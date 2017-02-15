@@ -13,6 +13,7 @@ module.exports = {
     //页面入口文件配置
     entry: {
         index: './src/index.js',//主页
+        button: './src/Button.jsx',//按钮demo
     },
     //入口文件输出配置
     output: {
