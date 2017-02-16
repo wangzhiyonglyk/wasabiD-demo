@@ -15,8 +15,7 @@ class ButtonDemo extends React.Component {
            <Button title="danger" name="danger" theme="danger"></Button>
            <Button title="green" name="green" theme="green"></Button>
            <Button title="default" name="default" theme="default"></Button>
-           <Button title="cancel" name="cancel" theme="cancel"></Button>
-       </Page>;
+           <Button title="cancel" name="cancel" theme="cancel"></Button></Page>;
     }
 }
 ReactDOM.render(<ButtonDemo/>, document.getElementById("root"));
