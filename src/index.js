@@ -7,7 +7,6 @@ let wasabi = require("wasabiD");
 
 let Button = wasabi.Button;
 let Message = wasabi.Message;
-
 let TestToolbar = React.createClass({
     getInitialState: function () {
         return {
@@ -27,10 +26,9 @@ let TestToolbar = React.createClass({
         })
     },
     render: function () {
-        return <div>
-            <Button name="alert" theme="success" title="按钮Alert" tip="tip" size="large" onClick={this.ClickAlert}/>
+        return (<div>   <Button name="alert" theme="success" title="按钮Alert" tip="tip" size="large" onClick={this.ClickAlert}/>
             <Button name="Confirm" theme="success" title="按钮Confirm" tip="tip" size="large" onClick={this.ClickConfirm}/>
-        </div>
+        </div>)
     }
 });
 ReactDOM.render(<TestToolbar/>, document.getElementById("root"));
