@@ -5,30 +5,17 @@ let React = require("react");
 let ReactDOM = require("react-dom");
 let wasabi = require("wasabiD");
 
-let Button = wasabi.Button;
-let Message = wasabi.Message;
+let Single = wasabi.Single;
 let TestToolbar = React.createClass({
     getInitialState: function () {
         return {
-            title: "新增",
-            addDisabled: false,
-            updateDisabled: false
+            controller: "Admin",
+            corsUrl:"http://112.74.194.226:7499/"
         }
     },
-    ClickAlert:function(){
-        Message.alert("弹出信息");
-    },
-    ClickConfirm:() => {
-        Message.confirm("确定要购买吗？",function(){
-            Message.info("是");
-        },function(){
-            Message.success("否");
-        })
-    },
+   
     render: function () {
-        return (<div>   <Button name="alert" theme="success" title="按钮Alert" tip="tip" size="large" onClick={this.ClickAlert}/>
-            <Button name="Confirm" theme="success" title="按钮Confirm" tip="tip" size="large" onClick={this.ClickConfirm}/>
-        </div>)
+        return (<Single controller={this.state.controller} corsUrl={this.state.corsUrl}></Single>)
     }
 });
 ReactDOM.render(<TestToolbar/>, document.getElementById("root"));
