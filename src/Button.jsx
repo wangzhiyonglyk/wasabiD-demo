@@ -1,5 +1,6 @@
 import  React from  "react";
 import  ReactDOM from  "react-dom";
+require("./sass/button.css");
 import  {Page,Button,LinkButton,Toolbar,ButtonModel} from  "wasabiD";
 class ButtonDemo extends React.Component {
     constructor(props) {

@@ -4,7 +4,7 @@
 let React = require("react");
 let ReactDOM = require("react-dom");
 let wasabi = require("wasabiD");
-
+require("./sass/index.css");
 let Single = wasabi.Single;
 let TestToolbar = React.createClass({
     getInitialState: function () {

@@ -21,8 +21,8 @@ module.exports = {
             debug: true,
             minimize: true
         }),
-         // // 获取打包css，独立文件，名称与输出一样，多页面一定要设置为disable真，单页面可视情况而定
-        new ExtractTextPlugin({filename: 'css/[name].css', disable: true, allChunks: true}),  
+         // // 获取打包css，独立文件，名称与输出一样,disable 设置false  allChunks参数设置成true，则插件会所有独立样式打包各自打包成一个css文件 在2.0中似乎没有用
+        new ExtractTextPlugin({filename: 'css/[name].css', disable:false,  allChunks: true}),  
 
        //公共文件
         new webpack.optimize.CommonsChunkPlugin({name:'common', filename:'js/common.js'}),  
@@ -35,12 +35,13 @@ module.exports = {
     entry: {
         button: './Button.jsx',
          index: './index.js',
+         //将哪些文件作为common的打包
         common: ['react','react-dom']
     },
 
     // 出口文件输出配置
     output: {
-        path: path.resolve(__dirname, './build/'),//路径配置
+        path: path.resolve(__dirname, './dist/'),//路径配置
         filename: 'js/[name].js',//文件名称
         publicPath: ''  // 静态资源最终访问路径 = output.publicPath + 资源loader或插件等配置路径，暂时不需要
     },
