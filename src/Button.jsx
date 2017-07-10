@@ -2,9 +2,19 @@ import  React from  "react";
 import  ReactDOM from  "react-dom";
 require("./sass/button.css");
 import  {Page,Button,LinkButton,Toolbar,ButtonModel} from  "wasabiD";
+import{ajax} from "wasabi-api";
 class ButtonDemo extends React.Component {
     constructor(props) {
         super(props);
+    }
+    componentDidMount(){
+        ajax({
+            url:"http://www.baidu.com",
+            success:function(result)
+            {
+
+            }
+        })
     }
     render()
     {

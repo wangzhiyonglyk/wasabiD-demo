@@ -25,7 +25,7 @@ module.exports = {
         new ExtractTextPlugin({filename: 'css/[name].css', disable:false,  allChunks: true}),  
 
        //公共文件
-        new webpack.optimize.CommonsChunkPlugin({name:'common', filename:'js/common.js'}),  
+        new webpack.optimize.CommonsChunkPlugin({name:['common',"api"]}),  
 
         // 热加载 添加HMR插件 | 对应启动参数 --hot
         new webpack.HotModuleReplacementPlugin(),
@@ -36,7 +36,8 @@ module.exports = {
         button: './Button.jsx',
          index: './index.js',
          //将哪些文件作为common的打包
-        common: ['react','react-dom']
+        common: ['react','react-dom'],
+        api:["wasabi-api"]
     },
 
     // 出口文件输出配置
@@ -60,10 +61,10 @@ module.exports = {
            //下面的方式也是可以的 
             //  { test: /\.jsx?$/,  loader: 'babel-loader', options: { presets: ['react', 'es2015', 'stage-0'] } },
             // 图片文件使用 url-loader 来处理，小于8kb的直接转为base64,并且指定文件名称与路径
-            { test: /\.(png|jpg|gif)$/, use: 'url-loader?limit=8192&name=../img/[name].[ext]'},
+            { test: /\.(png|jpg|gif)$/, use: 'url-loader?limit=8192&name=./img/[name].[ext]'},
             //打包字体
             //{test: 使用file-loader 来处理，并且指定文件名称与路径
-            {test: /\.(woff|woff2|svg|eot|ttf)\??.*$/, use: 'file-loader?prefix=font/&name=../font/[name].[ext]'}
+            {test: /\.(woff|woff2|svg|eot|ttf)\??.*$/, use: 'file-loader?prefix=font/&name=./font/[name].[ext]'}
         ]
     },
 
