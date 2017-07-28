@@ -27,7 +27,7 @@ module.exports = {
        //公共文件
         new webpack.optimize.CommonsChunkPlugin({name:['common',"api"]}),  
 
-        // 热加载 添加HMR插件 | 对应启动参数 --hot
+        // 热加载 添加HMR插件 | 对应启动参数 --hot  
         new webpack.HotModuleReplacementPlugin(),
     ],
 

@@ -6,12 +6,18 @@ import{ajax} from "wasabi-api";
 class ButtonDemo extends React.Component {
     constructor(props) {
         super(props);
+
     }
     componentDidMount(){
+        let obj1={name:"www"};
+        let obj2={sex:1};
+        let obj={...obj1,...obj2};
+        console.log(obj);
         ajax({
-            url:"http://www.baidu.com",
+            url:"http://192.168.3.191:81/mockjsdata/22/integral/index",
             success:function(result)
             {
+                console.log(result);
 
             }
         })

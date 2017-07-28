@@ -1,6 +1,13 @@
-webpackJsonp([0],{
+webpackJsonp([1],{
 
-/***/ 326:
+/***/ 149:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 297:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10,9 +17,9 @@ webpackJsonp([0],{
  * Created by shine 2017/02/08.
  */
 var React = __webpack_require__(1);
-var ReactDOM = __webpack_require__(29);
-var wasabi = __webpack_require__(59);
-
+var ReactDOM = __webpack_require__(26);
+var wasabi = __webpack_require__(57);
+__webpack_require__(149);
 var Single = wasabi.Single;
 var TestToolbar = React.createClass({
     displayName: "TestToolbar",
@@ -32,5 +39,5 @@ ReactDOM.render(React.createElement(TestToolbar, null), document.getElementById(
 
 /***/ })
 
-},[326]);
+},[297]);
 //# sourceMappingURL=index.js.map
