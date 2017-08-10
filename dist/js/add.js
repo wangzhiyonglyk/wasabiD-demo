@@ -1,6 +1,6 @@
-webpackJsonp([5],{
+webpackJsonp([4],{
 
-/***/ 295:
+/***/ 296:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46,9 +46,8 @@ var ButtonDemo = function (_React$Component) {
         key: "render",
         value: function render() {
             return _react2.default.createElement(
-                "div",
+                _wasabiD.Page,
                 null,
-                "  ",
                 _react2.default.createElement(_wasabiD.Button, { title: "primary", name: "primary", theme: "primary" }),
                 _react2.default.createElement(_wasabiD.Button, { title: "success", name: "success", theme: "success" }),
                 _react2.default.createElement(_wasabiD.Button, { title: "info", name: "info", theme: "info" }),
@@ -68,5 +67,5 @@ _reactDom2.default.render(_react2.default.createElement(ButtonDemo, null), docum
 
 /***/ })
 
-},[295]);
-//# sourceMappingURL=button.js.map
+},[296]);
+//# sourceMappingURL=add.js.map

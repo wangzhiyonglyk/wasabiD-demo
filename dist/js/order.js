@@ -1,6 +1,6 @@
-webpackJsonp([5],{
+webpackJsonp([3],{
 
-/***/ 295:
+/***/ 297:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36,7 +36,33 @@ var ButtonDemo = function (_React$Component) {
     function ButtonDemo(props) {
         _classCallCheck(this, ButtonDemo);
 
-        return _possibleConstructorReturn(this, (ButtonDemo.__proto__ || Object.getPrototypeOf(ButtonDemo)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (ButtonDemo.__proto__ || Object.getPrototypeOf(ButtonDemo)).call(this, props));
+
+        _this.state = {
+            headers: [{
+                name: "openid",
+                label: "openid"
+            }, {
+                name: "nickname",
+                label: "nickname"
+            }, {
+                name: "city",
+                label: "city"
+            }, {
+                name: "country",
+                label: "country"
+            }, {
+                name: "province",
+                label: "province"
+            }, {
+                name: "language",
+                label: "language"
+            }, {
+                name: "remark",
+                label: "remark"
+            }]
+        };
+        return _this;
     }
 
     _createClass(ButtonDemo, [{
@@ -46,17 +72,9 @@ var ButtonDemo = function (_React$Component) {
         key: "render",
         value: function render() {
             return _react2.default.createElement(
-                "div",
+                _wasabiD.Page,
                 null,
-                "  ",
-                _react2.default.createElement(_wasabiD.Button, { title: "primary", name: "primary", theme: "primary" }),
-                _react2.default.createElement(_wasabiD.Button, { title: "success", name: "success", theme: "success" }),
-                _react2.default.createElement(_wasabiD.Button, { title: "info", name: "info", theme: "info" }),
-                _react2.default.createElement(_wasabiD.Button, { title: "warning", name: "warning", theme: "warning" }),
-                _react2.default.createElement(_wasabiD.Button, { title: "danger", name: "danger", theme: "danger" }),
-                _react2.default.createElement(_wasabiD.Button, { title: "green", name: "green", theme: "green" }),
-                _react2.default.createElement(_wasabiD.Button, { title: "default", name: "default", theme: "default" }),
-                _react2.default.createElement(_wasabiD.Button, { title: "cancel", name: "cancel", theme: "cancel" })
+                _react2.default.createElement(_wasabiD.DataGrid, { headers: this.state.headers, dataSource: "rows", url: "http://localhost:6080/Test/GetTable" })
             );
         }
     }]);
@@ -68,5 +86,5 @@ _reactDom2.default.render(_react2.default.createElement(ButtonDemo, null), docum
 
 /***/ })
 
-},[295]);
-//# sourceMappingURL=button.js.map
+},[297]);
+//# sourceMappingURL=order.js.map
