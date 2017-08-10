@@ -25,7 +25,7 @@ module.exports = {
         new ExtractTextPlugin({filename: 'css/[name].css', disable:false,  allChunks: true}),  
 
        //公共文件
-        new webpack.optimize.CommonsChunkPlugin({name:['common',"api"]}),  
+        new webpack.optimize.CommonsChunkPlugin({name:['common',"react","api","load"],minChunks: 2}),  
 
         // 热加载 添加HMR插件 | 对应启动参数 --hot  
         new webpack.HotModuleReplacementPlugin(),
@@ -33,10 +33,11 @@ module.exports = {
 
     //页面入口文件配置
     entry: {
-        button: './Button.jsx',
-         index: './index.js',
-         //将哪些文件作为common的打包
-        common: ['react','react-dom'],
+        button: './view/button/index.jsx',
+       add: './view/order/add.jsx',
+        order: './view/order/index.jsx',
+           //将哪些文件作为common的打包
+        react: ['react','react-dom'],
         api:["wasabi-api"]
     },
 
@@ -79,7 +80,7 @@ module.exports = {
     devtool:'source-map',
     // 启动服务器
     devServer: {
-        contentBase: path.resolve(__dirname, './build/'),  // 默认webpack-dev-server会为根文件夹提供本地服务器，如果想为另外一个目录下的文件提供本地服务器，应该在这里设置其所在目录
+        contentBase: path.resolve(__dirname, './dist/'),  // 默认webpack-dev-server会为根文件夹提供本地服务器，如果想为另外一个目录下的文件提供本地服务器，应该在这里设置其所在目录
         inline: true, // 实时刷新
         historyApiFallback: false, // 在开发单页应用时非常有用，它依赖于HTML5 history API，如果设置为true，所有的跳转将指向index.html
         host: host,
