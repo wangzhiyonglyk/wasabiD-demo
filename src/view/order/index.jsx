@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 require("../../sass/button.css");
-import { Page, DataGrid } from "wasabiD";
+import { Page, DataGrid,Input,Button } from "wasabiD";
 import { ajax } from "wasabi-api";
+import Add from "./add";
 class ButtonDemo extends React.Component {
     constructor(props) {
         super(props);
@@ -45,8 +46,17 @@ class ButtonDemo extends React.Component {
     componentDidMount() {
 
     }
+    onClick()
+    {
+       console.log(this.refs.form.props.children); 
+    }
     render() {
         return <Page>
+            <Add ref="form">
+                 <Input type="idcard" name="idcard" label="身份证"></Input>
+                <Input type="number" name="money" label="金额"></Input>
+                <Button title="提交" onClick={this.onClick.bind(this)}></Button>
+            </Add>
             <DataGrid headers={this.state.headers} dataSource="rows" url="http://localhost:6080/Test/GetTable"></DataGrid>
         </Page>;
     }

@@ -11,17 +11,22 @@ class ButtonDemo extends React.Component {
     componentDidMount(){
        
     }
+        onClick()
+    {
+       console.log(this.refs.props.children[0]); 
+    }
     render()
     {
-       return <Page>
-           <Button title="primary" name="primary" theme="primary"></Button>
-           <Button title="success" name="success" theme="success"></Button>
-           <Button title="info" name="info" theme="info"></Button>
-           <Button title="warning" name="warning" theme="warning"></Button>
-           <Button title="danger" name="danger" theme="danger"></Button>
-           <Button title="green" name="green" theme="green"></Button>
-           <Button title="default" name="default" theme="default"></Button>
-           <Button title="cancel" name="cancel" theme="cancel"></Button></Page>;
+       return <div>
+           {
+                React.Children.map(this.props.children, function (child) {
+              return {child};
+        })
+
+           }
+             <Button title="提交" onClick={this.onClick.bind(this)}></Button>
+       </div>;
     }
 }
-ReactDOM.render(<ButtonDemo/>, document.getElementById("root"));
+
+export default ButtonDemo;
