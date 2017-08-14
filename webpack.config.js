@@ -34,7 +34,6 @@ module.exports = {
     //页面入口文件配置
     entry: {
         button: './view/button/index.jsx',
-       add: './view/order/add.jsx',
         order: './view/order/index.jsx',
            //将哪些文件作为common的打包
         react: ['react','react-dom'],

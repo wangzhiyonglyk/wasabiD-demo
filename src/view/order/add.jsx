@@ -1,32 +1,32 @@
-import  React from  "react";
-import  ReactDOM from  "react-dom";
-require("../../sass/button.css");
-import  {Page,Button,LinkButton,Toolbar,ButtonModel} from  "wasabiD";
-import{ajax} from "wasabi-api";
-class ButtonDemo extends React.Component {
+import React from "react";
+class Add extends React.Component {
     constructor(props) {
         super(props);
+        this.onClick=this.onClick.bind(this);
 
     }
-    componentDidMount(){
-       
-    }
-        onClick()
-    {
-       console.log(this.refs.props.children[0]); 
-    }
-    render()
-    {
-       return <div>
-           {
-                React.Children.map(this.props.children, function (child) {
-              return {child};
-        })
+    componentDidMount() {
 
-           }
-             <Button title="提交" onClick={this.onClick.bind(this)}></Button>
-       </div>;
+    }
+    onClick() {
+    for(var o in this.refs)
+        {
+           
+            this.refs[o].validate&&this.refs[o].validate();
+            console.log(this.refs[o].getValue());
+        }
+    }
+    render() {
+        return <div>
+            {
+                React.Children.map(this.props.children,  (child,index)=> {
+                    return React.cloneElement(child, {  key: index,ref:index })
+                })
+
+            }
+        
+        </div>;
     }
 }
 
-export default ButtonDemo;
+export default Add;
