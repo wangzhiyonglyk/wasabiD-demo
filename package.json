@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack -p --colors --progress",
-    "dev": "webpack-dev-server --colors --progress --watch"
+    "dev": "webpack-dev-server --colors --progress --inline"
   },
   "keywords": [
     "wasabi",

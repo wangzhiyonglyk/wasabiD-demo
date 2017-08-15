@@ -55,6 +55,7 @@ class ButtonDemo extends React.Component {
                 {name:"test",label:"test",require:true},
                 {name:"test1",label:"test1",size:"three"},
                 {name:"test2",label:"test2"},
+                    {name:"test3",label:"test3"},
             ]}>
             
             </Form>
