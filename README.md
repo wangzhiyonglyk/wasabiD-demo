@@ -16,5 +16,7 @@ cnpm install 淘宝镜像安装方式
 运行npm run dev 来启动服务
 
 ### 运行说明
-因为本项目是pc端多页面的，启动服务后默认是index.html，如果要运行其他页面或者没有index.html，请在浏览器中手动改为其他页面
+因为本项目默认是pc端多页面的，启动服务后默认是index.html，如果要运行其他页面或者没有index.html，请在浏览器中手动改为其他页面
+如果要设置成单页面，请在entryconfig/index.js中改
+
 
