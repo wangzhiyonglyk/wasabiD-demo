@@ -15,8 +15,11 @@ cnpm install 淘宝镜像安装方式
 然后运行npm run build来编译
 运行npm run dev 来启动服务
 
-### 运行说明
-因为本项目默认是pc端多页面的，启动服务后默认是index.html，如果要运行其他页面或者没有index.html，请在浏览器中手动改为其他页面
-如果要设置成单页面，请在entryconfig/index.js中改
+###开发说明
+开发一个新功能后需要打包的，只要参考entryconfig/index.js 中参数即可。
+多页面时比如CRM系统可将配置拆分为多个，最后在index.js中合并。
+单页面，则只有一个index配置
+
+
 
 
