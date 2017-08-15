@@ -1,6 +1,7 @@
 /**
  * Created by wangzy
  * date 2017-02-08
+ *  * edit date:2017-08-15
  * desc:打包入口
  */
 const path = require('path');
