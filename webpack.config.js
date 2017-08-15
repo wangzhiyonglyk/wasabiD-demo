@@ -9,7 +9,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const host = '127.0.0.1';
 const port = 8080;
 const devAddress = 'http://${host}:${port}';
-
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
 
      //入口文件来源的路径
@@ -29,12 +29,42 @@ module.exports = {
 
         // 热加载 添加HMR插件 | 对应启动参数 --hot  
         new webpack.HotModuleReplacementPlugin(),
+        //生成对应的html文件
+        new HtmlWebpackPlugin({
+            title:"首页",
+            filename:"index.html",
+             template: "template.html",
+             chunks:["load","react","api","common","index"],
+           
+              minify: {
+           removeComments: true,
+           collapseWhitespace: true,
+          removeAttributeQuotes: true      
+      },
+      chunksSortMode: 'dependency'
+        }),
+     new HtmlWebpackPlugin({
+            title:"测试页面",
+            filename:"add.html",
+             template: "template.html",
+             chunks:["load","react","api","common","add"],
+            
+              minify: {
+           removeComments: true,
+           collapseWhitespace: true,
+          removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+      },
+      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      chunksSortMode: 'dependency'
+        })
     ],
 
     //页面入口文件配置
     entry: {
-        button: './view/button/index.jsx',
-        order: './view/order/index.jsx',
+        index: './view/demo/index.jsx',
+        add:'./view/demo/add.jsx',
            //将哪些文件作为common的打包
         react: ['react','react-dom'],
         api:["wasabi-api"]
