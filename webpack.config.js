@@ -10,7 +10,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const host = '127.0.0.1';//地址
 const port = 8080;//端口号
-let  entry =require( "./entryconfig");//打包的配置文件
+let  entry =require( "./config");//打包的配置文件
 
 //根据打包的配置文件，生成对应要打包的配置
 let entryconfig ={};
@@ -69,7 +69,7 @@ module.exports = {
             { test: /\.(png|jpg|gif)$/, use: 'url-loader?limit=8192&name=./img/[name].[ext]' },
             //打包字体
             //{test: 使用file-loader 来处理，并且指定文件名称与路径
-            { test: /\.(woff|woff2|svg|eot|ttf)\??.*$/, use: 'file-loader?prefix=font/&name=./font/[name].[ext]' }
+            { test: /\.(woff|woff2|svg|eot|ttf)\??.*$/, use: 'url-loader?name=./font/[name].[ext]' }
         ]
     },
     resolve: {
