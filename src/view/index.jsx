@@ -1,11 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Page, DataGrid,Input,Button, SearchBar,Form,Modal,Toolbar,SlidePanel,CheckBox} from "wasabiD";
+import { Page, DataGrid,Input,Button, SearchBar,Form,Modal,Toolbar,SlidePanel,CheckBox,Row,Col} from "wasabiD";
+import {Layout,Upload,Center,Left,Right,Header,Footer,Tabs,TabPanel,Menus,MenuPanel,LinkButton} from "wasabiD";
 import { ajax } from "wasabi-api";
 class ButtonDemo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            value:"http://wechat.bluehy.com/Test/Upload",
             headers: [
                 {
                     name: "openid",
@@ -41,51 +43,46 @@ class ButtonDemo extends React.Component {
                 {
                     name:"edit",
                     label:"编辑",
-                    content:function(rowData,rowIndex)
+                    content:(rowData,rowIndex)=>
                     {
-                        return <div><a onClick={this.onClick}>fdfdfd</a></div>
+                        return <div><LinkButton onClick={this.onClick} title="fdfd"></LinkButton></div>
                     }
                 }
 
             ]
         }
         this.onClick=this.onClick.bind(this);
+        this.onChange=this.onChange.bind(this);
+        
     }
     componentDidMount() {
 
     }
+    onChange(value){
+ this.setState({
+     value:value
+ })
+    }
     onClick()
     {
 
-      this.refs.slide.open();
-      this.refs.modal.open();
-    }
-    onChange()
-    {
-        this.setState({
+        if(this.state.value)
+            {
 
-        })
+            }
+            else {
+                alert("请入上传地址");
+                return ;
+            }
+      this.refs.upload.open();
+      
     }
+ 
     render() {
         return <Page>
-            <SearchBar ref="form" >
-            <Input type="text" name="text" label="text" onChange={this.onChange.bind(this)} style={{width:500}}></Input>
-            <Input type="muti" name="muti" label="muti" title="请输入" placeholder="多行文本输出"></Input>
-              <Input type="date" name="date" label="date"></Input>
-              <Input type="datetime" name="datetime" label="datetime"></Input>
-              <Input type="daterange" name="daterange" label="daterange"></Input>
-              <Input type="datetimerange" name="datetimerange" label="datetimerange"></Input>
-              <Input type="select" data={[{value:"1",text:"男"},{value:"2",text:"女"}]}></Input>
-              <Input type="picker" name="picker" label="picker" data={[{value:"1",text:"男"},{value:"2",text:"女"}]}></Input>
-              <Input type="checkbox" data={[{value:"1",text:"男"},{value:"2",text:"女"}]}></Input>
-              <Input type="radio" data={[{value:"1",text:"男"},{value:"2",text:"女"}]}></Input>
-              <CheckBox data={[{value:"1",text:"男"},{value:"2",text:"女"}]}></CheckBox>
-              <Button name="btn" style={{width:100}} title="提交" onClick={this.onClick}> </Button>
-          
-            </SearchBar>
-            <Modal ref="modal"  showOK={true} showCancel={true}><div>fdfsdfsd</div></Modal>
-            <DataGrid headers={this.state.headers} dataSource="rows" param url={"http://wechat.bluehy.com/Test/GetTable"}></DataGrid>
-            <SlidePanel ref="slide"></SlidePanel>
+             <Button name="btn"  title="打开导入" onClick={this.onClick}> </Button>
+<Input type="text" name="upload" label="请输入后台上传地址" style={{width:200}} onChange={this.onChange} value={this.state.value}></Input>
+                <Upload  ref="upload" accept="image/gif, image/jpeg" uploadurl={this.state.value} ref="upload"></Upload>
         </Page>;
     }
 }

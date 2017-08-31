@@ -24,6 +24,7 @@ let htmlplugin = entry.map((item, index) => {
         title: item.title,
         filename: item.filename+".html",//加上后缀
         template: "template.html",
+        hash:true,
         chunks: ["load", "react", "api", "common", item.filename],//前面四个为公共脚本,用意见下面的配置
         minify: {
             removeComments: true,
@@ -60,7 +61,7 @@ module.exports = {
             { test: /\.(sass|scss)$/, use: ExtractTextPlugin.extract({ fallback: 'style-loader', use: ['css-loader', 'sass-loader'] }) },
             { test: /\.(less)$/, use: ExtractTextPlugin.extract({ fallback: 'style-loader', use: ['css-loader', 'less-loader'] }) },
             // .js 文件使用babel 来编译处理,react 需要几个插件
-            { test: /\.jsx?$/, use: [{ loader: 'babel-loader', options: { presets: ['react', 'es2015', 'stage-0'] } }] },
+            { test: /\.jsx?$/, use: [{ loader: 'babel-loader', options: { presets: ['react', 'es2015', 'stage-1'] } }] },
             // exclude 参数是否需要请根据情况而定，一般不需要
             //   { test: /\.js[x]?$/, use: [{ loader: 'babel-loader', options: { presets: ['react', 'es2015', 'stage-0'] }}], exclude: /node_modules/ },
             //下面的方式也是可以的 
