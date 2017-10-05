@@ -25,7 +25,7 @@ let htmlplugin = entry.map((item, index) => {
         filename: item.filename+".html",//加上后缀
         template: "template.html",
         hash:true,
-        chunks: ["load", "react", "api", "common", item.filename],//前面四个为公共脚本,用意见下面的配置
+        chunks: ["load", "react", "api", "common", item.filename],//页面中引用的脚本，前面四个为公共脚本,后面是当前页面的脚本，注意的顺序，原理见下面的配置
         minify: {
             removeComments: true,
             collapseWhitespace: true,
