@@ -5,7 +5,8 @@
 
  import React from "react";
  import ReactDOM from "react-dom";
- import {Page, Panel, Button,Message } from "wasabiD";
+ import {Page, Panel, Button,Message,Form ,Input,Row,Col } from "wasabiD";
+
  class ButtonDemo extends React.Component{
   constructor(props)
   {
@@ -14,10 +15,20 @@
   }
   onClick(name,title){
   Message.alert("此按钮的name:"+name+",标题:"+title);
+  console.log(this.refs.form.getData());
   }
   render()
   {
       return <Page>
+        <Form ref="form">
+            <Row><Input type="text" style={{width:600}} name="name" label="姓名"></Input>
+            <Input type="select" name="name1" label="姓名1" ></Input>
+            <Input type="picker" name="name2" label="姓名2"></Input>
+            <Input type="date" name="name3" label="姓名3"></Input>
+            <Input type="datetime" name="name4" label="姓名4"></Input></Row>
+            
+        </Form>
+
           <Panel title="各类主题按钮 属性值:theme" style={{height:100}}>
           <Button theme="default" title="default" name="default" tip="默认主题"></Button>
           <Button theme="primary" title="primary" name="primary" tip="主要"></Button>
