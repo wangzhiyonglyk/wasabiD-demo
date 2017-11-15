@@ -5,8 +5,8 @@
   "main": "no",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack -p --colors --progress",
-    "dev": "webpack-dev-server --colors --progress --inline"
+    "build": "webpack ",
+    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --inline --content-base ./build"
   },
   "keywords": [
     "wasabi",
@@ -19,7 +19,7 @@
     "react-dom": "^15.5.4",
     "react-router": "^4.1.1",
     "wasabi-api": "^0.6.3",
-    "wasabiD": "^0.8.3"
+    "wasabiD": "^0.8.57"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

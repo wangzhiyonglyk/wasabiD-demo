@@ -20,8 +20,8 @@ module.exports=entry;
 //如果是单页面
 let entry= [
     {
-     filename:"index",//文件名，
-     title:"微信公众号管理",// 标题
+     filename:"index", //文件名，
+     title:"微信公众号管理", // 标题
      src:'./view/index.jsx'//脚本路径
  }
 ]
