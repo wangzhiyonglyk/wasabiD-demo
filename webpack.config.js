@@ -51,7 +51,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, './dist/'),//路径配置
         filename: 'js/[name][chunkhash:8].js',//文件名称
-        publicPath: ''  // 
+        publicPath: ''  // 表示资源的发布地址，当配置过该属性后，打包文件中所有通过相对路径引用的资源都会被配置的路径所替换。
     },
 
     module: {
@@ -112,7 +112,8 @@ module.exports = {
                 // 提取出出现多次但是没有定义成变量去引用的静态值
                 reduce_vars: true,
             }
-        })
+        }),
+        new webpack.HotModuleReplacementPlugin() //热加载插件
 
     ].concat(htmlplugin), //生成对应的html文件,在htmlplugin中
 
