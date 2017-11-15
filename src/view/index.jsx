@@ -1,87 +1,73 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Page, DataGrid, Input, SearchBar, Form, Modal, Toolbar, SlidePanel, CheckBox, Row, Col } from "wasabiD";
-import { Layout,Button, Upload, Center, Left, Right, Header, Footer, Tabs, TabPanel, Menus, MenuPanel, LinkButton } from "wasabiD";
+import { Page, Layout, Left, Right, Center, Menus, MenuPanel, Tabs, TabPanel } from "wasabiD";
 import { ajax } from "wasabi-api";
-class ButtonDemo extends React.Component {
+class Index extends React.Component {
     constructor(props) {
         super(props);
+
+        this.tabClose = this.tabClose.bind(this);
+        this.addTab = this.addTab.bind(this);
         this.state = {
-            value: "http://wechat.bluehy.com/Test/Upload",
-            headers: [
-                {
-                    name: "openid",
-                    label: "openid"
-                },
-                {
-                    name: "nickname",
-                    label: "nickname"
-                }
-                ,
-                {
-                    name: "city",
-                    label: "city"
-                }
-                ,
-                {
-                    name: "country",
-                    label: "country"
-                }
-                , {
-                    name: "province",
-                    label: "province"
-                },
-                {
-                    name: "language",
-                    label: "language"
-                },
-                {
-                    name: "remark",
-                    label: "remark"
-                }
-                ,
-                {
-                    name: "edit",
-                    label: "编辑",
-                    content: (rowData, rowIndex) => {
-                        return <div><LinkButton onClick={this.onClick} title="fdfd"></LinkButton></div>
-                    }
-                }
-
-            ]
+            tabs: [],
+            activeIndex: 0
         }
-        this.onClick = this.onClick.bind(this);
-        this.onChange = this.onChange.bind(this);
-
     }
     componentDidMount() {
         
     }
-    onChange(value) {
+    tabClose(index, activeIndex) {
+        this.state.tabs.splice(index, 1);
+        activeIndex = activeIndex > this.state.tabs.length - 1 ? activeIndex - 1 <= this.state.tabs.length - 1 ? activeIndex - 1 : 0 : activeIndex;
         this.setState({
-            value: value
+            tabs: this.state.tabs,
+            activeIndex: activeIndex
         })
     }
-    onClick() {
+    addTab(title, url) {
+        //判断当前的页签的下标
+        let activeIndex = this.state.activeIndex;
+        if (this.state.tabs.filter((item, index) => {
+            if (item.title == title) {
+                activeIndex =index;
+                return true;
+            }
+        }).length == 0) {
+            this.state.tabs.push(
+                { title: title, url: url }
 
-        if (this.state.value) {
-
+            )
+            activeIndex = this.state.tabs.length - 1;
         }
-        else {
-            alert("请入上传地址");
-            return;
-        }
-        this.refs.upload.open();
-
+        this.setState({
+            tabs: this.state.tabs,
+            activeIndex: activeIndex
+        })
     }
-
     render() {
-        return <Page>
-            <Button name="btn" title="打开导入" onClick={this.onClick}>你好 </Button>
-            <Input type="text" name="upload" label="请输入后台上传地址" style={{ width: 200 }} onChange={this.onChange} value={this.state.value}></Input>
-            <Upload ref="upload" name="file" uploadSuccess uploadurl={this.state.value} ></Upload>
-        </Page>;
+        return <Layout>
+            <Left width={250}>
+                <Menus>
+                    <MenuPanel title="按钮组件">
+                        <a href="javascript:void(0);" onClick={this.addTab.bind(this, "普通按钮-Button", "./button.html")}>普通按钮-Button</a>
+                        <a href="javascript:void(0);" onClick={this.addTab.bind(this, "链接按钮-LinkButton", "./button.html")}>链接按钮-LinkButton</a>
+                    </MenuPanel>
+                </Menus>
+
+            </Left>
+            <Center>
+                <Tabs onClose={this.tabClose.bind(this)} activeIndex={this.state.activeIndex} >
+                    {
+                        this.state.tabs.map((item, index) => {
+                            return <TabPanel key={index} title={item.title}
+                            > <iframe style={{ width: "100%", height: document.body.clientHeight - 20 }} src={item.url}></iframe></TabPanel>
+                        })
+                    }
+                </Tabs>
+
+            </Center>
+
+        </Layout>
     }
 }
-
-ReactDOM.render(<ButtonDemo />, document.getElementById("root"));
+ReactDOM.render(<Index />, document.getElementById("root"));
