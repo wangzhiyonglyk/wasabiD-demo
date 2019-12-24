@@ -17,7 +17,7 @@ class Index extends React.Component {
    
     render() {
         return <div>
-            你好
+            你好2
         </div>
     }
 }

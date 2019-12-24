@@ -23,7 +23,7 @@ let htmlplugin = entry.map((item, index) => {
     return new HtmlWebpackPlugin({
         title: item.title,//页面标题
         filename: item.filename + ".html",//生成的html存放路径，相对于 path
-        template: "template.html", //html模板路径
+        template: "../config/template.html", //html模板路径
         inject: true,    //允许插件修改哪些内容，true/'head'/'body'/false,
         hash: true,
         chunks: ["load", "react", "api", "common", item.filename],//前面四个为公共脚本,用意见下面的配置
@@ -50,7 +50,7 @@ module.exports = {
     // 出口文件输出配置
     output: {
         path: path.resolve(__dirname, './dist/'),//路径配置
-        filename: 'js/[name][chunkhash:8].js',//文件名称
+        filename: 'js/[name][hash].js',//文件名称
         publicPath: ''  // 表示资源的发布地址，当配置过该属性后，打包文件中所有通过相对路径引用的资源都会被配置的路径所替换。
     },
 
