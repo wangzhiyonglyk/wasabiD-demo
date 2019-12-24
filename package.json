@@ -15,29 +15,29 @@
   "author": "wangzhiyong",
   "license": "ISC",
   "dependencies": {
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
-    "react-router": "^4.1.1",
-    "wasabi-api": "^0.6.3",
-    "wasabiD": "^0.8.57"
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router": "^5.1.2",
+    "wasabi-api": "^0.7.47",
+    "wasabiD": "^0.8.594"
   },
   "devDependencies": {
-    "babel-core": "^6.25.0",
-    "babel-loader": "^6.4.1",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.6",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
-    "css-loader": "^0.23.1",
-    "extract-text-webpack-plugin": "^2.0.0-beta.4",
-    "file-loader": "^0.8.5",
-    "html-webpack-plugin": "^2.30.1",
-    "style-loader": "^0.13.2",
-    "url-loader": "^0.5.9",
-    "webpack": "^2.7.0",
-    "webpack-dev-server": "^2.5.0",
-    "whatwg-fetch": "^1.1.1"
+    "css-loader": "^3.4.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^5.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^1.1.1",
+    "url-loader": "^3.0.0",
+    "webpack": "^4.41.4",
+    "webpack-dev-server": "^3.10.1",
+    "whatwg-fetch": "^3.0.0"
   }
 }
