@@ -1,4 +1,4 @@
-# wasabi Design PC框架测试DEMO<sup>React</sup>
+c# wasabi Design PC框架测试DEMO<sup>React</sup>
 	蓝风信子网络科技有限公司PC端前端框架
 	此版本可以用来使用，也可以用于学习
 	

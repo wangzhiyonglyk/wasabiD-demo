@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
+import Button from "../component/Buttons/Button"
 class Index extends React.Component {
     constructor(props) {
         super(props);
@@ -17,7 +17,8 @@ class Index extends React.Component {
    
     render() {
         return <div>
-            你好
+            <div>测试按钮</div>
+            <Button title="测试" label="测试"></Button>
         </div>
     }
 }
