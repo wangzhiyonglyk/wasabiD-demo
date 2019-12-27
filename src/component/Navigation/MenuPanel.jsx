@@ -43,4 +43,4 @@ class Menu extends React.Component {
  
 }
 
-module.exports= Menu;
+export default  Menu;

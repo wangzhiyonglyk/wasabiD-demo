@@ -44,4 +44,4 @@ let element= {
     }
 
 }
-module .exports=element;
+export default element;

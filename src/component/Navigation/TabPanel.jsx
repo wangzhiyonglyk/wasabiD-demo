@@ -21,4 +21,4 @@ class TabPanel extends React.Component {
 
 }
 
-module.exports= TabPanel;
+export default TabPanel;

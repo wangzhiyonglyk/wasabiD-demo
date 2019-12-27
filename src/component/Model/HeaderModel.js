@@ -2,7 +2,6 @@
  * Created by zhiyongwang on 2016-02-24.
  * 列表表头模型
  */
- var EditorModel=require("./EditorModel");
 class HeaderModel {
     constructor(name,label,content=null,hide=false,sortAble=false,width=null)
     {
@@ -19,4 +18,4 @@ class HeaderModel {
         this.editor=null;//处理编辑时的,默认为文本
     }
 }
-module .exports=HeaderModel;
+export default HeaderModel;

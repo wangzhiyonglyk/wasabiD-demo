@@ -32,7 +32,7 @@ export  default function (value)  {
                         helpTip = isvalidate ? "" : this.props.invalidTip ? this.props.invalidTip : validation["invalidTip"];
                     }
                     else {//没有正则表达式，则验证默认正则
-                      
+                    
                         if (regexp[this.props.type]) {//系统存在这个类型
                             if (typeof regexp[this.props.type] == "function") {
                                 isvalidate = regexp[this.props.type](value);

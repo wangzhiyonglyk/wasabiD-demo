@@ -13,4 +13,4 @@ class  MenuModel {
 
     }
 }
-module .exports=MenuModel;
+export default MenuModel;

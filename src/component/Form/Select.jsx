@@ -109,7 +109,7 @@ class  Select extends  Component{
     }
     validate(value) {
 
-        validate.call(this, value)
+        return validate.call(this, value)
     }
     showUpdate(newParam, oldParam) {
         showUpdate.call(this, newParam, oldParam);

@@ -625,9 +625,9 @@ baseUtil.Error={
     ServiceError:"错误代码:002,后台服务器响应失败",
     HandlerError:"后台业务程序处理错误"
 }
-var base64 = require("./base64.js");
+import  base64 from "./base64.js";
 baseUtil.base64 = base64;
-var md5 = require("./md5.js");
+import  md5 from "./md5.js";
 baseUtil.md5 = md5;
 
 

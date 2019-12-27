@@ -97,4 +97,4 @@ class Col extends React.Component {
     }
 }
 
-module. exports=Col;
+export default Col;

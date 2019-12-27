@@ -4,8 +4,9 @@ date:2017-02-09
 desc:圣杯布局
  */
 
-var React = require("react");
-require("../Sass/Layout/Layout.css");
+import React from 'react';
+
+import ("../Sass/Layout/Layout.css");
 class Layout extends React.Component {
     constructor(props) {
         super(props);
@@ -74,4 +75,4 @@ class Layout extends React.Component {
     }
 }
 
-module.exports = Layout;
+export default Layout;

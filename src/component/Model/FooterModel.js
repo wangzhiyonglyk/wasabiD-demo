@@ -12,4 +12,4 @@ class FooterModel
         this.content=content;//复合计算函数
     }
 }
-module .exports=FooterModel;
+export default FooterModel;

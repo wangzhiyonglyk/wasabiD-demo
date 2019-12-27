@@ -4,10 +4,11 @@ create by wangzy
 date:2016-04-05
 desc:滑动面板
 */
-let React=require("react");
-require("../Sass/Layout/SlidePanel.css");
-var Toolbar=require("../Buttons/Toolbar.jsx");
-var Button=require("../Buttons/Button.jsx");
+import  React from "react";
+
+import  Toolbar from "../Buttons/Toolbar.jsx";
+import  Button from "../Buttons/Button.jsx";
+import "../Sass/Layout/SlidePanel.css";
 class SlidePanel extends  React.Component{
     constructor(props) {
         super(props);
@@ -113,4 +114,4 @@ class SlidePanel extends  React.Component{
             </div>
         }
     };
-module.exports=SlidePanel;
+export default SlidePanel;

@@ -47,5 +47,5 @@ class  FormModel {
 
 }
 
-module.exports=FormModel;
+export default FormModel;
 

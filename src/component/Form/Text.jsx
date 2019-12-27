@@ -172,7 +172,7 @@ class  Text  extends Component{
     }
     validate(value){
     
-        validate.call(this,value)
+     return validate.call(this,value)
     }
     getValue () {//获取值
         return this.state.value;

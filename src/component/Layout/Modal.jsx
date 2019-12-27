@@ -1,11 +1,12 @@
 //create by wangzy
 //date:2016-03-22
 //desc:模态窗口
-require("../Sass/Layout/Modal.css");
-require("../Sass/Buttons/button.css");
-let React =require("react");
-let Button=require("../Buttons/Button.jsx");
-let Resize=require("./Resize.jsx");
+
+import React from "react";
+import  Button from ("../Buttons/Button.jsx");
+import  Resize from ("./Resize.jsx");
+import ("../Sass/Layout/Modal.css");
+import ("../Sass/Buttons/button.css");
 class Modal extends  React.Component {
     constructor(props) {
         super(props);
@@ -180,5 +181,4 @@ Modal.defaultProps={
     OKHandler: null,//确定按钮的事件,
 }
 
-
-module .exports= Modal;
+export default  Modal;

@@ -29,12 +29,14 @@ class Toolbar  extends Component {
         if (this.props.buttons != null) {
             this.props.buttons.map((child) => {
                     if (this.props.type == "button") {
+                       let  key=child.name?child.name:child.title;
                         buttonlist.push(
-                            <Button key={child.name} {...child} onClick={this.onClick}></Button>
+                           
+                        <Button key={key} {...child} onClick={this.onClick}></Button>
                         );
                     } else {
                         buttonlist.push(
-                            <LinkButton key={child.name} {...child} onClick={this.onClick}></LinkButton>
+                            <LinkButton key={key} {...child} onClick={this.onClick}></LinkButton>
                         );
                     }
 
@@ -52,13 +54,13 @@ class Toolbar  extends Component {
 Toolbar.propTypes= {
     buttons: PropTypes.array.isRequired,
     type: PropTypes
-        .oneOf([ //主题
+        .oneOf([ //类型
             "button",
             "link"
         ]),
         style:PropTypes.object,
         className:PropTypes.string,
-    onClick:PropTypes.func
+        onClick:PropTypes.func
 };
 Toolbar.defaultProps= {buttons: [], type: "button",style:{}, className: ""};
 

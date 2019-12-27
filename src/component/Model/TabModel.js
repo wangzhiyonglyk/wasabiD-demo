@@ -29,4 +29,4 @@ class TabModel
 
     }
 }
-module .exports=TabModel;
+export default TabModel;

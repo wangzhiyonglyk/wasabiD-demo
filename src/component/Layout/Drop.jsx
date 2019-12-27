@@ -2,9 +2,8 @@
  * Created by zhiyongwang on 2016-03-26.
  * 能停靠的层与LinkButton配合使用
  */
-var React=require("react");
-var LinkButton=require("../Buttons/LinkButton.jsx");
-require("../sass/Layout/Drop.css");
+import React from 'react';
+import ("../sass/Layout/Drop.css");
 class Drop extends  React.Component {
     constructor(props) {
         super(props);
@@ -64,4 +63,4 @@ class Drop extends  React.Component {
 Drop.propTypes={
     onDrop: React.PropTypes.func.isRequired,//元素停靠事件
 }
-module .exports= Drop;
+export default Drop;

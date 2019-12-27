@@ -13,16 +13,13 @@ class ButtonModel
         this.iconAlign="left";
         this.href="javascript:void(0);";
         this.onClick=null;
-        this.backgroundColor=null;
-        this.tip=null;
         this.theme=theme;
         this.size="default";
-        this.color=null;
-        this.hide=false;
+       
         this.className=null;
         this.style=null;
         this.draggable=false;
 
     }
 }
-module .exports=ButtonModel;
+export default  ButtonModel;

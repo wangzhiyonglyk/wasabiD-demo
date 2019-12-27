@@ -79,7 +79,7 @@ class  DatePicker extends Component{
     }
     validate(value) {
 
-        validate.call(this, value)
+        return validate.call(this, value)
     }
     registerClickAway(onClickAway,target){
         ClickAway.registerClickAway.call(this,onClickAway,target);

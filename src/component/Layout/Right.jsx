@@ -29,4 +29,4 @@ class Right extends  React.Component{
     }
 }
 
-module .exports= Right;
+export default  Right;

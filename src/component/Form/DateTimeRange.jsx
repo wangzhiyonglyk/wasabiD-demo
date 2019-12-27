@@ -37,7 +37,7 @@ class DateTimeRange extends Component {
     }
     validate(value) {
 
-        validate.call(this, value)
+        return validate.call(this, value)
     }
     setDefaultState(props) {
         //先设置默认值的，再判断用户是否有输入值

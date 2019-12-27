@@ -94,7 +94,13 @@ this.onSubmit=this.onSubmit.bind(this);
         let isva = true;
         for (let v in this.refs) {
             //如果没有验证方法说明不是表单控件，保留原来的值
-            isva = this.refs[v].validate ? this.refs[v].validate(this.refs[v].getValue()) : isva;
+            if(isva)
+            {//如果验证是正确的，继续获取值
+                isva = this.refs[v].validate ? this.refs[v].validate(this.refs[v].getValue()) : isva;
+            }
+           else{//如果前一个验证失败，则验证不拿值
+            this.refs[v].validate ? this.refs[v].validate(this.refs[v].getValue()):void(0);
+           }
             if (this.refs[v].props.name && this.refs[v].getValue) {//说明是表单控件
                 if (this.refs[v].props.name.indexOf(",") > -1) {//含有多个字段
                     var nameSplit = this.refs[v].props.name.split(",");
@@ -122,9 +128,7 @@ this.onSubmit=this.onSubmit.bind(this);
                 }
             }
         }
-console.log(isva);
         if (isva) {
-console.log(this.props);
             if (this.props.onSubmit ) {
                 this.props.onSubmit(data);
             }

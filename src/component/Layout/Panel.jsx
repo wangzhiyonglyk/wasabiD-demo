@@ -3,58 +3,31 @@ create by wangzy
 date:2016-15-18
 desc:面板组件
  */
-var React=require("react");
-var LinkButton=require("../Buttons/LinkButton.jsx");
-var Toolbars=require("../Buttons/Toolbar.jsx");
-require("../Sass/Layout/Panel.css");
-var Panel=React.createClass({
-    propTypes: {
-        theme: React.PropTypes.oneOf([
-            "default",
-            "primary",
-            "success",
-            "info",
-            "warning",
-            "danger",
-        ]),//主题
-      
-        expand:React.PropTypes.bool,//是否展开
-        expandAble:React.PropTypes.bool,//是否允许展开
-        title:React.PropTypes.string,//标题
-        buttons:React.PropTypes.array,//按钮
-        buttonClick:React.PropTypes.func,//按钮的单击事件
-    },
-    getDefaultProps:function() {
-        return{
-            theme:"default",
-            expand:true,
-            className:"",
-            expandAble:true,
-            title:"",
-            height:400,
-            backgroundColor:null,
-            buttons:[],
-            buttonClick:null,
-        }
-    },
-    getInitialState:function() {
-        return {
-            expand:this.props.expand,
-            expandAble:this.props.expandAble,
-            iconTip:(this.props.expand==true)?"折叠":"展开",
-            iconCls:(this.props.expand==true)?"icon-fold":"icon-expand",
-            height:(this.props.expand==true)?this.props.height:0,
-            }
-    },
-    componentWillReceiveProps:function(nextProps) {
+import React from "react";
+import  LinkButton from ("../Buttons/LinkButton.jsx");
+import  Toolbars from ("../Buttons/Toolbar.jsx");
+import ("../Sass/Layout/Panel.css");
+class   Panel extends  React.Component {
+   constructor(props){
+       super(props);
+       this.state={
+        expand:this.props.expand,
+        expandAble:this.props.expandAble,
+        iconTip:(this.props.expand==true)?"折叠":"展开",
+        iconCls:(this.props.expand==true)?"icon-fold":"icon-expand",
+        height:(this.props.expand==true)?this.props.height:0,
+       }
+   }
+ 
+    componentWillReceiveProps(nextProps) {
         this.setState({
             expand: nextProps.expand,
             expandAble:nextProps.expandAble,
            }
         );
 
-    },
-    expandHandler:function()
+    }
+    expandHandler()
     {
         this.setState({
             expand:!this.state.expand,
@@ -62,14 +35,14 @@ var Panel=React.createClass({
             iconCls:this.state.expand==true?"icon-fold":"icon-expand",
             height:this.state.expand==true?this.props.height:0,
         })
-    },
-    buttonClick:function(name,title) {
+    }
+    buttonClick(name,title) {
           if(this.props.buttonClick!=null)
           {
               this.props.buttonClick(name,title);
           }
-    },
-    render:function()
+    }
+    render()
     {
        let style=this.props.style?this.props.style:{};
         if(!style.width)
@@ -89,5 +62,33 @@ var Panel=React.createClass({
 
                 )
     }
-})
-module .exports=Panel;
+}
+
+propTypes={
+    theme: PropTypes.oneOf([
+        "default",
+        "primary",
+        "success",
+        "info",
+        "warning",
+        "danger",
+    ]),//主题
+  
+    expand:PropTypes.bool,//是否展开
+    expandAble:PropTypes.bool,//是否允许展开
+    title:PropTypes.string,//标题
+    buttons:PropTypes.array,//按钮
+    buttonClick:PropTypes.func,//按钮的单击事件
+};
+  Panel. defaultProps={
+        theme:"default",
+        expand:true,
+        className:"",
+        expandAble:true,
+        title:"",
+        height:400,
+        backgroundColor:null,
+        buttons:[],
+        buttonClick:null,
+    };
+export default  Panel;

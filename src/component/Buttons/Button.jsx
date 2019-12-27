@@ -15,7 +15,9 @@ class Button  extends Component {
         super(props);
         this.title = null; //初始化
         this.clickHandler=this.clickHandler.bind(this);
-        this.state= {title:this.props.title, theme: this.props.theme, disabled: this.props.disabled, title: this.props.title, tip: this.props.tip, hide: this.props.hide}
+       this.state={
+
+       }
 
     }
    
@@ -49,12 +51,11 @@ class Button  extends Component {
                 ? "disabled"
                 : null,
                 //文字提示
-            title: (this.props.tip
-                ? this.props.tip
-                : this.props.title)
+            title: this.props.title
         }
+        
         return (
-            <button {...props}  onClick={this.clickHandler} type="button">{this.props.title}</button>
+            <button {...props}  onClick={this.clickHandler} type="button">{this.props.children?this.props.children:this.props.title}</button>
         )
     }
 
@@ -62,8 +63,7 @@ class Button  extends Component {
 
  Button. propTypes={
     name: PropTypes.string, //按钮名称
-    title: PropTypes.string, //按钮标题
-    tip: PropTypes.string, //按钮提示信息
+    title: PropTypes.string, //按钮提示信息
     theme:PropTypes
         .oneOf([ //主题
             "primary",
@@ -83,17 +83,18 @@ class Button  extends Component {
     onClick: PropTypes.func, //按钮单击事件
     className: PropTypes.string, //按钮自定义样式
     disabled: PropTypes.bool, //按钮是否无效
+  
 };
 Button.defaultProps= {
-    
+        name:"",
         title: null,
-        tip: null,
         theme: "primary",
         size: "default",
         style:{},
         className: "",
         onClick: null,
         disabled: false,
+      
      
       
     

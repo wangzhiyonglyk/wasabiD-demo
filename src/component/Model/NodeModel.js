@@ -27,4 +27,4 @@ class  NodeModel {
 
     }
 }
-module.exports=NodeModel;
+export default NodeModel;

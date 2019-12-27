@@ -33,4 +33,4 @@ class Center extends  React.Component{
 }
 
 
-module .exports= Center;
+export default Center;

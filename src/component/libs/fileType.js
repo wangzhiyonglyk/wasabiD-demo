@@ -221,4 +221,4 @@ fileType.getTypeMap=function(value) {
     }
 }
 
-module .exports=fileType;
+export default fileType;

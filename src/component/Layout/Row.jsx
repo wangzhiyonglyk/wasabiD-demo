@@ -99,4 +99,4 @@ clearData () {
 
 }
 
-module. exports=Row;
+export default Row;

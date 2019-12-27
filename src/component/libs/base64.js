@@ -142,4 +142,4 @@ var base64decodechars = new Array(
         return out;
     }
 
-module.exports = base64;
+export default  base64;

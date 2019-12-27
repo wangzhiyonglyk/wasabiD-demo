@@ -2,8 +2,8 @@
 //date 2016-07-27
 //desc 物流跟踪信息
 
-let React=require("react");
-require("../sass/Navigation/Track.css");
+import React from "react";
+import ("../sass/Navigation/Track.css");
 class Track extends  React.Component {
 
     constructor(props){
@@ -56,4 +56,4 @@ class Track extends  React.Component {
         }
     }
 }
-module .exports= Track;
+export default  Track;

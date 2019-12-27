@@ -5,12 +5,12 @@
 
 class PickerModel
 {
-    constructor(value,text="",expand=false,childrens=null) {
+    constructor(value,text="",expand=false,children=null) {
         this.value=value;//名称
         this.text=text;//标题
         this.expand=expand;//是否为展开状态
-        this.childrens=childrens;//子节点
+        this.children=children;//子节点
     }
 }
-module.exports=PickerModel;
+export default PickerModel;
 

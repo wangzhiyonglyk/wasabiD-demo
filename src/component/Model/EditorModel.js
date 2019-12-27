@@ -13,4 +13,4 @@ class EditorModel
        this.edited=null;//值修改后的处理函数
     }
 }
-module .exports=EditorModel;
+export default EditorModel;

@@ -248,4 +248,4 @@
     }
 
 
-module.exports = md5;
+export default  md5;

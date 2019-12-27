@@ -26,4 +26,4 @@ class Footer extends  React.Component{
 Footer.propTypes={
    
 }
-module .exports= Footer;
+export default Footer;

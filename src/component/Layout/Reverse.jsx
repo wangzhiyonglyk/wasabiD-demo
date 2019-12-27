@@ -2,33 +2,23 @@
  * Created by zhiyongwang on 2016-04-14.
  * 能够翻转的层
  */
-var React=require("react");
-require("../sass/Layout/reverse.css");
-var Reverse=React.createClass({
-    propTypes: {
-        dblAble: React.PropTypes.bool,//是否允许双击翻转
-        className: React.PropTypes.string,
-    },
-    getDefaultProps:function() {
-        return {
-            className:"",
-            dblAble:true
-        }
-    },
-    getInitialState: function () {
-        return {
-           isReverse:false,
+import React from "react";
+import ("../sass/Layout/reverse.css");
+class  Reverse extends React.Component {
+    constructor(props){
+        super(props);
+        this.state={
+            isReverse:false,
             frontClassName:"",
             reverseClassName:"flip out",
             frontDisplay:"block",
             reverseDisplay:"none"
-
         }
+    }  
 
-    },
-    componentWillReceiveProps:function(nextProps) {
-    },
-    mouseoverHandler:function() {
+    componentWillReceiveProps(nextProps) {
+    }
+    mouseoverHandler() {
 
        this.setState({
            frontClassName:"flip out",
@@ -45,8 +35,8 @@ var Reverse=React.createClass({
              })
             },300
         )
-    },
-    mouseOutHandler:function() {
+    }
+    mouseOutHandler() {
         this.setState({
             reverseClassName:"flip out",
             isReverse:false
@@ -62,20 +52,20 @@ var Reverse=React.createClass({
                 })
             },300
         )
-    },
-    onDblClick:function() {
+    }
+    onDblClick() {
         if(!this.props.dblAble)
         {
             return ;
         }
         this.reverseHandler();
-    },
-    getState:function()
+    }
+    getState()
     {//用获取状态用于父组件
 
         return this.state.isReverse;
-    },
-    reverseHandler:function() {//用于父组件调用
+    }
+    reverseHandler() {//用于父组件调用
         if (this.state.isReverse) {
 
             this.mouseOutHandler();
@@ -87,8 +77,8 @@ var Reverse=React.createClass({
             this.mouseoverHandler()
         }
 
-    },
-    render:function() {
+    }
+    render() {
         var props=
         {
             style:this.props.style,
@@ -105,5 +95,15 @@ var Reverse=React.createClass({
             </div>
         )
     }
-});
-module .exports=Reverse;
+}
+
+Reverse.propTypes= {
+    dblAble: React.PropTypes.bool,//是否允许双击翻转
+    className: React.PropTypes.string,
+};
+ Reverse.defaultProps ={
+        className:"",
+        dblAble:true
+    
+};
+export default Reverse;

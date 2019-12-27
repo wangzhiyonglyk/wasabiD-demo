@@ -89,5 +89,4 @@ clearData () {
   }
 
 }
-
-module.exports=Container;
+export default Container;

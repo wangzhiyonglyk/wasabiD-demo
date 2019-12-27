@@ -1,51 +1,40 @@
 //create by wangzy
 //date:2016-02-18
 //标签页组
+import React from "react";
 require("../sass/Navigation/Tabs.css");
-var React =require("react");
-var addRipple=require("../Mixins/addRipple.js");
-var Tabs=React.createClass({
-      mixins:[addRipple],
-        propTypes:{
-            theme: React.PropTypes.oneOf([//主题
-                "primary",
-                "default",
-               
-            ]),
-            activeIndex:React.PropTypes.number,
-            onClose:React.PropTypes.func,
-        },
-        getDefaultProps: function () {
-            return {
-                theme:"default",
-                activeIndex:0,
-                onClose:null,
 
-            }
-        }
-        , getInitialState: function () {
-            
-         return {   activeIndex:this.props.activeIndex}
-    },
-        componentWillReceiveProps:function (nextProps)
+// var addRipple=require("../Mixins/addRipple.js");
+class  Tabs extends React.Component{
+      
+     constructor(props){
+         super(props);
+         this.state={
+            activeIndex:this.props.activeIndex
+         }
+         this.tabClickHandler=this.tabClickHandler.bind(this);
+         this.onClose=this.onClose.bind(this);
+     }
+
+        componentWillReceiveProps (nextProps)
         {
            
             this.setState({
                 activeIndex:nextProps.activeIndex!=null&&nextProps.activeIndex!=undefined?nextProps.activeIndex:0
             })
-        },
-        tabClickHandler:function(index,event) {
+        }
+        tabClickHandler(index,event) {
 
             this.rippleHandler(event);
             //页签单击事件
            this.setState({
                activeIndex:index
            })
-        },
+        }
         onClose(index){
             this.props.onClose&&this.props.onClose(index,this.state.activeIndex);
-        },
-        render: function () {
+        }
+        render () {
             return (
                 <div className="wasabi-tabs" >
                     <div  >
@@ -73,5 +62,22 @@ var Tabs=React.createClass({
 
         }
     }
-);
-module.exports=Tabs;
+
+Tabs. propTypes={
+    theme: React.PropTypes.oneOf([//主题
+        "primary",
+        "default",
+       
+    ]),
+    activeIndex:React.PropTypes.number,
+    onClose:React.PropTypes.func,
+};
+Tabs.defaultProps= {
+     
+        theme:"default",
+        activeIndex:0,
+        onClose:null,
+
+    
+};
+export default  Tabs;

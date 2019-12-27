@@ -78,7 +78,7 @@ class DateTime extends Component {
     }
     validate(value) {
 
-        validate.call(this, value)
+        return validate.call(this, value)
     }
     updateYearAndMonth(filterYear, filterMonth) {
         this.setState({

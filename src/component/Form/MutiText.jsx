@@ -47,7 +47,7 @@ class  MutiText extends Component {
 
     }
     validate(value){
-        validate.call(this,value);
+        return validate.call(this,value);
     }
       setValue(value)    {
       this.setState({
