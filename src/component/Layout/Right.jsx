@@ -4,6 +4,8 @@
  desc:圣杯布局，右侧
  */
 import React from "react";
+import PropTypes from "prop-types";
+
 class Right extends  React.Component{
     constructor(props)
     {
@@ -13,17 +15,17 @@ class Right extends  React.Component{
     static defaultProps = {
         title:"right",
         top:null,
-        width:null,
-        height:null
+        width:0,
+        height:0
     }
     static propTypes={
-        top: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-        width:React.PropTypes.oneOfType([React.PropTypes.number,React.PropTypes.string]),
-        height: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+        top: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        width:PropTypes.oneOfType([PropTypes.number,PropTypes.string]),
+        reduceHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }
     render() {
         return <div className={"wasabi-layout-right  layout-panel "}
-        style={{top:this.props.top,width:this.props.width,height: (this.props.height?"calc(100% - "+(this.props.height).toString()+"px":null) }}>
+        style={{top:this.props.top,width:this.props.width,height: (this.props.reduceHeight?"calc(100% - "+(this.props.reduceHeight).toString()+"px":null) }}>
             {  this.props.children}
         </div>
     }

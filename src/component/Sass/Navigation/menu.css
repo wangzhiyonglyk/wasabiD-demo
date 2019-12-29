@@ -1,20 +1,20 @@
 .wasabi-menu {
 	width: 100%;
-	min-width: 220px
+   min-width: 100px;
 }
 
-dropdown {
+.dropdown {
 	display: block;
 	background: #2f4050;
 	transition: all .5s
 }
 
-dropdown.expand {
+.dropdown.expand {
 	border-left: 4px solid #19aa8d;
 	background-color: #293846
 }
 
-dropdown label {
+.dropdown label {
 	color: #a7b1c2;
 	text-align: left;
 	padding: 10px;
@@ -24,41 +24,41 @@ dropdown label {
 	font-weight: 600
 }
 
-dropdown label:hover {
+.dropdown label:hover {
 	background-color: #293846;
 	color: #fff
 }
 
-dropdown ul {
+.dropdown ul {
 	display: none;
 	transition: all .5s
 }
 
-dropdown.expand ul {
+.dropdown.expand ul {
 	display: block
 }
 
-dropdown ul li {
+.dropdown ul li {
 	display: block;
 	padding: 10px
 }
 
-dropdown ul li,dropdown ul li * {
+.dropdown ul li,.dropdown ul li * {
 	text-align: center;
 	color: #a7b1c2;
 	font-weight: 600
 }
 
-dropdown ul li.active *,dropdown ul li:hover,dropdown ul li:hover * {
+.dropdown ul li.active *,.dropdown ul li:hover,.dropdown ul li:hover * {
 	background-color: #293846;
 	color: #fff;
 	cursor: pointer
 }
 
-dropdown input {
-	display: none
+.dropdown input {
+	display: none;
 }
 
-dropdown input:checked+label {
+.dropdown input:checked+label {
 	color: #fff
 }

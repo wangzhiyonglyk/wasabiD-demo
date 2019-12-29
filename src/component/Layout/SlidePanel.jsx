@@ -5,6 +5,7 @@ date:2016-04-05
 desc:滑动面板
 */
 import  React from "react";
+import PropTypes from "prop-types";
 
 import  Toolbar from "../Buttons/Toolbar.jsx";
 import  Button from "../Buttons/Button.jsx";
@@ -30,9 +31,9 @@ class SlidePanel extends  React.Component{
 
     }
     static propTypes= {
-        title: React.PropTypes.string,//标题
-        buttons: React.PropTypes.array,//自定义按钮
-        buttonClick: React.PropTypes.func,//按钮的单击事件,
+        title: PropTypes.string,//标题
+        buttons: PropTypes.array,//自定义按钮
+        buttonClick: PropTypes.func,//按钮的单击事件,
     }
     static defaultProps={
         title:"",

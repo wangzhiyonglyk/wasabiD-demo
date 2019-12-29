@@ -3,6 +3,8 @@
  * 能够翻转的层
  */
 import React from "react";
+import PropTypes from "prop-types";
+
 import ("../sass/Layout/reverse.css");
 class  Reverse extends React.Component {
     constructor(props){
@@ -98,8 +100,8 @@ class  Reverse extends React.Component {
 }
 
 Reverse.propTypes= {
-    dblAble: React.PropTypes.bool,//是否允许双击翻转
-    className: React.PropTypes.string,
+    dblAble: PropTypes.bool,//是否允许双击翻转
+    className: PropTypes.string,
 };
  Reverse.defaultProps ={
         className:"",

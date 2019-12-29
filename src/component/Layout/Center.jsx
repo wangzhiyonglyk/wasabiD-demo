@@ -4,6 +4,8 @@
  desc:圣杯布局，中间内容
  */
 import React from "react";
+import PropTypes from "prop-types";
+
 class Center extends  React.Component{
     constructor(props)
     {
@@ -12,20 +14,20 @@ class Center extends  React.Component{
     }
     static defaultProps = {
         title:"center",
-        top:null,
-        left:null,
-        width:null,
-        height:null,
+        top:0,
+        left:0,
+        reduceWidth:0,
+        reduceHeight:0,
     }
     static propTypes={
-        top: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-        left :React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-        width: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-        height: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+        top: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        left :PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        reduceWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        reduceHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }
     render() {  
         return <div className={" wasabi-layout-center  layout-panel" }
-       style={{ top:this.props.top,left:this.props.left, width: (this.props.width?"calc(100% - "+(this.props.width).toString()+"px":null), height: (this.props.height?"calc(100% - "+(this.props.height).toString()+"px":null) }} 
+       style={{ top:this.props.top,left:this.props.left, width: (this.props.reduceWidth?"calc(100% - "+(this.props.reduceWidth).toString()+"px":null), height: (this.props.reduceHeight?"calc(100% - "+(this.props.reduceHeight).toString()+"px":null) }} 
        >
           {  this.props.children}
         </div>

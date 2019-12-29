@@ -71,7 +71,7 @@ class LinkButton extends Component{
 
         //注意这里只有按钮提示
         
-        let isicon=this.props.children?true:this.props.title?true:false;
+        let isicon=this.props.children?false:this.props.title?false:true;
         if (isicon ) {//纯图标
             return (<a draggable={this.props.draggable} onDragStart={this.dragStartHandler} title={this.props.title}
                        href={this.props.href} onClick={this.clickHandler}

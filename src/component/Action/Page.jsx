@@ -4,6 +4,7 @@
  desc:页面基类
  */
 import React from "react";
+import PropTypes from "prop-types";
 import  unit from "../libs/unit";
 import  FetchModel from "../Model/FetchModel";
 require("../Sass/Action/Page.css");
@@ -24,17 +25,17 @@ class Page extends React.Component {
     }
 
     static propTypes={
-        width: React.PropTypes.oneOfType([
-            React.PropTypes.number,
-            React.PropTypes.string,
+        width: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string,
     
         ]),//宽度
-        height: React.PropTypes.oneOfType([
-            React.PropTypes.number,
-            React.PropTypes.string,
+        height: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string,
         ]),//高度
-        style:React.PropTypes.object,
-        className:React.PropTypes.string,
+        style:PropTypes.object,
+        className:PropTypes.string,
     
     }
  

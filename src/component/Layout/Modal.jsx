@@ -3,6 +3,8 @@
 //desc:模态窗口
 
 import React from "react";
+import PropTypes from "prop-types";
+
 import  Button from ("../Buttons/Button.jsx");
 import  Resize from ("./Resize.jsx");
 import ("../Sass/Layout/Modal.css");
@@ -166,10 +168,10 @@ class Modal extends  React.Component {
 
 Modal.propTypes={
     
-    resize: React.PropTypes.bool,
-    closedHandler: React.PropTypes.func,
-    OKHandler: React.PropTypes.func,
-    cancelHandler: React.PropTypes.func,
+    resize: PropTypes.bool,
+    closedHandler: PropTypes.func,
+    OKHandler: PropTypes.func,
+    cancelHandler: PropTypes.func,
 }
 
 Modal.defaultProps={

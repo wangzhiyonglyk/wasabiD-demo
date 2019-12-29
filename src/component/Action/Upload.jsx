@@ -3,18 +3,19 @@
  date:2016-05-17
  desc:文件上传组件
  */
-let React = require("react");
+import React from "react";
+import PropTypes from "prop-types";
 let Modal = require("../Layout/Modal.jsx");
 let Button = require("../Buttons/Button.jsx");
 let Message = require("../Unit/Message.jsx");
 require("../Sass/Action/Import.css");
 let Upload = React.createClass({
     propTypes: {
-        uploadurl: React.PropTypes.string.isRequired,//上传地址
-        accept: React.PropTypes.string,//上传文件类型
-        multiple: React.PropTypes.bool,//是否允许多选
-        name: React.PropTypes.string,//名称
-        uploadSuccess: React.PropTypes.func//上传成功事件
+        uploadurl: PropTypes.string.isRequired,//上传地址
+        accept: PropTypes.string,//上传文件类型
+        multiple: PropTypes.bool,//是否允许多选
+        name: PropTypes.string,//名称
+        uploadSuccess: PropTypes.func//上传成功事件
     },
     getDefaultProps: function () {
         return {

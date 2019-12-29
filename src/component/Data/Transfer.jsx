@@ -2,7 +2,8 @@
  create by wangzhiyong
  date:2016-12-19
  */
-let React=require("react");
+import React from "react";
+import PropTypes from "prop-types";
 require("../Sass/Data/Transfer.css");
 let unit=require("../libs/unit.js");
 let LinkButton=require("../Buttons/LinkButton.jsx");
@@ -11,15 +12,15 @@ var showUpdate=require("../Mixins/showUpdate.js");
 let Transfer=React.createClass({
     mixins:[showUpdate],
     propTypes: {
-        name:React.PropTypes.string,//名称
-        valueField: React.PropTypes.string,//数据字段值名称
-        textField:React.PropTypes.string,//数据字段文本名称
-        url:React.PropTypes.string,//后台查询地址
-        params:React.PropTypes.object,//向后台传输的额外参数
-        dataSource:React.PropTypes.string,//ajax的返回的数据源中哪个属性作为数据源,为null时直接后台返回的数据作为数据源
-        data:React.PropTypes.array,//节点数据
-        selectData:React.PropTypes.array,//选中的数据
-        onSelect:React.PropTypes.func,//选中后的事件
+        name:PropTypes.string,//名称
+        valueField: PropTypes.string,//数据字段值名称
+        textField:PropTypes.string,//数据字段文本名称
+        url:PropTypes.string,//后台查询地址
+        params:PropTypes.object,//向后台传输的额外参数
+        dataSource:PropTypes.string,//ajax的返回的数据源中哪个属性作为数据源,为null时直接后台返回的数据作为数据源
+        data:PropTypes.array,//节点数据
+        selectData:PropTypes.array,//选中的数据
+        onSelect:PropTypes.func,//选中后的事件
 
     },
     getDefaultProps:function() {

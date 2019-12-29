@@ -4,14 +4,15 @@
  * desc 列
  */
 import React from 'react';
+import PropTypes from "prop-types";
 
 class Row extends React.Component {
   constructor(props) {
     super(props);
   }
   static propTypes = {
-    style: React.PropTypes.object,
-    className: React.PropTypes.string,
+    style: PropTypes.object,
+    className: PropTypes.string,
   }
   static defaultProps = {
     title: "row",

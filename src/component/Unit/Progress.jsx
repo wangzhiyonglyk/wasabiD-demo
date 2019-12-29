@@ -1,15 +1,17 @@
 /**
  * Created by 12295 on 2016/10/21.
  */
+import React from "react";
+import PropTypes from "prop-types";
 require("../sass/Unit/Progress.css");
-const React = require('react');
+
 var Progress = React.createClass({
     propTypes:{
-        width: React.PropTypes.number,//宽度（线性进步条的宽度   环形进度条的大小-宽高相等）
-        percent:React.PropTypes.number,//进度条的百分数
-        type:React.PropTypes.oneOf(['line', 'circle']),//进度条的类型
-        height:React.PropTypes.number,//高度（线性进度条的高度）
-        status:React.PropTypes.oneOf(['','active', 'exception']),//线性进步条的主题效果
+        width: PropTypes.number,//宽度（线性进步条的宽度   环形进度条的大小-宽高相等）
+        percent:PropTypes.number,//进度条的百分数
+        type:PropTypes.oneOf(['line', 'circle']),//进度条的类型
+        height:PropTypes.number,//高度（线性进度条的高度）
+        status:PropTypes.oneOf(['','active', 'exception']),//线性进步条的主题效果
         percent: function(props, propName, componentName) {//percent  的范围为0-100的正数
             if (!/^(\d{1,2}(\.\d+)?|100|NA)$/.test(props[propName])) {
                 return new Error('Invalid prop\''+propName+'\'supplied to'+'\''+componentName+'\'.validation failed');

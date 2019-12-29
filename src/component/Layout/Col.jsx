@@ -10,9 +10,9 @@ class Col extends React.Component {
         super(props);
     }
     static propTypes = {
-        cols: React.PropTypes.number,
-        style: React.PropTypes.object,
-        className: React.PropTypes.string,
+        cols: PropTypes.number,
+        style: PropTypes.object,
+        className: PropTypes.string,
     }
     static defaultProps = {
         cols: 3,//默认3列

@@ -2,13 +2,14 @@
  * Created by 42591 on 2016/10/21.
  * 环形进度条组件
  */
-let React = require("react");
+import React from "react";
+import PropTypes from "prop-types";
 let ReactDOM = require("react-dom");
 var ProgressCricle = React.createClass({
     propTypes: {
-        progress: React.PropTypes.number.isRequired,//进度
-        color: React.PropTypes.string,//字体和圆环颜色
-        radius: React.PropTypes.number//内圆半径
+        progress: PropTypes.number.isRequired,//进度
+        color: PropTypes.string,//字体和圆环颜色
+        radius: PropTypes.number//内圆半径
     },
     getDefaultProps: function(){
         return {

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from "prop-types";
 class Menu extends React.Component {
   constructor(props) {
     super(props);
@@ -12,8 +12,8 @@ class Menu extends React.Component {
   }
   }
   static propTypes={
-    title: React.PropTypes.any.isRequired,//标题是必须，可以是组件
-    expand:React.PropTypes.bool //是否展开
+    title: PropTypes.any.isRequired,//标题是必须，可以是组件
+    expand:PropTypes.bool //是否展开
   }
   static defaultProps={
     expand:false,
@@ -24,10 +24,13 @@ class Menu extends React.Component {
       activeIndex:index
     })
 }
+onChange(){
+
+}
 
   render() {
-    return       <dropdown className={this.props.expand?"expand":""}>
-    <input name={this.props.title}  type="checkbox" checked={this.props.expand} value="menu"/>
+    return       <div   className={"dropdown "+this.props.className+" "+( this.props.expand?"expand":"")}>
+    <input name={this.props.title}  onChange={this.onChange.bind(this)} type="checkbox" checked={this.props.expand} value="menu"/>
     <label htmlFor={this.props.title} onClick={this.props.expandHandler} >{this.props.title}</label>
     <i></i>
     <ul className="animate" style={{display:this.props.expand?"block":"none"}}>
@@ -37,7 +40,7 @@ class Menu extends React.Component {
             })
         }
     </ul>
-  </dropdown>;
+  </div>;
   }
 
  

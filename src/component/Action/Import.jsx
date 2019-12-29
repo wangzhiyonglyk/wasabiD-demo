@@ -3,7 +3,9 @@
  date:2016-05-17
  desc:excel数据导入组件
  */
-let  React=require("react");
+import React from "react";
+import PropTypes from "prop-types";
+
 let Modal=require("../Layout/Modal.jsx");
 let Button=require("../Buttons/Button.jsx");
 let Message=require("../Unit/Message.jsx");
@@ -12,11 +14,11 @@ var unit=require("../libs/unit.js");
 require("../Sass/Action/Import.css");
 let  Import=React.createClass({
     propTypes: {
-        name:React.PropTypes.string,//文件字段名称
-        uploadurl: React.PropTypes.string.isRequired,//导入地址
-        modelurl: React.PropTypes.string.isRequired,//模板下载地址
-        failloadurl: React.PropTypes.string.isRequired,//导入失败下载地址
-        importSuccess: React.PropTypes.func//上传成功事件
+        name:PropTypes.string,//文件字段名称
+        uploadurl: PropTypes.string.isRequired,//导入地址
+        modelurl: PropTypes.string.isRequired,//模板下载地址
+        failloadurl: PropTypes.string.isRequired,//导入失败下载地址
+        importSuccess: PropTypes.func//上传成功事件
     },
     getDefaultProps: function () {
         return {

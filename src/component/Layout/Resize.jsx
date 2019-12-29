@@ -2,6 +2,7 @@
 //date:2016-03-22
 //desc:模态窗口
 import React from "react";
+import PropTypes from "prop-types";
 
 import ("../Sass/Layout/resize.css");
 class  Resize extends Component{

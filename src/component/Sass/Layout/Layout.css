@@ -31,15 +31,24 @@ desc:圣杯布局样式
 .wasabi-layout .wasabi-layout-footer {
 	height: 100px;
 	width: 100%;
-	bottom: 0
+	bottom: 0;
 }
 
 .wasabi-layout .wasabi-layout-left {
 	left: 0;
-	height: 100%
+	height: 100%;
+	border-top:0;
+	border-bottom: 0;
+	
 }
 
 .wasabi-layout .wasabi-layout-right {
 	right: 0;
-	height: 100%
+	height: 100%;
+	border-top:0;
+	border-bottom: 0;
+}
+.wasabi-layout .wasabi-layout-center{
+	border:none;
+
 }

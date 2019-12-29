@@ -3,6 +3,8 @@
  * 能停靠的层与LinkButton配合使用
  */
 import React from 'react';
+import PropTypes from "prop-types";
+
 import ("../sass/Layout/Drop.css");
 class Drop extends  React.Component {
     constructor(props) {
@@ -61,6 +63,6 @@ class Drop extends  React.Component {
     }
 }
 Drop.propTypes={
-    onDrop: React.PropTypes.func.isRequired,//元素停靠事件
+    onDrop: PropTypes.func.isRequired,//元素停靠事件
 }
 export default Drop;

@@ -2,8 +2,8 @@
  * Created by wangzhiyong on 2016/10/30.
  * 创建单表应用组件
  */
-let React=require("react");
-
+import React from "react";
+import PropTypes from "prop-types";
 let SearchBar =require("../Form/SearchBar.jsx");
 let Form =require("../Form/Form.jsx");
 let Toolbar =require("../Buttons/Toolbar.jsx");
@@ -14,21 +14,21 @@ let SlidePanel =require("../Layout/SlidePanel.jsx");
 let Single=React.createClass({
         mixins: [SingleHandlerMixins, SingleModelMixins],
         propTypes: {
-            title: React.PropTypes.string.isRequired,//页面的标题
-            controller: React.PropTypes.string.isRequired,//控制器名称
-            key:React.PropTypes.string,//主键名称
-            corsUrl: React.PropTypes.string,//跨域地址
+            title: PropTypes.string.isRequired,//页面的标题
+            controller: PropTypes.string.isRequired,//控制器名称
+            key:PropTypes.string,//主键名称
+            corsUrl: PropTypes.string,//跨域地址
         
-            params: React.PropTypes.object,//默认的筛选条件
-            modelUrl:React.PropTypes.string,//数据模型地址url
-            getUrl:React.PropTypes.string,//实例地址url
-            addUrl: React.PropTypes.string,//新增地址url
-            deleteUrl: React.PropTypes.string,//修改地址url
-            updateUrl: React.PropTypes.string,//更新地址url
-            queryUrl: React.PropTypes.string,//不分页查询url
-            pageUrl:React.PropTypes.string,//分页查询url
-            overrideModel:React.PropTypes.func,//对数据模型再进一步处理,有返回值
-            submitTheme:React.PropTypes.string,//提交按钮主题
+            params: PropTypes.object,//默认的筛选条件
+            modelUrl:PropTypes.string,//数据模型地址url
+            getUrl:PropTypes.string,//实例地址url
+            addUrl: PropTypes.string,//新增地址url
+            deleteUrl: PropTypes.string,//修改地址url
+            updateUrl: PropTypes.string,//更新地址url
+            queryUrl: PropTypes.string,//不分页查询url
+            pageUrl:PropTypes.string,//分页查询url
+            overrideModel:PropTypes.func,//对数据模型再进一步处理,有返回值
+            submitTheme:PropTypes.string,//提交按钮主题
         },
         getDefaultProps: function () {
             return {

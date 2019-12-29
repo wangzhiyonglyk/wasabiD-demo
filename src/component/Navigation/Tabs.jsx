@@ -2,6 +2,7 @@
 //date:2016-02-18
 //标签页组
 import React from "react";
+import PropTypes from "prop-types";
 require("../sass/Navigation/Tabs.css");
 
 // var addRipple=require("../Mixins/addRipple.js");
@@ -64,13 +65,13 @@ class  Tabs extends React.Component{
     }
 
 Tabs. propTypes={
-    theme: React.PropTypes.oneOf([//主题
+    theme: PropTypes.oneOf([//主题
         "primary",
         "default",
        
     ]),
-    activeIndex:React.PropTypes.number,
-    onClose:React.PropTypes.func,
+    activeIndex:PropTypes.number,
+    onClose:PropTypes.func,
 };
 Tabs.defaultProps= {
      

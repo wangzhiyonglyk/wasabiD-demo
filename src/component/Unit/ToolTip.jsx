@@ -1,17 +1,18 @@
-let React=require("react");
+import React from "react";
+import PropTypes from "prop-types";
 require("../Sass/Unit/newToolTip.css");
 let ToolTip=React.createClass({
     propTypes:{
-        theme:React.PropTypes.oneOf([
+        theme:PropTypes.oneOf([
             "dark",
             "light",
         ]),//主题
-        size:React.PropTypes.oneOf([
+        size:PropTypes.oneOf([
             "small",
             "medium",
             "large"
         ]),//大小
-        direction:React.PropTypes.oneOf([
+        direction:PropTypes.oneOf([
             "south",
             "west",
             "north",

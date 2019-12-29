@@ -3,6 +3,7 @@
 //desc 物流跟踪信息
 
 import React from "react";
+import PropTypes from "prop-types";
 import ("../sass/Navigation/Track.css");
 class Track extends  React.Component {
 
@@ -15,9 +16,9 @@ class Track extends  React.Component {
         }
     }
    static propTypes= {
-        model:React.PropTypes.array,//跟踪信息
-        expressName:React.PropTypes.string,//快递公司名称
-        exrepssId:React.PropTypes.oneOfType([React.PropTypes.number,React.PropTypes.string]),//快递单号
+        model:PropTypes.array,//跟踪信息
+        expressName:PropTypes.string,//快递公司名称
+        exrepssId:PropTypes.oneOfType([PropTypes.number,PropTypes.string]),//快递单号
 
 
     }

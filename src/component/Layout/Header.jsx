@@ -4,6 +4,8 @@
  desc:圣杯布局，头部
  */
 import React from "react";
+import PropTypes from "prop-types";
+
 class Header extends  React.Component{
     constructor(props)
     {
@@ -15,7 +17,7 @@ class Header extends  React.Component{
        height:null,
     }
     static propTypes={
-        height:React.PropTypes.oneOfType([React.PropTypes.number,React.PropTypes.string]),
+        height:PropTypes.oneOfType([PropTypes.number,PropTypes.string]),
     }
     
     render() {

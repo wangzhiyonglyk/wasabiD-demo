@@ -5,6 +5,7 @@
  * desc 对应bootstrap中风格布局中的容器
  */
 import React from 'react';
+import PropTypes from "prop-types";
 
 class Container extends React.Component {
   constructor(props) {

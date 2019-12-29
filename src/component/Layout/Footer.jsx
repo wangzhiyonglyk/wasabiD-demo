@@ -4,6 +4,8 @@
  desc:圣杯布局，底部
  */
 import React from "react";
+import PropTypes from "prop-types";
+
 class Footer extends  React.Component{
     constructor(props)
     {
@@ -14,7 +16,7 @@ class Footer extends  React.Component{
         height:null
     }
     static propTypes={
-        height:React.PropTypes.oneOfType([React.PropTypes.number,React.PropTypes.string]),
+        height:PropTypes.oneOfType([PropTypes.number,PropTypes.string]),
     }
     render() {
         return <div className={"wasabi-layout-footer  layout-panel" } 
