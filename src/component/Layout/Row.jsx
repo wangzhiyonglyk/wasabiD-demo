@@ -97,6 +97,7 @@ clearData () {
               return child;
             }
             else{
+            
               return React.cloneElement(child, { key: index, ref: index })
             }
            

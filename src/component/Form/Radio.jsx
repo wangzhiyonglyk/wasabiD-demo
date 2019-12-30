@@ -26,8 +26,8 @@ class  Radio extends Component{
         if (this.props.data instanceof Array) {
             for (let i = 0; i < this.props.data.length; i++) {
                 let obj = this.props.data[i];
-                obj.text = this.props.data[i][this.props.textField];
-                obj.value = this.props.data[i][this.props.valueField];
+                obj.text = this.props.data[i][this.props.textField?this.props.textField:"text"];
+                obj.value = this.props.data[i][this.props.valueField?this.props.valueField:"value"];
                 if (obj.value == this.props.value) {
                     text = obj.text;//根据value赋值
                 }
@@ -54,7 +54,7 @@ class  Radio extends Component{
         this.onSelect = this.onSelect.bind(this);
   }
     componentWillReceiveProps(nextProps) {
-        console.log("radio1",nextProps);
+      
         if (nextProps.url) {
 
             if (nextProps.url != this.props.url) {
@@ -77,12 +77,12 @@ class  Radio extends Component{
                 for(let i=0;i<nextProps.data.length;i++)
             {
                 let obj=nextProps.data[i];
-                obj.text=nextProps.data[i][this.props.textField];
-                obj.value=nextProps.data[i][this.props.valueField];
+                obj.text=nextProps.data[i][this.props.textField?this.props.textField:"text"];
+                obj.value=nextProps.data[i][this.props.valueField?this.props.valueField:"value"];
               
                 newData.push(obj);
             }
-            console.log("radio1",newData);
+          
             if(newData[0].text!=this.state.data[0].text||newData[newData.length-1].text!=this.state.data[this.state.data.length-1].text)
             {this.setState({
                 data:nextProps.data,
@@ -93,7 +93,12 @@ class  Radio extends Component{
             }
         }
         }
-       
+        if(nextProps.forceChange&& nextProps.value!=this.state.value)
+    {
+        this.setState({
+            value:nextProps.value
+        })
+    }
     }
     componentWillMount() {//如果指定url,先查询数据再绑定
         this.loadData(this.props.url,this.state.params);//查询数据
@@ -154,8 +159,8 @@ class  Radio extends Component{
         for(let i=0;i<realData.length;i++)
         {
             let obj=realData[i];//将所有字段添加进来
-            obj.text=realData[i][this.props.textField];
-            obj.value=realData[i][this.props.valueField];
+            obj.text=realData[i][this.props.textField?this.props.textField:"text"];
+            obj.value=realData[i][this.props.valueField?this.valueField:"value"];
             if(obj.value==this.state.value)
             {
                 text=obj.text;//根据value赋值
@@ -172,8 +177,8 @@ class  Radio extends Component{
             for(let i=0;i<this.props.extraData.length;i++)
             {
                 let obj={};
-                obj.text=this.props.extraData[i][this.props.textField];
-                obj.value=this.props.extraData[i][this.props.valueField];
+                obj.text=this.props.extraData[i][this.props.textField?this.props.textField:"text"];
+                obj.value=this.props.extraData[i][this.props.valueField?this.props.valueField:"value"];
                 if(obj.value==this.state.value)
                 {
                     text=obj.text;//根据value赋值

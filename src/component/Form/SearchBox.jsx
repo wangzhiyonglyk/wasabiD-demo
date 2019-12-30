@@ -34,8 +34,8 @@ class  SearchBox extends Component{
         else {
             params = {};//初始化
         }
-        params[this.props.valueField] = this.state.filterValue;
-        params[this.props.textField] = this.state.filterValue;
+        params[this.props.valueField?this.props.valueField:"value"] = this.state.filterValue;
+        params[this.props.textField?this.props.valueField:"text"] = this.state.filterValue;
         
 
         this.setState({

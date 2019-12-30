@@ -50,8 +50,8 @@ componentWillReceiveProps(nextProps) {
             for(let i=0;i<nextProps.data.length;i++)
         {
             let obj=nextProps.data[i];
-            obj.text=nextProps.data[i][this.props.textField];
-            obj.value=nextProps.data[i][this.props.valueField];
+            obj.text=nextProps.data[i][this.props.textField?this.props.textField:"text"];
+            obj.value=nextProps.data[i][this.props.valueField?this.props.valueField:"value"];
           
             newData.push(obj);
         }
@@ -107,8 +107,8 @@ componentWillReceiveProps(nextProps) {
     setValueAndText (realData) {//遍历设置text，value的值
         if(realData instanceof  Array) {
             for (let i = 0; i < realData.length; i++) {
-                realData[i].text = realData[i][this.props.textField];
-                realData[i].value = realData[i][this.props.valueField];
+                realData[i].text = realData[i][this.props.textField?this.props.textField:"text"];
+                realData[i].value = realData[i][this.props.valueField?this.props.valueField:"value"];
                 if (realData[i].data) {
                     realData[i].data = this.setValueAndText(realData[i].data);
                 }

@@ -92,8 +92,8 @@ class   Picker  extends  Component{
                 for(let i=0;i<nextProps.data.length;i++)
             {
                 let obj=nextProps.data[i];
-                obj.text=nextProps.data[i][this.props.textField];
-                obj.value=nextProps.data[i][this.props.valueField];
+                obj.text=nextProps.data[i][this.props.textField?this.props.textField:"text"];
+                obj.value=nextProps.data[i][this.props.valueField?this.props.valueField:"value"];
               
                 newData.push(obj);
             }
@@ -211,7 +211,7 @@ class   Picker  extends  Component{
     setPickerModel(data) {//根据数据生成标准格式
         let realData = [];
         for (let index = 0; index < data.length; index++) {
-            let pickerModel = new PickerModel(data[index][this.props.valueField],data[index][this.props.textField]);
+            let pickerModel = new PickerModel(data[index][this.props.valueField],data[index][this.props.textField?this.props.textField:"text"]);
             realData.push(pickerModel);
         }
         return realData;

@@ -124,8 +124,8 @@ let Transfer=React.createClass({
         }
         if (realData instanceof Array) {
             for (let i = 0; i < realData.length; i++) {
-                realData[i].text = realData[i][this.props.textField];
-                realData[i].value = realData[i][this.props.valueField];
+                realData[i].text = realData[i][this.props.textField?this.props.textField:"text"];
+                realData[i].value = realData[i][this.props.valueField?this.props.valueField:"value"];
 
             }
         }
@@ -140,8 +140,8 @@ let Transfer=React.createClass({
     setValueAndText:function (realData) {//设置text，value的值
         if(realData instanceof  Array) {
             for (let i = 0; i < realData.length; i++) {
-                realData[i].text = realData[i][this.props.textField];
-                realData[i].value = realData[i][this.props.valueField];
+                realData[i].text = realData[i][this.props.textField?this.props.textField:"text"];
+                realData[i].value = realData[i][this.props.valueField?this.props.valueField:"value"];
 
             }
 

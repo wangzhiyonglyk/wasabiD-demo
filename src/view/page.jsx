@@ -63,18 +63,21 @@ class Index extends React.Component {
         console.log("dd");
     }
     openAdd(){
-       
+      console.log( this.refs.grid.getChecked());
 this.refs.addModal.open("新增");
     }
     openEdit(){
         this.refs.addModal.open("编辑"); 
     }
     deleteConfirm(){
-Message.confirm("确定删除吗？",()=>{
+    Message.confirm("确定删除吗？",()=>{
     Message.success("删除成功");
 },()=>{
     Message.error("删除失败");
 })
+    }
+    getChecked(checkedData){
+        console.log("checkedData",checkedData);
     }
     onSubmit(){
 console.log("ddd")
@@ -83,14 +86,12 @@ console.log("ddd")
 
         return <div>
             <Row> 
-                <Col cols={3}>  <Text  name="userName" type="text" label="名称"></Text></Col>
-              <Input type="date"></Input>
-               <Select label="地区" data={[{value:"001",text:"北京"},{value:"002",text:"天津"}]}></Select>
-                <LinkButton  iconCls="icon-search" style={{color:"red"}}> 查询</LinkButton>
-                <LinkButton iconCls="icon-add"  onClick={this.openAdd}>添加</LinkButton>
-                </Row>
+                <Input type="select" label="地区" data={[{"value":"001","text":"北京"},{"value":"002","text":"天津"}]} ></Input>
+               <Select  label="地区" data={[{"value":"001","text":"北京"},{"value":"002","text":"天津"}]}></Select>
+               <LinkButton iconCls="icon-set" title="启用" style={{color:"red"}} onClick={this.openEdit}>启用</LinkButton><LinkButton iconCls="icon-edit" title="编辑" onClick={this.openEdit}>编辑</LinkButton><LinkButton iconCls="icon-add" title="添加" onClick={this.openAdd}>添加</LinkButton>
+               </Row>
            <div>
-                    <DataGrid headers={this.state.headers} data={this.state.data}></DataGrid>
+                    <DataGrid ref="grid" selectAble={true} selectChecked={true} headers={this.state.headers} data={this.state.data}></DataGrid>
                 </div>
                 <Modal ref="addModal"  style={{width:800,height:600}} OKHandler={this.OKHandler} >
                     <Form>

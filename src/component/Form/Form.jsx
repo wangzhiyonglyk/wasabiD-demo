@@ -150,7 +150,8 @@ this.onSubmit=this.onSubmit.bind(this);
                             if (typeof child.type !== "function") {//非react组件
                                 return child;
                             } else {
-                                return React. cloneElement(child, { readonly: this.props.disabled, key: index, ref: child.ref?child.ref:index })
+                               
+                                return React. cloneElement(child, {  readonly: this.props.disabled, key: index, ref: child.ref?child.ref:index })
                             }
 
                         })

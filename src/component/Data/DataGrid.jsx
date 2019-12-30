@@ -79,6 +79,7 @@ class DataGrid extends Component{
     });
 
        this.substitute=this.substitute.bind(this);
+       console.log("showUpdate",this.showUpdate);
      
      
    }
@@ -88,7 +89,8 @@ class DataGrid extends Component{
          headers可能是后期才传了,见Page组件可知
          所以此处需要详细判断
          */
-        if (nextProps.headers && this.showUpdate(nextProps.headers, this.state.headers)) { //存在着这种情况,后期才传headers,所以要更新一下
+        console.log("showUpdate",this.showUpdate);
+        if (nextProps.headers && this.showUpdate&& this.showUpdate(nextProps.headers, this.state.headers)) { //存在着这种情况,后期才传headers,所以要更新一下
 
             this.setState({
                 headers: nextProps.headers,
@@ -150,7 +152,7 @@ class DataGrid extends Component{
             }
             headers.push(
                 <th key="headercheckbox" name="check-column" style={{ width: 30 }}  >
-                    <div className="wasabi-grid-cell"  name="check-column">{this.props.singleSelect ? null : <CheckBox {...thCheckProps} ></CheckBox>}</div>
+                    <div className="wasabi-grid-cell"  name="check-column">{this.props.singleSelect ? null : <CheckBox forceChange={true} {...thCheckProps} ></CheckBox>}</div>
                 </th>
             );
         }
@@ -214,24 +216,25 @@ class DataGrid extends Component{
             }
             //设置这一行的选择列
             if (this.props.selectAble) {
+
                 let props = {
                     value: this.state.checkedData.has(key) == true ? key : null,
                     data: [{ value: key, text: "" }],
                     onSelect: this.onChecked.bind(this, rowIndex),
                     name: key,
                 }
-
+              
                 if (this.props.singleSelect == true) {
                     tds.push(
-                        <td key={"bodycheckbox" + rowIndex.toString()}  style={{ width: 30 }} className="check-column" >
-                            <div className="wasabi-grid-cell"> <Radio {...props} ></Radio></div></td>
+                        <td key={"bodycheckbox" + rowIndex.toString()}   style={{ width: 30 }} className="check-column" >
+                            <div className="wasabi-grid-cell" > <Radio forceChange={true} {...props} ></Radio></div></td>
                     );
 
                 }
                 else {
                     tds.push(
-                        <td key={"bodycheckbox" + rowIndex.toString()} style={{ width: 30 }} className="check-column" >
-                            <div className="wasabi-grid-cell"  ><CheckBox {...props} ></CheckBox></div></td>
+                        <td key={"bodycheckbox" + rowIndex.toString()} style={{ width: 30 }} className="check-column"  >
+                            <div className="wasabi-grid-cell"  ><CheckBox forceChange={true} {...props} ></CheckBox></div></td>
                     );
                 }
             }
@@ -529,7 +532,9 @@ class DataGrid extends Component{
         }
         return headerMenuCotrol;
     }
-   
+    showUpdate(newParam, oldParam) {
+        showUpdate.call(this, newParam, oldParam);
+    }
     render () {
         let className = this.props.borderAble ? "table " : "table table-no-bordered";
         let headerControl = this.renderHeader();//渲染两次，所以定义一个变量
@@ -708,6 +713,6 @@ DataGrid.defaultProps= {
     
 };
 
-mixins(DataGrid,[DataGridHandler, DataGridExtend, pasteExtend, showUpdate]);
+mixins(DataGrid,[DataGridHandler, DataGridExtend, pasteExtend]);
 
 export default DataGrid;

@@ -21,21 +21,25 @@ class  Select extends  Component{
  
     constructor(props) {
 
-        super(props);;
+        super(props);
       
         //对传来的数据进行格式化
         var newData = []; var text = this.props.text;
+       
         if (this.props.data instanceof Array) {
             for (let i = 0; i < this.props.data.length; i++) {
                 let obj = this.props.data[i];
-                obj.text = this.props.data[i][this.props.textField];
-                obj.value = this.props.data[i][this.props.valueField];
+                
+                obj.text = this.props.data[i][this.props.textField?this.props.textField:"text"];
+                obj.value = this.props.data[i][this.props.valueField?this.props.valueField:"value"];
+              
                 if (obj.value == this.props.value) {
                     text = obj.text;//根据value赋值
                 }
                 newData.push(obj);
             }
         }
+       
         this.state = {
             params: unit.clone(this.props.params),//参数
             data: newData,
@@ -55,7 +59,7 @@ class  Select extends  Component{
         this.loadError = this.loadError.bind(this);
         this.loadSuccess = this.loadSuccess.bind(this);
         this.filterChangeHandler = this.filterChangeHandler.bind(this);
-
+        this.onBlur=this.onBlur.bind(this);
         this.onSelect = this.onSelect.bind(this);
         this.hideOptions=this.hideOptions.bind(this);
 
@@ -84,8 +88,8 @@ class  Select extends  Component{
                 for(let i=0;i<nextProps.data.length;i++)
             {
                 let obj=nextProps.data[i];
-                obj.text=nextProps.data[i][this.props.textField];
-                obj.value=nextProps.data[i][this.props.valueField];
+                obj.text=nextProps.data[i][this.props.textField?this.props.textField:"text"];
+                obj.value=nextProps.data[i][this.props.valueField?this.props.valueField:"value"];
               
                 newData.push(obj);
             }
@@ -160,8 +164,8 @@ class  Select extends  Component{
         var text = this.state.text;
         for (let i = 0; i < realData.length; i++) {
             let obj = realData[i];//将所有字段添加进来
-            obj.text = realData[i][this.props.textField];
-            obj.value = realData[i][this.props.valueField];
+            obj.text = realData[i][this.props.textField?this.props.textField:"text"];
+            obj.value = realData[i][this.props.valueField?this.props.valueField:"value"];
             if (obj.value == this.state.value) {
                 text = obj.text;//根据value赋值
             }
@@ -174,8 +178,8 @@ class  Select extends  Component{
             //有额外的数据
             for (let i = 0; i < this.props.extraData.length; i++) {
                 let obj = {};
-                obj.text = this.props.extraData[i][this.props.textField];
-                obj.value = this.props.extraData[i][this.props.valueField];
+                obj.text = this.props.extraData[i][this.props.textField?this.props.textField:"text"];
+                obj.value = this.props.extraData[i][this.props.valueField?this.props.valueField:"value"];
                 if (obj.value == this.state.value) {
                     text = obj.text;//根据value赋值
                 }
@@ -329,6 +333,7 @@ class  Select extends  Component{
 
             }//文本框的属性
         var control = null;
+       
         if (this.state.data && this.state.data.length > 0) {
             control = <ul style={{display: this.state.show == true ? "block" : "none"}} ref="ul">
                 {
@@ -344,9 +349,12 @@ class  Select extends  Component{
                                 checked = true;
                             }
                             else if (this.state.value == "" && child.value == "") {
+                                //防止有空值的情况
                                 checked = true;
                             }
+                            console.log(child);
                             return (
+                               
                                 <li key={"li" + i} className={checked == true ? "active" : ""}
                                     onClick={this.onSelect.bind(this, child.value, child.text, child)}>{child.text}</li>
                             )
@@ -392,6 +400,5 @@ class  Select extends  Component{
 
 
 Select.propTypes= props;
-Select.defaultProps=Object.assign({type:"select",defaultProps});
-   
+//Select.defaultProps=Object.assign({type:"select",defaultProps});
 export default Select;

@@ -11,7 +11,7 @@ import Message from "../Unit/Message.jsx";
 let DataGridExtend= {
     //列表常用操作
     onClick: function (rowIndex,rowData) {
-
+     
         if (this.props.selectChecked == true) {
             let key = this.getKey(rowIndex);//获取关键字
             if (this.state.checkedData.has(key)) {

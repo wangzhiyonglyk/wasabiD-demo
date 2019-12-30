@@ -22,14 +22,14 @@ class CheckBox extends Component {
     constructor(props) {
 
         super(props);;
-      
+       
         //对传来的数据进行格式化
         var newData = []; var text = this.props.text;
         if (this.props.data instanceof Array) {
             for (let i = 0; i < this.props.data.length; i++) {
                 let obj = this.props.data[i];
-                obj.text = this.props.data[i][this.props.textField];
-                obj.value = this.props.data[i][this.props.valueField];
+                obj.text = this.props.data[i][this.props.textField?this.props.textField:"text"];
+                obj.value = this.props.data[i][this.props.valueField?this.props.valueField:"value"];
                 if (obj.value == this.props.value) {
                     text = obj.text;//根据value赋值
                 }
@@ -47,6 +47,7 @@ class CheckBox extends Component {
             helpTip: validation["required"],//提示信息
             invalidTip: "",
         }
+      
         this.setValue = this.setValue.bind(this);
         this.getValue = this.getValue.bind(this);
         this.loadData = this.loadData.bind(this);
@@ -80,8 +81,8 @@ class CheckBox extends Component {
                 for(let i=0;i<nextProps.data.length;i++)
             {
                 let obj=nextProps.data[i];
-                obj.text=nextProps.data[i][this.props.textField];
-                obj.value=nextProps.data[i][this.props.valueField];
+                obj.text=nextProps.data[i][this.props.textField?this.props.textField:"text"];
+                obj.value=nextProps.data[i][this.props.valueField?this.props.valueField:"value"];
               
                 newData.push(obj);
             }
@@ -94,7 +95,14 @@ class CheckBox extends Component {
 
             }
         }
-        }
+    }
+     if(nextProps.forceChange&& nextProps.value!=this.state.value)
+    {
+        this.setState({
+            value:nextProps.value
+        })
+    }
+        
     }
     setValue(value) {
         let text = "";
@@ -159,8 +167,8 @@ class CheckBox extends Component {
         var newData = []; var text = this.state.text;
         for (let i = 0; i < realData.length; i++) {
             let obj = realData[i];//将所有字段添加进来
-            obj.text = realData[i][this.props.textField];
-            obj.value = realData[i][this.props.valueField];
+            obj.text = realData[i][this.props.textField?this.props.textField:"text"];
+            obj.value = realData[i][this.props.valueField?this.props.valueField:"value"];
             if (obj.value == this.state.value) {
                 text = obj.text;//根据value赋值
             }
@@ -172,9 +180,9 @@ class CheckBox extends Component {
         else {
             //有额外的数据
             for (let i = 0; i < this.props.extraData.length; i++) {
-                let obj = {};
-                obj.text = this.props.extraData[i][this.props.textField];
-                obj.value = this.props.extraData[i][this.props.valueField];
+                let obj = {};t
+                obj.text = this.props.extraData[i][this.props.textField?this.props.textField:"text"];
+                obj.value = this.props.extraData[i][this.props.valueField?this.props.valueField:"value"];
                 if (obj.value == this.state.value) {
                     text = obj.text;//根据value赋值
                 }
@@ -245,13 +253,14 @@ class CheckBox extends Component {
     }
     render() {
 
-        console.log("checkbox",this.props);
+     
         var componentClassName = "wasabi-form-group ";//组件的基本样式
         var control = null;
+        
         if (this.state.data instanceof Array) {
             control = this.state.data.map((child, i) => {
                 var checked = false;
-                if ((this.state.value != null && this.state.value != undefined) && (("," + this.state.value.toString()).indexOf("," + child[this.props.valueField]) > -1)) {
+                if ((this.state.value != null && this.state.value != undefined) && (("," + this.state.value.toString()).indexOf("," + child[this.props.valueField?this.props.valueField:"value"]) > -1)) {
                     checked = true;
                 }
                 var props = {
