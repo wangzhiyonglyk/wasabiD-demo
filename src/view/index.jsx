@@ -5,13 +5,16 @@ import LinkButton from "../component/Buttons/LinkButton"
 import Toolbar from "../component/Buttons/Toolbar"
 import Form  from "../component/Form/Form";
 import Text from "../component/Form/Text";
+import Select from "../component/Form/Select";
 import Menus from "../component/Navigation/Menus";
 import MenuPanel from "../component/Navigation/MenuPanel"
 import Layout from "../component/Layout/Layout";
 import Left from "../component/Layout/Left";
 import Center from "../component/Layout/Center";
 import Header from "../component/Layout/Header";
-
+import Modal from "../component/Layout/Modal";
+import DataGrid from "../component/Data/DataGrid";
+import Message from "../component/Unit/Message";
 class Index extends React.Component {
     constructor(props) {
         super(props);
@@ -19,12 +22,36 @@ class Index extends React.Component {
        
         this.state = {
             tabs: [],
-            activeIndex: 0
+            modalTitle:"添加",
+            activeIndex: 0,
+
+            headers:[{"name":"userName",label:"用户名"},{"name":"op",label:"操作",content:(rowData,rowIndex)=>{
+                 return <div><LinkButton iconCls="icon-edit" title="编辑" onClick={this.openEdit}>编辑</LinkButton><LinkButton iconCls="icon-remove" title="删除" onClick={this.deleteConfirm}>删除</LinkButton></div>
+            }}],
+            data:[{
+                userName:"王志勇"
+            }, {userName:"房宜龙"}]
         }
     this.onSubmit=this.onSubmit.bind(this);
+    this.openAdd=this.openAdd.bind(this);
+    this.openEdit=this.openEdit.bind(this);
     }
     componentDidMount() {
         
+    }
+    openAdd(){
+       
+this.refs.addModal.open("新增");
+    }
+    openEdit(){
+        this.refs.addModal.open("编辑"); 
+    }
+    deleteConfirm(){
+Message.confirm("确定删除吗？",()=>{
+    Message.success("删除成功");
+},()=>{
+    Message.error("删除失败");
+})
     }
     onSubmit(){
 console.log("ddd")
@@ -49,13 +76,21 @@ console.log("ddd")
                     </Menus>
                     </Left>
     <Center>
-    <Button >测试</Button>
-            <LinkButton title="测试" iconCls="icon-add">测试图票</LinkButton>
-            <Toolbar buttons={[{title:"按钮1",theme:"info"},{title:"按钮2",theme:"warning"}]}></Toolbar>
-            <Form onSubmit={this.onSubmit}>
-                <Text required={true} type="email" label="邮箱"></Text>
-                <Text required={true} type="password" label="密码"></Text>
-            </Form>
+    
+    <Text required={true} type="text" label="名称"></Text>
+               <Select label="地区"></Select>
+                <LinkButton  iconCls="icon-search">查询</LinkButton>
+                <LinkButton iconCls="icon-add"  onClick={this.openAdd}>添加</LinkButton>
+                <div>
+                    <DataGrid headers={this.state.headers} data={this.state.data}></DataGrid>
+                </div>
+                <Modal ref="addModal" title={this.state.modalTitle}>
+                    <Form>
+                       
+    <Text required={true} type="email" label="名称"></Text>
+             
+                    </Form>
+                </Modal>
     </Center>
 
 </Layout>

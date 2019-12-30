@@ -5,7 +5,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import ("../Sass/Layout/resize.css");
-class  Resize extends Component{
+class  Resize extends React.Component{
 constructor(props){
     super(props);
     this.state={

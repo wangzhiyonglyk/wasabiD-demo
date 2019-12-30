@@ -13,6 +13,11 @@ constructor(props)
             visible:true,//可见性
         
     }
+    this.OKHandler=this.OKHandler.bind(this);
+    this.cancelHandler=this.cancelHandler.bind(this);
+    this.onMouseOver=this.onMouseOver.bind(this);
+    this.onMouseOut=this.onMouseOut.bind(this);
+    this.timeOutHandler=this.timeOutHandler.bind(this);
 }
   
     componentDidMount() {

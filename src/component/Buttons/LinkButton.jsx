@@ -71,7 +71,7 @@ class LinkButton extends Component{
 
         //注意这里只有按钮提示
         
-        let isicon=this.props.children?false:this.props.title?false:true;
+        let isicon=this.props.children?false:true;
         if (isicon ) {//纯图标
             return (<a draggable={this.props.draggable} onDragStart={this.dragStartHandler} title={this.props.title}
                        href={this.props.href} onClick={this.clickHandler}
@@ -98,7 +98,7 @@ class LinkButton extends Component{
                     <a ref="link"  draggable={this.props.draggable} onDragStart={this.dragStartHandler} title={this.props.tip}
                        href={this.props.href} onClick={this.clickHandler} onMouseOut={this.onMouseOut} onMouseOver={this.onMouseOver}
                        className={className} disabled={this.props.disabled} name={this.props.name} style={style} >
-                        <div className="wasabi-linkbutton-text" style={this.props.textStyle}>{this.props.children?this.props.children:this.props.title}</div>
+                        <div className="wasabi-linkbutton-text" style={this.props.textStyle}>{this.props.children}</div>
                         <i className={" "+this.props.iconCls+" icon-rightTop"}
                            style={{color:this.props.iconColor,display:this.props.iconCls==""?"none":"inline-block"}}></i>
                     </a>);
@@ -109,7 +109,7 @@ class LinkButton extends Component{
                     <a  ref="link" draggable={this.props.draggable}  onDragStart={this.dragStartHandler} title={this.props.tip}
                        href={this.props.href} onClick={this.clickHandler} onMouseOut={this.onMouseOut} onMouseOver={this.onMouseOver}
                        className={className} disabled={this.props.disabled} name={this.props.name} style={style} >
-                        <div className="wasabi-linkbutton-text" style={this.props.textStyle}>{this.props.children?this.props.children:this.props.title}</div>
+                        <div className="wasabi-linkbutton-text" style={this.props.textStyle}>{this.props.children}</div>
                         <i className={" "+this.props.iconCls+" icon-rightBottom"}
                            style={{color:this.props.iconColor,display:this.props.iconCls==""?"none":"inline-block"}}></i>
                     </a>);
@@ -122,7 +122,7 @@ class LinkButton extends Component{
                        disabled={this.props.disabled}  name={this.props.name}  style={style}>
                         <i className={" "+this.props.iconCls}
                            style={{display:(this.props.iconCls==null||this.props.iconCls=="")?"none":"inline-block"}}></i>
-                        <div className="wasabi-linkbutton-text left" style={this.props.textStyle}>{this.props.children?this.props.children:this.props.title}</div>
+                        <div className="wasabi-linkbutton-text left" style={this.props.textStyle}>{this.props.children}</div>
 
                     </a>
 

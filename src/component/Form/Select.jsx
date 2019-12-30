@@ -47,14 +47,17 @@ class  Select extends  Component{
             helpTip: validation["required"],//提示信息
             invalidTip: "",
         }
+        this.validate=this.validate.bind(this);
+        this.showUpdate=this.showUpdate.bind(this);
         this.setValue = this.setValue.bind(this);
         this.getValue = this.getValue.bind(this);
         this.loadData = this.loadData.bind(this);
         this.loadError = this.loadError.bind(this);
         this.loadSuccess = this.loadSuccess.bind(this);
-        this.changeHandler = this.changeHandler.bind(this);
+        this.filterChangeHandler = this.filterChangeHandler.bind(this);
 
         this.onSelect = this.onSelect.bind(this);
+        this.hideOptions=this.hideOptions.bind(this);
 
     }
 
@@ -200,14 +203,14 @@ class  Select extends  Component{
         this.setState({
             show: type == 1 ? !this.state.show : true,
         });
-        this.bindClickAway();//绑定全局单击事件
+        //this.bindClickAway();//绑定全局单击事件
     }
     hideOptions (event) {
       
         this.setState({
             show: false
         });
-        this.unbindClickAway();//卸载全局单击事件
+        //this.unbindClickAway();//卸载全局单击事件
     }
 
     onSelect (value, text, row) {//选中事件  

@@ -5,8 +5,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import  Button from ("../Buttons/Button.jsx");
-import  Resize from ("./Resize.jsx");
+import  Button from "../Buttons/Button.jsx";
+import  Resize from "./Resize.jsx";
 import ("../Sass/Layout/Modal.css");
 import ("../Sass/Buttons/button.css");
 class Modal extends  React.Component {
@@ -16,6 +16,7 @@ class Modal extends  React.Component {
         let height=(this.props.style&&this.props.style.height)?this.props.style.height:400;
         
         this.state = {
+            title:this.props.title,
             width:width,
             height:height,
             visible: false,
@@ -54,8 +55,8 @@ class Modal extends  React.Component {
         }
     }
 
-    open() {//打开事件
-        this.setState({visible: true});
+    open(title) {//打开事件
+        this.setState({visible: true,title:title});
     }
 
     mouseMoveHandler(event) {
@@ -148,7 +149,7 @@ class Modal extends  React.Component {
                      onMouseUp={this.mouseUpHandler}
                      onMouseOut={this.mouseOutHandler}
                 >
-                    <div style={{display: "inline"}}>{this.props.title}</div>
+                    <div style={{display: "inline"}}>{this.state.title}</div>
                 </div>
 
                 <div className="wasabi-modal-content" style={{height: this.state.height - 40}}>
@@ -175,7 +176,7 @@ Modal.propTypes={
 }
 
 Modal.defaultProps={
-    ...Modal.defaultProps,
+   
     width: 400,//宽度
     height: 400,//高度
     resize: false,//是否可以改变大小

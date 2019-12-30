@@ -20,6 +20,7 @@ import defaultProps from "./config/defaultProps.js";
 class TreePicker extends Component{
    
     constructor(props){
+        super(props);
         this.state={
             hide:this.props.hide,
             params:this.props.params,//默认筛选条件
