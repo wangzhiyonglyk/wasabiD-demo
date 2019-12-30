@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+
 import Button from "../component/Buttons/Button"
 import LinkButton from "../component/Buttons/LinkButton"
 import Toolbar from "../component/Buttons/Toolbar"
@@ -15,6 +16,8 @@ import Header from "../component/Layout/Header";
 import Modal from "../component/Layout/Modal";
 import DataGrid from "../component/Data/DataGrid";
 import Message from "../component/Unit/Message";
+import {fetch} from "wasabi-api"
+console.log(fetch);
 class Index extends React.Component {
     constructor(props) {
         super(props);
@@ -36,8 +39,12 @@ class Index extends React.Component {
     this.openAdd=this.openAdd.bind(this);
     this.openEdit=this.openEdit.bind(this);
     }
-    componentDidMount() {
-        
+   async componentDidMount() {
+       let res= await fetch({
+            type:"POST",
+            url:"https://www.bluehy.com/Product/GetProductList?appid=wx48731a1afb81ead2"
+        });
+        console.log("res",res);
     }
     openAdd(){
        
