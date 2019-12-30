@@ -9,6 +9,13 @@ import PropTypes from "prop-types";
 class Row extends React.Component {
   constructor(props) {
     super(props);
+    this.state={
+
+    }
+    this.validate=this.validate.bind(this);
+    this.getData=this.getData.bind(this);
+    this.setData=this.setData.bind(this);
+    this.clearData=this.clearData.bind(this);
   }
   static propTypes = {
     style: PropTypes.object,

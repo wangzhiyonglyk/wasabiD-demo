@@ -4,10 +4,15 @@
  * desc 列
  */
 import React from 'react';
+import PropTypes from "prop-types";
 
 class Col extends React.Component {
     constructor(props) {
         super(props);
+        this.validate=this.validate.bind(this);
+        this.getData=this.getData.bind(this);
+        this.setData=this.setData.bind(this);
+        this.clearData=this.clearData.bind(this);
     }
     static propTypes = {
         cols: PropTypes.number,

@@ -15,6 +15,9 @@ import Header from "../component/Layout/Header";
 import Modal from "../component/Layout/Modal";
 import DataGrid from "../component/Data/DataGrid";
 import Message from "../component/Unit/Message";
+import Row from "../component/Layout/Row";
+import Col from "../component/Layout/Col";
+import Input from "../component/Form/Input"
 class Index extends React.Component {
     constructor(props) {
         super(props);
@@ -79,20 +82,24 @@ console.log("ddd")
     render() {
 
         return <div>
-            <Text  name="userName" type="text" label="名称"></Text>
+            <Row> 
+                <Col cols={3}>  <Text  name="userName" type="text" label="名称"></Text></Col>
+              <Input type="date"></Input>
                <Select label="地区" data={[{value:"001",text:"北京"},{value:"002",text:"天津"}]}></Select>
                 <LinkButton  iconCls="icon-search" style={{color:"red"}}> 查询</LinkButton>
                 <LinkButton iconCls="icon-add"  onClick={this.openAdd}>添加</LinkButton>
-                <div>
+                </Row>
+           <div>
                     <DataGrid headers={this.state.headers} data={this.state.data}></DataGrid>
                 </div>
-                <Modal ref="addModal" width={800} height={800} OKHandler={this.OKHandler} >
+                <Modal ref="addModal"  style={{width:800,height:600}} OKHandler={this.OKHandler} >
                     <Form>
                        
     <Text required={true} type="email" label="名称"></Text>
              
                     </Form>
                 </Modal>
+                
         </div>
     
     }
