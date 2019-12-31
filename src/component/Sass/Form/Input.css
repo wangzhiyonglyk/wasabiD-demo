@@ -69,7 +69,7 @@ label
  输入框主体
  */
 .wasabi-form-group .wasabi-form-group-body {
-   min-width: 190px;
+   /* min-width: 190px; */
     float: left;
     position: relative;
   }
