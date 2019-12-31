@@ -16,7 +16,8 @@ import Header from "../component/Layout/Header";
 import Modal from "../component/Layout/Modal";
 import DataGrid from "../component/Data/DataGrid";
 import Message from "../component/Unit/Message";
-import {fetch} from "wasabi-api"
+import {fetch,ajax} from "wasabi-api";
+
 console.log(fetch);
 class Index extends React.Component {
     constructor(props) {
@@ -39,12 +40,23 @@ class Index extends React.Component {
     this.openAdd=this.openAdd.bind(this);
     this.openEdit=this.openEdit.bind(this);
     }
-   async componentDidMount() {
-       let res= await fetch({
+    async loadData(){
+        let res= await fetch({
             type:"POST",
             url:"https://www.bluehy.com/Product/GetProductList?appid=wx48731a1afb81ead2"
         });
-        console.log("res",res);
+        console.log("res1122",res);
+     ajax({
+        url:"https://www.bluehy.com/Product/GetProductList?appid=wx48731a1afb81ead2",
+        type:"POST",
+      
+        success:(res)=>{
+console.log("fdfd",res);
+        }
+     })
+    }
+    componentDidMount() {
+       this.loadData();
     }
     openAdd(){
        
