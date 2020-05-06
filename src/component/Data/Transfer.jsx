@@ -133,8 +133,8 @@ let Transfer=React.createClass({
             data: realData,
         })
     },
-    loadError:function(errorCode,message) {//查询失败
-        console.log("treepicker-error",errorCode,message);
+    loadError:function(message) {//查询失败
+        console.log("treepicker-error",message);
         Message. error(message);
     },
     setValueAndText:function (realData) {//设置text，value的值

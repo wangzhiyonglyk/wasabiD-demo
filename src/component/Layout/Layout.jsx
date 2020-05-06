@@ -30,25 +30,27 @@ class Layout extends React.Component {
         React.Children.map(this.props.children, (child, index) => {
             switch (child.props.title) {
                 case "header":
-                    centerReduceHeight += child.props.height ? child.props.height : 100;//默认100
-                    top = child.props.height ? child.props.height : 100;
+                    centerReduceHeight += child.props.height ? child.props.height : 0;//默认100
+                    top = child.props.height ? child.props.height : 0;
                     break;
                 case "footer":
-                    centerReduceHeight += child.props.height ? child.props.height : 100;
+                    centerReduceHeight += child.props.height ? child.props.height : 0;
                     break;
                 case "left":
-                    centerReduceWidth += child.props.width ? child.props.width : 100;
-                    left =child.props.width ? child.props.width : 100;
+                    
+                    centerReduceWidth += child.props.width ? child.props.width : 0;
+                    left =child.props.width ? child.props.width : 0;
                     break;
                 case "right":
-                    centerReduceWidth += child.props.width ? child.props.width : 100;
+                    centerReduceWidth += child.props.width ? child.props.width : 0;
                     break;
 
             }
         })
+
         return {
-            reduceWidth: centerReduceWidth ? centerReduceWidth : null,//这里是center要扣除的宽度
-            reduceHeight: centerReduceHeight ? centerReduceHeight : null,//不仅仅是center的高度是left,right的扣除高度
+            reduceWidth: centerReduceWidth ? centerReduceWidth : 0,//这里是center要扣除的宽度
+            reduceHeight: centerReduceHeight ? centerReduceHeight : 0,//不仅仅是center的高度是left,right的扣除高度
             top: top,//left center  right的位置
             left:left
            
@@ -56,6 +58,7 @@ class Layout extends React.Component {
     }
     render() {
         let widthHeight = this.calWidthHeight();//计算宽高
+        
         return <div className={"wasabi-layout clearfix"}
             style={{ width: this.props.width, height: this.props.height }}  >
             {

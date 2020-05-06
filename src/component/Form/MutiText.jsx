@@ -147,8 +147,14 @@ class  MutiText extends Component {
         {
             areaValue="";
         }
+        let style=this.props.style?JSON.parse(JSON.stringify(this.props.style)):{};
+        if(this.props.hide){
+            style.display="none";
+        }else{
+            style.display="flex";
+        }
         return (
-            <div className={componentClassName+this.state.validateClass} ref="picker" style={{display:this.props.hide==true?"none":"block"}}>
+            <div className={componentClassName+this.state.validateClass} ref="picker" style={style}>
                 <Label name={this.props.label} ref="label" style={this.props.labelStyle} hide={this.props.hide} required={this.props.required}></Label>
                 <div className={ "wasabi-form-group-body"} style={{width:!this.props.label?"100%":null}}>
                     <div className="combobox"  style={{display:this.props.hide==true?"none":"block"}}   >

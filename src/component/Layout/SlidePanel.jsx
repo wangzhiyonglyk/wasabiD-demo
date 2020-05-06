@@ -67,6 +67,7 @@ class SlidePanel extends  React.Component{
                 this.setState({
                     panelwidth:0
                 })
+                this.props.slideHandler&&this.props.slideHandler(0);
             },700);//过渡效果结束后立即关闭
         }
        else
@@ -76,6 +77,7 @@ class SlidePanel extends  React.Component{
                 overlayOpacity:this.state.overlayOpacity==0?0.5:0,
                 panelwidth:this.state.width
             });
+            this.props.slideHandler&&this.props.slideHandler(1);
         }
 
     }
@@ -85,10 +87,10 @@ class SlidePanel extends  React.Component{
         }
     }
     render() {
-        let style=this.props.style?this.props.style:{};
-        style.width=this.state.panelwidth;
-            return <div className={"wasabi-slidepanel "}  style={style}>
-                <div className="slide-overlay" style={{width:this.state.panelwidth,opacity:this.state.overlayOpacity}}></div>
+      
+        
+            return <div className={"wasabi-slidepanel "}   style={{width:this.state.panelwidth==0?0:this.state.width}} >
+                <div className="slide-overlay" onClick={this.slideHandler} style={{width:this.state.panelwidth,opacity:this.state.overlayOpacity}}></div>
                 <div className="slide-container" style={{width:this.state.containerwidth}}>
 
                         <div className="slide-header">

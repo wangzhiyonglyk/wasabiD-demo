@@ -2,6 +2,8 @@
  * Created by wangzhiyong on 2016/10/25.
  * 将原有的单击与双击事件
  * 将新增,修改,粘贴,鼠标右键,滚动,固定表头,固定列,等功能
+ * 2019-2020中间修改语法等
+ * 2020-03-15 增加contentType值
  * 作为DataGrid扩展功能
  */
 import React, { Component } from "react";
@@ -116,7 +118,7 @@ let DataGridExtend= {
     hideMenuHandler:function (event) {//隐藏菜单，远程更新某一行
         this.refs.headermenu.style.display="none";//表头菜单隐藏
         this.menuHeaderName=null;//清空全局列名
-        //this.unbindClickAway();//卸载全局单击事件
+        this.unbindClickAway();//卸载全局单击事件
     },
     
     headerMouseDownHandler: function (event) {//表头列,鼠标按下事件
@@ -173,7 +175,7 @@ let DataGridExtend= {
 
     /**列表样式问题 */
     tableBodyScrollHandler: function (event) {//监听列表的横向滚动的事件,以便固定表头可以一同滚动
-        this.refs.fixedTableContainer.style.left = "-" + event.target.scrollLeft + "px";
+       // this.refs.fixedTableContainer.style.left = "-" + event.target.scrollLeft + "px";
 
     },
 
@@ -208,9 +210,18 @@ let DataGridExtend= {
         }
         if(headerUrl)
         {
-            var fetchmodel=new FetchModel(headerUrl,this.getHeaderDataHandlerSuccess,{url:this.state.url},this.ajaxError);
+            let type=this.props.httpType?this.props.httpType:"POST";
+             type=type.toUpperCase();
+            var fetchmodel=new FetchModel(headerUrl,this.getHeaderDataHandlerSuccess,{url:this.state.url},this.ajaxError,type);
+            if(this.props.contentType){
+                //如果传contentType值则采用传入的械
+                //否则默认
+              
+                fetchmodel.contentType=  this.props.contentType;
+                fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
+              }
             console.log("datagrid-header-get:",fetchmodel);
-            unit.fetch.post(fetchmodel);
+            type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
         }
         this.setState({
             loading:true,//正在加载
@@ -343,9 +354,18 @@ let DataGridExtend= {
     },
      remoteUpdateRow:function (newEditIndex) {//远程提交某一行数据
         if (this.state.updateUrl) {//定义url,保存上一行
-            var fetchmodel = new FetchModel(this.state.updateUrl, this.remoteUpdateRowuccess.bind(this,newEditIndex), {model: this.state.data[this.state.editIndex]}, this.ajaxError);
+            let type=this.props.httpType?this.props.httpType:"POST";
+            type=type.toUpperCase();
+            var fetchmodel = new FetchModel(this.state.updateUrl, this.remoteUpdateRowuccess.bind(this,newEditIndex), {model: this.state.data[this.state.editIndex]}, this.ajaxError,type);
+            if(this.props.contentType){
+                //如果传contentType值则采用传入的械
+                //否则默认
+              
+                fetchmodel.contentType=  this.props.contentType;
+                fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
+              }
             console.log("datagrid-updateRow:", fetchmodel);
-            unit.fetch.post(fetchmodel);
+            type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
         }
         else {//没有定义url
             if(this.state.addData.has(this.getKey(this.state.editIndex)))

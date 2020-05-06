@@ -171,6 +171,7 @@ class DateD extends Component {
     }
 
     render() {
+       
         return (
             <div className="wasabi-datetime"  >
                 <CalendarHeader
@@ -200,12 +201,27 @@ class DateD extends Component {
 }
 DateD.propTypes = {
     name: PropTypes.string,//字段名称，对应于表单
-    year: PropTypes.number,//年
-    month: PropTypes.number,//月
-    day: PropTypes.number,//日
+    year: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),//年
+    month: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),//月
+    day: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),//日
     isRange: PropTypes.bool,//是否为范围选择
-    min: PropTypes.number,//最小值，用于日期范围选择
-    max: PropTypes.number,//最大值,用于日期范围选择
+    min: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),//最小值，用于日期范围选择
+    max: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),//最大值,用于日期范围选择
     onSelect: PropTypes.func,//选择后的事件
 
 

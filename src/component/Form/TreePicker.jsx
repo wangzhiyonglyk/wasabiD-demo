@@ -14,7 +14,8 @@ import validate from "../Mixins/validate.js";
 import showUpdate from "../Mixins/showUpdate.js";
 
 import Label from "../Unit/Label.jsx";
-import ClickAway from "../Unit/ClickAway.js";
+import ClickAway  from "../Unit/ClickAway.js";
+import mixins from '../Mixins/mixins';
 import props from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
 class TreePicker extends Component{
@@ -68,7 +69,7 @@ class TreePicker extends Component{
     }
     componentDidMount(){
 
-       // this.registerClickAway(this.hidePicker, this.refs.picker);//注册全局单击事件
+        this.registerClickAway(this.hidePicker, this.refs.picker);//注册全局单击事件
     }
     changeHandler(event) {
     }
@@ -77,7 +78,7 @@ class TreePicker extends Component{
         return validate.call(this, value)
     }
     showUpdate(newParam, oldParam) {
-        showUpdate.call(this, newParam, oldParam);
+  return    showUpdate.call(this, newParam, oldParam);
     }
       setValue(value) {
         let text = "";
@@ -145,14 +146,20 @@ class TreePicker extends Component{
             let inputProps=
             {
                 readOnly:this.props.readonly==true?"readonly":null,
-                style:this.props.style,
+               
                 name:this.props.name,
                 placeholder:(this.props.placeholder===""||this.props.placeholder==null)?this.props.required?"必填项":"":this.props.placeholder,
-                className:"wasabi-form-control  "+(this.props.className!=null?this.props.className:""),
+                className:"wasabi-form-control  ",
                 title:this.props.title,
 
             }//文本框的属性
-        return <div className={componentClassName+this.state.validateClass}  ref="picker" style={{display:this.props.hide==true?"none":"block"}}>
+            let style=this.props.style?JSON.parse(JSON.stringify(this.props.style)):{};
+            if(this.props.hide){
+                style.display="none";
+            }else{
+                style.display="flex";
+            }
+        return <div className={componentClassName+ this.props.className+" "+ this.state.validateClass}  ref="picker" style={style}>
             <Label name={this.props.label} ref="label" style={this.props.labelStyle} required={this.props.required}></Label>
             <div className={ "wasabi-form-group-body"} style={{width:!this.props.label?"100%":null}}>
                 <div className="combobox"    >
@@ -177,4 +184,5 @@ class TreePicker extends Component{
  
 TreePicker. propTypes=props;
 TreePicker. defaultProps=Object.assign({type:"treepicker",defaultProps});
+mixins(TreePicker,[ClickAway]);
 export default  TreePicker;

@@ -3,13 +3,16 @@ create by wangzy
 date:2016-05-18
 desc:面板组件样式
 */
-
+@import url("../base.css");
 .wasabi-panel{
   margin: 0px;
   margin-bottom: 10px;
   box-shadow:none;
-  overflow: visible;
+  
   border-radius: 4px;
+  -webkit-transition: height 1s;
+  transition:height 1s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .wasabi-panel .panel-heading
@@ -65,21 +68,29 @@ desc:面板组件样式
 {
   position:absolute;
   right:10px;
-  bottom: 5px;
-  width:20px;
+  bottom: 8px;
+  width:40px;
   height:20px;
-
+text-align: right;
+  color: #666666;
+}
+.panel-icon i{
+  color: #666666;
+}
+.panel-icon i:hover
+{
+  color: #333333;
 }
 .wasabi-panel .panel-body
 {
-  -webkit-transition: height 1s;
-  transition:height 1s;
-  height:100%;
+  
+  height:calc(100% - 41px);
   padding:0px;
   padding-bottom: 10px;
   text-align: left;
   margin: 0;
   border: 0;
-
+  overflow: auto;
+ 
 }
 

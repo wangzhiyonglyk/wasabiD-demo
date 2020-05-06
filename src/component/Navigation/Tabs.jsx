@@ -6,79 +6,95 @@ import PropTypes from "prop-types";
 require("../sass/Navigation/Tabs.css");
 
 // var addRipple=require("../Mixins/addRipple.js");
-class  Tabs extends React.Component{
-      
-     constructor(props){
-         super(props);
-         this.state={
-            activeIndex:this.props.activeIndex
-         }
-         this.tabClickHandler=this.tabClickHandler.bind(this);
-         this.onClose=this.onClose.bind(this);
-     }
+class Tabs extends React.Component {
 
-        componentWillReceiveProps (nextProps)
-        {
-           
-            this.setState({
-                activeIndex:nextProps.activeIndex!=null&&nextProps.activeIndex!=undefined?nextProps.activeIndex:0
-            })
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeIndex: this.props.activeIndex
         }
-        tabClickHandler(index,event) {
-
-            this.rippleHandler(event);
-            //页签单击事件
-           this.setState({
-               activeIndex:index
-           })
-        }
-        onClose(index){
-            this.props.onClose&&this.props.onClose(index,this.state.activeIndex);
-        }
-        render () {
-            return (
-                <div className="wasabi-tabs" >
-                    <div  >
-                        {
-                            
-                            React.Children.map(this.props.children, (child, index) => {
-                              
-                                return    <a key={index} href="javascript:void(0);"  onClick={this.tabClickHandler.bind(this,index)} className={"wasabi-tab "+this.props.theme+" "+(this.state.activeIndex==index?"active ":"")} >
-                                    {child.props.title}
-                                     <i className="tab-icon icon-close" onClick={this.onClose.bind(this,index)}></i>
-                                </a>
-                            })
-                        }
-                    </div>
-                    { 
-                            React.Children.map(this.props.children, (child, index) => {
-                               
-                            return  <div key={index} style={this.props.style} className={"section  "+this.props.theme+ " "+(index==this.state.activeIndex?"active":"")}  >
-                      {child}
-                       </div>
-                        })
-                        }
-                   
-                </div>)
-
-        }
+        this.tabClickHandler = this.tabClickHandler.bind(this);
+        this.onClose = this.onClose.bind(this);
     }
 
-Tabs. propTypes={
+    componentWillReceiveProps(nextProps) {
+        let activeIndex = nextProps.activeIndex != null && nextProps.activeIndex != undefined ? nextProps.activeIndex : 0
+        if (nextProps.children.length > this.props.children.length) {
+            activeIndex = nextProps.children.length - 1
+        }
+        this.setState({
+            activeIndex: activeIndex
+        })
+    }
+    tabClickHandler(index, event) {
+
+        // this.rippleHandler(event);
+        //页签单击事件
+        this.setState({
+            activeIndex: index
+        })
+    }
+    onClose(index) {
+        this.props.onClose && this.props.onClose(index, this.state.activeIndex);
+    }
+    changeActive(index){
+        if(this.props.children&&index>-1&&index< this.props.children.length){
+            this.setState({
+                activeIndex:index
+            })
+        }
+     
+    }
+    render() {
+        return (
+            <div className="wasabi-tabs" >
+                <div  >
+                    {
+
+                        React.Children.map(this.props.children, (child, index) => {
+
+                            if (child) {
+                                let iconCls = child && child.props.iconCls ? child.props.iconCls : "txt";
+                                return <a key={index} href="#" onClick={this.tabClickHandler.bind(this, index)} className={"wasabi-tab " + this.props.theme + " " + (this.state.activeIndex == index ? "active " : "")} >
+                                    <i className={"" + iconCls} style={{ marginRight: 5 }}></i>
+                                    {child.props.title}
+                                    <i className="tab-icon icon-close" style={{display:child.props.closeAble?"inline":"none"}} onClick={this.onClose.bind(this, index)}></i>
+                                </a>
+                            }
+                            return null;
+
+                        })
+                    }
+                </div>
+                {
+                    React.Children.map(this.props.children, (child, index) => {
+
+                        return <div key={index} style={this.props.style} className={"section  " + this.props.theme + " " + (index == this.state.activeIndex ? "active" : "")}  >
+                            {child}
+                        </div>
+                    })
+                }
+
+            </div>)
+
+    }
+}
+
+Tabs.propTypes = {
     theme: PropTypes.oneOf([//主题
         "primary",
         "default",
-       
-    ]),
-    activeIndex:PropTypes.number,
-    onClose:PropTypes.func,
-};
-Tabs.defaultProps= {
-     
-        theme:"default",
-        activeIndex:0,
-        onClose:null,
 
-    
+    ]),
+    activeIndex: PropTypes.number,
+    onClose: PropTypes.func,
 };
-export default  Tabs;
+Tabs.defaultProps = {
+
+    theme: "default",
+    activeIndex: 0,
+    onClose: null,
+
+
+};
+export default Tabs;

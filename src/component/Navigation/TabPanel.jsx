@@ -12,10 +12,16 @@ class TabPanel extends React.Component {
     
   }
   static propTypes={
-      title: PropTypes.any.isRequired//标题是必须，可以是组件
+      title: PropTypes.any.isRequired,//标题是必须，可以是组件
+      closeAble:PropTypes.bool,//是否可以关闭
+      iconCls:PropTypes.string
   } 
+  static defaultProps={
+    closeAble:true,
+    iconCls:"icon-txt"
+  }
   render() {
-    return <div>{this.props.children}</div>;
+    return this.props.children;
   }
 
 

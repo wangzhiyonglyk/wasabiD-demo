@@ -11,7 +11,7 @@ class ButtonModel
         this.disabled=false;
         this.iconCls=null;
         this.iconAlign="left";
-        this.href="javascript:void(0);";
+        this.href="#";
         this.onClick=null;
         this.theme=theme;
         this.size="default";

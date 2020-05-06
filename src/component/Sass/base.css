@@ -6,7 +6,7 @@ date:2017-07-28 对整体样式风格修改 实现hplus主题
 */
 
 @import url("./animation.css");
-
+@import url("./Buttons/icon.css");
 /*!
  * 引用Bootstrap v3.3.7 对基本样式的设置，定制时只勾选的grid
  */
@@ -15,20 +15,19 @@ html {
   width:100%;
   margin: 0px;
   padding:0px;
-   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+
 body {
   height: 100%;
   width:100%;
   margin: 0px;
   padding:0px;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #333;
-    background-color: #fff;
+
 }
 
 body>div:first-child{
@@ -314,33 +313,7 @@ hr {
 [role="button"] {
   cursor: pointer;
 }
-.container {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-@media (min-width: 768px) {
-  .container {
-    width: 750px;
-  }
-}
-@media (min-width: 992px) {
-  .container {
-    width: 970px;
-  }
-}
-@media (min-width: 1200px) {
-  .container {
-    width: 1170px;
-  }
-}
-.container-fluid {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 15px;
-  padding-right: 15px;
-}
+
 .row {
   margin-left: -15px;
   margin-right: -15px;

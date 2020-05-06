@@ -36,7 +36,7 @@ getData () {
                 }
                 else {
                     for (let index = 0; index < nameSplit.length; index++) {
-                        data[nameSplit[index]] = null;
+                        data[nameSplit[index]] = "";
                     }
                 }
             }

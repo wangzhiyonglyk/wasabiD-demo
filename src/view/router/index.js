@@ -1,0 +1,1 @@
+export { zhongyinRoutes } from './zhongyin';

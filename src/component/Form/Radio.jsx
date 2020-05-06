@@ -83,7 +83,7 @@ class  Radio extends Component{
                 newData.push(obj);
             }
           
-            if(newData[0].text!=this.state.data[0].text||newData[newData.length-1].text!=this.state.data[this.state.data.length-1].text)
+            if(newData[0].value!=this.state.data[0].value||newData[newData.length-1].value!=this.state.data[this.state.data.length-1].value)
             {this.setState({
                 data:nextProps.data,
                 value:"",
@@ -129,7 +129,7 @@ class  Radio extends Component{
         return validate.call(this, value)
     }
     showUpdate(newParam, oldParam) {
-        showUpdate.call(this, newParam, oldParam);
+      return   showUpdate.call(this, newParam, oldParam);
     }
     loadData(url,params) {
         if(url!=null&&url!="")
@@ -194,8 +194,8 @@ class  Radio extends Component{
             text:text,
         })
     }
-    loadError(errorCode,message) {//查询失败
-        console.log("radio-error",errorCode,message);
+    loadError(message) {//查询失败
+        console.log("radio-error",message);
         Message. error(message);
     }
     changeHandler(event) {//一害绑定，但不处理
@@ -214,7 +214,7 @@ class  Radio extends Component{
     }
     render() {
        
-       var componentClassName = "wasabi-form-group " ;//组件的基本样式 
+       var componentClassName = "wasabi-form-group " +this.props.className;//组件的基本样式 
         var control = null;
         let className = "wasabi-radio-btn " + (this.props.readonly ? " readonly" : "");
         if (this.state.data) {
@@ -227,7 +227,7 @@ class  Radio extends Component{
                 }
                 return (
                     <li key={i}>
-                        <div style={this.props.style} className={className+((this.state.value==child.value)?" checkedRadio":"")}
+                        <div  className={className+((this.state.value==child.value)?" checkedRadio":"")}
                              onClick={this.onSelect.bind(this,child.value,child.text,child)}><i>
                             <input type="radio" name={this.props.name}
                                    id={this.props.name+child.value}
@@ -243,9 +243,11 @@ class  Radio extends Component{
                 );
             })
         }
+        let style=this.props.style?JSON.parse(JSON.stringify(this.props.style)):{};
+
         return (
-            <div className={componentClassName+this.state.validateClass} style={{display:this.props.hide==true?"none":"block"}}>
-                <Label name={this.props.label} hide={this.props.hide} style={this.props.labelStyle} required={this.state.required}></Label>
+            <div className={componentClassName+this.state.validateClass} style={style}>
+                <Label name={this.props.label} hide={this.props.hide} style={this.props.labelStyle} required={this.props.required}></Label>
                 <div className={ "wasabi-form-group-body"} style={{width:!this.props.label?"100%":null}}>
                     <ul className="wasabi-checkul">
                         {

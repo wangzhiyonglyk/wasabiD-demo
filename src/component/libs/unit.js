@@ -4,7 +4,7 @@
  *
  */
 
-import  paramFormat from "./paramFormat.js";
+ import api from "../../libs/api"
 
 var baseUtil = {};
 
@@ -22,6 +22,12 @@ baseUtil.GetArgsFromHref = function (sHref, sArgName) {
         /*无需做任何处理*/
     }
     var str = args[1];
+    if(str.indexOf("#")>-1)
+    {//处理锚点的问题，有可能在前面有可能在后面
+        str=str.split("#");
+        str=str[0].indexOf("=")>-1?str[0]:str[1];
+      
+    }
     args = str.toString().split("&");
     for (var i = 0; i < args.length; i++) {
         str = args[i];
@@ -266,212 +272,18 @@ baseUtil.placeHolderIE8 = function(){
 //向后台请求数据
 baseUtil.fetch = {
     /// <summary>
-    /// 向后台请求数据
+    /// 向后台请求数据,todo 后期要全部干掉
     /// </summary>
     get:function(fetchmodel){
-        fetch(
-            fetchmodel.url,
-            {
-                method:"GET"
-            }
-        ).then((res)=>{
-            if(res.ok){
-                try {
-                    res.json().then( (result)=> {
-                       result=this.formatResult(result);//如果是心怡科技旧系统,数据转为标准格式
-                        if (result.success) {
-                            fetchmodel.success && fetchmodel.success(result);
-                        }
-                        else {
-
-                            if (fetchmodel.error) {
-                                fetchmodel.error(result.errorCode, result.message,result);
-                            } else {
-                                console.log("fetch-error",result.errorCode,result.message);
-                             
-                            }
-
-                        }
-
-                    });
-                }catch (e)
-                {
-                    console.log(e.message);
-                }
-            }
-            else {
-                if(fetchmodel.error)
-                {
-                    fetchmodel.error("002",baseUtil.Error.ServiceError);
-                }else {
-
-                    console.log(baseUtil.Error.ServiceError);
-                }
-            }
-
-        }).catch(function(e){
-            if(fetchmodel.error)
-            {
-                fetchmodel.error("001",baseUtil.Error.HttpError+e.message);
-            }else {
-
-                console.log(baseUtil.Error.HttpError+e.message);
-            }
-        });
+       
+        api.ajax(fetchmodel);
+  
     },
     post:function(fetchmodel){
-        fetchmodel=this.formatModel(fetchmodel);//如果是心怡科技旧系统,将参数转义
-
-        fetch(
-            fetchmodel.url,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": fetchmodel.contentType
-                },
-                body:this.setParams(fetchmodel.params),//参数标准化
-            }
-        ).then((res)=>{
-            if(res.ok){
-                try {
-                    res.json().then((result)=>{      
-                        result= this.formatResult(result);//如果是心怡科技旧系统,数据转为标准格式
-                        if(result.success){
-                            fetchmodel.success&&fetchmodel.success(result);
-                        }
-                        else {
-                            if(fetchmodel.error)
-                            {
-                                fetchmodel.error(result.errorCode,result.message,result);
-                            }else {
-                                console.log("fetch-error",result.errorCode,result.message);
-                               
-                            }
-                        }
-                    });
-                }
-                catch (e)
-                {
-                    console.log(e.message);
-                }
-            }
-            else {
-                if(fetchmodel.error)
-                {
-                    fetchmodel.error("002",baseUtil.Error.ServiceError);
-                }else {
-                    console.log(baseUtil.Error.ServiceError);
-                }
-            }
-        }).catch(function(e){
-            if(fetchmodel.error)
-            {
-                fetchmodel.error("001",baseUtil.Error.HttpError + e.message);
-            }else {
-                console.log(baseUtil.Error.HttpError + e.message);
-            }
-        });
-    },
-    setParams:function(params) {//是否是心怡科技的旧系统,如果是则将参数转字符串
-        let isalog=window.localStorage.getItem("wasabi-alog");
-        if(isalog) {//是
-            return params ? JSON.stringify(params) : ""//转为字符串
-        }
-        else
-        {
-            return paramFormat(params);//标准化
-        }
-       return "";
-    },
-    formatModel:function(fetchModel) {//是否是心怡科技的旧系统,如果是则对contentType进行处理
-        let isalog=window.localStorage.getItem("wasabi-alog");
-        if(isalog) {//是
-
-            fetchModel.contentType = "application/json;charset=UTF-8";
-            return fetchModel;
-        }
-        else
-        {
-            return fetchModel;
-        }
-    },
-    formatResult:function(result) {//是否是心怡科技的旧系统,如果是则将后端数据转为标准格式,否则直接返回
-    let isalog=window.localStorage.getItem("wasabi-alog");
-       var newResult;
-    if(isalog) {//是
-         newResult = {
-            success: false,
-            data:null,//数据,
-            total: 0,//总记录数
-            message: "",
-            errorCode: "",//错误处理,不需要复制,因为fetch中已经处理了.
-            footer: null,
-        };//标准格式
-        if (result.data) {//存在data
-            if(result.success!=null&&result.success!=undefined)
-            {
-                newResult.success=result.success;
-
-            }
-            else {
-                throw "后台返回json数据中必须有success属性";
-            }
-            if(result.errCode) {
-                newResult.errorCode=result.errCode;
-            }
-            if(result.message) {
-                newResult.message=result.message;
-            }
-            if (result.data.data) {//分页
-                newResult.data = result.data.data;
-                if (result.data.total) {//分页
-                    newResult.total = result.data.total;
-                }
-                if (result.data.footer) {//分页
-                    newResult.footer = result.data.footer;
-                }
-            }
-            else {//可能是不分页查询,可能是实体查询
-                newResult.data = result.data;
-
-                if (result.total) {
-                    newResult.total = result.total;
-                }
-                else {
-                    if (newResult.data instanceof Array) {//是数组,不分页查询,否则是实体查询
-                        newResult.total = newResult.data.length;
-                    }
-                    else
-                    {//实体查询,不处理total
-
-                    }
-
-                }
-                if(result.footer)
-                {
-                    newResult.footer = result.footer;
-                }
-            }
-
-        }
-        else {//如果连data都不存在,直接为result;
-            newResult = result;
-        }
+      
+        api.ajax(fetchmodel);
     }
-    else
-    {//不是心怡科技的旧系统,直接返回
-        if(result.success!=null&&result.success!=undefined)
-        {
-
-
-        }
-        else {
-            throw "后台返回json数据中必须有success属性";
-        }
-        newResult= result;
-    }
-        return newResult;
-}
+       
 }
 
 baseUtil.showError=function(msg) {
@@ -628,6 +440,7 @@ baseUtil.Error={
 import  base64 from "./base64.js";
 baseUtil.base64 = base64;
 import  md5 from "./md5.js";
+
 baseUtil.md5 = md5;
 
 

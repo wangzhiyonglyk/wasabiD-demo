@@ -7,7 +7,6 @@
 
 'use strict';
 
-require("whatwg-fetch");//让safari支持fetch
 
 /*****************按钮组件******************/
 exports.Button = require('./Buttons/Button.jsx');//普通按钮

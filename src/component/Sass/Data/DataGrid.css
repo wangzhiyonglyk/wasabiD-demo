@@ -136,6 +136,13 @@
   width: 100%;
   overflow: visible;
   box-sizing:border-box;
+ 
+}
+/*
+表头文字不换行
+*/
+.wasabi-grid th .wasabi-grid-cell{
+  white-space: nowrap;
 }
 .wasabi-grid .wasabi-grid-cell .wasabi-form-group{
   width: 100%;

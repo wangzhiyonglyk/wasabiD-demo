@@ -55,7 +55,7 @@ componentWillReceiveProps(nextProps) {
           
             newData.push(obj);
         }
-        if(newData[0].text!=this.state.data[0].text||newData[newData.length-1].text!=this.state.data[this.state.data.length-1].text)
+        if(newData[0].value!=this.state.data[0].value||newData[newData.length-1].value!=this.state.data[this.state.data.length-1].value)
         {this.setState({
             data:nextProps.data,
             value:"",
@@ -72,7 +72,7 @@ componentWillReceiveProps(nextProps) {
         this.loadData(this.state.url,this.state.params);
     }
     showUpdate(newParam, oldParam) {
-        showUpdate.call(this, newParam, oldParam);
+      return   showUpdate.call(this, newParam, oldParam);
     }
     loadData(url,params) {
         if(url!=null&&url!="")
@@ -118,8 +118,8 @@ componentWillReceiveProps(nextProps) {
 
         return realData;
     }
-    loadError(errorCode,message) {//查询失败
-        console.log("treepicker-error",errorCode,message);
+    loadError(message) {//查询失败
+        console.log("treepicker-error",message);
         Message. error(message);
     }
     onSelect (value,text,row) {

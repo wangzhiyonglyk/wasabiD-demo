@@ -2,7 +2,7 @@
 date:2017-01-09
 desc:圣杯布局样式
 */
-
+@import url("../base.css");
 .wasabi-layout {
 	position: relative;
 	margin: 0;
@@ -19,7 +19,7 @@ desc:圣杯布局样式
 	min-height: 1px;
 	position: absolute;
 	box-sizing: border-box;
-	border: 1px solid #ccc
+	
 }
 
 .wasabi-layout .wasabi-layout-header {
@@ -39,6 +39,7 @@ desc:圣杯布局样式
 	height: 100%;
 	border-top:0;
 	border-bottom: 0;
+	overflow-x: hidden;
 	
 }
 
@@ -50,5 +51,6 @@ desc:圣杯布局样式
 }
 .wasabi-layout .wasabi-layout-center{
 	border:none;
+	height: 100%;
 
 }

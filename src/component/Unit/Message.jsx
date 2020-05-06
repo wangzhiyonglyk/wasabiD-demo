@@ -6,26 +6,49 @@ import  React from "react";
 import  ReactDOM from "react-dom";
 import  MessageView from "./MessageView.jsx";
 let  Message= {
+    loading(){//正在加载
+        if (!!document.getElementById("wasabi-loading")) {
+            //存在
+            let child=document.getElementById("wasabi-loading");
+            document.body.removeChild(child);
+            let info = document.createElement("div");
+            info.id="wasabi-loading";
+            document.body.appendChild(info);
+            ReactDOM.render(<MessageView  type="loading" />, document.getElementById("wasabi-loading"));
+
+        }
+        else {
+            let info = document.createElement("div");
+            info.id="wasabi-loading";
+            document.body.appendChild(info);
+            ReactDOM.render(<MessageView  type="loading" />, document.getElementById("wasabi-loading"));
+        }
+    },
+    hide(){
+        let child=document.getElementById("wasabi-loading");
+        document.body.removeChild(child);
+      
+    },
     info(msg,timeout) {
         if(!timeout)
         {
             timeout=1000;
         }
-        if (!!document.getElementById("alog-info")) {
+        if (!!document.getElementById("wasabi-info")) {
             //存在
-            let child=document.getElementById("alog-info");
+            let child=document.getElementById("wasabi-info");
             document.body.removeChild(child);
             let info = document.createElement("div");
-            info.id="alog-info";
+            info.id="wasabi-info";
             document.body.appendChild(info);
-            ReactDOM.render(<MessageView  type="info" timeout={timeout} msg={msg}/>, document.getElementById("alog-info"));
+            ReactDOM.render(<MessageView  type="info" timeout={timeout} msg={msg}/>, document.getElementById("wasabi-info"));
 
         }
         else {
             let info = document.createElement("div");
-            info.id="alog-info";
+            info.id="wasabi-info";
             document.body.appendChild(info);
-            ReactDOM.render(<MessageView  type="info" timeout={timeout} msg={msg} />, document.getElementById("alog-info"));
+            ReactDOM.render(<MessageView  type="info" timeout={timeout} msg={msg} />, document.getElementById("wasabi-info"));
         }
 
     },
@@ -34,21 +57,21 @@ let  Message= {
         {
             timeout=1000;
         }
-        if (!!document.getElementById("alog-success")) {
+        if (!!document.getElementById("wasabi-success")) {
             //存在
-            let child=document.getElementById("alog-success");
+            let child=document.getElementById("wasabi-success");
             document.body.removeChild(child);
             let success = document.createElement("div");
-            success.id="alog-success";
+            success.id="wasabi-success";
             document.body.appendChild(success);
-            ReactDOM.render(<MessageView  type="success" timeout={timeout} msg={msg}/>, document.getElementById("alog-success"));
+            ReactDOM.render(<MessageView  type="success" timeout={timeout} msg={msg}/>, document.getElementById("wasabi-success"));
 
         }
         else {
             let success = document.createElement("div");
-            success.id="alog-success";
+            success.id="wasabi-success";
             document.body.appendChild(success);
-            ReactDOM.render(<MessageView  type="success" timeout={timeout} msg={msg} />, document.getElementById("alog-success"));
+            ReactDOM.render(<MessageView  type="success" timeout={timeout} msg={msg} />, document.getElementById("wasabi-success"));
         }
 
     },
@@ -57,56 +80,56 @@ let  Message= {
         {
             timeout=1000;
         }
-        if (!!document.getElementById("alog-error")) {
+        if (!!document.getElementById("wasabi-error")) {
             //存在
-            let child=document.getElementById("alog-error");
+            let child=document.getElementById("wasabi-error");
             document.body.removeChild(child);
             let error = document.createElement("div");
-            error.id="alog-error";
+            error.id="wasabi-error";
             document.body.appendChild(error);
-            ReactDOM.render(<MessageView  type="error" timeout={timeout} msg={msg}/>, document.getElementById("alog-error"));
+            ReactDOM.render(<MessageView  type="error" timeout={timeout} msg={msg}/>, document.getElementById("wasabi-error"));
 
         }
         else {
             let error = document.createElement("div");
-            error.id="alog-error";
+            error.id="wasabi-error";
             document.body.appendChild(error);
-            ReactDOM.render(<MessageView  type="error" timeout={timeout} msg={msg} />, document.getElementById("alog-error"));
+            ReactDOM.render(<MessageView  type="error" timeout={timeout} msg={msg} />, document.getElementById("wasabi-error"));
         }
 
     },
     alert(msg){
-        if (!!document.getElementById("alog-alert")) {
+        if (!!document.getElementById("wasabi-alert")) {
             //存在
-            let child=document.getElementById("alog-alert");
+            let child=document.getElementById("wasabi-alert");
             document.body.removeChild(child);
             let alert = document.createElement("div");
-            alert.id="alog-alert";
+            alert.id="wasabi-alert";
             document.body.appendChild(alert);
-            ReactDOM.render(<MessageView type="alert" msg={msg}  />, document.getElementById("alog-alert"));
+            ReactDOM.render(<MessageView type="alert" msg={msg}  />, document.getElementById("wasabi-alert"));
         }
         else {
             let alert = document.createElement("div");
-            alert.id="alog-alert";
+            alert.id="wasabi-alert";
             document.body.appendChild(alert);
-            ReactDOM.render(<MessageView  type="alert" msg={msg}  />, document.getElementById("alog-alert"));
+            ReactDOM.render(<MessageView  type="alert" msg={msg}  />, document.getElementById("wasabi-alert"));
         }
     },
     confirm(msg,success,cancel) {
-        if (!!document.getElementById("alog-confirm")) {
+        if (!!document.getElementById("wasabi-confirm")) {
             //存在
-            let child=document.getElementById("alog-confirm");
+            let child=document.getElementById("wasabi-confirm");
             document.body.removeChild(child);
             let confirm = document.createElement("div");
-            confirm.id="alog-confirm";
+            confirm.id="wasabi-confirm";
             document.body.appendChild(confirm);
-            ReactDOM.render(<MessageView type="confirm" msg={msg} OKHandler={success} cancelHandler={cancel} />, document.getElementById("alog-confirm"));
+            ReactDOM.render(<MessageView type="confirm" msg={msg} OKHandler={success} cancelHandler={cancel} />, document.getElementById("wasabi-confirm"));
         }
         else {
             let confirm = document.createElement("div");
-            confirm.id="alog-confirm";
+            confirm.id="wasabi-confirm";
             document.body.appendChild(confirm);
-            ReactDOM.render(<MessageView  type="confirm" msg={msg}  OKHandler={success} cancelHandler={cancel}/>, document.getElementById("alog-confirm"));
+            ReactDOM.render(<MessageView  type="confirm" msg={msg}  OKHandler={success} cancelHandler={cancel}/>, document.getElementById("wasabi-confirm"));
         }
     }
 };

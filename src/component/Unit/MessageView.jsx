@@ -8,7 +8,7 @@ constructor(props)
 {
     super(props);
     this.state={
-      
+            loading:true,//正在加载
             opacity:1,//透明度
             visible:true,//可见性
         
@@ -81,6 +81,18 @@ constructor(props)
   
 
     }
+    renderLoading(){
+        return <div>
+             <div
+          className='wasabi-loading'
+          style={{ zIndex:999, position:"fixed", display: this.state.loading == true ? 'block' : 'none' }}
+        ></div>
+        <div
+          className='wasabi-load-icon'
+          style={{ display: this.state.loading == true ? 'block' : 'none' }}
+    ></div>
+        </div>
+    }
     renderInfo(){
         return   <div onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} className={"wasabi-message "+this.props.type}
                       style={{display:this.state.visible?"inline-block":"none",opacity:this.state.opacity,transition:("opacity "+(this.props.timeout/1000).toString()+"s")}} >
@@ -112,6 +124,8 @@ constructor(props)
     render() {
         switch (this.props.type)
         {
+            case "loading":
+                return this.renderLoading();
             case "info":
                 return this.renderInfo();
             case "success":
@@ -128,6 +142,7 @@ constructor(props)
 }
 MessageView. propTypes={
     type:PropTypes.oneOf([
+        "loading",
         "alert",
         "info",
         "success",

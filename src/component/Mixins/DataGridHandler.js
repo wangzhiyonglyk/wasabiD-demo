@@ -141,18 +141,17 @@ let DataGridHandler={
             this.setState({
                 loading:true,
                 url:url,//更新,有可能从reload那里直接改变了url
-                pageSize:pageSize,
-                pageIndex:pageIndex,
+            
             })
             var actualParams={};
             if(!params&&this.state.params&&typeof this.state.params =="object")
             {//新的参数为null或者undefined，旧参数不为空
-                actualParams = (this.state.params);
-                params=this.state.params;//保存以便下一次更新
+                actualParams = unit.clone(this.state.params);
+                params=unit.clone(this.state.params);//保存以便下一次更新
             }
             else
             {//新参数不为空
-                actualParams=params;
+                actualParams=unit.clone(params);//复制，否则后面参数就会多加四个默认参数
             }
 
             if(this.props.pagination==true)
@@ -166,17 +165,27 @@ let DataGridHandler={
                 actualParams.sortName=sortName;
                 actualParams.sortOrder=sortOrder;
             }
-            else
-            {
-            }
+           
             /*
              在查询失败后可能要继续调用updateHandler查询前一页数据,所以传url,以便回调,
              而pageSize,pageIndex,sortName,sortOrder,params这些参数在查询成功后再更新
              所以回传
              */
-            var fetchmodel=new FetchModel(url,this.loadSuccess.bind(this,url,pageSize,pageIndex,sortName,sortOrder,params),actualParams,this.loadError);
+          
+             let type=this.props.httpType?this.props.httpType:"POST";
+             type=type.toUpperCase();
+            var fetchmodel=new FetchModel(url,this.loadSuccess.bind(this,url,pageSize,pageIndex,sortName,sortOrder,params),actualParams,this.loadError,type);
+            if(this.props.contentType){
+                //如果传contentType值则采用传入的械
+                //否则默认
+              
+                fetchmodel.contentType=  this.props.contentType;
+                fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
+              }
+             
             console.log("datagrid-开始查询:",fetchmodel);
-            unit.fetch.post(fetchmodel);
+            
+           type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
         }
         else {
             //没有传url,判断用户是否自定义了更新函数
@@ -188,14 +197,22 @@ let DataGridHandler={
 
     },
     loadSuccess:function(url,pageSize,pageIndex,sortName,sortOrder,params,result) {//数据加载成功
+
+        
+        if(this.props.loadSuccess){
+            //如果父组件指定了数据加载后的方法，先执行，然后再处理数据
+
+            result=this.props.loadSuccess(result);
+            if(!result){
+                Message.error("您传递的loadSuccess方法没有返回值");
+                return;
+            }
+        }
         var dataResult;//最终数据
         var totalResult;//最终总共记录
         var footerResult;//最终统计数据
         var dataSource=this.props.dataSource;//数据源
-        if(dataSource=="data"&&this.props.backSource!="data"&&this.props.backSource!="data.data")
-        {//dataSource属性为默认,backSource不为默认又不是旧版的data.data默认值,说明是旧版本中自定义的,
-            dataSource=this.props.backSource;
-        }
+      
         if(dataSource) {//需要重新指定数据源
             dataResult= unit.getSource( result,dataSource);
         }
@@ -287,8 +304,9 @@ let DataGridHandler={
         }
 
     },
-    loadError:function(errorCode,message) {//查询失败
-        console.log("datagrid-error",errorCode,message);
+
+    loadError:function(message) {//查询失败
+        console.log("datagrid-error",message);
         Message. error(message);
         this.setState({
             loading:false,
@@ -316,20 +334,25 @@ let DataGridHandler={
     },
     onChecked:function(index,value) {//选中事件
         let checkedData=(this.state.checkedData);//已经选中的行
+        let checkedIndex=(this.state.checkedIndex);//已经选中的行的序号，用于导出
         if(this.props.singleSelect==true)
         {//单选则清空
             checkedData=new Map();//单选先清空之前的选择
+            checkedIndex=new Map();
         }
         let key=this.getKey(index);//获取关键字
         if(value&&value!=""){
             checkedData.set(key,this.state.data[index]);
+            checkedIndex.set(index+"",index);
         }else
         {
-            checkedData.delete(key,this.state.data[index]);
+            checkedData.delete(key);
+            checkedIndex.delete(index+"");
         }
 
         this.setState({
-            checkedData:checkedData
+            checkedData:checkedData,
+            checkedIndex:checkedIndex
         })
         if(this.props.onChecked!=null)
         {
@@ -397,23 +420,28 @@ let DataGridHandler={
         }
         let length=this.state.data.length;
         let checkedData=this.state.checkedData;
+        let checkedIndex=this.state.checkedIndex;
         for(let i=0;i<length;i++)
         {
             let key=this.getKey(i);
+        
+            
             if(value=="yes") {
                 if (!checkedData.has(key)) {
+                    checkedIndex.set(i+"",i);
                     checkedData.set(key, this.state.data[i]);//添加
                 }
             }
             else {
                 if (checkedData.has(key)) {
-                    checkedData.delete(key, this.state.data[i]);//删除
+                    checkedIndex.delete(i+"");
+                    checkedData.delete(key);//删除
                 }
             }
         }
 
 
-        this.setState({checkedData:checkedData});
+        this.setState({checkedData:checkedData,checkedIndex:checkedIndex});
         if(this.props.onChecked!=null)
         {//执行父组件的onchecked事件
             var data=[];
@@ -434,6 +462,7 @@ let DataGridHandler={
     },
     reload:function(params,url) {//重新查询数据,
 
+        
         //存在用户第一次没有传url,第二次才传url
         if(!url) {//如果为空,则使用旧的
             url=this.state.url;//得到旧的url
@@ -446,8 +475,10 @@ let DataGridHandler={
             }
         }
         else {//传了url
-            if( this.showUpdate(params,this.state.para))
+            
+            if( this.showUpdate(params,this.state.params))
             {//参数发生改变,从第一页查起
+             
                 this.updateHandler(url,this.state.pageSize, 1, this.state.sortName, this.state.sortOrder,params);
             }
             else
@@ -517,6 +548,36 @@ let DataGridHandler={
 
             }
         }
+    }
+    ,
+    export(selected){
+   
+      
+        let tableHtml="<table>";
+        if(selected)
+        {
+            tableHtml+=this.refs.realTable.children[0].outerHTML+"<tbody>";
+        
+            for (let value of this.state.checkedIndex.values()) {
+                tableHtml+=  this.refs.realTable.children[1].children[value].outerHTML;
+              }
+
+        tableHtml+="</tbody></table>";
+          
+        }
+        else{
+            tableHtml=  this.refs.realTable.outerHTML;//直接导出
+          
+        }
+      
+        let  html = "<html><head><meta charset='UTF-8'></head><body>"+ tableHtml+"</body></html>";
+        // 创建一个Blob对象，第一个参数是文件的数据，第二个参数是文件类型属性对象
+        var blob = new Blob([html],{type:"application/vnd.ms-excel"});
+    
+        // 利用URL的createObjectURL方法为元素a生成blobURL
+       window.open( URL.createObjectURL(blob),"excel");
+     
+
     }
 }
 export default DataGridHandler;

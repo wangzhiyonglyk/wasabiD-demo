@@ -11,10 +11,16 @@ desc:菜单树的样式
   padding-bottom: 5px;
   width:100%;
   overflow: visible;
+  display: flex;
 }
-.wasabi-searchbar.one-line{
-  height: 45px;
-  overflow: visible;
+.wasabi-searchbar .inputcontainer{
+  display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: calc(100% - 100px);
+}
+.wasabi-searchbar .buttoncontainer{
+  min-width: 100px;
 }
 
  .wasabi-searchbar-down
@@ -35,5 +41,5 @@ desc:菜单树的样式
   background-size: 13px 20px;
   background-repeat: no-repeat;
   background-color: transparent;
-  margin-top: 4px;
+  margin-top: -6px;
 }

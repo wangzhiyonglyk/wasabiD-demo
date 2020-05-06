@@ -6,6 +6,7 @@
 'use strict';
 
 let dom = {
+    //整数化
     tryParseInt: function (p) {
         if (!p) {
             return 0;
@@ -15,6 +16,7 @@ let dom = {
     },
 
 
+    //是否为子孙节点
     isDescendant: function (parent, child) {
         let node = child.parentNode;
 

@@ -1,11 +1,11 @@
 import React,{Component} from 'react';
 import PropTypes from "prop-types";
-import ("../sass/Navigation/menu.css");
+import "../sass/Navigation/menu.css";
 class Menus extends Component {
   constructor(props) {
     super(props);
    this.state={
-     expandIndex:null,
+     expandIndex:0,
    },
    this.expandHandler=this.expandHandler.bind(this);
   } 

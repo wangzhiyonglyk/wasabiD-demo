@@ -189,8 +189,8 @@ CalendarBody.propTypes = {
     month: PropTypes.oneOfType( [ PropTypes.number,PropTypes.string]),//月
     day: PropTypes.oneOfType( [ PropTypes.number,PropTypes.string]),//日
     isRange: PropTypes.bool,//是否为范围选择
-    min: PropTypes.number,//最小值，用于日期范围选择
-    max: PropTypes.number,//最大值,用于日期范围选择
+    min: PropTypes.oneOfType( [ PropTypes.number,PropTypes.string]),//最小值，用于日期范围选择
+    max: PropTypes.oneOfType( [ PropTypes.number,PropTypes.string]),//最大值,用于日期范围选择
     dayHandler: PropTypes.func,//选择后的事件
     changeYear: PropTypes.bool,
     changeMonth: PropTypes.bool,

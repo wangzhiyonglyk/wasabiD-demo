@@ -26,8 +26,9 @@ class Center extends  React.Component{
         reduceHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }
     render() {  
+       
         return <div className={" wasabi-layout-center  layout-panel" }
-       style={{ top:this.props.top,left:this.props.left, width: (this.props.reduceWidth?"calc(100% - "+(this.props.reduceWidth).toString()+"px":null), height: (this.props.reduceHeight?"calc(100% - "+(this.props.reduceHeight).toString()+"px":null) }} 
+       style={{ top:this.props.top,left:this.props.left, width: (this.props.reduceWidth!=null&&this.props.reduceWidth!=undefined?"calc(100% - "+(this.props.reduceWidth).toString()+"px":null), height: (this.props.reduceHeight?"calc(100% - "+(this.props.reduceHeight).toString()+"px":null) }} 
        >
           {  this.props.children}
         </div>

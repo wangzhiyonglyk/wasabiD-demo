@@ -42,7 +42,12 @@ class  Text  extends Component{
 
     }
     componentWillReceiveProps(nextProps) {
-        
+        if(nextProps.value!=this.props.value){
+            //就是说原来的初始值发生改变了，说明父组件要更新值
+         this.setState({
+             value:nextProps.value
+         })
+        }
          
     }
     componentDidMount() {    
@@ -201,16 +206,22 @@ class  Text  extends Component{
             validateState:"invalid",//验证失败
         })
     }
+    
     render() {
-       
+        let style=this.props.style?JSON.parse(JSON.stringify(this.props.style)):{};
+        if(this.props.hide){
+            style.display="none";
+        }else{
+            style.display="flex";
+        }
         let inputType=this.props.type?this.props.type:"text";
             let inputProps=
             {
                 readOnly:this.props.readonly==true?"readonly":null,
-                style:this.props.style,
+               
                 name:this.props.name,
                 placeholder:(this.props.placeholder===""||this.props.placeholder==null)?this.props.required?"必填项":"":this.props.placeholder,
-                className:"wasabi-form-control  "+(this.props.className?this.props.className:""),
+                className:"wasabi-form-control  ",
                 rows:this.props.rows,
                 title:this.props.title,
 
@@ -227,11 +238,11 @@ class  Text  extends Component{
         else {
             //textarea 不支持null值
             let value=this.state.value;
-            if(!value)
+            if(value==null||value==undefined)
             {
                 value="";
             }
-            control = <textarea ref="input"  {...inputProps} onClick={this.clickHandler}
+            control = <textarea ref="input"  style={{resize:"none"}} {...inputProps} onClick={this.clickHandler}
                                 onChange={this.onChange} onKeyDown={this.keyDownHandler}
                                 onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
                                 onBlur={this.blurHandler}
@@ -240,9 +251,9 @@ class  Text  extends Component{
 
 
 
-        return (<div className={"wasabi-form-group "+this.state.validateClass} onPaste={this.onPaste} style={{display:this.props.hide==true?"none":"block"}}>
+        return (<div className={"wasabi-form-group "+this.props.className+" "+ this.state.validateClass} onPaste={this.onPaste} style={style}>
                 <Label name={this.props.label} ref="label" hide={this.props.hide} style={this.props.labelStyle} required={this.props.required}></Label>
-                <div className={ "wasabi-form-group-body"} style={{width:!this.props.label?"100%":null}}>
+                <div className={ "wasabi-form-group-body text" } style={{width:!this.props.label?"100%":null}}>
                     {control}
                     <i className={this.state.validateState} style={{display:(this.state.validateState?"block":"none")}} ></i>
                     <small className={"wasabi-help-block "} style={{display:(this.state.helpTip&&this.state.helpTip!="")?this.state.helpShow:"none"}}>

@@ -12,11 +12,13 @@ class Menu extends React.Component {
   }
   }
   static propTypes={
+    iconCls:PropTypes.string,//图标
     title: PropTypes.any.isRequired,//标题是必须，可以是组件
     expand:PropTypes.bool //是否展开
   }
   static defaultProps={
     expand:false,
+    className:""
   }
 
   activeChange(index){
@@ -31,12 +33,13 @@ onChange(){
   render() {
     return       <div   className={"dropdown "+this.props.className+" "+( this.props.expand?"expand":"")}>
     <input name={this.props.title}  onChange={this.onChange.bind(this)} type="checkbox" checked={this.props.expand} value="menu"/>
+    
     <label htmlFor={this.props.title} onClick={this.props.expandHandler} >{this.props.title}</label>
-    <i></i>
-    <ul className="animate" style={{display:this.props.expand?"block":"none"}}>
+    <i className={this.props.expand?"icon-down":"icon-up"} onClick={this.props.expandHandler} ></i>
+    <ul className="" style={{display:this.props.expand?"block":"none"}}>
         {
             React.Children.map(this.props.children, (child, index) => {
-                    return  <li className={"animate " +(this.state.activeIndex==index?"active":"")}key={index} onClick={this.activeChange.bind(this,index)}>{child}</li>
+                    return  <li className={(this.state.activeIndex==index?"active":"")}key={index} onClick={this.activeChange.bind(this,index)}>{child}</li>
             })
         }
     </ul>

@@ -33,11 +33,20 @@ class Label extends Component{
     }
     render(){
         let style=this.props.style?this.props.style:{};
-        style.display=(this.props.hide?"none":(this.props.name&&this.props.name!="")?"table":"none");
-        return  <div className={"wasabi-form-group-label "+(this.props.required?"required":"") }
-                     style={style}>
-            <label>{this.props.name}<a className="help" onClick={this.helpHandler} style={{display:(this.props.help?"inline-block":"none")}}>?</a><div className="heip-text" style={{display:(this.state.showHelp?"block":"none")}} >{this.props.help}</div></label>
-        </div>
+      
+        if(this.props.name)
+        {
+            return  <div className={"wasabi-form-group-label "+(this.props.required?"required":"") }
+            style={style}>
+   <label>{this.props.name}
+   <a className="help" onClick={this.helpHandler} 
+   style={{display:(this.props.help?"inline-block":"none")}}>?</a><div className="heip-text" style={{display:(this.state.showHelp?"block":"none")}} >{this.props.help}</div></label>
+</div>
+        }
+        else{
+            return null;
+        }
+       
     }
 }
 

@@ -3,10 +3,8 @@
  */
 import React from "react";
 export default function(newParam,oldParam) {//判断前后参数是否相同
+   
         let isupdate=false;
-        if(!oldParam) {
-            oldParam = this.state.params;
-        }
         if(!newParam&&!oldParam)
         {//都为空
             isupdate=false;//

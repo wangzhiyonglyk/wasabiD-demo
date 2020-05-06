@@ -1,60 +1,66 @@
 .wasabi-menu {
 	width: 100%;
-   min-width: 100px;
 }
 
 .dropdown {
+	position: relative;
 	display: block;
-	background: #2f4050;
-	transition: all .5s
+	background: #333;
+	transition: all 0.5s;
 }
 
 .dropdown.expand {
-	border-left: 4px solid #19aa8d;
-	background-color: #293846
+	border-left: 4px solid #009688;
+	background: #333;
 }
 
 .dropdown label {
-	color: #a7b1c2;
+	color: #fff;
 	text-align: left;
 	padding: 10px;
 	padding-left: 30px;
 	margin-left: 4px;
 	display: block;
-	font-weight: 600
+	font-size: 14px;
 }
-
+.dropdown i{
+	position: absolute;
+	right: 0px;
+	right: 10px;
+    top: 12px;
+    color: #fff;
+}
 .dropdown label:hover {
-	background-color: #293846;
-	color: #fff
+	background-color: #777;
+	color: #fff;
 }
 
 .dropdown ul {
 	display: none;
-	transition: all .5s
+	transition: all .5s;
 }
 
-.dropdown.expand ul {
-	display: block
-}
 
-.dropdown ul li {
+
+.dropdown ul li * {
 	display: block;
-	padding: 10px
-}
-
-.dropdown ul li,.dropdown ul li * {
+	padding: 10px;
 	text-align: center;
-	color: #a7b1c2;
-	font-weight: 600
+	color:#fff;
 }
 
-.dropdown ul li.active *,.dropdown ul li:hover,.dropdown ul li:hover * {
-	background-color: #293846;
+
+.dropdown ul li.active,.dropdown ul li.active:hover{
+	background-color: #009688;
 	color: #fff;
-	cursor: pointer
+	cursor: pointer;
 }
 
+.dropdown ul li:hover {
+	background-color: #777;
+	color: #fff;
+	cursor: pointer;
+}
 .dropdown input {
 	display: none;
 }

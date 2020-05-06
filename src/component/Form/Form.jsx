@@ -1,5 +1,6 @@
 //create by wangzy
 //date:2016-04-05后开始独立改造
+//edit date:2020-04-05
 //desc:表单组件
 import React, {Component} from "react";
 import PropTypes from "prop-types";
@@ -26,10 +27,18 @@ this.onSubmit=this.onSubmit.bind(this);
         })
     }
     validate () {
+        
         let isva = true;
         for (let v in this.refs) {
-            //如果没有验证方法说明不是表单控件，保留原来的值
-            isva = this.refs[v].validate ? this.refs[v].validate() : isva;
+          
+            if(isva)
+            {//如果验证是正确的，继续获取值
+                isva = this.refs[v].validate ? this.refs[v].validate() : isva;
+            }
+           else{//如果前一个验证失败，则验证不拿值
+            this.refs[v].validate ? this.refs[v].validate():void(0);
+           }
+            
         }
         return isva;
     }
@@ -50,7 +59,7 @@ this.onSubmit=this.onSubmit.bind(this);
                     }
                     else {
                         for (let index = 0; index < nameSplit.length; index++) {
-                            data[nameSplit[index]] = null;
+                            data[nameSplit[index]] = "";
                         }
                     }
                 }
@@ -72,7 +81,7 @@ this.onSubmit=this.onSubmit.bind(this);
             return;
         }
         for (let v in this.refs) {
-            if (this.refs[v].props.name&&data[this.refs[v].props.name]) {
+            if (this.refs[v].props.name) {
                 this.refs[v].setValue&&this.refs[v].setValue(data[this.refs[v].props.name]);
             }
             else if(this.refs[v].setData)
@@ -96,12 +105,14 @@ this.onSubmit=this.onSubmit.bind(this);
             //如果没有验证方法说明不是表单控件，保留原来的值
             if(isva)
             {//如果验证是正确的，继续获取值
-                isva = this.refs[v].validate ? this.refs[v].validate(this.refs[v].getValue()) : isva;
+                isva = this.refs[v].validate ? this.refs[v].validate() : isva;
             }
            else{//如果前一个验证失败，则验证不拿值
-            this.refs[v].validate ? this.refs[v].validate(this.refs[v].getValue()):void(0);
+            this.refs[v].validate ? this.refs[v].validate():void(0);
            }
+
             if (this.refs[v].props.name && this.refs[v].getValue) {//说明是表单控件
+           
                 if (this.refs[v].props.name.indexOf(",") > -1) {//含有多个字段
                     var nameSplit = this.refs[v].props.name.split(",");
                     let value = this.refs[v].getValue();
@@ -118,7 +129,7 @@ this.onSubmit=this.onSubmit.bind(this);
                     }
                     else {
                         for (let index = 0; index < nameSplit.length; index++) {
-                            data[nameSplit[index]] = null;
+                            data[nameSplit[index]] = "";
 
                         }
                     }
@@ -126,7 +137,9 @@ this.onSubmit=this.onSubmit.bind(this);
                 else {
                     data[this.refs[v].props.name] = this.refs[v].getValue();
                 }
-            }
+            } else if(this.refs[v].getData){//布局组件或者表单组件
+                data=Object.assign(data,this.refs[v].getData())
+            } 
         }
         if (isva) {
             if (this.props.onSubmit ) {
@@ -150,15 +163,15 @@ this.onSubmit=this.onSubmit.bind(this);
                             if (typeof child.type !== "function") {//非react组件
                                 return child;
                             } else {
-                               
-                                return React. cloneElement(child, {  readonly: this.props.disabled, key: index, ref: child.ref?child.ref:index })
+                              
+                                return React. cloneElement(child, {  readonly: this.props.disabled?this.props.disabled:child.props.readonly, key: index, ref: child.ref?child.ref:index })
                             }
 
                         })
                     }
                 </div>
-                <div className="form-submit clearfix" >
-                    <Button theme={this.props.submitTheme} onClick={this.onSubmit} title={this.props.submitTitle} hide={this.props.submitHide} disabled={this.props.disabled}  >
+                <div className="form-submit clearfix" style={{display:this.props.submitHide?"none":null}}  >
+                    <Button theme={this.props.submitTheme} onClick={this.onSubmit} title={this.props.submitTitle} style={{display:this.props.submitHide?"none":null}} disabled={this.props.disabled}  >
                     </Button>
 
                 </div>

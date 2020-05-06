@@ -6,10 +6,10 @@
 
 class FetchModel
 {
-    constructor(url,success,params=null,error=null,type="GET")
+    constructor(url,success,data=null,error=null,type="POST")
     {
         this.url=url;
-        this.params=params;
+        this.data=data;
         this.success=success;
         this.error=error;
         this.type=type;//类型

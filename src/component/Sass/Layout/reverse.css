@@ -50,11 +50,11 @@ desc：div翻转样式
   animation-duration: 225ms;
   animation-name: fadein;
 }
-.pop {
+.reverse-pop {
   -webkit-transform-origin: 50% 50%;
   transform-origin: 50% 50%;
 }
-.pop.in {
+.reverse-pop.in {
   -webkit-transform: scale(1);
   -webkit-animation-name: popin;
   -webkit-animation-duration: 350ms;
@@ -63,18 +63,18 @@ desc：div翻转样式
   animation-duration: 350ms;
   opacity: 1;
 }
-.pop.out {
+.reverse-pop.out {
   -webkit-animation-name: fadeout;
   -webkit-animation-duration: 100ms;
   animation-name: fadeout;
   animation-duration: 100ms;
   opacity: 0;
 }
-.pop.in.reverse {
+.reverse-pop.in.reverse {
   -webkit-animation-name: fadein;
   animation-name: fadein;
 }
-.pop.out.reverse {
+.reverse-pop.out.reverse {
   -webkit-transform: scale(.8);
   -webkit-animation-name: popout;
   transform: scale(.8);

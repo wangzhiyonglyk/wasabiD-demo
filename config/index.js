@@ -1,4 +1,3 @@
-
 /**
  * create by wangzhiyong
  * date:2017-08-15
@@ -6,19 +5,26 @@
  * 如果是单页面，请只写一个入口脚本文件
  *  */
 
-
 //如果是单页面
-let entry= [
-    {
-     filename:"index",//文件名，
-     title:"wasabiD框架的demo",// 标题
-     src:'./view/index.jsx'//脚本路径
- },
- {
-     filename:"page",//文件名，
-     title:"wasabiD框架的demo",// 标题
-     src:'./view/page.jsx'//脚本路径
- }
-]
+let entry = [
+  {
+    filename: 'index', //文件名，
+    title: '后台管理系统', // 标题
+    src: './view/index/index.jsx' //脚本路径
+  },
+  
+  {
+    filename: 'home', //文件名，
+    title: '后台管理系统-主页', // 标题
+    src: './view/home/home.jsx' //脚本路径
+  },
+  {
+    filename: 'login', //文件名，
+    title: '后台管理系统-登陆', // 标题
+    src: './view/login/index.jsx' //登陆页面
+  },
+  
+  
+];
 
-module.exports=entry;
+module.exports = entry;

@@ -290,7 +290,8 @@ class DateRange extends Component {
     }
 
     render() {
-        return (<div>
+      
+        return (<div >
             <div className="ok">
                 <Button title="确定" name="ok" size="small" theme="primary" onClick={this.onSelectHandler}></Button>
                 <Button title="取消" name="cancel" size="small" theme="cancel" onClick={this.cancelHandler}></Button>

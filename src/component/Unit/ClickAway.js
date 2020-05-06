@@ -6,10 +6,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import dom from "./dom.js";
-import * as Events from './events';
+import  Events from './events';
 let ClickAway= {
 
     componentWillUnmount () {
+        console.log("componentWillUnmount 注销事件")
         this.unbindClickAway();
     },
 
@@ -34,7 +35,7 @@ let ClickAway= {
         
         let fn = this._clickAwayEvent;//
         if (!fn) {//第一次不存在的时候
-            console.log("dd");
+           
             fn = (event) => {
                 let el = this.clickAwayTarget || ReactDOM.findDOMNode(this);
 

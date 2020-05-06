@@ -25,10 +25,18 @@ class Col extends React.Component {
         className: ""
     }
     validate () {
+          
         let isva = true;
         for (let v in this.refs) {
-            //如果没有验证方法说明不是表单控件，保留原来的值
-            isva = this.refs[v].validate ? this.refs[v].validate() : isva;
+          
+            if(isva)
+            {//如果验证是正确的，继续获取值
+                isva = this.refs[v].validate ? this.refs[v].validate() : isva;
+            }
+           else{//如果前一个验证失败，则验证不拿值
+            this.refs[v].validate ? this.refs[v].validate():void(0);
+           }
+            
         }
         return isva;
     }
@@ -49,7 +57,7 @@ class Col extends React.Component {
                     }
                     else {
                         for (let index = 0; index < nameSplit.length; index++) {
-                            data[nameSplit[index]] = null;
+                            data[nameSplit[index]] = "";
                         }
                     }
                 }
@@ -96,7 +104,14 @@ class Col extends React.Component {
               return child;
             }
             else{
-              return React.cloneElement(child, { key: index, ref: index })
+                if(child.ref)
+                {
+                   child;
+                }
+                else{
+                    return React.cloneElement(child, { key: index, ref: index })
+                }
+             
             }
         })}</div>;
     }

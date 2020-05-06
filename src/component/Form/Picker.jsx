@@ -19,7 +19,8 @@ import  validate from "../Mixins/validate.js";
 import  showUpdate from "../Mixins/showUpdate.js";
 import  Label from "../Unit/Label.jsx";
 import  Message from "../Unit/Message.jsx";
- import  ClickAway from "../Unit/ClickAway.js";
+import ClickAway  from "../Unit/ClickAway.js";
+import mixins from '../Mixins/mixins';
 import propType from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
 import ("../Sass/Form/picker.css");
@@ -28,7 +29,7 @@ class   Picker  extends  Component{
   {
       super(props)
       this.state={
-        hide:this.props.hide,
+     
         value:this.props.value,
         text:this.props.text,
       
@@ -97,7 +98,7 @@ class   Picker  extends  Component{
               
                 newData.push(obj);
             }
-            if(newData[0].text!=this.state.data[0].text||newData[newData.length-1].text!=this.state.data[this.state.data.length-1].text)
+            if(newData[0].value!=this.state.data[0].value||newData[newData.length-1].value!=this.state.data[this.state.data.length-1].value)
             {this.setState({
                 data:nextProps.data,
                 value:"",
@@ -114,13 +115,13 @@ class   Picker  extends  Component{
             console.log("picker",fetchmodel);
             unit.fetch.post(fetchmodel);
         }
-       // this.registerClickAway(this.hidePicker, this.refs.picker);//注册全局单击事件
+        this.registerClickAway(this.hidePicker, this.refs.picker);//注册全局单击事件
     }
     validate(value){
         return validate.call(this,value);
     }
     showUpdate(newParam, oldParam) {
-        showUpdate.call(this, newParam, oldParam);
+       return  showUpdate.call(this, newParam, oldParam);
     }
      setValue(value) {
         let text = "";
@@ -172,8 +173,8 @@ class   Picker  extends  Component{
             data:provinceData
         })
     }
-    loadError(errorCode,message) {//查询失败
-        console.log("picker-error",errorCode,message);
+    loadError(message) {//查询失败
+        console.log("picker-error",message);
         Message. error(message);
     }
     changeHandler(event) {
@@ -192,13 +193,13 @@ class   Picker  extends  Component{
                 show: type==1?!this.state.show:true
             })
         }
-        //this.bindClickAway();//绑定全局单击事件
+    this.bindClickAway();//绑定全局单击事件
     }
     hidePicker () {
         this.setState({
             show: false
         })
-      //  this.unbindClickAway();//卸载全局单击事件
+       this.unbindClickAway();//卸载全局单击事件
     }
     clearHandler() {//清除数据
         this.setState({
@@ -647,9 +648,14 @@ class   Picker  extends  Component{
             }//文本框的属性
         var control=this.renderProvince();
 
-
+        let style=this.props.style?JSON.parse(JSON.stringify(this.props.style)):{};
+        if(this.props.hide){
+            style.display="none";
+        }else{
+            style.display="flex";
+        }
         return (
-            <div className={componentClassName+this.state.validateClass}  ref="picker"  style={{display:this.state.hide==true?"none":"block"}}>
+            <div className={componentClassName+this.state.validateClass}  ref="picker" style={style} >
                 <Label name={this.props.label} ref="label" style={this.props.labelStyle} required={this.props.required}></Label>
                 <div className={ "wasabi-form-group-body"} style={{width:!this.props.label?"100%":null}}>
                     <div className="combobox"     >
@@ -681,5 +687,5 @@ class   Picker  extends  Component{
   
 Picker. propTypes=propType;
 Picker.defaultProps =Object.assign({type:"picker",defaultProps});
-
+mixins(Picker,[ClickAway]);
 export default Picker;

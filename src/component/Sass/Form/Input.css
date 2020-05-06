@@ -6,17 +6,18 @@ desc:表单输入框样式
 /*
 外层div
 */
-
+@import url("../base.css");
 .wasabi-form-group {
   padding-left:0px;
   padding-right:10px;
   padding-bottom: 10px;
   position: relative;
   margin: 0px;
-  display: block;
+  display: flex;
   float: left;
   white-space: nowrap;
   min-height: 45px;
+  
 }
 
 /*
@@ -69,11 +70,18 @@ label
  输入框主体
  */
 .wasabi-form-group .wasabi-form-group-body {
-   /* min-width: 190px; */
+   min-width: 200px;
     float: left;
     position: relative;
+    flex:1;
+   
   }
-
+  .wasabi-grid-cell .wasabi-form-group-body{
+min-width: none;
+  }
+  .wasabi-form-group-body.text{
+    width: 190px;
+  }
 /*
 普通input
 */

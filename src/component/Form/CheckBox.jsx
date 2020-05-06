@@ -47,6 +47,7 @@ class CheckBox extends Component {
             helpTip: validation["required"],//提示信息
             invalidTip: "",
         }
+     
       
         this.setValue = this.setValue.bind(this);
         this.getValue = this.getValue.bind(this);
@@ -73,8 +74,8 @@ class CheckBox extends Component {
             if (nextProps.data.length != this.props.data.length) {
                     this.setState({
                         data:nextProps.data,
-                        value:"",
-                        text:""
+                        value:nextProps.forceChange?nextProps.value:this.state.value,
+                        text:nextProps.forceChange?nextProps.text:this.state.text,
                     })
             }else{
                 let newData=[];
@@ -86,18 +87,22 @@ class CheckBox extends Component {
               
                 newData.push(obj);
             }
-            if(newData[0].text!=this.state.data[0].text||newData[newData.length-1].text!=this.state.data[this.state.data.length-1].text)
+            if(newData[0].value!=this.state.data[0].value||newData[newData.length-1].value!=this.state.data[this.state.data.length-1].value)
             {this.setState({
                 data:nextProps.data,
-                value:"",
-                text:""
+                        value:nextProps.forceChange?nextProps.value:this.state.value,
+                        text:nextProps.forceChange?nextProps.text:this.state.text,
             })
 
             }
         }
+    }else{
+       
     }
-     if(nextProps.forceChange&& nextProps.value!=this.state.value)
+
+     if(nextProps.forceChange)
     {
+      
         this.setState({
             value:nextProps.value
         })
@@ -130,7 +135,7 @@ class CheckBox extends Component {
         return validate.call(this, value)
     }
     showUpdate(newParam, oldParam) {
-        showUpdate.call(this, newParam, oldParam);
+       return  showUpdate.call(this, newParam, oldParam);
     }
     componentWillMount() {//如果指定url,先查询数据再绑定
 
@@ -153,8 +158,8 @@ class CheckBox extends Component {
             console.log("checkbox", fetchmodel);
         }
     }
-    loadError(errorCode, message) {//查询失败
-        console.log("checkbox-error", errorCode, message);
+    loadError( message) {//查询失败
+        console.log("checkbox-error", message);
         Message.error(message);
     }
     loadSuccess(data) {//数据加载成功
@@ -263,6 +268,7 @@ class CheckBox extends Component {
                 if ((this.state.value != null && this.state.value != undefined) && (("," + this.state.value.toString()).indexOf("," + child[this.props.valueField?this.props.valueField:"value"]) > -1)) {
                     checked = true;
                 }
+              
                 var props = {
                     checked: checked,//是否为选中状态
                     readOnly: this.props.readonly == true ? "readonly" : null,
@@ -276,11 +282,17 @@ class CheckBox extends Component {
             });
 
         }
+        let style=this.props.style?JSON.parse(JSON.stringify(this.props.style)):{};
+        if(this.props.hide){
+            style.display="none";
+        }else{
+            style.display="flex";
+        }
         return (
 
-            <div className={componentClassName + this.state.validateClass} >
-                <Label name={this.props.label} ref="label" style={this.props.labelStyle} hide={this.props.hide} required={this.props.required}></Label>
-                <div className={"wasabi-form-group-body"} style={{ width: !this.props.label ? "100%" : null }}>
+            <div className={componentClassName + this.state.validateClass}  style={style}>
+                <Label name={this.props.label} ref="label" style={this.props.labelStyle}  required={this.props.required}></Label>
+                <div className={"wasabi-form-group-body"} style={{ minWidth:0, width: !this.props.label ? "100%" : null }}>
                     <ul className="wasabi-checkul" style={{marginTop:6}}>
                         {
                             control
