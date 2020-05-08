@@ -3,7 +3,7 @@
 //标签页组
 import React from "react";
 import PropTypes from "prop-types";
-require("../sass/Navigation/Tabs.css");
+require("../Sass/Navigation/Tabs.css");
 
 // var addRipple=require("../Mixins/addRipple.js");
 class Tabs extends React.Component {
