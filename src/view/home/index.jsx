@@ -151,8 +151,7 @@ class Home extends React.Component {
   }
 
   render() {
-    return null;
-    //
+  
     return (
       <div style={{ width: '100%', height: '100%' }}>
         <Box
