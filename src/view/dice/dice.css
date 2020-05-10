@@ -65,6 +65,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    /*白色面板对于横向剧中对齐*/
     align-items: center; 
     width: 200px;
     height: 200px;
@@ -77,7 +78,6 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: stretch;
     flex-wrap: nowrap;
     width:120px;
     height:120px;
@@ -86,14 +86,26 @@ body{
     padding: 5px; 
     margin: 0;  
 }
-.firstRow, .thirdRow{
+.spaceAroundRow{
     display: flex;
     flex-direction: row;
-    align-content: space-around;
+    justify-content: space-around;
 }
-.secondRow{
+.centerRow{
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+}
+.flexStartRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.flexEndRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 /* diceItem(骰子项目=红点)作为一个弹性容器 */
 .diceItem{
@@ -105,21 +117,6 @@ body{
     box-sizing: border-box;
     margin: 5px;
     border: 1px solid blue;
-}
-.centerDiv{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.leftDiv{
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
-.rightDiv{
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
 }
 /* .wrap{
     flex-wrap: wrap;

@@ -18,14 +18,14 @@ class Dice extends Component {
                 <div className = "rowDice">
                     <SingleDice>
                         <DiceBox>
-                            <div className = "firstRow">
+                            <div className = "spaceAroundRow">
                                 <DiceItem></DiceItem>
                                 <DiceItem></DiceItem>
                             </div>
-                            <div className = "secondRow">
+                            <div className = "centerRow">
                                 <DiceItem></DiceItem>
                             </div>
-                            <div className = "thirdRow">
+                            <div className = "spaceAroundRow">
                                 <DiceItem></DiceItem>
                                 <DiceItem></DiceItem>
                             </div>
@@ -34,79 +34,79 @@ class Dice extends Component {
                 </div>
                 <div className = "rowDice">
                     <SingleDice>
-                        {/* // 一颗骰子 */}
+                        {/* 一颗骰子 */}
                         <DiceBox>
-                            <div className = "centerDiv">
+                            <div className = "centerRow">
                                 <DiceItem></DiceItem>
                             </div>
                         </DiceBox>
                     </SingleDice>
                     <SingleDice>
-                        {/* // 两颗骰子 */}
+                        {/* 两颗骰子 */}
                         <DiceBox>
-                            <div className = "centerDiv"> 
+                            <div className = "centerRow"> 
                                 <DiceItem></DiceItem>
                             </div>
-                            <div className = "centerDiv">
+                            <div className = "centerRow">
                                 <DiceItem></DiceItem>
                             </div>
                         </DiceBox>
                     </SingleDice>
                     <SingleDice>
-                        {/* // 三颗骰子 */}
+                        {/* 三颗骰子 */}
                         <DiceBox>
-                            <div className = "leftDiv">
+                            <div className = "flexStartRow">
                                 <DiceItem></DiceItem>
                             </div>
-                            <div className = "centerDiv">
+                            <div className = "centerRow">
                                 <DiceItem></DiceItem>
                             </div>
-                            <div className = "rightDiv">
+                            <div className = "flexEndRow">
                                 <DiceItem></DiceItem>
                             </div>
                         </DiceBox>
                     </SingleDice>
                     <SingleDice>
-                        {/* // 四颗骰子 */}
+                        {/* 四颗骰子 */}
                         <DiceBox>
-                            <div>
+                            <div className = "spaceAroundRow">
                                 <DiceItem></DiceItem>
                                 <DiceItem></DiceItem>
                             </div>
-                            <div>
-                                <DiceItem></DiceItem>
-                                <DiceItem></DiceItem>
-                            </div>
-                        </DiceBox>
-                    </SingleDice>
-                    <SingleDice>
-                        {/* // 五颗骰子 */}
-                        <DiceBox>
-                            <div className = "firstRow">
-                                <DiceItem></DiceItem>
-                                <DiceItem></DiceItem>
-                            </div>
-                            <div className = "secondRow">
-                                <DiceItem></DiceItem>
-                            </div>
-                            <div className = "thirdRow">
+                            <div className = "spaceAroundRow">
                                 <DiceItem></DiceItem>
                                 <DiceItem></DiceItem>
                             </div>
                         </DiceBox>
                     </SingleDice>
                     <SingleDice>
-                        {/* // 六颗骰子 */}
+                        {/* 五颗骰子 */}
                         <DiceBox>
-                        <div>
+                            <div className = "spaceAroundRow">
                                 <DiceItem></DiceItem>
                                 <DiceItem></DiceItem>
                             </div>
-                            <div>
+                            <div className = "centerRow">
+                                <DiceItem></DiceItem>
+                            </div>
+                            <div className = "spaceAroundRow">
                                 <DiceItem></DiceItem>
                                 <DiceItem></DiceItem>
                             </div>
-                            <div>
+                        </DiceBox>
+                    </SingleDice>
+                    <SingleDice>
+                        {/* 六颗骰子 */}
+                        <DiceBox>
+                            <div className = "spaceAroundRow">
+                                <DiceItem></DiceItem>
+                                <DiceItem></DiceItem>
+                            </div>
+                            <div className = "spaceAroundRow">
+                                <DiceItem></DiceItem>
+                                <DiceItem></DiceItem>
+                            </div>
+                            <div className = "spaceAroundRow">
                                 <DiceItem></DiceItem>
                                 <DiceItem></DiceItem>
                             </div>
@@ -114,77 +114,80 @@ class Dice extends Component {
                     </SingleDice>
                 </div>
                 <div className = "clunmDice">
-                    <SingleDice>
-                        {/* // 一颗骰子 */}
+                <SingleDice>
+                        {/* 一颗骰子 */}
                         <DiceBox>
-                            <div className = "centerDiv">
+                            <div className = "centerRow">
                                 <DiceItem></DiceItem>
                             </div>
                         </DiceBox>
                     </SingleDice>
                     <SingleDice>
-                        {/* // 两颗骰子 */}
+                        {/* 两颗骰子 */}
                         <DiceBox>
-                            <div>  <DiceItem></DiceItem></div>
-                        
-                            <div>  <DiceItem></DiceItem></div>
-                        </DiceBox>
-                    </SingleDice>
-                    <SingleDice>
-                        {/* // 三颗骰子 */}
-                        <DiceBox>
-                            <div className = "leftDiv">
+                            <div className = "centerRow"> 
                                 <DiceItem></DiceItem>
                             </div>
-                            <div className = "centerDiv">
-                                <DiceItem></DiceItem>
-                            </div>
-                            <div className = "rightDiv">
+                            <div className = "centerRow">
                                 <DiceItem></DiceItem>
                             </div>
                         </DiceBox>
                     </SingleDice>
                     <SingleDice>
-                        {/* // 四颗骰子 */}
+                        {/* 三颗骰子 */}
                         <DiceBox>
-                            <div>
-                                <DiceItem></DiceItem>
+                            <div className = "flexStartRow">
                                 <DiceItem></DiceItem>
                             </div>
-                            <div>
+                            <div className = "centerRow">
                                 <DiceItem></DiceItem>
+                            </div>
+                            <div className = "flexEndRow">
                                 <DiceItem></DiceItem>
                             </div>
                         </DiceBox>
                     </SingleDice>
                     <SingleDice>
-                        {/* // 五颗骰子 */}
+                        {/* 四颗骰子 */}
                         <DiceBox>
-                            <div className = "firstRow">
+                            <div className = "spaceAroundRow">
                                 <DiceItem></DiceItem>
                                 <DiceItem></DiceItem>
                             </div>
-                            <div className = "secondRow">
-                                <DiceItem></DiceItem>
-                            </div>
-                            <div className = "thirdRow">
+                            <div className = "spaceAroundRow">
                                 <DiceItem></DiceItem>
                                 <DiceItem></DiceItem>
                             </div>
                         </DiceBox>
                     </SingleDice>
                     <SingleDice>
-                        {/* // 六颗骰子 */}
+                        {/* 五颗骰子 */}
                         <DiceBox>
-                        <div>
+                            <div className = "spaceAroundRow">
                                 <DiceItem></DiceItem>
                                 <DiceItem></DiceItem>
                             </div>
-                            <div>
+                            <div className = "centerRow">
+                                <DiceItem></DiceItem>
+                            </div>
+                            <div className = "spaceAroundRow">
                                 <DiceItem></DiceItem>
                                 <DiceItem></DiceItem>
                             </div>
-                            <div>
+                        </DiceBox>
+                    </SingleDice>
+                    <SingleDice>
+                        {/* 六颗骰子 */}
+                        <DiceBox>
+                            <div className = "spaceAroundRow">
+                                <DiceItem></DiceItem>
+                                <DiceItem></DiceItem>
+                            </div>
+                            <div className = "spaceAroundRow">
+                                <DiceItem></DiceItem>
+                                <DiceItem></DiceItem>
+                            </div>
+                            <div className = "spaceAroundRow">
                                 <DiceItem></DiceItem>
                                 <DiceItem></DiceItem>
                             </div>
