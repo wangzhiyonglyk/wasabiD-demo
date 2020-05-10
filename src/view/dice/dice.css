@@ -86,22 +86,26 @@ body{
     padding: 5px; 
     margin: 0;  
 }
+/* 均匀分布的行 */
 .spaceAroundRow{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
 }
+/* 居中的行 */
 .centerRow{
     display: flex;
     flex-direction: row;
     justify-content: center;
     justify-items: center;
 }
+/* 居左对齐的行 */
 .flexStartRow{
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
 }
+/* 居右对齐的行 */
 .flexEndRow{
     display: flex;
     flex-direction: row;
