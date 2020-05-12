@@ -24,12 +24,15 @@ let entry = [
     src: './view/login/index.jsx' //登陆页面
   },
   {
+    filename: 'dice', //文件名，
+    title: '后台管理系统-登陆', // 标题
+    src: './view/dice/index.jsx' // 页面路径
+  },
+  {
     filename: 'flex', //文件名，
     title: '后台管理系统-flex布局', // 标题
     src: './view/flex/index.jsx' //登陆页面
-  },
-  
-  
+  }
 ];
 
 module.exports = entry;

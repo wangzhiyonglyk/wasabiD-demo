@@ -1,0 +1,131 @@
+/* 
+Flex 是 Flexible Box 的缩写。
+任何一个容器都可以指定为 Flex 布局：
+.box{
+  display: flex;
+}
+行内元素也可以使用 Flex 布局：
+.box{
+  display: inline-flex;
+}
+Webkit 内核的浏览器，必须加上-webkit前缀：
+.box{
+  display: -webkit-flex; 
+  display: flex;
+}
+PS:设为Flex布局以后,子元素的float/clear和vertical-align属性将失效!!!
+采用Flex布局的元素，称为Flex容器(flex container即弹性容器),它的所有子元素自动成为容器成员,称为Flex项目(flex item即弹性项目),简称"项目".
+容器属性:flex-direction|flex-wrap|flex-flow|justify-content|align-items|align-content
+.box {
+  flex-direction(主轴方向即项目排列方向): row(默认,横向,左边开始)|row-reverse(横向,右始)|column(纵向,上边开始)|column-reverse(纵向,下始);
+  flex-wrap(项目是否换行): nowrap(默认,不换行)|wrap(换行,第一行在上方)|wrap-reverse(换行,第一行在下方);
+  flex-flow: <flex-direction> || <flex-wrap>;(flex-flow属性是flex-direction属性和flex-wrap属性的简写形式，默认值为row nowrap。)
+  justify-content(项目在主轴上的对齐方式): flex-start(默认,左对齐)|flex-end(右对齐)|center(居中对齐)|space-between(两端对齐，项目之间的间隔都相等)|space-around(每个项目两侧的间隔相等,项目与项目间的间隔比项目与边框的间隔大一倍);
+  align-items(项目在交叉轴上对齐方式): stretch(默认,如果项目未设置高度或设为auto，将占满整个容器的高度)|flex-start(交叉轴起点对齐)|flex-end(交叉轴终点对齐)|center(交叉轴中点对齐)|baseline(项目的第一行文字的基线对齐);
+  align-content(多根轴线对齐方式,如果项目只有一根轴线，该属性不起作用): stretch(默认,轴线占满整个交叉轴)|flex-start(与交叉轴起点对齐)|flex-end(与交叉轴终点对齐)|center(与交叉轴中点对齐)|space-between(与交叉轴两端对齐，轴线之间的间隔平均分布)|space-around(每根轴线两侧的间隔相等，轴线与轴线的间隔比轴线与边框的间隔大一倍);
+}
+项目属性:order|flex-grow|flex-shrink|flex-basis|flex|align-self
+.item {
+  order(项目排列顺序): <integer>(数值越小，排列越靠前，默认为0);
+  flex-grow(项目放大比例): <number>(默认为0，此时存在剩余空间也不放大;所有项目都为1,则均分剩余空间(如果存在),数值越大项目的放大比例越大)
+  flex-shrink(项目缩小比例): <number>(默认为1，即如果空间不足该项目将缩小;某项目值为0,则其不缩小;数值越大缩小比例越大);
+  flex-basis(分配多余空间之前，项目占据主轴空间): <length>|auto(默认,即项目的本来大小);
+  flex(flex-grow,flex-shrink和flex-basis的简写): none |[ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ];(默认值为0 1 auto;两个快捷值：auto (1 1 auto) 和 none (0 0 auto))
+  align-self(允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性): auto(默认,表示继承父元素的align-items属性，如果没有父元素，则等同于stretch)|flex-start(与align-items一致)|flex-end(与align-items一致)|center(与align-items一致)|baseline(与align-items一致)|stretch(与align-items一致);
+}
+*/
+/* body作为一个弹性容器 */
+body{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+/* container作为一个弹性容器 */
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* align-content: center;
+    height: 200px;
+    background-color: #000000;*/
+}
+/* rowDice(横向排列的6颗骰子)作为一个弹性容器 */
+.rowDice{
+    display: flex;
+    flex-direction: row;
+}
+/* clunmDice(纵向排列的6颗骰子)作为一个弹性容器 */
+.clunmDice{
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+}
+/* singleDice(整个骰子容器=骰子+外壳)作为一个弹性容器 */
+.singleDice{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    /*白色面板对于横向剧中对齐*/
+    align-items: center; 
+    width: 200px;
+    height: 200px;
+    background-color: #000000;
+    box-sizing: border-box;
+    margin: 5px;
+}
+/* diceBox(骰子容器=白色面板+红点)作为一个弹性容器 */
+.diceBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    width:120px;
+    height:120px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    padding: 5px; 
+    margin: 0;  
+}
+/* 均匀分布的行 */
+.spaceAroundRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+/* 居中的行 */
+.centerRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+}
+/* 居左对齐的行 */
+.flexStartRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+/* 居右对齐的行 */
+.flexEndRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+/* diceItem(骰子项目=红点)作为一个弹性容器 */
+.diceItem{
+    width:30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #FF0000;
+    /* padding: 5px; */
+    box-sizing: border-box;
+    margin: 5px;
+    border: 1px solid blue;
+}
+/* .wrap{
+    flex-wrap: wrap;
+}
+.column {
+    display: flex;
+    justify-content: space-between;
+} */
