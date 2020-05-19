@@ -15,7 +15,7 @@ class Box extends React.Component {
   render() {
   
     return (
-      <div className="box">
+      <div className="box" style={this.props.style}>
           {this.props.children}
 
        </div>
