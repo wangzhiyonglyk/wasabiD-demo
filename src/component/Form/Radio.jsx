@@ -132,20 +132,19 @@ class  Radio extends Component{
       return   showUpdate.call(this, newParam, oldParam);
     }
     loadData(url,params) {
-        if(url!=null&&url!="")
-        {
-            if(params==null)
-            {
-                var fetchmodel=new FetchModel(url,this.loadSuccess,null,this.loadError)
-                unit.fetch.get(fetchmodel);
+        if (url) {
+            let type=this.props.httpType?this.props.httpType:"POST";
+            type=type.toUpperCase();
+            var fetchmodel = new FetchModel(url, this.loadSuccess, params, this.loadError);
+            if(this.props.contentType){
+                //如果传contentType值则采用传入的械
+                //否则默认
+              
+                fetchmodel.contentType=  this.props.contentType;
+                fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
             }
-            else
-
-            {
-                var fetchmodel=new FetchModel(url,this.loadSuccess,params,this.loadError);
-                unit.fetch.post(fetchmodel);
-            }
-            console.log("radio",fetchmodel);
+            type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
+            console.log("radio-fetch", fetchmodel);
         }
     }
     loadSuccess(data) {//数据加载成功

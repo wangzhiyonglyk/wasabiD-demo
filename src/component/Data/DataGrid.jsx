@@ -590,7 +590,7 @@ class DataGrid extends Component {
       //设计了header
       let beginOrderNumber = 0;
       let endOrderNumber = 0; //数据开始序号与结束序号
-      let total = this.state.total ? this.state.total : this.state.data.length; //总记录数
+      let total = this.state.total ? this.state.total : this.state.data? this.state.data.length:0; //总记录数
       let pageTotal = parseInt(this.state.total / this.state.pageSize); //共多少页
       pageTotal =
         this.state.total % this.state.pageSize > 0 ? pageTotal + 1 : pageTotal; //求余后得到最终总页数

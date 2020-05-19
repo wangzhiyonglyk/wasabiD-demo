@@ -69,13 +69,27 @@ class Upload extends Component {
 
     if (this.files.length > 0) {
       if (this.props.uploadurl) {
-        if (this.files.length == 1 && this.props.name) {
+        if (this.files.length == 1 ) {
           //单文件上传时，如果指定了name，则以name为基准
+          if(!this.props.name){
+            Message.error("单文件上传必须指定name属性");
+            return;
+          }
+          if(this.props.size&&this.props.size*1024*1024<this.files[0].size){
+            Message.error("文件不得超过"+this.props.size+"M");
+            return;
+          }
           formData.append(this.props.name, this.files[0]);
         } else {
+          let size=0;//文件总大小
           for (let index = 0; index < this.files.length; index++) {
             // 文件名称，文件对象
+            size+=this.files[index].size;
             formData.append(this.files[index].name, this.files[index]);
+          }
+          if(this.props.size&&this.props.size*1024*1024<size){
+            Message.error("文件不得超过"+this.props.size+"M");
+            return;
           }
         }
         //是否有其他参数
@@ -224,6 +238,7 @@ Upload.propTypes = {
   uploadurl: PropTypes.string.isRequired, //上传地址
   accept: PropTypes.string, //上传文件类型
   multiple: PropTypes.bool, //是否允许多选
+  size:PropTypes.number,//上传大小限制
   name: PropTypes.string, //名称
   uploadSuccess: PropTypes.func //上传成功事件
 };
@@ -231,6 +246,7 @@ Upload.defaultProps = {
   params: null,
   name: null,
   multiple: false,
+  size:null,
   accept: null,
   uploadurl: null,
   uploadSuccess: () => {

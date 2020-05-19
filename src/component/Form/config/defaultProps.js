@@ -33,6 +33,7 @@ export default {
 
 
             //其他属性 combobox
+            contentType:"",//http的request的数据类型
             multiple:false,
             valueField:"value",
             textField:"text",
