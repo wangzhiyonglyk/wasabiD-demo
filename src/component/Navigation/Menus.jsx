@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import PropTypes from "prop-types";
-import "../sass/Navigation/menu.css";
+import "../Sass/Navigation/menu.css";
 class Menus extends Component {
   constructor(props) {
     super(props);
