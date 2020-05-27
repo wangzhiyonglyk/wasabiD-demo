@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 
 import  Button from "../Buttons/Button.jsx";
 import  Resize from "./Resize.jsx";
+import events from "../Unit/events.js";
 import ("../Sass/Layout/Modal.css");
 import ("../Sass/Buttons/button.css");
 class Modal extends  React.Component {
@@ -60,39 +61,33 @@ class Modal extends  React.Component {
     }
 
     mouseMoveHandler(event) {
-        if (this.state.moveX != null && event.target.className == "wasabi-modal-header") {
-            this.setState({
-                left: this.state.oldLeft + event.clientX - this.state.moveX,
-                top: this.state.oldTop + event.clientY - this.state.moveY,
-            })
+        return;
+        if (this.position != null & event.target.className == "wasabi-modal-header") {
+            let target= this.refs.resize.target();
+          target.style.left+=event.clientX-this.oldClientX;
+           target.style.top+=event.clientY-this.oldClientY;
         }
 
 
     }
 
     mouseDownHandler(event) {
-        this.setState({
-            moveX: event.clientX,
-            moveY: event.clientY,
-        })
+        return ;
+        let position=   this.refs.resize.getBoundingClientRect();
+      if(position){
+         this.position=position;//记住方向
+         //记住原始位置
+          this.oldClientX=event.clientX;
+          this.oldClientY=event.clientY;
     }
+}
 
     mouseOutHandler(event) {
-        this.setState({
-            moveX: null,
-            moveY: null,
-            oldLeft: this.state.left,
-            oldTop: this.state.top
-        })
+        this.position=null;
     }
 
     mouseUpHandler(event) {
-        this.setState({
-            moveX: null,
-            moveY: null,
-            oldLeft: this.state.left,
-            oldTop: this.state.top
-        })
+        this.position=null;
     }
 
     OKHandler() {
@@ -111,15 +106,15 @@ class Modal extends  React.Component {
 
     render() {
 
+        if(!this.state.visible){
+return null;
+        }
         let activename = "wasabi-modal-container ";
         if (this.state.visible == true) {
             activename = "wasabi-modal-container active";
         }
-        let width = this.state.width;
-        let height = this.state.height;
-        let left = this.state.left;
-        let top = this.state.top;
-        let control;
+      
+       
         let footer = null;
         let buttons = [];
             if (this.props.OKHandler) {
@@ -141,7 +136,7 @@ class Modal extends  React.Component {
         }
         return <div className={activename}>
             <div className={" wasabi-overlay " + (this.props.modal == true ? "active" : "")}></div>
-            <Resize width={width} height={height} left={left} top={top}
+            <Resize ref="resize"
                     className="wasabi-modal fadein" resize={this.props.resize}>
                 <a className="wasabi-modal-close" onClick={this.close}></a>
                 <div className="wasabi-modal-header" ref="header" onMouseMove={this.mouseMoveHandler}

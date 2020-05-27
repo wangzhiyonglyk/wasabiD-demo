@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import Modal from '../Layout/Modal.jsx';
 import Button from '../Buttons/Button.jsx';
 import Message from '../Unit/Message.jsx';
+import fileType from "../libs/fileType";
 import('../Sass/Action/Import.css');
 class Upload extends Component {
   constructor(props) {
@@ -61,14 +62,32 @@ class Upload extends Component {
       filenames: filenames
     });
   }
+  //验证文件上传类型是否正确
+  validateType(files){
+    
+    if(this.props.accept)
+    {
+      return  fileType.filter(this.props.accept,files);
+    }
+    else{
+      return true;
+    }
+   
+
+  }
+  //上传处理
   importHandler() {
     //执行导入事件
     // 实例化一个表单数据对象
     let formData = new FormData();
     // 遍历文件列表，插入到表单数据中
 
-    if (this.files.length > 0) {
+    if (this.files&&this.files.length > 0) {
       if (this.props.uploadurl) {
+        if(!this.validateType(this.files)){
+          Message.error("上传的文件类型不正确");
+          return ;
+        }
         if (this.files.length == 1 ) {
           //单文件上传时，如果指定了name，则以name为基准
           if(!this.props.name){

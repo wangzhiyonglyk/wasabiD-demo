@@ -65,6 +65,12 @@ class Resize extends React.Component {
         this.oldheight=null;
        
     }
+    getBoundingClientRect(){
+       return  this.refs.resizediv.getBoundingClientRect();
+    }
+    target(){
+        return  this.refs.resizediv;
+    }
     mouseMoveHandler(event) {//鼠标移动事件
 
        this.getDirection(this.refs.resizediv, event);//设置方向

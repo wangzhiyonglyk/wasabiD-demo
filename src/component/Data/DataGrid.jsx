@@ -379,12 +379,14 @@ class DataGrid extends Component {
     }
 
     this.state.data.map((rowData, rowIndex) => {
+      let ordertd=null;
+      let checkedtd=null;
       let tds = []; //当前的列集合
       let key = this.getKey(rowIndex); //获取这一行的关键值
 
       //序号列
       if (this.props.rowNumber) {
-        tds.push(
+        ordertd=(
           <td key={'bodyorder' + rowIndex.toString()} style={{ width: 50 }}>
             <div className='wasabi-grid-cell'>
               {' '}
@@ -407,20 +409,20 @@ class DataGrid extends Component {
         };
 
         if (this.props.singleSelect == true) {
-          tds.push(
+          checkedtd=(
             <td
               key={'bodycheckbox' + rowIndex.toString()}
               style={{ width: 30 }}
               className='check-column'
             >
               <div className='wasabi-grid-cell'>
-                {' '}
+               
                 <Radio forceChange={true} {...props}></Radio>
               </div>
             </td>
           );
         } else {
-          tds.push(
+          checkedtd=(
             <td
               key={'bodycheckbox' + rowIndex.toString()}
               style={{ width: 30 }}
@@ -440,6 +442,33 @@ class DataGrid extends Component {
         if (!header || header.hide) {
           return;
         }
+
+        if(header.checked&&checkedtd){
+           //选择框
+          let rowchecked=header.checked;
+          if(typeof rowchecked==="function"){
+            rowchecked = rowchecked(rowData, rowIndex);
+          }
+          else {
+            rowchecked=true;//默认有
+          }
+          if(!rowchecked){//如果不能先把
+            //没有选择框
+            checkedtd=<td
+            key={'bodycheckbox' + rowIndex.toString()}
+            style={{ width: 30 }}
+            className='check-column'
+          >
+            <div className='wasabi-grid-cell'>
+             
+             
+            </div>
+          </td>
+          }
+        
+          return;//选择列，不处理内容了
+
+        }
         if (
           this.state.headerMenu.length > 0 &&
           this.state.headerMenu.indexOf(header.label) > -1
@@ -450,7 +479,9 @@ class DataGrid extends Component {
         if (header.colspan && header.colspan > 0) {
           return;//如果占多列则代表不需要渲染
         }
+       
 
+        //内容
         let content = header.content;
 
         if (typeof content === 'string') {
@@ -560,11 +591,14 @@ class DataGrid extends Component {
       if (rowIndex * 1 == this.focusIndex && this.props.focusAble) {
         trClassName = 'selected';
       }
+     
       trobj.push(
         <tr
           key={'row' + rowIndex.toString()}
           onMouseDown={this.onTRMouseDown.bind(this, rowIndex)}
         >
+          {ordertd}
+          {checkedtd}
           {tds}
         </tr>
       );
