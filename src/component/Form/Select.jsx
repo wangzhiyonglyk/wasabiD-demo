@@ -141,24 +141,25 @@ class Select extends Component {
     return this.state.value;
   }
   loadData(url, params) {
-    if (url != null && url != '') {
-      if (params == null) {
-        const fetchmodel = new FetchModel(
-          url,
-          this.loadSuccess,
-          null,
-          this.loadError
-        );
-        unit.fetch.get(fetchmodel);
-      } else {
-        const fetchmodel = new FetchModel(
-          url,
-          this.loadSuccess,
-          params,
-          this.loadError
-        );
-        unit.fetch.post(fetchmodel);
-      }
+    if (url) {
+      let type=this.props.httpType?this.props.httpType:"POST";
+             type=type.toUpperCase();
+            let  fetchmodel= new FetchModel(
+              url,
+              this.loadSuccess,
+              params,
+              this.loadError
+            );
+            if(this.props.contentType){
+                //如果传contentType值则采用传入的械
+                //否则默认
+              
+                fetchmodel.contentType=  this.props.contentType;
+                fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
+            }
+            type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
+             
+     console.log("select-fetch",fetchmodel);
     }
   }
   loadSuccess(data) {

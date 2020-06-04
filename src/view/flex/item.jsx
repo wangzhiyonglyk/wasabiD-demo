@@ -15,7 +15,7 @@ class Item extends React.Component {
   render() {
   
     return (
-      <div className="item">
+      <div className="item" style={this.props.style}>
        </div>
     );
   }

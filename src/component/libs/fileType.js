@@ -42,6 +42,14 @@ fileType.html.set("text/html",".html");
 fileType.html.set( "text/javascript",".js");
 fileType.html.set( "application/json",".json");
 fileType.html.set(  "text/css",".css" );
+
+/*
+html
+
+ */
+fileType. json=new Map();
+fileType.json.set( "application/json",".json");
+
     /*
     excel
      */
@@ -92,108 +100,6 @@ fileType.image.set( "image/tiff",".tif");
 fileType.image.set("image/tiff",".tiff");
 fileType.image.set("image/png",".png");
 
-fileType.isWord=function(type) {//word文件
-    if(fileType.word.has(type))
-    {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-fileType.isExcel=function(type) {//excel文件
-    if(fileType.excel.has(type))
-    {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-fileType.isPpt=function(type) {//ppt文件
-    if(fileType.ppt.has(type))
-    {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-fileType.isOffice=function(type) {//office格式文件
-
-    if(fileType.isword(type))
-    {
-        return false;
-    }
-    else if(fileType.isexcel(type))
-    {
-        return false;
-    }
-    else if(fileType.isppt(type))
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-
-}
-fileType.isPdf=function(type) {//pdf 文件
-    if(fileType.pdf.has(type))
-    {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-fileType.isTxt=function(type) {//txt 文件
-    if(fileType.txt.has(type))
-    {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-fileType.isHtml=function(type) {//html 文件
-    if(html.has(type))
-    {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-fileType.isImage=function(type) {//image 文件
-    if(fileType.image.has(type))
-    {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-fileType.isMedia=function(type) {//media 文件
-    if(fileType.media.has(type))
-    {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-fileType.isZip=function(type) {//压缩 文件
-    if(fileType.zip.has(type))
-    {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
 fileType.getTypeMap=function(value) {
     switch (value) {
         case "word":
@@ -216,9 +122,35 @@ fileType.getTypeMap=function(value) {
             return fileType.media;
         case      "zip":
             return fileType.zip;
+            case      "json":
+                return fileType.json;
         default:
             return null;
     }
+}
+
+//文件筛选
+fileType.filter=function(accept,files){
+    console.log("ddd");
+    let result=true;
+if(accept&&files){
+     accept=accept?accept.split(","):[];
+    let fileTypestr="";//得到所有的文件类型
+    for(let i=0;i<accept.length;i++){
+        let mymap= fileType.getTypeMap(accept[i]);
+        for (let key of mymap.keys()) {
+            fileTypestr+=key+",";
+          }
+
+    }
+    for(let i=0;i<files.length;i++){
+       if(fileTypestr.indexOf(files[i].type)<=-1){
+            result=false;
+            break;
+       }
+    }
+}
+return result;
 }
 
 export default fileType;

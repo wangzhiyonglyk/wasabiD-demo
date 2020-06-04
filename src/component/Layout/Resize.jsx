@@ -3,8 +3,9 @@
 //desc:模态窗口
 import React from "react";
 import PropTypes from "prop-types";
-
+import events from "../../component/Unit/events";
 import("../Sass/Layout/resize.css");
+
 class Resize extends React.Component {
     constructor(props) {
         super(props);
@@ -12,7 +13,7 @@ class Resize extends React.Component {
         this.state = {
             width: this.props.width,
             height: this.props.height,
-            min: 8,
+            min: 8,//最小尺度
 
         }
         this.mouseDownHandler = this.mouseDownHandler.bind(this);
@@ -28,63 +29,73 @@ class Resize extends React.Component {
         if (this.props.resize) {
             //允许改变大小
 
-            document.onmousemove = this.mouseMoveHandler;
-            document.onmouseup = this.mouseUpHandler;
-            document.onmousedown = this.mouseDownHandler;
+            events.on(document,"mousemove",this.mouseMoveHandler);
+            events.on(document,"mouseup",this.mouseUpHandler)
+            events.on(document,"mousedown",this.mouseDownHandler)
+          
         }
 
     }
     mouseDownHandler(event) {
+    
         //鼠标按下事件,保存鼠标位置
+      let dir=   this.getDirection(this.refs.resizediv,event);
+      if(dir){
+         this.dir=dir;//记住方向
+         //记住原始位置
+          this.oldClientX=event.clientX;
+          this.oldClientY=event.clientY;
 
+          //记住原始宽度与高度
+          this. oldwidth=this.refs.resizediv.getBoundingClientRect().width;
+          this. oldheight=this.refs.resizediv.getBoundingClientRect().height;
 
-        if (this.dir) {
-            this.oldClientX = event.clientX;
-            this.oldClientY = event.clientY;
-            this.oldwidth = this.state.width;
-            this.oldheight = this.state.height;
-        }
-        else {
-            this.oldClientX = null;
-            this.oldClientY = null;
-            this.oldwidth = this.state.width;
-            this.oldheight = this.state.height;
-        }
+      }
+      else{
+          this.oldClientX=null;
+          this.oldClientY=null;
+      }
+     
 
     }
     mouseUpHandler() {
         this.oldClientX = null;
         this.oldClientY = null;
-        this.oldwidth = this.newwidth;
-        this.oldheight = this.newheight;
-        this.setState({
-            width: this.newwidth,
-            height: this.newheight
-        })
+        this. oldwidth=null;
+        this.oldheight=null;
+       
+    }
+    getBoundingClientRect(){
+       return  this.refs.resizediv.getBoundingClientRect();
+    }
+    target(){
+        return  this.refs.resizediv;
     }
     mouseMoveHandler(event) {//鼠标移动事件
-        this.getDirection(event);//设置方向
+
+       this.getDirection(this.refs.resizediv, event);//设置方向
+
+            //设置拖动
         if (this.oldClientX) {
             //判断是否可以拖动
 
+         let dir=this.dir;
             try {
-                var newwidth = this.state.width;//先等于旧的
-                var newheight = this.state.height;//先等于旧的
-                if (dir.indexOf("e") > -1) {//改变宽度
-                    newwidth = Math.max(this.state.min, this.oldwidth + event.clientX - this.oldClientX);
+              
+              
+                if(dir&&dir==("ew")){
+                    this.refs.resizediv.style.width = (this.oldwidth+(event.clientX-this.oldClientX))+"px";
                 }
-                if (dir.indexOf("s") > -1) {//改变高度
-                    if (this.props.onlyWidth == false) {//允许改变高度
-                        newheight = Math.max(this.state.min, this.oldheight + event.clientY - this.oldClientY);
-                    }
+                else if(dir&&dir==("ns")){
+                    this.refs.resizediv.style.height = (this.oldheight+(event.clientY-this.oldClientY))+"px";
                 }
-
-
-
-                this.refs.resizediv.style.width = newwidth + "px";
-                this.refs.resizediv.style.height = newheight + "px";
-                this.newwidth = newwidth;
-                this.newheight = newheight;
+                else if(dir){
+                    this.refs.resizediv.style.width = (this.oldwidth+(event.clientX-this.oldClientX))+"px";
+                    this.refs.resizediv.style.height = (this.oldheight+(event.clientY-this.oldClientY))+"px";
+                }
+             
+             
+                
 
             }
             catch (e) {
@@ -93,68 +104,55 @@ class Resize extends React.Component {
         }
         else {
         }
-        //取消默认事件
-        //window.event.returnValue = false;
-        //window.event.cancelBubble = true;
+       
     }
-    getDirection(event) {
+    //获取方向
+    getDirection(targetElement,event) {
         //此处计算方向与光标图形分开，
         //当缩小时，要将方向向里多计算一点，否则缩小不流畅
-        var xPos, yPos, offset;
+        let  xPos, yPos, offset;
 
-        xPos = event.offsetX;
-        yPos = event.offsetY;
+        xPos = event.clientX;//
+        yPos = event.clientY;//
         offset = this.state.min;
+
+        let position=targetElement.getBoundingClientRect();//获取div的位置信息
+
         let cursor = "";
-        if (this.props.onlyWidth == false) {//允许改变高度
-            if (yPos <= this.refs.resizediv.offsetHeight + offset && yPos >= this.refs.resizediv.offsetHeight - offset) {
+         if (yPos <= position.height+position.top+offset && yPos >= position.height+position.top - offset) {
                 cursor += "ns";
             }
-        }
-        if (xPos <= this.refs.resizediv.offsetWidth + offset && xPos >= this.refs.resizediv.offsetWidth - offset) {
+        
+        if (xPos <= position.width+position.left + offset && xPos >= position.width+position.left - offset) {
             cursor += "ew";
         }
+      
         cursor = cursor == "nsew" ? "nwse" : cursor;
 
-        this.refs.resizediv.style.cursor = cursor ? cursor + "-resize" : "default";//设置鼠标样式
-        this.dir = cursor;
+        targetElement.style.cursor = cursor ? cursor + "-resize" : "default";//设置鼠标样式
+       return cursor;
     }
     render() {
 
-       
+        let style=this.props.style?this.props.style:{};
+    
         return (
             <div className={"resize  " + this.props.className} ref="resizediv"
-                style={{
-                    width: this.state.width,
-                    height: this.props.onlyWidth == true ? "auto" : this.state.height,
-                     left: this.props.left,
-                      top: this.props.top, 
-                    
-                       zIndex: 8
-                    
-                }}
-            >
-
+                style={ style}>
                 {this.props.children}
             </div>)
     }
 }
 Resize.propTypes = {
-    width: PropTypes.number,
-    height: PropTypes.number,
-    left: PropTypes.number,
-    top: PropTypes.number,
-    onlyWidth: PropTypes.bool,//是否只允许改变宽度
-    className: PropTypes.string,
-    resize: PropTypes.bool,//
+    style:PropTypes.object.isRequired,//样式
+    className: PropTypes.string,//样式
+    
+    resize: PropTypes.bool,//是否允许调整大小
 }
 Resize.defaultProps = {
-    width: 400,
-    height: 400,
-    left: 0,
-    top: 0,
-    onlyWidth: false,
+    style:{},
     className: "",
+   
     resize: true,//默认是可以改变大小的
 
 

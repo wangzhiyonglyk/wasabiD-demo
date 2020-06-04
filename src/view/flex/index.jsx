@@ -16,10 +16,12 @@ class FlexBox extends React.Component {
 
   render() {
   
-    return ( <div className="container"><Box>
+    return ( <div className="container">
+        
+        <Box>
         <Item></Item>
-        <Item></Item>
-        <Item></Item>
+        <Item style={{alignSelf: "center"}}> </Item>
+        <Item style={{alignSelf: "flex-end"}}></Item>
     </Box> </div>
     );
   }

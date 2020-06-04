@@ -31,6 +31,7 @@ export default {
         onChange:PropTypes.func,//值改变事件
 
         //其他属性 combobox
+        contentType:PropTypes.string,//http请求的request类型
         multiple:PropTypes.bool,//是否允许多选
         valueField: PropTypes.string,//数据字段值名称
         textField:PropTypes.string,//数据字段文本名称

@@ -1,5 +1,6 @@
 /**
  * Created by wangzhiyong on 2016/10/25.
+ * edit by wangzhiyong 2020-05-09 修复分页的问题
  * 将DataGrid拆分,基本处理事件存在这里
  */
 import React, { Component } from "react";
@@ -273,7 +274,7 @@ let DataGridHandler={
             //查询成功
             if(dataResult&& dataResult instanceof  Array)
             {//是数组,
-                dataResult= (this.props.pagination == true ? dataResult.slice(0, this.state.pageSize) : dataResult);
+                dataResult= (this.props.pagination == true ? dataResult.slice(0, pageSize) : dataResult);
             }
             var checkedData=this.state.checkedData;//之前被选择的数据
             if(this.props.clearChecked==false) {//不清除之前的选择
@@ -550,9 +551,9 @@ let DataGridHandler={
         }
     }
     ,
-    export(selected){
+    export(selected,title){
    
-      
+      title=title?title:"excel"+unit.dateformat(new Date(),"yyyy-MM-dd");
         let tableHtml="<table>";
         if(selected)
         {
@@ -573,10 +574,11 @@ let DataGridHandler={
         let  html = "<html><head><meta charset='UTF-8'></head><body>"+ tableHtml+"</body></html>";
         // 创建一个Blob对象，第一个参数是文件的数据，第二个参数是文件类型属性对象
         var blob = new Blob([html],{type:"application/vnd.ms-excel"});
-    
-        // 利用URL的createObjectURL方法为元素a生成blobURL
-       window.open( URL.createObjectURL(blob),"excel");
-     
+        var downloadA = document.createElement('a');
+        downloadA.href = window.URL.createObjectURL(blob);
+        downloadA.download = title+".xls";
+        downloadA.click(); // 点我，点我，快点我
+        window.URL.revokeObjectURL(downloadA.href);
 
     }
 }

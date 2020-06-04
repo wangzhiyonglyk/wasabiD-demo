@@ -369,7 +369,7 @@ class DatePicker extends Component {
   render() {
     let control = null;
     let controlDropClassName = "";
-
+console.log(this.props.type);
     switch (this.props.type) {
       case "date":
         control = this.renderDate();
@@ -378,7 +378,6 @@ class DatePicker extends Component {
       case "datetime":
         control = this.renderDateTime();
         controlDropClassName = "date time";
-
         break;
       case "daterange":
         control = this.renderDateRange();

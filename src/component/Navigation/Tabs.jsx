@@ -46,8 +46,8 @@ class Tabs extends React.Component {
      
     }
     render() {
-        return (
-            <div className="wasabi-tabs" >
+        return (    
+            <div className={"wasabi-tabs "+this.props.className} style={this.props.style} >
                 <div  >
                     {
 

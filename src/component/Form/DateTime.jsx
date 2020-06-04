@@ -194,7 +194,7 @@ class DateTime extends Component {
     render() {
         
         return (
-            <div className={componentClassName+this.state.validateClass}  ref="picker" style={style}>
+            <div className={this.props.className+" " +this.state.validateClass}  ref="picker" style={this.props.style}>
                 <div style={{ position: "relative", height: 32 }}><Time ref="time" type="time" key="end"  ></Time></div>
                 <div className="wasabi-datetime"  >
                     <CalendarHeader

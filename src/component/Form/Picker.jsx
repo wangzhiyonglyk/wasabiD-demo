@@ -111,9 +111,7 @@ class   Picker  extends  Component{
     }
     componentDidMount(){
         if(this.props.url!=null) {
-            var fetchmodel=new FetchModel(this.props.url,this.loadProvinceSuccess,this.state.params,this.loadError);
-            console.log("picker",fetchmodel);
-            unit.fetch.post(fetchmodel);
+           this.loadProvince(this.props.url,this.state.params);
         }
         this.registerClickAway(this.hidePicker, this.refs.picker);//注册全局单击事件
     }
@@ -142,21 +140,22 @@ class   Picker  extends  Component{
         return this.state.value;
 
     }
-    loadProvince(url, params) {
-
-       
-        if (url != null && url != "") {
-            if (params == null) {
-                var fetchmodel = new FetchModel(url, this.loadProvinceSuccess, null, this.loadError);
-
-                unit.fetch.get(fetchmodel);
+    loadProvince(url, params) {      
+        if (url) {
+            let type=this.props.httpType?this.props.httpType:"POST";
+            type=type.toUpperCase();
+         
+            let  fetchmodel = new FetchModel(url, this.loadProvinceSuccess, params, this.loadError);
+            if(this.props.contentType){
+                //如果传contentType值则采用传入的械
+                //否则默认
+              
+                fetchmodel.contentType=  this.props.contentType;
+                fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
             }
-            else {
-                var fetchmodel = new FetchModel(url, this.loadProvinceSuccess, params, this.loadError);
-
-                unit.fetch.post(fetchmodel);
-            }
-            console.log("checkbox", fetchmodel);
+            type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
+             
+            console.log("picker-fetch", fetchmodel);
         }
     }
     loadProvinceSuccess(data) {//一级节点的数据加载成功
@@ -294,9 +293,20 @@ class   Picker  extends  Component{
                     }
 
                 }
-                var fetchmodel=new FetchModel(url,this.loadCitySuccess.bind(this,currentProvinceIndex),params,this.loadError);
+                let type=this.props.httpType?this.props.httpType:"POST";
+                type=type.toUpperCase();
+                
+                var fetchmodel=new FetchModel(url,this.loadCitySuccess.bind(this,currentProvinceIndex),params,this.loadError,type);
+                if(this.props.contentType){
+                    //如果传contentType值则采用传入的械
+                    //否则默认
+                  
+                    fetchmodel.contentType=  this.props.contentType;
+                    fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
+                }
+                type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel); 
                 console.log("picker-second",fetchmodel);
-                unit.fetch.post(fetchmodel);
+                
             }
             else {//没有二级节点的url
                 var newData=this.state.data;
@@ -422,9 +432,20 @@ class   Picker  extends  Component{
                         params[this.state.thirdParamsKey]=currentCityValue;
                     }
                 }
-                var fetchmodel=new FetchModel(url,this.loadDistinctSuccess.bind(this,currentCityIndex),params,this.loadError);
+                let type=this.props.httpType?this.props.httpType:"POST";
+                type=type.toUpperCase();
+                
+                var fetchmodel=new FetchModel(url,this.loadDistinctSuccess.bind(this,currentCityIndex),params,this.loadError,type);
+                if(this.props.contentType){
+                    //如果传contentType值则采用传入的械
+                    //否则默认
+                  
+                    fetchmodel.contentType=  this.props.contentType;
+                    fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
+                }
+                type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
                 console.log("picker-third",fetchmodel);
-                unit.fetch.post(fetchmodel);
+                
             }
             else {
 

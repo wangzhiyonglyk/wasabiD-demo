@@ -28,7 +28,11 @@ let entry = [
     title: '后台管理系统-flex布局', // 标题
     src: './view/flex/index.jsx' //登陆页面
   },
-  
+  {
+    filename: 'modalDemo', //文件名，
+    title: '后台管理系统-modalDemo', // 标题
+    src: './view/modalDemo/index.jsx' //登陆页面
+  },
   
 ];
 
