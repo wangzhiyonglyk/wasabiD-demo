@@ -1,0 +1,138 @@
+html, body,ul{
+    margin: 0px;    
+    padding: 0px;   
+}
+* {
+    box-sizing: border-box;/*对元素指定宽度和高度包括了 padding 和 border */
+}
+/* about ball.jsx */
+.ball{
+    background: white;
+    border-radius: 50%;
+    margin: 5px;
+    height: 40px;
+    width: 40px;
+    font-weight: 600;
+    font-size: 20px;
+}
+.proBall{
+    border: 1px solid #e98542;
+}
+.postBall{
+    border: 1px solid #60ade0;
+}
+
+/* about selectZone.jsx */
+.proSelectZone{
+    position: absolute;
+    left: 50px;
+    top: 20px;
+    width: 634px;
+    height: 212px;
+}
+.postSelectZone{
+    position: absolute;
+    left: 700px;
+    top: 20px;
+    height: 212px;
+    width: 234px;
+}
+.proBallZone{
+    padding: 10px 16px;
+    border: 1px solid #e98542;
+    background: #f7f1ed;
+}
+.postBallZone{
+    padding: 10px 16px;
+    border: 1px solid #60ade0;
+    background: #ebf0f5;
+}
+.autoSelectZone{
+    text-align: center;
+    padding: 12px 0;
+}
+.autoSelectBox{
+    height: 20px;
+    border: 1px solid #c1c1c1;
+}
+.autoSelectBtn{
+    border: 1px solid #e9e9e9;
+    border-radius: 4px;
+    color: #0c65c3;
+    background: #fff;
+    height: 22px;
+    padding: 0 8px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+.clearBtn{
+    border: 1px solid #ffffff;
+    background: #fff;
+    color: #c1c1c1;
+}
+.Title{
+    font-size: 15px;
+    color: #a5a5a5;
+}
+.SubTitle{
+    font-size: 30px;
+}
+.EmpTitle{
+    color: #f63f3f;
+}
+/* about computeZone.jsx */
+.computeZone{
+    position: absolute;
+    left: 250px;
+    top: 280px;
+}
+/* about displayZone.jsx */
+.displayTable{
+    padding: 3px 3px 0;
+    width: 580px;
+    height: 200px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    position: absolute;
+    left: 50px;
+    top: 320px;
+    border: 1px solid #e3e3e3;
+}
+
+.btnZone{
+    width: 100px;
+    position: absolute;
+    left: 650px;
+    top: 320px;
+    height: 168px;
+}
+
+.dBtn{
+    border: 1px solid #e9e9e9;
+    border-radius: 4px;
+    color: #0c65c3;
+    background: #fff;
+    width: 200px;
+    height: 30px;
+    padding: 0 8px;
+    cursor: pointer;
+    margin: 10px;
+}
+.proDisplay{
+    font-size: 15px;
+    color: #e98542;
+    /* white-space:pre; */
+}
+.postDisplay{
+    font-size: 15px;
+    color: #60ade0;
+}
+.deleteBtn{
+    border: 1px solid #d3d2d2;
+    margin: 5px;
+    width: 15px;
+    height: 15px;
+    background: #d3d2d2;
+    border-radius: 50%;
+    color: white;
+}
