@@ -38,6 +38,11 @@ let entry = [
     title: '后台管理系统-pageModel', // 标题
     src: './view/chenzhaoyi/PageModel/index.jsx' //登陆页面
   },
+  {
+    filename: 'lotteryModel', //文件名，
+    title: '后台管理系统-lotteryModel', // 标题
+    src: './view/chenzhaoyi/lottery/index.jsx' //登陆页面
+  },
   
 ];
 
