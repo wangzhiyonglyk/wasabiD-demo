@@ -1,0 +1,35 @@
+html, body{
+    width: 100%;        /* 窗口宽占比 */
+    height: 100%;       /* 窗口长占比 */
+    margin: 0px;        /* 窗口外边距 */
+    padding: 0px;       /* 窗口内边距 */
+}
+.ground {
+    position: absolute;       /*容器绝对定位*/
+    left: calc(50% - 100px);
+    top: calc(50% - 100px);
+    width: 220px;             /*容器宽*/
+    height: 220px;            /*容器宽*/
+    border:5px white;
+    border-bottom:solid black; /*地平线色*/
+
+}
+.ball{
+    position: absolute;         /*球绝对定位*/
+    left: calc(50% - 10px);
+    top: 0px;
+    border-radius: 50%;         /*球型*/
+    width: 20px;                /*球宽*/
+    height: 20px;               /*球长*/
+    background-image: radial-gradient(ellipse farthest-corner at 25% 25%, #ffffff,#a89292);
+    animation: ballFall 1.3s 1 ease-in forwards; /*动画执行1.3s,执行一次，反弹采用ease-in减速*/
+}
+
+@keyframes ballFall {
+    60%, 80%, to { 
+        transform: translateY(200px);         
+        animation-timing-function: ease-out; /*下落采用ease-out加速*/
+    }     
+    70% { transform: translateY(150px); }     
+    90% { transform: translateY(180px); } 
+}

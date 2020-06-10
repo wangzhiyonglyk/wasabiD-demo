@@ -1,0 +1,91 @@
+html, body{
+    width: 100%;    /*设置宽度占比 */
+    height: 100%;   /*设置长度占比 */
+    margin: 0px;    /*设置无外边距 */
+    padding: 0px;   /*设置无内边距 */
+}
+* {
+    box-sizing: border-box;/*对元素指定宽度和高度包括了 padding 和 border */
+}
+.container-dialog{
+    width: 100%;    /*设置宽度占比 */
+    height: 100%;   /*设置长度占比 */
+}
+.mask{
+    z-index:1;          /*设置优先级在对话框层之下*/
+    position: fixed;    /*设置生成固定定位，相对于浏览器窗口进行定位遮罩*/
+    width: 100%;        /*设置宽度占比,定义基于包含块（父元素）宽度的百分比宽度。*/
+    height: 100%;       /*设置长度占比 */
+    background: #000; /*设置标题栏背景色 */
+    opacity: 0.3;       /*设置透明度 */
+}
+
+.dialog{
+    z-index:2;                    /*设置优先级在遮罩层之上*/
+    position: fixed;            /*设置生成固定定位，相对于浏览器窗口进行定位遮罩*/
+    /* 设置居中 */
+    top: calc(50% - 105px);
+    left: calc(50% - 180px);
+    width: 360px;                 /*设置宽度 */    
+    height: 210px;                  /*设置高度 */
+    border-radius: 3px;           /*设置外边框弧度 */  
+    background: #fff;           /*设置标题栏背景色 */
+    box-shadow: 1px 1px 50px rgba(0,0,0,.3);    /*设置框阴影 上下左右、虚化程度、阴影颜色*/
+    border: 5px solid #c7c7c7;     /*设置内上下边框宽度 */
+}
+.dialog-header{
+    width: 100%;        /*设置宽度占比 */
+    height:20%;         /*设置高度占比 */
+    padding: 3%;          /*设置内边框宽度 */
+    background: #f6f6f6;  /*设置标题栏背景色 */
+    color: #4b4c52;       /*设置标题字体颜色 */
+    font-family:"Times New Roman";   /*设置标题字体类型 */
+    font-size: 16px;        /*设置标题字体大小 */
+    font-weight: bold;      /*设置标题字体粗细 */
+}
+.dialog-content{
+    padding: 10%;      /*设置内边框宽度 */
+    width: 100%;        /*设置宽度占比 */
+    height:50%;         /*设置高度占比 */
+}
+.inputBox{
+    display: block;     /*设置显示为块级元素，前后会带有换行符 */
+    width: 75%;       /*设置宽度 */
+    margin: 0 auto;     /*设置四个边距为浏览器计算外边距*/
+    padding: 2% 5%;     /*设置内左右边框宽度 */
+    border: 1px solid #ccc;     /*设置内上下边框宽度 */
+    box-shadow: 1px 1px 5px rgba(0,0,0,.1);   /*设置输入框阴影 */
+    color: #333;            /*设置输入框内字体颜色 */
+}
+.dialog-footer{
+    padding: 3% 0;          /*设置内上下边框宽度 */
+    border-top: 1px solid #c7c7c7 ;  /*设置页脚栏外上边框宽度、样式、颜色 */
+    height:30%;             /*设置高度占比 */
+    /* text-align: right; */
+    background: #f0f4f7;    /*设置页脚栏背景色 */
+}
+.okBtn{
+    left: 70%;              /*设置距左边距离占父div宽度比 */
+}
+.cancelBtn{
+    cursor: pointer;        /*设置鼠标指向按钮时样式 */
+    left: 80%;              /*设置距左边距离占父div宽度比 */
+}
+.okBtn, .cancelBtn{
+    margin-right:5px;       /*设置右间距 */
+    padding: 1px;
+    position: absolute;        /*设置绝对定位,根据父div进行定位 */
+    border: 1px solid #c0c4cd;  /*设置按钮外边框宽度、样式、颜色 */
+    border-radius: 3px;     /*设置按钮外边框弧度 */   
+    background: #fff;     /*设置按钮背景色 */
+    font-style: oblique;    /*设置字体样式 */
+    color: #757880;       /*设置按钮内字体颜色 */   
+}
+  .closeBtn{
+    cursor: pointer;        /*设置鼠标指向按钮时样式 */
+    position: absolute;      /*设置绝对定位,根据父div进行定位 */
+    left: 90%;              /*设置距左边距离占父div宽度比 */
+    border:#f6f6f6;       /*设置按钮外边框颜色 */   
+    background: #f6f6f6;  /*设置按钮背景色 */
+    color: #757880;       /*设置按钮内字体颜色 */   
+}

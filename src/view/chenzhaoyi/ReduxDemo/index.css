@@ -1,0 +1,52 @@
+html, body{
+    width: 100%;    /*设置宽度占比 */
+    height: 100%;   /*设置长度占比 */
+    margin: 0px;    /*设置无外边距 */
+    padding: 0px;   /*设置无内边距 */
+}
+* {
+    box-sizing: border-box;/*对元素指定宽度和高度包括了 padding 和 border */
+}
+.container{
+    /* 设置居中 */
+    position: fixed;
+    top: calc(50% - 100px);
+    left: calc(50% - 125px);
+    padding: 10px;
+    width: 200px;
+    height: 250px;              
+    border-radius: 3px;           /*设置外边框弧度 */  
+    background: #fff;           /*设置标题栏背景色 */
+    box-shadow: 1px 1px 50px rgba(0,0,0,.3);    /*设置框阴影 上下左右、虚化程度、阴影颜色*/
+    border: 5px solid #c7c7c7;     /*设置内上下边框宽度 */
+}
+.countZone, .sumZone{
+    margin: 10px;
+}
+.subtitle{
+    font-size: 15px;
+    text-align: left;
+}
+.title{
+    font-size: 20px;
+    text-align: center;
+    margin: 20px;
+    font-weight: 800;
+}
+.Btn{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 1px;
+    border: 1px solid #aaaaaa;
+    font-size: 15px;
+}
+.value{
+    margin: 1px;
+    font-size: 15px;
+}
+.sumZone{
+    font-size: 15px;
+    margin: 20px 0px;
+    text-align: center;
+}

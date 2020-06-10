@@ -1,0 +1,26 @@
+/*属性顺序：cursor->整体类->边框类->内容类 */
+html, body{
+    width: 100%;    /*设置宽度占比 */
+    height: 100%;   /*设置长度占比 */
+    margin: 0px;    /*设置无外边距 */
+    padding: 0px;   /*设置无内边距 */
+}
+* {
+    box-sizing: border-box;/*对元素指定宽度和高度包括了 padding 和 border */
+}
+.container{
+    width: 100%;    /*设置宽度占比 */
+    height: 100%;   /*设置长度占比 */
+}
+.showBtn{
+    cursor: pointer;        /*设置鼠标指向按钮时样式 */
+    position:absolute;      /*设置生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。*/
+    /* 设置居中 */
+    top: calc(50% - 9px);
+    left: calc(50% - 40px);
+    border: 1px solid #c0c4cd;  /*设置按钮外边框宽度、样式、颜色 */
+    border-radius: 3px;     /*设置按钮外边框弧度 */   
+    background: #fff;     /*设置按钮背景色 */
+    font-style: oblique;    /*设置字体样式 */
+    color: #757880;       /*设置按钮内字体颜色 */   
+}

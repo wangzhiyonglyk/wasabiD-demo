@@ -1,0 +1,62 @@
+/*属性顺序：cursor->整体类->边框类->内容类 */
+html, body{
+    width: 100%;    /*设置宽度占比 */
+    height: 100%;   /*设置长度占比 */
+    margin: 0px;    /*设置无外边框 */
+    padding: 0px;   /*设置无内边框 */
+}
+* {
+    box-sizing: border-box;/*对元素指定宽度和高度包括了 padding 和 border */
+}
+.container {
+    width: 100%;    /*设置宽度占比 */
+    height: 100%;   /*设置长度占比 */
+    display: flex;  /*设置弹性布局 */
+    justify-content: center;    /*设置横轴居中 */
+    align-items: center;        /*设置纵轴居中 */
+}
+.button-goto{
+    position: absolute;     /*设置生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。*/
+    cursor: pointer;        /*设置鼠标指向按钮时样式 */
+    margin-right:5px;       /*设置右间距 */
+    background: #fff;     /*设置按钮背景色 */
+    border: 1px solid #c0c4cd;  /*设置按钮外边框宽度、样式、颜色 */
+    border-radius: 3px;     /*设置按钮外边框弧度 */   
+    font-size: 12px;        /*设置字体大小 */
+    font-weight: 100;       /*设置字体粗细 */
+    font-style: oblique;    /*设置字体样式 */
+    color: #757880;       /*设置按钮内字体颜色 */   
+}
+.mask{
+    z-index:1;          /*设置优先级在对话框层之下*/
+    position: fixed;    /*设置生成固定定位，相对于浏览器窗口进行定位遮罩*/
+    width: 100%;        /*设置宽度占比 */
+    height: 100%;       /*设置长度占比 */
+    background: #000; /*设置标题栏背景色 */
+    opacity: 0.3;       /*设置透明度 */
+}
+.loadingImage{
+    z-index:2;                    /*设置优先级在遮罩层之上*/
+    position: fixed;              /*设置生成固定定位，相对于浏览器窗口进行定位遮罩*/
+    top: calc(50% - 20px);
+    left: calc(50% - 20px);
+}
+.imgs{
+    animation: loadingImage 1s infinite; /* 加载图标旋转动画 一次1s 无限循环 */
+    width: 20%;     /*设置宽度占比 */
+    height: 20%;    /*设置长度占比 */
+}
+/* 加载图标旋转动画 */
+@keyframes loadingImage { 
+    0% {transform: rotate(0deg);}       /* 加载图标旋转起点 */
+    10% {transform: rotate(36deg);}     /* 加载图标旋转36度 */
+    20% {transform: rotate(72deg);}     /* 加载图标旋转72度 */
+    30% {transform: rotate(108deg);}    /* 加载图标旋转108度 */
+    40% {transform: rotate(144deg);}    /* 加载图标旋转144度 */
+    50% {transform: rotate(180deg);}    /* 加载图标旋转180度 */
+    60% {transform: rotate(216deg);}    /* 加载图标旋转216度 */
+    70% {transform: rotate(252deg);}    /* 加载图标旋转252度 */
+    80% {transform: rotate(288deg);}    /* 加载图标旋转288度 */
+    90% {transform: rotate(324deg);}    /* 加载图标旋转324度 */
+    100% {transform: rotate(360deg);}   /* 加载图标旋转360度 */
+}

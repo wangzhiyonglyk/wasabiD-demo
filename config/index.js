@@ -43,7 +43,26 @@ let entry = [
     title: '后台管理系统-lotteryModel', // 标题
     src: './view/chenzhaoyi/lottery/index.jsx' //登陆页面
   },
-  
+  {
+    filename: 'BallFall', //文件名，
+    title: '后台管理系统-BallFall', // 标题
+    src: './view/chenzhaoyi/BallFall/index.jsx' //登陆页面
+  },
+  {
+    filename: 'LoadingShow', //文件名，
+    title: '后台管理系统-LoadingShow', // 标题
+    src: './view/chenzhaoyi/LoadingShow/index.jsx' //登陆页面
+  },
+  {
+    filename: 'DialogModel', //文件名，
+    title: '后台管理系统-DialogModel', // 标题
+    src: './view/chenzhaoyi/DialogModel/index.jsx' //登陆页面
+  },
+  {
+    filename: 'ReduxDemo', //文件名，
+    title: '后台管理系统-ReduxDemo', // 标题
+    src: './view/chenzhaoyi/ReduxDemo/index.jsx' //登陆页面
+  },
 ];
 
 module.exports = entry;
