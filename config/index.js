@@ -63,6 +63,16 @@ let entry = [
     title: '后台管理系统-ReduxDemo', // 标题
     src: './view/chenzhaoyi/ReduxDemo/index.jsx' //登陆页面
   },
+  {
+    filename: 'Dice', //文件名，
+    title: '后台管理系统-Dice', // 标题
+    src: './view/chenzhaoyi/Dice/index.jsx' //登陆页面
+  },
+  {
+    filename: 'Heart', //文件名，
+    title: '后台管理系统-Heart', // 标题
+    src: './view/chenzhaoyi/Heart/index.jsx' //登陆页面
+  },
 ];
 
 module.exports = entry;

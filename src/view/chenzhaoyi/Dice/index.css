@@ -1,0 +1,60 @@
+.container{
+    display: flex;
+    flex-wrap: wrap;
+}
+/* 骰子点数 */
+.point{
+    width:50px;
+    height: 50px;
+    background: #000000;
+    border-radius: 50%;
+    margin: 20px;
+}
+/* 骰子边框 */
+.dice{
+    margin: 10px;
+    width: 300px;
+    height: 300px;
+    border: 1px solid #00000005;
+    border-radius: 30px;
+    box-shadow: 11px 9px 9px #706e6b;
+}
+/* 一层结构 */
+.one{
+    height: 100%;
+    width: 100%;
+}
+/* 两层结构 */
+.two{
+    height: 50%;
+    width:100%
+}
+/* 三层结构 */
+.three{
+    height:33.33%;
+    width: 100%;
+}
+/* 左布局 */
+.left{
+    display: flex;
+    align-items:flex-start;
+    justify-content: flex-start;
+}
+/* 右布局 */
+.right{
+    display: flex;
+    align-items:flex-end;
+    justify-content:flex-end;
+}
+/* 居中布局 */
+.center{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+}
+/* 左右对称布局 */
+.spaceAr{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
