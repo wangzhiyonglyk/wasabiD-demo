@@ -9,12 +9,9 @@ import Center from "../../component/Layout/Center";
 import Header from "../../component/Layout/Header";
 import Tabs from "../../component/Navigation/Tabs";
 import TabPanel from "../../component/Navigation/TabPanel";
-// import Input from '../../component/Form/Input';
-// import LinkButton from '../../component/Buttons/LinkButton';
-
-import { zhongyinRoutes } from "@/view/router";
+import configMenu from '../../../config/index'
 import "./index.css";
-
+import api from "../../libs/api"
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -33,7 +30,10 @@ class Index extends React.Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    api.message();
+    api.location();
+  }
   open(item) {
    let findIndex=null;
     let e = this.state.tabs.find((selfItem ,index)=> {
@@ -45,8 +45,6 @@ class Index extends React.Component {
     });
   
     if (!e) {
-      item.title = item.name; //
-    
       this.state.tabs.push(item);
       this.setState({
         tabs: this.state.tabs
@@ -160,28 +158,24 @@ class Index extends React.Component {
         </Header>
         <Left width={this.state.leftWidth}>
           <Menus theme='default   '>
-            {zhongyinRoutes.map((route, index) => {
-              if (route.menu) {
+            {configMenu.map((route, index) => {
                 return (
-                  <MenuPanel key={index} title={route.name} expand={true}>
-                    {route.menu.map((item, idx) => {
-                      return (
+                  <MenuPanel key={index} title={route.title} expand={true}>
+                   
                         <a
-                          key={index + idx + ""}
-                          onClick={this.open.bind(this, item)}
+                          key={index  + ""}
+                          onClick={this.open.bind(this, route)}
                           style={{ textAlign: "left", marginLeft: "40px" }}
                         >
                           <span className='icon-txt menuicon'>
-                            {item.name}
+                            {route.title}
                           </span>
                         </a>
                       );
-                    })}
+                    
                   </MenuPanel>
                 );
-              } else {
-                return <div></div>;
-              }
+              
             })}
 
            
@@ -194,7 +188,7 @@ class Index extends React.Component {
               return (
                 <TabPanel key={item.title} title={item.title} iconCls={item.iconCls}>
                   <iframe
-                    src={item.src}
+                    src={"./"+item.filename+".html"}
                     style={{ width: "100%", height: "100%" }}
                   ></iframe>
                 </TabPanel>

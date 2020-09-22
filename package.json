@@ -5,8 +5,8 @@
   "main": "no",
   "homepage": "./",
   "scripts": {
-    "dev": "    webpack-dev-server   --mode=development  --devtool=eval-source-map",
-    "build": "  webpack  --mode=production "
+    "dev": "  webpack-dev-server  --env.mode=development --mode=development --devtool=eval-source-map  ",
+    "build": " webpack  --env.mode=production  --mode=production "
   },
   "keywords": [
     "wasabi",
@@ -19,7 +19,7 @@
     "react-dom": "^16.13.0",
     "react-pdf-js": "^5.1.0",
     "wangeditor": "^3.1.1",
-    "wasabi-api": "^0.8.3"
+    "wasabi-api": "^0.8.4"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

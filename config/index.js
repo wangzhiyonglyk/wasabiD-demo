@@ -13,26 +13,6 @@ let entry = [
     src: './view/index/index.jsx' //脚本路径
   },
   
-  {
-    filename: 'home', //文件名，
-    title: '后台管理系统-主页', // 标题
-    src: './view/home/index.jsx' //脚本路径
-  },
-  {
-    filename: 'login', //文件名，
-    title: '后台管理系统-登陆', // 标题
-    src: './view/login/index.jsx' //登陆页面
-  },
-  {
-    filename: 'flex', //文件名，
-    title: '后台管理系统-flex布局', // 标题
-    src: './view/flex/index.jsx' //登陆页面
-  },
-  {
-    filename: 'modalDemo', //文件名，
-    title: '后台管理系统-modalDemo', // 标题
-    src: './view/modalDemo/index.jsx' //登陆页面
-  },
   
 ];
 
