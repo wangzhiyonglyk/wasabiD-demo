@@ -11,7 +11,7 @@ class Track extends  React.Component {
         super(props);
         this.state = {
             model:this.props.model,
-            expressName:this.props.expressName,
+            expressName:this.props.expressName||"",
             expressId:this.props.expressId,
         }
     }
@@ -40,7 +40,8 @@ class Track extends  React.Component {
         {
             return(
                 <div className="wasabi-track">
-              <div className="express">  <div className="expressName">{"快递公司:   "+this.state.expressName}</div><div className="expressId">{"快递单号:  "+this.state.expressId}</div></div>
+              <div className="express" style={{display:this.state.expressName||this.state.expressId?"block":"none"}}>  <div className="expressName"  
+              >{"快递公司:   "+this.state.expressName}</div><div className="expressId">{"快递单号:  "+this.state.expressId}</div></div>
                 <ul >
 
                     {

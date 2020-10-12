@@ -18,13 +18,13 @@ class Tabs extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        let activeIndex = nextProps.activeIndex != null && nextProps.activeIndex != undefined ? nextProps.activeIndex : 0
-        if (nextProps.children.length > this.props.children.length) {
-            activeIndex = nextProps.children.length - 1
-        }
-        this.setState({
-            activeIndex: activeIndex
-        })
+        // let activeIndex = nextProps.activeIndex != null && nextProps.activeIndex != undefined ? nextProps.activeIndex : 0
+        // if (nextProps.children.length > this.props.children.length) {
+        //     activeIndex = nextProps.children.length - 1
+        // }
+        // this.setState({
+        //     activeIndex: activeIndex
+        // })
     }
     tabClickHandler(index, event) {
 
@@ -33,6 +33,7 @@ class Tabs extends React.Component {
         this.setState({
             activeIndex: index
         })
+        this.props.tabClick&&this.props.tabClick(index)
     }
     onClose(index) {
         this.props.onClose && this.props.onClose(index, this.state.activeIndex);
@@ -42,6 +43,7 @@ class Tabs extends React.Component {
             this.setState({
                 activeIndex:index
             })
+            this.props.tabClick&&this.props.tabClick(index)
         }
      
     }

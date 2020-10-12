@@ -22,8 +22,8 @@ class Select extends Component {
     super(props);
 
     //对传来的数据进行格式化
-    var newData = [];
-    var text = this.props.text;
+    let newData = [];
+    let text = this.props.text;
 
     if (this.props.data instanceof Array) {
       for (let i = 0; i < this.props.data.length; i++) {
@@ -150,6 +150,7 @@ class Select extends Component {
               params,
               this.loadError
             );
+            fetchmodel.headers=this.props.httpHeaders;
             if(this.props.contentType){
                 //如果传contentType值则采用传入的械
                 //否则默认
@@ -164,13 +165,13 @@ class Select extends Component {
   }
   loadSuccess(data) {
     //数据加载成功
-    var realData = data;
+    let realData = data;
     if (this.props.dataSource == null) {
     } else {
       realData = unit.getSource(data, this.props.dataSource);
     }
-    var newData = [];
-    var text = this.state.text;
+    let newData = [];
+    let text = this.state.text;
     for (let i = 0; i < realData.length; i++) {
       let obj = realData[i]; //将所有字段添加进来
       obj.text =
@@ -236,8 +237,8 @@ class Select extends Component {
     //选中事件
 
     if (this.state.multiple) {
-      var oldvalue = [];
-      var oldtext = [];
+      let oldvalue = [];
+      let oldtext = [];
       if (this.state.value) {
         oldvalue = this.state.value.toString().split(',');
         oldtext = this.state.text.toString().split(',');
@@ -268,8 +269,8 @@ class Select extends Component {
         this.props.onSelect(value, text, this.props.name, row);
       }
     } else {
-      var newvalue = value;
-      var newtext = text;
+      let newvalue = value;
+      let newtext = text;
       this.setState({
         show: false,
         value: newvalue,
@@ -293,24 +294,37 @@ class Select extends Component {
     // this.setState({
     //   show: false
     // });
-    this.refs.label.hideHelp(); //隐藏帮助信息
+    if(this.props&&this.props.addAbled){
+      this.addHandler();
+    }
+    try{
+      this.refs.label.hideHelp(); //隐藏帮助信息
+    }
+    catch(e){
+
+    }  
   }
   keyUpHandler(event) {
     if (this.props && this.props.addAbled && event.keyCode == 13) {
-      var filter = this.state.data.filter((item, index) => {
-        return item.text == event.target.value;
+    this.addHandler(event);
+    }
+  }
+  addHandler(event){
+    let filter = this.state.data.filter((item, index) => {
+      return item.text == event.target.value;
+    });
+    if (filter.length == 0) {
+      this.state.data.push({
+        value: event.target.value,
+        text: event.target.value
       });
-      if (filter.length == 0) {
-        this.state.data.push({
-          value: event.target.value,
-          text: event.target.value
-        });
-        this.setState({
-          data: this.state.data
-        });
-        if (this.props.addHandler) {
-          this.props.addHandler(this.state.data);
-        }
+      this.setState({
+        data: this.state.data,
+        value:event.target.value,
+        text:event.target.value
+      });
+      if (this.props.addHandler) {
+        this.props.addHandler(this.state.data);
       }
     }
   }
@@ -334,7 +348,7 @@ class Select extends Component {
   }
   render() {
   
-    var componentClassName = 'wasabi-form-group '+
+    let componentClassName = 'wasabi-form-group '+
     (this.props.className != null ? this.props.className : ''); //组件的基本样式
     let inputProps = {
       readOnly: this.props.readonly == true ? 'readonly' : null,
@@ -350,7 +364,7 @@ class Select extends Component {
         'wasabi-form-control  ' ,
       title: this.props.title
     }; //文本框的属性
-    var control = null;
+    let control = null;
 
     if (this.state.data && this.state.data.length > 0) {
       control = (
@@ -359,12 +373,12 @@ class Select extends Component {
           ref='ul'
         >
           {this.state.data.map((child, i) => {
-            var reg = new RegExp(this.state.filterValue, 'i');
+            let reg = new RegExp(this.state.filterValue, 'i');
             if (this.state.filterValue && child.text.search(reg) == -1) {
               return;
             } else {
               //TODO 这里要用正则，先保留
-              var checked = false;
+              let checked = false;
               if (
                 this.state.value &&
                 child.value &&

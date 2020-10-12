@@ -4,7 +4,7 @@
  edit:2020-03-13
  desc:文件上传组件
  */
-import React ,{Component}from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../Layout/Modal.jsx';
 import Button from '../Buttons/Button.jsx';
@@ -19,16 +19,16 @@ class Upload extends Component {
       uploadTitle: '上传',
       uploadDisabled: false
     }
-    this.open=this.open.bind(this);
-    this.close=this.close.bind(this);
-    this.onChange=this.onChange.bind(this);
-    this.importHandler=this.importHandler.bind(this);
-    this.uploadCanceled=this.uploadCanceled.bind(this);
-    this.uploadComplete=this.uploadComplete.bind(this);
-    this.uploadFailed=this.uploadFailed.bind(this);
-    this.uploadProgress=this.uploadProgress.bind(this);
-    this.uploadend=this.uploadend.bind(this);
-  
+    this.open = this.open.bind(this);
+    this.close = this.close.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.importHandler = this.importHandler.bind(this);
+    this.uploadCanceled = this.uploadCanceled.bind(this);
+    this.uploadComplete = this.uploadComplete.bind(this);
+    this.uploadFailed = this.uploadFailed.bind(this);
+    this.uploadProgress = this.uploadProgress.bind(this);
+    this.uploadend = this.uploadend.bind(this);
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,7 +50,7 @@ class Upload extends Component {
     this.files = event.target.files;//拿到文件
     let filenames = '';
     if (this.files.length > 0) {
-      for (let index = 0; index < this.files.length;index++) {
+      for (let index = 0; index < this.files.length; index++) {
         if (filenames == '') {
           filenames += this.files[index].name;
         } else {
@@ -63,16 +63,15 @@ class Upload extends Component {
     });
   }
   //验证文件上传类型是否正确
-  validateType(files){
-    
-    if(this.props.accept)
-    {
-      return  fileType.filter(this.props.accept,files);
+  validateType(files) {
+
+    if (this.props.accept) {
+      return fileType.filter(this.props.accept, files);
     }
-    else{
+    else {
       return true;
     }
-   
+
 
   }
   //上传处理
@@ -82,32 +81,32 @@ class Upload extends Component {
     let formData = new FormData();
     // 遍历文件列表，插入到表单数据中
 
-    if (this.files&&this.files.length > 0) {
+    if (this.files && this.files.length > 0) {
       if (this.props.uploadurl) {
-        if(!this.validateType(this.files)){
+        if (!this.validateType(this.files)) {
           Message.error("上传的文件类型不正确");
-          return ;
+          return;
         }
-        if (this.files.length == 1 ) {
+        if (this.files.length == 1) {
           //单文件上传时，如果指定了name，则以name为基准
-          if(!this.props.name){
+          if (!this.props.name) {
             Message.error("单文件上传必须指定name属性");
             return;
           }
-          if(this.props.size&&this.props.size*1024*1024<this.files[0].size){
-            Message.error("文件不得超过"+this.props.size+"M");
+          if (this.props.size && this.props.size * 1024 * 1024 < this.files[0].size) {
+            Message.error("文件不得超过" + this.props.size + "M");
             return;
           }
           formData.append(this.props.name, this.files[0]);
         } else {
-          let size=0;//文件总大小
+          let size = 0;//文件总大小
           for (let index = 0; index < this.files.length; index++) {
             // 文件名称，文件对象
-            size+=this.files[index].size;
+            size += this.files[index].size;
             formData.append(this.files[index].name, this.files[index]);
           }
-          if(this.props.size&&this.props.size*1024*1024<size){
-            Message.error("文件不得超过"+this.props.size+"M");
+          if (this.props.size && this.props.size * 1024 * 1024 < size) {
+            Message.error("文件不得超过" + this.props.size + "M");
             return;
           }
         }
@@ -120,6 +119,17 @@ class Upload extends Component {
 
         // 实例化一个AJAX对象
         let xhr = new XMLHttpRequest();
+        //添加headers
+        if (this.props.headers && this.props.headers instanceof Object) {
+          try {
+            for (let prop in this.props.headers) {
+              xhr.setRequestHeader(prop, this.props.headers[prop]);
+            }
+          }
+          catch(e){
+            console.error("error",e.message);
+          }
+        }
         if (this.props.progress) {
           xhr.upload.addEventListener('progress', this.uploadProgress.bind(this), false);
         }
@@ -164,10 +174,10 @@ class Upload extends Component {
     let xhr = event.target;
     if (xhr.readyState == 4 && ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304)) {
       let result = JSON.parse(xhr.responseText);
-     
+
       if (result) {
         if (this.props.uploadSuccess != null) {
-          
+
           this.props.uploadSuccess(result);
         }
       }
@@ -179,24 +189,24 @@ class Upload extends Component {
       }
 
     }
-    else{
+    else {
       Message.error(xhr.statusText);//弹出错误;
     }
 
-   
+
   }
   //请求完成
   uploadend(event) {
     let xhr = event.target;
-  
-    if (xhr.statusText.indexOf('404')>-1) {//判断是不是404错误
+
+    if (xhr.statusText.indexOf('404') > -1) {//判断是不是404错误
       Message.error('服务器没有响应,请检查您的上传路径');
     } else {
-     
+
     }
-     //重置
-     this.setState({
-      
+    //重置
+    this.setState({
+
       uploadTitle: '上传',
       uploadDisabled: false
     });
@@ -213,7 +223,7 @@ class Upload extends Component {
       accept: this.props.accept,
       multiple: this.props.multiple
     };
-   
+
     return (
       <Modal ref='modal' width={460} height={340} title='请选择导入文件'>
         <div className='import-section'>
@@ -253,19 +263,21 @@ class Upload extends Component {
 }
 
 Upload.propTypes = {
+  headers:PropTypes.headers,//请求的头部信息
   params: PropTypes.object,//其他参数
   uploadurl: PropTypes.string.isRequired, //上传地址
   accept: PropTypes.string, //上传文件类型
   multiple: PropTypes.bool, //是否允许多选
-  size:PropTypes.number,//上传大小限制
+  size: PropTypes.number,//上传大小限制
   name: PropTypes.string, //名称
   uploadSuccess: PropTypes.func //上传成功事件
 };
 Upload.defaultProps = {
+  headers:{},
   params: null,
   name: null,
   multiple: false,
-  size:null,
+  size: null,
   accept: null,
   uploadurl: null,
   uploadSuccess: () => {

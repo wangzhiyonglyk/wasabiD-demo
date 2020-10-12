@@ -79,6 +79,7 @@ componentWillReceiveProps(nextProps) {
             let type=this.props.httpType?this.props.httpType:"POST";
             type=type.toUpperCase();
             var fetchmodel = new FetchModel(url, this.loadSuccess, params, this.loadError);
+            fetchmodel.headers=this.props.httpHeaders;
             if(this.props.contentType){
                 //如果传contentType值则采用传入的械
                 //否则默认

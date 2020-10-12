@@ -19,7 +19,7 @@ import Radio from '../Form/Radio.jsx';
 import DataGridHandler from '../Mixins/DataGridHandler.js';
 import DataGridExtend from '../Mixins/DataGridExtend.js';
 import pasteExtend from '../Mixins/pasteExtend.js';
- import ClickAway from "../Unit/ClickAway.js";
+import ClickAway from "../Unit/ClickAway.js";
 import showUpdate from '../Mixins/showUpdate.js';
 import mixins from '../Mixins/mixins';
 import('../Sass/Data/DataGrid.css');
@@ -77,7 +77,7 @@ class DataGrid extends Component {
     });
 
     this.substitute = this.substitute.bind(this);
-   
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -173,13 +173,9 @@ class DataGrid extends Component {
     if (!(this.state.headers instanceof Array)) {
       return null;
     }
-
-
     let headers1 = [];
     let headers2 = [];
-
-
-
+    //处理表头
     this.state.headers.map((header, index) => {
       if (!header || header.hide == true) {
         //隐藏则不显示
@@ -245,7 +241,7 @@ class DataGrid extends Component {
                 key={'header' + index.toString()}
                 name={header.label}
                 {...props}
-                className={'' + sortOrder}
+                className={'' + sortOrder + (header.export === false ? " wasabi-noexport" : "")}
                 style={{
                   width: header.width ? header.width : null,
                   textAlign: header.align
@@ -253,6 +249,8 @@ class DataGrid extends Component {
                 rowSpan={header.rowspan}
                 colSpan={header.colspan}
                 onContextMenu={this.headerContextMenuHandler}
+
+
               >
                 <div
                   className='wasabi-grid-cell'
@@ -274,7 +272,7 @@ class DataGrid extends Component {
                 key={'header' + index.toString()}
                 name={header.label}
                 {...props}
-                className={'' + sortOrder}
+                className={'' + sortOrder + (header.export === false ? " wasabi-noexport" : "")}
                 style={{
                   width: header.width ? header.width : null,
                   textAlign: header.align
@@ -299,43 +297,43 @@ class DataGrid extends Component {
         }
       }
     });
- //处理选择
- if (this.props.selectAble) {
-  let thCheckProps = {
-    //设置checkbox的属性
-    value: this.checkCurrentPageCheckedAll() == true ? 'yes' : null, //判断当前页是否选中
-    data: [{ value: 'yes', text: '' }],
-    onSelect: this.checkedAllHandler,
-    name: 'all'
-  };
-  if (headers1.length > 0) {
-    headers1.unshift(
-      <th key='headercheckbox' name='check-column' style={{ width: 30 }}>
-        <div className='wasabi-grid-cell' name='check-column'>
-          {this.props.singleSelect ? null : (
-            <CheckBox forceChange={true} {...thCheckProps}></CheckBox>
-          )}
-        </div>
-      </th>
-    );
-  } else {
-    headers2.unshift(
-      <th key='headercheckbox' name='check-column' style={{ width: 30 }}>
-        <div className='wasabi-grid-cell' name='check-column'>
-          {this.props.singleSelect ? null : (
-            <CheckBox forceChange={true} {...thCheckProps}></CheckBox>
-          )}
-        </div>
-      </th>
-    );
-  }
-}
+    //处理选择
+    if (this.props.selectAble) {
+      let thCheckProps = {
+        //设置checkbox的属性
+        value: this.checkCurrentPageCheckedAll() == true ? 'yes' : null, //判断当前页是否选中
+        data: [{ value: 'yes', text: '' }],
+        onSelect: this.checkedAllHandler,
+        name: 'all'
+      };
+      if (headers1.length > 0) {
+        headers1.unshift(
+          <th key='headercheckbox' name='check-column' style={{ width: 30 }}>
+            <div className='wasabi-grid-cell' name='check-column'>
+              {this.props.singleSelect ? null : (
+                <CheckBox forceChange={true} {...thCheckProps}></CheckBox>
+              )}
+            </div>
+          </th>
+        );
+      } else {
+        headers2.unshift(
+          <th key='headercheckbox' name='check-column' style={{ width: 30 }}>
+            <div className='wasabi-grid-cell' name='check-column'>
+              {this.props.singleSelect ? null : (
+                <CheckBox forceChange={true} {...thCheckProps}></CheckBox>
+              )}
+            </div>
+          </th>
+        );
+      }
+    }
 
     //处理序号
     if (this.props.rowNumber) {
       if (headers1.length > 0) {
         headers1.unshift(<th key='headerorder' rowSpan={2} name='order' style={{ width: 50 }}>
-          <div className='wasabi-grid-cell' name='order'>
+          <div className='wasabi-grid-cell wasabi-tableorderIndex' name='order'>
             序号
         </div>
         </th>)
@@ -350,7 +348,7 @@ class DataGrid extends Component {
         );
       }
     }
-  
+
     //返回数据
     if (headers1.length > 0) {
       //多行
@@ -379,16 +377,16 @@ class DataGrid extends Component {
     }
 
     this.state.data.map((rowData, rowIndex) => {
-      let ordertd=null;
-      let checkedtd=null;
+      let ordertd = null;
+      let checkedtd = null;//本行是否有选择框
       let tds = []; //当前的列集合
       let key = this.getKey(rowIndex); //获取这一行的关键值
 
       //序号列
       if (this.props.rowNumber) {
-        ordertd=(
+        ordertd = (
           <td key={'bodyorder' + rowIndex.toString()} style={{ width: 50 }}>
-            <div className='wasabi-grid-cell'>
+            <div className='wasabi-grid-cell wasabi-tableorderIndex'>
               {' '}
               {(
                 (this.state.pageIndex - 1) * this.state.pageSize +
@@ -399,7 +397,7 @@ class DataGrid extends Component {
           </td>
         );
       }
-      //设置这一行的选择列
+      //通过全局属性，设置这一行的选择列
       if (this.props.selectAble) {
         let props = {
           value: this.state.checkedData.has(key) == true ? key : null,
@@ -409,20 +407,20 @@ class DataGrid extends Component {
         };
 
         if (this.props.singleSelect == true) {
-          checkedtd=(
+          checkedtd = (
             <td
               key={'bodycheckbox' + rowIndex.toString()}
               style={{ width: 30 }}
               className='check-column'
             >
               <div className='wasabi-grid-cell'>
-               
+
                 <Radio forceChange={true} {...props}></Radio>
               </div>
             </td>
           );
         } else {
-          checkedtd=(
+          checkedtd = (
             <td
               key={'bodycheckbox' + rowIndex.toString()}
               style={{ width: 30 }}
@@ -443,29 +441,30 @@ class DataGrid extends Component {
           return;
         }
 
-        if(header.checked&&checkedtd){
-           //选择框
-          let rowchecked=header.checked;
-          if(typeof rowchecked==="function"){
+        if (header.checked && checkedtd) {
+          // 本行设置了是否可选择的属性并且有选择框
+
+          let rowchecked = header.checked;//是否可以选择
+          if (typeof rowchecked === "function") {
             rowchecked = rowchecked(rowData, rowIndex);
           }
           else {
-            rowchecked=true;//默认有
+            rowchecked = true;//默认有
           }
-          if(!rowchecked){//如果不能先把
-            //没有选择框
-            checkedtd=<td
-            key={'bodycheckbox' + rowIndex.toString()}
-            style={{ width: 30 }}
-            className='check-column'
-          >
-            <div className='wasabi-grid-cell'>
-             
-             
-            </div>
-          </td>
+          if (!rowchecked) {
+            //本行没有选择框，先要事先处理好
+            checkedtd = <td
+              key={'bodycheckbox' + rowIndex.toString()}
+              style={{ width: 30 }}
+              className='check-column'
+            >
+              <div className='wasabi-grid-cell'>
+
+
+              </div>
+            </td>
           }
-        
+
           return;//选择列，不处理内容了
 
         }
@@ -479,7 +478,7 @@ class DataGrid extends Component {
         if (header.colspan && header.colspan > 0) {
           return;//如果占多列则代表不需要渲染
         }
-       
+
 
         //内容
         let content = header.content;
@@ -514,15 +513,18 @@ class DataGrid extends Component {
               currentText = valueResult.text;
             }
           }
+          //处理数据单元格
           tds.push(
             <td
               onClick={this.onClick.bind(this, rowIndex, rowData)}
               onDoubleClick={this.onDoubleClick.bind(this, rowIndex, rowData)}
               key={'col' + rowIndex.toString() + '-' + columnIndex.toString()}
+              export={"1"}//为了导出时处理数字化的问题
               style={{
                 width: header.width ? header.width : null,
-                textAlign: header.align
+                textAlign: header.align ? header.align : "center"
               }}
+              className={header.export===false?"wasabi-noexport":""}//为了不导出
             >
               <div
                 className='wasabi-grid-cell'
@@ -550,6 +552,8 @@ class DataGrid extends Component {
 
             tds.push(
               <td
+                 export={"1"}
+                 className={header.export===false?"wasabi-noexport":""}//为了不导出
                 onClick={this.detailHandler.bind(this, rowIndex, rowData)}
                 key={'col' + rowIndex.toString() + '-' + columnIndex.toString()}
               >
@@ -557,7 +561,7 @@ class DataGrid extends Component {
                   className='wasabi-grid-cell'
                   style={{
                     width: header.width ? header.width : null,
-                    textAlign: header.align
+                    textAlign: header.align ? header.align : "center"
                   }}
                 >
                   <div style={{ float: 'left' }}> {content}</div>
@@ -568,6 +572,8 @@ class DataGrid extends Component {
           } else {
             tds.push(
               <td
+                export={"1"}//为了导出时处理数字化的问题
+                className={header.export===false?"wasabi-noexport":""}//为了不导出
                 onClick={this.onClick.bind(this, rowIndex, rowData)}
                 onDoubleClick={this.onDoubleClick.bind(this, rowIndex, rowData)}
                 key={'col' + rowIndex.toString() + '-' + columnIndex.toString()}
@@ -587,11 +593,7 @@ class DataGrid extends Component {
         }
       });
 
-      let trClassName = '';
-      if (rowIndex * 1 == this.focusIndex && this.props.focusAble) {
-        trClassName = 'selected';
-      }
-     
+
       trobj.push(
         <tr
           key={'row' + rowIndex.toString()}
@@ -624,7 +626,7 @@ class DataGrid extends Component {
       //设计了header
       let beginOrderNumber = 0;
       let endOrderNumber = 0; //数据开始序号与结束序号
-      let total = this.state.total ? this.state.total : this.state.data? this.state.data.length:0; //总记录数
+      let total = this.state.total ? this.state.total : this.state.data ? this.state.data.length : 0; //总记录数
       let pageTotal = parseInt(this.state.total / this.state.pageSize); //共多少页
       pageTotal =
         this.state.total % this.state.pageSize > 0 ? pageTotal + 1 : pageTotal; //求余后得到最终总页数
@@ -660,6 +662,9 @@ class DataGrid extends Component {
               <option value={30}>30</option>
               <option value={50}>50</option>
               <option value={100}>100</option>
+              <option value={200}>200</option>
+              <option value={500}>500</option>
+              <option value={1000}>1000</option>
             </select>{' '}
             条
           </div>
@@ -1048,6 +1053,7 @@ DataGrid.propTypes = {
   data: PropTypes.array, //当前页数据（json）
 
   url: PropTypes.string, //ajax地址
+  httpHeaders:PropTypes.object,//请求的头部
   httpType: PropTypes.string,//请求类型
   contentType: PropTypes.string,//请求的参数传递类型
   backSource: PropTypes.string, //ajax的返回的数据源中哪个属性作为数据源(旧版本)
@@ -1091,6 +1097,7 @@ DataGrid.defaultProps = {
   data: null,
   url: null, //
   contentType: "application/x-www-form-urlencoded",
+  httpHeaders:{},//http请求的头部字段
   httpType: "POST",
   backSource: 'data', //
   dataSource: 'data', //

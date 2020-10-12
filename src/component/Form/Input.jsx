@@ -17,6 +17,7 @@ import None from "./None.jsx";
 import props from "./config/propType.js";
 import config from "./config/inputConfig.js"
 import defaultProps from "./config/defaultProps.js";
+import Time from "./Time"
 import("../Sass/Form/Input.css");
 class Input extends Component {
 
@@ -42,6 +43,9 @@ constructor(props)
 
         if (type == "none") {//空占位组件
             control = <None ref="input" {...props} ></None>
+        }
+        else if(type=="time"){
+            control=<Time ref="input" {...props}></Time>
         }
         else if (type == "radio") {//单选按钮组
             control = <Radio ref="input" {...props} ></Radio>

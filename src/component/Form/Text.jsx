@@ -191,9 +191,21 @@ class  Text  extends Component{
         this.setState({
             validateState:"validing",//正在验证
         })
+        let type=this.props.httpType?this.props.httpType:"POST";
+        type=type.toUpperCase();
         let fetchmodel=new FetchModel(this.props.validateUrl,this.validateHandlerSuccess,{key:value});
+        fetchmodel.headers=this.props.httpHeaders;
+        if(this.props.contentType){
+            //如果传contentType值则采用传入的械
+            //否则默认
+          
+            fetchmodel.contentType=  this.props.contentType;
+            fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
+        }
+        type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
+         
         console.log("text-validing:",fetchmodel);
-        unit.fetch.post(fetchmodel);
+      
     }
     validateHandlerSuccess () {//后台请求验证成功
         this.setState({
@@ -233,7 +245,7 @@ class  Text  extends Component{
                               onChange={this.onChange} onKeyDown={this.keyDownHandler}
                               onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
                               onBlur={this.blurHandler}
-                              value={this.state.value}></input>;
+                              value={(this.state.value==null||this.state.value==undefined)?"":this.state.value}></input>;
         }
         else {
             //textarea 不支持null值
@@ -246,7 +258,7 @@ class  Text  extends Component{
                                 onChange={this.onChange} onKeyDown={this.keyDownHandler}
                                 onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
                                 onBlur={this.blurHandler}
-                                value={value}></textarea>;
+                                value={(this.state.value==null||this.state.value==undefined)?"":this.state.value}></textarea>;
         }
 
 

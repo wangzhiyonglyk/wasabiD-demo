@@ -146,6 +146,7 @@ class   Picker  extends  Component{
             type=type.toUpperCase();
          
             let  fetchmodel = new FetchModel(url, this.loadProvinceSuccess, params, this.loadError);
+            fetchmodel.headers=this.props.httpHeaders;
             if(this.props.contentType){
                 //如果传contentType值则采用传入的械
                 //否则默认

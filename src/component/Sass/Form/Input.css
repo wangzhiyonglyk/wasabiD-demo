@@ -70,7 +70,7 @@ label
  输入框主体
  */
 .wasabi-form-group .wasabi-form-group-body {
-   min-width: 200px;
+   min-width: 150px;
     float: left;
     position: relative;
     flex:1;

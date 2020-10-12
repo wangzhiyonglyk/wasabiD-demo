@@ -52,6 +52,7 @@ export  default function (value)  {
                         if (typeof this.props.min == "number") {
                             switch (this.props.type) {
                                 case "text":
+                                    case "textarea":
                                     if (value.toString().length < this.props.min) {
                                         isvalidate = false;
                                         helpTip = "长度不能小于" + this.props.min;
@@ -95,6 +96,7 @@ export  default function (value)  {
                             {
                                 switch (this.props.type) {
                                     case "text":
+                                        case"textarea":
                                         if (value.toString().length > this.props.max) {
                                             isvalidate = false;
                                             helpTip = "长度不能大于" + this.props.max;

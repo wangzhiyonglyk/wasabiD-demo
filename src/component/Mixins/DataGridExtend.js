@@ -213,6 +213,7 @@ let DataGridExtend= {
             let type=this.props.httpType?this.props.httpType:"POST";
              type=type.toUpperCase();
             var fetchmodel=new FetchModel(headerUrl,this.getHeaderDataHandlerSuccess,{url:this.state.url},this.ajaxError,type);
+             fetchmodel.headers=this.props.httpHeaders;
             if(this.props.contentType){
                 //如果传contentType值则采用传入的械
                 //否则默认
@@ -357,6 +358,7 @@ let DataGridExtend= {
             let type=this.props.httpType?this.props.httpType:"POST";
             type=type.toUpperCase();
             var fetchmodel = new FetchModel(this.state.updateUrl, this.remoteUpdateRowuccess.bind(this,newEditIndex), {model: this.state.data[this.state.editIndex]}, this.ajaxError,type);
+            fetchmodel.headers=this.props.httpHeaders;
             if(this.props.contentType){
                 //如果传contentType值则采用传入的械
                 //否则默认

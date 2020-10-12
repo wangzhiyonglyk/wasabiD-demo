@@ -99,7 +99,7 @@ class  ComboBox extends Component{
                 control = this.renderSelect();
                 break;
             case "time":
-                control = this.renderTime();
+                control = this.renderDatePicker();
                 break;
             case "picker":
                 control = this.renderPicker();

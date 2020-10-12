@@ -137,7 +137,7 @@ return null;
         return <div className={activename}>
             <div className={" wasabi-overlay " + (this.props.modal == true ? "active" : "")}></div>
             <Resize ref="resize"
-                    className="wasabi-modal fadein" resize={this.props.resize}>
+                    className={"wasabi-modal fadein "+ this.props.className}  style={this.props.style} resize={this.props.resize}>
                 <a className="wasabi-modal-close" onClick={this.close}></a>
                 <div className="wasabi-modal-header" ref="header" onMouseMove={this.mouseMoveHandler}
                      onMouseDown={this.mouseDownHandler}
@@ -163,7 +163,8 @@ return null;
 }
 
 Modal.propTypes={
-    
+    className:PropTypes.oneOfType([PropTypes.number, PropTypes.string]), 
+    style:PropTypes.object,
     resize: PropTypes.bool,
     closedHandler: PropTypes.func,
     OKHandler: PropTypes.func,
@@ -171,7 +172,8 @@ Modal.propTypes={
 }
 
 Modal.defaultProps={
-   
+   className:"",
+   style:{},
     width: 400,//宽度
     height: 400,//高度
     resize: false,//是否可以改变大小

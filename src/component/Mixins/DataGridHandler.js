@@ -4,77 +4,69 @@
  * 将DataGrid拆分,基本处理事件存在这里
  */
 import React, { Component } from "react";
-import   unit from "../libs/unit.js";
+import unit from "../libs/unit.js";
 import FetchModel from "../Model/FetchModel.js";
 import Message from "../Unit/Message.jsx";
-let DataGridHandler={
+let DataGridHandler = {
 
     //列表自用处理函数
-    paginationHandler:function(pageIndex) {//分页处理函数
-        if(pageIndex==this.state.pageIndex) {//当前页,不处理
-            return ;
+    paginationHandler: function (pageIndex) {//分页处理函数
+        if (pageIndex == this.state.pageIndex) {//当前页,不处理
+            return;
         }
         else {//跳转到指定页
-         
-            this.updateHandler(this.state.url,this.state.pageSize,pageIndex,this.state.sortName,this.state.sortOrder,null,null);
+
+            this.updateHandler(this.state.url, this.state.pageSize, pageIndex, this.state.sortName, this.state.sortOrder, null, null);
         }
     },
-    prePaginationHandler:function() {//上一页
-       
-        if(this.state.pageIndex==1)
-        {
+    prePaginationHandler: function () {//上一页
+
+        if (this.state.pageIndex == 1) {
 
         }
         else {
-            this.paginationHandler(this.state.pageIndex-1);
+            this.paginationHandler(this.state.pageIndex - 1);
         }
 
     },
-    nextPaginationHandler: function() {//下一页
-       
-        var pageAll = ( parseInt(this.state.total / this.state.pageSize));//共多少页
+    nextPaginationHandler: function () {//下一页
+
+        var pageAll = (parseInt(this.state.total / this.state.pageSize));//共多少页
         var lastPageNum = (this.state.total % this.state.pageSize);
         if (lastPageNum > 0) {
             pageAll++;
         }
-        if(this.state.pageIndex==pageAll)
-        {
+        if (this.state.pageIndex == pageAll) {
 
         }
-        else
-        {
-            this.paginationHandler(this.state.pageIndex+1);
+        else {
+            this.paginationHandler(this.state.pageIndex + 1);
         }
     },
-    pageSizeHandler: function(event) {
+    pageSizeHandler: function (event) {
 
-        this.updateHandler(this.state.url,event.target.value*1,this.state.pageIndex,this.state.sortName,this.state.sortOrder,null);
+        this.updateHandler(this.state.url, event.target.value * 1, this.state.pageIndex, this.state.sortName, this.state.sortOrder, null);
     },
-    sumHandler:function(footerModel) {//计算某一列的总和
-        var sum=null;
-        if(this.state.data instanceof  Array)
-        {
-            this.state.data.map((rowData,rowIndex) =>{
+    sumHandler: function (footerModel) {//计算某一列的总和
+        var sum = null;
+        if (this.state.data instanceof Array) {
+            this.state.data.map((rowData, rowIndex) => {
 
-                var footerModelValue=rowData[footerModel.name];//当前行当前列的值
-            if(typeof footerModel.content==="function")
-            {//有函数则通过计算得到值
-                footerModelValue=footerModel.content(rowData,rowIndex);//
-            }
-
-            if(typeof (footerModelValue*1)=="number")
-
-            {//如果值可以传为数值
-                if(sum==null)
-                {
-                    sum=0;//可以计算则先设置为0
+                var footerModelValue = rowData[footerModel.name];//当前行当前列的值
+                if (typeof footerModel.content === "function") {//有函数则通过计算得到值
+                    footerModelValue = footerModel.content(rowData, rowIndex);//
                 }
-                sum+=footerModelValue*1;
-            }
-            else {
 
-            }
-        });
+                if (typeof (footerModelValue * 1) == "number") {//如果值可以传为数值
+                    if (sum == null) {
+                        sum = 0;//可以计算则先设置为0
+                    }
+                    sum += footerModelValue * 1;
+                }
+                else {
+
+                }
+            });
         }
         else {
         }
@@ -82,111 +74,106 @@ let DataGridHandler={
 
 
     },
-    avgHandler:function(footerModel) {//计算某一列的平均值
-        var sum=0; var avg=null;
-        if(this.state.data instanceof  Array)
-        {
-            this.state.data.map((rowData,rowIndex) =>{
+    avgHandler: function (footerModel) {//计算某一列的平均值
+        var sum = 0; var avg = null;
+        if (this.state.data instanceof Array) {
+            this.state.data.map((rowData, rowIndex) => {
                 var footerModelValue = rowData[footerModel.name];//当前行当前列的值
-            if (typeof  footerModel.content === "function") {//有函数则通过计算得到值
-                footerModelValue = footerModel.content(rowData, rowIndex);//
-            }
-
-            if (typeof (footerModelValue * 1) == "number") {
-                if (sum == null) {
-                    sum = 0;//可以计算则先设置为0
+                if (typeof footerModel.content === "function") {//有函数则通过计算得到值
+                    footerModelValue = footerModel.content(rowData, rowIndex);//
                 }
-                sum += footerModelValue * 1;
-            } else {
 
-            }
+                if (typeof (footerModelValue * 1) == "number") {
+                    if (sum == null) {
+                        sum = 0;//可以计算则先设置为0
+                    }
+                    sum += footerModelValue * 1;
+                } else {
 
-        });
-            avg=(sum/this.state.data.length).toFixed(2);
+                }
+
+            });
+            avg = (sum / this.state.data.length).toFixed(2);
         }
         else {
         }
         return avg;
     },
-    onSort:function(sortName,sortOrder) {  //排序事件
-        this.updateHandler(this.state.url,this.state.pageSize, 1, sortName, sortOrder);
+    onSort: function (sortName, sortOrder) {  //排序事件
+        this.updateHandler(this.state.url, this.state.pageSize, 1, sortName, sortOrder);
 
     },
 
     //更新函数
-    updateHandler:function(url,pageSize,pageIndex,sortName,sortOrder,params) {////数据处理函数,更新
+    updateHandler: function (url, pageSize, pageIndex, sortName, sortOrder, params) {////数据处理函数,更新
 
 
-        if(this.state.addData.length>0||this.state.deleteData.length>0||this.state.updatedData.length>0) {
-            Message.confirm("有脏数据,是否继续更新列表?", this.updateHandlerConfirm.bind(this, url, pageSize, pageIndex, sortName, sortOrder, params), ()=>  {
+        if (this.state.addData.length > 0 || this.state.deleteData.length > 0 || this.state.updatedData.length > 0) {
+            Message.confirm("有脏数据,是否继续更新列表?", this.updateHandlerConfirm.bind(this, url, pageSize, pageIndex, sortName, sortOrder, params), () => {
                 return;
             })
 
         }
-        else{
+        else {
             this.updateHandlerConfirm(url, pageSize, pageIndex, sortName, sortOrder, params);
         }
     },
-    updateHandlerConfirm:function(url, pageSize, pageIndex, sortName, sortOrder, params) {
+    updateHandlerConfirm: function (url, pageSize, pageIndex, sortName, sortOrder, params) {
         /*
      url与params而url可能是通过reload方法传进来的,并没有作为状态值绑定
      headers可能是后期才传了,见Page组件可知
      所以此处需要详细判断
      */
-        if(!url)
-        {//如果为空,先取状态值中...
-            url=this.state.url;
+        if (!url) {//如果为空,先取状态值中...
+            url = this.state.url;
         }
 
-        if(url) {
+        if (url) {
             this.setState({
-                loading:true,
-                url:url,//更新,有可能从reload那里直接改变了url
-            
+                loading: true,
+                url: url,//更新,有可能从reload那里直接改变了url
+
             })
-            var actualParams={};
-            if(!params&&this.state.params&&typeof this.state.params =="object")
-            {//新的参数为null或者undefined，旧参数不为空
+            var actualParams = {};
+            if (!params && this.state.params && typeof this.state.params == "object") {//新的参数为null或者undefined，旧参数不为空
                 actualParams = unit.clone(this.state.params);
-                params=unit.clone(this.state.params);//保存以便下一次更新
+                params = unit.clone(this.state.params);//保存以便下一次更新
             }
-            else
-            {//新参数不为空
-                actualParams=unit.clone(params);//复制，否则后面参数就会多加四个默认参数
+            else {//新参数不为空
+                actualParams = unit.clone(params);//复制，否则后面参数就会多加四个默认参数
             }
 
-            if(this.props.pagination==true)
-            {
-                if(!actualParams)
-                    {
-                        actualParams={};
-                    }
-                actualParams.pageSize=pageSize;
-                actualParams.pageIndex=pageIndex;
-                actualParams.sortName=sortName;
-                actualParams.sortOrder=sortOrder;
+            if (this.props.pagination == true) {
+                if (!actualParams) {
+                    actualParams = {};
+                }
+                actualParams.pageSize = pageSize;
+                actualParams.pageIndex = pageIndex;
+                actualParams.sortName = sortName;
+                actualParams.sortOrder = sortOrder;
             }
-           
+
             /*
              在查询失败后可能要继续调用updateHandler查询前一页数据,所以传url,以便回调,
              而pageSize,pageIndex,sortName,sortOrder,params这些参数在查询成功后再更新
              所以回传
              */
-          
-             let type=this.props.httpType?this.props.httpType:"POST";
-             type=type.toUpperCase();
-            var fetchmodel=new FetchModel(url,this.loadSuccess.bind(this,url,pageSize,pageIndex,sortName,sortOrder,params),actualParams,this.loadError,type);
-            if(this.props.contentType){
+
+            let type = this.props.httpType ? this.props.httpType : "POST";
+            type = type.toUpperCase();
+            let fetchmodel = new FetchModel(url, this.loadSuccess.bind(this, url, pageSize, pageIndex, sortName, sortOrder, params), actualParams, this.loadError, type,this.props.httpHeaders);
+            fetchmodel.headers=this.props.httpHeaders;
+            if (this.props.contentType) {
                 //如果传contentType值则采用传入的械
                 //否则默认
-              
-                fetchmodel.contentType=  this.props.contentType;
-                fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
-              }
-             
-            console.log("datagrid-开始查询:",fetchmodel);
-            
-           type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
+
+                fetchmodel.contentType = this.props.contentType;
+                fetchmodel.data = fetchmodel.contentType == "application/json" ? JSON.stringify(fetchmodel.data) : fetchmodel.data;
+            }
+
+            console.log("datagrid-开始查询:", fetchmodel);
+
+            type == "POST" ? unit.fetch.post(fetchmodel) : unit.fetch.get(fetchmodel);
         }
         else {
             //没有传url,判断用户是否自定义了更新函数
@@ -197,14 +184,14 @@ let DataGridHandler={
         }
 
     },
-    loadSuccess:function(url,pageSize,pageIndex,sortName,sortOrder,params,result) {//数据加载成功
+    loadSuccess: function (url, pageSize, pageIndex, sortName, sortOrder, params, result) {//数据加载成功
 
-        
-        if(this.props.loadSuccess){
+
+        if (this.props.loadSuccess) {
             //如果父组件指定了数据加载后的方法，先执行，然后再处理数据
 
-            result=this.props.loadSuccess(result);
-            if(!result){
+            result = this.props.loadSuccess(result);
+            if (!result) {
                 Message.error("您传递的loadSuccess方法没有返回值");
                 return;
             }
@@ -212,72 +199,63 @@ let DataGridHandler={
         var dataResult;//最终数据
         var totalResult;//最终总共记录
         var footerResult;//最终统计数据
-        var dataSource=this.props.dataSource;//数据源
-      
-        if(dataSource) {//需要重新指定数据源
-            dataResult= unit.getSource( result,dataSource);
+        var dataSource = this.props.dataSource;//数据源
+
+        if (dataSource) {//需要重新指定数据源
+            dataResult = unit.getSource(result, dataSource);
         }
         else {
-            dataResult=result;
+            dataResult = result;
         }
-        if(this.props.pagination&&this.props.totalSource) {//分页而且需要重新指定总记录数的数据源
+        if (this.props.pagination && this.props.totalSource) {//分页而且需要重新指定总记录数的数据源
             totalResult = unit.getSource(result, this.props.totalSource);
         }
-        else if(this.props.pagination)
-        {//分页了,没有指定,使用默认的
-            if(result.total)
-            {
-                totalResult=result.total;
+        else if (this.props.pagination) {//分页了,没有指定,使用默认的
+            if (result.total) {
+                totalResult = result.total;
             }
-            else
-            {
-                totalResult=null;
+            else {
+                totalResult = null;
                 throw ("datagrid分页了,但返回的数据没有指定total");
             }
 
         }
         else {//不分页
-            totalResult=dataResult.length;
+            totalResult = dataResult.length;
         }
 
-        if(this.props.footerSource)//需要重新指定页脚的数据源
+        if (this.props.footerSource)//需要重新指定页脚的数据源
         {
-            footerResult= unit.getSource( result,this.props.footerSource);
+            footerResult = unit.getSource(result, this.props.footerSource);
         }
-        else
-        {//没有指定，
-            if(result.footer)
-            {
-                footerResult=result.footer;//默认的
+        else {//没有指定，
+            if (result.footer) {
+                footerResult = result.footer;//默认的
             }
-            else
-            {
+            else {
 
             }
 
 
         }
-        if(!footerResult)
-        {
-            footerResult=this.state.footer;
+        if (!footerResult) {
+            footerResult = this.state.footer;
         }
-        console.log("datagrid-fetch结果",{
-            "原数据":result,
-            "处理后的数据":dataResult
+        console.log("datagrid-fetch结果", {
+            "原数据": result,
+            "处理后的数据": dataResult
         });
-        if(totalResult>0 &&dataResult&& dataResult instanceof  Array&&dataResult.length==0&&totalResult>0&&pageIndex!=1)
-        {
+        if (totalResult > 0 && dataResult && dataResult instanceof Array && dataResult.length == 0 && totalResult > 0 && pageIndex != 1) {
             //有总记录，没有当前记录数,不是第一页，继续查询转到上一页
-            this.updateHandler(url,pageSize,pageIndex-1,sortName,sortOrder,params);
+            this.updateHandler(url, pageSize, pageIndex - 1, sortName, sortOrder, params);
         }
         else {
             //查询成功
-            if(dataResult&& dataResult instanceof  Array)
-            {//是数组,
-                dataResult= (this.props.pagination == true ? dataResult.slice(0, pageSize) : dataResult);
+            if (dataResult && dataResult instanceof Array) {//是数组,
+                dataResult = (this.props.pagination == true ? dataResult.slice(0, pageSize) : dataResult);
             }
-            var checkedData=this.state.checkedData;//之前被选择的数据
-            if(this.props.clearChecked==false) {//不清除之前的选择
+            var checkedData = this.state.checkedData;//之前被选择的数据
+            if (this.props.clearChecked == false) {//不清除之前的选择
                 for (let dataIndex = 0; dataIndex < dataResult; dataIndex++) {
                     let currentKey = this.getKey(dataIndex, pageIndex);//得到当前的key
                     if (checkedData.has(currentKey)) {//如果被选择则修改数据源
@@ -295,7 +273,7 @@ let DataGridHandler={
                 total: totalResult,
                 footer: footerResult,
                 loading: false,
-                checkedData:this.props.clearChecked==true?new Map():checkedData,
+                checkedData: this.props.clearChecked == true ? new Map() : checkedData,
                 detailIndex: null,//重新查询要清空详情
                 detailView: null,
 
@@ -306,146 +284,131 @@ let DataGridHandler={
 
     },
 
-    loadError:function(message) {//查询失败
-        console.log("datagrid-error",message);
-        Message. error(message);
+    loadError: function (message) {//查询失败
+        console.log("datagrid-error", message);
+        Message.error(message);
         this.setState({
-            loading:false,
+            loading: false,
         })
     },
     //选择处理函数
-    getKey: function(index,pageIndex) {//获取指定行的关键字，没有指定页号则为当前页
+    getKey: function (index, pageIndex) {//获取指定行的关键字，没有指定页号则为当前页
         let key;//TODO
-        if(!pageIndex) {
-           
+        if (!pageIndex) {
+
             pageIndex = this.state.pageIndex;
         }
-        if(index==null&&index==undefined)
-        {
+        if (index == null && index == undefined) {
             console.log(new Error("index 值传错"));
         }
-        else
-        {
-             key = pageIndex.toString() + "-" + index.toString();//默认用序号作为关键字
+        else {
+            key = pageIndex.toString() + "-" + index.toString();//默认用序号作为关键字
         }
 
 
 
         return key;
     },
-    onChecked:function(index,value) {//选中事件
-        let checkedData=(this.state.checkedData);//已经选中的行
-        let checkedIndex=(this.state.checkedIndex);//已经选中的行的序号，用于导出
-        if(this.props.singleSelect==true)
-        {//单选则清空
-            checkedData=new Map();//单选先清空之前的选择
-            checkedIndex=new Map();
+    onChecked: function (index, value) {//选中事件
+        let checkedData = (this.state.checkedData);//已经选中的行
+        let checkedIndex = (this.state.checkedIndex);//已经选中的行的序号，用于导出
+        if (this.props.singleSelect == true) {//单选则清空
+            checkedData = new Map();//单选先清空之前的选择
+            checkedIndex = new Map();
         }
-        let key=this.getKey(index);//获取关键字
-        if(value&&value!=""){
-            checkedData.set(key,this.state.data[index]);
-            checkedIndex.set(index+"",index);
-        }else
-        {
+        let key = this.getKey(index);//获取关键字
+        if (value && value != "") {
+            checkedData.set(key, this.state.data[index]);
+            checkedIndex.set(index + "", index);
+        } else {
             checkedData.delete(key);
-            checkedIndex.delete(index+"");
+            checkedIndex.delete(index + "");
         }
 
         this.setState({
-            checkedData:checkedData,
-            checkedIndex:checkedIndex
+            checkedData: checkedData,
+            checkedIndex: checkedIndex
         })
-        if(this.props.onChecked!=null)
-        {
-            var data=[];
+        if (this.props.onChecked != null) {
+            var data = [];
             for (let value of checkedData.values()) {
                 data.push(value);
             }
             this.props.onChecked(data);//用于返回
         }
     },
-    onTRMouseDown:function(index,event) {//行事件，一定要用鼠标按下事件,不保存在状态值中
-        if(this.props.focusAble) {
+    onTRMouseDown: function (index, event) {//行事件，一定要用鼠标按下事件,不保存在状态值中
+        if (this.props.focusAble) {
             let node = event.target;
             while (node.nodeName.toLowerCase() != "tr" && node.nodeName.toLowerCase() != "body") {
                 node = node.parentElement;
             }
-            var trs=this.refs.realTable.children[1].children;
-            for(var i=0;i<trs.length;i++)
-            {
-                trs[i].className=trs[i].className.replace("selected","");//先去掉
+            var trs = this.refs.realTable.children[1].children;
+            for (var i = 0; i < trs.length; i++) {
+                trs[i].className = trs[i].className.replace("selected", "");//先去掉
             }
             if (node.className.indexOf("selected") > -1) {
 
             }
             else {
-                node.className ="selected"+( node.className?" "+node.className:"") ;
+                node.className = "selected" + (node.className ? " " + node.className : "");
             }
         }
-         this.focusIndex=index;//不更新状态值，否则导致频繁的更新
+        this.focusIndex = index;//不更新状态值，否则导致频繁的更新
 
     },
-    checkCurrentPageCheckedAll: function() {//判断当前页是否全部选中
-        if(this.state.data instanceof Array )
-        {
+    checkCurrentPageCheckedAll: function () {//判断当前页是否全部选中
+        if (this.state.data instanceof Array) {
 
         }
-        else
-        {
-            return ;
+        else {
+            return;
         }
-        let length=this.state.data.length;
-        if(length==0)
-        {
-            return  false;//如果没有数据，则不判断，直接返回
+        let length = this.state.data.length;
+        if (length == 0) {
+            return false;//如果没有数据，则不判断，直接返回
         }
-        var ischeckall=true;
-        for(let i=0;i<length;i++)
-        {
-            if(!this.state.checkedData.has(this.getKey(i)))
-            {
-                ischeckall=false;
+        var ischeckall = true;
+        for (let i = 0; i < length; i++) {
+            if (!this.state.checkedData.has(this.getKey(i))) {
+                ischeckall = false;
                 break;
             }
         }
         return ischeckall;
     },
-    checkedAllHandler:function(value) {//全选按钮的单击事件
-        if(this.state.data instanceof  Array)
-        {
+    checkedAllHandler: function (value) {//全选按钮的单击事件
+        if (this.state.data instanceof Array) {
 
         }
-        else
-        {
+        else {
             return;
         }
-        let length=this.state.data.length;
-        let checkedData=this.state.checkedData;
-        let checkedIndex=this.state.checkedIndex;
-        for(let i=0;i<length;i++)
-        {
-            let key=this.getKey(i);
-        
-            
-            if(value=="yes") {
+        let length = this.state.data.length;
+        let checkedData = this.state.checkedData;
+        let checkedIndex = this.state.checkedIndex;
+        for (let i = 0; i < length; i++) {
+            let key = this.getKey(i);
+
+
+            if (value == "yes") {
                 if (!checkedData.has(key)) {
-                    checkedIndex.set(i+"",i);
+                    checkedIndex.set(i + "", i);
                     checkedData.set(key, this.state.data[i]);//添加
                 }
             }
             else {
                 if (checkedData.has(key)) {
-                    checkedIndex.delete(i+"");
+                    checkedIndex.delete(i + "");
                     checkedData.delete(key);//删除
                 }
             }
         }
 
 
-        this.setState({checkedData:checkedData,checkedIndex:checkedIndex});
-        if(this.props.onChecked!=null)
-        {//执行父组件的onchecked事件
-            var data=[];
+        this.setState({ checkedData: checkedData, checkedIndex: checkedIndex });
+        if (this.props.onChecked != null) {//执行父组件的onchecked事件
+            var data = [];
             for (let value of checkedData.values()) {
                 data.push(value);
             }
@@ -455,70 +418,63 @@ let DataGridHandler={
     },
 
     //只读函数,父组件通过refs调用
-    clearData:function() {//清空数据
+    clearData: function () {//清空数据
         this.setState({
-            data:[],
-            params:[],
+            data: [],
+            params: [],
         });
     },
-    reload:function(params,url) {//重新查询数据,
+    reload: function (params, url) {//重新查询数据,
 
-        
+
         //存在用户第一次没有传url,第二次才传url
-        if(!url) {//如果为空,则使用旧的
-            url=this.state.url;//得到旧的url
+        if (!url) {//如果为空,则使用旧的
+            url = this.state.url;//得到旧的url
         }
-        if(!url)
-        {//没有传url
-            if(this.props.updateHandler)
-            {//用户自定义了更新事件
-                this.props.updateHandler(this.state.pageSize,this.state.pageIndex,this.state.sortName,this.state.sortOrder);
+        if (!url) {//没有传url
+            if (this.props.updateHandler) {//用户自定义了更新事件
+                this.props.updateHandler(this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder);
             }
         }
         else {//传了url
-            
-            if( this.showUpdate(params,this.state.params))
-            {//参数发生改变,从第一页查起
-             
-                this.updateHandler(url,this.state.pageSize, 1, this.state.sortName, this.state.sortOrder,params);
+
+            if (this.showUpdate(params, this.state.params)) {//参数发生改变,从第一页查起
+
+                this.updateHandler(url, this.state.pageSize, 1, this.state.sortName, this.state.sortOrder, params);
             }
-            else
-            {//从当前页查起
-                this.updateHandler(url,this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder,params);
+            else {//从当前页查起
+                this.updateHandler(url, this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder, params);
             }
 
         }
     },
-    getFocusIndex: function() { //只读函数,用于父组件获取数据
+    getFocusIndex: function () { //只读函数,用于父组件获取数据
 
         return this.focusIndex;
     },
-    getFocusRowData:function(index) {//获取当前焦点行的数据
-        if(index!=null&&index!=undefined)
-        {
+    getFocusRowData: function (index) {//获取当前焦点行的数据
+        if (index != null && index != undefined) {
 
         }
-        else
-        {
-            index=this.focusIndex;
+        else {
+            index = this.focusIndex;
         }
         return this.state.data[index];
     },
-    getChecked: function() {
+    getChecked: function () {
         //获取选中的行数据
-        var data=[];
+        var data = [];
         for (let value of this.state.checkedData.values()) {
             data.push(value);
         }
         return data;
     },
-    getFooterData: function() {//获取得页脚的统计值
+    getFooterData: function () {//获取得页脚的统计值
         return this.footerActualData;
     },
-    detailHandler:function(rowIndex,rowData ) {//执行显示详情功能
-        var key=this.getKey(rowIndex);//获取关键值
-        if(key==this.state.detailIndex)
-        {
+    detailHandler: function (rowIndex, rowData) {//执行显示详情功能
+        var key = this.getKey(rowIndex);//获取关键值
+        if (key == this.state.detailIndex) {
             this.setState({
                 detailIndex: null,
                 detailView: null,
@@ -527,7 +483,7 @@ let DataGridHandler={
         else {
             if (this.props.detailHandler != null) {
                 var detail = this.props.detailHandler(rowData);
-                if(!detail) {
+                if (!detail) {
                     this.setState({
                         detailIndex: null,//方便下次操作
                         detailView: null,
@@ -540,43 +496,73 @@ let DataGridHandler={
                     }
 
                     this.setState({
-                            detailIndex: key,
-                            detailView: <tr key={key+"detail"}>
-                        <td colSpan={colSpan}><div className="wasabi-detail" >{detail}</div></td>
+                        detailIndex: key,
+                        detailView: <tr key={key + "detail"}>
+                            <td colSpan={colSpan}><div className="wasabi-detail" >{detail}</div></td>
                         </tr>,
-                })
+                    })
                 }
 
             }
         }
     }
     ,
-    export(selected,title){
-   
-      title=title?title:"excel"+unit.dateformat(new Date(),"yyyy-MM-dd");
-        let tableHtml="<table>";
-        if(selected)
-        {
-            tableHtml+=this.refs.realTable.children[0].outerHTML+"<tbody>";
-        
-            for (let value of this.state.checkedIndex.values()) {
-                tableHtml+=  this.refs.realTable.children[1].children[value].outerHTML;
-              }
+    export(selected, title) {
 
-        tableHtml+="</tbody></table>";
-          
+        title = title ? title : "excel" + unit.dateformat(new Date(), "yyyy-MM-dd");
+        let tableHtml = "<table border='1'> ";
+        let lastIndex = this.refs.realTable.children[1].children[0].children.length;//列数
+        //导出表头
+        tableHtml += "<thead><tr>";
+        for (let i = 0; i < lastIndex; i++) {
+            let html = this.refs.realTable.children[0].children[0].children[i].outerHTML;
+            if (html.indexOf("wasabi-tableorderIndex") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")) {//除去序号列与选择列及不需要导出的列
+                continue;
+            }
+            tableHtml += html;
         }
-        else{
-            tableHtml=  this.refs.realTable.outerHTML;//直接导出
-          
+        tableHtml += "</tr></thead><tbody>";
+        //导出表体
+        if (selected) {
+
+            for (let value of this.state.checkedIndex.values()) {
+                tableHtml += "<tr>"
+                for (let i = 0; i < lastIndex; i++) {
+                    let html = this.refs.realTable.children[1].children[value].children[i].outerHTML;
+                    if (html.indexOf("wasabi-tableorderIndex") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")) {//除去序号列与选择列及不需要导出的列
+                        continue;
+                    }
+                    tableHtml += html;
+                }
+                tableHtml += "</tr>";
+            }
+
+
         }
-      
-        let  html = "<html><head><meta charset='UTF-8'></head><body>"+ tableHtml+"</body></html>";
+        else {
+            for (let rowIndex = 0; i < this.state.data; rowIndex++) {
+                tableHtml += "<tr>"
+                for (let i = 0; i < lastIndex; i++) {
+                    if (this.refs.realTable.children[1].children.length > rowIndex) {
+                        let html = this.refs.realTable.children[1].children[rowIndex].children[i].outerHTML;
+                        if (html.indexOf("wasabi-tableorderIndex") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")) {//除去序号列与选择列及不需要导出的列
+                            continue;
+                        }
+                        tableHtml += html;
+                    }
+                }
+                tableHtml += "</tr>";
+            }
+
+
+        }
+        tableHtml += "</tbody></table>";
+        let html = "<html><head><meta charset='UTF-8'></head><body>" + tableHtml + "</body></html>";
         // 创建一个Blob对象，第一个参数是文件的数据，第二个参数是文件类型属性对象
-        var blob = new Blob([html],{type:"application/vnd.ms-excel"});
+        var blob = new Blob([html], { type: "application/vnd.ms-excel" });
         var downloadA = document.createElement('a');
         downloadA.href = window.URL.createObjectURL(blob);
-        downloadA.download = title+".xls";
+        downloadA.download = title + ".xls";
         downloadA.click(); // 点我，点我，快点我
         window.URL.revokeObjectURL(downloadA.href);
 

@@ -27,13 +27,13 @@ class Time extends Component {
         /*
 
          */
-        var result = this.setInitValue(nextProps);
-        result.height = this.state.height;//高度仍用旧值，因为选择时回传父组件，还不需要消失
-        this.setState(result);
-        //滚动到指定位置
-        this.refs.hour.scrollTop = result.hour * 24;
-        this.refs.minute.scrollTop = result.minute * 24;
-        this.refs.second.scrollTop = result.second * 24;
+        // var result = this.setInitValue(nextProps);
+        // result.height = this.state.height;//高度仍用旧值，因为选择时回传父组件，还不需要消失
+        // this.setState(result);
+        // //滚动到指定位置
+        // this.refs.hour.scrollTop = result.hour * 24;
+        // this.refs.minute.scrollTop = result.minute * 24;
+        // this.refs.second.scrollTop = result.second * 24;
     }
     componentDidMount() {
         //滚动到指定位置
@@ -43,12 +43,30 @@ class Time extends Component {
 
     }
     getValue() {//获取值
-        return this.state.hour + ":" + this.state.minute + ":" + this.state.second;
+        let value =(this.state.hour>=10?this.state.hour:"0"+this.state.hour)+":"+(this.state.minute>=10?this.state.minute:"0"+this.state.minute)
+        +(this.props.hideSecond?"":":"+(this.state.second>=10?this.state.second:"0"+this.state.second));
+        return value;
     }
     setValue(value) {//设置值 
-        this.setState({
-            value: value,
-        })
+        value=this.formatValue(value);
+        if(value){
+            let hour=value.split(":")[0]*1;
+            let minute=value.split(":")[1]*1;
+            this.second=this.props.hideSecond?"":value.split(":")[2]*1;
+            this.setState({
+                hour:hour,
+                minute:minute,
+                second:second
+            })
+        }
+        else{
+            this.setState({
+                hour:"",
+                minute:"",
+                second:""
+            })
+        }
+      
     }
     setInitValue(props) {
         var date = new Date();
@@ -72,7 +90,8 @@ class Time extends Component {
             hour: value
         })
         if (this.props.onSelect != null) {
-            this.props.onSelect(value + ":" + this.state.minute + ":" + this.state.second, value + ":" + this.state.minute + ":" + this.state.second, this.props.name, null);
+            value=this.formatValue(value + ":" + this.state.minute + ":" + this.state.second)
+            this.props.onSelect(value, value, this.props.name, null);
         }
     }
     minuteHandler(value, tran) {
@@ -82,7 +101,8 @@ class Time extends Component {
             minute: value
         })
         if (this.props.onSelect != null) {
-            this.props.onSelect(this.state.hour + ":" + value + ":" + this.state.second, this.state.hour + ":" + value + ":" + this.state.second, this.props.name, null);
+            value=this.formatValue(this.state.hour + ":" + value + ":" + this.state.second)
+            this.props.onSelect(value, value, this.props.name, null);
         }
 
     }
@@ -94,7 +114,8 @@ class Time extends Component {
             second: value
         })
         if (this.props.onSelect != null) {
-            this.props.onSelect(this.state.hour + ":" + this.state.minute + ":" + value, this.state.hour + ":" + this.state.minute + ":" + value, this.props.name, null);
+            value=this.formatValue(this.state.hour + ":" + this.state.minute + ":" + value)
+            this.props.onSelect(value, value, this.props.name, null);
         }
 
     }
@@ -165,6 +186,9 @@ class Time extends Component {
     }
 
     showHandler() {
+        if(this.props.readonly){
+            return;
+        }
         this.setState({
             height: 146,
 
@@ -174,23 +198,34 @@ class Time extends Component {
     changeHandler() {
 
     }
+    /**
+     * 格式化值
+     * @param {*} value 
+     */
+    formatValue(value){
+       if(this.props.hideSecond){
+           value=value.split(":").length==3?value.substring(0,value.lastIndexOf(":")):value
+       }
+       return value;
+    }
     render() {
 
-
+   let value= this.getValue();
         return <div className="wasabi-time-picker-panel-inner" onMouseOut={this.mouseOutHandler}>
             <div className="wasabi-time-picker-panel-input-wrap">
                 <input className="wasabi-time-picker-panel-input  "
-                    onClick={this.showHandler} onChange={this.changeHandler} value={this.state.hour + ":" + this.state.minute + ":" + this.state.second} placeholder="请选择时间"></input>
+                    onClick={this.showHandler} onChange={this.changeHandler} 
+                     readOnly={this.props.readonly} value={value} placeholder="请选择时间"></input>
 
             </div>
-            <div className="wasabi-time-picker-panel-combobox" style={{ height: this.state.height }}>
+            <div className="wasabi-time-picker-panel-combobox" style={{ height: this.state.height,width:this.props.hideSecond?112:null }}>
                 <div ref="hour" key="hour" className="wasabi-time-picker-panel-select" >
                     <ul key="hour" >{this.renderHour()} </ul>
                 </div>
                 <div ref="minute" key="minute" className="wasabi-time-picker-panel-select" >
                     <ul key="minute">{this.rendMinute()}</ul>
                 </div>
-                <div ref="second" key="second" className="wasabi-time-picker-panel-select" >
+                <div ref="second" key="second" className="wasabi-time-picker-panel-select" style={{display:this.props.hideSecond?"none":"block"}} >
                     <ul key="second">{this.rendSecond()}</ul>
                 </div>
             </div></div>
@@ -201,7 +236,8 @@ Time.propTypes = {
     name: PropTypes.string,//表单字段名称
     hour: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//小时
     minute: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//分钟
-    second: PropTypes.oneOfType([PropTypes.number, PropTypes.string]) //秒
+    second: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), //秒
+    hideSecond:PropTypes.bool,//是否隐藏秒
 
 };
 Time.defaultProps = () => {
@@ -210,6 +246,7 @@ Time.defaultProps = () => {
         hour: date.getHours(),
         minute: date.getMinutes(),
         second: date.getSeconds(),
+        hideSecond:false
     }
 };
 export default Time;

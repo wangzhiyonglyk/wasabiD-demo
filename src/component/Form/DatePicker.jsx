@@ -13,7 +13,7 @@ import DateD from "./DateD.jsx";
 import DateTime from "./DateTime.jsx";
 import DateRange from "./DateRange.jsx";
 import DateTimeRange from "./DateTimeRange.jsx";
-
+import Time from "./Time";
 import validation from "../Lang/validation.js";
 import regs from "../Lang/regs.js";
 
@@ -61,6 +61,11 @@ class DatePicker extends Component {
 
   componentWillReceiveProps(nextProps) {
     //不是容器，不用默认处理
+    if(nextProps.value&&!this.state.value&&this.state.value!=nextProps.value){
+      this.setState({
+        value:nextProps.value
+      })
+    }
   }
   componentDidMount() {
     this.registerClickAway(this.hidePicker, this.refs.picker);//注册全局单击事件
@@ -69,7 +74,7 @@ class DatePicker extends Component {
   componentDidUpdate(){
     console.log(this.refs.pickerc.getBoundingClientRect());
     if(this.refs.pickerc.getBoundingClientRect().right>window.screen.availWidth){
-      this.refs.pickerc.style.right="-90px";
+      this.refs.pickerc.style.right="0px";
     }
   }
   getValue() {
@@ -83,7 +88,7 @@ class DatePicker extends Component {
     return value;
   }
   setValue(value) {
-    if (this.validate(value)) {
+    if (value&&this.validate(value)) {
       if(this.props.type=="daterange"&&value.indexOf(" ")>-1){
 //包含了时间
 
@@ -93,7 +98,13 @@ class DatePicker extends Component {
       value=value.join(",");
       }
       this.setState({
-        value: value
+        value: value,
+        text:value
+      });
+    }else{
+      this.setState({
+        value: "",
+        text:""
       });
     }
   }
@@ -186,7 +197,7 @@ class DatePicker extends Component {
       text: text
     });
     this.validate(value);
-    this.props.onSelect && this.props.onSelect("", "", this.props.name, null);
+    this.props.onSelect && this.props.onSelect(value, text, this.props.name, null);
   }
   clearHandler() {
     //清除数据
@@ -207,7 +218,7 @@ class DatePicker extends Component {
     this.props.onSelect && this.props.onSelect("", "", this.props.name, null);
   }
   _getText() {
-    var text = this.state.text;
+    var text = this.state.text?this.state.text:this.state.value;
     if (this.props.type == "date") {
       if (text && text.indexOf(" ") > -1) {
         text = text.split(" ")[0]; //除去显示的时间格式
@@ -252,7 +263,6 @@ class DatePicker extends Component {
   }
   renderDateTime() {
     var dateobj = this.splitDateTime(this.state.value);
-    console.log(dateobj);
     return (
       <DateTime
         ref='combobox'
@@ -369,7 +379,6 @@ class DatePicker extends Component {
   render() {
     let control = null;
     let controlDropClassName = "";
-console.log(this.props.type);
     switch (this.props.type) {
       case "date":
         control = this.renderDate();
@@ -489,5 +498,5 @@ console.log(this.props.type);
 DatePicker.propTypes = Object.assign({ type: PropTypes.oneOf(config) }, props);
 
 DatePicker.defaultProps = Object.assign({}, defaultProps, { type: "datetime" });
-mixins(DatePicker,[ClickAway]);ClickAway
+mixins(DatePicker,[ClickAway]);
 export default DatePicker;

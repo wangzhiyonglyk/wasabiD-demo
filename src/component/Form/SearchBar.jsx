@@ -61,7 +61,7 @@ class SearchBar extends Component {
       return;
     }
     for (let v in this.refs) {
-      if (this.refs[v].props.name && data[this.refs[v].props.name]) {
+      if (this.refs[v].props.name&&data[this.refs[v].props.name]!=null&&data[this.refs[v].props.name]!=undefined) {
         this.refs[v].setValue &&
           this.refs[v].setValue(data[this.refs[v].props.name]);
       } else if (this.refs[v].setData) {

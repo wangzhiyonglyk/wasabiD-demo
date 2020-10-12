@@ -240,7 +240,11 @@ float: left;
   width: 60px;
   height: 24px;
 }
-
+.wasabi-time-picker-panel-input[readonly]{
+  background-color: #eee;
+  opacity: 1;
+  cursor: not-allowed;
+}
 .wasabi-time-picker-panel-clear-btn {
   position: absolute;
   right: 5px;

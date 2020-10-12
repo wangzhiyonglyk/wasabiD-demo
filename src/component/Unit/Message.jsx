@@ -10,7 +10,10 @@ let  Message= {
         if (!!document.getElementById("wasabi-loading")) {
             //存在
             let child=document.getElementById("wasabi-loading");
-            document.body.removeChild(child);
+            if(child){
+                document.body.removeChild(child);
+            }
+         
             let info = document.createElement("div");
             info.id="wasabi-loading";
             document.body.appendChild(info);
@@ -25,8 +28,17 @@ let  Message= {
         }
     },
     hide(){
-        let child=document.getElementById("wasabi-loading");
-        document.body.removeChild(child);
+        try{
+            let child=document.getElementById("wasabi-loading");
+            if(child){
+                document.body.removeChild(child);
+            }
+        }
+        catch(e){
+
+        }
+        
+    
       
     },
     info(msg,timeout) {
