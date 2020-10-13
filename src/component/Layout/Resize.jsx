@@ -9,7 +9,7 @@ import("../Sass/Layout/resize.css");
 class Resize extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props);
+      
         this.state = {
             width: this.props.width,
             height: this.props.height,
@@ -110,6 +110,9 @@ class Resize extends React.Component {
     getDirection(targetElement,event) {
         //此处计算方向与光标图形分开，
         //当缩小时，要将方向向里多计算一点，否则缩小不流畅
+        if(!targetElement){
+            return;
+        }
         let  xPos, yPos, offset;
 
         xPos = event.clientX;//

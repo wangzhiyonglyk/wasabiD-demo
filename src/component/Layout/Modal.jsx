@@ -5,96 +5,101 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import  Button from "../Buttons/Button.jsx";
-import  Resize from "./Resize.jsx";
+import Button from "../Buttons/Button.jsx";
+import Resize from "./Resize.jsx";
 import events from "../Unit/events.js";
-import ("../Sass/Layout/Modal.css");
-import ("../Sass/Buttons/button.css");
-class Modal extends  React.Component {
+import unit from "../libs/unit"
+import("../Sass/Layout/Modal.css");
+import("../Sass/Buttons/button.css");
+class Modal extends React.Component {
     constructor(props) {
         super(props);
-        let width=(this.props.style&&this.props.style.width)?this.props.style.width:400;
-        let height=(this.props.style&&this.props.style.height)?this.props.style.height:400;
-        
+        let style = (this.props.style && unit.clone(this.props.style)) || {};
+        let width = (this.props.style && this.props.style.width) ? parseInt(this.props.style.width) : 400;
+        let height = (this.props.style && this.props.style.height) ? parseInt(this.props.style.height) : 400;
+        style.width = width;
+        style.height = height;
+        style.left ="calc(50% - "+(width/2).toFixed(2)+"px)";
+        style.top = "calc(50% - "+(height/2).toFixed(2)+"px)";
         this.state = {
-            title:this.props.title,
-            width:width,
-            height:height,
+            title: this.props.title,
+            style:style,
             visible: false,
-            left: (document.body.clientWidth - width) / 2,
-            top: 50,
-            oldLeft: (document.body.clientWidth - width) / 2,
-            oldTop: 50,
-            moveX: null,
-            moveY: null,
         }
         this.close = this.close.bind(this);
         this.open = this.open.bind(this);
         this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
         this.mouseDownHandler = this.mouseDownHandler.bind(this);
-        this.mouseOutHandler = this.mouseOutHandler.bind(this);
+
         this.mouseUpHandler = this.mouseUpHandler.bind(this);
         this.OKHandler = this.OKHandler.bind(this);
         this.cancelHandler = this.cancelHandler.bind(this);
     }
+    componentDidMount() {
+        events.on(document, "mousedown", this.mouseDownHandler)
+    }
     componentWillReceiveProps(nextProps) {
-        let width=(nextProps.style&&nextProps.style.width)?nextProps.style.width:this.state.width;
-        let height=(nextProps.style&&nextProps.style.height)?nextProps.style.height:this.state.height;
-        
-        this.setState({
-               ...nextProps,
-               width:width,
-               height:height,
-            }
-        );
+
 
     }
     close() {//关闭事件
-        this.setState({visible: false});
+        this.setState({ visible: false });
         if (this.props.closedHandler != null) {
             this.props.closedHandler();
         }
     }
 
     open(title) {//打开事件
-        this.setState({visible: true,title:title});
+        this.setState({ visible: true, title: title });
     }
-
+    /**
+     * 鼠标移动事件
+     * @param {*} event 
+     */
     mouseMoveHandler(event) {
-        return;
-        if (this.position != null & event.target.className == "wasabi-modal-header") {
-            let target= this.refs.resize.target();
-          target.style.left+=event.clientX-this.oldClientX;
-           target.style.top+=event.clientY-this.oldClientY;
+
+        if (this.position != null) {
+            let target = this.refs.resize.target();
+            target.style.left = (this.position.left + event.clientX - this.oldClientX) + "px";
+            target.style.top = (this.position.top + event.clientY - this.oldClientY) + "px";
+        }
+    }
+    /**
+     * 鼠标按下事件
+     * @param {*} event 
+     */
+    mouseDownHandler(event) {
+        if (event.target.className == "wasabi-modal-header") {
+            events.on(document, "mousemove", this.mouseMoveHandler)
+            events.on(document, "mouseup", this.mouseUpHandler)
+
+            //记住原始位置
+            this.oldClientX = event.clientX;
+            this.oldClientY = event.clientY;
+            let target = this.refs.resize.target();
+            this.position = target.getBoundingClientRect()
+
+        } else {
+            this.position = null;
         }
 
-
     }
 
-    mouseDownHandler(event) {
-        return ;
-        let position=   this.refs.resize.getBoundingClientRect();
-      if(position){
-         this.position=position;//记住方向
-         //记住原始位置
-          this.oldClientX=event.clientX;
-          this.oldClientY=event.clientY;
-    }
-}
-
-    mouseOutHandler(event) {
-        this.position=null;
-    }
-
+    /**
+     * 鼠标松开事件
+     * @param {*} event 
+     */
     mouseUpHandler(event) {
-        this.position=null;
+        this.position = null;
+        events.off(document, "mouseup", this.mouseUpHandler)
+        events.off(document, "mousemove", this.mouseMoveHandler)
     }
 
     OKHandler() {
         if (this.props.OKHandler != null) {
             this.props.OKHandler();
         }
-    
+
     }
 
     cancelHandler() {
@@ -106,26 +111,26 @@ class Modal extends  React.Component {
 
     render() {
 
-        if(!this.state.visible){
-return null;
+        if (!this.state.visible) {
+            return null;
         }
         let activename = "wasabi-modal-container ";
         if (this.state.visible == true) {
             activename = "wasabi-modal-container active";
         }
-      
-       
+
+
         let footer = null;
         let buttons = [];
-            if (this.props.OKHandler) {
-                buttons.push(
-                    <Button title="确定" key="ok" theme="primary" onClick={this.OKHandler}
-                            style={{width: 60, height: 30}}></Button>
-                )         
+        if (this.props.OKHandler) {
+            buttons.push(
+                <Button title="确定" key="ok" theme="primary" onClick={this.OKHandler}
+                    style={{ width: 60, height: 30 }}></Button>
+            )
             if (this.props.OKHandler) {
                 buttons.push(
                     <Button title="取消" key="cancel" theme="cancel" onClick={this.cancelHandler}
-                            style={{width: 60, height: 30, backgroundColor: "gray"}}></Button>
+                        style={{ width: 60, height: 30, backgroundColor: "gray" }}></Button>
                 )
             }
             footer = <div className="wasabi-modal-footer">
@@ -134,20 +139,22 @@ return null;
                 }
             </div>;
         }
+       
+     
         return <div className={activename}>
             <div className={" wasabi-overlay " + (this.props.modal == true ? "active" : "")}></div>
             <Resize ref="resize"
-                    className={"wasabi-modal fadein "+ this.props.className}  style={this.props.style} resize={this.props.resize}>
+                className={"wasabi-modal fadein " + this.props.className} style={this.state.style} resize={true}>
                 <a className="wasabi-modal-close" onClick={this.close}></a>
-                <div className="wasabi-modal-header" ref="header" onMouseMove={this.mouseMoveHandler}
-                     onMouseDown={this.mouseDownHandler}
-                     onMouseUp={this.mouseUpHandler}
-                     onMouseOut={this.mouseOutHandler}
+                <div className="wasabi-modal-header" ref="header"
+
+
+
                 >
-                    <div style={{display: "inline"}}>{this.state.title}</div>
+                    <div style={{ display: "inline" }}>{this.state.title}</div>
                 </div>
 
-                <div className="wasabi-modal-content" style={{height: this.state.height - 40}}>
+                <div className="wasabi-modal-content" >
                     {
                         this.props.children
                     }
@@ -162,18 +169,18 @@ return null;
     }
 }
 
-Modal.propTypes={
-    className:PropTypes.oneOfType([PropTypes.number, PropTypes.string]), 
-    style:PropTypes.object,
+Modal.propTypes = {
+    className: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    style: PropTypes.object,
     resize: PropTypes.bool,
     closedHandler: PropTypes.func,
     OKHandler: PropTypes.func,
     cancelHandler: PropTypes.func,
 }
 
-Modal.defaultProps={
-   className:"",
-   style:{},
+Modal.defaultProps = {
+    className: "",
+    style: {},
     width: 400,//宽度
     height: 400,//高度
     resize: false,//是否可以改变大小
@@ -181,4 +188,4 @@ Modal.defaultProps={
     OKHandler: null,//确定按钮的事件,
 }
 
-export default  Modal;
+export default Modal;

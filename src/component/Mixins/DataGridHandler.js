@@ -516,7 +516,7 @@ let DataGridHandler = {
         tableHtml += "<thead><tr>";
         for (let i = 0; i < lastIndex; i++) {
             let html = this.refs.realTable.children[0].children[0].children[i].outerHTML;
-            if (html.indexOf("wasabi-tableorderIndex") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")) {//除去序号列与选择列及不需要导出的列
+            if (html.indexOf("wasabi-tableorderIndex") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
                 continue;
             }
             tableHtml += html;
@@ -529,7 +529,7 @@ let DataGridHandler = {
                 tableHtml += "<tr>"
                 for (let i = 0; i < lastIndex; i++) {
                     let html = this.refs.realTable.children[1].children[value].children[i].outerHTML;
-                    if (html.indexOf("wasabi-tableorderIndex") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")) {//除去序号列与选择列及不需要导出的列
+                    if (html.indexOf("wasabi-tableorderIndex") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
                         continue;
                     }
                     tableHtml += html;
@@ -545,7 +545,7 @@ let DataGridHandler = {
                 for (let i = 0; i < lastIndex; i++) {
                     if (this.refs.realTable.children[1].children.length > rowIndex) {
                         let html = this.refs.realTable.children[1].children[rowIndex].children[i].outerHTML;
-                        if (html.indexOf("wasabi-tableorderIndex") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")) {//除去序号列与选择列及不需要导出的列
+                        if (html.indexOf("wasabi-tableorderIndex") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
                             continue;
                         }
                         tableHtml += html;
@@ -558,6 +558,7 @@ let DataGridHandler = {
         }
         tableHtml += "</tbody></table>";
         let html = "<html><head><meta charset='UTF-8'></head><body>" + tableHtml + "</body></html>";
+        html=html.replace(/export=\"1\"/g,"style=\"mso-number-format:\'\@\';\"");
         // 创建一个Blob对象，第一个参数是文件的数据，第二个参数是文件类型属性对象
         var blob = new Blob([html], { type: "application/vnd.ms-excel" });
         var downloadA = document.createElement('a');

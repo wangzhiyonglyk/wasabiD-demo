@@ -8,6 +8,7 @@ import Left from "../../component/Layout/Left";
 import Center from "../../component/Layout/Center";
 import Header from "../../component/Layout/Header";
 import Tabs from "../../component/Navigation/Tabs";
+import Modal from "../../component/Layout/Modal";
 import TabPanel from "../../component/Navigation/TabPanel";
 import configMenu from '../../../config/index'
 import "./index.css";
@@ -31,6 +32,7 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
+    this.refs.model.open();
     api.message();
     api.location();
   }
@@ -72,6 +74,7 @@ class Index extends React.Component {
   }
   onMenuClose(index,activeIndex){
  let tabs=this.state.tabs;
+ this.refs.model.open();
  tabs.splice(index,1)
     this.setState({
       tabs:tabs,
@@ -182,7 +185,7 @@ class Index extends React.Component {
           </Menus>
         </Left>
         <Center>
-         
+         <Modal ref="model"></Modal>
           <Tabs onClose={this.onMenuClose.bind(this)} ref="tabs" >
             {this.state.tabs.map(item => {
               return (
