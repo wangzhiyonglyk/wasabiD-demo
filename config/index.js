@@ -13,7 +13,11 @@ let entry = [
     src: './view/index/index.jsx' //脚本路径
   },
   
-  
+  {
+    filename: 'home', //文件名，
+    title: '后台管理系统', // 标题
+    src: './view/home/index.jsx' //脚本路径
+  },
 ];
 
 module.exports = entry;

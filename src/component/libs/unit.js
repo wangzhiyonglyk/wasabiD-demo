@@ -364,8 +364,6 @@ baseUtil.clone = function (obj) {
                 }
             }
             break;
-        case "function":
-            o=Object.assign({},obj);
         default:
             o = obj;
             break;

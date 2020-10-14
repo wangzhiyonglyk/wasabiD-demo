@@ -120,10 +120,10 @@ class Upload extends Component {
         // 实例化一个AJAX对象
         let xhr = new XMLHttpRequest();
         //添加headers
-        if (this.props.headers && this.props.headers instanceof Object) {
+        if (this.props.httpHeaders && this.props.httpHeaders instanceof Object) {
           try {
-            for (let prop in this.props.headers) {
-              xhr.setRequestHeader(prop, this.props.headers[prop]);
+            for (let prop in this.props.httpHeaders) {
+              xhr.setRequestHeader(prop, this.props.httpHeaders[prop]);
             }
           }
           catch(e){
@@ -263,7 +263,7 @@ class Upload extends Component {
 }
 
 Upload.propTypes = {
-  headers:PropTypes.headers,//请求的头部信息
+  httpHeaders:PropTypes.httpHeaders,//请求的头部信息
   params: PropTypes.object,//其他参数
   uploadurl: PropTypes.string.isRequired, //上传地址
   accept: PropTypes.string, //上传文件类型
@@ -273,7 +273,7 @@ Upload.propTypes = {
   uploadSuccess: PropTypes.func //上传成功事件
 };
 Upload.defaultProps = {
-  headers:{},
+  httpHeaders:{},
   params: null,
   name: null,
   multiple: false,

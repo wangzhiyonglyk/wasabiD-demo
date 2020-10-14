@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import Upload from "../../component/Action/Upload"
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -8,12 +8,12 @@ class Home extends React.Component {
     }
   }
   componentDidMount() {
- 
+ this.refs.upload.open()
   }
 
   render() {
   
-    return null;
+    return <div><Upload ref="upload"></Upload></div>;
   }
 }
 

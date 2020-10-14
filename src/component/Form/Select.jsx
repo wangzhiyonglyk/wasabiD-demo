@@ -235,7 +235,7 @@ class Select extends Component {
 
   onSelect(value, text, row) {
     //选中事件
-
+    let newvalue="",newtext="";
     if (this.state.multiple) {
       let oldvalue = [];
       let oldtext = [];
@@ -269,8 +269,8 @@ class Select extends Component {
         this.props.onSelect(value, text, this.props.name, row);
       }
     } else {
-      let newvalue = value;
-      let newtext = text;
+       newvalue = value;
+       newtext = text;
       this.setState({
         show: false,
         value: newvalue,

@@ -89,6 +89,7 @@ desc:模态窗口样式
   width: 100%;
   position: relative;
   text-align: left;
+  height: calc(100% - 40px);
 }
 .wasabi-modal-container .wasabi-modal{
   text-align: right;
