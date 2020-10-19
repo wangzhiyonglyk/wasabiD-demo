@@ -10,7 +10,6 @@
   margin-top: -6px;
   min-height: 0;
   height: 16px;
-  width: 20px;
   transform: scale(.83) translateY(3px);
   -webkit-transform: scale(.83) translateY(3px);
   -moz-transform: scale(.83) translateY(3px);
@@ -46,7 +45,6 @@
   position: relative;
   color:#666;
   display: inline-block;
-  user-select: none;
 }
 .wasabi-tree a:focus,.wasabi-tree a:hover{
   color:#666;
@@ -80,5 +78,5 @@
 }
 .wasabi-tree .wasabi-form-control{
   height: 25px;
-  width: 100px;
+  width: 100%;
 }

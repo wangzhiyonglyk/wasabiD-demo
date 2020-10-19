@@ -6,7 +6,7 @@
 
 import api from "../../libs/api"
 
-var baseUtil = {};
+let baseUtil = {};
 
 /// 获取地址栏参数的值
 baseUtil.GetArgsFromHref = function (sHref, sArgName) {
@@ -15,22 +15,22 @@ baseUtil.GetArgsFromHref = function (sHref, sArgName) {
     /// </summary>
     /// <param name="sHref" type="string">url地址，</param>
     /// <param name="iwidth" type="int">参数名称</param>
-    var args = sHref.toString().split("?");
-    var retval = "";
+    let args = sHref.toString().split("?");
+    let retval = "";
     if (args[0] == sHref) /*参数为空*/ {
         return retval;
         /*无需做任何处理*/
     }
-    var str = args[1];
+    let str = args[1];
     if (str.indexOf("#") > -1) {//处理锚点的问题，有可能在前面有可能在后面
         str = str.split("#");
         str = str[0].indexOf("=") > -1 ? str[0] : str[1];
 
     }
     args = str.toString().split("&");
-    for (var i = 0; i < args.length; i++) {
+    for (let i = 0; i < args.length; i++) {
         str = args[i];
-        var arg = str.toString().split("=");
+        let arg = str.toString().split("=");
         if (arg.length <= 1) continue;
         if (arg[0] == sArgName) retval = arg[1];
     }
@@ -39,8 +39,8 @@ baseUtil.GetArgsFromHref = function (sHref, sArgName) {
 
 //判断浏览器类型
 baseUtil.BrowserType = function () {
-    var browserType = "";
-    var userAgent = navigator.userAgent.toLowerCase(); //取得浏览器的userAgent字符串
+    let browserType = "";
+    let userAgent = navigator.userAgent.toLowerCase(); //取得浏览器的userAgent字符串
     if (userAgent.indexOf("opera") > -1) {//判断是否Opera浏览器
         browserType = "Opera"
     }
@@ -109,7 +109,7 @@ baseUtil.dealNumToEnglishFormat = function (num) {
         return num;
     }
 
-    var number = num.toString();
+    let number = num.toString();
     return number.split('').reverse().join('').replace(/(.{3})/g, '$1,').split('').reverse().join('').replace(/^,/, "");
 }
 
@@ -128,7 +128,7 @@ baseUtil.dateformat = function (date, format) {
         return null;
     }
 
-    var isToday = false;
+    let isToday = false;
 
 
     //上一个人写的 
@@ -137,7 +137,7 @@ baseUtil.dateformat = function (date, format) {
     //     date = new Date();
     // }
     //
-    // var o = {
+    // let o = {
     //     "M+": date.getMonth() + 1, //month
     //     "d+": date.getDate(), //day
     //     "h+": isToday ? date.getHours() : 23, //hour
@@ -148,7 +148,7 @@ baseUtil.dateformat = function (date, format) {
     // };
 
 
-    var o = {
+    let o = {
         "M+": date.getMonth() + 1, //month
         "d+": date.getDate(), //day
         "h+": date.getHours(), //hour
@@ -162,7 +162,7 @@ baseUtil.dateformat = function (date, format) {
         format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
     }
 
-    for (var k in o) {
+    for (let k in o) {
         if (new RegExp("(" + k + ")").test(format)) {
             format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
         }
@@ -179,9 +179,9 @@ baseUtil.phoneType = function () {
     /// <summary>
     /// 判断手机类型
     /// </summary>
-    var u = navigator.userAgent, app = navigator.appVersion;
-    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
-    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    let u = navigator.userAgent, app = navigator.appVersion;
+    let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+    let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
     if (isiOS) {
         return "iphone";
     }
@@ -199,7 +199,7 @@ baseUtil.stringToDate = function (strDate) {
     /// 字符转日期
     /// </summary>
     /// <param name="strDate" type="string">日期字符格式</param>
-    var date = new Date(Date.parse(strDate.replace(/-/g, "/"))); //转换成Date();
+    let date = new Date(Date.parse(strDate.replace(/-/g, "/"))); //转换成Date();
     return date;
 }
 
@@ -208,22 +208,22 @@ baseUtil.cookies = {
     /// cookies设置
     /// </summary>
     set: function (key, val) {
-        var Days = 7;
-        var exp = new Date();
+        let Days = 7;
+        let exp = new Date();
         exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
         document.cookie = key + "=" + val + ";path=/;expires=" + exp.toGMTString();
     },
     get: function (key) {
-        var arr, reg = new RegExp("(^| )" + key + "=([^;]*)(;|$)");
+        let arr, reg = new RegExp("(^| )" + key + "=([^;]*)(;|$)");
         if (arr = document.cookie.match(reg))
             return arr[2];
         else
             return null;
     },
     del: function (key) {
-        var exp = new Date();
+        let exp = new Date();
         exp.setTime(exp.getTime() - 1);
-        var cval = this.get(key);
+        let cval = this.get(key);
         if (cval != null)
             document.cookie = key + "=" + cval + ";expires=" + exp.toGMTString();
     }
@@ -242,10 +242,10 @@ baseUtil.trim = function (str) {
  */
 baseUtil.placeHolderIE8 = function () {
     if (!("placeholder" in document.createElement("input"))) {
-        var inputs = document.getElementsByTagName("input");
-        for (var i = 0; i < inputs.length; i++) {
-            var curInput = inputs[i];
-            var placeholder = curInput.getAttribute("placeholder");
+        let inputs = document.getElementsByTagName("input");
+        for (let i = 0; i < inputs.length; i++) {
+            let curInput = inputs[i];
+            let placeholder = curInput.getAttribute("placeholder");
             if (curInput.getAttribute("type") != "text" || baseUtil.trim(placeholder) == "") return;
 
             curInput.value = placeholder;
@@ -339,7 +339,7 @@ baseUtil.clone = function (obj) {
     /// 把对象复制,返回
     /// </summary>
     /// <param name="obj" type="object">源对象</param>
-    var o;
+    let o;
     switch (typeof obj) {
         case 'undefined': break;
         case 'string': o = obj + ''; break;
@@ -353,12 +353,12 @@ baseUtil.clone = function (obj) {
 
                     o = [];
                     //o= obj.slice(0)， 注意了这里不能直接使用这个复制，如果数组中的元素为对象，复制是不成功的
-                    for (var i = 0; i < obj.length; i++) {
+                    for (let i = 0; i < obj.length; i++) {
                         o.push(baseUtil.clone(obj[i]));
                     }
                 } else {
                     o = {};
-                    for (var k in obj) {
+                    for (let k in obj) {
                         o[k] = baseUtil.clone(obj[k]);
                     }
                 }
@@ -377,8 +377,8 @@ baseUtil.getSource = function (data, source) {
     /// </summary>
     /// <param name="Data" type="object">Data</param>
     /// <param name="source" type="string">source</param>
-    var sourceArr = new Array();
-    var returnData = data;
+    let sourceArr = new Array();
+    let returnData = data;
 
     if (source.indexOf(".") > -1) {
         sourceArr = source.split(".");
@@ -386,7 +386,7 @@ baseUtil.getSource = function (data, source) {
     else {
         sourceArr.push(source);
     }
-    var i = 0;
+    let i = 0;
     try {
         while (i < sourceArr.length) {
             returnData = returnData[sourceArr[i]];
@@ -405,21 +405,21 @@ baseUtil.getSource = function (data, source) {
 }
 //判断是否空对象
 baseUtil.isEmptyObject = function (obj) {
-    var isempty = true;
+    let isempty = true;
     if (typeof obj === "object") {
-        for (var o in obj) {
+        for (let o in obj) {
             isempty = false;
         }
     }
     return isempty;
 
 }
-baseUtil.download=function(url,title){
-    let extend=url.substr(url.lastIndexOf("."));
-    title=title||baseUtil.dateformat(new Date(),"yyyy-MM-dd HH:mm:ss");
-    let downloadA=document.createElement("a");
-    downloadA.href=url;
-    downloadA.download=title+extend;
+baseUtil.download = function (url, title) {
+    let extend = url.substr(url.lastIndexOf("."));
+    title = title || baseUtil.dateformat(new Date(), "yyyy-MM-dd HH:mm:ss");
+    let downloadA = document.createElement("a");
+    downloadA.href = url;
+    downloadA.download = title + extend;
     downloadA.click();
     window.URL.revokeObjectURL(downloadA.href);//释放
 }
@@ -432,62 +432,82 @@ baseUtil.Error = {
 /**
  * 将二维json数据转树型结构
  */
-baseUtil.toTreeData=function(data) {
-	var pos = {};
-	var tree = [];
-	var i = 0;
-	while(data.length != 0) {
-		if(data[i].pid == null) {
-			tree.push({
-				id: data[i].id,
-				name: data[i].text,
-				children: []
-			});
-			pos[data[i].id] = [tree.length - 1];
-			data.splice(i, 1);
-			i--;
-		} else {
-			var posArr = pos[data[i].pid];
-			if(posArr != undefined) {
- 
-				var obj = tree[posArr[0]];
-				for(var j = 1; j < posArr.length; j++) {
-					obj = obj.children[posArr[j]];
-				}
- 
-				obj.children.push({
-					id: data[i].id,
-					name: data[i].text,
-					children: []
-				});
-				pos[data[i].id] = posArr.concat([obj.children.length - 1]);
-				data.splice(i, 1);
-				i--;
-			}
-		}
-		i++;
-		if(i > data.length - 1) {
-			i = 0;
-		}
-	}
-	return tree;
+baseUtil.toTreeData = function (data) {
+    let pos = {};
+    let tree = [];
+    let count = 0;
+    let pId = "";//一级父节点pid值
+    let ids= "";//所有id值
+    for (let i = 0; i < data.length; i++) {
+        ids+=","+data[i].id+","
+    }
+  
+    for (let i = 0; i < data.length; i++) {
+        if (ids.indexOf(","+data[i].pId+",") <= -1) {//属于一级节点的pid值
+            pId +=","+ data[i].pId+",";
+        }
+    }
+    let index = 0;
+    while (data.length != 0 && count < 200000) {
+        count++;
+        if (pId.indexOf(","+data[index].pId+",") > -1) {
+            tree.push({
+                ...data[index],
+                id: data[index].id,
+                text: data[index].text||data[index].name,
+                children: [],
+                
+            });
+            pos[data[index].id] = [tree.length - 1];
+            data.splice(index, 1);
+            index--;
+        } else {
+            let posArr = pos[data[index].pId];
+            if (posArr != undefined) {
+
+                let obj = tree[posArr[0]];
+                for (let j = 1; j < posArr.length; j++) {
+                    obj = obj.children[posArr[j]];
+                }
+
+                obj.children.push({
+                    ...data[index],
+                    id: data[index].id,
+                    text: data[index].text||data[index].name,
+                    children: [],
+                  
+                });
+                pos[data[index].id] = posArr.concat([obj.children.length - 1]);
+                data.splice(index, 1);
+                index--;
+            }
+        }
+        index++;
+        if (index > data.length - 1) {
+            index = 0;
+        }
+    }
+    if(data.length>0){
+        console.error("数据量过大，请使用异步请求");
+    }
+    return tree;
 
 }
 /**
  * 生成uuid
  */
-baseUtil.uuid=function () {
-	var s = [];
-	var hexDigits = "0123456789abcdef";
-	for (var i = 0; i < 36; i++) {
-		s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-	}
-	s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
-	s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
-	s[8] = s[13] = s[18] = s[23] = "-";
+baseUtil.uuid = function () {
+    let s = [];
+    let hexDigits = "0123456789abcdef";
+    for (let i = 0; i < 36; i++) {
+        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+    }
+    s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+    s[8] = s[13] = s[18] = s[23] = "-";
 
-	var uuid = s.join("");
-	return uuid;
+    let uuid = s.join("");
+    return uuid;
 }
 
 import base64 from "./base64.js";

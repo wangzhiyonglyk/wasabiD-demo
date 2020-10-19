@@ -3,21 +3,57 @@ import ReactDOM from 'react-dom';
 import Upload from "../../component/Action/Upload"
 import Tree from "../../component/Data/Tree"
 import Input from '../../component/Form/Input'
+import Button from "../../component/Buttons/Button"
+import unit from "../../component/libs/unit"
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      data:[
+		
+        { id:1, pId:0, name:"父节点1 - 展开", open:true},
+        { id:11, pId:1, name:"父节点11 - 折叠"},
+        { id:111, pId:11, name:"叶子节点111"},
+        { id:112, pId:11, name:"叶子节点112"},
+        { id:113, pId:11, name:"叶子节点113"},
+        { id:114, pId:11, name:"叶子节点114"},
+        { id:12, pId:1, name:"父节点12 - 折叠"},
+        { id:121, pId:12, name:"叶子节点121"},
+        { id:122, pId:12, name:"叶子节点122"},
+        { id:123, pId:12, name:"叶子节点123"},
+        { id:124, pId:12, name:"叶子节点124"},
+        { id:13, pId:1, name:"父节点13 - 没有子节点", isParent:true},
+        { id:2, pId:0, name:"父节点2 - 折叠"},
+        { id:21, pId:2, name:"父节点21 - 展开", open:true},
+        { id:211, pId:21, name:"叶子节点211"},
+        { id:212, pId:21, name:"叶子节点212"},
+        { id:213, pId:21, name:"叶子节点213"},
+        { id:214, pId:21, name:"叶子节点214"},
+        { id:22, pId:2, name:"父节点22 - 折叠"},
+        { id:221, pId:22, name:"叶子节点221"},
+        { id:222, pId:22, name:"叶子节点222"},
+        { id:223, pId:22, name:"叶子节点223"},
+        { id:224, pId:22, name:"叶子节点224"},
+        { id:23, pId:2, name:"父节点23 - 折叠"},
+        { id:231, pId:23, name:"叶子节点231"},
+        { id:232, pId:23, name:"叶子节点232"},
+        { id:233, pId:23, name:"叶子节点233"},
+        { id:234, pId:23, name:"叶子节点234"},
+        { id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}
+      ]
     }
-  }
-  componentDidMount() {
 
   }
-  beforeRename(value, text) {
-    console.log(value, text);
+  componentDidMount() {
+    
+  
+  }
+  beforeRename(id, text) {
+
     return true;
   }
-  beforeRemove(value, text, p, children) {
-    if (children && children.length > 0) {
+  beforeRemove(id, text, p, children) {
+    if (children && children.length > 1) {
       if (confirm("是否一同删除子节点")) {
         return true;
       }
@@ -25,24 +61,34 @@ class Home extends React.Component {
     }
     return true;
   }
-  onRename(oldValue, oldText, newText, pro,chid) {
-    console.log(oldValue, oldText, newText, pro,chid);
+  onRename(oldid, oldText, newText, pro, chid) {
+    console.log(oldid, oldText, newText, pro, chid);
   }
-  onRemove(value,oldText,pro,child){
-   
+  onRemove(id, oldText, pro, child) {
+
   }
-  onChecked(checked){
-    console.log(checked,"d0");
+  onChecked(checked) {
+    
   }
+  onClick() {
+  console.log(this.refs.tree.getData())
+  }
+  onEdit(){
+    console.log("de")
+  }
+  ontreeClick(){
+    console.log("de1")
+  }
+  beforeRename(){
+    return false;
+  }
+
   render() {
-
     return <div>
-
-      <Tree beforeRename={this.beforeRename.bind(this)} onChecked={this.onChecked.bind(this)} beforeRemove={this.beforeRemove.bind(this)} 
-      onRemove={this.onRemove.bind(this)} onRename={this.onRename.bind(this)} checkAble={true} editAble={true} 
-      removeAble={true} data={[{ value: "一级", text: "一级", dragAble: true },
-       { value: "父节点", isParent: true, text: "父节点", open: true, children: [{ value: "子节点", text: "子节点" },
-        { value: "父子节点", isParent: true, text: "父子节点",drag:true }] }]}></Tree>
+      <Button onClick={this.onClick.bind(this)}>单击</Button>
+      <Tree ref="tree" beforeRename={this.beforeRename.bind(this)} onChecked={this.onChecked.bind(this)} beforeRemove={this.beforeRemove.bind(this)}
+        onRemove={this.onRemove.bind(this)} onRename={this.onRename.bind(this)} checkAble={true} editAble={true} renameAble={true} 
+        removeAble={true} simpleData={true} textField="name" data={this.state.data} beforeRename={this.beforeRename.bind(this)} onEdit={this.ontreeClick.bind(this)}></Tree>
     </div>;
   }
 }

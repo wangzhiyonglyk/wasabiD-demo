@@ -11,9 +11,10 @@ class TreeNode extends Component {
 
     constructor(props) {
         super(props);
+      
         this.state = {
             ...this.props,
-            edit: false,//是否处理编辑状态
+            rename: false,//是否处于重命名状态
             half: false,//是否半选
             nodeid: Math.random().toString(36).slice(-8) + 'node' + unit.dateformat(new Date(), 'yyyyMMddHHmmss'),
             textid: Math.random().toString(36).slice(-8) + 'text' + unit.dateformat(new Date(), 'yyyyMMddHHmmss'),
@@ -31,36 +32,50 @@ class TreeNode extends Component {
 
     }
     componentDidUpdate() {
-       
+
     }
+    /**
+     * 展开/折叠
+     */
     showHandler() {
         this.setState({
             open: !this.state.open
         })
     }
-    onClick(value, text, property) {
-        this.props.onClick && this.props.onClick(value, text, property)
+    /**
+     * 单击事件
+     * @param {*} id 
+     * @param {*} text 
+     */
+    onClick(id, text) {
+        this.props. onClick && this.props.onClick(id, text)
 
     }
-    onDoubleClick(value, text, property) {
-        this.props.onDoubleClick && this.props.onDoubleClick(value, text, property)
+    /**
+     * 双击事件
+     * @param {*} id 
+     * @param {*} text 
+     */
+    onDoubleClick(id, text) {
+        this.props.onDoubleClick && this.props.onDoubleClick(id, text)
     }
     /**
      * change事件
-     * @param {*} value 
+     * @param {*} id 
      */
-    onChange(value) {
+    onChange(id) {
 
     }
     /**
      * 失去焦点
-     * @param {*} value 
+     * @param {*} id 
      */
     onBlur(value) {
+       
         let oldText = this.state.text;
         this.setState({
             text: value.trim(),
-            edit: false,
+            rename: false,
         }, this.onRename(oldText, value.trim()))
     }
     /**
@@ -71,7 +86,7 @@ class TreeNode extends Component {
         let oldText = this.state.text;
         if (event.keyCode == 13) {
             this.setState({
-                edit: false,
+                rename: false,
                 text: event.target.value.trim()
             }, this.onRename(oldText, event.target.value.trim()))
         }
@@ -79,97 +94,37 @@ class TreeNode extends Component {
     }
     /**
      * 勾选动作
-     * @param {*} value 
+     * @param {*} id 
      */
     onChecked(value) {
-
         this.setState({
-            checked: value == this.state.value,
+            checked: value == this.state.id,
             half: false
         },
             () => {
-                this.props.treeProps.onChecked && this.props.treeProps.onChecked(value == this.state.value, this.state.value, this.state.text, this.state.property, this.state.children)
+                this.props.onChecked && this.props.onChecked(value == this.state.id, this.state.id, this.state.text, this.state.children)
                 let checked = this.props.getBrotherChecked && this.props.getBrotherChecked();
 
                 if (checked && checked.num && checked.length == checked.num) {//全部勾选
-                    this.props.setParentChecked && this.props.setParentChecked(true);
+                    this.props.parentSetChecked && this.props.parentSetChecked(true);
                 }
                 else if (checked && checked.num == 0) {//全部没有勾选
-                    this.props.setParentChecked && this.props.setParentChecked(false);
+                    this.props.parentSetChecked && this.props.parentSetChecked(false);
                 }
                 else if (checked && checked.length != checked.num) {//部分勾选
                     //半选/todo
-                    this.props.setParentChecked && this.props.setParentChecked("half");
+                    this.props.parentSetChecked && this.props.parentSetChecked("half");
                 }
 
             }
         );
 
     }
-
-    /**
-     * 重命名
-     * @param {*} oldText 
-     * @param {*} newText 
+      /**
+     * ，由父节点设置勾选情况
+     * @param {*} checked 
      */
-    onRename(oldText, newText) {
-        this.props.treeProps.onRename && this.props.treeProps.onRename(this.state.value, oldText, newText, this.state.property, this.state.children);
-    }
-    /**
-     * 由节点的父组件处理删除
-     * @param {*} childIndex 
-     */
-    onRemoveForParent(childValue, childText, property, subChildren) {
-        let children = unit.clone(this.state.children);
-        let childIndex = null;
-        for (let i = 0; i < children.length; i++) {
-            if (children[i].value == childValue) {
-                childIndex = i; break;
-            }
-        }
-        if (childIndex != null) {
-            children.splice(childIndex, 1);
-            this.setState({
-                children: children
-            })
-        }
-
-        this.props.treeProps.onRemove && this.props.treeProps.onRemove(childValue, childText, property, subChildren);
-    }
-    /**
-     * 重命名之前
-     */
-    beforeRename() {
-        let edit = true;
-        if (this.props.treeProps && this.props.treeProps.beforeRename) {
-            edit = this.props.treeProps.beforeRename && this.props.treeProps.beforeRename(this.state.value, this.state.text, this.state.property, this.state.children);
-        }
-
-        if (edit) {
-            this.setState({
-                edit: edit
-            }, () => {
-                let input = document.getElementById(this.state.textid);
-                input.focus();
-                input.select();
-            })
-        }
-    }
-    /**
-     * 删除之前
-     */
-    beforeRemove(index) {
-        let remove = true;
-        if (this.props.treeProps && this.props.treeProps.beforeRemove) {
-            remove = this.props.treeProps.beforeRemove && this.props.treeProps.beforeRemove(this.state.value, this.state.text, this.state.property, this.state.children);
-        }
-
-        if (remove) {
-            this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.value, this.state.text, this.state.property, this.state.children)
-        }
-    }
-    //设置勾选情况
-    setChecked(checked) {
+    setCheckedForParent(checked) {
 
         if (checked != "half") {
             this.setState({
@@ -185,6 +140,7 @@ class TreeNode extends Component {
         }
 
     }
+
     /**
      * 获取勾选情况
      */
@@ -193,7 +149,7 @@ class TreeNode extends Component {
         return this.state.checked;
     }
 
-    /**
+     /**
      * 获取子节点的勾选情况
      */
     getchildChecked() {
@@ -214,12 +170,87 @@ class TreeNode extends Component {
         }
         return checked;
     }
+
+    /**
+     * 重命名
+     * @param {*} oldText 
+     * @param {*} newText 
+     */
+    onRename(oldText, newText) {
+        this.props.onRename && this.props.onRename(this.state.id, oldText, newText, this.state.children);
+    }
+    /**
+     * 由节点的父组件处理删除
+     * @param {*} childIndex 
+     */
+    onRemoveForParent(childid, childText, subChildren) {
+        let children = unit.clone(this.state.children);
+        let childIndex = null;
+        for (let i = 0; i < children.length; i++) {
+            if (children[i].id == childid) {
+                childIndex = i; break;
+            }
+        }
+        if (childIndex != null) {
+            children.splice(childIndex, 1);
+            this.setState({
+                children: children
+            })
+        }
+
+        this.props.onRemove && this.props.onRemove(childid, childText, subChildren);
+    }
+    /**
+     * 重命名之前
+     */
+    beforeRename() {
+        let rename = this.props.beforeRename && this.props.beforeRename(this.state.id, this.state.text, this.state.children)       
+        if (rename) {
+            this.setState({
+                rename: rename
+            }, () => {
+                let input = document.getElementById(this.state.textid);
+                if(input){
+                    input.focus();
+                    input.select();
+                }
+               
+            })
+        }
+    }
+    /**
+     * 删除之前
+     */
+    beforeRemove(index) {
+        let remove =this.props.beforeRemove && this.props.beforeRemove(this.state.id, this.state.text, this.state.children);
+        if (remove) {
+            this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.id, this.state.text, this.state.children)
+        }
+    }
+    
+    onEdit(childid,childText,subChildren){
+        this.props.onEdit&& this.props.onEdit(childid,childText,subChildren);
+    }
+  
+
+    /**
+     * 获取节点数据
+     */
+    getData() {
+        return this.state;
+    }
+
+   /**
+    * 
+    * 下面是处理拖动的事件
+    */
+
     /**
      * 鼠标经过事件
      */
     onMouseOver(event) {
         event.stopPropagation();//阻止冒泡
-        console.log(this.state.value, this.state.text);
+
     }
 
     /**
@@ -236,7 +267,12 @@ class TreeNode extends Component {
     onDragEnd(event) {
         event.preventDefault()
         event.stopPropagation();
-        this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.value, this.state.text, this.state.property, this.state.children)
+
+        if (window.localStorage.getItem("moveed")) {
+            window.localStorage.removeItem("moveed");
+            this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.id, this.state.text, this.state.children);
+        }
+
     }
     /**
      * 停靠事件
@@ -255,6 +291,7 @@ class TreeNode extends Component {
         event.preventDefault()
         event.stopPropagation();
         document.getElementById(this.state.nodeid).style.borderTop = "none";
+
     }
     /**
      * 停靠组件的事件
@@ -265,13 +302,14 @@ class TreeNode extends Component {
 
         let node = JSON.parse(window.localStorage.getItem("treenode"));
 
-        if ((node.value == this.state.value && node.text == this.state.text) || (node.parent && node.parent.value == this.state.value && node.parent.text == this.state.text)) {
+        if ((node.id == this.state.id && node.text == this.state.text) || (node.parent && node.parent.id == this.state.id && node.parent.text == this.state.text)) {
             //相同，不处理
         }
         else {
+            window.localStorage.setItem("moveed", "true");
             let children = unit.clone(this.state.children) || [];
-            children.push(node); //不能前插
-            
+            children.unshift(node); //不能前插
+
             this.setState({
                 children: children,
                 isParent: true,
@@ -285,8 +323,8 @@ class TreeNode extends Component {
     /**
      * 拖动后父节点删除
      */
-    onDragForParent(childValue, childText, property, subChildren) {
-        this.onRemoveForParent(childValue, childText, property, subChildren)
+    onDragForParent(childid, childText, subChildren) {
+        this.onRemoveForParent(childid, childText, subChildren)
 
     }
     render() {
@@ -294,7 +332,7 @@ class TreeNode extends Component {
         let tip = this.state.tip ? this.state.tip : this.state.text;//提示信息
         if (this.state.children instanceof Array) {
             this.state.children.map((item, index) => {
-                console.log("item", item);
+
                 let isParent = false;//是否为父节点
                 if (item.isParent == true || (item.children instanceof Array && item.children.length > 0)) {//如果明确规定了，或者子节点不为空，则设置为父节点
                     isParent = true;
@@ -304,16 +342,19 @@ class TreeNode extends Component {
                 }
                 //父节点
 
-                let parent = { value: this.state.value, text: this.state.text, children: this.state.children };
+                let parent = { id: this.state.id, text: this.state.text, children: this.state.children };
                 nodeControl.push(<TreeNode
-                    key={item.value}
-                    parentRemoveChild={this.onRemoveForParent.bind(this)} setParentChecked={this.setChecked.bind(this)} getBrotherChecked={this.getchildChecked.bind(this)}
-                    ref={"child" + index}
+                     {...this.props}
+                     {...this.state}
                     {...item}
+                    key={item.id}
+                    parentRemoveChild={this.onRemoveForParent.bind(this)} parentSetChecked={this.setCheckedForParent.bind(this)} getBrotherChecked={this.getchildChecked.bind(this)}
+                    ref={"child" + index}
                     half={this.state.half}
                     checked={this.state.checked}
-                    treeProps={this.props.treeProps} isParent={isParent} parent={parent}
-                    onClick={this.props.onClick} key={index} selectValue={this.props.selectValue} />);
+                     isParent={isParent} parent={parent}
+                  
+                    selectid={this.props.selectid} />);
             });
         }
         let iconCls = this.state.iconCls;//默认图标图标
@@ -331,28 +372,33 @@ class TreeNode extends Component {
         }
 
         //节点元素
-        let nodeEement = [<Input key="1" forceChange={true} type={this.props.treeProps.checkStyle || "checkbox"}
-            hide={this.props.checkAble ? false : this.props.treeProps.checkAble ? false : true}
+        let nodeEement = [<Input key="1" forceChange={true} type={this.props.checkStyle || "checkbox"}
+            hide={this.props.checkAble ? false : this.props.checkAble ? false : true}
             half={this.state.half}
-            name={this.props.name}
-            value={this.state.checked ? this.state.value : null} data={[{ value: this.state.value }]} onSelect={this.onChecked.bind(this)}></Input>,
-        <span key="2" draggable={this.props.dragAble} onDragEnd={this.onDragEnd.bind(this)} onDragStart={this.onDragStart.bind(this)} onClick={this.onClick.bind(this, this.state.value, this.state.text, this.state.property)}>   <i key="2" className={iconCls} style={{ marginRight: 3 }} onClick={this.onClick.bind(this, this.state.value, this.state.text, this.state.property)}></i>{this.state.text}&nbsp;&nbsp;</span>
+            name={"node"+this.props.id}
+            value={this.state.checked ? this.state.id : null} data={[{ value: this.state.id,text:"" }]} onSelect={this.onChecked.bind(this)}></Input>,
+        <span key="2" draggable={this.props.dragAble} onDragEnd={this.onDragEnd.bind(this)} onDragStart={this.onDragStart.bind(this)} 
+        onClick={this.onClick.bind(this, this.state.id, this.state.text)}  onDoubleClick={this.onDoubleClick.bind(this, this.state.id, this.state.text)}>  
+         <i key="2" className={iconCls} style={{ marginRight: 3 }} onClick={this.onClick.bind(this, this.state.id, this.state.text)}></i>{this.state.text}&nbsp;&nbsp;</span>
         ]
         //判断是否可以拖动
 
         return <li ref="node" style={{ display: this.state.hide ? "none" : "block" }} onDrop={this.onDrop.bind(this)} onDragOver={this.onDragOver.bind(this)} onDragLeave={this.onDragLeave.bind(this)} >
 
-            <div id={this.state.nodeid} className={this.props.selectValue == this.state.value ? "selected" : ""} >
+            <div id={this.state.nodeid} className={this.props.selectid == this.state.id ? "selected" : ""} >
                 <i className={this.state.open ? "icon-drop" : "icon-zright"} style={{ opacity: this.state.isParent ? 1 : 0 }} onClick={this.showHandler}></i>
-                <a href={this.state.href} title={tip} onDoubleClick={this.onDoubleClick.bind(this, this.state.value, this.state.text, this.state.property)}  >
-                    {this.state.edit ? <Input type="text" id={this.state.textid} required={true} onBlur={this.onBlur.bind(this)} onKeyUp={this.onKeyUp.bind(this)}
-                        name={"key" + this.state.value} value={this.state.text} onChange={this.onChange.bind(this)}></Input> : nodeEement}
+                <a href={this.state.href} title={tip}  >
+                    {this.state.rename ? <Input type="text" id={this.state.textid} required={true} onBlur={this.onBlur.bind(this)} onKeyUp={this.onKeyUp.bind(this)}
+                        name={"key" + this.state.id} value={this.state.text} onChange={this.onChange.bind(this)}></Input> : nodeEement}
                 </a>
                 {
-                    !this.state.edit && this.props.treeProps.editAble ? <i key="edit" className={"icon-edit"} title="编辑" onClick={this.beforeRename.bind(this)} style={{ fontSize: 12, transform: "translateY(1px)" }}></i> : null
+                    !this.state.rename && this.props.renameAble ? <i key="edit" className={"icon-edit"} title="重命名" onClick={this.beforeRename.bind(this)} style={{ fontSize: 12, transform: "translateY(1px)" }}></i> : null
                 }
                 {
-                    !this.state.edit && this.props.treeProps.removeAble ? <i key="delete" className={"icon-remove"} title="删除" onClick={this.beforeRemove.bind(this)} style={{ fontSize: 13, transform: "translateY(2px)" }}></i> : null
+                    !this.state.rename && this.props.removeAble ? <i key="delete" className={"icon-remove"} title="删除" onClick={this.beforeRemove.bind(this)} style={{ fontSize: 13, transform: "translateY(2px)" }}></i> : null
+                }
+                {
+                    !this.state.rename && this.props.editAble ? <i key="set" className={"icon-setting"} title="编辑" onClick={this.onEdit.bind(this)} style={{ fontSize: 13, transform: "translateY(2px)" }}></i> : null
                 }
             </div>
             {
@@ -370,7 +416,7 @@ class TreeNode extends Component {
 }
 TreeNode.propTypes = {
     isParent: PropTypes.bool,//是否是父节点
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,//值
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,//值
     text: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,//标题
     tip: PropTypes.string,//提示信息
     iconCls: PropTypes.string,//默认图标
@@ -383,16 +429,17 @@ TreeNode.propTypes = {
     dropAble: PropTypes.bool,//是否允许停靠
     href: PropTypes.string,//节点的链接
     hide: PropTypes.bool,//是否隐藏
-    property: PropTypes.any,//其他数据
     children: PropTypes.array,//子节点
 
 
     //after事件
-    onClick: PropTypes.func,//选中后的事件
+    onClick: PropTypes.func,//单击的事件
+    onDoubleClick:PropTypes.func,//双击事件
     onCheck: PropTypes.func,//勾选/取消勾选事件
     onCollapse: PropTypes.func,//折叠事件
     onExpand: PropTypes.func,//展开事件
     onRename: PropTypes.func,//重命名事件
+    onEdit: PropTypes.func,//编辑事件
     onRemove: PropTypes.func,//删除事件
     onRightClick: PropTypes.func,//右键菜单
     onDrag: PropTypes.func,//拖动事件
@@ -407,7 +454,7 @@ TreeNode.propTypes = {
 };
 TreeNode.defaultProps = {
     isParent: false,
-    value: null,
+    id: null,
     text: null,
     tip: null,
     iconCls: "icon-txt",
@@ -420,15 +467,16 @@ TreeNode.defaultProps = {
     dropAble: false,
     href: null,
     hide: null,
-    property: null,
     children: [],
 
     //after事件
     onClick: null,
+    onDoubleClick:null,
     onCheck: null,
     onCollapse: null,
     onExpand: null,
     onRename: null,
+    onEdit:null,
     onRemove: null,
     onRightClick: null,
     onDrag: null,
