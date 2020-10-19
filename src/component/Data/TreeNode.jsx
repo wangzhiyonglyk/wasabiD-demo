@@ -31,16 +31,7 @@ class TreeNode extends Component {
 
     }
     componentDidUpdate() {
-        try {
-            if (this.moveAdd !== false && this.moveAdd == this.state.value && this.state.children && this.state.children.length > 0) {
-
-              
-
-            }
-        }
-        catch (e) {
-            console.error(e);
-        }
+       
     }
     showHandler() {
         this.setState({
@@ -280,7 +271,7 @@ class TreeNode extends Component {
         else {
             let children = unit.clone(this.state.children) || [];
             children.push(node); //不能前插
-            this.moveAdd = this.state.value;//标记前插入了     
+            
             this.setState({
                 children: children,
                 isParent: true,
