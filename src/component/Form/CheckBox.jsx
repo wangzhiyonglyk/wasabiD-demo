@@ -277,7 +277,7 @@ class CheckBox extends Component {
                 }
                 return <li style={this.props.style} className={this.props.className} key={i} onClick={this.onSelect.bind(this, child.value, child.text, child)}  >
                     <input type="checkbox" id={"checkbox" + this.props.name + child.value}
-                        className="checkbox"  {...props} onChange={() => { }}></input>
+                        className= {this.props.half?"checkbox halfcheck":"checkbox"}  {...props} onChange={() => { }}></input>
                     <label className="checkbox-label"  {...props}></label>
                     <div className="checktext" >{child.text}</div>
                 </li >

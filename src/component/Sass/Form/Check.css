@@ -53,7 +53,7 @@ desc:表单输入框样式
   position: absolute;
   top: 2px;
   left: 3px;
-
+  border-radius: 2px;
 }
 
 .wasabi-checkul .checkbox + label[readonly] {
@@ -79,6 +79,23 @@ desc:表单输入框样式
   background-repeat: no-repeat;
   color:transparent;
 }
+.wasabi-checkul .checkbox.halfcheck + label {
+  background-color: #1c84c6;
+  border: 1px solid transparent;
+}
+.wasabi-checkul .checkbox.halfcheck + label:after {
+  content: "";
+  height: 8px;
+  width: 8px;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  background-image: url("../../img/icons/half.png");
+  background-size: 12px 12px;
+  background-repeat: no-repeat;
+  color:transparent;
+}
+
 
 /*radio*/
 

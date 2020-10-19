@@ -263,7 +263,7 @@ class Upload extends Component {
 }
 
 Upload.propTypes = {
-  httpHeaders:PropTypes.httpHeaders,//请求的头部信息
+  httpHeaders:PropTypes.object,//请求的头部信息
   params: PropTypes.object,//其他参数
   uploadurl: PropTypes.string.isRequired, //上传地址
   accept: PropTypes.string, //上传文件类型

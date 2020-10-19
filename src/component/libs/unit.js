@@ -414,13 +414,82 @@ baseUtil.isEmptyObject = function (obj) {
     return isempty;
 
 }
-
+baseUtil.download=function(url,title){
+    let extend=url.substr(url.lastIndexOf("."));
+    title=title||baseUtil.dateformat(new Date(),"yyyy-MM-dd HH:mm:ss");
+    let downloadA=document.createElement("a");
+    downloadA.href=url;
+    downloadA.download=title+extend;
+    downloadA.click();
+    window.URL.revokeObjectURL(downloadA.href);//释放
+}
 //错误信息
 baseUtil.Error = {
     HttpError: "错误代码:001,网络地址无法请求",
     ServiceError: "错误代码:002,后台服务器响应失败",
     HandlerError: "后台业务程序处理错误"
 }
+/**
+ * 将二维json数据转树型结构
+ */
+baseUtil.toTreeData=function(data) {
+	var pos = {};
+	var tree = [];
+	var i = 0;
+	while(data.length != 0) {
+		if(data[i].pid == null) {
+			tree.push({
+				id: data[i].id,
+				name: data[i].text,
+				children: []
+			});
+			pos[data[i].id] = [tree.length - 1];
+			data.splice(i, 1);
+			i--;
+		} else {
+			var posArr = pos[data[i].pid];
+			if(posArr != undefined) {
+ 
+				var obj = tree[posArr[0]];
+				for(var j = 1; j < posArr.length; j++) {
+					obj = obj.children[posArr[j]];
+				}
+ 
+				obj.children.push({
+					id: data[i].id,
+					name: data[i].text,
+					children: []
+				});
+				pos[data[i].id] = posArr.concat([obj.children.length - 1]);
+				data.splice(i, 1);
+				i--;
+			}
+		}
+		i++;
+		if(i > data.length - 1) {
+			i = 0;
+		}
+	}
+	return tree;
+
+}
+/**
+ * 生成uuid
+ */
+baseUtil.uuid=function () {
+	var s = [];
+	var hexDigits = "0123456789abcdef";
+	for (var i = 0; i < 36; i++) {
+		s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+	}
+	s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+	s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+	s[8] = s[13] = s[18] = s[23] = "-";
+
+	var uuid = s.join("");
+	return uuid;
+}
+
 import base64 from "./base64.js";
 baseUtil.base64 = base64;
 import md5 from "./md5.js";

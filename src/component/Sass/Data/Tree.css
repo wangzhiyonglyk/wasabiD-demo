@@ -1,42 +1,84 @@
 
+@import url("../base.css");
 .wasabi-tree {
-  line-height: 26px;
+  margin:5px;
+  color:#666;
+  z-index: 4;
 }
-.wasabi-tree cite{
-  padding: 0 3px;
-  position: absolute;
-  top: -7px;
-
-
+.wasabi-tree .wasabi-form-group{
+  padding: 0;
+  margin-top: -6px;
+  min-height: 0;
+  height: 16px;
+  width: 20px;
+  transform: scale(.83) translateY(3px);
+  -webkit-transform: scale(.83) translateY(3px);
+  -moz-transform: scale(.83) translateY(3px);
+  -ms-transform: scale(.83) translateY(3px);
+  -o-transform: scale(.83) translateY(3px);
 }
+.wasabi-tree .checkbox-label,.wasabi-tree .checktext{
+  display: none;
+}
+
 .wasabi-tree li {
   text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+    white-space: nowrap;
+    list-style: none;
+    cursor: pointer;
+  
+}
+.wasabi-tree li>div{
+  height: 25px;
+  line-height: 25px;
+}
+.wasabi-tree li>div:hover{
+  background-color:#eceeef;
 }
 
+.wasabi-tree li>div.selected{
+  background-color: #eceeef;
+}
+.wasabi-tree [class*=" icon-"],[class^=icon-] {
+  color:#818a9c;
+}
 .wasabi-tree a{
   position: relative;
-  color: #666666;
+  color:#666;
+  display: inline-block;
+  user-select: none;
 }
-.wasabi-tree a:hover {
-  color: #3c92a7;
+.wasabi-tree a:focus,.wasabi-tree a:hover{
+  color:#666;
 }
-.wasabi-tree a.selected {
-  color: #3c92a7;
-}
+
 .wasabi-tree i{
   padding-left: 3px;
   font-size: 14px;
+  display: inline-block;
 
 }
 
 .wasabi-tree li ul {
+  margin-left: 10px;
   display: none;
-  margin-left: 30px;
+  padding-left: 20px;
+}
+.wasabi-tree li ul.wasabi-checkul{
+  display: block;
+  margin: 0px;
+    padding: 0px;
 }
 .wasabi-tree li ul.show
 {
   display: block!important;
+
 }
 
+.wasabi-tree .wasabi-drag-box{
+  cursor: pointer;
+}
+.wasabi-tree .wasabi-form-control{
+  height: 25px;
+  width: 100px;
+}

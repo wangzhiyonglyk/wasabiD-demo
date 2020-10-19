@@ -1,5 +1,6 @@
 //creete by wangzy
 //date:2016-08-02
+//edit by wangzhiyong 2020-10-18 todo blur事件要改
 //desc 将输入框从Input中独立出来
 import React, {Component} from "react";
 import PropTypes from "prop-types";
@@ -52,7 +53,7 @@ class  Text  extends Component{
     }
     componentDidMount() {    
         this.validateInput=true;//设置初始化值，输入有效
-        this.onblur=false;
+        this.onblur=null;
     }
     componentDidUpdate() {
         this.validateInput=true;//设置初始化值
@@ -62,8 +63,9 @@ class  Text  extends Component{
         }
         if(this.onblur)
         {
-            this.onblur=false;
-            this.props.onBlur();
+            this.props.onBlur(this.state.value);
+            this.onblur=null;
+          
         }
     }
     onChange(event) {
@@ -144,16 +146,17 @@ class  Text  extends Component{
         }
     }
     blurHandler(event) {
+      let isvalidate=false;
         if(this.props.validateUrl) {//后台验证
-            this.validateHandler(event.target.value);
+            isvalidate=this.validateHandler(event.target.value);
         }
         else {//普通验证
-            this.validate(this.state.value);
+            isvalidate= this.validate(this.state.value);
         }
 
         this.refs.label.hideHelp();//隐藏帮助信息
 
-        if(this.props.onBlur)
+        if(isvalidate&&this.props.onBlur)
         {
             this.onblur=true
 
@@ -230,7 +233,7 @@ class  Text  extends Component{
             let inputProps=
             {
                 readOnly:this.props.readonly==true?"readonly":null,
-               
+                id:this.props.id?this.props.id:null,
                 name:this.props.name,
                 placeholder:(this.props.placeholder===""||this.props.placeholder==null)?this.props.required?"必填项":"":this.props.placeholder,
                 className:"wasabi-form-control  ",
