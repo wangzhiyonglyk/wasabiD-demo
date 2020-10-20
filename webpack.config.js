@@ -12,6 +12,7 @@ const webpack = require('webpack')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') // 打包前先清空dist
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //分离js中的css
+let  CopyWebpackPlugin=require('copy-webpack-plugin');
 const host = '127.0.0.1' //地址
 const port = 8080 //端口号
 
@@ -211,6 +212,14 @@ module.exports =env=> {
     }),
 
     new webpack.HotModuleReplacementPlugin(), //热加载插件
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname+"/public", 'test.txt'),
+        },
+      
+      ],
+    }) 
   ].concat(htmlplugin), //生成对应的html文件,在htmlplugin中
 
   //devtool: 'eval-source-map', // eval-source-map is faster for development

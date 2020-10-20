@@ -226,6 +226,7 @@ Tree.propTypes = {
     renameAble: PropTypes.bool,//是否允许重命名
     editAble:PropTypes.bool,//是否允许编辑
     removeAble: PropTypes.bool,//是否允许移除
+   
     //after事件
     onClick: PropTypes.func,//单击的事件
     onDoubleClick:PropTypes.func,//双击事件
@@ -233,6 +234,7 @@ Tree.propTypes = {
     onCollapse: PropTypes.func,//折叠事件
     onExpand: PropTypes.func,//展开事件
     onRename: PropTypes.func,//重命名事件
+    onEdit: PropTypes.func,//编辑事件
     onRemove: PropTypes.func,//删除事件
     onRightClick: PropTypes.func,//右键菜单
     onDrag: PropTypes.func,//拖动事件
@@ -240,6 +242,8 @@ Tree.propTypes = {
     onAsyncSuccess: PropTypes.func,//异步回调事件
 
     //before 事件
+    beforeDrag:PropTypes.func,//拖动前事件
+    beforeDrop:PropTypes.func,//停靠前事件
     beforeRemove: PropTypes.func,//删除前事件
     beforeRename: PropTypes.func,//重命名前事件
     beforeRightClick: PropTypes.func,//鼠标右键前事件
@@ -263,6 +267,7 @@ Tree.defaultProps = {
     editAble:false,
     removeAble: false,
   
+   
     //after事件
     onClick: null,
     onDoubleClick:null,
@@ -270,6 +275,7 @@ Tree.defaultProps = {
     onCollapse: null,
     onExpand: null,
     onRename: null,
+    onEdit:null,
     onRemove: null,
     onRightClick: null,
     onDrag: null,
@@ -277,6 +283,8 @@ Tree.defaultProps = {
     onAsyncSuccess: null,
 
     //before 事件
+    beforeDrag:null,
+    beforeDrop:null,
     beforeRemove: null,
     beforeRename: null,
     beforeRightClick: null,

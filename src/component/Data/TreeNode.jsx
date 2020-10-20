@@ -204,7 +204,11 @@ class TreeNode extends Component {
      * 重命名之前
      */
     beforeRename() {
-        let rename = this.props.beforeRename && this.props.beforeRename(this.state.id, this.state.text, this.state.children)       
+        let rename =true;
+        if(this.props.beforeRename )
+        {
+            rename= this.props.beforeRename(this.state.id, this.state.text, this.state.children) 
+        }       
         if (rename) {
             this.setState({
                 rename: rename
@@ -222,14 +226,17 @@ class TreeNode extends Component {
      * 删除之前
      */
     beforeRemove(index) {
-        let remove =this.props.beforeRemove && this.props.beforeRemove(this.state.id, this.state.text, this.state.children);
+        let remove =true;
+        if(this.props.beforeRemove){
+            remove=this.props.beforeRemove(this.state.id, this.state.text, this.state.children);
+        } 
         if (remove) {
             this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.id, this.state.text, this.state.children)
         }
     }
     
-    onEdit(childid,childText,subChildren){
-        this.props.onEdit&& this.props.onEdit(childid,childText,subChildren);
+    onEdit(){
+        this.props.onEdit&& this.props.onEdit(this.state.id, this.state.text, this.state.children);
     }
   
 
@@ -257,8 +264,18 @@ class TreeNode extends Component {
      * 拖动事件
      */
     onDragStart(event) {
-        let obj = unit.clone(this.state);
-        window.localStorage.setItem("treenode", JSON.stringify(obj));
+        if(this.state.dragAble){
+            let dragAble=true;
+            if(this.props.beforeDrag){
+                dragAble=this.props.beforeDrag(this.state.id,this.state.text,this.state.children);
+            }
+            if(dragAble){
+                let obj = unit.clone(this.state);
+                window.localStorage.setItem("treenode", JSON.stringify(obj));
+            }
+          
+        }
+      
 
     }
     /**
@@ -271,6 +288,7 @@ class TreeNode extends Component {
         if (window.localStorage.getItem("moveed")) {
             window.localStorage.removeItem("moveed");
             this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.id, this.state.text, this.state.children);
+            this.props.onDrag&&this.props.onDrag(this.state.id, this.state.text, this.state.children);
         }
 
     }
@@ -305,16 +323,23 @@ class TreeNode extends Component {
         if ((node.id == this.state.id && node.text == this.state.text) || (node.parent && node.parent.id == this.state.id && node.parent.text == this.state.text)) {
             //相同，不处理
         }
-        else {
-            window.localStorage.setItem("moveed", "true");
-            let children = unit.clone(this.state.children) || [];
-            children.unshift(node); //不能前插
-
-            this.setState({
-                children: children,
-                isParent: true,
-                open: true
-            })
+        else if(this.state.dropAble){
+            let dropAble=true;//可以停靠
+            if(this.props.beforeDrop){
+                dropAble= this.props.beforeDrop(node,this.state);//存在并且返回
+            }
+            if(dropAble){
+                window.localStorage.setItem("moveed", "true");
+                let children = unit.clone(this.state.children) || [];
+                children.unshift(node); //不能前插
+    
+                this.setState({
+                    children: children,
+                    isParent: true,
+                    open: true
+                },()=>{this.props.onDrop&&this.props.onDrop(node,this.state)});
+            }
+          
         }
         document.getElementById(this.state.nodeid).style.borderTop = "none";
         window.localStorage.removeItem("treenode")
@@ -447,6 +472,8 @@ TreeNode.propTypes = {
     onAsyncSuccess: PropTypes.func,//异步回调事件
 
     //before 事件
+    beforeDrag:PropTypes.func,//拖动前事件
+    beforeDrop:PropTypes.func,//停靠前事件
     beforeRemove: PropTypes.func,//删除前事件
     beforeRename: PropTypes.func,//重命名前事件
     beforeRightClick: PropTypes.func,//鼠标右键前事件
@@ -484,6 +511,8 @@ TreeNode.defaultProps = {
     onAsyncSuccess: null,
 
     //before 事件
+    beforeDrag:null,
+    beforeDrop:null,
     beforeRemove: null,
     beforeRename: null,
     beforeRightClick: null,
