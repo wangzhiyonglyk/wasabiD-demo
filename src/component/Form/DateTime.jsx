@@ -9,8 +9,8 @@ import Time from "./Time.jsx";
 import Button from "../Buttons/Button.jsx";
 import CalendarHeader from "./CalendarHeader.jsx";
 import CalendarBody from "./CalendarBody.jsx";
-
 import validate from "../Mixins/validate.js";
+import LinkButton from "../Buttons/LinkButton"
 import("../Sass/Form/DateTime.css");
 class DateTime extends Component {
 
@@ -19,28 +19,28 @@ class DateTime extends Component {
         var newDate = new Date();
         var year = (this.formatDate(newDate, 'yyyy'));
         var month = (this.formatDate(newDate, 'MM'));
-        
+
         this.state = {
-            year: this.props.year ? this.props.year : year*1,
-            month: this.props.month ? this.props.month : month*1,
-            day: this.props.day,
-            time: this.props.time,
+            year: this.props.year ? this.props.year : year * 1,
+            month: this.props.month ? this.props.month : month * 1,
+            day: this.props.day ? this.props.day : newDate.getDate(),
+            time: this.props.time ? this.props.time : this.formatDate(newDate, 'HH:mm:ss'),
             isRange: this.props.isRange,
             min: this.props.min,
             max: this.props.max,
             changeYear: false,//选择年份
             changeMonth: false,//选择月份
         }
-        this.setValue=this.setValue.bind(this);
-        this.getValue=this.getValue.bind(this);
-        this.validate=this.validate.bind(this);
-        this.updateYearAndMonth=this.updateYearAndMonth.bind(this);
-        this.dayHandler=this.dayHandler.bind(this);
-        this.changeYear=this.changeYear.bind(this);
-        this.changeMonth=this.changeMonth.bind(this);
-        this.changeYearHandler=this.changeYearHandler.bind(this);
-        this.changeMonthHandler=this.changeMonthHandler.bind(this);
-        this.formatDate=this.formatDate.bind(this);
+        this.setValue = this.setValue.bind(this);
+        this.getValue = this.getValue.bind(this);
+        this.validate = this.validate.bind(this);
+        this.updateYearAndMonth = this.updateYearAndMonth.bind(this);
+        this.dayHandler = this.dayHandler.bind(this);
+        this.changeYear = this.changeYear.bind(this);
+        this.changeMonth = this.changeMonth.bind(this);
+        this.changeYearHandler = this.changeYearHandler.bind(this);
+        this.changeMonthHandler = this.changeMonthHandler.bind(this);
+        this.formatDate = this.formatDate.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -48,18 +48,18 @@ class DateTime extends Component {
             this.setState({
                 year: nextProps.year ? nextProps.year : this.state.year,
                 month: nextProps.month ? nextProps.month : this.state.month,
-                day: nextProps.day,
-                time: nextProps.time,
+                day: nextProps.day ? nextProps.day : this.state.day,
+                time: nextProps.time ? nextProps.time : this.state.time,
                 isRange: nextProps.isRange,
-                min: nextProps.min,
-                max: nextProps.max,
+                min: nextProps.min ? nextProps.min : this.state.min,
+                max: nextProps.max ? nextProps.max : this.state.max,
             });
         } else {
             this.setState({
                 year: nextProps.year ? nextProps.year : this.state.year,
                 month: nextProps.month ? nextProps.month : this.state.month,
-                day: nextProps.day,
-                time: nextProps.time,
+                day: nextProps.day ? nextProps.day : this.state.day,
+                time: nextProps.time ? nextProps.time : this.state.time,
                 isRange: nextProps.isRange,
             });
         }
@@ -95,18 +95,22 @@ class DateTime extends Component {
     }
     dayHandler(day) {
 
-        var time = this.refs.time.getValue();
+
         this.setState({
             day: day,
             min: day,
             max: day,
-            time: (time < 10 ? "0" + day.toString() : day) + (time ? " " + time : "")
-
+        }, () => {
+            this.onSelect();
         })
-        let value = this.state.year + "-" + (this.state.month.toString().length == 1 ? "0" + this.state.month.toString() : this.state.month)
-        + "-" + (day < 10 ? "0" + day.toString() : day);
-        this.props.onSelect(value+" "+time, value+" "+time, this.props.name)
 
+
+    }
+    onSelect() {
+
+        let value = this.state.year + "-" + (this.state.month.toString().length == 1 ? "0" + this.state.month.toString() : this.state.month)
+            + "-" + (this.state.day < 10 ? "0" + this.state.day.toString() : this.state.day.toString());
+        this.props.onSelect(value + " " + this.state.time, value + " " + this.state.time, this.props.name)
     }
     changeYear() {
         this.setState({
@@ -191,11 +195,32 @@ class DateTime extends Component {
         }
         return format;
     }
+    timeHandler() {
+        this.setState({
+            showTime: true,
+        })
+    }
+    timeOnChange(value) {
+
+        this.setState({
+            time: value,
+            showTime: false
+        }, () => {
+            this.onSelect();
+        })
+
+    }
     render() {
-        
+        console.log("dd", this.state);
         return (
-            <div className={this.props.className+" " +this.state.validateClass}  ref="picker" style={this.props.style}>
-                <div style={{ position: "relative", height: 32 }}><Time ref="time" type="time" key="end"  ></Time></div>
+            <div className={this.props.className + " "} ref="picker" style={this.props.style}>
+                <div style={{ position: "relative", height: 32 }}>
+                    <input className=" wasabi-form-control timeinput"
+                        value={this.state.time} onClick={this.timeHandler.bind(this)} readOnly={true} onChange={() => { }}></input>
+
+                    <div style={{ display: this.state.showTime ? "inline-block" : "none" }}><Time onSelect={this.timeOnChange.bind(this)}
+                        ref="time" type="time" key="end" value={this.state.time} ></Time></div>
+                </div>
                 <div className="wasabi-datetime"  >
                     <CalendarHeader
                         year={this.state.year}
@@ -236,19 +261,20 @@ DateTime.propTypes = {
 
 }
 DateTime.defaultProps =
-    {
-        type: "datetime",
-        year: null,
-        month: null,
-        day: null,
-        time: null,
-        isRange: false,///默认否
-        min: null,//默认为空，不属于日期范围选择
-        max: null,//默认为空，不属于日期范围选择
+{
+    className: "",
+    type: "datetime",
+    year: null,
+    month: null,
+    day: null,
+    time: null,
+    isRange: false,///默认否
+    min: null,//默认为空，不属于日期范围选择
+    max: null,//默认为空，不属于日期范围选择
 
 
 
 
-    };
+};
 
 export default DateTime;

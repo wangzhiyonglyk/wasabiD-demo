@@ -18,7 +18,7 @@ desc:日期选择样式
   width: 32px;
   height: 34px;
 
-  border-left: 1px solid #d7dde2;
+  border-left: 1px solid #d8d8d8;
   position: absolute;
   right: 0px;
   top: 0px;
@@ -36,7 +36,7 @@ desc:日期选择样式
   position: absolute;
   top: 8px;
   left: 8px;
-  color: #d7dde2;
+  color: #d8d8d8;
 }
 .combobox .pickericon.rotate:before{
   -webkit-transform: rotate(180deg);
@@ -50,7 +50,7 @@ desc:日期选择样式
   width: 34px;
   height: 34px;
 
-  border-left: 1px solid #d7dde2;
+  border-left: 1px solid #d8d8d8;
   position: absolute;
   right: 0px;
   top: 0px;
@@ -59,7 +59,7 @@ desc:日期选择样式
 .combobox .pickeradd:before
 {
   content: "\e93e";
-  color: #d7dde2;
+  color: #d8d8d8;
   font-size: 18px;
   padding: 0px;
   position: absolute;
@@ -93,11 +93,35 @@ desc:日期选择样式
   position: absolute;
   overflow: visible;
   z-index:2;
-  top:34px;
-  border:1px solid #d7dde2;
-  box-shadow: 0px 0px 20px #dddddd;
+  top:44px;
+  border:1px solid #d8d8d8;
+  box-shadow: 0px 10px 10px #dddddd;
   background-color: white;
 }
+
+.combobox .dropcontainter::before{
+  border-color: transparent transparent #ffffff;
+    top: -17px;
+    z-index: 1;
+  
+
+}
+.combobox .dropcontainter::after {
+  border-color: transparent transparent #c9cbce;
+  top: -20px;
+}
+.combobox .dropcontainter::before, .combobox .dropcontainter::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-width: 10px;
+  border-style: solid;
+  position: absolute;
+  left: 20px;
+}
+
+
 
 /*多行添加文本*/
 .combobox .mutiText{
@@ -111,11 +135,19 @@ width:250px;
   height: 246px;
 
 }
+.combobox .time{
+  width: 390px;
+  height: 246px;
+}
 .combobox .date.time {
+  width: 250px;
   height:286px;
 
 }
 
+.combobox .wasabi-time-container{
+  z-index: 3;
+}
 /*日期范围*/
 .combobox .range
 {
@@ -133,6 +165,27 @@ width:250px;
 .combobox .range.right
 {
   left: -170px;
+}
+.combobox .datetimeicon .icon-time{
+  font-size: 20px;
+}
+.combobox .timeinput{
+  width: 120px;
+    height: 25px;
+    top: 6px;
+    position: absolute;
+    margin-left: 15px;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #dddddd;
+    right:20px;
+    padding-right: 6px;
+}
+
+.timeinput.wasabi-form-control[disabled], .timeinput.wasabi-form-control[readonly] {
+  background-color:transparent;
+  opacity: 1;
+  cursor: default;
 }
 /*联级选择*/
 .combobox .picker
@@ -166,8 +219,8 @@ width:250px;
   left: 0px;
   z-index:2;
   top:34px;
-  border:1px solid #d7dde2;
-  box-shadow: 0px 0px 20px #dddddd;
+  border:1px solid #d8d8d8;
+  box-shadow: 0px 0px 10px #dddddd;
   background: white;
   overflow: auto;
 }
@@ -194,8 +247,8 @@ width:250px;
   left: 0px;
   z-index:2;
   top:34px;
-  border:1px solid #d7dde2;
-  box-shadow: 0px 0px 20px #dddddd;
+  border:1px solid #d8d8d8;
+  box-shadow: 0px 0px 10px #dddddd;
   background: white;
   overflow: auto;
 }

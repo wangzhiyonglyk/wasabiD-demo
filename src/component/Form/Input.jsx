@@ -44,9 +44,7 @@ constructor(props)
         if (type == "none") {//空占位组件
             control = <None ref="input" {...props} ></None>
         }
-        else if(type=="time"){
-            control=<Time ref="input" {...props}></Time>
-        }
+      
         else if (type == "radio") {//单选按钮组
             control = <Radio ref="input" {...props} ></Radio>
         }

@@ -6,6 +6,7 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { bind } from "file-loader";
 
 import("../Sass/Form/DateTime.css");
 class Time extends Component {
@@ -15,33 +16,12 @@ class Time extends Component {
     this.getValue=this.getValue.bind(this);
     this.setValue=this.setValue.bind(this);
     this.setInitValue=this.setInitValue.bind(this);
-    this.showHandler=this.showHandler.bind(this);
     this.hourHandler=this.hourHandler.bind(this);
     this.minuteHandler=this.minuteHandler.bind(this);
-    this.secondHandler=this.secondHandler.bind(this);
-    this.scrollHandler=this.scrollHandler.bind(this);
-    this.mouseOutHandler=this.mouseOutHandler.bind(this);
+    
     }
 
-    componentWillReceiveProps(nextProps) {
-        /*
-
-         */
-        // var result = this.setInitValue(nextProps);
-        // result.height = this.state.height;//高度仍用旧值，因为选择时回传父组件，还不需要消失
-        // this.setState(result);
-        // //滚动到指定位置
-        // this.refs.hour.scrollTop = result.hour * 24;
-        // this.refs.minute.scrollTop = result.minute * 24;
-        // this.refs.second.scrollTop = result.second * 24;
-    }
-    componentDidMount() {
-        //滚动到指定位置
-        this.refs.hour.scrollTop = this.state.hour * 24;
-        this.refs.minute.scrollTop = this.state.minute * 24;
-        this.refs.second.scrollTop = this.state.second * 24;
-
-    }
+    
     getValue() {//获取值
         let value =(this.state.hour>=10?this.state.hour:"0"+this.state.hour)+":"+(this.state.minute>=10?this.state.minute:"0"+this.state.minute)
         +(this.props.hideSecond?"":":"+(this.state.second>=10?this.state.second:"0"+this.state.second));
@@ -52,7 +32,7 @@ class Time extends Component {
         if(value){
             let hour=value.split(":")[0]*1;
             let minute=value.split(":")[1]*1;
-            this.second=this.props.hideSecond?"":value.split(":")[2]*1;
+            this.second=this.props.hideSecond?"":value.split(":").length==3?value.split(":")[2]*1:"00";
             this.setState({
                 hour:hour,
                 minute:minute,
@@ -78,126 +58,40 @@ class Time extends Component {
             hour: (hour < 10) ? "0" + hour : hour,
             minute: (minute < 10) ? "0" + minute : minute,
             second: (second < 10) ? "0" + second : second,
-            height: 0,//
+            showMinute:false,
         }
 
     }
-    hourHandler(value, tran) {
-        let lastScrollTop = value * 24;
-        this.scrollHandler(this.refs.hour, this.refs.hour.scrollTop, lastScrollTop, tran);
-        this.refs.hour.style.backgroundColor = "red";
+    /**
+     * 时单击
+     * @param {*} value 
+     */
+    hourHandler(value, ) {
+      
         this.setState({
-            hour: value
+            hour: value,
+            showMinute:true
         })
-        if (this.props.onSelect != null) {
-            value=this.formatValue(value + ":" + this.state.minute + ":" + this.state.second)
-            this.props.onSelect(value, value, this.props.name, null);
-        }
+       
     }
-    minuteHandler(value, tran) {
-        let lastScrollTop = value * 24;
-        this.scrollHandler(this.refs.minute, this.refs.minute.scrollTop, lastScrollTop, tran);
+    /**
+     * 分单击
+     * @param {*} value 
+     */
+    minuteHandler(value) {
+      
         this.setState({
-            minute: value
+            minute: value,
+            showMinute:false
         })
         if (this.props.onSelect != null) {
-            value=this.formatValue(this.state.hour + ":" + value + ":" + this.state.second)
-            this.props.onSelect(value, value, this.props.name, null);
-        }
-
-    }
-    secondHandler(value, tran) {
-
-        let lastScrollTop = value * 24;
-        this.scrollHandler(this.refs.second, this.refs.second.scrollTop, lastScrollTop, tran);
-        this.setState({
-            second: value
-        })
-        if (this.props.onSelect != null) {
-            value=this.formatValue(this.state.hour + ":" + this.state.minute + ":" + value)
+            //todo 太麻烦，后期改
+            value=this.formatValue((this.state.hour<10?"0"+this.state.hour:this.state.hour)+ ":" +(value<10?"0"+value:value)+ ":00")
             this.props.onSelect(value, value, this.props.name, null);
         }
 
     }
-    scrollHandler(obj, scrollTop, lastScrollTop, tran) {
-        obj.scrollTop = scrollTop;
-        if (scrollTop < lastScrollTop) {
-            setTimeout(() => {
-                this.scrollHandler(obj, scrollTop + 24, lastScrollTop, tran);
-            }, tran);
-
-        }
-
-    }
-    mouseOutHandler(event) {//鼠标移开时隐藏下拉
-        var parentE = event.relatedTarget;//相关节点
-        while (parentE && parentE.nodeName != "BODY") {
-            if (parentE.className.indexOf("wasabi-time-picker-panel-inner") > -1) {
-                break;
-            }
-            parentE = parentE.parentElement;
-        }
-
-        if (parentE == undefined || parentE == null || parentE.nodeName == "BODY") {
-            setTimeout(() => {
-                this.setState({
-                    height: 0,
-                });
-            }, 200);
-
-        }
-
-    }
-    renderHour() {
-        let hourControl = [];
-        for (let index = 0; index < 24; index++) {
-            var currentHour = (index < 10) ? "0" + index : index;
-            hourControl.push(<li onClick={this.hourHandler.bind(this, currentHour, 70)} key={"hour" + currentHour}
-                className={(this.state.hour == currentHour) ? "wasabi-time-picker-panel-select-option-selected" : null}>{currentHour}</li>);
-        }
-        for (let index = 0; index < 5; index++) {
-            hourControl.push(<li key={"nohour" + index}></li>);
-        }
-        return hourControl;
-    }
-    rendMinute() {
-        let minuteControl = [];
-        for (let index = 0; index < 60; index++) {
-            var currentMinute = (index < 10) ? "0" + index : index;
-            minuteControl.push(<li key={"minute" + currentMinute} onClick={this.minuteHandler.bind(this, currentMinute, 70)}
-                className={(this.state.minute == currentMinute) ? "wasabi-time-picker-panel-select-option-selected" : null}>{currentMinute}</li>);
-        }
-        for (let index = 0; index < 5; index++) {
-            minuteControl.push(<li key={"nominute" + index}></li>);
-        }
-        return minuteControl;
-    }
-    rendSecond() {
-        let secondControl = [];
-        for (let index = 0; index < 60; index++) {
-            var currentSecond = (index < 10) ? "0" + index : index;
-            secondControl.push(<li key={"second" + currentSecond} onClick={this.secondHandler.bind(this, currentSecond, 70)}
-                className={(this.state.second == currentSecond) ? "wasabi-time-picker-panel-select-option-selected" : null}>{currentSecond}</li>);
-        }
-        for (let index = 0; index < 5; index++) {
-            secondControl.push(<li key={"nosecond" + index}></li>);
-        }
-        return secondControl;
-    }
-
-    showHandler() {
-        if(this.props.readonly){
-            return;
-        }
-        this.setState({
-            height: 146,
-
-        })
-
-    }
-    changeHandler() {
-
-    }
+  
     /**
      * 格式化值
      * @param {*} value 
@@ -208,27 +102,40 @@ class Time extends Component {
        }
        return value;
     }
+    renderHour(){
+        let hourControl=[];
+        for(let i=0;i<24;i++){
+          
+            if(this.state.hour==i){
+                hourControl.push(<li key={i} ><span className={"hour "+ (this.state.hour==i?"active":"")}>{i<10?"0"+i:i}</span>
+                {<ul className="time-container" style={{display:this.state.showMinute?"block":"none"}}><p>分钟</p>{this.rendMinute()}</ul>}
+                </li>)
+            }
+            else{
+                hourControl.push(<li key={i} ><span onClick={this.hourHandler.bind(this,i)} className={"hour "+ (this.state.hour==i?"active":"")}>{i<10?"0"+i:i}</span></li>)
+            }
+           
+            
+        }
+        return hourControl;
+    }
+    rendMinute(){
+        let minuteControl=[];
+        for(let i=0;i<=59;i+=5){
+            minuteControl.push(<li key={i} className={"hour "+ (this.state.minute==i?"active":"")} onClick={this.minuteHandler.bind(this,i)}>{i<10?"0"+i:i}</li>)
+        }
+        return minuteControl;
+    }
     render() {
 
-   let value= this.getValue();
-        return <div className="wasabi-time-picker-panel-inner" onMouseOut={this.mouseOutHandler}>
-            <div className="wasabi-time-picker-panel-input-wrap">
-                <input className="wasabi-time-picker-panel-input  "
-                    onClick={this.showHandler} onChange={this.changeHandler} 
-                     readOnly={this.props.readonly} value={value} placeholder="请选择时间"></input>
-
-            </div>
-            <div className="wasabi-time-picker-panel-combobox" style={{ height: this.state.height,width:this.props.hideSecond?112:null }}>
-                <div ref="hour" key="hour" className="wasabi-time-picker-panel-select" >
-                    <ul key="hour" >{this.renderHour()} </ul>
-                </div>
-                <div ref="minute" key="minute" className="wasabi-time-picker-panel-select" >
-                    <ul key="minute">{this.rendMinute()}</ul>
-                </div>
-                <div ref="second" key="second" className="wasabi-time-picker-panel-select" style={{display:this.props.hideSecond?"none":"block"}} >
-                    <ul key="second">{this.rendSecond()}</ul>
-                </div>
-            </div></div>
+   return <div className="wasabi-time-container">
+       <ul>
+       <p>小时</p>
+       {
+         this.renderHour()
+       }
+       </ul>
+   </div>
     }
 }
 

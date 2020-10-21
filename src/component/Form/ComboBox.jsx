@@ -74,11 +74,7 @@ class  ComboBox extends Component{
      
         return    <Picker ref="combobox"{...this.props}></Picker>
     }
-    renderTime() {
-       
-
-        return <Time ref="combobox" {...this.props}></Time>
-    }
+   
     renderDatePicker() {
     
         return <DatePicker ref="combobox" {...this.props}></DatePicker>
@@ -98,9 +94,7 @@ class  ComboBox extends Component{
             case "select":
                 control = this.renderSelect();
                 break;
-            case "time":
-                control = this.renderDatePicker();
-                break;
+          
             case "picker":
                 control = this.renderPicker();
                 break;
@@ -114,6 +108,9 @@ class  ComboBox extends Component{
                 control = this.renderDatePicker();
 
                 break;
+                case "time":
+                    control = this.renderDatePicker();
+                    break;
             case "datetime":
                 control = this.renderDatePicker();
 

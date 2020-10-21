@@ -17,7 +17,7 @@ desc:下拉框样式
   font-style: normal;
   width: 34px;
   height: 34px;
-  border-left: 1px solid #d7dde2;
+  border-left: 1px solid #d8d8d8;
   position: absolute;
   top: 0px;
  right: 0px;
@@ -38,7 +38,7 @@ desc:下拉框样式
   position: absolute;
   top: 10px;
   left: 9px;
-  color: #d7dde2;
+  color: #d8d8d8;
 }
 
 .nice-select .picker-clear{

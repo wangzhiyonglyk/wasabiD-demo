@@ -50,7 +50,7 @@ class Modal extends React.Component {
     }
 
     open(title) {//打开事件
-        this.setState({ visible: true, title: title });
+        this.setState({ visible: true, title: title?title:this.state.title });
     }
     /**
      * 鼠标移动事件

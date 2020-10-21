@@ -19,6 +19,25 @@ desc:表单样式
 
 .wasabi-form .form-body{
     width:100%;
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+}
+
+.wasabi-form .form-body[cols="1"] .wasabi-form-group{
+    width: 100%;
+}
+.wasabi-form .form-body[cols="2"] .wasabi-form-group{
+    width: 50%;
+}
+.wasabi-form .form-body[cols="3"] .wasabi-form-group{
+    width: 33.33%;
+}
+.wasabi-form .form-body[cols="4"] .wasabi-form-group{
+    width: 25%;
+}
+.wasabi-form .form-body[cols="5"] .wasabi-form-group{
+    width: 20%;
 }
 
 .wasabi-form .form-submit

@@ -228,100 +228,97 @@ float: left;
 
 
 }
+
+
 /*
 时间样式
 */
-.wasabi-time-picker-panel-input-wrap {
-  box-sizing: border-box;
-  position: relative;
-}
 
-.wasabi-time-picker-panel-input {
-  width: 60px;
-  height: 24px;
+.wasabi-time-container{
+    position: relative;
+    width: 390px;
+    background: #ffffff;
+    padding:10px;
+    border: 1px solid #D8D8D8;
+    border-radius:5px ;
+    -webkit-border-radius:5px ;
+    -moz-border-radius:5px ;
+    -ms-border-radius:5px ;
+    -o-border-radius:5px ;
+    box-shadow: 0 0 20px #ddd;
+    height: 100%;
+    min-height:210px;
+    white-space: pre-wrap;
 }
-.wasabi-time-picker-panel-input[readonly]{
-  background-color: #eee;
-  opacity: 1;
-  cursor: not-allowed;
+.wasabi-time-container *{
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0;
+  
 }
-.wasabi-time-picker-panel-clear-btn {
-  position: absolute;
-  right: 5px;
-  cursor: pointer;
-  overflow: hidden;
-  width: 40px;
-  height: 20px;
-  text-align: center;
-  line-height: 20px;
-  top: 5px;
-  margin: 0;
-  -webkit-transition:color .3s ease;
-  transition: color .3s ease;
-}
-.wasabi-time-picker-panel-combobox
-{
-  overflow: hidden;
-  width: 168px;
-  background: white;
-  height: 0px;
-  -webkit-transition:height 0.5s;
-  transition: height 0.5s;
-  position: absolute;
-  box-shadow: 0 0 20px #888888;
-}
-
-.wasabi-time-picker-panel-select {
-  float: left;
-  font-size: 12px;
-  border: 1px solid #e9e9e9;
-  margin-left: -1px;
-  box-sizing: border-box;
-  width: 56px;
-  overflow: hidden;
-  position: relative;
-}
-.wasabi-time-picker-panel-select:first-child {
-  border-left: 0;
-  margin-left: 0;
-}
-
-
-
-.wasabi-time-picker-panel-select ul {
+.wasabi-time-container ul{
   list-style: none;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  max-height: 144px;
 }
-.wasabi-time-picker-panel-select:hover {
-  overflow-y: auto;
-}
-.wasabi-time-picker-panel-select li {
-  list-style: none;
-  box-sizing: content-box;
-  margin: 0;
-  padding: 0 0 0 16px;
-  width: 100%;
-  height: 24px;
-  line-height: 24px;
+.wasabi-time-container p{
+  font-weight: bold;
+  padding: 0 4px;
+  margin-top: 4px;
+  margin-bottom: 10px;
   text-align: left;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-transition: background .3s ease;
-  transition: background .3s ease;
-  background-color: white;
 }
-.wasabi-time-picker-panel-select li.timeitem:hover {
+.wasabi-time-container li{
+  display: inline-block;
+    position: relative;
+    margin: 4px;
+    cursor: pointer;
+}
+.wasabi-time-container .hour{
+  display: inline-block;
+  width: 50px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+.wasabi-time-container .hour:hover,.wasabi-time-container .hour.active{
   background-color: #1c84c6;
+  color: #fff;
 }
+.wasabi-time-container .time-container{
+     display: none;
+    border: 1px solid #d8d8d8;
+    background: #ffffff;
+    position: absolute;
+    top: 40px;
+    width: 370px;
+    padding:10px;
+    z-index: 1;
+    border-radius:5px ;
+    -webkit-border-radius:5px ;
+    -moz-border-radius:5px ;
+    -ms-border-radius:5px ;
+    -o-border-radius:5px ;
+   
+}
+.wasabi-time-container .time-container::before{
+  border-color: transparent transparent #ffffff;
+    top: -17px;
+    z-index: 1;
+  
 
-li.wasabi-time-picker-panel-select-option-selected {
-  background: #f7f7f7;
-  font-weight: 700;
+}
+.wasabi-time-container .time-container::after {
+  border-color: transparent transparent #c9cbce;
+  top: -20px;
+}
+.wasabi-time-container .time-container::before, .wasabi-time-container .time-container::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-width: 10px;
+  border-style: solid;
+  position: absolute;
+  left: 20px;
 }

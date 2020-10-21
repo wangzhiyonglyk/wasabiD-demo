@@ -154,7 +154,7 @@ this.onSubmit=this.onSubmit.bind(this);
     render() {
         return (
             <div className={"wasabi-form  clearfix " + " " + this.props.className} style={this.props.style}>
-                <div className={"form-body clearfix "}>
+                <div className={"form-body clearfix "}  cols={this.props.cols}>
 
                     {
                       React.  Children.map(this.props.children, (child, index) => {
@@ -188,6 +188,7 @@ Form. propTypes= {
     submitHide: PropTypes.bool,
     submitTheme: PropTypes.string,
     onSubmit: PropTypes.func,//提交成功后的回调事件
+    cols:PropTypes.number//一行几列
 };
 Form.defaultProps= {
         style: {},
@@ -197,5 +198,6 @@ Form.defaultProps= {
         submitHide: false,//是否隐藏按钮
         submitTheme: "primary",//主题
         onSubmit: null,//提交成功后的回调事 
+        cols:4,//默认4个
     };
 export default Form;

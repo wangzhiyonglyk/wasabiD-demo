@@ -164,7 +164,7 @@ class  MutiText extends Component {
                         <div className={"dropcontainter  mutiText "+this.props.position}  style={{display:this.state.show==true?"block":"none"}}  >
                             <div style={{height:30,lineHeight:"30px",color:"#aaaaaa",overflow:"hidden", display:this.props.placeholder?"block":"none"}}>{this.props.placeholder}</div>
                        <textarea value={areaValue} ref="input" onChange={this.changeHandler} placeholder="回行代表一行"
-                                 style={{width:"100%",height:100,border:"1px solid #d7dde2",resize:"none"}}></textarea>
+                                 style={{width:"100%",height:100,border:"1px solid #d8d8d8",resize:"none"}}></textarea>
                             <div className="ok" >
                                 <Button title="确定" name="ok"  size="small" theme="primary" onClick={this.changeHandler}></Button>
                                 <Button title="取消" name="cancel"  size="small" theme="cancel" onClick={this.cancelHandler}></Button>

@@ -117,28 +117,28 @@ class DatePicker extends Component {
     this.refs.label.hideHelp(); //隐藏帮助信息
   }
 
-  splitDate(splitdate) {
+  splitDate(datestr) {
     //拆分日期格式
 
     if (
-      splitdate &&
-      splitdate.indexOf(" ") > -1 &&
-      regs.datetime.test(splitdate)
+      datestr &&
+      datestr.indexOf(" ") > -1 &&
+      regs.datetime.test(datestr)
     ) {
       //有时间
 
-      splitdate = splitdate.split(" ")[0];
+      datestr = datestr.split(" ")[0];
       var returnvalue = {
-        year: splitdate.split("-")[0] * 1,
-        month: splitdate.split("-")[1] * 1,
-        day: splitdate.split("-")[2] * 1
+        year: datestr.split("-")[0] * 1,
+        month: datestr.split("-")[1] * 1,
+        day: datestr.split("-")[2] * 1
       };
       return returnvalue;
-    } else if (regs.date.test(splitdate)) {
+    } else if (regs.date.test(datestr)) {
       var returnvalue = {
-        year: splitdate.split("-")[0] * 1,
-        month: splitdate.split("-")[1] * 1,
-        day: splitdate.split("-")[2] * 1
+        year: datestr.split("-")[0] * 1,
+        month: datestr.split("-")[1] * 1,
+        day: datestr.split("-")[2] * 1
       };
       return returnvalue;
     } else {
@@ -261,6 +261,18 @@ class DatePicker extends Component {
       ></DateD>
     );
   }
+  renderTime(){
+  
+   
+    return (
+      <Time
+        ref='combobox'
+        name={this.props.name}
+        value={this.state.value}
+        onSelect={this.onSelect}
+      ></Time>
+    );
+  }
   renderDateTime() {
     var dateobj = this.splitDateTime(this.state.value);
     return (
@@ -380,10 +392,15 @@ class DatePicker extends Component {
     let control = null;
     let controlDropClassName = "";
     switch (this.props.type) {
+      
       case "date":
         control = this.renderDate();
         controlDropClassName = "date";
         break;
+        case "time":
+          control=this.renderTime();
+          controlDropClassName = "time";
+          break;
       case "datetime":
         control = this.renderDateTime();
         controlDropClassName = "date time";

@@ -212,14 +212,14 @@ module.exports =env=> {
     }),
 
     new webpack.HotModuleReplacementPlugin(), //热加载插件
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname+"/public", 'test.txt'),
-        },
+    // new CopyWebpackPlugin({
+    //   patterns: [
+    //     {
+    //       // from: path.resolve(__dirname+"/public", 'test.txt'),
+    //     },
       
-      ],
-    }) 
+    //   ],
+    // }) 
   ].concat(htmlplugin), //生成对应的html文件,在htmlplugin中
 
   //devtool: 'eval-source-map', // eval-source-map is faster for development
