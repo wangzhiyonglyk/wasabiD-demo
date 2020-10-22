@@ -95,10 +95,8 @@ class  Text  extends Component{
                 text:event.target.value,
             });
 
-            if (this.props.onChange != null) {
-                this.props.onChange(event.target.value);//自定义的改变事件
-
-            }
+        
+                this.props.onChange&&this.props.onChange(event.target.value, event.target.value, this.props.name);//自定义的改变事件
             //回传给表单组件,下拉组件使用onSelect回传给表单组件
             if (this.props.backFormHandler != null) {
                 this.props.backFormHandler(event.target.value, event.target.value, this.props.name);

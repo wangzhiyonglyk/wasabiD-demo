@@ -9,7 +9,7 @@ import config from "./config"
 
 let ajax = function (settings) {
 
-    let headers = getHeaders()
+    let headers = getHeaders(settings.url)
     //说明要对接用管系统
     if (!unit.isEmptyObject(headers)) {
         settings.headers = settings.headers instanceof Object ? Object.assign(settings.headers, headers) : headers
@@ -64,8 +64,10 @@ let fetch = async function (fetchModel) {
     }
 
 }
-let getHeaders = function () {
+let getHeaders = function (url) {
 
+    url=url?url.replace(config.url,""):url;
+    url=url.indexOf("?")>-1?url.replace("?"+url.split("?")[1],""):url;
     let token = unit.GetArgsFromHref(window.location.href, 'token') ? unit.GetArgsFromHref(window.location.href, 'token') : window.sessionStorage.getItem('token')
     let headers = {}
     if (token) {
@@ -77,11 +79,7 @@ let getHeaders = function () {
         window.sessionStorage.setItem('userId', userId)
         window.sessionStorage.setItem('perId', perId)
         window.sessionStorage.setItem('sysId', sysId)
-
-        let url = window.location.href
-        url = url ? url.replace(window.location.origin, '') : url;
         let rock = config.rock//密钥
-
         headers.token = token
         headers.sysId = sysId
         headers.perId = perId
@@ -189,4 +187,4 @@ let post = function (url, data, success,contentType="application/json") {
 
 
 
-export default { ajax, fetch, get, post, location, message, crpto }
+export default { ajax, fetch, get, post, location, message, crpto,getHeaders }

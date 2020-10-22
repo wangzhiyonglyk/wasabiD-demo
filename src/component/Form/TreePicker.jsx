@@ -80,7 +80,7 @@ class TreePicker extends Component{
     showUpdate(newParam, oldParam) {
   return    showUpdate.call(this, newParam, oldParam);
     }
-      setValue(value) {
+    setValue(value) {
         let text = "";
         for (let i = 0; i < this.state.data.length; i++) {
             if (this.state.data[i].value == value) {
@@ -120,18 +120,23 @@ class TreePicker extends Component{
         })
         this.unbindClickAway();//卸载全局单击事件
     }
-    onSelect(value,text,name,row) {
-      
-      
+    onSelect() {
+        let data= this.refs.tree.getChecked();
+        let value=[],text=[];
+        console.log("data",data);
+        if(data&&data.length>0){
+            for(let i=0;i<data.length;i++){
+                value.push(data[i].id);
+                text.push(data[i].text);
+            }
+        }
         this.setState({
-            value: value,
-            text: text,
-            show: !this.state.show
+            value: value.join(","),
+            text: text.join(","),
+            
         });
-        this.validate(value);//
-                if (this.props.onSelect != null) {
-                    this.props.onSelect(value, text, name, row);
-                }
+        this.validate(value);//只验证
+        this.props.onSelect&&this.props.onSelect(value, text, name);   
 
     }
     clearHandler() {//清除数据
@@ -163,14 +168,15 @@ class TreePicker extends Component{
             <Label name={this.props.label} ref="label" style={this.props.labelStyle} required={this.props.required}></Label>
             <div className={ "wasabi-form-group-body"} style={{width:!this.props.label?"100%":null}}>
                 <div className="combobox"    >
-                    <i className={"picker-clear "} onClick={this.clearHandler} style={{display:this.props.readonly?"none":(this.state.value==""||!this.state.value)?"none":"inline"}}></i>
+                    <i className={"picker-clear "} onClick={this.clearHandler.bind(this)} style={{display:this.props.readonly?"none":(this.state.value==""||!this.state.value)?"none":"inline"}}></i>
                     <i className={"pickericon  " +(this.state.show?"rotate":"")} onClick={this.showPicker.bind(this,1)}></i>
-                    <input type="text" {...inputProps}  value={this.state.text} onBlur={this.onBlur}   onClick={this.showPicker.bind(this,2)} onChange={this.changeHandler}     />
+                    <input type="text" {...inputProps}  value={this.state.text} onBlur={this.onBlur.bind(this)}   onClick={this.showPicker.bind(this,2)} onChange={this.changeHandler.bind(this)}     />
                     <div className={"dropcontainter treepicker  "} style={{height:this.props.height,display:this.state.show==true?"block":"none"}}  >
                         <Tree
-                            name={this.props.name}  value={this.state.value} text={this.state.text}
-                            valueField={this.props.valueField} textField={this.props.textField} dataSource={this.props.dataSource}
-                            url={this.props.url}  params={this.props.params} data={this.state.data} onSelect={this.onSelect}
+                          ref="tree"
+                            {...this.props}
+                          data={this.state.data} onChecked={this.onSelect.bind(this)}
+                            checkAble={true}
                         ></Tree>
                     </div>
                 </div>

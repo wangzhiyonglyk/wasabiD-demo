@@ -144,7 +144,7 @@ class Tree extends Component {
     getData(){
         let data=[];
         for(let ref in this.refs){
-            if(ref.indexOf("node")>-1){
+            if(ref.indexOf("nodetree")>-1){
                 data.push(this.refs[ref].getData());
             }
         }
@@ -155,6 +155,19 @@ class Tree extends Component {
      */
     getRawData(){
         return this.state.rawData;
+    }
+
+    /**
+     * 返回勾选的数据
+     */
+    getChecked(){
+        let data=[];
+        for(let ref in this.refs){
+            if(ref.indexOf("nodetree")>-1){
+                data=[].concat(data, this.refs[ref].getChecked());
+            }
+        }
+        return data;
     }
 
     /**
@@ -190,13 +203,13 @@ class Tree extends Component {
                 else {
 
                 }
-                nodeControl.push(<TreeNode ref={"node"+item.id+index} parentRemoveChild={this.onRemoveForParent.bind(this)} 
+                nodeControl.push(<TreeNode ref={"nodetree"+item.id+index} parentRemoveChild={this.onRemoveForParent.bind(this)} 
                 key={"nodetree"+item.id} 
                 {...this.props}
                    {...item}
                    data={this.state.rawData}
                  isParent={isParent} selectid={this.state.id} 
-                 
+                 /** 其他事件不需要绑定，因为父组件设定 */
                     onClick={this.onClick}
                     onDoubleClick={this.onDoubleClick}
                     />);

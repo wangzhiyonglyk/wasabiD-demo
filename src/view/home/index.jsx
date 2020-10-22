@@ -71,7 +71,8 @@ class Home extends React.Component {
 
   }
   onChecked(checked) {
-    
+   let data= this.refs.tree.getChecked();
+   console.log("data",data);
   }
   onClick() {
   console.log(this.refs.tree.getData())
@@ -89,14 +90,10 @@ class Home extends React.Component {
   render() {
     return <div>
       <Button onClick={this.onClick.bind(this)}>单击</Button>
-      {/* <Editor></Editor> */}
-      {/* <Input key="1" type="date"></Input> */}
-      
-      <Input key="2" type="datetimerange"></Input>
-      {/* <Time></Time> */}
-      {/* <Tree ref="tree" beforeRename={this.beforeRename.bind(this)} onChecked={this.onChecked.bind(this)} beforeRemove={this.beforeRemove.bind(this)}
-        onRemove={this.onRemove.bind(this)} onRename={this.onRename.bind(this)} checkAble={true} editAble={true} renameAble={true} 
-        removeAble={true} simpleData={true} textField="name" data={this.state.data} beforeRename={this.beforeRename.bind(this)} onEdit={this.ontreeClick.bind(this)}></Tree> */}
+   
+      <Input key="2" type="treepicker" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
+    
+     
     </div>;
   }
 }

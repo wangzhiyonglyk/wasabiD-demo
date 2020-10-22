@@ -119,26 +119,26 @@ class Upload extends Component {
 
         // 实例化一个AJAX对象
         let xhr = new XMLHttpRequest();
-        //添加headers
-        if (this.props.httpHeaders && this.props.httpHeaders instanceof Object) {
-          try {
-            for (let prop in this.props.httpHeaders) {
-              xhr.setRequestHeader(prop, this.props.httpHeaders[prop]);
-            }
-          }
-          catch(e){
-            console.error("error",e.message);
-          }
-        }
+      
         if (this.props.progress) {
           xhr.upload.addEventListener('progress', this.uploadProgress.bind(this), false);
         }
-
         xhr.addEventListener('load', this.uploadComplete.bind(this), false);
         xhr.addEventListener('error', this.uploadFailed.bind(this), false);
         xhr.addEventListener('abort', this.uploadCanceled.bind(this), false);
         xhr.addEventListener('loadend', this.uploadend.bind(this), false);
         xhr.open('POST', this.props.uploadurl, true);
+          //添加headers
+          if (this.props.httpHeaders && this.props.httpHeaders instanceof Object) {
+            try {
+              for (let prop in this.props.httpHeaders) {
+                xhr.setRequestHeader(prop, this.props.httpHeaders[prop]);
+              }
+            }
+            catch(e){
+              console.error("error",e.message);
+            }
+          }
         // 发送表单数据
         xhr.send(formData);
         this.setState({

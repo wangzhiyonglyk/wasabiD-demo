@@ -93,32 +93,42 @@ class TreeNode extends Component {
 
     }
     /**
-     * 勾选动作
+     * 自身的勾选动作
      * @param {*} id 
      */
-    onChecked(value) {
+    onselfChecked(value) {
         this.setState({
             checked: value == this.state.id,
             half: false
         },
-            () => {
-                this.props.onChecked && this.props.onChecked(value == this.state.id, this.state.id, this.state.text, this.state.children)
-                let checked = this.props.getBrotherChecked && this.props.getBrotherChecked();
-
-                if (checked && checked.num && checked.length == checked.num) {//全部勾选
-                    this.props.parentSetChecked && this.props.parentSetChecked(true);
-                }
-                else if (checked && checked.num == 0) {//全部没有勾选
-                    this.props.parentSetChecked && this.props.parentSetChecked(false);
-                }
-                else if (checked && checked.length != checked.num) {//部分勾选
-                    //半选/todo
-                    this.props.parentSetChecked && this.props.parentSetChecked("half");
-                }
-
-            }
+        ()=>{
+                //获取兄弟之间的勾选情况，来处理父节点的勾选
+               this.brotherChecked(); 
+                //触及树组件【即根】的onchecked
+                console.log("ee")
+              this.props.onChecked && this.props.onChecked(value == this.state.id, this.state.id, this.state.text, this.state.children);     
+        }
         );
 
+    }
+    /**
+     * 获取兄弟之间的勾选情况，来处理父节点的勾选
+     */
+    brotherChecked(){
+         //获取兄弟节点的勾选情况，。
+         let checked = this.props.getBrotherCheckedNum && this.props.getBrotherCheckedNum();
+         if (checked && checked.num && checked.length == checked.num) {//全部勾选
+             this.props.parentSetChecked && this.props.parentSetChecked(true);//处理父节点的
+         }
+         else if (checked && checked.num == 0) {//全部没有勾选
+             this.props.parentSetChecked && this.props.parentSetChecked(false);//处理父节点的
+         }
+         else if (checked && checked.length != checked.num) {//部分勾选
+             //半选/todo
+             this.props.parentSetChecked && this.props.parentSetChecked("half");//处理父节点的
+         }
+        
+     
     }
       /**
      * ，由父节点设置勾选情况
@@ -130,29 +140,60 @@ class TreeNode extends Component {
             this.setState({
                 checked: checked,
                 half: false
+            },()=>{
+                //再向上解决父节点的勾选情况
+               this.brotherChecked();
+               this.props.onChecked && this.props.onChecked(checked, this.state.id, this.state.text, this.state.children);     
             })
         }
         else {
             this.setState({
                 half: checked == "half",
                 checked: false,
-            })
+            },()=>{ this.brotherChecked();})
         }
 
     }
 
     /**
-     * 获取勾选情况
+     * 获取当前节点，包括子孙的已勾选的详情
+     */
+   getChecked(){
+        //勾选的对象
+        let checkedArr=[];
+        if(this.state.checked){
+            checkedArr.push({
+                id:this.state.id,
+                text:this.state.text,
+                checked:this.state.checked
+            })
+        }
+        if (this.state.children && this.state.children instanceof Array) {
+            for (let ref in this.refs) {
+                if (ref.indexOf("child") > -1) {
+                 
+                   checkedArr=[].concat(checkedArr,  this.refs[ref].getChecked());
+
+                }
+            }
+        }
+     
+        return checkedArr;
+   }
+
+    /**
+     * 获取自身的勾选情况
      */
 
-    getChecked() {
-        return this.state.checked;
+    getselfChecked() {
+        
+        return this.state.checked
     }
 
      /**
-     * 获取子节点的勾选情况
+     * 获取子节点的勾选数量
      */
-    getchildChecked() {
+    getchildCheckedNum() {
         let checked = {
             length: 0,
             num: 0
@@ -161,7 +202,7 @@ class TreeNode extends Component {
             for (let ref in this.refs) {
                 if (ref.indexOf("child") > -1) {
                     checked.length++
-                    if (this.refs[ref].getChecked()) {
+                    if (this.refs[ref].getselfChecked()) {
                         checked.num++
                     }
 
@@ -373,7 +414,7 @@ class TreeNode extends Component {
                      {...this.state}
                     {...item}
                     key={item.id}
-                    parentRemoveChild={this.onRemoveForParent.bind(this)} parentSetChecked={this.setCheckedForParent.bind(this)} getBrotherChecked={this.getchildChecked.bind(this)}
+                    parentRemoveChild={this.onRemoveForParent.bind(this)} parentSetChecked={this.setCheckedForParent.bind(this)} getBrotherCheckedNum={this.getchildCheckedNum.bind(this)}
                     ref={"child" + index}
                     half={this.state.half}
                     checked={this.state.checked}
@@ -401,7 +442,7 @@ class TreeNode extends Component {
             hide={this.props.checkAble ? false : this.props.checkAble ? false : true}
             half={this.state.half}
             name={"node"+this.props.id}
-            value={this.state.checked ? this.state.id : null} data={[{ value: this.state.id,text:"" }]} onSelect={this.onChecked.bind(this)}></Input>,
+            value={this.state.checked ? this.state.id : null} data={[{ value: this.state.id,text:"" }]} onSelect={this.onselfChecked.bind(this)}></Input>,
         <span key="2" draggable={this.props.dragAble} onDragEnd={this.onDragEnd.bind(this)} onDragStart={this.onDragStart.bind(this)} 
         onClick={this.onClick.bind(this, this.state.id, this.state.text)}  onDoubleClick={this.onDoubleClick.bind(this, this.state.id, this.state.text)}>  
          <i key="2" className={iconCls} style={{ marginRight: 3 }} onClick={this.onClick.bind(this, this.state.id, this.state.text)}></i>{this.state.text}&nbsp;&nbsp;</span>

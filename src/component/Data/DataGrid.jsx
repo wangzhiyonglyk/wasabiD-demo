@@ -533,6 +533,7 @@ class DataGrid extends Component {
                 <Input
                   {...header.editor.options}
                   type={header.editor.type}
+                   name={header.name}
                   value={currentValue}
                   text={currentText}
                   onChange={this.rowEditHandler.bind(this, columnIndex)}
