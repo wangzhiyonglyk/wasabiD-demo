@@ -21,7 +21,7 @@ class  Radio extends Component{
   constructor(props){
       super(props);
         //对传来的数据进行格式化
-        console.log("radio",this.props);
+     
         var newData = []; var text = this.props.text;
         if (this.props.data instanceof Array) {
             for (let i = 0; i < this.props.data.length; i++) {
@@ -72,7 +72,7 @@ class  Radio extends Component{
                         text:""
                     })
             }else{
-                console.log("radio",nextProps, nextProps.data);
+               
                 let newData=[];
                 for(let i=0;i<nextProps.data.length;i++)
             {
@@ -229,11 +229,11 @@ class  Radio extends Component{
                     <li key={i}>
                         <div  className={className+((this.state.value==child.value)?" checkedRadio":"")}
                              onClick={this.onSelect.bind(this,child.value,child.text,child)}><i>
-                            <input type="radio" name={this.props.name}
+                            {/* <input type="radio" name={this.props.name}
                                    id={this.props.name+child.value}
                                    value={child.value}
                                    onChange={this.changeHandler}>
-                            </input>
+                            </input> */}
                         </i></div>
                         <div className="radiotext" onClick={this.onSelect.bind(this,child.value,child.text,child)}>{textFeild}
                             <div
@@ -248,7 +248,7 @@ class  Radio extends Component{
         return (
             <div className={componentClassName+this.state.validateClass} style={style}>
                 <Label name={this.props.label} hide={this.props.hide} style={this.props.labelStyle} required={this.props.required}></Label>
-                <div className={ "wasabi-form-group-body"} style={{width:!this.props.label?"100%":null}}>
+                <div className={ "wasabi-form-group-body"} style={{minWidth:0,width:!this.props.label?"100%":null}}>
                     <ul className="wasabi-checkul">
                         {
                             control

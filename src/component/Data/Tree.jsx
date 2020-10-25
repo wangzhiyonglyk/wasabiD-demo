@@ -16,21 +16,23 @@ require("../Sass/Data/Tree.css");
 class Tree extends Component {
     constructor(props) {
         super(props);
-        let  newData = this.setidAndText(this.props.data);//对数据进行处理
+        let newData = this.setidAndText(this.props.data);//对数据进行处理
         this.state = {
             name: this.props.name,
             text: this.props.text,
             id: this.props.id,
             data: newData,
-            rawData:unit.clone(this.props.data)//原始数据
+            rawData: unit.clone(this.props.data)//原始数据
 
         }
         //单击与双击需要改变样式
         this.onClick = this.onClick.bind(this);
-        this.onDoubleClick=this.onDoubleClick.bind(this);
-      
-        //因为有些节点没有父节点，在移除时需要树组件配合
-        this.onRemoveForParent=this.onRemoveForParent.bind(this);
+        this.onradioChecked=this.onradioChecked.bind(this);
+        this.onDoubleClick = this.onDoubleClick.bind(this);
+
+        //因为第一级节点没有父节点，在移除时需要树组件配合
+        this.parentRemoveChild = this.parentRemoveChild.bind(this);
+        
         /**
          * 其他事件则自行定义就可以了
          */
@@ -45,11 +47,11 @@ class Tree extends Component {
                 this.loadData(nextProps.url, nextProps.params);
             }
 
-        } else if (this.showUpdate(nextProps.data,this.state.rawData)) {
-            let  newData = this.setidAndText(nextProps.data);//对数据进行处理
+        } else if (this.showUpdate(nextProps.data, this.state.rawData)) {
+            let newData = this.setidAndText(nextProps.data);//对数据进行处理
             this.setState({
-                data:newData,
-                rawData:nextProps.data
+                data: newData,
+                rawData: nextProps.data
             })
         }
 
@@ -87,7 +89,7 @@ class Tree extends Component {
         }
 
         realData = this.setidAndText(realData);
-        
+
         this.setState({
             data: realData,
         })
@@ -104,8 +106,8 @@ class Tree extends Component {
             }
 
         }
-        if(this.props.simpleData){//简单的json数据格式
-            realData=unit.toTreeData(realData);//转成树结构
+        if (this.props.simpleData) {//简单的json数据格式
+            realData = unit.toTreeData(realData);//转成树结构
         }
 
         return realData;
@@ -125,8 +127,40 @@ class Tree extends Component {
         this.setState({
             id: id,
             text: text
+        },()=>{
+            this.props.onClick && this.props.onClick(id, text, children, this.props.name);
         })
-        this.props.onClick && this.props.onClick(id, text,children,this.props.name);
+     
+    }
+    /**
+     * 单选按钮 radioType="all"
+     * @param {*} id 
+     * @param {*} text 
+     * @param {*} children 
+     */
+    onradioChecked(id, text,children){
+        this.setState({
+            id: id,
+            text: text
+        },()=>{
+
+            if (this.state.data && this.state.data instanceof Array && this.state.data.length > 0) {
+                for (let ref in this.refs) {
+                    if (ref.indexOf("nodetree") > -1) {
+                        //     
+                              
+                        this.refs[ref].setNodeSelfChecked(false,{id:id,text:text});//改变子节点
+                        this.refs[ref].setChildrenChecked(false,{id:id,text:text});//改变子孙节点
+                    }
+                }
+            }
+            setTimeout(() => {
+                this.onChecked(true,id, text, children);
+            }, 200);
+            //只有一个单选
+          
+        })
+      
     }
     /**
      * 双击事件
@@ -134,18 +168,21 @@ class Tree extends Component {
      * @param {*} text 
      * @param {*} children 
      */
-    onDoubleClick(id,text,children){
-        this.props.onDoubleClick && this.props.onDoubleClick(id, text,children,this.props.name);
+    onDoubleClick(id, text, children) {
+        this.props.onDoubleClick && this.props.onDoubleClick(id, text, children, this.props.name);
     }
 
+    onChecked(checked,id, text, children){
+        this.props.onChecked && this.props.onChecked(checked,id, text, children, this.props.name);
+    }
     /**
      * 返回树的数据
      */
-    getData(){
-        let data=[];
-        for(let ref in this.refs){
-            if(ref.indexOf("nodetree")>-1){
-                data.push(this.refs[ref].getData());
+    getData() {
+        let data = [];
+        for (let ref in this.refs) {
+            if (ref.indexOf("nodetree") > -1) {
+                data.push(this.refs[ref].getNodeData());
             }
         }
         return data;
@@ -153,28 +190,32 @@ class Tree extends Component {
     /**
      * 返回原始数据
      */
-    getRawData(){
+    getRawData() {
         return this.state.rawData;
     }
 
     /**
      * 返回勾选的数据
      */
-    getChecked(){
-        let data=[];
-        for(let ref in this.refs){
-            if(ref.indexOf("nodetree")>-1){
-                data=[].concat(data, this.refs[ref].getChecked());
+    getChecked() {
+        let data = [];
+        for (let ref in this.refs) {
+            if (ref.indexOf("nodetree") > -1) {
+                data = [].concat(data, this.refs[ref].getNodeChecked());
             }
         }
         return data;
     }
 
+    setChecked(checked){
+
+    }
+
     /**
-   * 由节点的父组件处理删除
+   * 由节点的父组件处理删除与移动时的删除
    * @param {*} childIndex 
    */
-    onRemoveForParent(childid, childText, subChildren) {
+    parentRemoveChild(childid, childText, subChildren) {
         let children = unit.clone(this.state.data);
         let childIndex = null;
         for (let i = 0; i < children.length; i++) {
@@ -203,16 +244,18 @@ class Tree extends Component {
                 else {
 
                 }
-                nodeControl.push(<TreeNode ref={"nodetree"+item.id+index} parentRemoveChild={this.onRemoveForParent.bind(this)} 
-                key={"nodetree"+item.id} 
-                {...this.props}
-                   {...item}
-                   data={this.state.rawData}
-                 isParent={isParent} selectid={this.state.id} 
-                 /** 其他事件不需要绑定，因为父组件设定 */
+                nodeControl.push(<TreeNode ref={"nodetree" + item.id + index} parentRemoveChild={this.parentRemoveChild.bind(this)}
+
+                    key={"nodetree" + item.id}
+                    {...this.props}
+                    {...item}
+                    data={this.state.rawData}
+                    isParent={isParent} selectid={this.state.id}
+                    /** 其他事件不需要绑定，因为父组件设定 */
                     onClick={this.onClick}
+                    onradioChecked={this.onradioChecked}
                     onDoubleClick={this.onDoubleClick}
-                    />);
+                />);
             });
         }
         return <ul className="wasabi-tree clearfix">
@@ -237,12 +280,12 @@ Tree.propTypes = {
     checkType: PropTypes.object,//勾选对于父子节点的关联关系
     radioType: PropTypes.oneOf(["level", "all"]),//单选时影响的层级
     renameAble: PropTypes.bool,//是否允许重命名
-    editAble:PropTypes.bool,//是否允许编辑
+    editAble: PropTypes.bool,//是否允许编辑
     removeAble: PropTypes.bool,//是否允许移除
-   
+
     //after事件
     onClick: PropTypes.func,//单击的事件
-    onDoubleClick:PropTypes.func,//双击事件
+    onDoubleClick: PropTypes.func,//双击事件
     onCheck: PropTypes.func,//勾选/取消勾选事件
     onCollapse: PropTypes.func,//折叠事件
     onExpand: PropTypes.func,//展开事件
@@ -255,8 +298,8 @@ Tree.propTypes = {
     onAsyncSuccess: PropTypes.func,//异步回调事件
 
     //before 事件
-    beforeDrag:PropTypes.func,//拖动前事件
-    beforeDrop:PropTypes.func,//停靠前事件
+    beforeDrag: PropTypes.func,//拖动前事件
+    beforeDrop: PropTypes.func,//停靠前事件
     beforeRemove: PropTypes.func,//删除前事件
     beforeRename: PropTypes.func,//重命名前事件
     beforeRightClick: PropTypes.func,//鼠标右键前事件
@@ -277,18 +320,18 @@ Tree.defaultProps = {
     checkType: { "y": "ps", "n": "ps" },//默认勾选/取消勾选都影响父子节点，todo 暂时还没完成
     radioType: "all",//todo 
     renameAble: false,
-    editAble:false,
+    editAble: false,
     removeAble: false,
-  
-   
+
+
     //after事件
     onClick: null,
-    onDoubleClick:null,
+    onDoubleClick: null,
     onCheck: null,
     onCollapse: null,
     onExpand: null,
     onRename: null,
-    onEdit:null,
+    onEdit: null,
     onRemove: null,
     onRightClick: null,
     onDrag: null,
@@ -296,8 +339,8 @@ Tree.defaultProps = {
     onAsyncSuccess: null,
 
     //before 事件
-    beforeDrag:null,
-    beforeDrop:null,
+    beforeDrag: null,
+    beforeDrop: null,
     beforeRemove: null,
     beforeRename: null,
     beforeRightClick: null,

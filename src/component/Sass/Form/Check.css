@@ -110,7 +110,7 @@ desc:表单输入框样式
   -webkit-border-radius: 100%;
   -moz-border-radius: 100%;
   border-radius: 100%;
-  border: 2px solid #1c84c6;
+  border: 2px solid #afb3b8;
   box-sizing: border-box;
 
 }
@@ -137,6 +137,10 @@ desc:表单输入框样式
   -moz-border-radius: 100%;
   border-radius: 100%;
   box-sizing: border-box;
+  background-color: transparent;
+}
+.wasabi-radio-btn.checkedRadio{
+ border-color: #1c84c6;
 }
 .checkedRadio i {
   background-color: #1c84c6;

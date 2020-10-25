@@ -91,7 +91,8 @@ class Home extends React.Component {
     return <div>
       <Button onClick={this.onClick.bind(this)}>单击</Button>
    
-      <Input key="2" type="treepicker" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
+      <Input key="2" type="treepicker" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
+      <Input key="3" type="treepicker" checkType={{y:"s",n:"s"}} checkStyle="checkbox"  data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
     
      
     </div>;

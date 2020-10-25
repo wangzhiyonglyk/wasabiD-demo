@@ -4,7 +4,7 @@
  */
 import React, { cloneElement } from "react";
 import unit from "../libs/unit"
-export default function (newParam, oldParam) {//判断前后参数是否相同
+let diff = function (oldParam, newParam) {//判断前后参数是否相同
     if (!newParam && !oldParam) {//都为空
         return false;//
     }
@@ -19,23 +19,28 @@ export default function (newParam, oldParam) {//判断前后参数是否相同
             return true;
         }
         else if (newParam && oldParam) { //有参数,但参数个数相同,对比
-            let isupdate = false;//默认不更新
+            let isDiff = false;//默认不更新
             for (var par in newParam) {
                 try {
-                    if (newParam[par] == oldParam[par]) {
+                    if (newParam[par] instanceof Array || newParam[par] instanceof Object) {
+                        isDiff = diff(oldParam[par], newParam[par]);
+                        if (isDiff) break;
+                    }
+                    else if (newParam[par] == oldParam[par]) {
                         continue;
                     }
                     else {//不相同
-                        isupdate = true;
+                        isDiff = true;
 
-                        return isupdate;
+                        break;
                     }
                 } catch (e) {
-                    isupdate = true;
-                    return isupdate;
+                    isDiff = true;
+
                 }
 
             }
+            return isDiff;
         }
         else {
             return true;
@@ -46,5 +51,6 @@ export default function (newParam, oldParam) {//判断前后参数是否相同
     }
     return true;
 }
+export default diff;
 
 

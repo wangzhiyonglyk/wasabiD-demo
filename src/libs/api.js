@@ -184,7 +184,4 @@ let post = function (url, data, success,contentType="application/json") {
     ajax(settings)
 
 }
-
-
-
 export default { ajax, fetch, get, post, location, message, crpto,getHeaders }

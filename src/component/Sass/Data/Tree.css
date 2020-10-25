@@ -27,9 +27,18 @@
     cursor: pointer;
   
 }
+.wasabi-tree .wasabi-form-group {
+  width: 20px;
+}
 .wasabi-tree li>div{
   height: 25px;
   line-height: 25px;
+}
+.wasabi-tree li>div.wasabi-radio-btn{
+  height: 18px;
+  margin-top: 8px;
+
+  
 }
 .wasabi-tree li>div:hover{
   background-color:#eceeef;
