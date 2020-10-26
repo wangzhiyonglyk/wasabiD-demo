@@ -198,6 +198,6 @@ Form.defaultProps= {
         submitHide: false,//是否隐藏按钮
         submitTheme: "primary",//主题
         onSubmit: null,//提交成功后的回调事 
-        cols:4,//默认4个
+        cols:3,//默认3个
     };
 export default Form;
