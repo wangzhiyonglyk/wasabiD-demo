@@ -1,5 +1,5 @@
 /**
- *Created by wangzhiyong on 3016-04-05
+ *Created by wangzhiyong on 2016-04-05
  * desc:列表组件,由此组件开始独立重构所组件,不再依赖
  * wasabi框架的第一个组件
  * 3016-06-09后开始调整整个样式
@@ -220,6 +220,8 @@ class DataGrid extends Component {
                 onClick={this.panelShow}
               />
             ) : null;
+
+
           //表格处理编辑时的保存按钮
           let saveIcon =
             this.state.editIndex != null && index == 0 ? (
@@ -232,6 +234,26 @@ class DataGrid extends Component {
                 onClick={this.remoteUpdateRow.bind(this, null)}
               />
             ) : null;
+
+
+               //内容
+        let content = header.headerContent;
+
+        if (typeof content === 'string') {
+          //指定的列
+          content = this.substitute(content, rowData);
+        } else if (typeof content === 'function') {
+          //函数
+          try {
+            content = content(header.name,header.label);
+          } catch (e) {
+            console.log('生成自定列出错,原因', e.message);
+            content = '';
+          }
+        } else {
+          //为空时
+          content =header.label;
+        }
 
           if ((header.rowspan && header.rowspan > 1) || header.colspan && header.colspan > 1) {
             headers1.push(
@@ -257,7 +279,7 @@ class DataGrid extends Component {
                   name={header.label}
                   style={{ textAlign: header.align }}
                 >
-                  <span>{header.label}</span>
+                  <div>{content}</div>
                   {panelIcon}
                   {saveIcon}
                 </div>
@@ -286,7 +308,7 @@ class DataGrid extends Component {
                   name={header.label}
                   style={{ textAlign: header.align }}
                 >
-                  <span>{header.label}</span>
+                  <div>{content}</div>
                   {panelIcon}
                   {saveIcon}
                 </div>

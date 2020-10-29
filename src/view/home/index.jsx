@@ -4,6 +4,7 @@ import Upload from "../../component/Action/Upload"
 import Tree from "../../component/Data/Tree"
 import Input from '../../component/Form/Input'
 import Button from "../../component/Buttons/Button"
+import DataGrid from "../../component/Data/DataGrid"
 import unit from "../../component/libs/unit"
 import Editor from "../../component/Action/Editor"
 import Form from "../../component/Form/Form"
@@ -91,9 +92,16 @@ class Home extends React.Component {
     return <div>
       <Button onClick={this.onClick.bind(this)}>单击</Button>
    
-      <Input key="2" type="treepicker" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
-      <Input key="3" type="treepicker" checkType={{y:"s",n:"s"}} checkStyle="checkbox"  data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
-    
+      <Input key="2" type="timerange" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
+     
+     
+      <Input key="3" type="time" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
+      <Input key="4" type="date" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
+     
+      <Input key="5" type="treepicker" checkType={{y:"s",n:"s"}} checkStyle="checkbox"  data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
+    <DataGrid headers={[{name:"good",label:"你好",headerContent:(name,label)=>{
+      return <div style={{color:"red"}}>{label}</div>
+    }}]} ></DataGrid>
      
     </div>;
   }

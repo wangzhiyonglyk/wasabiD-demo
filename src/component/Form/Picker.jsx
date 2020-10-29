@@ -660,8 +660,7 @@ class   Picker  extends  Component{
         var componentClassName=  "wasabi-form-group ";//组件的基本样式 
       let inputProps=
             {
-                readOnly:this.props.readonly==true?"readonly":null,
-                style:this.props.style,
+                readOnly:this.props.readonly==true?"readonly":null,    
                 name:this.props.name,
                 placeholder:(this.props.placeholder===""||this.props.placeholder==null)?this.props.required?"必填项":"":this.props.placeholder,
                 className:"wasabi-form-control  "+(this.props.className!=null?this.props.className:""),

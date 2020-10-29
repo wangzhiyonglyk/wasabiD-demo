@@ -14,6 +14,7 @@ import DateTime from "./DateTime.jsx";
 import DateRange from "./DateRange.jsx";
 import DateTimeRange from "./DateTimeRange.jsx";
 import Time from "./Time";
+import TimeRange from "./TimeRange";
 import validation from "../Lang/validation.js";
 import regs from "../Lang/regs.js";
 
@@ -270,6 +271,8 @@ class DatePicker extends Component {
         name={this.props.name}
         value={this.state.value}
         onSelect={this.onSelect}
+  
+        hideSecond={this.props.hideSecond}
       ></Time>
     );
   }
@@ -347,6 +350,17 @@ class DatePicker extends Component {
       ></DateRange>
     );
   }
+  renderTimeRange(){
+    return (
+      <TimeRange
+        ref='combobox'
+        name={this.props.name}
+        value={this.state.value}
+        onSelect={this.onSelect}
+        hideSecond={this.props.hideSecond}
+      ></TimeRange>
+    );
+  }
 
   /** focus */
   onFocus(e) {
@@ -401,6 +415,11 @@ class DatePicker extends Component {
           control=this.renderTime();
           controlDropClassName = "time";
           break;
+          case "timerange":
+          
+            control=this.renderTimeRange();
+            controlDropClassName = "timerange";
+            break;
       case "datetime":
         control = this.renderDateTime();
         controlDropClassName = "date time";

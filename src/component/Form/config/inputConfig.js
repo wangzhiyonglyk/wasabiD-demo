@@ -13,6 +13,7 @@ export default [
             "idcard",//身份证
             "date",//日期
             "time",//时间
+            "timerange",//时间范围
             "datetime",//日期时间
             "daterange",//日期范围
             "datetimerange",//日期时间范围

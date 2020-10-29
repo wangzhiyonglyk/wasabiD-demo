@@ -108,6 +108,9 @@ class  ComboBox extends Component{
                 control = this.renderDatePicker();
 
                 break;
+                case "timerange":
+                    control = this.renderDatePicker();
+                    break;
                 case "time":
                     control = this.renderDatePicker();
                     break;
