@@ -249,12 +249,15 @@ class Tree extends Component {
                     key={"nodetree" + item.id}
                     {...this.props}
                     {...item}
+                    checked={this.props.inputValue?this.props.inputValue.indexOf(","+item.id+",")>-1?true:false:item.checked}
                     data={this.state.rawData}
                     isParent={isParent} selectid={this.state.id}
                     /** 其他事件不需要绑定，因为父组件设定 */
                     onClick={this.onClick}
                     onradioChecked={this.onradioChecked}
                     onDoubleClick={this.onDoubleClick}
+                    
+
                 />);
             });
         }

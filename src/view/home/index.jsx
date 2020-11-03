@@ -99,7 +99,7 @@ class Home extends React.Component {
       <Input key="3" type="time" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
       <Input key="4" type="date" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
      
-      <Input key="5" type="treepicker" checkType={{y:"s",n:"s"}} checkStyle="checkbox"  data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
+      <Input key="5" type="treepicker" value="11" checkType={{y:"s",n:"s"}} checkStyle="checkbox"  data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
     
       <Input key="6" type="checkbutton" checkType={{y:"s",n:"s"}} checkStyle="radio" valueField="id" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
      

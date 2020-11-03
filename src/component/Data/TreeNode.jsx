@@ -566,6 +566,7 @@ class TreeNode extends Component {
 
                 }
                 //父节点 toto 先保留，后期有用
+           
                 let parent = { id: this.state.id, text: this.state.text, children: this.state.children };
                 nodeControl.push(<TreeNode
                     {...this.props}
@@ -577,8 +578,8 @@ class TreeNode extends Component {
                     parentGetChildCheckedNum={this.parentGetChildCheckedNum.bind(this)}
                     parentSetBrotherRadioChecked={this.parentSetBrotherRadioChecked.bind(this)}
                     ref={"child" + index}
-                    half={this.state.checkValue == "half"}
-                    checked={this.state.checked}
+                    half={(this.state.checkValue||item.checkValue) == "half"}
+                    checked={this.props.inputValue?this.props.inputValue.indexOf(","+item.id+",")>-1?true:false:this.state.checked}
                     isParent={isParent} parent={parent}
 
                     selectid={this.props.selectid} />);
@@ -598,7 +599,7 @@ class TreeNode extends Component {
 
         }
 
-    
+     
    //节点元素
         let nodeEement = [<Input key="1" forceChange={true} type={this.props.checkStyle || "checkbox"}
             hide={this.props.checkAble ? false : this.props.checkAble ? false : true}
