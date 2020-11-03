@@ -25,6 +25,7 @@ export default [
             "select",//下拉框
             "radio",//单选框
             "checkbox",//复选框
+            "checkbutton",//复选按钮
             "switch",//开关
             "picker",//级联选择组件
             "treepicker",//下拉树选择

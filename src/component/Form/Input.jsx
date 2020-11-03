@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 
 import Radio from "./Radio.jsx";
 import CheckBox from "./CheckBox.jsx";
+import CheckButton from "./CheckButton.jsx";
 import SwitchButton from "./SwitchButton.jsx";
 import ComboBox from "./ComboBox.jsx";
 import Text from "./Text.jsx";
@@ -50,6 +51,9 @@ constructor(props)
         }
         else if (type == "checkbox") {//多选择按钮组
             control = <CheckBox ref="input" {...props}  ></CheckBox>
+        }
+        else if (type == "checkbutton") {//多选择按钮组
+            control = <CheckButton ref="input" {...props}  ></CheckButton>
         }
         else if (type == "switch") {//开关
             control = <SwitchButton ref="input"  {...props} ></SwitchButton>

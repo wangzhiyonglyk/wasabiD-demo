@@ -97,7 +97,7 @@ class Upload extends Component {
             Message.error("文件不得超过" + this.props.size + "M");
             return;
           }
-          formData.append(this.props.name, this.files[0]);
+          formData.append(this.props.name||this.files[0].name, this.files[0]);
         } else {
           let size = 0;//文件总大小
           for (let index = 0; index < this.files.length; index++) {
@@ -178,13 +178,13 @@ class Upload extends Component {
       if (result) {
         if (this.props.uploadSuccess != null) {
 
-          this.props.uploadSuccess(result);
+          this.props.uploadSuccess(result,this.state.filenames);
         }
       }
       else {//非json格式
 
         if (this.props.uploadSuccess != null) {
-          this.props.uploadSuccess(xhr.responseText);
+          this.props.uploadSuccess(xhr.responseText,this.state.filenames);
         }
       }
 
