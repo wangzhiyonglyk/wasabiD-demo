@@ -4,13 +4,11 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
 import Time from "./Time.jsx";
-import Button from "../Buttons/Button.jsx";
 import CalendarHeader from "./CalendarHeader.jsx";
 import CalendarBody from "./CalendarBody.jsx";
 import validate from "../Mixins/validate.js";
-import LinkButton from "../Buttons/LinkButton"
+import Msg from '../Info/Msg'
 import("../Sass/Form/DateTime.css");
 class DateTime extends Component {
 
@@ -43,27 +41,48 @@ class DateTime extends Component {
         this.formatDate = this.formatDate.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     if (nextProps.isRange == true) {//是日期范围选择，要更新最大值与最小值
+    //         this.setState({
+    //             year: nextProps.year ? nextProps.year : this.state.year,
+    //             month: nextProps.month ? nextProps.month : this.state.month,
+    //             day: nextProps.day ? nextProps.day : this.state.day,
+    //             time: nextProps.time ? nextProps.time : this.state.time,
+    //             isRange: nextProps.isRange,
+    //             min: nextProps.min ? nextProps.min : this.state.min,
+    //             max: nextProps.max ? nextProps.max : this.state.max,
+    //         });
+    //     } else {
+    //         this.setState({
+    //             year: nextProps.year ? nextProps.year : this.state.year,
+    //             month: nextProps.month ? nextProps.month : this.state.month,
+    //             day: nextProps.day ? nextProps.day : this.state.day,
+    //             time: nextProps.time ? nextProps.time : this.state.time,
+    //             isRange: nextProps.isRange,
+    //         });
+    //     }
+
+    // }
+    static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.isRange == true) {//是日期范围选择，要更新最大值与最小值
             this.setState({
-                year: nextProps.year ? nextProps.year : this.state.year,
-                month: nextProps.month ? nextProps.month : this.state.month,
-                day: nextProps.day ? nextProps.day : this.state.day,
-                time: nextProps.time ? nextProps.time : this.state.time,
+                year: nextProps.year ? nextProps.year :prevState.year,
+                month: nextProps.month ? nextProps.month : prevState.month,
+                day: nextProps.day ? nextProps.day : prevState.day,
+                time: nextProps.time ? nextProps.time : prevState.time,
                 isRange: nextProps.isRange,
-                min: nextProps.min ? nextProps.min : this.state.min,
-                max: nextProps.max ? nextProps.max : this.state.max,
+                min: nextProps.min ? nextProps.min : prevState.min,
+                max: nextProps.max ? nextProps.max : prevState.max,
             });
         } else {
             this.setState({
-                year: nextProps.year ? nextProps.year : this.state.year,
-                month: nextProps.month ? nextProps.month : this.state.month,
-                day: nextProps.day ? nextProps.day : this.state.day,
-                time: nextProps.time ? nextProps.time : this.state.time,
+                year: nextProps.year ? nextProps.year :prevState.year,
+                month: nextProps.month ? nextProps.month :prevState.month,
+                day: nextProps.day ? nextProps.day :prevState.day,
+                time: nextProps.time ? nextProps.time :prevState.time,
                 isRange: nextProps.isRange,
             });
         }
-
     }
     setValue(value) {
         if (this.validate(value)) {
@@ -108,9 +127,14 @@ class DateTime extends Component {
     }
     onSelect() {
 
-        let value = this.state.year + "-" + (this.state.month.toString().length == 1 ? "0" + this.state.month.toString() : this.state.month)
+        if( this.state.year&&this.state.month&&this.state.day){
+            let value = this.state.year + "-" + (this.state.month.toString().length == 1 ? "0" + this.state.month.toString() : this.state.month)
             + "-" + (this.state.day < 10 ? "0" + this.state.day.toString() : this.state.day.toString());
-        this.props.onSelect(value + " " + this.state.time, value + " " + this.state.time, this.props.name)
+       this.props.onSelect&& this.props.onSelect(value + " " + this.state.time, value + " " + this.state.time, this.props.name)
+        }else{
+            Msg.alert("请选择日期");
+        }
+     
     }
     changeYear() {
         this.setState({
@@ -211,7 +235,7 @@ class DateTime extends Component {
 
     }
     render() {
-        console.log("dd", this.state);
+     
         return (
             <div className={this.props.className + " "} ref="picker" style={this.props.style}>
                 <div style={{ position: "relative", height: 32 }}>

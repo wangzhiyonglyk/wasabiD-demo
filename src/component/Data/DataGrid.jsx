@@ -1,16 +1,17 @@
 /**
  *Created by wangzhiyong on 2016-04-05
- * desc:列表组件,由此组件开始独立重构所组件,不再依赖
+ * desc:列表组件,由此组件开始独立重构所有组件,不再依赖
  * wasabi框架的第一个组件
- * 3016-06-09后开始调整整个样式
- * 3017-01-04 注意了,这里渲染分页与复制的CopyDataGrid不一样，因为CopyDataGrid宽度比较小可能放不下
- *3017-09-30 将固定表头功能先隐藏掉
+ * 2016-06-09后开始调整整个样式
+ * 2017-01-04 注意了,这里渲染分页与复制的CopyDataGrid不一样，因为CopyDataGrid宽度比较小可能放不下
+ *2017-09-30 将固定表头功能先隐藏掉
+ *2020-11月统一修改
  */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import unit from '../libs/unit.js';
+import func from '../libs/func.js';
 import LinkButton from '../Buttons/LinkButton.jsx';
 import CheckBox from '../Form/CheckBox.jsx';
 import Input from '../Form/Input.jsx';
@@ -19,13 +20,12 @@ import Radio from '../Form/Radio.jsx';
 import DataGridHandler from '../Mixins/DataGridHandler.js';
 import DataGridExtend from '../Mixins/DataGridExtend.js';
 import pasteExtend from '../Mixins/pasteExtend.js';
-import ClickAway from "../Unit/ClickAway.js";
-import showUpdate from '../Mixins/showUpdate.js';
+import ClickAway from "../libs/ClickAway.js";
+import diff from '../libs/diff.js';
 import mixins from '../Mixins/mixins';
 import('../Sass/Data/DataGrid.css');
 import('../Sass/Data/DataGridDetail.css');
 class DataGrid extends Component {
-  // mixins: [DataGridHandler, DataGridExtend, pasteExtend, ClickAway, showUpdate],
   constructor(props) {
     super(props);
     this.clientHeight = document.documentElement.clientHeight; //先得到页面高度,防止后期页面发生晃动
@@ -35,22 +35,22 @@ class DataGrid extends Component {
     }
     this.state = {
       url: this.props.url,
-
-      params: unit.clone(this.props.params), //这里一定要复制,只有复制才可以比较两次参数是否发生改变没有,防止父组件状态任何改变而导致不停的查询
-      pageIndex: this.props.pageIndex,
-      pageSize: this.props.pageSize,
-      sortName: this.props.sortName,
-      sortOrder: this.props.sortOrder,
+      params: func.clone(this.props.params), //这里一定要复制,只有复制才可以比较两次参数是否发生改变没有,防止父组件状态任何改变而导致不停的查询
+      pageIndex: this.props.pageIndex,//页号
+      pageSize: this.props.pageSize,//分页大小
+      sortName: this.props.sortName,//排序名称
+      sortOrder: this.props.sortOrder,//排序方式
+      rawData: this.props.data,//原始数据，在自动分页时有用
       data:
         this.props.pagination == true
-          ? data.slice(0, this.props.pageSize)
+          ? data.length > this.props.pageSize ? data.slice((this.props.pageIndex - 1) * this.props.pageSize, this.props.pageSize) : data
           : data, //只只保留当前的数据
-      checkedData: new Map(),
-      checkedIndex: new Map(),
+      checkedData: new Map(),//勾选的数据
+      checkedIndex: new Map(),//勾选的下标
       detailView: null, //详情行,
       detailIndex: null, //显示详情的行下标
-      total: this.props.total, //总记录数
-      loading: this.props.url || this.props.headerUrl ? true : false, //显示正在加载图示
+      total: this.props.total || this.props.data.length || 0, //总记录数
+      loading: this.state.url || this.props.headerUrl ? true : false, //显示正在加载图示
       footer: this.props.footer, //页脚
       headers: this.props.headers, //表头会可能后期才传送,也会动态改变
       height: this.props.height, //如果没有设置高度还要从当前页面中计算出来空白高度,以适应布局
@@ -64,10 +64,12 @@ class DataGrid extends Component {
       editIndex: null, //当前处理编辑的列
       addData: new Map(), //新增的数据,因为有可能新增一个空的，然后再修改
       updatedData: new Map(), //被修改过的数据，因为要判断曾经是否修改
-      deleteData: [] //删除的数据
+      deleteData: [], //删除的数据
+      reloadData: false,//是否重新加载数据
+      reloadHeaderData: false,//是否重新加载header数据
     };
     //绑定事件
-    let baseCtors = [DataGridHandler, DataGridExtend, pasteExtend, showUpdate];
+    let baseCtors = [DataGridHandler, DataGridExtend, pasteExtend];
     baseCtors.forEach(baseCtor => {
       Object.getOwnPropertyNames(baseCtor).forEach(name => {
         if (typeof baseCtor[name] == 'function') {
@@ -79,73 +81,124 @@ class DataGrid extends Component {
     this.substitute = this.substitute.bind(this);
 
   }
+  //代码先保存
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  //   if (React.version < "16.3.0") {
+  //     /*      
+  //          headers可能是后期才传了,见Page组件可知
+  //          所以此处需要详细判断
+  //          */
 
-  componentWillReceiveProps(nextProps) {
-    /*      
-         headers可能是后期才传了,见Page组件可知
-         所以此处需要详细判断
-         */
-    console.log('datagrid-nextProps', nextProps);
+  //     if (
+  //       nextProps.headers &&
+  //       this.showUpdate(nextProps.headers, this.state.headers)
+  //     ) {
+  //       //存在着这种情况,后期才传headers,所以要更新一下
+  //       this.setState({
+  //         headers: nextProps.headers
+  //       });
+  //     }
+  //     if (this.state.headerUrl != nextProps.headerUrl) {
+  //       //有远程加载表头信息
+  //       this.getHeaderDataHandler(nextProps.headerUrl);
+  //     }
+
+
+  //     if (
+  //       nextProps.data != null &&
+  //       nextProps.data != undefined &&
+  //       nextProps.data instanceof Array
+  //     ) {
+  //       //如果传了死数据
+  //       this.setState({
+  //         data:
+  //           this.props.pagination == true
+  //             ? nextProps.data.slice(0, nextProps.pageSize)
+  //             : nextProps.data,
+  //         total: nextProps.total,
+  //         pageIndex: nextProps.pageIndex,
+  //         pageSize: nextProps.pageSize,
+  //         sortName: this.props.sortName,
+  //         sortOrder: nextProps.sortOrder,
+  //         loading: false,
+  //         headers: nextProps.headers, //表头可能会更新
+  //         controlPanel: nextProps.controlPanel
+  //       });
+  //     } else if (
+  //       nextProps.params &&
+  //       this.showUpdate &&
+  //       this.showUpdate(nextProps.params, this.state.params)
+  //     ) {
+  //       //如果参数有发生改变，也可更新
+  //       this.updateHandler(
+  //         nextProps.url,
+  //         this.state.pageSize,
+  //         1,
+  //         this.state.sortName,
+  //         this.state.sortOrder,
+  //         nextProps.params
+  //       );
+  //     }
+
+  //   }
+  // }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let newState = {};
+    if (nextProps.url && nextProps.params &&
+      diff(nextProps.params, prevState.params)) {//如果有url
+      newState = {
+        reloadData: true,
+        url: nextProps.url,
+        params: nextProps.params,
+      }
+    }
     if (
-      nextProps.headers &&
-      this.showUpdate &&
-      this.showUpdate(nextProps.headers, this.state.headers)
+      nextProps.headers && diff(nextProps.headers, prevState.headers)
     ) {
-      //存在着这种情况,后期才传headers,所以要更新一下
-      this.setState({
-        headers: nextProps.headers
-      });
+      //存在着这种情况,后期才传headers,所以要更新一下   
+      newState.headers = nextProps.headers;
     }
-    if (this.state.headerUrl != nextProps.headerUrl) {
+    if (nextProps.headerUrl && prevState.headerUrl != nextProps.headerUrl) {
       //有远程加载表头信息
-      this.getHeaderDataHandler(nextProps.headerUrl);
+      newState.reloadHeaderData = true;
     }
-    if (nextProps.url && this.state.url != nextProps.url) {
-      //url发生改变
-      this.updateHandler(
-        nextProps.url,
-        this.state.pageSize,
-        1,
-        this.state.sortName,
-        this.state.sortOrder,
-        nextProps.params
-      );
-    } else if (
-      nextProps.data != null &&
-      nextProps.data != undefined &&
-      nextProps.data instanceof Array
-    ) {
+    if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
       //如果传了死数据
+
+      newState.rawData = nextProps.data;
+      newState.data = nextProps.pagination == true ? nextProps.data > prevState.pageSize
+        ? nextProps.data.slice((prevState.pageIndex - 1) * prevState.pageSize, prevState.pageSize)
+        : nextProps.data : nextProps.data;
+      newState.total = nextProps.total || nextProps.data.length || 0
+
+    }
+    if (func.isEmptyObject(newState)) {
+      return null;
+    }
+    else {
+      return newState;
+    }
+
+  }
+  /**
+   * 更新函数
+   */
+  componentDidUpdate() {
+    if (this.state.reloadData) {
       this.setState({
-        data:
-          this.props.pagination == true
-            ? nextProps.data.slice(0, nextProps.pageSize)
-            : nextProps.data,
-        total: nextProps.total,
-        pageIndex: nextProps.pageIndex,
-        pageSize: nextProps.pageSize,
-        sortName: this.props.sortName,
-        sortOrder: nextProps.sortOrder,
-        loading: false,
-        headers: nextProps.headers, //表头可能会更新
-        controlPanel: nextProps.controlPanel
-      });
-    } else if (
-      nextProps.params &&
-      this.showUpdate &&
-      this.showUpdate(nextProps.params, this.state.params)
-    ) {
-      //如果参数有发生改变，也可更新
-      this.updateHandler(
-        nextProps.url,
-        this.state.pageSize,
-        1,
-        this.state.sortName,
-        this.state.sortOrder,
-        nextProps.params
-      );
+        reloadData: false,
+      })
+      this.reload();
+    }
+    if (this.state.reloadHeaderData) {
+      this.setState({
+        reloadHeaderData: false,
+      })
+      this.getHeaderDataHandler();
     }
   }
+
   componentDidMount() {
     //渲染后再开始加载数据
     if (this.state.headerUrl) {
@@ -159,15 +212,14 @@ class DataGrid extends Component {
         this.state.pageSize,
         this.state.pageIndex,
         this.state.sortName,
-        this.state.sortOrder
+        this.state.sortOrder,
+        this.state.params
       );
     }
     this.registerClickAway(this.hideMenuHandler, this.refs.grid);//注册全局单击事件
     // this.resizeTableWidthHandler();//固定的表头每一列的宽度
   }
-  componentDidUpdate() {
-    // this.resizeTableWidthHandler();//固定的表头每一列的宽度
-  }
+
   renderHeader() {
     //渲染表头
     if (!(this.state.headers instanceof Array)) {
@@ -236,24 +288,24 @@ class DataGrid extends Component {
             ) : null;
 
 
-               //内容
-        let content = header.headerContent;
+          //内容
+          let content = header.headerContent;
 
-        if (typeof content === 'string') {
-          //指定的列
-          content = this.substitute(content, rowData);
-        } else if (typeof content === 'function') {
-          //函数
-          try {
-            content = content(header.name,header.label);
-          } catch (e) {
-            console.log('生成自定列出错,原因', e.message);
-            content = '';
+          if (typeof content === 'string') {
+            //指定的列
+            content = this.substitute(content, rowData);
+          } else if (typeof content === 'function') {
+            //函数
+            try {
+              content = content(header.name, header.label);
+            } catch (e) {
+              console.log('生成自定列出错,原因', e.message);
+              content = '';
+            }
+          } else {
+            //为空时
+            content = header.label;
           }
-        } else {
-          //为空时
-          content =header.label;
-        }
 
           if ((header.rowspan && header.rowspan > 1) || header.colspan && header.colspan > 1) {
             headers1.push(
@@ -546,7 +598,7 @@ class DataGrid extends Component {
                 width: header.width ? header.width : null,
                 textAlign: header.align ? header.align : "center"
               }}
-              className={header.export===false?"wasabi-noexport":""}//为了不导出
+              className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
             >
               <div
                 className='wasabi-grid-cell'
@@ -555,7 +607,7 @@ class DataGrid extends Component {
                 <Input
                   {...header.editor.options}
                   type={header.editor.type}
-                   name={header.name}
+                  name={header.name}
                   value={currentValue}
                   text={currentText}
                   onChange={this.rowEditHandler.bind(this, columnIndex)}
@@ -575,8 +627,8 @@ class DataGrid extends Component {
 
             tds.push(
               <td
-                 export={"1"}
-                 className={header.export===false?"wasabi-noexport":""}//为了不导出
+                export={"1"}
+                className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
                 onClick={this.detailHandler.bind(this, rowIndex, rowData)}
                 key={'col' + rowIndex.toString() + '-' + columnIndex.toString()}
               >
@@ -596,7 +648,7 @@ class DataGrid extends Component {
             tds.push(
               <td
                 export={"1"}//为了导出时处理数字化的问题
-                className={header.export===false?"wasabi-noexport":""}//为了不导出
+                className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
                 onClick={this.onClick.bind(this, rowIndex, rowData)}
                 onDoubleClick={this.onDoubleClick.bind(this, rowIndex, rowData)}
                 key={'col' + rowIndex.toString() + '-' + columnIndex.toString()}
@@ -932,15 +984,13 @@ class DataGrid extends Component {
     }
     return headerMenuCotrol;
   }
-  showUpdate(newParam, oldParam) {
-    return showUpdate.call(this, newParam, oldParam);
-  }
+
   render() {
     let className = this.props.borderAble
       ? 'table '
       : 'table table-no-bordered';
     let headerControl = this.renderHeader(); //渲染两次，所以定义一个变量
-    let style = this.props.style ? unit.clone(this.props.style) : {};
+    let style = this.props.style ? func.clone(this.props.style) : {};
     let height = null;
     if (style.height) {
       height = style.height;
@@ -1048,7 +1098,6 @@ class DataGrid extends Component {
     );
   }
 }
-
 DataGrid.propTypes = {
   style: PropTypes.object,//对象
   height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), //高度
@@ -1076,7 +1125,7 @@ DataGrid.propTypes = {
   data: PropTypes.array, //当前页数据（json）
 
   url: PropTypes.string, //ajax地址
-  httpHeaders:PropTypes.object,//请求的头部
+  httpHeaders: PropTypes.object,//请求的头部
   httpType: PropTypes.string,//请求类型
   contentType: PropTypes.string,//请求的参数传递类型
   backSource: PropTypes.string, //ajax的返回的数据源中哪个属性作为数据源(旧版本)
@@ -1120,7 +1169,7 @@ DataGrid.defaultProps = {
   data: null,
   url: null, //
   contentType: "application/x-www-form-urlencoded",
-  httpHeaders:{},//http请求的头部字段
+  httpHeaders: {},//http请求的头部字段
   httpType: "POST",
   backSource: 'data', //
   dataSource: 'data', //

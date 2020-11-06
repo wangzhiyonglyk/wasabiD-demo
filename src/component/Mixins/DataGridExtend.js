@@ -7,9 +7,9 @@
  * 作为DataGrid扩展功能
  */
 import React, { Component } from "react";
-import unit from "../libs/unit.js";
+import func from "../libs/func.js";
 import FetchModel from "../Model/FetchModel.js";
-import Message from "../Unit/Message.jsx";
+import Msg from "../Info/Msg.jsx";
 let DataGridExtend= {
     //列表常用操作
     onClick: function (rowIndex,rowData) {
@@ -45,7 +45,7 @@ let DataGridExtend= {
         }
     },
     pageUpdateHandler:function (pageSize,pageIndex) {//改变分页大小，或者跳转
-        this.updateHandler(this.state.url,pageSize*1, pageIndex*1, this.state.sortName, this.state.sortOrder, null, null);
+        this.updateHandler(this.state.url,pageSize*1, pageIndex*1, this.state.sortName, this.state.sortOrder,this.state.params);
     },
     //详情页面
     detailViewHandler: function (detail) {
@@ -222,7 +222,7 @@ let DataGridExtend= {
                 fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
               }
             console.log("datagrid-header-get:",fetchmodel);
-            type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
+            type=="POST"?func.fetch.post(fetchmodel):func.fetch.get(fetchmodel);
         }
         this.setState({
             loading:true,//正在加载
@@ -367,7 +367,7 @@ let DataGridExtend= {
                 fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
               }
             console.log("datagrid-updateRow:", fetchmodel);
-            type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
+            type=="POST"?func.fetch.post(fetchmodel):func.fetch.get(fetchmodel);
         }
         else {//没有定义url
             if(this.state.addData.has(this.getKey(this.state.editIndex)))
@@ -401,7 +401,7 @@ let DataGridExtend= {
     },
     //错误处理事件
     ajaxError:function (errorCode,message) {//错误处理事件
-        Message.error(message);
+        Msg.error(message);
     }
       /****新增，修改，删除*/
 }

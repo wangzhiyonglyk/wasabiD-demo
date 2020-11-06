@@ -5,8 +5,6 @@ import Tree from "../../component/Data/Tree"
 import Input from '../../component/Form/Input'
 import Button from "../../component/Buttons/Button"
 import DataGrid from "../../component/Data/DataGrid"
-
-import unit from "../../component/libs/unit"
 import Editor from "../../component/Action/Editor"
 import Form from "../../component/Form/Form"
 import Time from "../../component/Form/Time"
@@ -77,7 +75,8 @@ class Home extends React.Component {
    console.log("data",data);
   }
   onClick() {
-  this.refs.upload.open();
+  // this.refs.upload.open();
+  this.setState({})
   }
   onEdit(){
     console.log("de")
@@ -97,7 +96,7 @@ class Home extends React.Component {
      
      
       <Input key="3" type="time" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
-      <Input key="4" type="date" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
+      <Input key="4" type="datetime" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
      
       <Input key="5" type="treepicker" value="11" checkType={{y:"s",n:"s"}} checkStyle="checkbox"  data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
     

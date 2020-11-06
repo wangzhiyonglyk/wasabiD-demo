@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 let Modal = require('../Layout/Modal.jsx');
 let Button = require('../Buttons/Button.jsx');
-let Message = require('../Unit/Message.jsx');
+let Msg = require('../Info/Msg.jsx');
 let fileType = require('../libs/fileType.js');
 // var unit = require('../libs/unit.js');
 require('../Sass/Action/Import.css');
@@ -39,13 +39,6 @@ let Import = React.createClass({
       showfail: false,
       uploadInfo: []
     };
-  },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      name: nextProps.name,
-      uploadurl: nextProps.uploadurl,
-      failloadurl: nextProps.failloadurl
-    });
   },
   componentDidUpdate: function() {},
   close: function() {
@@ -166,7 +159,7 @@ let Import = React.createClass({
         if (this.state.uploadurl) {
           formData.append(this.state.name, this.file);
         } else {
-          Message.alert('您没有设置上传路径');
+          Msg.alert('您没有设置上传路径');
           return;
         }
       }
@@ -299,13 +292,13 @@ let Import = React.createClass({
         } else {
           this.clearFile(); //清空文件,方便下次选择
           if (index == null) {
-            Message.error('文件读取失败,原因:' + result.message);
+            Msg.error('文件读取失败,原因:' + result.message);
             this.setState({
               uploadDisabled: true, //不可以再导入
               choseDisabled: false //可以再选择
             });
           } else {
-            Message.error('服务器处理失败,导入中断,原因:' + result.message);
+            Msg.error('服务器处理失败,导入中断,原因:' + result.message);
             this.setState({
               uploadDisabled: true, //不可以再导入
               choseDisabled: false //可以再选择
@@ -314,7 +307,7 @@ let Import = React.createClass({
         }
       } else {
         this.clearFile();
-        Message.error('服务器返回值非标准JSON格式,无法处理,请联系管理员');
+        Msg.error('服务器返回值非标准JSON格式,无法处理,请联系管理员');
         this.setState({
           uploadDisabled: true, //不可以再导入
           choseDisabled: false //可以再选择
@@ -323,13 +316,13 @@ let Import = React.createClass({
     } else {
       this.clearFile();
       if (xhr.statusText.indexOf('404')) {
-        Message.error('服务器没有响应,请检查您的上传路径');
+        Msg.error('服务器没有响应,请检查您的上传路径');
         this.setState({
           uploadDisabled: true, //不可以再导入
           choseDisabled: false //可以再选择
         });
       } else {
-        Message.error('服务器处理错误');
+        Msg.error('服务器处理错误');
         this.setState({
           uploadDisabled: true, //不可以再导入
           choseDisabled: false //可以再选择
@@ -343,7 +336,7 @@ let Import = React.createClass({
       choseDisabled: false, //可以再选择
       uploadDisabled: true //不可以再导入
     });
-    Message.error('上传失败');
+    Msg.error('上传失败');
   },
   uploadCanceled: function uploadCanceled(evt) {
     //保留这个方法

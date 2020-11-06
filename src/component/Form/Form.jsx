@@ -6,7 +6,9 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 import  Button  from "../Buttons/Button.jsx";
-
+if(React.version<="17.0.0"){
+    console.warn("请将react升级到了17+版本");
+}
 import ("../Sass/Form/Form.css");
 class   Form extends Component {
     constructor(props){
@@ -21,10 +23,16 @@ this.clearData=this.clearData.bind(this);
 this.onSubmit=this.onSubmit.bind(this);
     }
   
-    componentWillReceiveProps (nextProps) {
-        this.setState({
+    // UNSAFE_componentWillReceiveProps (nextProps) {
+    //     this.setState({
+    //         disabled: nextProps.disabled,
+    //     })
+    // }
+    
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
             disabled: nextProps.disabled,
-        })
+        }
     }
     validate () {
         

@@ -6,10 +6,10 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import  validation from "../Lang/validation.js";
 import  validate from "../Mixins/validate.js";
-import  Label from "../Unit/Label.jsx";
-import  Message from "../Unit/Message.jsx";
+import  Label from "../Info/Label.jsx";
+import Msg from "../Info/Msg.jsx";
 import  FetchModel from "../Model/FetchModel.js";
-import  unit from "../libs/unit.js";
+import  unit from "../libs/func.js";
 import props from "./config/propType.js";
 import config from "./config/textConfig.js";
 import defaultProps from  "./config/defaultProps.js";
@@ -20,6 +20,7 @@ class  Text  extends Component{
     constructor(props){
         super(props);
         this.state={
+            oldPropsValue:this.props.value,//保存用于匹配
             value:this.props.value,
             text:this.props.text,
             validateClass:"",//验证的样式
@@ -42,14 +43,24 @@ class  Text  extends Component{
         this.validateHandlerError=this.validateHandlerError.bind(this)
 
     }
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.value!=this.props.value){
-            //就是说原来的初始值发生改变了，说明父组件要更新值
-         this.setState({
-             value:nextProps.value
-         })
-        }
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     if(nextProps.value!=this.props.value){
+    //         //就是说原来的初始值发生改变了，说明父组件要更新值
+    //      this.setState({
+    //          value:nextProps.value
+    //      })
+    //     }
          
+    // }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if(nextProps.value!=prevState.oldPropsValue){
+            //就是说原来的初始值发生改变了，说明父组件要更新值
+        return {
+             value:nextProps.value,
+             oldPropsValue:nextProps.value
+         }
+        }
+        return null;
     }
     componentDidMount() {    
         this.validateInput=true;//设置初始化值，输入有效
@@ -214,7 +225,7 @@ class  Text  extends Component{
         })
     }
     validateHandlerError (errorCode,message) {//后台请求验证失败
-        Message.error(message);
+        Msg.error(message);
         this.setState({
             validateState:"invalid",//验证失败
         })

@@ -8,7 +8,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import('../Sass/Buttons/button.css');
-
 class Button extends Component {
   constructor(props) {
     super(props);
@@ -17,8 +16,6 @@ class Button extends Component {
     this.state = {};
   }
 
-  componentWillReceiveProps(nextProps) {}
-  componentDidUpdate() {}
   shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
@@ -45,8 +42,9 @@ class Button extends Component {
       //文字提示
       title: this.props.title
     };
-
+console.log("fdfd")
     return (
+    
       <button {...props} onClick={this.clickHandler} type='button'>
         {this.props.children ? this.props.children : this.props.title}
       </button>

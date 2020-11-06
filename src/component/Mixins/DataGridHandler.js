@@ -4,9 +4,9 @@
  * 将DataGrid拆分,基本处理事件存在这里
  */
 import React, { Component } from "react";
-import unit from "../libs/unit.js";
+import func from "../libs/func.js";
 import FetchModel from "../Model/FetchModel.js";
-import Message from "../Unit/Message.jsx";
+import Msg from "../Info/Msg.jsx";
 let DataGridHandler = {
 
     //列表自用处理函数
@@ -103,13 +103,35 @@ let DataGridHandler = {
         this.updateHandler(this.state.url, this.state.pageSize, 1, sortName, sortOrder);
 
     },
+    /**
+     * 更新方法
+     * @param {*} params 
+     * @param {*} url 
+     */
+    reload: function (params, url="") {//重新查询数据,
+        url = url||this.state.url;//得到旧的url
+        if (!url) {//没有url,不自行加载，则调用更新事件
+            if (this.props.updateHandler) {//用户自定义了更新事件
+                this.props.updateHandler(this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder);
+            }
+        }
+        else {//传了url
 
+            if (this.showUpdate(params, this.state.params)) {//参数发生改变,从第一页查起
+                this.updateHandler(url, this.state.pageSize, 1, this.state.sortName, this.state.sortOrder, params);
+            }
+            else {//从当前页查起，刷新
+                this.updateHandler(url, this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder, params);
+            }
+
+        }
+    },
     //更新函数
     updateHandler: function (url, pageSize, pageIndex, sortName, sortOrder, params) {////数据处理函数,更新
 
 
         if (this.state.addData.length > 0 || this.state.deleteData.length > 0 || this.state.updatedData.length > 0) {
-            Message.confirm("有脏数据,是否继续更新列表?", this.updateHandlerConfirm.bind(this, url, pageSize, pageIndex, sortName, sortOrder, params), () => {
+            Msg.confirm("有脏数据,是否继续更新列表?", this.updateHandlerConfirm.bind(this, url, pageSize, pageIndex, sortName, sortOrder, params), () => {
                 return;
             })
 
@@ -124,33 +146,30 @@ let DataGridHandler = {
      headers可能是后期才传了,见Page组件可知
      所以此处需要详细判断
      */
-        if (!url) {//如果为空,先取状态值中...
-            url = this.state.url;
-        }
-
+        url=url||this.state.url;
         if (url) {
             this.setState({
                 loading: true,
                 url: url,//更新,有可能从reload那里直接改变了url
 
             })
-            var actualParams = {};
+            let httpParams = {};//本次请求的参数
             if (!params && this.state.params && typeof this.state.params == "object") {//新的参数为null或者undefined，旧参数不为空
-                actualParams = unit.clone(this.state.params);
-                params = unit.clone(this.state.params);//保存以便下一次更新
+                httpParams = func.clone(this.state.params);//
+                params = func.clone(this.state.params);//保存以便下一次更新
             }
             else {//新参数不为空
-                actualParams = unit.clone(params);//复制，否则后面参数就会多加四个默认参数
+                httpParams = func.clone(params);//复制，否则后面参数就会多加四个默认参数
             }
 
             if (this.props.pagination == true) {
-                if (!actualParams) {
-                    actualParams = {};
+                if (!httpParams) {
+                    httpParams = {};
                 }
-                actualParams.pageSize = pageSize;
-                actualParams.pageIndex = pageIndex;
-                actualParams.sortName = sortName;
-                actualParams.sortOrder = sortOrder;
+                httpParams.pageSize = pageSize;
+                httpParams.pageIndex = pageIndex;
+                httpParams.sortName = sortName;
+                httpParams.sortOrder = sortOrder;
             }
 
             /*
@@ -161,7 +180,7 @@ let DataGridHandler = {
 
             let type = this.props.httpType ? this.props.httpType : "POST";
             type = type.toUpperCase();
-            let fetchmodel = new FetchModel(url, this.loadSuccess.bind(this, url, pageSize, pageIndex, sortName, sortOrder, params), actualParams, this.loadError, type,this.props.httpHeaders);
+            let fetchmodel = new FetchModel(url, this.loadSuccess.bind(this, url, pageSize, pageIndex, sortName, sortOrder, params), httpParams, this.loadError, type,this.props.httpHeaders);
             fetchmodel.headers=this.props.httpHeaders;
             if (this.props.contentType) {
                 //如果传contentType值则采用传入的械
@@ -173,7 +192,7 @@ let DataGridHandler = {
 
             console.log("datagrid-开始查询:", fetchmodel);
 
-            type == "POST" ? unit.fetch.post(fetchmodel) : unit.fetch.get(fetchmodel);
+            type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
         }
         else {
             //没有传url,判断用户是否自定义了更新函数
@@ -184,7 +203,7 @@ let DataGridHandler = {
         }
 
     },
-    loadSuccess: function (url, pageSize, pageIndex, sortName, sortOrder, params, result) {//数据加载成功
+    loadSuccess (url, pageSize, pageIndex, sortName, sortOrder, params, result) {//数据加载成功
 
 
         if (this.props.loadSuccess) {
@@ -192,7 +211,7 @@ let DataGridHandler = {
 
             result = this.props.loadSuccess(result);
             if (!result) {
-                Message.error("您传递的loadSuccess方法没有返回值");
+                Msg.error("您传递的loadSuccess方法没有返回值");
                 return;
             }
         }
@@ -202,13 +221,13 @@ let DataGridHandler = {
         var dataSource = this.props.dataSource;//数据源
 
         if (dataSource) {//需要重新指定数据源
-            dataResult = unit.getSource(result, dataSource);
+            dataResult = func.getSource(result, dataSource);
         }
         else {
             dataResult = result;
         }
         if (this.props.pagination && this.props.totalSource) {//分页而且需要重新指定总记录数的数据源
-            totalResult = unit.getSource(result, this.props.totalSource);
+            totalResult = func.getSource(result, this.props.totalSource);
         }
         else if (this.props.pagination) {//分页了,没有指定,使用默认的
             if (result.total) {
@@ -226,7 +245,7 @@ let DataGridHandler = {
 
         if (this.props.footerSource)//需要重新指定页脚的数据源
         {
-            footerResult = unit.getSource(result, this.props.footerSource);
+            footerResult = func.getSource(result, this.props.footerSource);
         }
         else {//没有指定，
             if (result.footer) {
@@ -265,7 +284,7 @@ let DataGridHandler = {
             }
             this.setState({
                 pageSize: pageSize,
-                params: unit.clone(params),//这里一定要复制,只有复制才可以比较两次参数是否发生改变没有,防止父组件状态任何改变而导致不停的查询
+                params: func.clone(params),//这里一定要复制,只有复制才可以比较两次参数是否发生改变没有,防止父组件状态任何改变而导致不停的查询
                 pageIndex: pageIndex,
                 sortName: sortName,
                 sortOrder: sortOrder,
@@ -286,7 +305,7 @@ let DataGridHandler = {
 
     loadError: function (message) {//查询失败
         console.log("datagrid-error", message);
-        Message.error(message);
+        Msg.error(message);
         this.setState({
             loading: false,
         })
@@ -424,30 +443,7 @@ let DataGridHandler = {
             params: [],
         });
     },
-    reload: function (params, url) {//重新查询数据,
-
-
-        //存在用户第一次没有传url,第二次才传url
-        if (!url) {//如果为空,则使用旧的
-            url = this.state.url;//得到旧的url
-        }
-        if (!url) {//没有传url
-            if (this.props.updateHandler) {//用户自定义了更新事件
-                this.props.updateHandler(this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder);
-            }
-        }
-        else {//传了url
-
-            if (this.showUpdate(params, this.state.params)) {//参数发生改变,从第一页查起
-
-                this.updateHandler(url, this.state.pageSize, 1, this.state.sortName, this.state.sortOrder, params);
-            }
-            else {//从当前页查起
-                this.updateHandler(url, this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder, params);
-            }
-
-        }
-    },
+  
     getFocusIndex: function () { //只读函数,用于父组件获取数据
 
         return this.focusIndex;
@@ -509,7 +505,7 @@ let DataGridHandler = {
     ,
     export(selected, title) {
 
-        title = title ? title : "excel" + unit.dateformat(new Date(), "yyyy-MM-dd");
+        title = title ? title : "excel" + func.dateformat(new Date(), "yyyy-MM-dd");
         let tableHtml = "<table border='1'> ";
         let lastIndex = this.refs.realTable.children[1].children[0].children.length;//列数
         //导出表头

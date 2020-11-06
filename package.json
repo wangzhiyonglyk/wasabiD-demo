@@ -15,9 +15,8 @@
   "author": "wangzhiyong",
   "license": "ISC",
   "dependencies": {
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
-    "react-pdf-js": "^5.1.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "wangeditor": "^3.1.1",
     "wasabi-api": "^0.8.5"
   },

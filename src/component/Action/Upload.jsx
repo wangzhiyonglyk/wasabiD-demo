@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../Layout/Modal.jsx';
 import Button from '../Buttons/Button.jsx';
-import Message from '../Unit/Message.jsx';
+import Msg from '../Info/Msg.jsx';
 import fileType from "../libs/fileType";
 import('../Sass/Action/Import.css');
 class Upload extends Component {
@@ -31,9 +31,6 @@ class Upload extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
-
-  }
   close() {
     //关闭
     this.refs.modal.close();
@@ -84,17 +81,17 @@ class Upload extends Component {
     if (this.files && this.files.length > 0) {
       if (this.props.uploadurl) {
         if (!this.validateType(this.files)) {
-          Message.error("上传的文件类型不正确");
+          Msg.error("上传的文件类型不正确");
           return;
         }
         if (this.files.length == 1) {
           //单文件上传时，如果指定了name，则以name为基准
           if (!this.props.name) {
-            Message.error("单文件上传必须指定name属性");
+            Msg.error("单文件上传必须指定name属性");
             return;
           }
           if (this.props.size && this.props.size * 1024 * 1024 < this.files[0].size) {
-            Message.error("文件不得超过" + this.props.size + "M");
+            Msg.error("文件不得超过" + this.props.size + "M");
             return;
           }
           formData.append(this.props.name||this.files[0].name, this.files[0]);
@@ -106,7 +103,7 @@ class Upload extends Component {
             formData.append(this.files[index].name, this.files[index]);
           }
           if (this.props.size && this.props.size * 1024 * 1024 < size) {
-            Message.error("文件不得超过" + this.props.size + "M");
+            Msg.error("文件不得超过" + this.props.size + "M");
             return;
           }
         }
@@ -146,10 +143,10 @@ class Upload extends Component {
           uploadDisabled: true
         });
       } else {
-        Message.alert('您没有设置上传路径');
+        Msg.alert('您没有设置上传路径');
       }
     } else {
-      Message.info('请选择文件');
+      Msg.info('请选择文件');
     }
   }
   //上传进度
@@ -190,7 +187,7 @@ class Upload extends Component {
 
     }
     else {
-      Message.error(xhr.statusText);//弹出错误;
+      Msg.error(xhr.statusText);//弹出错误;
     }
 
 
@@ -200,7 +197,7 @@ class Upload extends Component {
     let xhr = event.target;
 
     if (xhr.statusText.indexOf('404') > -1) {//判断是不是404错误
-      Message.error('服务器没有响应,请检查您的上传路径');
+      Msg.error('服务器没有响应,请检查您的上传路径');
     } else {
 
     }
@@ -213,7 +210,7 @@ class Upload extends Component {
   }
   //上传文件失败
   uploadFailed(event) {
-    Message.error('上传文件失败');
+    Msg.error('上传文件失败');
   }
   uploadCanceled(evt) {
     //保留这个方法

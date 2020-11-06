@@ -8,43 +8,44 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Lang from "../Lang/language.js";
 
-import Message from "../Unit/Message.jsx";
+import Msg from "../Info/Msg.jsx";
 
 require("../Sass/Form/DateTime.css");
 class CalendarBody extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
-            year: this.props.year,
-            tempyear: this.props.year,//临时的，防止输入框改变后对整个组件产生影响
-            month: this.props.month,
-            day: this.props.day,
-            isRange: this.props.isRange,
-            min: this.props.min,
-            max: this.props.max,
-           
-
+            tempyear:this.props.year
         };
         this.getMonthDays=this.getMonthDays.bind(this);
         this.getFirstDayWeek=this.getFirstDayWeek.bind(this);
-        this.dayHandler=this.dayHandler.bind(this);
-       
+        this.dayHandler=this.dayHandler.bind(this);       
         this.yearOnChange=this.yearOnChange.bind(this);
         this.changeYearHandler=this.changeYearHandler.bind(this);
         this.changeMonthHandler=this.changeMonthHandler.bind(this);
         this.yearOKHandler=this.yearOKHandler.bind(this);
         this.yearonBlur=this.yearonBlur.bind(this);
     }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-           
-            tempyear: nextProps.year,
-           
-            
-        })
+    //todo
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     this.setState({           
+    //         tempyear: nextProps.year,                   
+    //     })
+    // }
+    /**
+     * 
+     * @param {*} nextProps 
+     * @param {*} prevState 
+     */
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if(nextProps.year){
+            return {
+                tempyear:nextProps.year
+            }
+        }
+       
     }
+ 
     getMonthDays() {
         //根据月份获取当月总天数
         return new Date(this.props.year, this.props.month, 0).getDate();
@@ -82,7 +83,7 @@ class CalendarBody extends Component {
     }
     yearonBlur(event) {
         let year = event.target.value << 0;//转成数字
-        year < 1900 || year > 9999 ? Message.error("不是有效年份") : this.changeYearHandler(year);
+        year < 1900 || year > 9999 ? Msg.error("不是有效年份") : this.changeYearHandler(year);
     }
     render() {
         //TODO 以下代码有待优化

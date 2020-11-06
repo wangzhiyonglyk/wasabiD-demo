@@ -8,19 +8,13 @@ import PropTypes from "prop-types";
 import DateD from "./DateD.jsx";
 import Time from "./Time.jsx";
 import Button from "../Buttons/Button.jsx";
-import unit from "../libs/unit"
+import func from "../libs/func"
 import validate from "../Mixins/validate.js";
 class DateTimeRange extends Component {
 
     constructor(props) {
         super(props);
         this.state = this.setDefaultState(this.props);
-
-    }
-
-    componentWillReceiveProps(nextProps) {
-
-     
 
     }
     setValue(value) {
@@ -85,14 +79,14 @@ class DateTimeRange extends Component {
             first_year: first_year,
             first_month: first_month,
             first_day: first_day,
-            first_time: props.firstTime?props.firstTime: unit.dateformat(newDate, 'HH:mm:ss'),
+            first_time: props.firstTime?props.firstTime: func.dateformat(newDate, 'HH:mm:ss'),
             first_min: first_min,
             first_max: first_max,
 
             second_year: second_year,
             second_month: second_month,
             second_day: second_day,
-            second_time: props.secondTime?props.secondTime:unit.dateformat(newDate, 'HH:mm:ss'),
+            second_time: props.secondTime?props.secondTime:func.dateformat(newDate, 'HH:mm:ss'),
             second_min: second_min,
             second_max: second_max,
         }

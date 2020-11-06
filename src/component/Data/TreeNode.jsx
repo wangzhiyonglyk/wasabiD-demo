@@ -7,29 +7,23 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Input from "../Form/Input"
-import unit from "../libs/unit"
+import func from "../libs/func"
 class TreeNode extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             ...this.props,
             rename: false,//是否处于重命名状态
             checkValue: false,//勾选状态，不选，半选，勾选
-            nodeid: Math.random().toString(36).slice(-8) + 'node' + unit.dateformat(new Date(), 'yyyyMMddHHmmss'),
-            textid: Math.random().toString(36).slice(-8) + 'text' + unit.dateformat(new Date(), 'yyyyMMddHHmmss'),
-            children: unit.clone(this.props.children)
+            nodeid: Math.random().toString(36).slice(-8) + 'node' + func.dateformat(new Date(), 'yyyyMMddHHmmss'),
+            textid: Math.random().toString(36).slice(-8) + 'text' + func.dateformat(new Date(), 'yyyyMMddHHmmss'),
+            children: func.clone(this.props.children)
         }
         this.onClick = this.onClick.bind(this);
         this.showHandler = this.showHandler.bind(this)
     }
-    componentWillReceiveProps(nextProps) {
 
-    }
-    componentDidUpdate() {
-
-    }
     /**
      * 展开/折叠
      */
@@ -309,7 +303,7 @@ class TreeNode extends Component {
      * @param {*} childIndex 
      */
     parentRemoveChild(childid, childText, subChildren) {
-        let children = unit.clone(this.state.children);
+        let children = func.clone(this.state.children);
         let childIndex = null;
         for (let i = 0; i < children.length; i++) {
             if (children[i].id == childid) {
@@ -353,7 +347,7 @@ class TreeNode extends Component {
                 dragAble = this.props.beforeDrag(this.state.id, this.state.text, this.state.children);
             }
             if (dragAble) {
-                let obj = unit.clone(this.state);
+                let obj = func.clone(this.state);
                 window.localStorage.setItem("treenode", JSON.stringify(obj));
             }
 
@@ -413,7 +407,7 @@ class TreeNode extends Component {
             }
             if (dropAble) {
                 window.localStorage.setItem("moveed", "true");
-                let children = unit.clone(this.state.children) || [];
+                let children = func.clone(this.state.children) || [];
                 children.unshift(node); //不能前插
 
                 this.setState({

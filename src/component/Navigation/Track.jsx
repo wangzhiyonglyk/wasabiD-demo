@@ -28,13 +28,22 @@ class Track extends  React.Component {
             expressId:null,
 
     }
-    componentWillReceiveProps(nextProps) {
-        this.setState({
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     this.setState({
+    //         model:nextProps.model,
+    //         expressName:nextProps.expressName,
+    //         expressId:nextProps.expressId,
+    //     })
+    // }
+    static getDerivedStateFromProps(nextProps, prevState)
+    {
+        return {
             model:nextProps.model,
             expressName:nextProps.expressName,
             expressId:nextProps.expressId,
-        })
+        }
     }
+
     render() {
         if(this.state.model instanceof  Array)
         {

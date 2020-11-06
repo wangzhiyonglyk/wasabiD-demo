@@ -11,20 +11,34 @@ class Tabs extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeIndex: this.props.activeIndex
+            activeIndex: this.props.activeIndex,
+            childrenlength:this.props.children.length||0
         }
         this.tabClickHandler = this.tabClickHandler.bind(this);
         this.onClose = this.onClose.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        // let activeIndex = nextProps.activeIndex != null && nextProps.activeIndex != undefined ? nextProps.activeIndex : 0
-        // if (nextProps.children.length > this.props.children.length) {
-        //     activeIndex = nextProps.children.length - 1
-        // }
-        // this.setState({
-        //     activeIndex: activeIndex
-        // })
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     // let activeIndex = nextProps.activeIndex != null && nextProps.activeIndex != undefined ? nextProps.activeIndex : 0
+    //     // if (nextProps.children.length > this.props.children.length) {
+    //     //     activeIndex = nextProps.children.length - 1
+    //     // }
+    //     // this.setState({
+    //     //     activeIndex: activeIndex
+    //     // })
+    // }
+    
+    static getDerivedStateFromProps(nextProps, prevState)
+    {
+      
+          let activeIndex = nextProps.activeIndex != null && nextProps.activeIndex != undefined ? nextProps.activeIndex : 0
+        if (nextProps.children.length >prevState.childrenlength) {
+            activeIndex = nextProps.children.length - 1
+        }
+        this.setState({
+            activeIndex: activeIndex,
+            childrenlength:nextProps.children.length
+        })
     }
     tabClickHandler(index, event) {
 

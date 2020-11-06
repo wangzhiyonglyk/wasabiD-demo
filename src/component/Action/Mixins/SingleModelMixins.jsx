@@ -9,7 +9,7 @@ let ButtonModel = require('../../Model/ButtonModel.js');
 let FetchModel = require('../../Model/FetchModel.js');
 let FormModel = require('../../Model/FormModel.js');
 let HeaderModel = require('../../Model/HeaderModel.js');
-let unit = require('../../libs/unit.js');
+let unit = require('../../libs/func.js');
 let PageModelMixins = {
   modelUrl: function() {
     //获取模型的url

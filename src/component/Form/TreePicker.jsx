@@ -7,14 +7,14 @@ import React, { Component } from "react";
 
 
 import Tree from "../Data/Tree.jsx";
-import unit from "../libs/unit.js";
+import func from "../libs/func.js";
 import validation from "../Lang/validation.js";
 
 import validate from "../Mixins/validate.js";
-import showUpdate from "../Mixins/showUpdate.js";
-
-import Label from "../Unit/Label.jsx";
-import ClickAway from "../Unit/ClickAway.js";
+import diff from "../libs/diff.js";
+import propsTran from "../libs/propsTran"
+import Label from "../Info/Label.jsx";
+import ClickAway from "../libs/ClickAway.js";
 import mixins from '../Mixins/mixins';
 import props from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
@@ -23,7 +23,7 @@ class TreePicker extends Component {
     constructor(props) {
         super(props);
        
-        let r = this.initData(this.props.value, unit.clone(this.props.data));
+        let r =propsTran.treePickerInitData(this.props.value, func.clone(this.props.data));
       
         this.state = {
             hide: this.props.hide,
@@ -43,59 +43,30 @@ class TreePicker extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        /*
-         this.isChange :代表自身发生了改变,防止父组件没有绑定value,text,而导致无法选择
-         */
-        this.isChange = false;//重置
-        var value = this.isChange ? this.state.value : nextProps.value;
-        let r = this.initData(value, nextProps.data);
-        this.setState({
+// UNSAFE_componentWillReceiveProps(nextProps){
+//     if(nextProps.data){
+//         let r=this.initData(this.state.value, func.clone(nextProps.data));
+//         if(showUpdate(this.state.data,r.data)){
+//             this.setState({
+//                 data:r.data
+//             })
+//         }
+//     }
+   
+// }
 
-            value: value,
-            text: r.text.join(","),
-            url: nextProps.url,
-            data: r.data,
-            params: unit.clone(nextProps.params),
-            validateClass: "",//重置验证样式
-            helpTip: validation["required"],//提示信息
-        })
-    }
-    initData(value, data) {
-        let text = [];
-        value = "," + (value || "") + ",";
-        if (data && data instanceof Array && data.length > 0) {
-
-            for (let i = 0; i < data.length; i++) {
-                if (value.indexOf("," + data[i].id + ",") > -1) {
-                    data[i].checked = true;
-                    text.push(data[i].text || data[i][this.props.textField]);
-                }
-                if (data[i].children && data[i].children.length > 0) {
-                    let r = this.initData(value, data[i].children);
-                    data[i].children = r.data;
-                    if (r.text.length > 0) {
-                        //父节点
-                        if (!data[i].checked) {
-                            data[i].checkValue = "half";
-                            console.log(data, "data")
-                        }
-                    }
-                    text = [].concat(text, r.text);
-
-                }
-            }
-        }
-
-        return { data: data || [], text: text };
-    }
-    componentDidUpdate() {
-        if (this.isChange == true) {//说明已经改变了,回传给父组件
-            if (this.props.onSelect != null) {
-                this.props.onSelect(this.state.value, this.state.text, this.props.name, this.property);
+static getDerivedStateFromProps(nextProps, prevState) {
+    if(nextProps.data){
+        let r=propsTran.treePickerInitData(this.state.value, func.clone(nextProps.data));
+        if(diff(this.state.data,r.data)){
+          return {
+                data:r.data
             }
         }
     }
+    return null;
+}
+    
     componentDidMount() {
 
         this.registerClickAway(this.hidePicker, this.refs.picker);//注册全局单击事件
@@ -106,23 +77,16 @@ class TreePicker extends Component {
 
         return validate.call(this, value)
     }
-    showUpdate(newParam, oldParam) {
-        return showUpdate.call(this, newParam, oldParam);
-    }
+   
 
-    setValue(value) {
-        let text = "";
-        for (let i = 0; i < this.state.data.length; i++) {
-            if (this.state.data[i].value == value) {
-                text = this.state.data[i].text;
-                break;
-            }
-        }
-        this.setState({
-            value: value,
-            text: text
-        })
-
+    setValue(value,data) {
+        let r = propsTran.treePickerInitData(value, func.clone(data?data:this.state.data));
+      this.setState({
+        value:value,
+        text: r.text.join(","),
+        data:r.data
+      })
+      
 
     }
     getValue() {
@@ -153,7 +117,6 @@ class TreePicker extends Component {
     onSelect() {
         let data = this.refs.tree.getChecked();
         let value = [], text = [];
-        console.log("data", data);
         if (data && data.length > 0) {
             for (let i = 0; i < data.length; i++) {
                 value.push(data[i].id);

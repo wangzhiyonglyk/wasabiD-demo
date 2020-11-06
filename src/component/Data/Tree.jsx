@@ -7,61 +7,96 @@ create by wangzhiyong 创建树组件
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import Message from "../Unit/Message";
+import Msg from "../Info/Msg";
 import FetchModel from "../Model/FetchModel";
 import TreeNode from "./TreeNode.jsx";
-import unit from "../libs/unit.js";
-import showUpdate from "../Mixins/showUpdate.js";
+import func from "../libs/func.js";
+import diff from "../libs/diff.js";
+import propsTran from "../libs/propsTran";
 require("../Sass/Data/Tree.css");
 class Tree extends Component {
     constructor(props) {
         super(props);
-        let newData = this.setidAndText(this.props.data);//对数据进行处理
+        let newData = propsTran.setidAndText(this.props.data, this.props.idField, this.props.textField, this.props.simpleData);//对数据进行处理
         this.state = {
+            url: this.props.url,
             name: this.props.name,
             text: this.props.text,
             id: this.props.id,
             data: newData,
-            rawData: unit.clone(this.props.data)//原始数据
-
+            rawData: func.clone(this.props.data),//原始数据
+            reloadData: false,
+            idField: this.props.idField,
+            textField: this.props.textField,
+            simpleData: this.props.simpleData
         }
         //单击与双击需要改变样式
         this.onClick = this.onClick.bind(this);
-        this.onradioChecked=this.onradioChecked.bind(this);
+        this.onradioChecked = this.onradioChecked.bind(this);
         this.onDoubleClick = this.onDoubleClick.bind(this);
 
         //因为第一级节点没有父节点，在移除时需要树组件配合
         this.parentRemoveChild = this.parentRemoveChild.bind(this);
-        
+
         /**
          * 其他事件则自行定义就可以了
          */
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.url) {
-            if (nextProps.url != this.props.url) {
-                this.loadData(nextProps.url, nextProps.params);
-            }
-            else if (this.showUpdate(nextProps.params, this.props.params)) {//如果不相同则更新
-                this.loadData(nextProps.url, nextProps.params);
-            }
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     if (nextProps.url) {
+    //         if (nextProps.url != this.props.url) {
+    //             this.loadData(nextProps.url, nextProps.params);
+    //         }
+    //         else if (this.showUpdate(nextProps.params, this.props.params)) {//如果不相同则更新
+    //             this.loadData(nextProps.url, nextProps.params);
+    //         }
 
-        } else if (this.showUpdate(nextProps.data, this.state.rawData)) {
-            let newData = this.setidAndText(nextProps.data);//对数据进行处理
-            this.setState({
-                data: newData,
-                rawData: nextProps.data
-            })
+    //     } else if (this.showUpdate(nextProps.data, this.state.rawData)) {
+    //         let newData = this.setidAndText(nextProps.data);//对数据进行处理
+    //         this.setState({
+    //             data: newData,
+    //             rawData: nextProps.data
+    //         })
+    //     }
+
+    // }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        let newState = {};
+        if (nextProps.url && nextProps.params &&
+            diff(nextProps.params, prevState.params)) {//如果有url
+            newState = {
+                reloadData: true,
+                url: nextProps.url,
+                params: nextProps.params,
+            }
+        }
+        if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
+            //如果传了死数据
+            newState.rawData = nextProps.data;
+            newState.data = propsTran.setidAndText(nextProps.data, prevState.idField, prevState.textField, prevState.simpleData);
+        }
+        if (func.isEmptyObject(newState)) {
+            return null;
+        }
+        else {
+            return newState;
         }
 
+    }
+    componentDidUpdate() {
+        if (this.state.reloadData) {
+            this.setState({
+                realData: false
+            })
+            this.loadData(this.state.url, this.state.params);
+        }
     }
     componentDidMount() {
         this.loadData(this.state.url, this.state.params);
     }
-    showUpdate(newParam, oldParam) {
-        return showUpdate.call(this, newParam, oldParam);
-    }
+
     loadData(url, params) {
         if (url) {
             let type = this.props.httpType ? this.props.httpType : "POST";
@@ -75,7 +110,7 @@ class Tree extends Component {
                 fetchmodel.contentType = this.props.contentType;
                 fetchmodel.data = fetchmodel.contentType == "application/json" ? JSON.stringify(fetchmodel.data) : fetchmodel.data;
             }
-            type == "POST" ? unit.fetch.post(fetchmodel) : unit.fetch.get(fetchmodel);
+            type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
             console.log("tree-fetch", fetchmodel);
         }
 
@@ -85,7 +120,7 @@ class Tree extends Component {
         if (this.props.dataSource == null) {
         }
         else {
-            realData = unit.getSource(data, this.props.dataSource);
+            realData = func.getSource(data, this.props.dataSource);
         }
 
         realData = this.setidAndText(realData);
@@ -94,27 +129,10 @@ class Tree extends Component {
             data: realData,
         })
     }
-    setidAndText(data) {//遍历设置text，id的值
-        let realData = unit.clone(data);//
-        if (realData instanceof Array) {
-            for (let i = 0; i < realData.length; i++) {
-                realData[i].text = realData[i][this.props.textField ? this.props.textField : "text"];
-                realData[i].id = realData[i][this.props.idField ? this.props.idField : "id"];
-                if (realData[i].children) {
-                    realData[i].children = this.setidAndText(realData[i].children);
-                }
-            }
 
-        }
-        if (this.props.simpleData) {//简单的json数据格式
-            realData = unit.toTreeData(realData);//转成树结构
-        }
-
-        return realData;
-    }
     loadError(message) {//查询失败
         console.log("treepicker-error", message);
-        Message.error(message);
+        Msg.error(message);
     }
     /**
      * 单击事件
@@ -127,10 +145,10 @@ class Tree extends Component {
         this.setState({
             id: id,
             text: text
-        },()=>{
+        }, () => {
             this.props.onClick && this.props.onClick(id, text, children, this.props.name);
         })
-     
+
     }
     /**
      * 单选按钮 radioType="all"
@@ -138,29 +156,29 @@ class Tree extends Component {
      * @param {*} text 
      * @param {*} children 
      */
-    onradioChecked(id, text,children){
+    onradioChecked(id, text, children) {
         this.setState({
             id: id,
             text: text
-        },()=>{
+        }, () => {
 
             if (this.state.data && this.state.data instanceof Array && this.state.data.length > 0) {
                 for (let ref in this.refs) {
                     if (ref.indexOf("nodetree") > -1) {
                         //     
-                              
-                        this.refs[ref].setNodeSelfChecked(false,{id:id,text:text});//改变子节点
-                        this.refs[ref].setChildrenChecked(false,{id:id,text:text});//改变子孙节点
+
+                        this.refs[ref].setNodeSelfChecked(false, { id: id, text: text });//改变子节点
+                        this.refs[ref].setChildrenChecked(false, { id: id, text: text });//改变子孙节点
                     }
                 }
             }
             setTimeout(() => {
-                this.onChecked(true,id, text, children);
+                this.onChecked(true, id, text, children);
             }, 200);
             //只有一个单选
-          
+
         })
-      
+
     }
     /**
      * 双击事件
@@ -172,8 +190,8 @@ class Tree extends Component {
         this.props.onDoubleClick && this.props.onDoubleClick(id, text, children, this.props.name);
     }
 
-    onChecked(checked,id, text, children){
-        this.props.onChecked && this.props.onChecked(checked,id, text, children, this.props.name);
+    onChecked(checked, id, text, children) {
+        this.props.onChecked && this.props.onChecked(checked, id, text, children, this.props.name);
     }
     /**
      * 返回树的数据
@@ -207,7 +225,7 @@ class Tree extends Component {
         return data;
     }
 
-    setChecked(checked){
+    setChecked(checked) {
 
     }
 
@@ -216,7 +234,7 @@ class Tree extends Component {
    * @param {*} childIndex 
    */
     parentRemoveChild(childid, childText, subChildren) {
-        let children = unit.clone(this.state.data);
+        let children = func.clone(this.state.data);
         let childIndex = null;
         for (let i = 0; i < children.length; i++) {
             if (children[i].id == childid) {
@@ -249,14 +267,14 @@ class Tree extends Component {
                     key={"nodetree" + item.id}
                     {...this.props}
                     {...item}
-                    checked={this.props.inputValue?this.props.inputValue.indexOf(","+item.id+",")>-1?true:false:item.checked}
+                    checked={this.props.inputValue ? this.props.inputValue.indexOf("," + item.id + ",") > -1 ? true : false : item.checked}
                     data={this.state.rawData}
                     isParent={isParent} selectid={this.state.id}
                     /** 其他事件不需要绑定，因为父组件设定 */
                     onClick={this.onClick}
                     onradioChecked={this.onradioChecked}
                     onDoubleClick={this.onDoubleClick}
-                    
+
 
                 />);
             });

@@ -28,9 +28,7 @@ class Label extends Component{
             showHelp:false
         })
     }
-    componentWillReceiveProps(nextProps) {
-       
-    }
+  
     render(){
         let style=this.props.style?this.props.style:{};
       

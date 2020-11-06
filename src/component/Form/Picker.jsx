@@ -9,17 +9,17 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 
-import  unit from "../libs/unit.js";
+import  unit from "../libs/func.js";
 
 import  FetchModel from "../Model/FetchModel.js";
 import  PickerModel from "../Model/PickerModel.js";
 import  validation from "../Lang/validation.js";
 
 import  validate from "../Mixins/validate.js";
-import  showUpdate from "../Mixins/showUpdate.js";
-import  Label from "../Unit/Label.jsx";
-import  Message from "../Unit/Message.jsx";
-import ClickAway  from "../Unit/ClickAway.js";
+import  diff from "../libs/diff.js";
+import  Label from "../Info/Label.jsx";
+import Msg from "../Info/Msg.jsx";
+import ClickAway  from "../libs/ClickAway.js";
 import mixins from '../Mixins/mixins';
 import propType from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
@@ -29,7 +29,7 @@ class   Picker  extends  Component{
   {
       super(props)
       this.state={
-     
+        url:this.props.url,
         value:this.props.value,
         text:this.props.text,
       
@@ -51,9 +51,12 @@ class   Picker  extends  Component{
         helpShow:"none",//提示信息是否显示
         helpTip:validation["required"],//提示信息
         invalidTip:"",
+        reloadData:false,
+        valueField:this.props.valueField,
+        textField:this.props.textField,
       }
       this.validate=this.validate.bind(this);
-      this.showUpdate=this.showUpdate.bind(this);
+     
       this.setValue=this.setValue.bind(this);
       this.getValue=this.getValue.bind(this);
       this.loadProvince=this.loadProvince.bind(this);
@@ -71,56 +74,89 @@ class   Picker  extends  Component{
       this.loadCitySuccess=this.loadCitySuccess.bind(this);
       }
    
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.url) {
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     if (nextProps.url) {
 
-            if (nextProps.url != this.props.url) {
-                this.loadProvince(nextProps.url, nextProps.params);
-            }
-            else if (this.showUpdate(nextProps.params, this.props.params)) {//如果不相同则更新
-                this.loadProvince(nextProps.url, nextProps.params);
-            }
+    //         if (nextProps.url != this.props.url) {
+    //             this.loadProvince(nextProps.url, nextProps.params);
+    //         }
+    //         else if (this.showUpdate(nextProps.params, this.props.params)) {//如果不相同则更新
+    //             this.loadProvince(nextProps.url, nextProps.params);
+    //         }
 
-        } else if (nextProps.data && nextProps.data instanceof Array) {//又传了数组
-            if (nextProps.data.length != this.props.data.length) {
-                    this.setState({
-                        data:nextProps.data,
-                        value:"",
-                        text:""
-                    })
-            }else{
-                let newData=[];
-                for(let i=0;i<nextProps.data.length;i++)
-            {
-                let obj=nextProps.data[i];
-                obj.text=nextProps.data[i][this.props.textField?this.props.textField:"text"];
-                obj.value=nextProps.data[i][this.props.valueField?this.props.valueField:"value"];
+    //     } else if (nextProps.data && nextProps.data instanceof Array) {//又传了数组
+    //         if (nextProps.data.length != this.props.data.length) {
+    //                 this.setState({
+    //                     data:nextProps.data,
+    //                     value:"",
+    //                     text:""
+    //                 })
+    //         }else{
+    //             let newData=[];
+    //             for(let i=0;i<nextProps.data.length;i++)
+    //         {
+    //             let obj=nextProps.data[i];
+    //             obj.text=nextProps.data[i][this.props.textField?this.props.textField:"text"];
+    //             obj.value=nextProps.data[i][this.props.valueField?this.props.valueField:"value"];
               
-                newData.push(obj);
-            }
-            if(newData[0].value!=this.state.data[0].value||newData[newData.length-1].value!=this.state.data[this.state.data.length-1].value)
-            {this.setState({
-                data:nextProps.data,
-                value:"",
-                text:""
-            })
+    //             newData.push(obj);
+    //         }
+    //         if(newData[0].value!=this.state.data[0].value||newData[newData.length-1].value!=this.state.data[this.state.data.length-1].value)
+    //         {this.setState({
+    //             data:nextProps.data,
+    //             value:"",
+    //             text:""
+    //         })
 
+    //         }
+    //     }
+    //     }
+    // }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        let newState = {};
+        if (nextProps.url && nextProps.params &&
+            diff(nextProps.params, prevState.params)) {//如果有url
+            newState = {
+                reloadData: true,//重新加载
+                url: nextProps.url,
+                params: func.clone(nextProps.params),
             }
         }
+        if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.data)) {
+            //如果传了死数据
+            newState.data = propsTran.setValueAndText(nextProps.data, prevState.valueField, prevState.textField);
+            
+        }
+        if(nextProps.forceChange){
+            newState.value=nextProps.forceChange?nextProps.value:this.state.value;
+            newState.text=nextProps.forceChange?nextProps.text:this.state.text;
+        }
+        if (func.isEmptyObject(newState)) {
+            return null;
+        }
+        else {
+            return newState;
+        }
+    }
+    componentDidUpdate() {
+        if (this.state.reloadData) {
+            this.setState({
+                realData: false
+            })
+            this.loadProvince(this.state.url,this.state.params);
         }
     }
     componentDidMount(){
-        if(this.props.url!=null) {
-           this.loadProvince(this.props.url,this.state.params);
+        if(this.state.url!=null) {
+           this.loadProvince(this.state.url,this.state.params);
         }
         this.registerClickAway(this.hidePicker, this.refs.picker);//注册全局单击事件
     }
     validate(value){
         return validate.call(this,value);
     }
-    showUpdate(newParam, oldParam) {
-       return  showUpdate.call(this, newParam, oldParam);
-    }
+  
      setValue(value) {
         let text = "";
         for (let i = 0; i < this.state.data.length; i++) {
@@ -175,7 +211,7 @@ class   Picker  extends  Component{
     }
     loadError(message) {//查询失败
         console.log("picker-error",message);
-        Message. error(message);
+        Msg. error(message);
     }
     changeHandler(event) {
 

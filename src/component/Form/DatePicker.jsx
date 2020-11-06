@@ -19,9 +19,9 @@ import validation from "../Lang/validation.js";
 import regs from "../Lang/regs.js";
 
 import validate from "../Mixins/validate.js";
-import ClickAway  from "../Unit/ClickAway.js";
+import ClickAway from "../libs/ClickAway.js";
 import mixins from '../Mixins/mixins';
-import Label from "../Unit/Label.jsx";
+import Label from "../Info/Label.jsx";
 
 import props from "./config/propType.js";
 import config from "./config/dateConfig.js";
@@ -49,7 +49,7 @@ class DatePicker extends Component {
     this.getValue = this.getValue.bind(this);
     this.setValue = this.setValue.bind(this);
     this.validate = this.validate.bind(this);
-    
+
     this.onBlur = this.onBlur.bind(this);
     this.splitDate = this.splitDate.bind(this);
     this.splitDateTime = this.splitDateTime.bind(this);
@@ -60,59 +60,68 @@ class DatePicker extends Component {
     this._getText = this._getText.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    //不是容器，不用默认处理
-    if(nextProps.value&&!this.state.value&&this.state.value!=nextProps.value){
-      this.setState({
-        value:nextProps.value
-      })
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+
+  //   //不是容器，不用默认处理
+  //   if(nextProps.value&&!this.state.value&&this.state.value!=nextProps.value){
+  //     this.setState({
+  //       value:nextProps.value
+  //     })
+  //   }
+  // }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.value && !prevState.value && prevState.value != nextProps.value) {
+      return {
+        value: nextProps.value
+      }
     }
+    return null;
   }
   componentDidMount() {
     this.registerClickAway(this.hidePicker, this.refs.picker);//注册全局单击事件
- 
+
   }
-  componentDidUpdate(){
-    console.log(this.refs.pickerc.getBoundingClientRect());
-    if(this.refs.pickerc.getBoundingClientRect().right>window.screen.availWidth){
-      this.refs.pickerc.style.right="0px";
+  componentDidUpdate() {
+
+    if (this.refs.pickerc.getBoundingClientRect().right > window.screen.availWidth) {
+      this.refs.pickerc.style.right = "0px";
     }
   }
   getValue() {
-    let value=this.state.value?this.state.value:"";
-    if(this.props.type=="daterange"&&value&& this.props.attachTime){
-      value=value.split(",");
-      value[0]=value[0]+" 00:00:00";
-      value[1]=value[1]+" 23:59:59";
-      value=value.join(",");
+    let value = this.state.value ? this.state.value : "";
+    if (this.props.type == "daterange" && value && this.props.attachTime) {
+      value = value.split(",");
+      value[0] = value[0] + " 00:00:00";
+      value[1] = value[1] + " 23:59:59";
+      value = value.join(",");
     }
     return value;
   }
   setValue(value) {
-    if (value&&this.validate(value)) {
-      if(this.props.type=="daterange"&&value.indexOf(" ")>-1){
-//包含了时间
+    if (value && this.validate(value)) {
+      if (this.props.type == "daterange" && value.indexOf(" ") > -1) {
+        //包含了时间
 
-      value=value.split(",");
-      value[0]=value[0].split(" ")[0];
-      value[1]=value[1].split(" ")[0];
-      value=value.join(",");
+        value = value.split(",");
+        value[0] = value[0].split(" ")[0];
+        value[1] = value[1].split(" ")[0];
+        value = value.join(",");
       }
       this.setState({
         value: value,
-        text:value
+        text: value
       });
-    }else{
+    } else {
       this.setState({
         value: "",
-        text:""
+        text: ""
       });
     }
   }
   validate(value) {
     return validate.call(this, value);
   }
- 
+
 
   onBlur() {
     this.refs.label.hideHelp(); //隐藏帮助信息
@@ -181,14 +190,14 @@ class DatePicker extends Component {
         show: type == 1 ? !this.state.show : true
       });
     }
-    
-    this .bindClickAway();//绑定全局单击事件
+
+    this.bindClickAway();//绑定全局单击事件
   }
   hidePicker() {
     this.setState({
       show: false
     });
-      this.unbindClickAway();//卸载全局单击事件
+    this.unbindClickAway();//卸载全局单击事件
   }
   onSelect(value, text) {
     //选中事件
@@ -208,7 +217,7 @@ class DatePicker extends Component {
     });
     this.props.onSelect && this.props.onSelect("", "", this.props.name, null);
   }
-  changeHandler(event) {}
+  changeHandler(event) { }
 
   clearHandler() {
     //清除数据
@@ -219,7 +228,7 @@ class DatePicker extends Component {
     this.props.onSelect && this.props.onSelect("", "", this.props.name, null);
   }
   _getText() {
-    var text = this.state.text?this.state.text:this.state.value;
+    var text = this.state.text ? this.state.text : this.state.value;
     if (this.props.type == "date") {
       if (text && text.indexOf(" ") > -1) {
         text = text.split(" ")[0]; //除去显示的时间格式
@@ -262,16 +271,16 @@ class DatePicker extends Component {
       ></DateD>
     );
   }
-  renderTime(){
-  
-   
+  renderTime() {
+
+
     return (
       <Time
         ref='combobox'
         name={this.props.name}
         value={this.state.value}
         onSelect={this.onSelect}
-  
+
         hideSecond={this.props.hideSecond}
       ></Time>
     );
@@ -350,7 +359,7 @@ class DatePicker extends Component {
       ></DateRange>
     );
   }
-  renderTimeRange(){
+  renderTimeRange() {
     return (
       <TimeRange
         ref='combobox'
@@ -364,7 +373,7 @@ class DatePicker extends Component {
 
   /** focus */
   onFocus(e) {
-    
+
     const rangeX = document.getElementsByClassName("dropcontainter range ");
     if (rangeX && rangeX.length > 0) {
       setTimeout(() => {
@@ -406,20 +415,20 @@ class DatePicker extends Component {
     let control = null;
     let controlDropClassName = "";
     switch (this.props.type) {
-      
+
       case "date":
         control = this.renderDate();
         controlDropClassName = "date";
         break;
-        case "time":
-          control=this.renderTime();
-          controlDropClassName = "time";
-          break;
-          case "timerange":
-          
-            control=this.renderTimeRange();
-            controlDropClassName = "timerange";
-            break;
+      case "time":
+        control = this.renderTime();
+        controlDropClassName = "time";
+        break;
+      case "timerange":
+
+        control = this.renderTimeRange();
+        controlDropClassName = "timerange";
+        break;
       case "datetime":
         control = this.renderDateTime();
         controlDropClassName = "date time";
@@ -486,8 +495,8 @@ class DatePicker extends Component {
                 display: this.props.readonly
                   ? "none"
                   : this.state.value == "" || !this.state.value
-                  ? "none"
-                  : "inline"
+                    ? "none"
+                    : "inline"
               }}
             ></i>
             <i
@@ -503,12 +512,12 @@ class DatePicker extends Component {
               onClick={this.showPicker.bind(this, 2)}
               onChange={this.changeHandler}
             />
-            <div 
-            ref="pickerc"
+            <div
+              ref="pickerc"
               className={"dropcontainter " + controlDropClassName + " "}
               style={{
                 display: this.state.show == true ? "block" : "none",
-               
+
               }}
             >
               {control}
@@ -534,5 +543,5 @@ class DatePicker extends Component {
 DatePicker.propTypes = Object.assign({ type: PropTypes.oneOf(config) }, props);
 
 DatePicker.defaultProps = Object.assign({}, defaultProps, { type: "datetime" });
-mixins(DatePicker,[ClickAway]);
+mixins(DatePicker, [ClickAway]);
 export default DatePicker;

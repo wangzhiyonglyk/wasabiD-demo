@@ -4,15 +4,15 @@
  */
 
 import React, { Component } from "react";
-import unit from "../libs/unit.js";
+import func from "../libs/func.js";
 import FetchModel from "../Model/FetchModel.js";
 import validation from "../Lang/validation.js";
 import validate from "../Mixins/validate.js";
-import showUpdate from "../Mixins/showUpdate.js";
+import diff from "../libs/diff.js";
 import Button from "../Buttons/Button"
-import Label from "../Unit/Label.jsx";
-import Message from "../Unit/Message.jsx";
-
+import Label from "../Info/Label.jsx";
+import Msg from "../Info/Msg.jsx";
+import propsTran from '../libs/propsTran'
 import props from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
 import("../Sass/Form/Input.css");
@@ -20,32 +20,25 @@ import("../Sass/Form/Check.css");
 
 class CheckButton extends Component {
     constructor(props) {
-
-        super(props);;
-       
+        super(props);       
         //对传来的数据进行格式化
-        var newData = []; var text = this.props.text;
-        if (this.props.data instanceof Array) {
-            for (let i = 0; i < this.props.data.length; i++) {
-                let obj = this.props.data[i];
-                obj.text = this.props.data[i][this.props.textField?this.props.textField:"text"];
-                obj.value = this.props.data[i][this.props.valueField?this.props.valueField:"value"];
-                if (obj.value == this.props.value) {
-                    text = obj.text;//根据value赋值
-                }
-                newData.push(obj);
-            }
-        }
+        let newData = propsTran.setValueAndText(this.props.data, this.props.valueField, this.props.textField);
         this.state = {
-            params: unit.clone(this.props.params),//参数
+            oldPropsValue:this.props.value,//保存用于匹配
+            url:this.props.url,
+            rawData:this.props.data,
+            params: func.clone(this.props.params),//参数
             data: newData,
             value: this.props.value,
-            text: text,
+            text: this.props.text,
             ulShow: false,//是否显示下拉选项
             validateClass: "",//验证的样式
             helpShow: "none",//提示信息是否显示
             helpTip: validation["required"],//提示信息
             invalidTip: "",
+            reloadData:false,
+            valueField:this.props.valueField,
+            textField:this.props.textField,
         }
      
       
@@ -59,56 +52,92 @@ class CheckButton extends Component {
 
     }
 
-    componentWillReceiveProps(nextProps) {
+    // UNSAFE_componentWillReceiveProps(nextProps) {
       
-        if (nextProps.url) {
+    //     if (nextProps.url) {
 
-            if (nextProps.url != this.props.url) {
-                this.loadData(nextProps.url, nextProps.params);
-            }
-            else if (this.showUpdate(nextProps.params, this.props.params)) {//如果不相同则更新
-                this.loadData(nextProps.url, nextProps.params);
-            }
+    //         if (nextProps.url != this.props.url) {
+    //             this.loadData(nextProps.url, nextProps.params);
+    //         }
+    //         else if (this.showUpdate(nextProps.params, this.props.params)) {//如果不相同则更新
+    //             this.loadData(nextProps.url, nextProps.params);
+    //         }
 
-        } else if (nextProps.data && nextProps.data instanceof Array) {//又传了数组
-            if (nextProps.data.length != this.props.data.length) {
-                    this.setState({
-                        data:nextProps.data,
-                        value:nextProps.forceChange?nextProps.value:this.state.value,
-                        text:nextProps.forceChange?nextProps.text:this.state.text,
-                    })
-            }else{
-                let newData=[];
-                for(let i=0;i<nextProps.data.length;i++)
-            {
-                let obj=nextProps.data[i];
-                obj.text=nextProps.data[i][this.props.textField?this.props.textField:"text"];
-                obj.value=nextProps.data[i][this.props.valueField?this.props.valueField:"value"];
+    //     } else if (nextProps.data && nextProps.data instanceof Array) {//又传了数组
+    //         if (nextProps.data.length != this.props.data.length) {
+    //                 this.setState({
+    //                     data:nextProps.data,
+    //                     value:nextProps.forceChange?nextProps.value:this.state.value,
+    //                     text:nextProps.forceChange?nextProps.text:this.state.text,
+    //                 })
+    //         }else{
+    //             let newData=[];
+    //             for(let i=0;i<nextProps.data.length;i++)
+    //         {
+    //             let obj=nextProps.data[i];
+    //             obj.text=nextProps.data[i][this.props.textField?this.props.textField:"text"];
+    //             obj.value=nextProps.data[i][this.props.valueField?this.props.valueField:"value"];
               
-                newData.push(obj);
-            }
-            if(newData[0].value!=this.state.data[0].value||newData[newData.length-1].value!=this.state.data[this.state.data.length-1].value)
-            {this.setState({
-                data:nextProps.data,
-                        value:nextProps.forceChange?nextProps.value:this.state.value,
-                        text:nextProps.forceChange?nextProps.text:this.state.text,
-            })
+    //             newData.push(obj);
+    //         }
+    //         if(newData[0].value!=this.state.data[0].value||newData[newData.length-1].value!=this.state.data[this.state.data.length-1].value)
+    //         {this.setState({
+    //             data:nextProps.data,
+    //                     value:nextProps.forceChange?nextProps.value:this.state.value,
+    //                     text:nextProps.forceChange?nextProps.text:this.state.text,
+    //         })
 
+    //         }
+    //     }
+    // }else{
+       
+    // }
+
+    //  if(nextProps.forceChange)
+    // {
+      
+    //     this.setState({
+    //         value:nextProps.value
+    //     })
+    // }
+        
+    // }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        let newState = {};
+        if (nextProps.url && nextProps.params &&
+            diff(nextProps.params, prevState.params)) {//如果有url
+            newState = {
+                reloadData: true,//重新加载
+                url: nextProps.url,
+                params: func.clone(nextProps.params),
             }
         }
-    }else{
-       
+        if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
+            //如果传了死数据
+            newState.data = propsTran.setValueAndText(nextProps.data, prevState.valueField, prevState.textField);
+            newState.rawData=nextProps.data;
+        }
+        if (nextProps.value != prevState.oldPropsValue) {
+            newState.value = nextProps.value;
+            newState.text = nextProps.text;
+            newState.oldPropsValue = nextProps.value;
+          }
+        if (func.isEmptyObject(newState)) {
+            return null;
+        }
+        else {
+            return newState;
+        }
+    }
+    componentDidUpdate() {
+        if (this.state.reloadData) {
+            this.setState({
+                realData: false
+            })
+            this.loadData(this.state.url, this.state.params);
+        }
     }
 
-     if(nextProps.forceChange)
-    {
-      
-        this.setState({
-            value:nextProps.value
-        })
-    }
-        
-    }
     setValue(value) {
         let text = "";
         for (let i = 0; i < this.state.data.length; i++) {
@@ -137,11 +166,9 @@ class CheckButton extends Component {
     showUpdate(newParam, oldParam) {
        return  showUpdate.call(this, newParam, oldParam);
     }
-    componentWillMount() {//如果指定url,先查询数据再绑定
-
-        this.loadData(this.props.url, this.state.params);//查询数据
+    componentDidMount() {//如果指定url,先查询数据再绑定
+        this.loadData(this.state.url, this.state.params);//查询数据
     }
-
     loadData(url, params) {
 
         if (url) {
@@ -156,48 +183,32 @@ class CheckButton extends Component {
                 fetchmodel.contentType=  this.props.contentType;
                 fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
             }
-            type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
+            type=="POST"?func.fetch.post(fetchmodel):func.fetch.get(fetchmodel);
             console.log("checkbox-fetch", fetchmodel);
         }
     }
     loadError( message) {//查询失败
         console.log("checkbox-error", message);
-        Message.error(message);
+        Msg.error(message);
     }
     loadSuccess(data) {//数据加载成功
         var realData = data;
         if (this.props.dataSource == null) {
         }
         else {
-            realData = unit.getSource(data, this.props.dataSource);
+            realData = func.getSource(data, this.props.dataSource);
         }
         var newData = []; var text = this.state.text;
         for (let i = 0; i < realData.length; i++) {
             let obj = realData[i];//将所有字段添加进来
-            obj.text = realData[i][this.props.textField?this.props.textField:"text"];
-            obj.value = realData[i][this.props.valueField?this.props.valueField:"value"];
+            obj.text = realData[i][this.state.textField?this.state.textField:"text"];
+            obj.value = realData[i][this.state.valueField?this.state.valueField:"value"];
             if (obj.value == this.state.value) {
                 text = obj.text;//根据value赋值
             }
             newData.push(obj);
         }
-        if (this.props.extraData == null || this.props.extraData.length == 0) {
-            //没有额外的数据
-        }
-        else {
-            //有额外的数据
-            for (let i = 0; i < this.props.extraData.length; i++) {
-                let obj = {};t
-                obj.text = this.props.extraData[i][this.props.textField?this.props.textField:"text"];
-                obj.value = this.props.extraData[i][this.props.valueField?this.props.valueField:"value"];
-                if (obj.value == this.state.value) {
-                    text = obj.text;//根据value赋值
-                }
-                newData.unshift(obj);
-            }
-        }
-        window.localStorage.setItem(this.props.name + 'data', JSON.stringify(newData));//用于后期获取所有数据
-
+      
         this.setState({
             data: newData,
             value: this.state.value,
@@ -210,7 +221,6 @@ class CheckButton extends Component {
 
     onSelect(value, text, row, e) {//选中事件
        e&&e.preventDefault&&  e.preventDefault();//因为有用户借助label属性生成新的checkbox,所以要阻止默认事件
-console.log("dd");
         if (this.props.readonly) {
             return;
         }
@@ -267,7 +277,7 @@ console.log("dd");
         if (this.state.data instanceof Array) {
             control = this.state.data.map((child, i) => {
                 var checked = false;
-                if ((this.state.value != null && this.state.value != undefined) && (("," + this.state.value.toString()).indexOf("," + child[this.props.valueField?this.props.valueField:"value"]) > -1)) {
+                if ((this.state.value != null && this.state.value != undefined) && (("," + this.state.value.toString()).indexOf("," + child[this.state.valueField?this.state.valueField:"value"]) > -1)) {
                     checked = true;
                 }
               

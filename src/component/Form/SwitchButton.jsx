@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from "react";
-import  Label from "../Unit/Label.jsx";
+import  Label from "../Info/Label.jsx";
 import propType from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
 
@@ -23,9 +23,7 @@ class  SwitchButton extends Component{
        
       }
   }
-    componentWillReceiveProps(nextProps) {
-         
-    }
+
     validate()
     {
       return true;

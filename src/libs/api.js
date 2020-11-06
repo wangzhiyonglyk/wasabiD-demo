@@ -3,18 +3,18 @@ create by wanzhiyong
 desc:请求模块，还有初始化
  */
 import wasabiapi from 'wasabi-api'
-import unit from '../component/libs/unit'
-import Mssaege from '../component/Unit/Message'
+import func from '../component/libs/func'
+import Mssaege from '../component/Info/Msg'
 import config from "./config"
 
 let ajax = function (settings) {
 
     let headers = getHeaders(settings.url)
     //说明要对接用管系统
-    if (!unit.isEmptyObject(headers)) {
+    if (!func.isEmptyObject(headers)) {
         settings.headers = settings.headers instanceof Object ? Object.assign(settings.headers, headers) : headers
 
-        let success = unit.clone(settings.success)//复制一份
+        let success = func.clone(settings.success)//复制一份
         //默认错误
         settings.error = settings.error ? settings.error : (message) => {
             Mssaege.error(message)
@@ -68,12 +68,12 @@ let getHeaders = function (url) {
 
     url=url?url.replace(config.url,""):url;
     url=url.indexOf("?")>-1?url.replace("?"+url.split("?")[1],""):url;
-    let token = unit.GetArgsFromHref(window.location.href, 'token') ? unit.GetArgsFromHref(window.location.href, 'token') : window.sessionStorage.getItem('token')
+    let token = func.GetArgsFromHref(window.location.href, 'token') ? func.GetArgsFromHref(window.location.href, 'token') : window.sessionStorage.getItem('token')
     let headers = {}
     if (token) {
-        let userId = unit.GetArgsFromHref(window.location.href, 'userId') ? unit.GetArgsFromHref(window.location.href, 'token') : window.sessionStorage.getItem('userId')
-        let perId = unit.GetArgsFromHref(window.location.href, 'perId') ? unit.GetArgsFromHref(window.location.href, 'perId') : window.sessionStorage.getItem('perId')
-        let sysId = unit.GetArgsFromHref(window.location.href, 'sysId') ? unit.GetArgsFromHref(window.location.href, 'sysId') : window.sessionStorage.getItem('sysId')
+        let userId = func.GetArgsFromHref(window.location.href, 'userId') ? func.GetArgsFromHref(window.location.href, 'token') : window.sessionStorage.getItem('userId')
+        let perId = func.GetArgsFromHref(window.location.href, 'perId') ? func.GetArgsFromHref(window.location.href, 'perId') : window.sessionStorage.getItem('perId')
+        let sysId = func.GetArgsFromHref(window.location.href, 'sysId') ? func.GetArgsFromHref(window.location.href, 'sysId') : window.sessionStorage.getItem('sysId')
 
         window.sessionStorage.setItem('token', token)
         window.sessionStorage.setItem('userId', userId)
@@ -93,7 +93,7 @@ let getHeaders = function (url) {
 
 let location = function () {
 
-    let path = unit.GetArgsFromHref(window.location.href, 'path')//如果有地
+    let path = func.GetArgsFromHref(window.location.href, 'path')//如果有地
     //if(window.location.href.indexOf("token")>-1){
     if (window.location.href.indexOf('typtUserInfo') > -1) {//说明是用管系统过来的
         //绝对定位，改成相对

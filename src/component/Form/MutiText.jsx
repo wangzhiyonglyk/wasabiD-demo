@@ -2,14 +2,12 @@
 //date:2016-11-21
 //desc 增加多行文本
 import React, { Component } from "react";
-import unit from "../libs/unit.js";
 
 import  validation from "../Lang/validation.js";
 import  validate from "../Mixins/validate.js";
-import  Label from "../Unit/Label.jsx";
+import  Label from "../Info/Label.jsx";
 import  Button from "../Buttons/Button.jsx";
-// var pasteExtend=require("../Mixins/pasteExtend.js");
-import  ClickAway from "../Unit/ClickAway.js";
+
 import propType from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
 class  MutiText extends Component {
@@ -42,10 +40,7 @@ class  MutiText extends Component {
         this.onSelectHandler=this.onSelectHandler.bind(this);
     }
   
-    componentWillReceiveProps(nextProps) {
-     
-
-    }
+   
     validate(value){
         return validate.call(this,value);
     }

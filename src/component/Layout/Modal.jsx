@@ -7,14 +7,14 @@ import PropTypes from "prop-types";
 
 import Button from "../Buttons/Button.jsx";
 import Resize from "./Resize.jsx";
-import events from "../Unit/events.js";
-import unit from "../libs/unit"
+import events from "../libs/events.js";
+import func from "../libs/func"
 import("../Sass/Layout/Modal.css");
 import("../Sass/Buttons/button.css");
 class Modal extends React.Component {
     constructor(props) {
         super(props);
-        let style = (this.props.style && unit.clone(this.props.style)) || {};
+        let style = (this.props.style && func.clone(this.props.style)) || {};
         let width = (this.props.style && this.props.style.width) ? parseInt(this.props.style.width) : 400;
         let height = (this.props.style && this.props.style.height) ? parseInt(this.props.style.height) : 400;
         style.width = width;
@@ -38,10 +38,7 @@ class Modal extends React.Component {
     componentDidMount() {
         events.on(document, "mousedown", this.mouseDownHandler)
     }
-    componentWillReceiveProps(nextProps) {
 
-
-    }
     close() {//关闭事件
         this.setState({ visible: false });
         if (this.props.closedHandler != null) {

@@ -22,21 +22,7 @@ class   None extends Component {
      }
  }
  
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            hide:nextProps.hide,
-            min:nextProps.min,
-            max:nextProps.max,
-            value: nextProps.value,
-            text: nextProps.text,
-            readonly: nextProps.readonly,
-            required: nextProps.required,
-            validateClass:"",//重置验证样式
-        });
-
-    }
-
-
+   
     render() {
       
         let style=Object.assign({},this.props.style);

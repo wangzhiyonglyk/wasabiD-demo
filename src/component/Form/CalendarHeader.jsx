@@ -24,12 +24,20 @@ class CalendarHeader  extends Component{
         this.changeMonth=this.changeMonth.bind(this);
     }
   
-    componentWillReceiveProps(nextProps) {
-        this.setState({
+    //todo 
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     this.setState({
+    //         year:nextProps.year,
+    //         month:nextProps.month,
+    //         day:nextProps.day,
+    //     })
+    // }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
             year:nextProps.year,
             month:nextProps.month,
             day:nextProps.day,
-        })
+        }
     }
     /*
     * 处理月份变化

@@ -26,35 +26,60 @@ class DateD extends Component {
             changeYear: false,//选择年份
             changeMonth: false,//选择月份
         }
-        this.updateYearAndMonth=this.updateYearAndMonth.bind(this);
-        this.dayHandler=this.dayHandler.bind(this);
-        this.formatDate=this.formatDate.bind(this);
-    
-        this.changeYear=this.changeYear.bind(this);
-        this.changeMonth=this.changeMonth.bind(this);
-        this.changeYearHandler=this.changeYearHandler.bind(this);
-        this.changeMonthHandler=this.changeMonthHandler.bind(this);
-    }
+        this.updateYearAndMonth = this.updateYearAndMonth.bind(this);
+        this.dayHandler = this.dayHandler.bind(this);
+        this.formatDate = this.formatDate.bind(this);
 
-    componentWillReceiveProps(nextProps) {
+        this.changeYear = this.changeYear.bind(this);
+        this.changeMonth = this.changeMonth.bind(this);
+        this.changeYearHandler = this.changeYearHandler.bind(this);
+        this.changeMonthHandler = this.changeMonthHandler.bind(this);
+    }
+    //todo 
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     if (nextProps.isRange == true) {//是日期范围选择，要更新最大值与最小值
+    //         this.setState({
+    //             year: nextProps.year ? nextProps.year : this.state.year,
+    //             month: nextProps.month ? nextProps.month : this.state.month,
+    //             day: nextProps.day,
+    //             isRange: nextProps.isRange,
+    //             min: nextProps.min,
+    //             max: nextProps.max,
+    //         });
+    //     } else {
+    //         this.setState({
+    //             year: nextProps.year ? nextProps.year : this.state.year,
+    //             month: nextProps.month ? nextProps.month : this.state.month,
+    //             day: nextProps.day,
+    //             isRange: nextProps.isRange,
+    //         });
+    //     }
+
+    // }
+
+    /**
+     * 
+     * @param {*} nextProps 
+     * @param {*} prevState 
+     */
+    static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.isRange == true) {//是日期范围选择，要更新最大值与最小值
-            this.setState({
-                year: nextProps.year ? nextProps.year : this.state.year,
-                month: nextProps.month ? nextProps.month : this.state.month,
+            return {
+                year: nextProps.year ? nextProps.year : prevState.year,
+                month: nextProps.month ? nextProps.month : prevState.month,
                 day: nextProps.day,
                 isRange: nextProps.isRange,
                 min: nextProps.min,
                 max: nextProps.max,
-            });
+            }
         } else {
-            this.setState({
-                year: nextProps.year ? nextProps.year : this.state.year,
-                month: nextProps.month ? nextProps.month : this.state.month,
+            return {
+                year: nextProps.year ? nextProps.year : prevState.year,
+                month: nextProps.month ? nextProps.month : prevState.month,
                 day: nextProps.day,
                 isRange: nextProps.isRange,
-            });
+            }
         }
-
     }
 
     updateYearAndMonth(filterYear, filterMonth) {
@@ -156,7 +181,7 @@ class DateD extends Component {
             day: null,//清空
             min: null,
             max: null,
-           
+
         })
     }
     changeMonthHandler(value) {
@@ -171,7 +196,7 @@ class DateD extends Component {
     }
 
     render() {
-       
+
         return (
             <div className="wasabi-datetime"  >
                 <CalendarHeader

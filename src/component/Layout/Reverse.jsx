@@ -18,8 +18,7 @@ class  Reverse extends React.Component {
         }
     }  
 
-    componentWillReceiveProps(nextProps) {
-    }
+   
     mouseoverHandler() {
 
        this.setState({

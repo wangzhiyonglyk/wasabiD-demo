@@ -72,10 +72,9 @@ exports.Resize = require('./Layout/Resize.jsx');//可调整大小组件
 exports.Reverse = require('./Layout/Reverse.jsx');//翻转组件
 
 exports.SlidePanel = require('./Layout/SlidePanel.jsx');//滑动面板
-exports.Message = require('./Unit/Message.jsx');//消息组件
-exports.ToolTip = require('./Unit/ToolTip.jsx');//提示信息组件
-exports.Tooltip_shy = require('./Unit/Tooltip_shy.jsx');//提示信息组件-shy
-exports.Progress = require('./Unit/Progress.jsx');//进步条组件
+exports.Msg = require('./Info/Msg.jsx');//消息组件
+
+exports.Progress = require('./Info/Progress.jsx.js.js');//进步条组件
 
 /*****************导航组件******************/
 exports.Menus = require('./Navigation/Menus.jsx');//菜单组件
@@ -103,8 +102,8 @@ exports.TabModel = require('./Model/TabModel.js');//页签数据模型
 exports.NodeModel = require('./Model/NodeModel.js');//树节点数据模型
 
 
-exports.unit = require('./libs/unit.js');//常用函数
-exports.ClickAway = require('./Unit/ClickAway.js');//全局单击事件
+exports.unit = require('./libs/func.js');//常用函数
+exports.ClickAway = require('./libs/ClickAway.js');//全局单击事件
 
 
 

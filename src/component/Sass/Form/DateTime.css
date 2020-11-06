@@ -236,7 +236,7 @@ float: left;
 
 .wasabi-time-container{
     position: relative;
-    width: 390px;
+    width: 270px;
     background: #ffffff;
     padding:10px;
     border: 1px solid #D8D8D8;
@@ -246,9 +246,9 @@ float: left;
     -ms-border-radius:5px ;
     -o-border-radius:5px ;
     box-shadow: 0 0 20px #ddd;
-    height: 220px;
-    min-height:210px;
+    height: 250px;
     white-space: pre-wrap;
+    z-index: 1;
 }
 .wasabi-time-container *{
     box-sizing: border-box;
@@ -274,7 +274,7 @@ float: left;
 }
 .wasabi-time-container .hour{
   display: inline-block;
-  width: 50px;
+  width: 40px;
   height: 30px;
   text-align: center;
   line-height: 30px;

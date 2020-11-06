@@ -5,14 +5,14 @@
  */
 import React from 'react';
 import PropTypes from "prop-types";
-import unit from '../../component/libs/unit'
+import func from '../../component/libs/unit'
 import "../../component/Sass/Layout/Drop.css"
 class Drag extends React.Component {
   constructor() {
     super();
     this.state = {
-      cantainerid: Math.random().toString(36).slice(-8) + 'drag' + unit.dateformat(new Date(), 'yyyyMMddHHmmssq'),
-      dotid: Math.random().toString(36).slice(-8) + 'dot' + unit.dateformat(new Date(), 'yyyyMMddHHmmssq'),
+      cantainerid: Math.random().toString(36).slice(-8) + 'drag' + func.dateformat(new Date(), 'yyyyMMddHHmmssq'),
+      dotid: Math.random().toString(36).slice(-8) + 'dot' + func.dateformat(new Date(), 'yyyyMMddHHmmssq'),
     };
     this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
     this.mouseUpHandler=this.mouseUpHandler.bind(this)

@@ -3,7 +3,7 @@
 //desc:模态窗口
 import React from "react";
 import PropTypes from "prop-types";
-import events from "../../component/Unit/events";
+import events from "../libs/events";
 import("../Sass/Layout/resize.css");
 
 class Resize extends React.Component {
@@ -22,9 +22,7 @@ class Resize extends React.Component {
 
     }
 
-    componentWillReceiveProps(nextProps) {
-
-    }
+ 
     componentDidMount() {//设置鼠标事件
         if (this.props.resize) {
             //允许改变大小

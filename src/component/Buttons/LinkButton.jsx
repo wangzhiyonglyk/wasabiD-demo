@@ -18,8 +18,6 @@ class LinkButton extends Component {
     this.dragStartHandler = this.dragStartHandler.bind(this);
     this.state = {};
   }
-
-  componentWillReceiveProps(nextProps) {}
   clickHandler(event) {
     if (this.props.disabled == true) {
       return;

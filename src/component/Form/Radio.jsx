@@ -4,16 +4,18 @@
  * 单选框集合组件
  */
 import React, { Component } from "react";
-import unit from "../libs/unit.js";
+
 import FetchModel from "../Model/FetchModel.js";
 import validation from "../Lang/validation.js";
 import validate from "../Mixins/validate.js";
-import showUpdate from "../Mixins/showUpdate.js";
 
-import Label from "../Unit/Label.jsx";
-import Message from "../Unit/Message.jsx";
-
+import Label from "../Info/Label.jsx";
+import Msg from "../Info/Msg.jsx";
+import propsTran from "../libs/propsTran"
+import func from "../libs/func.js";
+import diff from "../libs/diff.js";
 import props from "./config/propType";
+
 import defaultProps from "./config/defaultProps.js";
 import("../Sass/Form/Input.css");
 import("../Sass/Form/Check.css");
@@ -22,28 +24,24 @@ class  Radio extends Component{
       super(props);
         //对传来的数据进行格式化
      
-        var newData = []; var text = this.props.text;
-        if (this.props.data instanceof Array) {
-            for (let i = 0; i < this.props.data.length; i++) {
-                let obj = this.props.data[i];
-                obj.text = this.props.data[i][this.props.textField?this.props.textField:"text"];
-                obj.value = this.props.data[i][this.props.valueField?this.props.valueField:"value"];
-                if (obj.value == this.props.value) {
-                    text = obj.text;//根据value赋值
-                }
-                newData.push(obj);
-            }
-        }
+        let  newData =propsTran.setValueAndText(this.props.data,this.props.valueField,this.props.textField);
+       
         this.state = {
-            params: unit.clone(this.props.params),//参数
+            oldPropsValue:this.props.value,//保存用于匹配
+            url:this.props.url,
+            rawData:this.props.data,
+            params: func.clone(this.props.params),//参数
             data: newData,
             value: this.props.value,
-            text: text,
+            text: this.props.text,
             ulShow: false,//是否显示下拉选项
             validateClass: "",//验证的样式
             helpShow: "none",//提示信息是否显示
             helpTip: validation["required"],//提示信息
             invalidTip: "",
+            reloadData:false,
+            valueField:this.props.valueField,
+            textField:this.props.textField,
         }
         this.setValue = this.setValue.bind(this);
         this.getValue = this.getValue.bind(this);
@@ -53,55 +51,92 @@ class  Radio extends Component{
         this.changeHandler = this.changeHandler.bind(this);
         this.onSelect = this.onSelect.bind(this);
   }
-    componentWillReceiveProps(nextProps) {
+    // UNSAFE_componentWillReceiveProps(nextProps) {
       
-        if (nextProps.url) {
+    //     if (nextProps.url) {
 
-            if (nextProps.url != this.props.url) {
-                this.loadData(nextProps.url, nextProps.params);
-            }
-            else if (this.showUpdate(nextProps.params, this.props.params)) {//如果不相同则更新
-                this.loadData(nextProps.url, nextProps.params);
-            }
+    //         if (nextProps.url != this.props.url) {
+    //             this.loadData(nextProps.url, nextProps.params);
+    //         }
+    //         else if (this.showUpdate(nextProps.params, this.props.params)) {//如果不相同则更新
+    //             this.loadData(nextProps.url, nextProps.params);
+    //         }
 
-        } else if (nextProps.data && nextProps.data instanceof Array) {//又传了数组
-            if (nextProps.data.length != this.props.data.length) {
-                    this.setState({
-                        data:nextProps.data,
-                        value:"",
-                        text:""
-                    })
-            }else{
+    //     } else if (nextProps.data && nextProps.data instanceof Array) {//又传了数组
+    //         if (nextProps.data.length != this.props.data.length) {
+    //                 this.setState({
+    //                     data:nextProps.data,
+    //                     value:"",
+    //                     text:""
+    //                 })
+    //         }else{
                
-                let newData=[];
-                for(let i=0;i<nextProps.data.length;i++)
-            {
-                let obj=nextProps.data[i];
-                obj.text=nextProps.data[i][this.props.textField?this.props.textField:"text"];
-                obj.value=nextProps.data[i][this.props.valueField?this.props.valueField:"value"];
+    //             let newData=[];
+    //             for(let i=0;i<nextProps.data.length;i++)
+    //         {
+    //             let obj=nextProps.data[i];
+    //             obj.text=nextProps.data[i][this.props.textField?this.props.textField:"text"];
+    //             obj.value=nextProps.data[i][this.props.valueField?this.props.valueField:"value"];
               
-                newData.push(obj);
-            }
+    //             newData.push(obj);
+    //         }
           
-            if(newData[0].value!=this.state.data[0].value||newData[newData.length-1].value!=this.state.data[this.state.data.length-1].value)
-            {this.setState({
-                data:nextProps.data,
-                value:"",
-                text:""
-            })
+    //         if(newData[0].value!=this.state.data[0].value||newData[newData.length-1].value!=this.state.data[this.state.data.length-1].value)
+    //         {this.setState({
+    //             data:nextProps.data,
+    //             value:"",
+    //             text:""
+    //         })
 
+    //         }
+    //     }
+    //     }
+    //     if(nextProps.forceChange&& nextProps.value!=this.state.value)
+    // {
+    //     this.setState({
+    //         value:nextProps.value
+    //     })
+    // }
+    // }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        let newState = {};
+        if (nextProps.url && nextProps.params &&
+            diff(nextProps.params, prevState.params)) {//如果有url
+            newState = {
+                reloadData: true,//重新加载
+                url: nextProps.url,
+                params: func.clone(nextProps.params),
             }
         }
+        if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
+            //如果传了死数据
+            newState.data = propsTran.setValueAndText(nextProps.data, prevState.valueField, prevState.textField);
+            newState.rawData=nextProps.data;
         }
-        if(nextProps.forceChange&& nextProps.value!=this.state.value)
-    {
-        this.setState({
-            value:nextProps.value
-        })
+        if(nextProps.value!=prevState.oldPropsValue){
+            newState.value=nextProps.value;
+            newState.text=nextProps.text;
+            newState.oldPropsValue=nextProps.value;
+        }
+        if (func.isEmptyObject(newState)) {
+            return null;
+        }
+        else {
+            return newState;
+        }
     }
+    componentDidUpdate() {
+        if (this.state.reloadData) {
+            this.setState({
+                realData: false
+            })
+            this.loadData(this.state.url, this.state.params);
+        }
     }
-    componentWillMount() {//如果指定url,先查询数据再绑定
-        this.loadData(this.props.url,this.state.params);//查询数据
+
+    componentDidMount() {//如果指定url,先查询数据再绑定
+        this.loadData(this.state.url,this.state.params);//查询数据
     }
    setValue(value) {
         let text = "";
@@ -144,7 +179,7 @@ class  Radio extends Component{
                 fetchmodel.contentType=  this.props.contentType;
                 fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
             }
-            type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
+            type=="POST"?func.fetch.post(fetchmodel):func.fetch.get(fetchmodel);
             console.log("radio-fetch", fetchmodel);
         }
     }
@@ -153,14 +188,14 @@ class  Radio extends Component{
         if(this.props.dataSource==null) {
         }
         else {
-            realData=unit.getSource(data,this.props.dataSource);
+            realData=func.getSource(data,this.props.dataSource);
         }
         var newData=[];var text=this.state.text;
         for(let i=0;i<realData.length;i++)
         {
             let obj=realData[i];//将所有字段添加进来
-            obj.text=realData[i][this.props.textField?this.props.textField:"text"];
-            obj.value=realData[i][this.props.valueField?this.valueField:"value"];
+            obj.text=realData[i][this.state.textField?this.state.textField:"text"];
+            obj.value=realData[i][this.state.valueField?this.state.valueField:"value"];
             if(obj.value==this.state.value)
             {
                 text=obj.text;//根据value赋值
@@ -177,8 +212,8 @@ class  Radio extends Component{
             for(let i=0;i<this.props.extraData.length;i++)
             {
                 let obj={};
-                obj.text=this.props.extraData[i][this.props.textField?this.props.textField:"text"];
-                obj.value=this.props.extraData[i][this.props.valueField?this.props.valueField:"value"];
+                obj.text=this.props.extraData[i][this.state.textField?this.state.textField:"text"];
+                obj.value=this.props.extraData[i][this.state.valueField?this.state.valueField:"value"];
                 if(obj.value==this.state.value)
                 {
                     text=obj.text;//根据value赋值
@@ -196,7 +231,7 @@ class  Radio extends Component{
     }
     loadError(message) {//查询失败
         console.log("radio-error",message);
-        Message. error(message);
+        Msg. error(message);
     }
     changeHandler(event) {//一害绑定，但不处理
 

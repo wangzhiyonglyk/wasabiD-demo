@@ -4,8 +4,8 @@ date:2016-10-30
 desc:单页面应用的事件处理模型
  */
 // let React = require('react');
-let Message = require('../../Unit/Message.jsx');
-let unit = require('../../libs/unit.js');
+let Msg = require('../../Info/Msg.jsx');
+let unit = require('../../libs/func.js');
 let FetchModel = require('../../Model/FetchModel.js');
 let PageHandlerMixins = {
   getHandler: function(id, disabled) {
@@ -73,7 +73,7 @@ let PageHandlerMixins = {
   },
   deleteHandler: function(id) {
     //删除事件
-    Message.confirm('确定删除这条记录吗?', () => {
+    Msg.confirm('确定删除这条记录吗?', () => {
       var deleteUrl = this.state.deleteUrl;
       if (deleteUrl.indexOf('?') > 0) {
         //已经带了参数
@@ -109,7 +109,7 @@ let PageHandlerMixins = {
         model: this.state.model
       });
     } else {
-      Message.alert('请选择一条记录');
+      Msg.alert('请选择一条记录');
     }
   },
   updateHandler: function(model) {
@@ -173,7 +173,7 @@ let PageHandlerMixins = {
   fetchErrorHandler: function(errorCode, errorMssage) {
     //统一错误处理
     console.log(errorCode, errorMssage);
-    Message.error('操作失败，原因' + errorMssage);
+    Msg.error('操作失败，原因' + errorMssage);
   }
 };
 module.exports = PageHandlerMixins;
