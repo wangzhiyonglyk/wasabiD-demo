@@ -113,7 +113,8 @@ class Time extends Component {
                 </li>)
             }
             else {
-                hourControl.push(<li key={i} ><span onClick={this.hourHandler.bind(this, i)} className={"hour " + (this.state.hour == i ? "active" : "")}>{i < 10 ? "0" + i : i}</span></li>)
+                hourControl.push(<li key={i} >
+                    <span onClick={this.hourHandler.bind(this, i)} className={"hour " + (this.state.hour == i ? "active" : "")}>{i < 10 ? "0" + i : i}</span></li>)
             }
 
 
@@ -123,7 +124,8 @@ class Time extends Component {
     rendMinute() {
         let minuteControl = [];
         for (let i = 0; i <= 59; i += 5) {
-            minuteControl.push(<li key={i} className={"hour " + (this.state.minute == i ? "active" : "")} onClick={this.minuteHandler.bind(this, i)}>{i < 10 ? "0" + i : i}</li>)
+            minuteControl.push(<li key={i} >
+                <span onClick={this.minuteHandler.bind(this, i)} className={"hour " + (this.state.minute == i ? "active" : "")}>{i < 10 ? "0" + i : i}</span></li>)
         }
         return minuteControl;
     }

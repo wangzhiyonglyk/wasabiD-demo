@@ -1,109 +1,49 @@
 /*
  create by wangzy
  date:2016-07-04
- desc:列表下拉选择
+ edit 2020-10 参照ztree改造
+ desc:树下拉选择
  */
 import React, { Component } from "react";
-
-
 import Tree from "../Data/Tree.jsx";
-import func from "../libs/func.js";
 import validation from "../Lang/validation.js";
-
-import validate from "../Mixins/validate.js";
-import diff from "../libs/diff.js";
-import propsTran from "../libs/propsTran"
 import Label from "../Info/Label.jsx";
 import ClickAway from "../libs/ClickAway.js";
 import mixins from '../Mixins/mixins';
 import props from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
+import _ComboBox from "./baseClass/_ComboBox.jsx";
 class TreePicker extends Component {
-
     constructor(props) {
         super(props);
-       
-        let r =propsTran.treePickerInitData(this.props.value, func.clone(this.props.data));
-      
         this.state = {
-            hide: this.props.hide,
-            params: this.props.params,//默认筛选条件
-            url: null,//默认为空,表示不查询,后期再更新,
-            show: false,//
+            show: false,//是否显示下拉框
+            text: this.props.text,
             value: this.props.value,
-            text: r.text.join(","),
-            readonly: this.props.readonly,
-            data: r.data,
-            //验证
-            required: this.props.required,
-            validateClass: "",//验证的样式
-            helpShow: "none",//提示信息是否显示
-            helpTip: validation["required"],//提示信息
-            invalidTip: "",
+            oldPropsValue: this.props.value,//保存初始化的值
         }
     }
-
-// UNSAFE_componentWillReceiveProps(nextProps){
-//     if(nextProps.data){
-//         let r=this.initData(this.state.value, func.clone(nextProps.data));
-//         if(showUpdate(this.state.data,r.data)){
-//             this.setState({
-//                 data:r.data
-//             })
-//         }
-//     }
-   
-// }
-
-static getDerivedStateFromProps(nextProps, prevState) {
-    if(nextProps.data){
-        let r=propsTran.treePickerInitData(this.state.value, func.clone(nextProps.data));
-        if(diff(this.state.data,r.data)){
-          return {
-                data:r.data
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.value != prevState.oldPropsValue) {//父组件强行更新了
+            return {
+                value: nextProps.value,
+                text: nextProps.text,
+                oldPropsValue: nextProps.value
             }
         }
+        return null;
     }
-    return null;
-}
-    
     componentDidMount() {
-
         this.registerClickAway(this.hidePicker, this.refs.picker);//注册全局单击事件
     }
-    changeHandler(event) {
-    }
-    validate(value) {
-
-        return validate.call(this, value)
-    }
-   
-
-    setValue(value,data) {
-        let r = propsTran.treePickerInitData(value, func.clone(data?data:this.state.data));
-      this.setState({
-        value:value,
-        text: r.text.join(","),
-        data:r.data
-      })
-      
-
-    }
-    getValue() {
-        return this.state.value;
-
-    }
-    onBlur() {
-        this.refs.label.hideHelp();//隐藏帮助信息
-    }
-    showPicker(type) {//显示选择
-        if (this.props.readonly) {
+    showPicker() {//显示选择
+        if (this.props.readOnly) {
             //只读不显示
             return;
         }
         else {
             this.setState({
-                show: type == 1 ? !this.state.show : true
+                show: true
             })
         }
         this.bindClickAway();//绑定全局单击事件
@@ -112,6 +52,7 @@ static getDerivedStateFromProps(nextProps, prevState) {
         this.setState({
             show: false
         })
+        this.refs.label.hideHelp();//隐藏帮助信息
         this.unbindClickAway();//卸载全局单击事件
     }
     onSelect() {
@@ -128,22 +69,14 @@ static getDerivedStateFromProps(nextProps, prevState) {
             text: text.join(","),
 
         });
-        this.validate(value);//只验证
         this.props.onSelect && this.props.onSelect(value, text, name);
 
-    }
-    clearHandler() {//清除数据
-        this.setState({
-            value: "",
-            text: "",
-        })
-        this.props.onSelect && this.props.onSelect("", "", this.props.name, null);
     }
     render() {
         var componentClassName = "wasabi-form-group ";//组件的基本样式
         let inputProps =
         {
-            readOnly: this.props.readonly == true ? "readonly" : null,
+            readOnly: this.props.readOnly == true ? "readOnly" : null,
 
             name: this.props.name,
             placeholder: (this.props.placeholder === "" || this.props.placeholder == null) ? this.props.required ? "必填项" : "" : this.props.placeholder,
@@ -157,33 +90,35 @@ static getDerivedStateFromProps(nextProps, prevState) {
         } else {
             style.display = "flex";
         }
-        return <div className={componentClassName + this.props.className + " " + this.state.validateClass} ref="picker" style={style}>
-            <Label name={this.props.label} ref="label" style={this.props.labelStyle} required={this.props.required}></Label>
-            <div className={"wasabi-form-group-body"} style={{ width: !this.props.label ? "100%" : null }}>
+        return <div className={componentClassName + this.props.className + " " + this.props.validateClass} ref="picker" style={style}>
+            <Label name={this.props.label} readOnly={this.props.readOnly||this.props.disabled} ref="label" style={this.props.labelStyle} required={this.props.required}></Label>
+            <div className={"wasabi-form-group-body" +(this.props.readOnly||this.props.disabled?" readOnly":"")} style={{ width: !this.props.label ? "100%" : null }}>
                 <div className="combobox"    >
-                    <i className={"picker-clear "} onClick={this.clearHandler.bind(this)} style={{ display: this.props.readonly ? "none" : (this.state.value == "" || !this.state.value) ? "none" : "inline" }}></i>
-                    <i className={"pickericon  " + (this.state.show ? "rotate" : "")} onClick={this.showPicker.bind(this, 1)}></i>
-                    <input type="text" {...inputProps} value={this.state.text} onBlur={this.onBlur.bind(this)} onClick={this.showPicker.bind(this, 2)} onChange={this.changeHandler.bind(this)} />
+                    <i className={"combobox-clear "} onClick={this.clearHandler.bind(this)} style={{ display: this.props.readOnly ? "none" : (this.state.value == "" || !this.state.value) ? "none" : "inline" }}></i>
+                    <i className={"comboxbox-icon  " + (this.state.show ? "rotate" : "")} onClick={this.showPicker.bind(this, 1)}></i>
+                    <input type="text" {...inputProps} value={this.state.text} onClick={this.showPicker.bind(this)} onChange={() => { }} />
                     <div className={"dropcontainter treepicker  "} style={{ height: this.props.height, display: this.state.show == true ? "block" : "none" }}  >
                         <Tree
                             ref="tree"
+                            /**
+                             * 包括了simpleData
+                             */
                             {...this.props}
                             data={this.state.data} onChecked={this.onSelect.bind(this)}
                             checkAble={true}
-                            inputValue={","+(this.state.value||"")+","}
+                            inputValue={this.state.value}
 
                         ></Tree>
                     </div>
                 </div>
 
-                <small className={"wasabi-help-block "} style={{ display: (this.state.helpTip && this.state.helpTip != "") ? this.state.helpShow : "none" }}>{this.state.helpTip}</small>
+                <small className={"wasabi-help-block "} style={{ display: (this.props.inValidateText && this.props.inValidateText != "") ? this.props.inValidateShow : "none" }}>{this.props.inValidateText}</small>
             </div>
         </div>
 
     }
 }
-
 TreePicker.propTypes = props;
-TreePicker.defaultProps = Object.assign({ type: "treepicker", defaultProps });
+TreePicker.defaultProps = Object.assign(defaultProps, { type: "treepicker" });
 mixins(TreePicker, [ClickAway]);
-export default TreePicker;
+export default _ComboBox(TreePicker);

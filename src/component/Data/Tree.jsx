@@ -1,12 +1,12 @@
 /*
+create by wangzy
+ date:2016-07
 create by wangzhiyong 创建树组件
-
+ edit 2020-10 参照ztree改造
+ desc:树下拉选择
  */
-
-
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
 import Msg from "../Info/Msg";
 import FetchModel from "../Model/FetchModel";
 import TreeNode from "./TreeNode.jsx";
@@ -17,14 +17,15 @@ require("../Sass/Data/Tree.css");
 class Tree extends Component {
     constructor(props) {
         super(props);
-        let newData = propsTran.setidAndText(this.props.data, this.props.idField, this.props.textField, this.props.simpleData);//对数据进行处理
+        let newData = propsTran.setComboxValueAndText("tree", this.props.inputValue, this.props.data, this.props.idField, this.props.textField, this.props.simpleData);//对数据进行处理
         this.state = {
             url: this.props.url,
             name: this.props.name,
-            text: this.props.text,
-            id: this.props.id,
-            data: newData,
-            rawData: func.clone(this.props.data),//原始数据
+            value: this.props.value,
+            text: newData.text,
+            selectid: "",
+            data: newData.data,//处理后数据
+            rawData: func.clone(this.props.data),//原始数据，
             reloadData: false,
             idField: this.props.idField,
             textField: this.props.textField,
@@ -42,26 +43,6 @@ class Tree extends Component {
          * 其他事件则自行定义就可以了
          */
     }
-
-    // UNSAFE_componentWillReceiveProps(nextProps) {
-    //     if (nextProps.url) {
-    //         if (nextProps.url != this.props.url) {
-    //             this.loadData(nextProps.url, nextProps.params);
-    //         }
-    //         else if (this.showUpdate(nextProps.params, this.props.params)) {//如果不相同则更新
-    //             this.loadData(nextProps.url, nextProps.params);
-    //         }
-
-    //     } else if (this.showUpdate(nextProps.data, this.state.rawData)) {
-    //         let newData = this.setidAndText(nextProps.data);//对数据进行处理
-    //         this.setState({
-    //             data: newData,
-    //             rawData: nextProps.data
-    //         })
-    //     }
-
-    // }
-
     static getDerivedStateFromProps(nextProps, prevState) {
         let newState = {};
         if (nextProps.url && nextProps.params &&
@@ -75,7 +56,7 @@ class Tree extends Component {
         if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
             //如果传了死数据
             newState.rawData = nextProps.data;
-            newState.data = propsTran.setidAndText(nextProps.data, prevState.idField, prevState.textField, prevState.simpleData);
+            newState.data = propsTran.setComboxValueAndText("tree", this.props.inputValue, nextProps.data, prevState.idField, prevState.textField, prevState.simpleData);
         }
         if (func.isEmptyObject(newState)) {
             return null;
@@ -123,7 +104,7 @@ class Tree extends Component {
             realData = func.getSource(data, this.props.dataSource);
         }
 
-        realData = this.setidAndText(realData);
+        realData = propsTran.setTreeidAndText(realData);
 
         this.setState({
             data: realData,
@@ -224,9 +205,12 @@ class Tree extends Component {
         }
         return data;
     }
-
+    /**
+     * 
+     * @param {*} checked 
+     */
     setChecked(checked) {
-
+        //todo 
     }
 
     /**
@@ -248,7 +232,7 @@ class Tree extends Component {
             })
         }
 
-        this.props.onRemove && this.props.onRemove(this.state.id, childText, subChildren);
+        this.props.onRemove && this.props.onRemove(childid, childText, subChildren);
     }
 
     render() {
@@ -267,9 +251,10 @@ class Tree extends Component {
                     key={"nodetree" + item.id}
                     {...this.props}
                     {...item}
-                    checked={this.props.inputValue ? this.props.inputValue.indexOf("," + item.id + ",") > -1 ? true : false : item.checked}
+                    half={(this.props.checkType && this.props.checkType.y.indexOf("p") > -1 && ((this.state.checkValue || item.checkValue) == "half"))}
+                    checked={this.props.inputValue ? ("," + this.props.inputValue + ",").indexOf("," + item.id + ",") > -1 ? true : false : item.checked}
                     data={this.state.rawData}
-                    isParent={isParent} selectid={this.state.id}
+                    isParent={isParent} selectid={this.state.selectid}
                     /** 其他事件不需要绑定，因为父组件设定 */
                     onClick={this.onClick}
                     onradioChecked={this.onradioChecked}
@@ -335,7 +320,7 @@ Tree.defaultProps = {
     params: null,
     dataSource: "data",
     data: [],
-    simpleData: false,
+    simpleData: true,//默认为真
     checkAble: false,
     checkStyle: "checkbox",
     checkType: { "y": "ps", "n": "ps" },//默认勾选/取消勾选都影响父子节点，todo 暂时还没完成

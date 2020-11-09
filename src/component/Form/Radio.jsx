@@ -4,302 +4,57 @@
  * 单选框集合组件
  */
 import React, { Component } from "react";
-
-import FetchModel from "../Model/FetchModel.js";
-import validation from "../Lang/validation.js";
-import validate from "../Mixins/validate.js";
-
 import Label from "../Info/Label.jsx";
-import Msg from "../Info/Msg.jsx";
-import propsTran from "../libs/propsTran"
-import func from "../libs/func.js";
-import diff from "../libs/diff.js";
-import props from "./config/propType";
+import _ComboBox from "./baseClass/_ComboBox.jsx";
 
-import defaultProps from "./config/defaultProps.js";
-import("../Sass/Form/Input.css");
-import("../Sass/Form/Check.css");
-class  Radio extends Component{
-  constructor(props){
-      super(props);
-        //对传来的数据进行格式化
-     
-        let  newData =propsTran.setValueAndText(this.props.data,this.props.valueField,this.props.textField);
-       
+class Radio extends Component {
+    constructor(props) {
+        super(props);
         this.state = {
-            oldPropsValue:this.props.value,//保存用于匹配
-            url:this.props.url,
-            rawData:this.props.data,
-            params: func.clone(this.props.params),//参数
-            data: newData,
-            value: this.props.value,
-            text: this.props.text,
-            ulShow: false,//是否显示下拉选项
-            validateClass: "",//验证的样式
-            helpShow: "none",//提示信息是否显示
-            helpTip: validation["required"],//提示信息
-            invalidTip: "",
-            reloadData:false,
-            valueField:this.props.valueField,
-            textField:this.props.textField,
-        }
-        this.setValue = this.setValue.bind(this);
-        this.getValue = this.getValue.bind(this);
-        this.loadData = this.loadData.bind(this);
-        this.loadError = this.loadError.bind(this);
-        this.loadSuccess = this.loadSuccess.bind(this);
-        this.changeHandler = this.changeHandler.bind(this);
-        this.onSelect = this.onSelect.bind(this);
-  }
-    // UNSAFE_componentWillReceiveProps(nextProps) {
-      
-    //     if (nextProps.url) {
-
-    //         if (nextProps.url != this.props.url) {
-    //             this.loadData(nextProps.url, nextProps.params);
-    //         }
-    //         else if (this.showUpdate(nextProps.params, this.props.params)) {//如果不相同则更新
-    //             this.loadData(nextProps.url, nextProps.params);
-    //         }
-
-    //     } else if (nextProps.data && nextProps.data instanceof Array) {//又传了数组
-    //         if (nextProps.data.length != this.props.data.length) {
-    //                 this.setState({
-    //                     data:nextProps.data,
-    //                     value:"",
-    //                     text:""
-    //                 })
-    //         }else{
-               
-    //             let newData=[];
-    //             for(let i=0;i<nextProps.data.length;i++)
-    //         {
-    //             let obj=nextProps.data[i];
-    //             obj.text=nextProps.data[i][this.props.textField?this.props.textField:"text"];
-    //             obj.value=nextProps.data[i][this.props.valueField?this.props.valueField:"value"];
-              
-    //             newData.push(obj);
-    //         }
-          
-    //         if(newData[0].value!=this.state.data[0].value||newData[newData.length-1].value!=this.state.data[this.state.data.length-1].value)
-    //         {this.setState({
-    //             data:nextProps.data,
-    //             value:"",
-    //             text:""
-    //         })
-
-    //         }
-    //     }
-    //     }
-    //     if(nextProps.forceChange&& nextProps.value!=this.state.value)
-    // {
-    //     this.setState({
-    //         value:nextProps.value
-    //     })
-    // }
-    // }
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        let newState = {};
-        if (nextProps.url && nextProps.params &&
-            diff(nextProps.params, prevState.params)) {//如果有url
-            newState = {
-                reloadData: true,//重新加载
-                url: nextProps.url,
-                params: func.clone(nextProps.params),
-            }
-        }
-        if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
-            //如果传了死数据
-            newState.data = propsTran.setValueAndText(nextProps.data, prevState.valueField, prevState.textField);
-            newState.rawData=nextProps.data;
-        }
-        if(nextProps.value!=prevState.oldPropsValue){
-            newState.value=nextProps.value;
-            newState.text=nextProps.text;
-            newState.oldPropsValue=nextProps.value;
-        }
-        if (func.isEmptyObject(newState)) {
-            return null;
-        }
-        else {
-            return newState;
-        }
-    }
-    componentDidUpdate() {
-        if (this.state.reloadData) {
-            this.setState({
-                realData: false
-            })
-            this.loadData(this.state.url, this.state.params);
-        }
-    }
-
-    componentDidMount() {//如果指定url,先查询数据再绑定
-        this.loadData(this.state.url,this.state.params);//查询数据
-    }
-   setValue(value) {
-        let text = "";
-        for (let i = 0; i < this.state.data.length; i++) {
-            if (this.state.data[i].value == value) {
-                text = this.state.data[i].text;
-                break;
-            }
-        }
-
-      
-            this.setState({
-                value: value,
-                text: text
-            })
-        
-
-    }
-    getValue() {
-        return this.state.value;
-
-    }
-    validate(value) {
-
-        return validate.call(this, value)
-    }
-    showUpdate(newParam, oldParam) {
-      return   showUpdate.call(this, newParam, oldParam);
-    }
-    loadData(url,params) {
-        if (url) {
-            let type=this.props.httpType?this.props.httpType:"POST";
-            type=type.toUpperCase();
-            var fetchmodel = new FetchModel(url, this.loadSuccess, params, this.loadError);
-            fetchmodel.headers=this.props.httpHeaders;
-            if(this.props.contentType){
-                //如果传contentType值则采用传入的械
-                //否则默认
-              
-                fetchmodel.contentType=  this.props.contentType;
-                fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
-            }
-            type=="POST"?func.fetch.post(fetchmodel):func.fetch.get(fetchmodel);
-            console.log("radio-fetch", fetchmodel);
-        }
-    }
-    loadSuccess(data) {//数据加载成功
-        var realData=data;
-        if(this.props.dataSource==null) {
-        }
-        else {
-            realData=func.getSource(data,this.props.dataSource);
-        }
-        var newData=[];var text=this.state.text;
-        for(let i=0;i<realData.length;i++)
-        {
-            let obj=realData[i];//将所有字段添加进来
-            obj.text=realData[i][this.state.textField?this.state.textField:"text"];
-            obj.value=realData[i][this.state.valueField?this.state.valueField:"value"];
-            if(obj.value==this.state.value)
-            {
-                text=obj.text;//根据value赋值
-            }
-            newData.push(obj);
-        }
-        if(this.props.extraData==null||this.props.extraData.length==0)
-        {
-            //没有额外的数据
-        }
-        else
-        {
-            //有额外的数据
-            for(let i=0;i<this.props.extraData.length;i++)
-            {
-                let obj={};
-                obj.text=this.props.extraData[i][this.state.textField?this.state.textField:"text"];
-                obj.value=this.props.extraData[i][this.state.valueField?this.state.valueField:"value"];
-                if(obj.value==this.state.value)
-                {
-                    text=obj.text;//根据value赋值
-                }
-                newData.unshift(obj);
-            }
-        }
-        window.localStorage.setItem(this.props.name+'data' ,JSON.stringify(newData));//用于后期获取所有数据
-
-        this.setState({
-            data:newData,
-            value:this.state.value,
-            text:text,
-        })
-    }
-    loadError(message) {//查询失败
-        console.log("radio-error",message);
-        Msg. error(message);
-    }
-    changeHandler(event) {//一害绑定，但不处理
-
-    }
-    onSelect(value,text,row) {//选中事件
-        this.setState({
-            value: value,
-            text: text,
-        });
-        this.validate(value);
-       
-        if (this.props.onSelect != null) {
-            this.props.onSelect(value, text, this.props.name, row);
         }
     }
     render() {
-       
-       var componentClassName = "wasabi-form-group " +this.props.className;//组件的基本样式 
-        var control = null;
-        let className = "wasabi-radio-btn " + (this.props.readonly ? " readonly" : "");
-        if (this.state.data) {
-            control = this.state.data.map((child, i)=> {
-                var textFeild = child.text;
-                var hideComponent = null;
-                if (this.props.hideComponents instanceof Array && this.props.hideComponents[i]) {
-                    hideComponent = this.props.hideComponents[i];
 
-                }
+        var componentClassName = "wasabi-form-group " + this.props.className;//组件的基本样式 
+        var control = null;
+        let className = "wasabi-radio-btn " + (this.props.readOnly ? " readOnly" : "");
+        if (this.props.data) {
+            control = this.props.data.map((child, i) => {
                 return (
                     <li key={i}>
-                        <div  className={className+((this.state.value==child.value)?" checkedRadio":"")}
-                             onClick={this.onSelect.bind(this,child.value,child.text,child)}><i>
-                            {/* <input type="radio" name={this.props.name}
+                        <div className={className + ((this.props.value == child.value) ? " checkedRadio" : "")}
+                            onClick={this.props.onSelect.bind(this, child.value, child.text, child)}><i>
+                                {/* <input type="radio" name={this.props.name}
                                    id={this.props.name+child.value}
                                    value={child.value}
                                    onChange={this.changeHandler}>
                             </input> */}
-                        </i></div>
-                        <div className="radiotext" onClick={this.onSelect.bind(this,child.value,child.text,child)}>{textFeild}
-                            <div
-                                style={{display:((this.state.value==child.value)?" inline-block":"none")}}>{hideComponent}</div>
+                            </i></div>
+                        <div className={"radiotext " + (this.props.readOnly ? " readOnly" : "") + ((this.props.value == child.value) ? " checkedRadio" : "")} onClick={this.props.onSelect.bind(this, child.value, child.text, child)}>{child.text}
+
                         </div>
                     </li>
                 );
             })
         }
-        let style=this.props.style?JSON.parse(JSON.stringify(this.props.style)):{};
+        let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
 
         return (
-            <div className={componentClassName+this.state.validateClass} style={style}>
-                <Label name={this.props.label} hide={this.props.hide} style={this.props.labelStyle} required={this.props.required}></Label>
-                <div className={ "wasabi-form-group-body"} style={{minWidth:0,width:!this.props.label?"100%":null}}>
+            <div className={componentClassName + this.state.validateClass} style={style}>
+                <Label name={this.props.label} readOnly={this.props.readOnly||this.props.disabled} hide={this.props.hide} style={this.props.labelStyle} required={this.props.required}></Label>
+                <div className={"wasabi-form-group-body"} style={{ minWidth: 0, width: !this.props.label ? "100%" : null }}>
                     <ul className="wasabi-checkul">
                         {
                             control
                         }
                     </ul>
                     <small className={"wasabi-help-block "}
-                           style={{display:(this.state.helpTip&&this.state.helpTip!="")?this.state.helpShow:"none"}}><div className="text">{this.state.helpTip}</div></small>
+                        style={{ display: (this.state.inValidateText && this.state.inValidateText != "") ? this.state.inValidateShow : "none" }}><div className="text">{this.state.inValidateText}</div></small>
                 </div>
             </div>
 
         )
     }
-
 }
 
-Radio.propTypes=props;
-defaultProps.type = "radio";
-Radio.defaultProps=defaultProps;
-export default Radio;
+export default _ComboBox(Radio);

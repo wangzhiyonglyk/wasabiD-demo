@@ -37,7 +37,7 @@ class  SwitchButton extends Component{
         })
     }
     handleClick(){
-        if(this.props.readonly)
+        if(this.props.readOnly)
         {
             return ;
         }
@@ -66,7 +66,7 @@ class  SwitchButton extends Component{
             className += "checkfalse";
         }
 
-        if(this.props.readonly)
+        if(this.props.readOnly)
         {
             className+=" disabled";
         }
@@ -79,12 +79,12 @@ class  SwitchButton extends Component{
 
         return (
         <div className={componentClassName+this.state.validateClass}  style={style}>
-            <Label name={this.props.label} ref="label" style={this.props.labelStyle} hide={this.props.hide} required={this.props.required}></Label>
+            <Label name={this.props.label} readOnly={this.props.readOnly||this.props.disabled} ref="label" style={this.props.labelStyle} hide={this.props.hide} required={this.props.required}></Label>
             <div className={ "wasabi-form-group-body"} style={{width:!this.props.label?"100%":null}}>
                 <div style={this.props.style} className={className} onClick={this.handleClick}>
                     <div className={"slideblock "}></div>
                 </div>
-                <small className={"wasabi-help-block "} style={{display:(this.state.helpTip&&this.state.helpTip!="")?this.state.helpShow:"none"}}><div className="text">{this.state.helpTip}</div></small>
+                <small className={"wasabi-help-block "} style={{display:(this.state.inValidateText&&this.state.inValidateText!="")?this.state.inValidateShow:"none"}}><div className="text">{this.state.inValidateText}</div></small>
             </div>
         </div>
 
@@ -93,5 +93,5 @@ class  SwitchButton extends Component{
 }
 
 SwitchButton. propTypes=propType;
-SwitchButton.defaultProp=Object.assign({type:"switch",defaultProps});
+SwitchButton.defaultProp=Object.assign(defaultProps,{type:"switch"});
 export default SwitchButton;

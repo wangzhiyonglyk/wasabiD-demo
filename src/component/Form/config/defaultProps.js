@@ -9,22 +9,22 @@ export default {
             name:"",
             label:null,
             title:null,
-         
+            help:"",
+
             value:"",
             text:"",
             placeholder:"",
-            readonly:false,
+            readOnly:false,
             required:false,
         
             hide:false,
             regexp:null,
             invalidTip:null,
-            style:{},
-            controlStyle:{},
+            style:{}, 
             className:"",
            
               //其他属性 text
-            rows:5,
+            rows:5,//textarea
             cols:1,
             min:null,
             max:null,
@@ -34,16 +34,18 @@ export default {
 
             //其他属性 combobox
             contentType:"",//http的request的数据类型
+            httpHeader:null,
             multiple:false,
+            idField:"id",
             valueField:"value",
             textField:"text",
             url:null,
             params:null,
             dataSource:"data",
             data:null,
-            extraData:null,
+            // extraData:null,
             onSelect:null,
-
+            addAbled:false,
            //其他属性 picker
             secondUrl:null,
             secondParams:null,
@@ -53,4 +55,5 @@ export default {
             thirdParamsKey:null,
             hotTitle:"热门选择",
             hotData:null,
+           
         }

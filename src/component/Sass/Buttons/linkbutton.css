@@ -5,18 +5,79 @@ desc:小图标按钮样式
 
 .wasabi-linkbutton
 {
-    cursor: pointer;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
     position: relative;
-    border: 1px solid transparent;
     text-decoration: none;
-    background-color:transparent;
-    border-radius: 0;
-    margin-right:10px;
-    padding-top:5px;
-    padding-bottom:5px;
-    padding-left:10px;
-    padding-right:10px;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 500;
 }
+
+/**
+继承字体大小
+*/
+.wasabi-linkbutton  [class*=" icon-"]{
+    font-size: inherit;
+}
+.wasabi-linkbutton.default,.wasabi-linkbutton.cancel{
+    color: #606266;
+  }
+  .wasabi-linkbutton.default:focus, .wasabi-linkbutton.default:hover,.wasabi-linkbutton.cancel:focus, .wasabi-linkbutton.cancel:hover{
+    color: #409eff;
+  }
+ 
+  
+
+.wasabi-linkbutton.primary {
+    color: #409eff;
+}
+.wasabi-linkbutton.primary:focus, .wasabi-linkbutton.primary:hover {
+ 
+  color: #66b1ff;
+}
+
+
+
+.wasabi-linkbutton.success {
+    color: #67c23a;
+}
+.wasabi-linkbutton.success:focus, .wasabi-linkbutton.success:hover {
+    color: #85ce61;
+}
+
+
+
+.wasabi-linkbutton.info {
+    color: #909399;
+
+}
+.wasabi-linkbutton.info:focus, .wasabi-linkbutton.info:hover {
+    color: #a6a9ad;
+}
+
+
+.wasabi-linkbutton.warning {
+    color: #e6a23c;
+}
+.wasabi-linkbutton.warning:focus, .wasabi-linkbutton.warning:hover {
+    color: #ebb563;
+
+}
+
+  
+.wasabi-linkbutton.danger {
+    color: #f56c6c;
+}
+.wasabi-linkbutton.danger:focus, .wasabi-linkbutton.danger:hover {
+    color: #f78989;
+}
+
 
 .wasabi-linkbutton .icon-rightTop
 {
@@ -31,10 +92,6 @@ desc:小图标按钮样式
     right: 0px;
 }
 
-.wasabi-linkbutton:hover
-{
-  opacity: 0.8;
-}
 
 .wasabi-linkbutton[disabled] {
     opacity: 0.40;
@@ -53,13 +110,16 @@ desc:小图标按钮样式
     margin: 0px;
     padding: 0px;
     margin-left:5px;
+    background: transparent;
+    font-size: 14px;
 
 }
-.wasabi-linkbutton.onlyicon:hover
-{
-    opacity: 0.8;
-   border: none;
-}
+
+
+
+
+
+
 
 .wasabi-linkbutton.onlytext
 {
@@ -67,15 +127,6 @@ desc:小图标按钮样式
     margin-right: 5px;
    
 }
-.wasabi-linkbutton.onlyicon[disabled] {
-    border: none;
-    -khtml-opacity: 0.40;
-    -moz-opacity: 0.40;
-    opacity: 0.40;
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
 .wasabi-linkbutton-text
 {
    display: inline-block;

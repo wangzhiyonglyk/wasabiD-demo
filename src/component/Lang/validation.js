@@ -14,6 +14,8 @@ let  validation= {
     required: '',
     invalidTip:"输入格式无效",
     date:"日期格式为: 0000-00-00",
+    daterange:"日期格式不正确",
+    datetime:"日期时间格式不正确",
     max: {
         array: '最多选择 {0} 个选项',
         number: '不能大于 {0}',

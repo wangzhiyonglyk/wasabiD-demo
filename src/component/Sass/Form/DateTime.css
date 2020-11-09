@@ -236,7 +236,7 @@ float: left;
 
 .wasabi-time-container{
     position: relative;
-    width: 270px;
+    width: 240px;
     background: #ffffff;
     padding:10px;
     border: 1px solid #D8D8D8;
@@ -246,9 +246,11 @@ float: left;
     -ms-border-radius:5px ;
     -o-border-radius:5px ;
     box-shadow: 0 0 20px #ddd;
-    height: 250px;
+    height: 220px;
     white-space: pre-wrap;
     z-index: 1;
+    text-align: left;
+    padding-left: 15px;
 }
 .wasabi-time-container *{
     box-sizing: border-box;
@@ -271,15 +273,19 @@ float: left;
     position: relative;
     margin: 4px;
     cursor: pointer;
+    width: 34px;
 }
 .wasabi-time-container .hour{
   display: inline-block;
-  width: 40px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   text-align: center;
-  line-height: 30px;
-  background-color: #f5f5f5;
-  border-radius: 4px;
+  line-height: 24px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
 }
 .wasabi-time-container .hour:hover,.wasabi-time-container .hour.active{
   background-color: #1c84c6;
@@ -291,8 +297,9 @@ float: left;
     background: #ffffff;
     position: absolute;
     top: 40px;
-    width: 370px;
+    width: 240px;
     padding:10px;
+    padding-left:15px;
   
     border-radius:5px ;
     -webkit-border-radius:5px ;
@@ -300,6 +307,7 @@ float: left;
     -ms-border-radius:5px ;
     -o-border-radius:5px ;
     z-index: 5;
+    text-align: left;
    
 }
 .wasabi-time-container .time-container::before{

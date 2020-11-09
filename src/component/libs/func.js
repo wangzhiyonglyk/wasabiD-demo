@@ -237,33 +237,6 @@ func.trim = function (str) {
     return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 
-/*
- *ie兼容placeholder
- */
-func.placeHolderIE8 = function () {
-    if (!("placeholder" in document.createElement("input"))) {
-        let inputs = document.getElementsByTagName("input");
-        for (let i = 0; i < inputs.length; i++) {
-            let curInput = inputs[i];
-            let placeholder = curInput.getAttribute("placeholder");
-            if (curInput.getAttribute("type") != "text" || func.trim(placeholder) == "") return;
-
-            curInput.value = placeholder;
-
-            curInput.onfocus = function () {
-                if (this.value = placeholder) {
-                    this.value = "";
-                }
-            }
-
-            curInput.onblur = function () {
-                if (func.trim(this.value) == "") {
-                    this.value = placeholder;
-                }
-            }
-        }
-    }
-}
 //向后台请求数据
 func.fetch = {
     /// <summary>
@@ -432,37 +405,38 @@ func.Error = {
 /**
  * 将二维json数据转树型结构
  */
-func.toTreeData = function (data) {
+func.toTreeData = function (data,idField="id",  parentField="pId") {
     let pos = {};
     let tree = [];
     let count = 0;
     let pId = "";//一级父节点pid值
     let ids= "";//所有id值
     for (let i = 0; i < data.length; i++) {
-        ids+=","+data[i].id+","
+        ids+=","+data[i][idField]+","
     }
   
     for (let i = 0; i < data.length; i++) {
-        if (ids.indexOf(","+data[i].pId+",") <= -1) {//属于一级节点的pid值
-            pId +=","+ data[i].pId+",";
+        if (ids.indexOf(","+data[i][parentField]+",") <= -1) {//属于一级节点的pid值
+            pId +=","+ data[i][parentField]+",";
         }
     }
     let index = 0;
     while (data.length != 0 && count < 200000) {
         count++;
-        if (pId.indexOf(","+data[index].pId+",") > -1) {
-            tree.push({
+        if (pId.indexOf(","+data[index][parentField]+",") > -1) {
+            let item={
                 ...data[index],
-                id: data[index].id,
                 text: data[index].text||data[index].name,
-                children: [],
-                
-            });
-            pos[data[index].id] = [tree.length - 1];
+                children: [],        
+            }
+            item[idField]=data[index][idField];//添加key
+            tree.push(item);
+            
+            pos[data[index][idField]] = [tree.length - 1];
             data.splice(index, 1);
             index--;
         } else {
-            let posArr = pos[data[index].pId];
+            let posArr = pos[data[index][parentField]];
             if (posArr != undefined) {
 
                 let obj = tree[posArr[0]];
@@ -470,14 +444,14 @@ func.toTreeData = function (data) {
                     obj = obj.children[posArr[j]];
                 }
 
-                obj.children.push({
+                let item={
                     ...data[index],
-                    id: data[index].id,
                     text: data[index].text||data[index].name,
-                    children: [],
-                  
-                });
-                pos[data[index].id] = posArr.concat([obj.children.length - 1]);
+                    children: [],        
+                }
+                item[idField]=data[index][idField];//添加key
+                obj.children.push(item);
+                pos[data[index][idField]] = posArr.concat([obj.children.length - 1]);
                 data.splice(index, 1);
                 index--;
             }
@@ -488,7 +462,7 @@ func.toTreeData = function (data) {
         }
     }
     if(data.length>0){
-        console.error("数据量过大，请使用异步请求");
+        console.error("数据格式不正确，或者是数据量过大，请使用异步请求,");
     }
     return tree;
 

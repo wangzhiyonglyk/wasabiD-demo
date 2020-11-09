@@ -35,10 +35,10 @@ class Tabs extends React.Component {
         if (nextProps.children.length >prevState.childrenlength) {
             activeIndex = nextProps.children.length - 1
         }
-        this.setState({
+      return {
             activeIndex: activeIndex,
             childrenlength:nextProps.children.length
-        })
+        }
     }
     tabClickHandler(index, event) {
 

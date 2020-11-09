@@ -6,9 +6,6 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
-// var unit=require("../libs/unit.js");
-// let Time=require("./Time.jsx");
 import DateD from "./DateD.jsx";
 import DateTime from "./DateTime.jsx";
 import DateRange from "./DateRange.jsx";
@@ -22,7 +19,7 @@ import validate from "../Mixins/validate.js";
 import ClickAway from "../libs/ClickAway.js";
 import mixins from '../Mixins/mixins';
 import Label from "../Info/Label.jsx";
-
+import func from "../libs/func"
 import props from "./config/propType.js";
 import config from "./config/dateConfig.js";
 import defaultProps from "./config/defaultProps.js";
@@ -38,13 +35,15 @@ class DatePicker extends Component {
       text = this.props.value;
     }
     this.state = {
+      cotainerid: func.uuid(),
       rangeCount: "-150%", // 时间选择框的位置
+      oldPropsValue: this.props.value,//保留原来的值
       value: this.props.value,
       text: text,
       validateClass: "", //验证的样式
-      helpShow: "none", //提示信息是否显示
-      helpTip: validation["required"], //提示信息
-      invalidTip: ""
+      inValidateShow: "none", //提示信息是否显示
+      inValidateText: validation["required"], //提示信息
+    
     };
     this.getValue = this.getValue.bind(this);
     this.setValue = this.setValue.bind(this);
@@ -59,26 +58,17 @@ class DatePicker extends Component {
     this.clearHandler = this.clearHandler.bind(this);
     this._getText = this._getText.bind(this);
   }
-
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-
-  //   //不是容器，不用默认处理
-  //   if(nextProps.value&&!this.state.value&&this.state.value!=nextProps.value){
-  //     this.setState({
-  //       value:nextProps.value
-  //     })
-  //   }
-  // }
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.value && !prevState.value && prevState.value != nextProps.value) {
+    if (nextProps.value != prevState.oldPropsValue) {
       return {
-        value: nextProps.value
+        value: nextProps.value,
+        oldPropsValue: nextProps.value
       }
     }
     return null;
   }
   componentDidMount() {
-    this.registerClickAway(this.hidePicker, this.refs.picker);//注册全局单击事件
+    this.registerClickAway(this.hidePicker, document.getElementById(this.state.cotainerid));//注册全局单击事件
 
   }
   componentDidUpdate() {
@@ -117,9 +107,6 @@ class DatePicker extends Component {
         text: ""
       });
     }
-  }
-  validate(value) {
-    return validate.call(this, value);
   }
 
 
@@ -180,14 +167,17 @@ class DatePicker extends Component {
       return null;
     }
   }
-  showPicker(type) {
+  showPicker(e) {
+    if (this.state.show) {
+      return;
+    }
     //显示选择
-    if (this.props.readonly) {
+    if (this.props.readOnly) {
       //只读不显示
       return;
     } else {
       this.setState({
-        show: type == 1 ? !this.state.show : true
+        show: true
       });
     }
 
@@ -199,14 +189,14 @@ class DatePicker extends Component {
     });
     this.unbindClickAway();//卸载全局单击事件
   }
-  onSelect(value, text) {
+  onSelect(value, text, name, hide = true) {
+    let isvalidate = this.validate(value);//只是验证一下，不影响回传给父组件
     //选中事件
     this.setState({
-      show: false,
+      show: !hide,
       value: value,
       text: text
     });
-    this.validate(value);
     this.props.onSelect && this.props.onSelect(value, text, this.props.name, null);
   }
   clearHandler() {
@@ -327,6 +317,7 @@ class DatePicker extends Component {
     return (
       <DateTimeRange
         ref='combobox'
+        type={this.props.type}
         name={this.props.name}
         firstDate={firstDate}
         firstTime={firstTime}
@@ -352,6 +343,7 @@ class DatePicker extends Component {
     return (
       <DateRange
         ref='combobox'
+        type={this.props.type}
         name={this.props.name}
         firstDate={firstDate}
         secondDate={secondDate}
@@ -363,6 +355,7 @@ class DatePicker extends Component {
     return (
       <TimeRange
         ref='combobox'
+        type={this.props.type}
         name={this.props.name}
         value={this.state.value}
         onSelect={this.onSelect}
@@ -439,14 +432,14 @@ class DatePicker extends Component {
         break;
       case "datetimerange":
         control = this.renderDateTimeRange();
-        controlDropClassName = "range";
+        controlDropClassName = "timerange";
         break;
     }
 
     var componentClassName = "wasabi-form-group "; //组件的基本样式
 
     let inputProps = {
-      readOnly: this.props.readonly == true ? "readonly" : null,
+      readOnly: this.props.readOnly == true ? "readOnly" : null,
 
       name: this.props.name,
       placeholder:
@@ -471,28 +464,43 @@ class DatePicker extends Component {
       style.display = "flex";
     }
 
+    let width = null;
+    switch (this.props.type) {
+      case "daterange":
+        width = 210;
+        break;
+      case "datetimerange":
+        width = 330;
+        break;
+      default:
+        break;
+
+    }
+
     return (
       <div
         className={componentClassName + this.state.validateClass}
         ref='picker'
+        id={this.state.cotainerid}
         style={style}
       >
         <Label
           name={this.props.label}
+          readOnly={this.props.readOnly||this.props.disabled}
           ref='label'
           style={this.props.labelStyle}
           required={this.props.required}
         ></Label>
         <div
-          className={"wasabi-form-group-body"}
-          style={{ width: this.props.type == "date" ? null : 200 }}
+          className={"wasabi-form-group-body " +(this.props.readOnly||this.props.disabled?" readOnly":"")}
+          style={{ width:width}}
         >
           <div className='combobox'>
             <i
-              className={"picker-clear"}
+              className={"combobox-clear"}
               onClick={this.clearHandler}
               style={{
-                display: this.props.readonly
+                display: this.props.readOnly
                   ? "none"
                   : this.state.value == "" || !this.state.value
                     ? "none"
@@ -500,16 +508,16 @@ class DatePicker extends Component {
               }}
             ></i>
             <i
-              className={"pickericon  " + (this.state.show ? " rotate" : "")}
+              className={"comboxbox-icon datepicker  "}
               onBlur={this.onBlur}
-              onClick={this.showPicker.bind(this, 1)}
+              onClick={this.showPicker.bind(this)}
             ></i>
             <input
               type='text'
               {...inputProps}
               value={text}
               onFocus={e => this.onFocus(e)}
-              onClick={this.showPicker.bind(this, 2)}
+              onClick={this.showPicker.bind(this)}
               onChange={this.changeHandler}
             />
             <div
@@ -527,12 +535,12 @@ class DatePicker extends Component {
             className={"wasabi-help-block "}
             style={{
               display:
-                this.state.helpTip && this.state.helpTip != ""
-                  ? this.state.helpShow
+                this.state.inValidateText && this.state.inValidateText != ""
+                  ? this.state.inValidateShow
                   : "none"
             }}
           >
-            <div className='text'>{this.state.helpTip}</div>
+            <div className='text'>{this.state.inValidateText}</div>
           </small>
         </div>
       </div>
@@ -543,5 +551,5 @@ class DatePicker extends Component {
 DatePicker.propTypes = Object.assign({ type: PropTypes.oneOf(config) }, props);
 
 DatePicker.defaultProps = Object.assign({}, defaultProps, { type: "datetime" });
-mixins(DatePicker, [ClickAway]);
+mixins(DatePicker, [ClickAway, validate]);
 export default DatePicker;

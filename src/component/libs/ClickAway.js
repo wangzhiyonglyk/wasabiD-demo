@@ -10,7 +10,6 @@ import  Events from './events';
 let ClickAway= {
 
     componentWillUnmount () {
-        console.log("componentWillUnmount 注销事件")
         this.unbindClickAway();
     },
 
@@ -27,23 +26,23 @@ let ClickAway= {
     },
 
     registerClickAway (onClickAway, target) {//注册绑定事件
-        this.clickAwayTarget = target;
-        this.onClickAway = onClickAway;
+        this.clickAwayTarget = target;//保存目标节点
+        this.onClickAway = onClickAway;//保存事件
     },
 
+    /**
+     * 获取要执行事件
+     */
     getClickAwayEvent () {
         
-        let fn = this._clickAwayEvent;//
+        let fn = this._clickAwayEvent;//获取单击时执行的事件
         if (!fn) {//第一次不存在的时候
-           
             fn = (event) => {
+              
                 let el = this.clickAwayTarget || ReactDOM.findDOMNode(this);
-
                 // Check if the target is inside the current component
-                if (event.target !== el && !dom.isDescendant(el, event.target)) {
-                    if (this.onClickAway) {
-                        this.onClickAway();
-                    }
+                if (event.target !== el && !dom.isDescendant(el, event.target)) {//是否目标节点或者子孙节点
+                    this.onClickAway&&this.onClickAway();
                 }
             }
             this._clickAwayEvent = fn;

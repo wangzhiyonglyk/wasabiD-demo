@@ -16,12 +16,12 @@ class Transfer extends React.Component {
 
     constructor(props) {
         super(props);
-        let realData = propsTran.setValueAndText(this.props.data, this.props.valueField, this.props.textField);
-        let realSelectData = propsTran.setValueAndText(this.props.selectData, this.props.valueField, this.props.textField);
+        let realData = propsTran.setComboxValueAndText("transfer","",this.props.data, this.props.valueField, this.props.textField);
+        let realSelectData = propsTran.setComboxValueAndText("transfer","",this.props.selectData, this.props.valueField, this.props.textField);
         this.state = {
             name: this.props.name,
-            data: realData,
-            selectData: realSelectData,
+            data: realData.data,
+            selectData: realSelectData.data,
             leftOnIndex: null,//左边被点中的数据
             rightOnIndex: null,//右边被点中的数据
             textField: this.props.textField,
@@ -30,35 +30,6 @@ class Transfer extends React.Component {
         }
 
     }
-    //代码先保存
-    // UNSAFE_componentWillReceiveProps(nextProps) {
-
-    //     if (nextProps.data != null && nextProps.data instanceof Array && (!nextProps.url || nextProps.url == "")) {//没有url,传的是死数据
-    //         //因为这里统一将数据进行了改造,所以这里要重新处理一下
-    //         newData = this.setValueAndText(nextProps.data);
-    //         selectData = this.setValueAndText(nextProps.selectData);
-    //     }
-    //     else {//url形式
-    //         newData = this.state.data;//先得到以前的数据
-    //         selectData = this.state.selectData;//先得到以前的数据
-    //         if (this.showUpdate(nextProps.params)) {//如果不相同则更新
-    //             this.loadData(this.props.url, nextProps.params);//异步更新
-    //         }
-    //         else {
-
-    //         }
-    //     }
-
-    //     this.setState({
-    //         value: value,
-    //         text: text,
-    //         data: newData,
-    //         selectData: selectData,
-    //         url: nextProps.url,
-    //         params: unit.clone(nextProps.params),
-    //     })
-
-    // }
 
     static getDerivedStateFromProps(nextProps, prevState) {
         let newState = {};
@@ -72,8 +43,10 @@ class Transfer extends React.Component {
         }
         if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.data)) {
             //如果传了死数据
-            newState.data = propsTran.setValueAndText(nextProps.data, prevState.valueField, prevState.textField);
-            newState.selectData = propsTran.setValueAndText(nextProps.selectData, prevState.valueField, prevState.textField);
+            newState.data = propsTran.setComboxValueAndText("transfer","",nextProps.data, prevState.valueField, prevState.textField);
+            newState.data= newState.data.data;
+            newState.selectData = propsTran.setComboxValueAndText("transfer","",nextProps.selectData, prevState.valueField, prevState.textField);
+            newState.selectData= newState.selectData.data;
         }
         if (func.isEmptyObject(newState)) {
             return null;

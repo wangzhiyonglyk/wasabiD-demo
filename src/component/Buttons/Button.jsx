@@ -20,12 +20,13 @@ class Button extends Component {
     return true;
   }
   clickHandler(event) {
+    event.preventDefault();
     if (this.props.disabled == true) {
       return;
     }
 
     if (this.props.onClick) {
-      this.props.onClick(this.props.name, this.props.title, event);
+      //this.props.onClick(this.props.name, this.props.title, event);
     }
   }
   render() {
@@ -42,11 +43,10 @@ class Button extends Component {
       //文字提示
       title: this.props.title
     };
-console.log("fdfd")
     return (
     
       <button {...props} onClick={this.clickHandler} type='button'>
-        {this.props.children ? this.props.children : this.props.title}
+       <span>{this.props.children ? this.props.children : this.props.title}</span> 
       </button>
     );
   }
@@ -69,7 +69,8 @@ Button.propTypes = {
     //按钮大小
     'large',
     'default',
-    'small'
+    'small',
+    "mini"
   ]),
   onClick: PropTypes.func, //按钮单击事件
   style: PropTypes.object, //样式

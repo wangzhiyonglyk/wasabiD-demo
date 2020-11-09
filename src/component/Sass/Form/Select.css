@@ -3,79 +3,21 @@ date:2016-03-30
 desc:下拉框样式
 */
 
-.nice-select {
+.wasabi-select ul {
   width: 100%;
-  display: block;
-  position: relative;
-
-}
-
-.nice-select .icon {
-
-  display: block;
-  font-family: 'icomoon' !important;
-  font-style: normal;
-  width: 34px;
-  height: 34px;
-  border-left: 1px solid #d8d8d8;
-  position: absolute;
-  top: 0px;
- right: 0px;
-  cursor: pointer;
-}
-.nice-select .icon.rotate:before{
-  -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
-  transform: rotate(180deg);
-
-}
-.nice-select .icon:before {
-  -webkit-transition: top, -webkit-transform 0.6s;
-  transition: top, -webkit-transform 0.6s;
-  transition: top, transform 0.6s;
-  transition: top, transform 0.6s, -webkit-transform 0.6s;
-  font-size: 13px;
-  content: "\E915";
-  position: absolute;
-  top: 10px;
-  left: 9px;
-  color: #d8d8d8;
-}
-
-.nice-select .picker-clear{
-  font-family: 'icomoon' !important;
-  font-style: normal;
-  width: 16px;
-  height: 16px;
-  position: absolute;
-  right: 40px;
-  top: 6px;
-  cursor: pointer;
-}
-.nice-select .picker-clear:before{
-  font-size:16px;
-  content: "\e90c";
-  color: #bbbbbb;
-}
-.nice-select ul {
-  width: 100%;
-  display: none;
-  position: absolute;
-  left: 0px;
-  overflow: hidden;
+  height: 100%;
   background-color: #fff;
   max-height: 270px;
   min-height: 100px;
   overflow-y: auto;
-  border: 1px solid #999;
   border-top: 0;
-  box-shadow: 0 3px 5px #999;
-  z-index:3;
-  top:34px ;
-  padding:0px;
-  margin: 0px;;
+  z-index: 3;
+  top: 34px;
+  padding: 0;
+  margin: 0;
   min-width: 120px;
 }
-.nice-select ul li {
+.wasabi-select ul li {
   height: 30px;
   line-height: 30px;
   overflow: hidden;
@@ -83,14 +25,14 @@ desc:下拉框样式
   cursor: pointer;
   position: relative;
 }
-.nice-select ul li:hover {
-  background-color: #f7f7f7;
+.wasabi-select ul li:hover {
+  background-color: #f5f7fa;
 }
 
-.nice-select ul li.active {
-  background-color: #f7f7f7;
+.wasabi-select ul li.active {
+color: #409eff;
 }
-.nice-select ul li.active:after
+.wasabi-select ul li.active:after
 {
   font-family: 'icomoon' !important;
   content:"\e95d";
@@ -100,6 +42,6 @@ desc:下拉框样式
   width: 16px;
   height: 16px;
   font-size: 16px;
-  color:#1c84c6;
+  color:#409eff;
 }
 

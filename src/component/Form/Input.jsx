@@ -91,6 +91,6 @@ constructor(props)
 
     }
 }
-Input.propTypes = Object.assign({ type: PropTypes.oneOf(config) }, props);
+Input.propTypes = Object.assign( props,{ type: PropTypes.oneOf(config) });
 Input.defaultProps = Object.assign({ type: "text" }, defaultProps);
   export default Input;

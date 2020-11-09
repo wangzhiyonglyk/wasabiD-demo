@@ -1,26 +1,8 @@
-// import React,{Component} from 'react';
-
-// const MyContainer = (MyComponent,...params) => 
-//     {
-//         //rest参数以数组的形式，所以要进行转义
-//         let newObj={};
-//         for(var i in params)
-//         {
-//             for(let p in params[i])
-//             {
-//                newObj[p]=params[i][p];
-//             }   
-//         }
-//    return  class extends Component {
-       
-//         render(){
-//             return <MyComponent {...this.props} {...newObj}  />
-//         }
-//     }
-// }
-
-//     export default MyContainer;
-
+/**
+ * 2020-11-07edit 此方法要改
+ * @param {*} derivedCtor 
+ * @param {*} baseCtors 
+ */
 function applyMixins(derivedCtor, baseCtors) {
    
     baseCtors.forEach(baseCtor => {
@@ -33,5 +15,6 @@ function applyMixins(derivedCtor, baseCtors) {
            }
         });
     });
+    return derivedCtor;
 }
 export default applyMixins;

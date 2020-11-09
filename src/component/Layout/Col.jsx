@@ -109,7 +109,7 @@ class Col extends React.Component {
                    child;
                 }
                 else{
-                    return React. cloneElement(child, { disabled:this.props.disabled?this.props.disabled:child.props.disabled,   readonly: this.props.disabled?this.props.disabled:child.props.readonly, key: index, ref: child.ref?child.ref:index })
+                    return React. cloneElement(child, { disabled:this.props.disabled?this.props.disabled:child.props.disabled,   readOnly: this.props.disabled?this.props.disabled:child.props.readOnly, key: index, ref: child.ref?child.ref:index })
                 }
              
             }

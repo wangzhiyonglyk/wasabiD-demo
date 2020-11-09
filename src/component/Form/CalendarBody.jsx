@@ -15,6 +15,7 @@ class CalendarBody extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            oldYear:this.props.year,
             tempyear:this.props.year
         };
         this.getMonthDays=this.getMonthDays.bind(this);
@@ -26,35 +27,22 @@ class CalendarBody extends Component {
         this.yearOKHandler=this.yearOKHandler.bind(this);
         this.yearonBlur=this.yearonBlur.bind(this);
     }
-    //todo
-    // UNSAFE_componentWillReceiveProps(nextProps) {
-    //     this.setState({           
-    //         tempyear: nextProps.year,                   
-    //     })
-    // }
     /**
      * 
      * @param {*} nextProps 
      * @param {*} prevState 
      */
     static getDerivedStateFromProps(nextProps, prevState) {
-        if(nextProps.year){
+        if(nextProps.year!=prevState.oldYear){
             return {
                 tempyear:nextProps.year
             }
         }
-       
+       return null;
     }
  
-    getMonthDays() {
-        //根据月份获取当月总天数
-        return new Date(this.props.year, this.props.month, 0).getDate();
-    }
-    getFirstDayWeek() {
-        //获取当月第一天是星期几
-        return new Date(this.props.year, this.props.month - 1, 1).getDay();
-    }
-    dayHandler(day) {
+   
+    dayHandler(day,e) {
         this.setState({
             day: day
         })
@@ -85,23 +73,32 @@ class CalendarBody extends Component {
         let year = event.target.value << 0;//转成数字
         year < 1900 || year > 9999 ? Msg.error("不是有效年份") : this.changeYearHandler(year);
     }
+    getMonthDays() {
+        //根据月份获取当月总天数
+        return new Date(this.props.year, this.props.month, 0).getDate();
+    }
+    getFirstDayWeek() {
+        //获取当月第一天是星期几
+        return new Date(this.props.year, this.props.month - 1, 1).getDay();
+    }
     render() {
-        //TODO 以下代码有待优化
-        var arry1 = [], arry2 = [];
+     
+
+        var preMonthWeekDays = [], thisMonthDays = [];
         var getDays = this.getMonthDays(), FirstDayWeek = this.getFirstDayWeek();
         for (var i = 0; i < FirstDayWeek; i++) {
-            arry1[i] = i;
+            preMonthWeekDays[i] = i;
         }
         for (var i = 0; i < getDays; i++) {
-            arry2[i] = (i + 1);
+            thisMonthDays[i] = (i + 1);
         }
-        var node1 = arry1.map(function (item, i) {
+        var preMonthWeekDaysNodes = preMonthWeekDays.map(function (item, i) {
             return <div className="datespan" key={i}></div>
         })
-        var node2 = arry2.map((item, index) => {
+        var thisMonthDaysNodes = thisMonthDays.map((item, index) => {
             let choseed = false;//当前日期是否被选中
             if (this.props.isRange) {
-                if (this.props.min && this.props.max && this.props.min <= item && this.props.max >= item) {
+                if (this.props.rangeBegin && this.props.rangeEnd && this.props.rangeBegin <= item && this.props.rangeEnd >= item) {
                     choseed = true;
                 }
             }
@@ -109,14 +106,14 @@ class CalendarBody extends Component {
                 choseed = true;
             }
             var control = null;
-            if (item == this.props.min && item == this.props.max) {
+            if (item == this.props.rangeBegin &&(!this.props.rangeEnd|| item == this.props.rangeEnd)) {
                 control = <div className={"datespan "} key={"li2" + index} onClick={this.dayHandler.bind(this, item)}><div className="onlyradius">{item}</div></div>;
             }
-            else if (item == this.props.min) {
+            else if (item == this.props.rangeBegin) {
                 control = <div className={"datespan begin"} key={"li2" + index} onClick={this.dayHandler.bind(this, item)}>
                     <div className="blank"><div className="radius">{item}</div></div></div>;
             }
-            else if (item == this.props.max) {
+            else if (item == this.props.rangeEnd) {
                 control = <div className={"datespan end"} key={"li2" + index} onClick={this.dayHandler.bind(this, item)}>
                     <div className="blank"><div className="radius">{item}</div></div></div>;
             }
@@ -158,7 +155,7 @@ class CalendarBody extends Component {
                     <div className="weekspan">{Lang.cn.FRI}</div>
                     <div className="weekspan">{Lang.cn.SAT}</div>
                 </div>
-                <div className="dayul" style={{ display: (!this.props.changeMonth && !this.props.changeYear) ? "block" : "none" }}>{node1} {node2}</div>
+                <div className="dayul" style={{ display: (!this.props.changeMonth && !this.props.changeYear) ? "block" : "none" }}>{preMonthWeekDaysNodes} {thisMonthDaysNodes}</div>
                 <div className="wasabi-datetime-month" style={{ display: this.props.changeMonth ? "block" : "none" }}>
 
                     <div className={"datespan " + ((this.props.month == 1) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 1)}>一月</div>
@@ -190,13 +187,15 @@ CalendarBody.propTypes = {
     month: PropTypes.oneOfType( [ PropTypes.number,PropTypes.string]),//月
     day: PropTypes.oneOfType( [ PropTypes.number,PropTypes.string]),//日
     isRange: PropTypes.bool,//是否为范围选择
-    min: PropTypes.oneOfType( [ PropTypes.number,PropTypes.string]),//最小值，用于日期范围选择
-    max: PropTypes.oneOfType( [ PropTypes.number,PropTypes.string]),//最大值,用于日期范围选择
+    rangeBegin: PropTypes.oneOfType( [ PropTypes.number,PropTypes.string]),//日期范围选择时开始值
+    rangeEnd:  PropTypes.oneOfType( [ PropTypes.number,PropTypes.string]),//日期范围选择时结束值
     dayHandler: PropTypes.func,//选择后的事件
     changeYear: PropTypes.bool,
     changeMonth: PropTypes.bool,
     changeYearHandler: PropTypes.func,
     changeMonthHandler: PropTypes.func,
+    min: PropTypes.oneOfType( [ PropTypes.number,PropTypes.string]),
+    max :PropTypes.oneOfType( [ PropTypes.number,PropTypes.string])
 };
 
 CalendarBody.defaultProps = {

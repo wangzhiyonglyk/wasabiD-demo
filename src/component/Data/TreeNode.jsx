@@ -572,7 +572,11 @@ class TreeNode extends Component {
                     parentGetChildCheckedNum={this.parentGetChildCheckedNum.bind(this)}
                     parentSetBrotherRadioChecked={this.parentSetBrotherRadioChecked.bind(this)}
                     ref={"child" + index}
-                    half={(this.state.checkValue||item.checkValue) == "half"}
+                    /**
+                     * 可以影响父节点并且是 是否半选
+                     * 
+                     */
+                    half={ (this.props.checkType&&this.props.checkType.y.indexOf("p")>-1&&((this.state.checkValue||item.checkValue) == "half"))}
                     checked={this.props.inputValue?this.props.inputValue.indexOf(","+item.id+",")>-1?true:false:this.state.checked}
                     isParent={isParent} parent={parent}
 

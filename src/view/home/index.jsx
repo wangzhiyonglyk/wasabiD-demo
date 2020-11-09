@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Upload from "../../component/Action/Upload"
-import Tree from "../../component/Data/Tree"
-import Input from '../../component/Form/Input'
+
+import CheckBox from "../../component/Form/CheckBox"
+import Select from "../../component/Form/Select"
+import Radio from "../../component/Form/Radio"
+import Input from "../../component/Form/Input"
+import Label from "../../component/Info/Label"
 import Button from "../../component/Buttons/Button"
-import DataGrid from "../../component/Data/DataGrid"
-import Editor from "../../component/Action/Editor"
-import Form from "../../component/Form/Form"
-import Time from "../../component/Form/Time"
+import LinkButton from "../../component/Buttons/LinkButton"
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -45,6 +45,7 @@ class Home extends React.Component {
         { id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}
       ]
     }
+    this.onClick=this.onClick.bind(this)
 
   }
   componentDidMount() {
@@ -76,7 +77,9 @@ class Home extends React.Component {
   }
   onClick() {
   // this.refs.upload.open();
-  this.setState({})
+  this.setState({
+value:"你好"
+  })
   }
   onEdit(){
     console.log("de")
@@ -90,7 +93,31 @@ class Home extends React.Component {
 
   render() {
     return <div>
-      <Button onClick={this.onClick.bind(this)}>单击</Button>
+<br></br>
+<button> 测试</button>
+<Button key="1" theme="default" size="small"  onClick={this.onClick}>信息按钮</Button>
+<Button  key="2" theme="primary"   size="mini" onClick={this.onClick}>信息按钮</Button>
+<Button  key="3" theme="info"   onClick={this.onClick}>信息按钮</Button>
+<Button   key="4" theme="success"size="large" disabled={true} onClick={this.onClick}>信息按钮</Button>
+<Button  key="5" theme="warning" onClick={this.onClick}>信息按钮</Button>
+<Button  key="6" theme="danger" onClick={this.onClick}>信息按钮</Button>
+
+<LinkButton key="11" iconCls={"icon-txt"} theme="default" size="small"  onClick={this.onClick}>设计要求</LinkButton>
+<LinkButton  key="12"   iconCls="icon-txt" theme="primary"  title="设计要求"  size="mini" onClick={this.onClick}>设计要求</LinkButton>
+<LinkButton  key="13"  iconCls={"icon-txt"} theme="info"   onClick={this.onClick}>设计要求</LinkButton>
+<LinkButton   key="14"  iconCls={"icon-txt"} theme="success"size="large" disabled={true} onClick={this.onClick}>设计要求</LinkButton>
+<LinkButton  key="15"  iconCls={"icon-txt"} theme="warning" onClick={this.onClick}>设计要求</LinkButton>
+<LinkButton  key="16"  iconCls={"icon-txt"}  style={{fontSize:18}}theme="danger" title="查询" onClick={this.onClick}></LinkButton>
+
+    {/* <CheckBox  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></CheckBox> */}
+    {/* <Radio  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Radio> */}
+    {/* <Select  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Select> */}
+    <Input  placeholder="请输入" value={this.state.value} addAbled={true} required={true} type="text" label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Input>
+    <Input  placeholder="请输入" readOnly={true} required={true} type="text" label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Input>
+    <Input  type="daterange"  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Input>
+    <Input  type="datetimerange" readOnly={true} label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Input>
+    {/* <Input  type="text" label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Input> */}
+      {/* <Button onClick={this.onClick.bind(this)}>单击</Button>
    <Upload ref="upload"></Upload>
       <Input key="2" type="timerange" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
      
@@ -104,7 +131,7 @@ class Home extends React.Component {
      
     <DataGrid headers={[{name:"good",label:"你好",headerContent:(name,label)=>{
       return <div style={{color:"red"}}>{label}</div>
-    }}]} ></DataGrid>
+    }}]} ></DataGrid> */}
      
     </div>;
   }

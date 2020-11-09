@@ -9,8 +9,9 @@ import  validate from "../Mixins/validate.js";
 import  Label from "../Info/Label.jsx";
 import Msg from "../Info/Msg.jsx";
 import  FetchModel from "../Model/FetchModel.js";
-import  unit from "../libs/func.js";
+import  func from "../libs/func.js";
 import props from "./config/propType.js";
+import mixins from '../Mixins/mixins';
 import config from "./config/textConfig.js";
 import defaultProps from  "./config/defaultProps.js";
 import ("../Sass/Form/Input.css");
@@ -24,9 +25,8 @@ class  Text  extends Component{
             value:this.props.value,
             text:this.props.text,
             validateClass:"",//验证的样式
-            helpShow:"none",//提示信息是否显示
-            helpTip:validation["required"],//提示信息
-            invalidTip:"",
+            inValidateShow:"none",//提示信息是否显示
+            inValidateText:validation["required"],//提示信息
             validateState:null,//是否正在验证
         }
         this.onChange=this.onChange.bind(this);
@@ -43,15 +43,7 @@ class  Text  extends Component{
         this.validateHandlerError=this.validateHandlerError.bind(this)
 
     }
-    // UNSAFE_componentWillReceiveProps(nextProps) {
-    //     if(nextProps.value!=this.props.value){
-    //         //就是说原来的初始值发生改变了，说明父组件要更新值
-    //      this.setState({
-    //          value:nextProps.value
-    //      })
-    //     }
-         
-    // }
+
     static getDerivedStateFromProps(nextProps, prevState) {
         if(nextProps.value!=prevState.oldPropsValue){
             //就是说原来的初始值发生改变了，说明父组件要更新值
@@ -68,7 +60,7 @@ class  Text  extends Component{
     }
     componentDidUpdate() {
         this.validateInput=true;//设置初始化值
-        if(this.state.helpTip=="非有效数字"||this.state.helpTip=="输入非法")
+        if(this.state.inValidateText=="非有效数字"||this.state.inValidateText=="输入非法")
         {
             this.refs.input.select();
         }
@@ -187,10 +179,7 @@ class  Text  extends Component{
             this.props.onClick(this.props.name,this.state.value,model);
         }
     }
-    validate(value){
-    
-     return validate.call(this,value)
-    }
+   
     getValue () {//获取值
         return this.state.value;
     }
@@ -214,7 +203,7 @@ class  Text  extends Component{
             fetchmodel.contentType=  this.props.contentType;
             fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
         }
-        type=="POST"?unit.fetch.post(fetchmodel):unit.fetch.get(fetchmodel);
+        type=="POST"?func.fetch.post(fetchmodel):func.fetch.get(fetchmodel);
          
         console.log("text-validing:",fetchmodel);
       
@@ -241,12 +230,14 @@ class  Text  extends Component{
         let inputType=this.props.type?this.props.type:"text";
             let inputProps=
             {
-                readOnly:this.props.readonly==true?"readonly":null,
+                readOnly:this.props.readOnly==true?"readOnly":null,
                 id:this.props.id?this.props.id:null,
                 name:this.props.name,
                 placeholder:(this.props.placeholder===""||this.props.placeholder==null)?this.props.required?"必填项":"":this.props.placeholder,
                 className:"wasabi-form-control  ",
-                rows:this.props.rows,
+                rows:this.props.rows,//textarea
+                cols:this.props.cols,
+                style:{resize:this.props.resize?"vertical":null},//只能向下切换
                 title:this.props.title,
 
             }//文本框的属性
@@ -276,12 +267,12 @@ class  Text  extends Component{
 
 
         return (<div className={"wasabi-form-group "+this.props.className+" "+ this.state.validateClass} onPaste={this.onPaste} style={style}>
-                <Label name={this.props.label} ref="label" hide={this.props.hide} style={this.props.labelStyle} required={this.props.required}></Label>
-                <div className={ "wasabi-form-group-body text" } style={{width:!this.props.label?"100%":null}}>
+                <Label name={this.props.label}  readOnly={this.props.readOnly||this.props.disabled} ref="label" hide={this.props.hide} style={this.props.labelStyle} required={this.props.required}></Label>
+                <div className={ "wasabi-form-group-body " } >
                     {control}
                     <i className={this.state.validateState} style={{display:(this.state.validateState?"block":"none")}} ></i>
-                    <small className={"wasabi-help-block "} style={{display:(this.state.helpTip&&this.state.helpTip!="")?this.state.helpShow:"none"}}>
-                        <div className="text">{this.state.helpTip}</div></small>
+                    <small className={"wasabi-help-block "} style={{display:(this.state.inValidateText&&this.state.inValidateText!="")?this.state.inValidateShow:"none"}}>
+                        <div className="text">{this.state.inValidateText}</div></small>
                 </div>
             </div>
         )
@@ -291,4 +282,5 @@ class  Text  extends Component{
  Text. propTypes=Object.assign({type:PropTypes.oneOf(config)},props);
 
 Text.defaultProps=  Object.assign({},defaultProps,{type:"text"});;
+Text=mixins(Text,[validate])
  export default Text;

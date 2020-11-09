@@ -45,43 +45,49 @@ desc:表单输入框样式
   visibility: hidden;
 }
 .wasabi-checkul .checkbox + label {
+  font-family: icomoon!important;
   width:16px;
   height:16px;
-  border: 1px solid #afb3b8;
+  border: 1px solid #dcdfe6;
   display: inline-block;
   margin-right: 3px;
   position: absolute;
   top: 2px;
   left: 3px;
   border-radius: 2px;
+  transition: border-color .25s cubic-bezier(.71,-.46,.29,1.46),background-color .25s cubic-bezier(.71,-.46,.29,1.46);
 }
 
-.wasabi-checkul .checkbox + label[readonly] {
-  background-color: #eee;
+.wasabi-checkul .checkbox + label[readOnly],.wasabi-checkul .checkbox + label[disabled] {
+  background-color: #f5f7fa;
   cursor: not-allowed;
 }
-.wasabi-checkul .checkbox:hover + label {
-  border: 1px solid #1c84c6;
+.wasabi-checkul .checkbox + label:hover {
+  border: 1px solid #409eff;
+}
+
+.wasabi-checkul .checktext.checked{
+  color:#409eff;
 }
 
 .wasabi-checkul .checkbox:checked + label {
-  background-color: #1c84c6;
   border: 1px solid transparent;
+  background-color:#409eff;
 }
 .wasabi-checkul .checkbox:checked + label:after {
-  content: '';
+  content: "\e95d";
   height: 12px;
   width: 12px;
   position: absolute;
   left: 1px;
-  background-image: url("../../img/icons/draw.png");
-  background-size: 12px 12px;
+  top: -1px;
+  font-size: 12px;
   background-repeat: no-repeat;
-  color:transparent;
+  color:white;
 }
 .wasabi-checkul .checkbox.halfcheck + label {
-  background-color: #1c84c6;
   border: 1px solid transparent;
+  background-color:#409eff;
 }
 .wasabi-checkul .checkbox.halfcheck + label:after {
   content: "";
@@ -90,10 +96,10 @@ desc:表单输入框样式
   position: absolute;
   left: 3px;
   top: 3px;
-  background-image: url("../../img/icons/half.png");
+  background-color:white;
   background-size: 12px 12px;
   background-repeat: no-repeat;
-  color:transparent;
+  color:white;
 }
 
 
@@ -110,13 +116,15 @@ desc:表单输入框样式
   -webkit-border-radius: 100%;
   -moz-border-radius: 100%;
   border-radius: 100%;
-  border: 2px solid #afb3b8;
+  border: 1px solid #afb3b8;
   box-sizing: border-box;
 
 }
-.wasabi-radio-btn.readonly{
-  background-color: #eee;
+.wasabi-radio-btn.readOnly{
+  background-color: #f5f7fa;
   cursor: not-allowed;
+  border-color: #e4e7ed;
+  color: #c0c4cc;
 }
 .wasabi-radio-btn input[type="radio"]{
   visibility: hidden;
@@ -131,8 +139,8 @@ desc:表单输入框样式
   width: 8px;
   height: 8px;
   position: absolute;
-  left: 3.4444px;
-  top: 3.4444px;
+  left: 4px;
+  top: 4px;
   -webkit-border-radius: 100%;
   -moz-border-radius: 100%;
   border-radius: 100%;
@@ -140,10 +148,10 @@ desc:表单输入框样式
   background-color: transparent;
 }
 .wasabi-radio-btn.checkedRadio{
- border-color: #1c84c6;
+ border-color: #409eff;
 }
 .checkedRadio i {
-  background-color: #1c84c6;
+  background-color: #409eff;
 }
 .wasabi-checkul .radiotext
 {
@@ -152,4 +160,10 @@ desc:表单输入框样式
   margin-top: -1px;
   cursor: default;
 
+}
+.wasabi-checkul .radiotext.readOnly{
+  color: #c0c4cc;
+}
+.wasabi-checkul .radiotext.checkedRadio{
+  color: #409eff;
 }

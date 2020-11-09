@@ -12,74 +12,36 @@ import("../Sass/Form/DateTime.css");
 class DateD extends Component {
     constructor(props) {
         super(props)
-        var newDate = new Date();
-        var year = (this.formatDate(newDate, 'yyyy'));
-        var month = (this.formatDate(newDate, 'MM'));
+        let newDate = new Date();
+        let year =newDate.getFullYear();
+        let month = newDate.getMonth()+1;
 
         this.state = {
+            oldPropsValue: (this.props.year || "") + "-"+(this.props.month || "") + "-" + (this.props.day || ""),//保留原来的值,方便父组件强制更新
             year: this.props.year ? this.props.year : year,
             month: this.props.month ? this.props.month : month,
-            day: this.props.day,
-            isRange: this.props.isRange,
-            min: this.props.min,
-            max: this.props.max,
+            day: this.props.day || "",
             changeYear: false,//选择年份
             changeMonth: false,//选择月份
         }
         this.updateYearAndMonth = this.updateYearAndMonth.bind(this);
         this.dayHandler = this.dayHandler.bind(this);
-        this.formatDate = this.formatDate.bind(this);
-
         this.changeYear = this.changeYear.bind(this);
         this.changeMonth = this.changeMonth.bind(this);
         this.changeYearHandler = this.changeYearHandler.bind(this);
         this.changeMonthHandler = this.changeMonthHandler.bind(this);
     }
-    //todo 
-    // UNSAFE_componentWillReceiveProps(nextProps) {
-    //     if (nextProps.isRange == true) {//是日期范围选择，要更新最大值与最小值
-    //         this.setState({
-    //             year: nextProps.year ? nextProps.year : this.state.year,
-    //             month: nextProps.month ? nextProps.month : this.state.month,
-    //             day: nextProps.day,
-    //             isRange: nextProps.isRange,
-    //             min: nextProps.min,
-    //             max: nextProps.max,
-    //         });
-    //     } else {
-    //         this.setState({
-    //             year: nextProps.year ? nextProps.year : this.state.year,
-    //             month: nextProps.month ? nextProps.month : this.state.month,
-    //             day: nextProps.day,
-    //             isRange: nextProps.isRange,
-    //         });
-    //     }
-
-    // }
-
-    /**
-     * 
-     * @param {*} nextProps 
-     * @param {*} prevState 
-     */
+   
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.isRange == true) {//是日期范围选择，要更新最大值与最小值
-            return {
-                year: nextProps.year ? nextProps.year : prevState.year,
-                month: nextProps.month ? nextProps.month : prevState.month,
-                day: nextProps.day,
-                isRange: nextProps.isRange,
-                min: nextProps.min,
-                max: nextProps.max,
-            }
-        } else {
-            return {
-                year: nextProps.year ? nextProps.year : prevState.year,
-                month: nextProps.month ? nextProps.month : prevState.month,
-                day: nextProps.day,
-                isRange: nextProps.isRange,
-            }
+        let newState = {};
+        if ((nextProps.year || "") + "-"+(nextProps.month || "") + "-" + (nextProps.day || "") != prevState.oldPropsValue) {
+            newState.year = nextProps.year ? nextProps.year : prevState.year;
+            newState.month = nextProps.month ? nextProps.month : prevState.month;
+            newState.day = nextProps.day;
+            newState.oldPropsValue=(nextProps.year || "") + "-"+(nextProps.month || "") + "-" + (nextProps.day || "");
+            return newState;
         }
+        return null;
     }
 
     updateYearAndMonth(filterYear, filterMonth) {
@@ -87,19 +49,17 @@ class DateD extends Component {
             year: filterYear,
             month: filterMonth,
             day: null,//清空
-            min: null,
-            max: null,
-        });
 
+        });
         if (this.props.updateYearAndMonth != null) {
             this.props.updateYearAndMonth(filterYear, filterMonth);
         }
     }
     dayHandler(day) {
+        event.stopPropagation();//阻止冒泡，防止下拉时注册的全局事件找不到父节点
         this.setState({
             day: day,
-            min: day,
-            max: day,
+
         })
         if (this.props.onSelect) {
             let value = this.state.year + "-" + (this.state.month.toString().length == 1 ? "0" + this.state.month.toString() : this.state.month)
@@ -109,56 +69,7 @@ class DateD extends Component {
         }
 
     }
-    formatDate(date, format) {
-        /**
-         * 对Date的扩展，将 Date 转化为指定格式的String
-         * 月(M)、日(d)、12小时(h)、24小时(H)、分(m)、秒(s)、周(E)、季度(q) 可以用 1-2 个占位符
-         * 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
-         * eg:
-         * Utils.formatDate(new Date(),'yyyy-MM-dd') ==> 2014-03-02
-         * Utils.formatDate(new Date(),'yyyy-MM-dd hh:mm') ==> 2014-03-02 05:04
-         * Utils.formatDate(new Date(),'yyyy-MM-dd HH:mm') ==> 2014-03-02 17:04
-         * Utils.formatDate(new Date(),'yyyy-MM-dd hh:mm:ss.S') ==> 2006-07-02 08:09:04.423
-         * Utils.formatDate(new Date(),'yyyy-MM-dd E HH:mm:ss') ==> 2009-03-10 二 20:09:04
-         * Utils.formatDate(new Date(),'yyyy-MM-dd EE hh:mm:ss') ==> 2009-03-10 周二 08:09:04
-         * Utils.formatDate(new Date(),'yyyy-MM-dd EEE hh:mm:ss') ==> 2009-03-10 星期二 08:09:04
-         * Utils.formatDate(new Date(),'yyyy-M-d h:m:s.S') ==> 2006-7-2 8:9:4.18
-         */
-        if (!date) return;
-        var o = {
-            "M+": date.getMonth() + 1, //月份
-            "d+": date.getDate(), //日
-            "h+": (date.getHours() % 12 == 0 ? 12 : date.getHours() % 12), //小时
-            "H+": date.getHours(), //小时
-            "m+": date.getMinutes(), //分
-            "s+": date.getSeconds(), //秒
-            "q+": Math.floor((date.getMonth() + 3) / 3), //季度
-            "S": date.getMilliseconds() //毫秒
-        };
-        var week = {
-            "0": "\u65e5",
-            "1": "\u4e00",
-            "2": "\u4e8c",
-            "3": "\u4e09",
-            "4": "\u56db",
-            "5": "\u4e94",
-            "6": "\u516d"
-        };
-
-        if (/(y+)/.test(format)) {
-            format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-        }
-
-        if (/(E+)/.test(format)) {
-            format = format.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? "\u661f\u671f" : "\u5468") : "") + week[date.getDay() + ""]);
-        }
-        for (var k in o) {
-            if (new RegExp("(" + k + ")").test(format)) {
-                format = format.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            }
-        }
-        return format;
-    }
+    
     changeYear() {
         this.setState({
             changeYear: !this.state.changeYear,
@@ -179,10 +90,12 @@ class DateD extends Component {
             changeYear: false,
             changeMonth: false,
             day: null,//清空
-            min: null,
-            max: null,
+          
 
         })
+        if (this.props.updateYearAndMonth != null) {
+            this.props.updateYearAndMonth(value, this.state.month);
+        }
     }
     changeMonthHandler(value) {
         this.setState({
@@ -190,9 +103,11 @@ class DateD extends Component {
             changeYear: false,
             changeMonth: false,
             day: null,//清空
-            min: null,
-            max: null,
+           
         })
+        if (this.props.updateYearAndMonth != null) {
+            this.props.updateYearAndMonth(this.state.year, value);
+        }
     }
 
     render() {
@@ -211,9 +126,9 @@ class DateD extends Component {
                     year={this.state.year}
                     month={this.state.month}
                     day={this.state.day}
-                    isRange={this.state.isRange}
-                    min={this.state.min}
-                    max={this.state.max}
+                    isRange={this.props.isRange}
+                    rangeBegin={this.props.rangeBegin}
+                    rangeEnd={this.props.rangeEnd}
                     dayHandler={this.dayHandler}
                     changeYear={this.state.changeYear}
                     changeMonth={this.state.changeMonth}
@@ -239,14 +154,15 @@ DateD.propTypes = {
         PropTypes.string,
     ]),//日
     isRange: PropTypes.bool,//是否为范围选择
-    min: PropTypes.oneOfType([
+   // 日期范围选择时开始值
+   rangeBegin: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
-    ]),//最小值，用于日期范围选择
-    max: PropTypes.oneOfType([
+    ]),//日期范围选择时开始值
+    rangeEnd: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
-    ]),//最大值,用于日期范围选择
+    ]),//日期范围选择时结果值
     onSelect: PropTypes.func,//选择后的事件
 
 
@@ -256,8 +172,8 @@ DateD.defaultProps = {
     month: null,
     day: null,
     isRange: false,///默认否
-    min: null,//默认为空，不属于日期范围选择
-    max: null,//默认为空，不属于日期范围选择
+    rangeBegin: null,//默认为空，日期范围选择时开始值
+    rangeEnd: null,//默认为空，日期范围选择时结果值
 
 };
 export default DateD;

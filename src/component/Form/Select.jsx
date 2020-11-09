@@ -4,242 +4,68 @@
  * 下拉框
  */
 import React, { Component } from 'react';
-
-import unit from '../libs/func.js';
-import FetchModel from '../Model/FetchModel.js';
-import validation from '../Lang/validation.js';
-import validate from '../Mixins/validate.js';
-import propsTran from "../libs/propsTran"
-import func from "../libs/func.js";
-import diff from "../libs/diff.js";
 import Label from '../Info/Label.jsx';
-import Msg from '../Info/Msg.jsx';
 import ClickAway from "../libs/ClickAway.js";
 import mixins from '../Mixins/mixins';
 import props from './config/propType.js';
 import defaultProps from "./config/defaultProps.js";
+import _ComboBox from "./baseClass/_ComboBox.jsx";
 import '../Sass/Form/Select.css';
 class Select extends Component {
   constructor(props) {
     super(props);
-
-    //对传来的数据进行格式化
-    let newData = propsTran.setValueAndText(this.props.data, this.props.valueField, this.props.textField);
     this.state = {
-      oldPropsValue: this.props.value,//保存用于匹配
-      url: this.props.url,
-      params: unit.clone(this.props.params), //参数
-      data: newData,
-      value: this.props.value,
+      show: false,//是否显示下拉框
       text: this.props.text,
-      ulShow: false, //是否显示下拉选项
-      validateClass: '', //验证的样式
-      helpShow: 'none', //提示信息是否显示
-      helpTip: validation['required'], //提示信息
-      invalidTip: '',
-      reloadData:false,
-      valueField:this.props.valueField,
-      textField:this.props.textField,
+      value: this.props.value,
+      oldPropsValue: this.props.value,//保存初始化的值
     };
-    this.validate = this.validate.bind(this);
-    this.showUpdate = this.showUpdate.bind(this);
-    this.setValue = this.setValue.bind(this);
-    this.getValue = this.getValue.bind(this);
-    this.loadData = this.loadData.bind(this);
-    this.loadError = this.loadError.bind(this);
-    this.loadSuccess = this.loadSuccess.bind(this);
     this.filterChangeHandler = this.filterChangeHandler.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onSelect = this.onSelect.bind(this);
-    this.clearHandler = this.clearHandler.bind(this);
-    this.hideOptions = this.hideOptions.bind(this);
+    this.hidePicker = this.hidePicker.bind(this);
     this.keyUpHandler = this.keyUpHandler.bind(this);
-
   }
-
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   if (nextProps.url) {
-  //     if (nextProps.url != this.props.url) {
-  //       this.loadData(nextProps.url, nextProps.params);
-  //     } else if (this.showUpdate(nextProps.params, this.props.params)) {
-  //       //如果不相同则更新
-  //       this.loadData(nextProps.url, nextProps.params);
-  //     }
-  //   } else if (nextProps.data && nextProps.data instanceof Array) {
-  //     //又传了数组,根据keyField来拿新的
-  //     let newData = []; let text=this.state.text;
-  //     for (let i = 0; i < nextProps.data.length; i++) {
-  //       let obj = nextProps.data[i];
-  //       obj.text =
-  //         nextProps.data[i][
-  //           this.props.textField ? this.props.textField : 'text'
-  //         ];
-  //       obj.value =
-  //         nextProps.data[i][
-  //           this.props.valueField ? this.props.valueField : 'value'
-  //         ];
-
-  //         if(nextProps.value==obj.value){
-  //           text=obj.text;
-  //         }
-  //       newData.push(obj);
-  //     }
-
-  //     let state={
-  //       data:nextProps.data
-  //     };
-  //     if(nextProps.value){
-
-  //       state.value=nextProps.value;
-  //       state.text=text;
-  //     }
-  //     this.setState(state); 
-  //   }
-  // }
   static getDerivedStateFromProps(nextProps, prevState) {
-    let newState = {};
-    if (nextProps.url && nextProps.params &&
-      diff(nextProps.params, prevState.params)) {//如果有url
-      newState = {
-        reloadData: true,//重新加载
-        url: nextProps.url,
-        params: func.clone(nextProps.params),
+    if (nextProps.value != prevState.oldPropsValue) {//父组件强行更新了
+      return {
+        value: nextProps.value,
+        text: nextProps.text,
+        oldPropsValue: nextProps.value
       }
     }
-    if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
-      //如果传了死数据
-      newState.data = propsTran.setValueAndText(nextProps.data, prevState.valueField, prevState.textField);
-      newState.rawData = nextProps.data;
-    }
-    if (nextProps.value != prevState.oldPropsValue) {
-      newState.value = nextProps.value;
-      newState.text = nextProps.text;
-      newState.oldPropsValue = nextProps.value;
-    }
-    if (func.isEmptyObject(newState)) {
-      return null;
-    }
-    else {
-      return newState;
-    }
+    return null;
   }
-  componentDidUpdate() {
-    if (this.state.reloadData) {
-      this.setState({
-        realData: false
-      })
-      this.loadData(this.state.url, this.state.params);
-    }
-  }
-
   componentDidMount() {
-    //如果指定url,先查询数据再绑定
-    this.loadData(this.state.url, this.state.params); //查询数据
-    this.registerClickAway(this.hideOptions, this.refs.select);//注册全局单击事件
+    this.registerClickAway(this.hidePicker, this.refs.select);//注册全局单击事件
   }
-  componentDidUpdate() { }
-  validate(value) {
-    return validate.call(this, value);
-  }
-  showUpdate(newParam, oldParam) {
-    return showUpdate.call(this, newParam, oldParam);
-  }
-  setValue(value) {
-    let text = '';
-    for (let i = 0; i < this.state.data.length; i++) {
-      if (this.state.data[i].value == value) {
-        text = this.state.data[i].text;
-        break;
-      }
-    }
-    this.setState({
-      value: value,
-      text: text
-    });
-  }
-  getValue() {
-    return this.state.value;
-  }
-  loadData(url, params) {
-    if (url) {
-      let type = this.props.httpType ? this.props.httpType : "POST";
-      type = type.toUpperCase();
-      let fetchmodel = new FetchModel(
-        url,
-        this.loadSuccess,
-        params,
-        this.loadError
-      );
-      fetchmodel.headers = this.props.httpHeaders;
-      if (this.props.contentType) {
-        //如果传contentType值则采用传入的械
-        //否则默认
-
-        fetchmodel.contentType = this.props.contentType;
-        fetchmodel.data = fetchmodel.contentType == "application/json" ? JSON.stringify(fetchmodel.data) : fetchmodel.data;
-      }
-      type == "POST" ? unit.fetch.post(fetchmodel) : unit.fetch.get(fetchmodel);
-
-      console.log("select-fetch", fetchmodel);
-    }
-  }
-  loadSuccess(data) {
-    //数据加载成功
-    let realData = data;
-    if (this.props.dataSource == null) {
-    } else {
-      realData = unit.getSource(data, this.props.dataSource);
-    }
-    let newData = [];
-    let text = this.state.text;
-    for (let i = 0; i < realData.length; i++) {
-      let obj = realData[i]; //将所有字段添加进来
-      obj.text =
-        realData[i][this.state.textField ? this.state.textField : 'text'];
-      obj.value =
-        realData[i][this.state.valueField ? this.state.valueField : 'value'];
-      if (obj.value == this.state.value) {
-        text = obj.text; //根据value赋值
-      }
-      newData.push(obj);
-    }
-    
-    this.setState({
-      data: newData,
-      value: this.state.value,
-      text: text
-    });
-  }
-  loadError(message) {
-    //查询失败
-    console.log('select-error', message);
-    Msg.error(message);
-  }
-  showOptions(type) {
+  showPicker() {
     //显示下拉选项
-
-    if (this.props.readonly) {
+    if (this.props.readOnly) {
       return;
     }
-    if (this.props.onClick != null) {
-      this.props.onClick();
-    }
     this.setState({
-      show: type == 1 ? !this.state.show : true
+      show:  true
     });
+    this.props.onClick && this.props.onClick();
     this.bindClickAway();//绑定全局单击事件
   }
-  hideOptions(event) {
+  hidePicker(event) {
     this.setState({
       show: false
     });
+    try {
+      this.refs.label.hideHelp(); //隐藏帮助信息
+    }
+    catch (e) {
+
+    }
     this.unbindClickAway();//卸载全局单击事件
   }
-
   onSelect(value, text, row) {
     //选中事件
     let newvalue = "", newtext = "";
-    if (this.state.multiple) {
+    if (this.props.multiple) {//多选
       let oldvalue = [];
       let oldtext = [];
       if (this.state.value) {
@@ -286,75 +112,55 @@ class Select extends Component {
       this.props.onSelect(value, text, this.props.name, row);
     }
   }
-
-  getComponentData() {
-    //只读属性，获取当前下拉的数据源
-    return this.state.data;
-  }
   onBlur(event) {
-
-    //todo 先隐藏
-    // this.setState({
-    //   show: false
-    // });
     if (this.props && this.props.addAbled) {
-      this.addHandler();
+      this.addHandler(event);
     }
-    try {
-      this.refs.label.hideHelp(); //隐藏帮助信息
-    }
-    catch (e) {
-
-    }
+    
   }
   keyUpHandler(event) {
     if (this.props && this.props.addAbled && event.keyCode == 13) {
       this.addHandler(event);
     }
   }
+  /**
+   * 手动输入添加
+   * @param {*} event 
+   */
   addHandler(event) {
-    let filter = this.state.data.filter((item, index) => {
+    let filter = this.props.data.filter((item, index) => {
       return item.text == event.target.value;
     });
     if (filter.length == 0) {
-      this.state.data.push({
-        value: event.target.value,
-        text: event.target.value
-      });
       this.setState({
-        data: this.state.data,
         value: event.target.value,
-        text: event.target.value
+        text: event.target.value,
+        filterValue:""//一定清空。否则出现添加空白列
       });
-      if (this.props.addHandler) {
-        this.props.addHandler(this.state.data);
-      }
+      this.props.addData&&  this.props.addData( event.target.value,  event.target.value)
+
     }
   }
   filterChangeHandler(event) {
     //筛选查询
-
-    this.setState({
+    this.refs.ul.scrollTop = 0; //回到顶部
+    this.setState({ 
       filterValue: event.target.value,
+      value:event.target.value?this.state.value:"",//如果清空了，则选择值也清空
+      text:event.target.value?this.state.text:"",
       show: true
     });
-    this.refs.ul.scrollTop = 0; //回到顶部
-  }
-  clearHandler() {
-    //清除数据
-
-    this.setState({
-      value: '',
-      text: ''
-    });
-    this.props.onSelect && this.props.onSelect('', '', this.props.name, null);
+  
+    if(!event.target.value){
+      this.props.clearHandler&&this.props.clearHandler();
+    }
+    
   }
   render() {
-
     let componentClassName = 'wasabi-form-group ' +
       (this.props.className != null ? this.props.className : ''); //组件的基本样式
     let inputProps = {
-      readOnly: this.props.readonly == true ? 'readonly' : null,
+      readOnly: this.props.readOnly == true ? 'readOnly' : null,
 
       name: this.props.name,
       placeholder:
@@ -369,14 +175,13 @@ class Select extends Component {
     }; //文本框的属性
     let control = null;
 
-    if (this.state.data && this.state.data.length > 0) {
+    if (this.props.data && this.props.data.length > 0) {
       control = (
         <ul
-          style={{ display: this.state.show == true ? 'block' : 'none' }}
           ref='ul'
         >
-          {this.state.data.map((child, i) => {
-            let reg = new RegExp(this.state.filterValue, 'i');
+          {this.props.data.map((child, i) => {
+            let reg = new RegExp("^"+this.state.filterValue, 'i');//左匹配
             if (this.state.filterValue && child.text.search(reg) == -1) {
               return;
             } else {
@@ -426,23 +231,24 @@ class Select extends Component {
     return (
 
       <div
-        className={componentClassName + this.state.validateClass}
-        ref='select'
+        className={componentClassName + this.props.validateClass}
+        ref="select"
         style={style}
       >
         <Label
-          name={this.props.label}
           ref='label'
           required={this.props.required}
+          readOnly={this.props.readOnly||this.props.disabled}
           style={this.props.labelStyle}
-        ></Label>
-        <div className={'wasabi-form-group-body'}>
-          <div className={'nice-select '}>
+          help={this.props.help}
+        >{this.props.label}</Label>
+        <div className={'wasabi-form-group-body' +(this.props.readOnly||this.props.disabled?" readOnly":"")}>
+          <div className={'combobox wasabi-select'}>
             <i
-              className={'picker-clear'}
-              onClick={this.clearHandler}
+              className={'combobox-clear'}
+              onClick={this.props.clearHandler}
               style={{
-                display: this.props.readonly
+                display: this.props.readOnly
                   ? 'none'
                   : this.state.value == '' || !this.state.value
                     ? 'none'
@@ -450,8 +256,8 @@ class Select extends Component {
               }}
             ></i>
             <i
-              className={'icon ' + (this.state.show ? 'rotate' : '')}
-              onClick={this.showOptions.bind(this, 1)}
+              className={'comboxbox-icon ' + (this.state.show ? 'rotate' : '')}
+              onClick={this.showPicker.bind(this)}
             ></i>
             <input
               type='text'
@@ -463,31 +269,30 @@ class Select extends Component {
                   ? this.state.filterValue || ''
                   : this.state.text || ''
               }
-              onClick={this.showOptions.bind(this, 2)}
+              onClick={this.showPicker.bind(this)}
               onBlur={this.onBlur}
               onChange={this.filterChangeHandler}
             />
-
-            {control}
+ <div className={"dropcontainter  select" } style={{ display: this.state.show == true ? "block" : "none" }}   >    {control}</div>
+        
           </div>
           <small
             className={'wasabi-help-block '}
             style={{
               display:
-                this.state.helpTip && this.state.helpTip != ''
-                  ? this.state.helpShow
+                this.props.inValidateText && this.props.inValidateText != ''
+                  ? this.props.inValidateShow
                   : 'none'
             }}
           >
-            <div className='text'>{this.state.helpTip}</div>
+            <div className='text'>{this.props.inValidateText}</div>
           </small>
         </div>
       </div>
     );
   }
 }
-
 Select.propTypes = props;
-Select.defaultProps = Object.assign({ type: "select", defaultProps });
+Select.defaultProps = Object.assign(defaultProps,{type:"select"});
 mixins(Select, [ClickAway]);
-export default Select;
+export default _ComboBox( Select);

@@ -27,15 +27,17 @@ label
  .wasabi-form-group-label {
     padding-right: 4px;
     height: 34px;
-    float: left;
     text-align: right;
     white-space: normal;
     display: table;
+    color:#606266;
+}
+.wasabi-form-group-label.readOnly{
+  color:#c0c4cc;
 }
 .wasabi-form-group-label  label{
       vertical-align:middle;
       display: table-cell;
-      
       overflow: hidden;
     }
     .wasabi-form-group-label  .help{
@@ -49,15 +51,21 @@ label
       display: block;
       position: absolute;
       top: 36px;
-      left: 28%;
       padding: 0px;
       text-align: left;
       background: #de2c3b;
       color: #ffffff;
       z-index: 2;
+      left:80px;
       box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
-      border-radius: 1px;
-    }
+      border-radius: 2px;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      -ms-border-radius: 2px;
+      -o-border-radius: 2px;
+      padding-left:2px;
+      padding-right: 2px;
+}
 .wasabi-form-group .wasabi-form-group-label.required  label:before {
   content: "*";
   color: #de2c3b;
@@ -70,18 +78,13 @@ label
  输入框主体
  */
 .wasabi-form-group .wasabi-form-group-body {
-   min-width: 150px;
-    float: left;
+  
     position: relative;
     flex:1;
    
   }
-  .wasabi-grid-cell .wasabi-form-group-body{
-min-width: none;
-  }
-  .wasabi-form-group-body.text{
-    width: 190px;
-  }
+ 
+ 
 /*
 普通input
 */
@@ -91,45 +94,46 @@ min-width: none;
     height: 34px;
     padding: 0px 6px;
     font-size: 14px;
-    line-height: 1.42857143;
     background-color: #fff;
     background-image: none;
-    border: 1px solid #ccc;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s; 
-    border-radius: 1px;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
     color: inherit;
     display: block;
     width: 100%;
     outline: none;
-    font-size: 14px; 
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 }
-.wasabi-form-control[disabled], .wasabi-form-control[readonly]{
-  background-color: #eee;
-  opacity: 1;
+.wasabi-form-control[disabled], .wasabi-form-control[readOnly]{
+  background-color: #f5f7fa;
+  border-color: #e4e7ed;
+  color: #c0c4cc;
   cursor: not-allowed;
 }
-.wasabi-form-control:focus {
-  border-color: #1c84c6;
-    box-shadow: none;
+.wasabi-form-control::placeholder{color:#c0c4cc;}
+.wasabi-form-control:hover{
+  border-color: #c0c4cc;
 }
-/* 下拉
-*/
-/*  box-shadow: 0px 0px 10px #dddddd;
-{
- 
-    padding-right: 42px;
-  
-} */
-.nice-select  .wasabi-form-control {
- 
-  
-    padding-right: 36px;
-  }
+.wasabi-form-control:focus {
+  border-color: #409eff;
+}
 
+.wasabi-form-control[disabled]:hover, .wasabi-form-control[readOnly]:hover{
+  background-color: #f5f7fa;
+  border-color: #e4e7ed;
+  color: #c0c4cc;
+  cursor: not-allowed;
+}
+.wasabi-form-control[disabled]:focus, .wasabi-form-control[readOnly]:focus{
+  background-color: #f5f7fa;
+  border-color: #e4e7ed;
+  color: #c0c4cc;
+  cursor: not-allowed;
+}
 /*
 input验证失败
 */
@@ -174,15 +178,7 @@ input验证通过
 }
 
 
-/*
-只读
-*/
-.wasabi-form-control input[readonly], .wasabi-form-control textarea[readonly] {
-  background-color: #eee;
-  color: #f0f2f3;
-  border-color: transparent;
-  cursor: not-allowed;
-}
+
 /*
  错误提示信息
 */

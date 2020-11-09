@@ -43,7 +43,7 @@ class LinkButton extends Component {
     window.localStorage.setItem('wasabidrageleProps', JSON.stringify(newele));
   }
   render() {
-    let className = 'wasabi-linkbutton '; //按钮样式
+    let className = 'wasabi-linkbutton '+this.props.theme+" "; //按钮样式
     if (this.props.className) {
       //自定义class
       className += ' ' + this.props.className;
@@ -63,7 +63,7 @@ class LinkButton extends Component {
         <a
           draggable={this.props.draggable}
           onDragStart={this.dragStartHandler}
-          title={this.props.tip}
+          title={this.props.title}
           href={this.props.href}
           onClick={this.clickHandler}
           className={className + ' onlyicon'}
@@ -87,7 +87,7 @@ class LinkButton extends Component {
             ref='link'
             draggable={this.props.draggable}
             onDragStart={this.dragStartHandler}
-            title={this.props.tip}
+            title={this.props.title}
             href={this.props.href}
             onClick={this.clickHandler}
             onMouseOut={this.onMouseOut}
@@ -101,7 +101,7 @@ class LinkButton extends Component {
               className='wasabi-linkbutton-text right'
               style={this.props.textStyle}
             >
-              {this.props.title}
+              {this.props.children}
             </div>
             <i
               className={' ' + this.props.iconCls}
@@ -118,7 +118,7 @@ class LinkButton extends Component {
             ref='link'
             draggable={this.props.draggable}
             onDragStart={this.dragStartHandler}
-            title={this.props.tip}
+            title={this.props.title}
             href={this.props.href}
             onClick={this.clickHandler}
             onMouseOut={this.onMouseOut}
@@ -149,7 +149,7 @@ class LinkButton extends Component {
             ref='link'
             draggable={this.props.draggable}
             onDragStart={this.dragStartHandler}
-            title={this.props.tip}
+            title={this.props.title}
             href={this.props.href}
             onClick={this.clickHandler}
             onMouseOut={this.onMouseOut}
@@ -180,7 +180,7 @@ class LinkButton extends Component {
             ref='link'
             draggable={this.props.draggable}
             onDragStart={this.dragStartHandler}
-            title={this.props.tip}
+            title={this.props.title}
             href={this.props.href}
             onClick={this.clickHandler}
             onMouseOut={this.onMouseOut}
@@ -218,7 +218,16 @@ LinkButton.propTypes = {
   iconCls: PropTypes.string, //图片
   iconAlign: PropTypes.oneOf(['left', 'right', 'rightTop', 'rightBottom']), //图片位置
   iconColor: PropTypes.string,
-
+  theme: PropTypes.oneOf([
+    //主题
+    'primary',
+    'default',
+    'success',
+    'info',
+    'warning',
+    'danger',
+    'cancel'
+  ]),
   textStyle: PropTypes.object,
   href: PropTypes.string, //链接地址
   onClick: PropTypes.func, //单击地址
@@ -231,6 +240,7 @@ LinkButton.defaultProps = {
   iconCls: null, //默认为空
   iconAlign: 'left', //图标位置
   iconColor: null,
+  theme: 'primary',
   textStyle: {},
 
   href: null, //连接地址

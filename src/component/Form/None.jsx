@@ -14,11 +14,10 @@ class   None extends Component {
      this.state={
         value:this.props.value,
         text:this.props.text,
-
         validateClass:"",//验证的样式
-        helpShow:"none",//提示信息是否显示
-        helpTip:"",//提示信息
-        invalidTip:"",
+        inValidateShow:"none",//提示信息是否显示
+        inValidateText:"",//提示信息
+
      }
  }
  
@@ -39,5 +38,5 @@ class   None extends Component {
 
 
 None. propTypes=propType;
-None.defaultProps=Object.assign({type:"none"},defaultProps);
+None.defaultProps=Object.assign(defaultProps,{type:"none"});
 export default None;

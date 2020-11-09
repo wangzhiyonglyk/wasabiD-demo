@@ -8,7 +8,7 @@ class  FormModel {
         this.type = type;//控件类型
         this.name = name;// 数据key名称，唯一
         this.value=value;///默认值
-        this.readonly=false;///，是否只读，默认为 false
+        this.readOnly=false;///，是否只读，默认为 false
         this.onClick=null//单击事件
         this.onChange=null,//值改变事件
         this.className = null; // 需要额外添加的 className
