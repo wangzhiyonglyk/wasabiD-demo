@@ -53,8 +53,8 @@ desc:面板组件样式
 
 .panel-danger>.panel-heading{
   color: #fff;
-  background-color: #ed5565;
-  border-color: #ed5565;
+  background-color: #f56c6c;
+  border-color: #f56c6c;
 }
 
 .wasabi-panel .panel-buttons

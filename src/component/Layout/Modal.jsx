@@ -107,16 +107,11 @@ class Modal extends React.Component {
     }
 
     render() {
-
-        if (!this.state.visible) {
-            return null;
-        }
+        //因为要提前调用children内容，所以不能在visible=false时，返回null
         let activename = "wasabi-modal-container ";
         if (this.state.visible == true) {
             activename = "wasabi-modal-container active";
         }
-
-
         let footer = null;
         let buttons = [];
         if (this.props.OKHandler) {

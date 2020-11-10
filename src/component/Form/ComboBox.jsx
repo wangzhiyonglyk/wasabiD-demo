@@ -3,8 +3,6 @@
  * desc:下拉框容器
  *
  */
-
-
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import DatePicker from "./DatePicker.jsx";
@@ -53,9 +51,6 @@ class ComboBox extends Component {
 
         let control = null;
         switch (this.props.type) {
-            case "muti":
-                control = this.renderMuti();
-                break;
             case "select":
                 control = this.renderSelect();
                 break;

@@ -45,7 +45,7 @@ class Select extends Component {
       return;
     }
     this.setState({
-      show:  true
+      show:  !this.state.show
     });
     this.props.onClick && this.props.onClick();
     this.bindClickAway();//绑定全局单击事件
@@ -115,6 +115,9 @@ class Select extends Component {
   onBlur(event) {
     if (this.props && this.props.addAbled) {
       this.addHandler(event);
+    }
+    else{
+      this.props.onBlur&&this.props.onBlur();
     }
     
   }
@@ -235,13 +238,7 @@ class Select extends Component {
         ref="select"
         style={style}
       >
-        <Label
-          ref='label'
-          required={this.props.required}
-          readOnly={this.props.readOnly||this.props.disabled}
-          style={this.props.labelStyle}
-          help={this.props.help}
-        >{this.props.label}</Label>
+        <Label ref="label" readOnly={this.props.readOnly||this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
         <div className={'wasabi-form-group-body' +(this.props.readOnly||this.props.disabled?" readOnly":"")}>
           <div className={'combobox wasabi-select'}>
             <i

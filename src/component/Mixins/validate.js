@@ -36,14 +36,19 @@ export default {
 
                         if (regexp[this.props.type]) {//系统存在这个类型
                             if(this.props.type=="daterange"){
-                                //
+                                //日期可以包含时间，
                                 isvalidate = regexp[this.props.type].test(value)||regexp["datetimerange"].test(value);
+                            }
+                            else  if(this.props.type=="date"){
+                                //日期可以包含时间，
+                                isvalidate = regexp[this.props.type].test(value)||regexp["datetime"].test(value);
                             }
                             else{
                                 if (typeof regexp[this.props.type] == "function") {
                                     isvalidate = regexp[this.props.type](value);
                                 }
                                 else {
+                                  
                                     isvalidate = regexp[this.props.type].test(value);
                                 }
                                

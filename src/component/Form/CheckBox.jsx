@@ -34,7 +34,7 @@ class CheckBox extends Component {
                 return <li style={this.props.style} className={this.props.className} key={i} onClick={this.props.onSelect.bind(this, child.value, child.text, child)}  >
                     <input type="checkbox" id={"checkbox" + this.props.name + child.value}
                         className={ !checked&&this.props.half ? "checkbox halfcheck" : "checkbox"}  {...subProps} onChange={() => { }}></input>
-                    <label   className="checkbox-label"  checked={checked} readOnly={this.props.readOnly||this.props.disabled}></label>
+                    <label   className="checkbox-label"  checked={checked} readOnly={this.props.readOnly||this.props.disabled} ></label>
                     <div className={"checktext "+ (checked?" checked":"")} >{child.text}</div>
                 </li >
             });
@@ -48,14 +48,15 @@ class CheckBox extends Component {
         }
         return (
             <div className={componentClassName + this.props.validateClass} style={style}>
-                <Label ref="label" readOnly={this.props.readOnly||this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
+                 <Label ref="label" readOnly={this.props.readOnly||this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
                 <div className={"wasabi-form-group-body"} style={{ minWidth: 0, width: !this.props.label ? "100%" : null }}>
                     <ul className="wasabi-checkul" style={{ marginTop: 6 }}>
                         {
                             control
                         }
                     </ul>
-                    <small className={"wasabi-help-block "} style={{ display: (this.props.inValidateText && this.props.inValidateText != "") ? this.props.inValidateShow : "none" }}><div className="text">{this.props.inValidateText}</div></small>
+                    <small className={"wasabi-help-block "} style={{ display: (this.props.inValidateText && this.props.inValidateText != "") ?
+                     this.props.inValidateShow : "none" }}>{this.props.inValidateText}</small>
                 </div>
             </div>
         )

@@ -95,7 +95,7 @@ value:"你好"
     return <div>
 <br></br>
 <button> 测试</button>
-<Button key="1" theme="default" size="small"  onClick={this.onClick}>信息按钮</Button>
+{/* <Button key="1" theme="default" size="small"  onClick={this.onClick}>信息按钮</Button>
 <Button  key="2" theme="primary"   size="mini" onClick={this.onClick}>信息按钮</Button>
 <Button  key="3" theme="info"   onClick={this.onClick}>信息按钮</Button>
 <Button   key="4" theme="success"size="large" disabled={true} onClick={this.onClick}>信息按钮</Button>
@@ -107,15 +107,33 @@ value:"你好"
 <LinkButton  key="13"  iconCls={"icon-txt"} theme="info"   onClick={this.onClick}>设计要求</LinkButton>
 <LinkButton   key="14"  iconCls={"icon-txt"} theme="success"size="large" disabled={true} onClick={this.onClick}>设计要求</LinkButton>
 <LinkButton  key="15"  iconCls={"icon-txt"} theme="warning" onClick={this.onClick}>设计要求</LinkButton>
-<LinkButton  key="16"  iconCls={"icon-txt"}  style={{fontSize:18}}theme="danger" title="查询" onClick={this.onClick}></LinkButton>
+<LinkButton  key="16"  iconCls={"icon-txt"}  style={{fontSize:18}}theme="danger" title="查询" onClick={this.onClick}></LinkButton> */}
 
     {/* <CheckBox  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></CheckBox> */}
     {/* <Radio  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Radio> */}
     {/* <Select  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Select> */}
-    <Input  placeholder="请输入" value={this.state.value} addAbled={true} required={true} type="text" label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Input>
-    <Input  placeholder="请输入" readOnly={true} required={true} type="text" label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Input>
-    <Input  type="daterange"  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Input>
-    <Input  type="datetimerange" readOnly={true} label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Input>
+    <Input key="1"  placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="datetimerange" label="你好" help="这个性别" name={"dd"}
+     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
+     <Input key="2"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="datetime" label="你好" help="这个性别" name={"dd"}
+     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
+    
+    <Input  key="3"  placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="timerange" label="你好" help="这个性别" name={"dd"}
+     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
+    
+    <Input  key="4"  placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="date" label="你好" help="这个性别" name={"dd"}
+     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
+    
+    <Input key="5"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="time" label="你好" help="这个性别" name={"dd"}
+     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
+       <Input key="6"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="daterange" label="number" help="这个性别" name={"dd"}
+     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
+      <Input key="7"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="select" label="number" help="这个性别" name={"dd"}
+     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
+      <Input key="8"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="picker" label="number" help="这个性别" name={"dd"}
+     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
+      <Input key="9"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="treepicker" label="number" help="这个性别" name={"dd"}
+     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
+   
     {/* <Input  type="text" label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Input> */}
       {/* <Button onClick={this.onClick.bind(this)}>单击</Button>
    <Upload ref="upload"></Upload>

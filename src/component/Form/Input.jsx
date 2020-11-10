@@ -60,7 +60,6 @@ constructor(props)
         }
 
         else if (type == "muti" || type == "select" || type == "datetime" || type == "time" ||type=="timerange"|| type == "date" || type == "daterange" || type == "datetimerange" || type == "picker" || type == "treepicker") {//下拉组件
-            console.log("timerange1")
             control = <ComboBox ref="input" {...props} ></ComboBox>
         }
 

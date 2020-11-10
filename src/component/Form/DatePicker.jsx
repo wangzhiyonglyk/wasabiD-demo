@@ -111,6 +111,7 @@ class DatePicker extends Component {
 
 
   onBlur() {
+    this.validate(this.state.value);
     this.refs.label.hideHelp(); //隐藏帮助信息
   }
 
@@ -168,16 +169,14 @@ class DatePicker extends Component {
     }
   }
   showPicker(e) {
-    if (this.state.show) {
-      return;
-    }
+    
     //显示选择
     if (this.props.readOnly) {
       //只读不显示
       return;
     } else {
       this.setState({
-        show: true
+        show:  !this.state.show
       });
     }
 
@@ -197,6 +196,7 @@ class DatePicker extends Component {
       value: value,
       text: text
     });
+
     this.props.onSelect && this.props.onSelect(value, text, this.props.name, null);
   }
   clearHandler() {
@@ -424,15 +424,15 @@ class DatePicker extends Component {
         break;
       case "datetime":
         control = this.renderDateTime();
-        controlDropClassName = "date time";
+        controlDropClassName = "datetime";
         break;
       case "daterange":
         control = this.renderDateRange();
-        controlDropClassName = "range";
+        controlDropClassName = "daterange";
         break;
       case "datetimerange":
         control = this.renderDateTimeRange();
-        controlDropClassName = "timerange";
+        controlDropClassName = "datetimerange";
         break;
     }
 
@@ -484,13 +484,7 @@ class DatePicker extends Component {
         id={this.state.cotainerid}
         style={style}
       >
-        <Label
-          name={this.props.label}
-          readOnly={this.props.readOnly||this.props.disabled}
-          ref='label'
-          style={this.props.labelStyle}
-          required={this.props.required}
-        ></Label>
+         <Label ref="label" readOnly={this.props.readOnly||this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
         <div
           className={"wasabi-form-group-body " +(this.props.readOnly||this.props.disabled?" readOnly":"")}
           style={{ width:width}}
@@ -509,7 +503,7 @@ class DatePicker extends Component {
             ></i>
             <i
               className={"comboxbox-icon datepicker  "}
-              onBlur={this.onBlur}
+          
               onClick={this.showPicker.bind(this)}
             ></i>
             <input
@@ -519,6 +513,7 @@ class DatePicker extends Component {
               onFocus={e => this.onFocus(e)}
               onClick={this.showPicker.bind(this)}
               onChange={this.changeHandler}
+              onBlur={this.onBlur}
             />
             <div
               ref="pickerc"

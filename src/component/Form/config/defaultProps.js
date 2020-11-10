@@ -26,6 +26,7 @@ export default {
               //其他属性 text
             rows:5,//textarea
             cols:1,
+            resize:false,
             min:null,
             max:null,
             onClick:null,
@@ -55,5 +56,7 @@ export default {
             thirdParamsKey:null,
             hotTitle:"热门选择",
             hotData:null,
+            idField:"id",
+            simpleData:false,//树组件
            
         }

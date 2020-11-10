@@ -12,17 +12,16 @@ desc:日期选择样式
 
 /*下拉图标*/
 .combobox .comboxbox-icon{
-  font-family: 'icomoon' !important;
+  font-family: icomoon;
   font-style: normal;
   display: block;
-  width: 32px;
-  height: 34px;
-
-  border-left: 1px solid #dcdfe6;
+  width: 22px;
+  height: 40px;
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 8px;
+  top: 3px;
   cursor: pointer;
+  text-align: center;
 
 }
 .wasabi-form-group-body.readOnly .combobox .comboxbox-icon{
@@ -34,12 +33,12 @@ desc:日期选择样式
   transition: top,-webkit-transform 0.6s;
   transition: top,transform 0.6s;
   transition:  top,transform 0.6s,-webkit-transform 0.6s;
-  font-size: 15px;
+  font-size: 16px;
   content: "\E915";
   position: absolute;
   top: 8px;
   left: 8px;
-  color: #d8d8d8;
+  color: #e4e7ed;
 }
 .combobox .comboxbox-icon.datepicker:before{
   left: 6px;
@@ -59,7 +58,7 @@ desc:日期选择样式
   width: 34px;
   height: 34px;
 
-  border-left: 1px solid #d8d8d8;
+  border-left: 1px solid #e4e7ed;
   position: absolute;
   right: 0px;
   top: 0px;
@@ -68,7 +67,7 @@ desc:日期选择样式
 .combobox .pickeradd:before
 {
   content: "\e93e";
-  color: #d8d8d8;
+  color: #e4e7ed;
   font-size: 18px;
   padding: 0px;
   position: absolute;
@@ -78,16 +77,17 @@ desc:日期选择样式
 }
 /*清空图标*/
 .combobox .combobox-clear{
-  font-family: 'icomoon' !important;
+  font-family: icomoon;
   font-style: normal;
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
   position: absolute;
-  right: 36px;
-  top: 6px;
+  right: 32px;
+  top: 9px;
   cursor: pointer;
-
 }
+
+
 .combobox .combobox-clear:before{
   font-size:16px;
   content: "\e90c";
@@ -102,7 +102,7 @@ desc:日期选择样式
   position: absolute;
   overflow: visible;
   z-index:2;
-  top:42px;
+  top:44px;
   border:1px solid #e4e7ed;
   border-radius: 4px;
   box-shadow:0 2px 12px 0 rgba(0,0,0,.1);
@@ -143,8 +143,8 @@ desc:日期选择样式
 
 }
 .combobox .time{
-  width: 390px;
-  height: 246px;
+  width: 220px;
+  height: 220px;
 }
 .combobox .date.time {
   width: 250px;
@@ -161,7 +161,8 @@ desc:日期选择样式
 }
 .combobox .timerange{
   width:502px;
-  height:290px;
+  height: 223px;
+
 }
 .combobox .range.default
 {
@@ -197,7 +198,7 @@ desc:日期选择样式
 {
   width:210px;
   height:auto;
-  overflow: visible;
+
 
 
 }
@@ -207,7 +208,7 @@ desc:日期选择样式
 {
   width:410px;
   height:527px;
-  overflow: visible;
+  
 
 
 }
@@ -227,17 +228,7 @@ desc:日期选择样式
 .combobox .gridpicker{
   width:410px;
   height:527px;
-  padding:0px;
-  margin: 0px;;
-  display: none;
-  position: absolute;
-  left: 0px;
-  z-index:2;
-  top:34px;
-  border:1px solid #d8d8d8;
-  box-shadow: 0px 0px 10px #dddddd;
-  background: white;
-  overflow: auto;
+ 
 }
 .combobox .gridpicker.default
 {
@@ -255,17 +246,7 @@ desc:日期选择样式
 .combobox .treepicker{
   width:250px;
   height:400px;
-  padding:0px;
-  margin: 0px;;
-  display: none;
-  position: absolute;
-  left: 0px;
-  z-index:2;
-  top:34px;
-  border:1px solid #d8d8d8;
-  box-shadow: 0px 0px 10px #dddddd;
-  background: white;
-  overflow: auto;
+
 }
 .combobox .treepicker.default
 {
@@ -286,7 +267,6 @@ desc:日期选择样式
   display: block;
  width: 100%;
   height:40px;
-  border-top: 1px solid #f0f0f0;
   border-bottom: none;
   text-align: right;
   padding-top: 5px;

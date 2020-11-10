@@ -18,8 +18,6 @@ class Time extends Component {
         this.minuteHandler = this.minuteHandler.bind(this);
 
     }
-
-
     getValue() {//获取值
         let value = (this.state.hour * 1 >= 10 ? this.state.hour : "0" + this.state.hour) + ":" + (this.state.minute * 1 >= 10 ? this.state.minute : "0" + this.state.minute)
             + (this.props.hideSecond * 1 ? "" : ":" + (this.state.second * 1 >= 10 ? this.state.second : "0" + this.state.second));
@@ -86,7 +84,7 @@ class Time extends Component {
             if (this.props.onSelect != null) {
                 //todo 太麻烦，后期改
                 value = this.formatValue((this.state.hour * 1 < 10 ? "0" + this.state.hour : this.state.hour) + ":" + (value * 1 < 10 ? "0" + value : value) + ":00")
-                this.props.onSelect(value, value, this.props.name, null);
+                this.props.onSelect(value, value, this.props.name, true);
             }
 
         })

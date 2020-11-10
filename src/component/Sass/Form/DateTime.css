@@ -239,7 +239,7 @@ float: left;
     width: 240px;
     background: #ffffff;
     padding:10px;
-    border: 1px solid #D8D8D8;
+    border: 1px solid #e4e7ed;
     border-radius:5px ;
     -webkit-border-radius:5px ;
     -moz-border-radius:5px ;
@@ -248,16 +248,16 @@ float: left;
     box-shadow: 0 0 20px #ddd;
     height: 220px;
     white-space: pre-wrap;
-    z-index: 1;
     text-align: left;
     padding-left: 15px;
+    z-index: 1;
+  }
+
+.timerange .wasabi-time-container{
+  border :none;
+  z-index: auto;
 }
-.wasabi-time-container *{
-    box-sizing: border-box;
-    margin: 0 auto;
-    padding: 0;
-  
-}
+
 .wasabi-time-container ul{
   list-style: none;
 }
@@ -293,7 +293,7 @@ float: left;
 }
 .wasabi-time-container .time-container{
      display: none;
-    border: 1px solid #d8d8d8;
+    border: 1px solid #e4e7ed;
     background: #ffffff;
     position: absolute;
     top: 40px;
@@ -322,7 +322,7 @@ float: left;
   height: 500px;
 }
 .wasabi-time-container .time-container::after {
-  border-color: transparent transparent #c9cbce;
+  border-color: transparent transparent #dcdfe6;
   top: -20px;
 }
 .wasabi-time-container .time-container::before, .wasabi-time-container .time-container::after {

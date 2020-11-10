@@ -27,6 +27,7 @@ export default {
         //其他属性 text
         rows:PropTypes.number,//textarea
         cols:PropTypes.number,//textarea
+        resize:PropTypes.bool,//是否可以拖动大小
         min:PropTypes.number,//最小值,最小长度,最少选项
         max:PropTypes.number,//最大值,最大长度,最多选项
         onClick:PropTypes.func,//单击事件
@@ -55,4 +56,5 @@ export default {
         hotTitle:PropTypes.string,//热门选择标题
         hotData:PropTypes.array,//热门选择的数据
         idField:PropTypes.string,//数据字段文本名称
+        simpleData:PropTypes.bool,//树组件是否启用简单数据格式
 }

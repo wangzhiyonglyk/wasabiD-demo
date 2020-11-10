@@ -41,15 +41,15 @@ class Radio extends Component {
 
         return (
             <div className={componentClassName + this.state.validateClass} style={style}>
-                <Label name={this.props.label} readOnly={this.props.readOnly||this.props.disabled} hide={this.props.hide} style={this.props.labelStyle} required={this.props.required}></Label>
+             <Label ref="label" readOnly={this.props.readOnly||this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
                 <div className={"wasabi-form-group-body"} style={{ minWidth: 0, width: !this.props.label ? "100%" : null }}>
                     <ul className="wasabi-checkul">
                         {
                             control
                         }
                     </ul>
-                    <small className={"wasabi-help-block "}
-                        style={{ display: (this.state.inValidateText && this.state.inValidateText != "") ? this.state.inValidateShow : "none" }}><div className="text">{this.state.inValidateText}</div></small>
+                    <small className={"wasabi-help-block "} style={{ display: (this.props.inValidateText && this.props.inValidateText != "") ?
+                     this.props.inValidateShow : "none" }}>{this.props.inValidateText}</small>
                 </div>
             </div>
 

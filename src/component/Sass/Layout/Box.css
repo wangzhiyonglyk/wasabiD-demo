@@ -51,7 +51,7 @@
     color: #FFFFFF;
  }
  .box-title .label.label-danger{
-    background-color: #ed5565;
+    background-color: #f56c6c;
     color: #FFFFFF;
  }
  .box-content {
@@ -84,5 +84,5 @@
     color: #1ab394;
  }
  .text-danger{
-    color: #ed5565;
+    color: #f56c6c;
  }

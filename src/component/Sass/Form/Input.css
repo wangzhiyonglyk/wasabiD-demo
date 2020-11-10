@@ -8,16 +8,14 @@ desc:表单输入框样式
 */
 @import url("../base.css");
 .wasabi-form-group {
-  padding-left:0px;
-  padding-right:10px;
-  padding-bottom: 10px;
+  padding-left: 0px;
+  margin-right: 10px;
   position: relative;
-  margin: 0px;
+  margin-bottom: 22px;
   display: flex;
   float: left;
   white-space: nowrap;
-  min-height: 45px;
-  
+  height: 40px;
 }
 
 /*
@@ -26,10 +24,11 @@ label
 
  .wasabi-form-group-label {
     padding-right: 4px;
-    height: 34px;
+    height: 40px;
+    line-height: 40px;
     text-align: right;
     white-space: normal;
-    display: table;
+   
     color:#606266;
 }
 .wasabi-form-group-label.readOnly{
@@ -37,7 +36,6 @@ label
 }
 .wasabi-form-group-label  label{
       vertical-align:middle;
-      display: table-cell;
       overflow: hidden;
     }
     .wasabi-form-group-label  .help{
@@ -45,30 +43,34 @@ label
       color: #666666;
     }
     .wasabi-form-group-label .help:hover{
-      color: #de2c3b;
+      color: #f56c6c;
     }
     .wasabi-form-group-label .heip-text {
       display: block;
       position: absolute;
-      top: 36px;
-      padding: 0px;
+      top: 40px;
+      padding: 0;
       text-align: left;
-      background: #de2c3b;
-      color: #ffffff;
+      /* background: #f56c6c; */
+      color: #f56c6c;
       z-index: 2;
-      left:80px;
-      box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+      left: 80px;
+      /* box-shadow: 4px 4px 8px rgba(0,0,0,.3); */
       border-radius: 2px;
       -webkit-border-radius: 2px;
       -moz-border-radius: 2px;
       -ms-border-radius: 2px;
       -o-border-radius: 2px;
-      padding-left:2px;
+      padding-left: 2px;
       padding-right: 2px;
+      height: 20px;
+      line-height: 20px;
+      font-size: 12px;
+    
 }
 .wasabi-form-group .wasabi-form-group-label.required  label:before {
   content: "*";
-  color: #de2c3b;
+  color: #f56c6c;
   vertical-align: middle;
   font-size: 14px;
 
@@ -91,7 +93,7 @@ label
 .wasabi-form-control {
     display: block;
     width: 100%;
-    height: 34px;
+    height: 40px;
     padding: 0px 6px;
     font-size: 14px;
     background-color: #fff;
@@ -138,42 +140,45 @@ label
 input验证失败
 */
 .wasabi-has-error .wasabi-form-control{
-  border-color: #ed5565;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  border-color: #f56c6c;
+ 
 
 }
-/*
-input验证失败
-*/
+
 .wasabi-has-error .checkbox-label{
-  border-color: #ed5565!important;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  border-color: #f56c6c;
+ 
 
 }
 
 .wasabi-has-error .wasabi-radio-btn{
-  border-color: #ed5565;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  border-color: #f56c6c;
+ 
 
 }
+
+.wasabi-has-error  .timeinput{
+  border: 1px solid #dcdfe6;
+}
+
 /*
 input验证通过
 */
 .wasabi-has-success .wasabi-form-control {
   border-color: #1c84c6;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+ 
   
 }
 
 .wasabi-has-success input[type="checkbox"]{
   border-color: #1c84c6;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+ 
 
 }
 
 .wasabi-has-success input[type="radio"]{
   border-color: #1c84c6;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+ 
 
 }
 
@@ -184,73 +189,16 @@ input验证通过
 */
 .wasabi-help-block
 {
-  position: absolute;
-  width: 120px;
-  height: 20px;
-  background: #ed5565;
-  color: #ffffff;
-  border-radius: 2px;
-  white-space: nowrap;
-  bottom: 17px;
-  left: 105%;
-  overflow: visible;
-  z-index: 2;
-  text-align: center;
-  line-height: 20px;
-  font-size: 14px;
-  top: 5px;
-
-}
-.wasabi-help-block .text{
-  position: absolute;
-  background: #de2c3b;
-  width: 100%;
+  color: #f56c6c;
+  display: none;
   white-space: pre-wrap;
-}
-.wasabi-help-block:before {
-  content: "1111111";
-  color: transparent;
-  border: 5px solid transparent;
-  border-right: 8px solid #de2c3b;
-  width: 0px;
-  height: 0px;
-  position: absolute;
-  top: 5px;
-  left: -10px;
-
-}
-/*
-靠近右侧的
-*/
-.wasabi-help-block.right {
-  position: absolute;
-  width: 120px;
-  height: 20px;
-  background: #de2c3b;
-  color: #ffffff;
-  border-radius: 2px;
-  top: -28px;
-  left: 85px;
   overflow: visible;
   z-index: 2;
-  text-align: center;
-  line-height: 20px;
-  font-size: 14px;
-}
-.wasabi-help-block.right .text{
-  bottom: 0px;
-}
-.wasabi-help-block.right:before {
-  content: "1111111";
-  color: transparent;
-  border: 5px solid transparent;
-  border-top: 8px solid #de2c3b;
-  width: 0px;
-  height: 0px;
+  font-size: 12px;
   position: absolute;
-  top:19px;
-  left: 0px;
-
+  top: 100%;
+  padding-top: 4px;
+ 
 }
 
 /*
@@ -282,7 +230,7 @@ input验证通过
 .wasabi-form-group-body .invalid:before{
   font-size:16px;
   content: "\e918";
-  color: #de2c3b;
+  color: #f56c6c;
 
 }
 

@@ -6,7 +6,6 @@
  */
 import React, { Component } from "react";
 import Tree from "../Data/Tree.jsx";
-import validation from "../Lang/validation.js";
 import Label from "../Info/Label.jsx";
 import ClickAway from "../libs/ClickAway.js";
 import mixins from '../Mixins/mixins';
@@ -36,6 +35,7 @@ class TreePicker extends Component {
     componentDidMount() {
         this.registerClickAway(this.hidePicker, this.refs.picker);//注册全局单击事件
     }
+
     showPicker() {//显示选择
         if (this.props.readOnly) {
             //只读不显示
@@ -43,7 +43,7 @@ class TreePicker extends Component {
         }
         else {
             this.setState({
-                show: true
+                show:  !this.state.show
             })
         }
         this.bindClickAway();//绑定全局单击事件
@@ -55,7 +55,7 @@ class TreePicker extends Component {
         this.refs.label.hideHelp();//隐藏帮助信息
         this.unbindClickAway();//卸载全局单击事件
     }
-    onSelect() {
+    onSelect(checked, nodeid, nodeText, children, row, name) {
         let data = this.refs.tree.getChecked();
         let value = [], text = [];
         if (data && data.length > 0) {
@@ -69,7 +69,7 @@ class TreePicker extends Component {
             text: text.join(","),
 
         });
-        this.props.onSelect && this.props.onSelect(value, text, name);
+        this.props.onSelect && this.props.onSelect(value.join(","), text.join(","), children, row, this.props.name);
 
     }
     render() {
@@ -91,12 +91,12 @@ class TreePicker extends Component {
             style.display = "flex";
         }
         return <div className={componentClassName + this.props.className + " " + this.props.validateClass} ref="picker" style={style}>
-            <Label name={this.props.label} readOnly={this.props.readOnly||this.props.disabled} ref="label" style={this.props.labelStyle} required={this.props.required}></Label>
-            <div className={"wasabi-form-group-body" +(this.props.readOnly||this.props.disabled?" readOnly":"")} style={{ width: !this.props.label ? "100%" : null }}>
+            <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
+            <div className={"wasabi-form-group-body" + (this.props.readOnly || this.props.disabled ? " readOnly" : "")} style={{ width: !this.props.label ? "100%" : null }}>
                 <div className="combobox"    >
-                    <i className={"combobox-clear "} onClick={this.clearHandler.bind(this)} style={{ display: this.props.readOnly ? "none" : (this.state.value == "" || !this.state.value) ? "none" : "inline" }}></i>
+                    <i className={"combobox-clear "} onClick={this.props.clearHandler.bind(this)} style={{ display: this.props.readOnly ? "none" : (this.state.value == "" || !this.state.value) ? "none" : "inline" }}></i>
                     <i className={"comboxbox-icon  " + (this.state.show ? "rotate" : "")} onClick={this.showPicker.bind(this, 1)}></i>
-                    <input type="text" {...inputProps} value={this.state.text} onClick={this.showPicker.bind(this)} onChange={() => { }} />
+                    <input type="text" {...inputProps} value={this.state.text} onBlur={this.props.onBlur} onClick={this.showPicker.bind(this)} onChange={() => { }} />
                     <div className={"dropcontainter treepicker  "} style={{ height: this.props.height, display: this.state.show == true ? "block" : "none" }}  >
                         <Tree
                             ref="tree"
@@ -104,7 +104,7 @@ class TreePicker extends Component {
                              * 包括了simpleData
                              */
                             {...this.props}
-                            data={this.state.data} onChecked={this.onSelect.bind(this)}
+                            data={this.props.data} onChecked={this.onSelect.bind(this)}
                             checkAble={true}
                             inputValue={this.state.value}
 
@@ -112,7 +112,8 @@ class TreePicker extends Component {
                     </div>
                 </div>
 
-                <small className={"wasabi-help-block "} style={{ display: (this.props.inValidateText && this.props.inValidateText != "") ? this.props.inValidateShow : "none" }}>{this.props.inValidateText}</small>
+                <small className={"wasabi-help-block "} style={{ display: (this.props.inValidateText && this.props.inValidateText != "") ?
+                     this.props.inValidateShow : "none" }}>{this.props.inValidateText}</small>
             </div>
         </div>
 

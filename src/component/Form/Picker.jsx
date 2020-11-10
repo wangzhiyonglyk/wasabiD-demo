@@ -13,17 +13,23 @@ import FetchModel from "../Model/FetchModel.js";
 import PickerModel from "../Model/PickerModel.js";
 import Label from "../Info/Label.jsx";
 import ClickAway from "../libs/ClickAway.js";
+import diff from "../libs/diff.js";
 import mixins from '../Mixins/mixins';
+import validate from "../Mixins/validate.js";
 import propType from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
 import("../Sass/Form/picker.css");
 class Picker extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        //因为在_combobox下已经对处理进行了处理，所以此处不需要再进加工
+        let realData = func.clone(this.props.data);
         this.state = {
             show: false,//是否显示下拉框
             text: this.props.text,
             value: this.props.value,
+            data: realData,
+            rawData: realData,
             oldPropsValue: this.props.value,//保存初始化的值
 
             provinceActiveIndex: null,//一级激活节点下标
@@ -38,10 +44,8 @@ class Picker extends Component {
 
         }
         this.changeHandler = this.changeHandler.bind(this);
-        this.onBlur = this.onBlur.bind(this);
         this.showPicker = this.showPicker.bind(this);
         this.hidePicker = this.hidePicker.bind(this);
-
         this.setPickerModel = this.setPickerModel.bind(this);
         this.activeHot = this.activeHot.bind(this);
         this.flodChildren = this.flodChildren.bind(this);
@@ -49,19 +53,30 @@ class Picker extends Component {
         this.loadCitySuccess = this.loadCitySuccess.bind(this);
     }
     static getDerivedStateFromProps(nextProps, prevState) {
+        let newState = {};
         if (nextProps.value != prevState.oldPropsValue) {//父组件强行更新了
-            return {
+            newState = {
                 value: nextProps.value,
                 text: nextProps.text,
                 oldPropsValue: nextProps.value
             }
+        }
+        if (nextProps.data && diff(nextProps.data, prevState.rawData)) {
+            let realData = func.clone(nextProps.data);
+            newState = {
+                data: realData,
+                rawData: realData
+            }
+        }
+        if (!func.isEmptyObject(newState)) {
+            return newState;
         }
         return null;
     }
     componentDidMount() {
         this.registerClickAway(this.hideOptions, this.refs.select);//注册全局单击事件
     }
-
+ 
     changeHandler(event) {
 
     }
@@ -73,7 +88,7 @@ class Picker extends Component {
         }
         else {
             this.setState({
-                show: true,
+                show:  !this.state.show,
             })
         }
         this.bindClickAway();//绑定全局单击事件
@@ -444,8 +459,7 @@ class Picker extends Component {
     }
     renderProvince() {//一级节点渲染
         let provinceComponents = [];
-
-        if (this.state.data instanceof Array) {
+        if (this.state.data && this.state.data instanceof Array) {
 
             this.state.data.map((child, index) => {
                 let left = (index % 5) * -65;
@@ -528,27 +542,28 @@ class Picker extends Component {
         }
         return (
             <div className={componentClassName + this.props.validateClass} ref="picker" style={style} >
-                <Label name={this.props.label} readOnly={this.props.readOnly||this.props.disabled} ref="label" style={this.props.labelStyle} required={this.props.required}></Label>
-                <div className={"wasabi-form-group-body"+(this.props.readOnly||this.props.disabled?" readOnly":"")} style={{ width: !this.props.label ? "100%" : null }}>
+                <Label ref="label" readOnly={this.props.readOnly||this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
+                <div className={"wasabi-form-group-body" + (this.props.readOnly || this.props.disabled ? " readOnly" : "")} style={{ width: !this.props.label ? "100%" : null }}>
                     <div className="combobox"     >
                         <i className={"combobox-clear"} onClick={this.props.clearHandler} style={{ display: this.props.readOnly ? "none" : (this.state.value == "" || !this.state.value) ? "none" : "inline" }}></i>
                         <i className={"comboxbox-icon " + (this.state.show ? "rotate" : "")} onClick={this.showPicker.bind(this)}></i>
-                        <input type="text" {...inputProps} value={this.state.text} onClick={this.showPicker.bind(this)} onChange={this.changeHandler} />
+                        <input type="text" {...inputProps} value={this.state.text} onBlur={this.props.onBlur} onClick={this.showPicker.bind(this)} onChange={this.changeHandler} />
                         <div className={"dropcontainter  picker " + this.props.position} style={{ display: this.state.show == true ? "block" : "none" }}   >
-                            <div className="picker">
-                                {this.renderHot()}
-                                <ul className="wrap" >
-                                    <p>{this.props.placeholder}</p>
-                                    {
-                                        this.renderProvince()
-                                    }
-                                </ul>
+                            {this.renderHot()}
+                            <ul className="wrap" >
+                                <p>{this.props.placeholder}</p>
+                                {
+                                    this.renderProvince()
+                                }
+                            </ul>
 
-                            </div>
+
+
 
                         </div>
                     </div>
-                    <small className={"wasabi-help-block "} style={{ display: (this.props.inValidateText && this.props.inValidateText != "") ? this.props.inValidateShow : "none" }}><div className="text">{this.props.inValidateText}</div></small>
+                    <small className={"wasabi-help-block "} style={{ display: (this.props.inValidateText && this.props.inValidateText != "") ?
+                     this.props.inValidateShow : "none" }}>{this.props.inValidateText}</small>
                 </div>
             </div>
 
@@ -559,5 +574,5 @@ class Picker extends Component {
 
 Picker.propTypes = propType;
 Picker.defaultProps = Object.assign(defaultProps, { type: "picker" });
-mixins(Picker, [ClickAway]);
+mixins(Picker, [ClickAway,validate]);
 export default _ComboBox(Picker);

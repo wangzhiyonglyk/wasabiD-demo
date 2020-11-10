@@ -7,91 +7,89 @@
  */
 
 import React, { Component } from "react";
-import  Label from "../Info/Label.jsx";
+import Label from "../Info/Label.jsx";
 import propType from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
 
 import '../Sass/Form/SwitchButton.css';
-class  SwitchButton extends Component{
-  constructor(props)
-  {
-      super(props);
-      this.state={
-      
-        value:this.props.value===""?0:this.props.value,//用于回传给表单组件
-        text:this.props.value===""?"false":"true",
-       
-      }
-  }
+class SwitchButton extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            oldPropsValue: this.props.value,
+            checked: this.props.value ? true : false,//用于回传给表单组件
+        }
+        this.handleClick = this.handleClick.bind(this)
+    }
 
-    validate()
-    {
-      return true;
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if(nextProps.value!=prevState.oldPropsValue){
+            return {
+                checked:nextProps.value?true:false
+            }
+        }
+        return null;
     }
-      getValue () {//获取值
-        return this.state.value;
+    validate() {
+        return true;
     }
-    setValue(value){//设置值
+    getValue() {//获取值
+        return this.state.checked ? this.state.value : "";
+    }
+    setValue(value) {//设置值
         this.setState({
-            value:value,
+            value: value,
+            checked: this.props.value ? true : false
         })
     }
-    handleClick(){
-        if(this.props.readOnly)
-        {
-            return ;
+    handleClick() {
+        if (this.props.readOnly) {
+            return;
         }
         this.setState({
-            value:this.state.value==1?0:1,
-            text:this.state.value==1?"false":"true",
+            checked: !this.state.checked
         });
 
-        if(this.props.onSelect!=null)
-        {//返回给comboBox组件
-            this.props.onSelect(this.state.value==1?0:1,this.state.value==1?"false":"true",this.props.name);
+        if (this.props.onSelect != null) {//返回给comboBox组件
+            this.props.onSelect(!this.state.checked ? this.props.value : "", !this.state.checked ? this.props.value : "", this.props.name);
         }
 
     }
-    render(){
-        var inputType="text";
-        if(this.props.type=="password") {
-            inputType = "password";
-        }
-        var componentClassName=  "wasabi-form-group ";//组件的基本样式
-       
-        var className = "syncbtn "+this.props.className;
-        if(this.state.value==1){
-            className+="checktrue";
-        }else{
+    render() {      
+        let componentClassName = "wasabi-form-group ";//组件的基本样式
+        let className = "syncbtn " + this.props.className;
+        if (this.state.checked) {
+            className += "checktrue";
+        } else {
             className += "checkfalse";
         }
-
-        if(this.props.readOnly)
-        {
-            className+=" disabled";
+        if (this.props.readOnly) {
+            className += " disabled";
         }
-        let style=this.props.style?JSON.parse(JSON.stringify(this.props.style)):{};
-        if(this.props.hide){
-            style.display="none";
-        }else{
-            style.display="flex";
+        let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
+        if (this.props.hide) {
+            style.display = "none";
+        } else {
+            style.display = "flex";
         }
-
         return (
-        <div className={componentClassName+this.state.validateClass}  style={style}>
-            <Label name={this.props.label} readOnly={this.props.readOnly||this.props.disabled} ref="label" style={this.props.labelStyle} hide={this.props.hide} required={this.props.required}></Label>
-            <div className={ "wasabi-form-group-body"} style={{width:!this.props.label?"100%":null}}>
-                <div style={this.props.style} className={className} onClick={this.handleClick}>
-                    <div className={"slideblock "}></div>
+            <div className={componentClassName + this.state.validateClass} style={style}>
+                <Label ref="label" readOnly={this.props.readOnly||this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
+                <div className={"wasabi-form-group-body"} style={{ width: !this.props.label ? "100%" : null }}>
+                    <div style={this.props.style} className={className} onClick={this.handleClick}>
+                        <div className={"slideblock "}></div>
+                    </div>
+                    <small className={"wasabi-help-block "} style={{ display: (this.state.inValidateText && this.state.inValidateText != "") ? 
+                    this.state.inValidateShow : "none" }}>
+                        {this.state.inValidateText}
+                    </small>
                 </div>
-                <small className={"wasabi-help-block "} style={{display:(this.state.inValidateText&&this.state.inValidateText!="")?this.state.inValidateShow:"none"}}><div className="text">{this.state.inValidateText}</div></small>
             </div>
-        </div>
 
         )
     }
 }
 
-SwitchButton. propTypes=propType;
-SwitchButton.defaultProp=Object.assign(defaultProps,{type:"switch"});
+SwitchButton.propTypes = propType;
+SwitchButton.defaultProp = Object.assign(defaultProps, { type: "switch" });
 export default SwitchButton;

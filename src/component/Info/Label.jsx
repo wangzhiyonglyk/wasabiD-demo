@@ -7,6 +7,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import func from "../libs/func"
+import ClickAway from "../libs/ClickAway.js";
+import mixins from '../Mixins/mixins';
 class Label extends Component {
     constructor(props) {
         super(props);
@@ -18,9 +20,13 @@ class Label extends Component {
         }
         this.helpHandler=this.helpHandler.bind(this)
     }
-
-    helpHandler() {
-
+    componentDidMount() {
+        this.registerClickAway(this.hideHelp, document.getElementById(this.state.controlid));//注册全局单击事件
+      }
+     
+    helpHandler(event) {
+        event.stopPropagation();//阻止冒泡
+        this.bindClickAway();//绑定全局单击事件
         document.getElementById(this.state.controlid).getBoundingClientRect().width;
         this.setState({
             showHelp: !this.state.showHelp,
@@ -32,6 +38,7 @@ class Label extends Component {
             showHelp: false,
             left:0
         })
+        this.unbindClickAway();//卸载全局单击事件
     }
 
     onClick(){
@@ -46,7 +53,7 @@ class Label extends Component {
         return <div id={this.state.controlid} className={"wasabi-form-group-label " +  (this.props.readOnly||this.props.disabled ? " readOnly " : "") +(this.props.required ? " required" : "")}
             style={style}>
             <label>{this.props.children || this.props.name}
-                <a className="help" onClick={this.helpHandler}
+                <a className="help" onClick={this.helpHandler.bind(this)}
                     style={{ display: (this.props.help ? "inline-block" : "none") }}>?</a>
                     <div className="heip-text" style={{ display: (this.state.showHelp ? "block" : "none") ,left:this.state.left}} >{this.props.help}</div></label>
         </div>
@@ -71,4 +78,5 @@ Label.dfaultProps = {
 
 
 };
+mixins(Label,[ClickAway])
 export default Label;

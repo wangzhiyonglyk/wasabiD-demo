@@ -82,7 +82,7 @@ class DateTimeRange extends Component {
             <div className="ok">
                 <div style={{ position: "absolute", width: 150 }}>
                     <input className=" wasabi-form-control timeinput"
-                        value={this.state.firstTime} onClick={this.firstTimeShowHandler.bind(this)} readOnly={true} onChange={() => { }}></input>
+                        value={this.state.firstTime} onClick={this.firstTimeShowHandler.bind(this)} onChange={() => { }}></input>
 
                     <div style={{ display: this.state.showfirstTime ? "inline-block" : "none" }}><Time
                         name="begin" type="time" key="begin"
@@ -92,7 +92,7 @@ class DateTimeRange extends Component {
                 </div>
                 <div style={{ position: "absolute", right: 110 }}>
                     <input className=" wasabi-form-control timeinput"
-                        value={this.state.secondTime} onClick={this.secondTimeShowHandler.bind(this)} readOnly={true} onChange={() => { }}></input>
+                        value={this.state.secondTime} onClick={this.secondTimeShowHandler.bind(this)}  onChange={() => { }}></input>
 
                     <div style={{ display: this.state.showsecondTime ? "inline-block" : "none" }}><Time
                         name="begin" type="time" key="begin"

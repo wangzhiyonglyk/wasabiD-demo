@@ -53,7 +53,8 @@ class CheckButton extends Component {
                             control
                         }
                     </ul>
-                    <small className={"wasabi-help-block "} style={{ display: (this.props.inValidateText && this.props.inValidateText != "") ? this.props.inValidateShow : "none" }}><div className="text">{this.props.inValidateText}</div></small>
+                    <small className={"wasabi-help-block "} style={{ display: (this.props.inValidateText && this.props.inValidateText != "") ?
+                     this.props.inValidateShow : "none" }}>{this.props.inValidateText}</small>
                 </div>
             </div>
 

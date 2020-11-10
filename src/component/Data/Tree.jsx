@@ -35,7 +35,7 @@ class Tree extends Component {
         this.onClick = this.onClick.bind(this);
         this.onradioChecked = this.onradioChecked.bind(this);
         this.onDoubleClick = this.onDoubleClick.bind(this);
-
+        this.onChecked=this.onChecked.bind(this)
         //因为第一级节点没有父节点，在移除时需要树组件配合
         this.parentRemoveChild = this.parentRemoveChild.bind(this);
 
@@ -137,7 +137,7 @@ class Tree extends Component {
      * @param {*} text 
      * @param {*} children 
      */
-    onradioChecked(id, text, children) {
+    onradioChecked(id, text, children,row) {
         this.setState({
             id: id,
             text: text
@@ -154,7 +154,7 @@ class Tree extends Component {
                 }
             }
             setTimeout(() => {
-                this.onChecked(true, id, text, children);
+                this.onChecked(true, id, text, children,row);
             }, 200);
             //只有一个单选
 
@@ -171,8 +171,9 @@ class Tree extends Component {
         this.props.onDoubleClick && this.props.onDoubleClick(id, text, children, this.props.name);
     }
 
-    onChecked(checked, id, text, children) {
-        this.props.onChecked && this.props.onChecked(checked, id, text, children, this.props.name);
+    onChecked(checked, id, text, children,row) {
+        console.log("你好")
+        this.props.onChecked && this.props.onChecked(checked, id, text, children,row, this.props.name);
     }
     /**
      * 返回树的数据
@@ -199,7 +200,7 @@ class Tree extends Component {
     getChecked() {
         let data = [];
         for (let ref in this.refs) {
-            if (ref.indexOf("nodetree") > -1) {
+            if (ref.indexOf("treenode-") > -1) {
                 data = [].concat(data, this.refs[ref].getNodeChecked());
             }
         }
@@ -235,7 +236,7 @@ class Tree extends Component {
         this.props.onRemove && this.props.onRemove(childid, childText, subChildren);
     }
 
-    render() {
+    render() {  
         var nodeControl = [];
         if (this.state.data instanceof Array) {
             this.state.data.map((item, index) => {
@@ -246,9 +247,8 @@ class Tree extends Component {
                 else {
 
                 }
-                nodeControl.push(<TreeNode ref={"nodetree" + item.id + index} parentRemoveChild={this.parentRemoveChild.bind(this)}
-
-                    key={"nodetree" + item.id}
+                nodeControl.push(<TreeNode ref={"treenode-" + item.id+"-" + index} 
+                    key={"treenode-" + item.id+"-"+index}
                     {...this.props}
                     {...item}
                     half={(this.props.checkType && this.props.checkType.y.indexOf("p") > -1 && ((this.state.checkValue || item.checkValue) == "half"))}
@@ -259,8 +259,8 @@ class Tree extends Component {
                     onClick={this.onClick}
                     onradioChecked={this.onradioChecked}
                     onDoubleClick={this.onDoubleClick}
-
-
+                    onChecked={this.onChecked}
+                    parentRemoveChild={this.parentRemoveChild.bind(this)}
                 />);
             });
         }

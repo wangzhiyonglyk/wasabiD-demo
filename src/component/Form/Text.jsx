@@ -2,285 +2,210 @@
 //date:2016-08-02
 //edit by wangzhiyong 2020-10-18 todo blur事件要改
 //desc 将输入框从Input中独立出来
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import  validation from "../Lang/validation.js";
-import  validate from "../Mixins/validate.js";
-import  Label from "../Info/Label.jsx";
+import validation from "../Lang/validation.js";
+import validate from "../Mixins/validate.js";
+import Label from "../Info/Label.jsx";
 import Msg from "../Info/Msg.jsx";
-import  FetchModel from "../Model/FetchModel.js";
-import  func from "../libs/func.js";
+import FetchModel from "../Model/FetchModel.js";
+import func from "../libs/func.js";
 import props from "./config/propType.js";
 import mixins from '../Mixins/mixins';
 import config from "./config/textConfig.js";
-import defaultProps from  "./config/defaultProps.js";
-import ("../Sass/Form/Input.css");
+import defaultProps from "./config/defaultProps.js";
+import("../Sass/Form/Input.css");
 
-class  Text  extends Component{
+class Text extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
-            oldPropsValue:this.props.value,//保存用于匹配
-            value:this.props.value,
-            text:this.props.text,
-            validateClass:"",//验证的样式
-            inValidateShow:"none",//提示信息是否显示
-            inValidateText:validation["required"],//提示信息
-            validateState:null,//是否正在验证
+        this.state = {
+            oldPropsValue: this.props.value,//保存用于匹配
+            value: this.props.value,
+            text: this.props.text,
+            validateClass: "",//验证的样式
+            inValidateShow: "none",//提示信息是否显示
+            inValidateText: validation["required"],//提示信息
+            validateState: null,//是否正在验证
         }
-        this.onChange=this.onChange.bind(this);
-       
-        this.keyDownHandler=this.keyDownHandler.bind(this);
-        this.keyUpHandler=this.keyUpHandler.bind(this);
-        this.focusHandler=this.focusHandler.bind(this);
-        this.blurHandler=this.blurHandler.bind(this);
-        this.clickHandler=this.clickHandler.bind(this);
-        this.getValue=this.getValue.bind(this);
-        this.setValue=this.setValue.bind(this);
-        this.validateHandler=this.validateHandler.bind(this);
-        this.validateHandlerSuccess=this.validateHandlerSuccess.bind(this);;
-        this.validateHandlerError=this.validateHandlerError.bind(this)
-
+        this.onChange = this.onChange.bind(this);
+        this.keyDownHandler = this.keyDownHandler.bind(this);
+        this.keyUpHandler = this.keyUpHandler.bind(this);
+        this.focusHandler = this.focusHandler.bind(this);
+        this.blurHandler = this.blurHandler.bind(this);
+        this.clickHandler = this.clickHandler.bind(this);
+        this.getValue = this.getValue.bind(this);
+        this.setValue = this.setValue.bind(this);
+        this.validateHandler = this.validateHandler.bind(this);
+        this.validateHandlerSuccess = this.validateHandlerSuccess.bind(this);;
+        this.validateHandlerError = this.validateHandlerError.bind(this)
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if(nextProps.value!=prevState.oldPropsValue){
+        if (nextProps.value != prevState.oldPropsValue) {
             //就是说原来的初始值发生改变了，说明父组件要更新值
-        return {
-             value:nextProps.value,
-             oldPropsValue:nextProps.value
-         }
+            return {
+                value: nextProps.value,
+                oldPropsValue: nextProps.value
+            }
         }
         return null;
     }
-    componentDidMount() {    
-        this.validateInput=true;//设置初始化值，输入有效
-        this.onblur=null;
-    }
-    componentDidUpdate() {
-        this.validateInput=true;//设置初始化值
-        if(this.state.inValidateText=="非有效数字"||this.state.inValidateText=="输入非法")
-        {
-            this.refs.input.select();
-        }
-        if(this.onblur)
-        {
-            this.props.onBlur(this.state.value);
-            this.onblur=null;
-          
-        }
-    }
     onChange(event) {
-        if (this.validateInput==true) {//输入有效的时候
-
-            if((this.props.type=="integer"||this.props.type=="number")) {
-                //数字,或者正数时
-                if(event.target.value=="-"||((!this.state.value||this.state.value.toString().indexOf(".")<0)&&event.target.value.length>0&&event.target.value.toString().lastIndexOf(".")==event.target.value.length-1))
-                {
-                    //第一次输入负号,或者输入小数点时原来没有小数点或为空时）时.不回传给父组件
-                    this.setState({
-                        value: event.target.value,
-                        text:event.target.value,
-                    });
-                    return;
-                }
-
-
-
-
-            }
-
-
-
+        let isvalidate=true;
+        if(this.props.type == "number"||this.props.type == "integer"){
+             /**
+         * 数字与整数要先验证，
+         * 验证时，当一个字符是+,或者-是被认为是正确，不能使用正则验证,否则通不过，但失去焦点则可以使用正则
+         */
+             isvalidate = (event.target.value == "+" || event.target.value == "-") || this.validate(event.target.value);    
+        }
+       
+        if (isvalidate) {
             this.setState({
                 value: event.target.value,
-                text:event.target.value,
-            });
-
-        
-                this.props.onChange&&this.props.onChange(event.target.value, event.target.value, this.props.name);//自定义的改变事件
-            //回传给表单组件,下拉组件使用onSelect回传给表单组件
-            if (this.props.backFormHandler != null) {
-                this.props.backFormHandler(event.target.value, event.target.value, this.props.name);
-
-            }
-
+                text: event.target.value,
+            })
+            this.props.onChange && this.props.onChange(event.target.value, event.target.value, this.props.name);//自定义的改变事件
         }
-
-
     }
-    keyDownHandler(event) {//控制输入
-        this.validateInput=true;
-        if(this.props.type=="integer"||this.props.type=="number")
-        {
-            if(((event.ctrlKey==false&&event.metaKey==false)&&event.keyCode>=65&&event.keyCode<=90))
-            {//防止ctrl,command键
-                this.validateInput=false;
-            }
+    keyDownHandler(event) {
 
-        }
-        if(this.props.onKeyDown)
-        {
+        if (this.props.onKeyDown) {
             this.props.onKeyDown(event);
         }
 
     }
     keyUpHandler(event) {
-        if(event.keyCode==13)
-        {
-            if(this.props.validateUrl)
-            {
+        if (event.keyCode == 13) {
+            if (this.props.validateUrl) {
                 this.validateHandler(event.target.value);
             }
         }
 
-        if(this.props.onKeyUp)
-        {
+        if (this.props.onKeyUp) {
             this.props.onKeyUp(event);
         }
     }
     focusHandler() {//焦点事件
-        if(this.props.onFocus!=null)
-        {
+        if (this.props.onFocus != null) {
             this.props.onFocus();
         }
     }
     blurHandler(event) {
-      let isvalidate=false;
-        if(this.props.validateUrl) {//后台验证
-            isvalidate=this.validateHandler(event.target.value);
+        let isvalidate = false;
+        if (this.props.validateUrl) {//后台验证
+            isvalidate = this.validateHandler(event.target.value);
         }
         else {//普通验证
-            isvalidate= this.validate(this.state.value);
+            isvalidate = this.validate(this.state.value);
         }
-
-        this.refs.label.hideHelp();//隐藏帮助信息
-
-        if(isvalidate&&this.props.onBlur)
-        {
-            this.onblur=true
-
-        }
-
+        // if(!isvalidate){
+        //     this.refs.input.focus();
+        //     this.refs.input.select();
+        // }
     }
     clickHandler(event) {//单击事件
-
-        if(this.props.onClick!=null) {
-            let model = {};
-            try {//有可能存在复制不成功的情况
-                model ={...this.props};
-            }
-            catch (e) {
-
-            }
-            model.value=this.state.value;
-            model.text=this.state.text;
-            this.props.onClick(this.props.name,this.state.value,model);
-        }
+        this.props.onClick && this.props.onClick(value, text, this.props.name);
     }
-   
-    getValue () {//获取值
+
+    getValue() {//获取值
         return this.state.value;
     }
-    setValue(value){//设置值
+    setValue(value) {//设置值
         this.setState({
-            value:value,
+            value: value,
         })
     }
-    validateHandler (value) {//后台请求验证
+    validateHandler(value) {//后台请求验证
         this.setState({
-            validateState:"validing",//正在验证
+            validateState: "validing",//正在验证
         })
-        let type=this.props.httpType?this.props.httpType:"POST";
-        type=type.toUpperCase();
-        let fetchmodel=new FetchModel(this.props.validateUrl,this.validateHandlerSuccess,{key:value});
-        fetchmodel.headers=this.props.httpHeaders;
-        if(this.props.contentType){
+        let type = this.props.httpType ? this.props.httpType : "POST";
+        type = type.toUpperCase();
+        let fetchmodel = new FetchModel(this.props.validateUrl, this.validateHandlerSuccess, { key: value });
+        fetchmodel.headers = this.props.httpHeaders;
+        if (this.props.contentType) {
             //如果传contentType值则采用传入的械
             //否则默认
-          
-            fetchmodel.contentType=  this.props.contentType;
-            fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
+
+            fetchmodel.contentType = this.props.contentType;
+            fetchmodel.data = fetchmodel.contentType == "application/json" ? JSON.stringify(fetchmodel.data) : fetchmodel.data;
         }
-        type=="POST"?func.fetch.post(fetchmodel):func.fetch.get(fetchmodel);
-         
-        console.log("text-validing:",fetchmodel);
-      
+        type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
+
+        console.log("text-validing:", fetchmodel);
+
     }
-    validateHandlerSuccess () {//后台请求验证成功
+    validateHandlerSuccess() {//后台请求验证成功
         this.setState({
-            validateState:"valid",//验证成功
+            validateState: "valid",//验证成功
         })
     }
-    validateHandlerError (errorCode,message) {//后台请求验证失败
+    validateHandlerError(message) {//后台请求验证失败
         Msg.error(message);
         this.setState({
-            validateState:"invalid",//验证失败
+            validateState: "invalid",//验证失败
         })
     }
-    
-    render() {
-        let style=this.props.style?JSON.parse(JSON.stringify(this.props.style)):{};
-        if(this.props.hide){
-            style.display="none";
-        }else{
-            style.display="flex";
-        }
-        let inputType=this.props.type?this.props.type:"text";
-            let inputProps=
-            {
-                readOnly:this.props.readOnly==true?"readOnly":null,
-                id:this.props.id?this.props.id:null,
-                name:this.props.name,
-                placeholder:(this.props.placeholder===""||this.props.placeholder==null)?this.props.required?"必填项":"":this.props.placeholder,
-                className:"wasabi-form-control  ",
-                rows:this.props.rows,//textarea
-                cols:this.props.cols,
-                style:{resize:this.props.resize?"vertical":null},//只能向下切换
-                title:this.props.title,
 
-            }//文本框的属性
-        let control=null;
-        if(inputType!="textarea")
-        {//普通输入框
-            control = <input  ref="input" type={inputType}   {...inputProps} onClick={this.clickHandler}
-                              onChange={this.onChange} onKeyDown={this.keyDownHandler}
-                              onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
-                              onBlur={this.blurHandler}
-                              value={(this.state.value==null||this.state.value==undefined)?"":this.state.value}></input>;
+    render() {
+        let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
+        if (this.props.hide) {
+            style.display = "none";
+        } else {
+            style.display = "flex";
+        }
+        let inputType = this.props.type == "password" ? this.props.type : "text";//统一使用text，否则在验证失效，没有onchange事件，拿不到值，则无法执行自定义验证事件
+        let inputProps =
+        {
+            readOnly: this.props.readOnly == true ? "readOnly" : null,
+            id: this.props.id ? this.props.id : null,
+            name: this.props.name,
+            placeholder: (this.props.placeholder === "" || this.props.placeholder == null) ? this.props.required ? "必填项" : "" : this.props.placeholder,
+            className: "wasabi-form-control  ",
+            rows: this.props.rows,//textarea
+            cols: this.props.cols,
+            style: { resize: this.props.resize ? "vertical" : null },//只能向下切换
+            title: this.props.title,
+
+        }//文本框的属性
+        let control = null;
+        if (inputType != "textarea") {//普通输入框
+            control = <input ref="input" type={inputType}   {...inputProps} onClick={this.clickHandler}
+                onChange={this.onChange} onKeyDown={this.keyDownHandler}
+                onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
+                onBlur={this.blurHandler}
+                value={(this.state.value == null || this.state.value == undefined) ? "" : this.state.value}></input>;
         }
         else {
             //textarea 不支持null值
-            let value=this.state.value;
-            if(value==null||value==undefined)
-            {
-                value="";
+            let value = this.state.value;
+            if (value == null || value == undefined) {
+                value = "";
             }
-            control = <textarea ref="input"  style={{resize:"none"}} {...inputProps} onClick={this.clickHandler}
-                                onChange={this.onChange} onKeyDown={this.keyDownHandler}
-                                onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
-                                onBlur={this.blurHandler}
-                                value={(this.state.value==null||this.state.value==undefined)?"":this.state.value}></textarea>;
+            control = <textarea ref="input" style={{ resize: "none" }} {...inputProps} onClick={this.clickHandler}
+                onChange={this.onChange} onKeyDown={this.keyDownHandler}
+                onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
+                onBlur={this.blurHandler}
+                value={(this.state.value == null || this.state.value == undefined) ? "" : this.state.value}></textarea>;
         }
-
-
-
-        return (<div className={"wasabi-form-group "+this.props.className+" "+ this.state.validateClass} onPaste={this.onPaste} style={style}>
-                <Label name={this.props.label}  readOnly={this.props.readOnly||this.props.disabled} ref="label" hide={this.props.hide} style={this.props.labelStyle} required={this.props.required}></Label>
-                <div className={ "wasabi-form-group-body " } >
-                    {control}
-                    <i className={this.state.validateState} style={{display:(this.state.validateState?"block":"none")}} ></i>
-                    <small className={"wasabi-help-block "} style={{display:(this.state.inValidateText&&this.state.inValidateText!="")?this.state.inValidateShow:"none"}}>
-                        <div className="text">{this.state.inValidateText}</div></small>
-                </div>
+        return (<div className={"wasabi-form-group " + this.props.className + " " + this.state.validateClass} onPaste={this.onPaste} style={style}>
+            <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
+            <div className={"wasabi-form-group-body "} >
+                {control}
+                <i className={this.state.validateState} style={{ display: (this.state.validateState ? "block" : "none") }} ></i>
+                <small className={"wasabi-help-block "} style={{ display: (this.state.inValidateText && this.state.inValidateText != "") ? this.state.inValidateShow : "none" }}>
+                    {this.state.inValidateText}</small>
             </div>
+        </div>
         )
     }
 }
 
- Text. propTypes=Object.assign({type:PropTypes.oneOf(config)},props);
+Text.propTypes = Object.assign({ type: PropTypes.oneOf(config) }, props);
 
-Text.defaultProps=  Object.assign({},defaultProps,{type:"text"});;
-Text=mixins(Text,[validate])
- export default Text;
+Text.defaultProps = Object.assign({}, defaultProps, { type: "text" });;
+Text = mixins(Text, [validate])
+export default Text;

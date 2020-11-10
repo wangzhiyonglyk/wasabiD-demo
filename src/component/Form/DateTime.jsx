@@ -145,9 +145,9 @@ class DateTime extends Component {
             <div className={this.props.className + " "} ref="picker" style={this.props.style}>
                 <div style={{ position: "relative", height: 32 }}>
                     <input className=" wasabi-form-control timeinput"
-                        value={this.state.time} onClick={this.timeHandler.bind(this)} readOnly={true} onChange={() => { }}></input>
+                        value={this.state.time} onClick={this.timeHandler.bind(this)} onChange={() => { }}></input>
 
-                    <div style={{ display: this.state.showTime ? "inline-block" : "none" }}><Time onSelect={this.timeOnChange.bind(this)}
+                    <div style={{ display: this.state.showTime ? "inline-block" : "none" ,zIndex:1}}><Time onSelect={this.timeOnChange.bind(this)}
                         ref="time" type="time" key="end" value={this.state.time} ></Time></div>
                 </div>
                 <div className="wasabi-datetime"  >

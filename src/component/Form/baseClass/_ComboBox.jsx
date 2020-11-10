@@ -37,17 +37,15 @@ export default function (WrappedComponent) {
                 valueField: this.props.valueField,
                 textField: this.props.textField,
             }
-
-
             this.setValue = this.setValue.bind(this);
             this.getValue = this.getValue.bind(this);
             this.loadData = this.loadData.bind(this);
             this.loadError = this.loadError.bind(this);
             this.loadSuccess = this.loadSuccess.bind(this);
-            this.onSelect = this.onSelect.bind(this)
-            this.clearHandler = this.clearHandler.bind(this)
-            this.addData = this.addData.bind(this)
-
+            this.onSelect = this.onSelect.bind(this);
+            this.onBlur = this.onBlur.bind(this);
+            this.clearHandler = this.clearHandler.bind(this);
+            this.addData = this.addData.bind(this);
         }
         static getDerivedStateFromProps(nextProps, prevState) {
             let newState = {};
@@ -60,7 +58,7 @@ export default function (WrappedComponent) {
                 }
             }
             if (nextProps.value != prevState.oldPropsValue) {//说明父节点改变了传递的值
-                console.log("dfdfd")
+
                 newState.value = nextProps.value;//强行改变组件选择的值，不管状态中的值是什么
                 newState.oldPropsValue = nextProps.value;//保留之前的值，用于下次对比
             }
@@ -168,6 +166,12 @@ export default function (WrappedComponent) {
             this.props.onSelect && this.props.onSelect(value, text, name, row);
         }
         /**
+         * 验证
+         */
+        onBlur() {
+            this.validate(this.state.value);//验证
+        }
+        /**
          * 专门用于select
          * @param {*} value 
          * @param {*} text 
@@ -182,7 +186,7 @@ export default function (WrappedComponent) {
             this.props.addHandler && this.props.addHandler(value, text, data, this.props.name);
         }
         render() {
-            return <WrappedComponent {...this.props} {...this.state} onSelect={this.onSelect} clearHandler={this.clearHandler} addData={this.addData}></WrappedComponent>
+            return <WrappedComponent {...this.props} {...this.state} onSelect={this.onSelect} clearHandler={this.clearHandler} addData={this.addData} onBlur={this.onBlur}></WrappedComponent>
         }
     }
     _ComboBox.propTypes = props;

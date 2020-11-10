@@ -11,7 +11,7 @@ let  validation= {
     mobile:"手机号码格式不正确",
     integer: '必须为整数',
     idcard:"身份证号码格式不正确",
-    required: '',
+    required: '必填项',
     invalidTip:"输入格式无效",
     date:"日期格式为: 0000-00-00",
     daterange:"日期格式不正确",
