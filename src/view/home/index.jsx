@@ -94,7 +94,7 @@ value:"你好"
   render() {
     return <div>
 <br></br>
-<button> 测试</button>
+
 {/* <Button key="1" theme="default" size="small"  onClick={this.onClick}>信息按钮</Button>
 <Button  key="2" theme="primary"   size="mini" onClick={this.onClick}>信息按钮</Button>
 <Button  key="3" theme="info"   onClick={this.onClick}>信息按钮</Button>

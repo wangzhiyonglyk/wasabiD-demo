@@ -487,7 +487,7 @@ class DatePicker extends Component {
          <Label ref="label" readOnly={this.props.readOnly||this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
         <div
           className={"wasabi-form-group-body " +(this.props.readOnly||this.props.disabled?" readOnly":"")}
-          style={{ width:width}}
+          style={{ minWidth:width}}
         >
           <div className='combobox'>
             <i

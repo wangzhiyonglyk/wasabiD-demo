@@ -131,18 +131,21 @@ class Select extends Component {
    * @param {*} event 
    */
   addHandler(event) {
-    let filter = this.props.data.filter((item, index) => {
-      return item.text == event.target.value;
-    });
-    if (filter.length == 0) {
-      this.setState({
-        value: event.target.value,
-        text: event.target.value,
-        filterValue:""//一定清空。否则出现添加空白列
+    if(event.target.value){
+      let filter = this.props.data.filter((item, index) => {
+        return item.text == event.target.value;
       });
-      this.props.addData&&  this.props.addData( event.target.value,  event.target.value)
-
+      if (filter.length == 0) {
+        this.setState({
+          value: event.target.value,
+          text: event.target.value,
+          filterValue:""//一定清空。否则出现添加空白列
+        });
+        this.props.addData&&  this.props.addData( event.target.value,  event.target.value)
+  
+      }
     }
+  
   }
   filterChangeHandler(event) {
     //筛选查询
