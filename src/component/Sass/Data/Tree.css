@@ -60,7 +60,7 @@
 .wasabi-tree li>div.selected{
   background-color: #eceeef;
 }
-.wasabi-tree [class*=" icon-"],[class^=icon-] {
+.wasabi-tree [class*=" icon-"],.wasabi-tree [class^=icon-] {
   color:#c0c4cc;
 }
 .wasabi-tree a{

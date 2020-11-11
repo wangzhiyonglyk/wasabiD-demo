@@ -8,6 +8,9 @@ import Input from "../../component/Form/Input"
 import Label from "../../component/Info/Label"
 import Button from "../../component/Buttons/Button"
 import LinkButton from "../../component/Buttons/LinkButton"
+import Tabs from "../../component/Navigation/Tabs";
+import Modal from "../../component/Layout/Modal";
+import TabPanel from "../../component/Navigation/TabPanel";
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -43,7 +46,12 @@ class Home extends React.Component {
         { id:233, pId:23, name:"叶子节点233"},
         { id:234, pId:23, name:"叶子节点234"},
         { id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}
-      ]
+      ],
+      tabs: [{
+        title:"你好"
+      },{
+        title:"我好"
+      }],
     }
     this.onClick=this.onClick.bind(this)
 
@@ -133,24 +141,16 @@ value:"你好"
      data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
       <Input key="9"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="treepicker" label="number" help="这个性别" name={"dd"}
      data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
+       <Tabs  ref="tabs"  >
+            {this.state.tabs.map(item => {
+              return (
+                <TabPanel key={item.title} title={item.title} iconCls={item.iconCls}>
+                  <div></div>
+                </TabPanel>
+              );
+            })}
+          </Tabs>
    
-    {/* <Input  type="text" label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Input> */}
-      {/* <Button onClick={this.onClick.bind(this)}>单击</Button>
-   <Upload ref="upload"></Upload>
-      <Input key="2" type="timerange" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
-     
-     
-      <Input key="3" type="time" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
-      <Input key="4" type="datetime" checkType={{y:"s",n:"s"}} checkStyle="radio" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
-     
-      <Input key="5" type="treepicker" value="11" checkType={{y:"s",n:"s"}} checkStyle="checkbox"  data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
-    
-      <Input key="6" type="checkbutton" checkType={{y:"s",n:"s"}} checkStyle="radio" valueField="id" radioType="level" data={this.state.data} name="tree" label="树" textField="name" simpleData={true}></Input>
-     
-    <DataGrid headers={[{name:"good",label:"你好",headerContent:(name,label)=>{
-      return <div style={{color:"red"}}>{label}</div>
-    }}]} ></DataGrid> */}
-     
     </div>;
   }
 }

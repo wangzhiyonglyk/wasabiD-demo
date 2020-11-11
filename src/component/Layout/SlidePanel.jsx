@@ -41,21 +41,6 @@ class SlidePanel extends  React.Component{
         buttonClick:null,
         url:null
     }
-    // UNSAFE_componentWillReceiveProps(nextProps)
-    // {
-    //     let width=(nextProps.style&&nextProps.style.width)?nextProps.style.width:this.state.width;
-        
-    //     this.setState({...nextProps,
-    //         width:width
-    //     });
-    // }
-    
-    static getDerivedStateFromProps(nextProps, prevState) {
-        let width=(nextProps.style&&nextProps.style.width)?nextProps.style.width:prevState.width;
-        return {
-         width:width
-        }
-    }
 
      open() {//打开事件，用于外部调用
        this.slideHandler();

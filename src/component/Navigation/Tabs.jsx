@@ -3,6 +3,7 @@
 //标签页组
 import React from "react";
 import PropTypes from "prop-types";
+import func from "../libs/func"
 require("../sass/Navigation/Tabs.css");
 
 // var addRipple=require("../Mixins/addRipple.js");
@@ -11,38 +12,35 @@ class Tabs extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            navid:func.uuid(),//id
             activeIndex: this.props.activeIndex,
-            childrenlength:this.props.children.length||0
+            oldActiveIndex: this.props.activeIndex,//保留旧的
+            childrenlength:this.props.children.length||0,//旧的子节点个数
         }
         this.tabClickHandler = this.tabClickHandler.bind(this);
         this.onClose = this.onClose.bind(this);
     }
 
-    // UNSAFE_componentWillReceiveProps(nextProps) {
-    //     // let activeIndex = nextProps.activeIndex != null && nextProps.activeIndex != undefined ? nextProps.activeIndex : 0
-    //     // if (nextProps.children.length > this.props.children.length) {
-    //     //     activeIndex = nextProps.children.length - 1
-    //     // }
-    //     // this.setState({
-    //     //     activeIndex: activeIndex
-    //     // })
-    // }
-    
     static getDerivedStateFromProps(nextProps, prevState)
-    {
-      
-          let activeIndex = nextProps.activeIndex != null && nextProps.activeIndex != undefined ? nextProps.activeIndex : 0
+    {  
+        let activeIndex=prevState.activeIndex;
         if (nextProps.children.length >prevState.childrenlength) {
             activeIndex = nextProps.children.length - 1
         }
+        else  if (nextProps.activeIndex!=prevState.oldActiveIndex) {
+            activeIndex=nextProps.activeIndex;//强行刷新
+        }
+
       return {
             activeIndex: activeIndex,
-            childrenlength:nextProps.children.length
+            childrenlength:nextProps.children.length||0
         }
+    }
+    componentDidMount(){
+
     }
     tabClickHandler(index, event) {
 
-        // this.rippleHandler(event);
         //页签单击事件
         this.setState({
             activeIndex: index
@@ -64,18 +62,18 @@ class Tabs extends React.Component {
     render() {
         return (    
             <div className={"wasabi-tabs "+this.props.className} style={this.props.style} >
-                <div  >
+                <div  className={"wasabi-tab-nav "} id={this.state.navid} >
                     {
 
                         React.Children.map(this.props.children, (child, index) => {
 
                             if (child) {
                                 let iconCls = child && child.props.iconCls ? child.props.iconCls : "txt";
-                                return <a key={index} href="#" onClick={this.tabClickHandler.bind(this, index)} className={"wasabi-tab " + this.props.theme + " " + (this.state.activeIndex == index ? "active " : "")} >
+                                return <div key={index} onClick={this.tabClickHandler.bind(this, index)} className={"wasabi-tab " + this.props.theme + " " + (this.state.activeIndex == index ? "active " : "")} >
                                     <i className={"" + iconCls} style={{ marginRight: 5 }}></i>
                                     {child.props.title}
                                     <i className="tab-icon icon-close" style={{display:child.props.closeAble?"inline":"none"}} onClick={this.onClose.bind(this, index)}></i>
-                                </a>
+                                </div>
                             }
                             return null;
 
@@ -100,14 +98,17 @@ Tabs.propTypes = {
     theme: PropTypes.oneOf([//主题
         "primary",
         "default",
-
+        "warning",
+        "info",
+        "danger",
+        "success",
     ]),
-    activeIndex: PropTypes.number,
-    onClose: PropTypes.func,
+    activeIndex: PropTypes.number,//活动下标
+    onClose: PropTypes.func,//关闭事件
 };
 Tabs.defaultProps = {
 
-    theme: "default",
+    theme: "primary",
     activeIndex: 0,
     onClose: null,
 

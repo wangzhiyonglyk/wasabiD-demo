@@ -14,21 +14,12 @@ class Panel extends React.Component {
         super(props);
         this.state = {
             close: false,
-
             expand: this.props.expand,
             iconTip: (this.props.expand == true) ? "折叠" : "展开",
             iconCls: (this.props.expand == true) ? "icon-up" : "icon-down",
 
         }
         this.expandHandler = this.expandHandler.bind(this);
-    }
-    static getDerivedStateFromProps(nextProps, prevState) {
-
-        return {
-            expand: nextProps.expand,
-            expandAble: nextProps.expandAble,
-        }
-
     }
     expandHandler() {
         let expand = !this.state.expand;

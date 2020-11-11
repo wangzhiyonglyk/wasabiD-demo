@@ -72,8 +72,7 @@ class Col extends React.Component {
     
         }
         return data;
-    }
-    
+    }  
     setData (data) {//设置值,data是对象
     
         if (!data) {
@@ -99,19 +98,11 @@ class Col extends React.Component {
         return <div className={"col-xs-" + this.props.cols+""}>{
            React.Children.map(this.props.children, (child, index) => {
         
-            if(typeof child.type !=="function" )
-            {//非react组件
-              return child;
-            }
-            else{
-                if(child.ref)
-                {
-                   child;
-                }
-                else{
-                    return React. cloneElement(child, { disabled:this.props.disabled?this.props.disabled:child.props.disabled,   readOnly: this.props.disabled?this.props.disabled:child.props.readOnly, key: index, ref: child.ref?child.ref:index })
-                }
-             
+            if (typeof child.type !== "function") {//非react组件
+                return child;
+            } else {
+              
+                return React. cloneElement(child, { disabled:this.props.disabled?this.props.disabled:child.props.disabled,   readOnly: this.props.disabled?this.props.disabled:child.props.readOnly, key: index, ref: child.ref?child.ref:index })
             }
         })}</div>;
     }

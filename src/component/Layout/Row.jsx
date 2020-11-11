@@ -100,20 +100,12 @@ clearData () {
   render() {
     return <div className={"row " + this.props.className} style={this.props.style}> {
            React.Children.map(this.props.children, (child, index) => {         
-            if(typeof child.type !=="function" )
-            {//非react组件
-              return child;
-            }
-            else{
-            if(child.ref){//如果
+            if (typeof child.type !== "function") {//非react组件
                 return child;
-            }
-            else{
+            } else {
+              
                 return React. cloneElement(child, { disabled:this.props.disabled?this.props.disabled:child.props.disabled,   readOnly: this.props.disabled?this.props.disabled:child.props.readOnly, key: index, ref: child.ref?child.ref:index })
             }
-            
-            }
-           
         })
     }</div>;
   }

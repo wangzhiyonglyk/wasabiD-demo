@@ -15,34 +15,7 @@ class Box extends  React.Component{
         }
         
     }
-    static defaultProps = {
-        style:{},
-        className:"",
-        title:"",
-        theme:"info",
-        dateTitle:"日",
-        content:"",
-        bottomLeftTitle:"",
-        bottomRightTitle:""
-       
-    }
-    static propTypes={
-        style: PropTypes.object,//样式
-    className: PropTypes.string,//自定义样式
-        theme: PropTypes.oneOf([
-           
-            "primary",
-            "success",
-            "info",
-            "danger",
-        ]),//主题
-
-        title: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        dateTitle :PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        content: PropTypes.any,
-        bottomLeftTitle: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        bottomRightTitle :PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    }
+ 
     render(){
     return     <div   className={"box"+this.props.className} style={this.props.style}>
         <div className="box-title">
@@ -57,5 +30,33 @@ class Box extends  React.Component{
         </div>
     </div>
     }
+}
+Box. defaultProps = {
+    style:{},
+    className:"",
+    title:"",
+    theme:"info",
+    dateTitle:"日",
+    content:"",
+    bottomLeftTitle:"",
+    bottomRightTitle:""
+   
+}
+Box. propTypes={
+    style: PropTypes.object,//样式
+className: PropTypes.string,//自定义样式
+    theme: PropTypes.oneOf([
+       
+        "primary",
+        "success",
+        "info",
+        "danger",
+    ]),//主题
+
+    title: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    dateTitle :PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    content: PropTypes.any,
+    bottomLeftTitle: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    bottomRightTitle :PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 }
 export default Box;
