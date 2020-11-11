@@ -21,13 +21,13 @@ class CheckButton extends Component {
         if (!props) {
             return null;
         }
-        var componentClassName = "wasabi-form-group ";//组件的基本样式
-        var control = null;
+        let componentClassName = "wasabi-form-group "+(this.props.className||"");//组件的基本样式 
+        let control = null;
 
         if (this.props.data instanceof Array) {
     
             control = this.props.data.map((child, i) => {
-                var checked = false;
+                let checked = false;
                 if ((this.props.value != null && this.props.value != undefined) && (("," + this.props.value.toString()).indexOf("," + child[this.props.valueField ? this.props.valueField : "value"]) > -1)) {
                     checked = true;
                 }

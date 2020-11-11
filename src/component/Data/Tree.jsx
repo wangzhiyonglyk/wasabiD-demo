@@ -170,9 +170,7 @@ class Tree extends Component {
     onDoubleClick(id, text, children) {
         this.props.onDoubleClick && this.props.onDoubleClick(id, text, children, this.props.name);
     }
-
     onChecked(checked, id, text, children,row) {
-        console.log("你好")
         this.props.onChecked && this.props.onChecked(checked, id, text, children,row, this.props.name);
     }
     /**
@@ -264,7 +262,7 @@ class Tree extends Component {
                 />);
             });
         }
-        return <ul className="wasabi-tree clearfix">
+        return <ul className={"wasabi-tree clearfix " +this.props.className} style={this.props.style}>
             {nodeControl}
         </ul>
     }

@@ -3,7 +3,6 @@
  date:2016-04-05后开始独立改造
  edit 2019-12-18
  desc:按钮组件,从linkbutton独立出来
-
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -16,9 +15,6 @@ class Button extends Component {
     this.state = {};
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
   clickHandler(event) {
     event.preventDefault();
     if (this.props.disabled == true) {
@@ -45,13 +41,12 @@ class Button extends Component {
     };
     return (
     
-      <button {...props} onClick={this.clickHandler} type='button'>
+      <button {...props} onClick={this.clickHandler} type='button' >
        <span>{this.props.children ? this.props.children : this.props.title}</span> 
       </button>
     );
   }
 }
-
 Button.propTypes = {
   name: PropTypes.string, //按钮名称
   title: PropTypes.string, //按钮提示信息

@@ -1,5 +1,5 @@
 .wasabi-badge {
-    position: rwasabiative;
+    position: relative;
     vertical-align: middle;
     display: inline-block;
 }
@@ -25,3 +25,27 @@
     white-space: nowrap;
     border: 1px solid #fff;
 }
+.wasabi-badge.default .wasabi-badge__content{
+    background-color: #f56c6c;
+}
+
+.wasabi-badge.primary .wasabi-badge__content{
+    background-color: #409eff;
+}
+
+.wasabi-badge.success .wasabi-badge__content{
+    background-color: #67c23a;
+}
+
+.wasabi-badge.warning .wasabi-badge__content{
+    background-color: #e6a23c;
+}
+
+.wasabi-badge.info .wasabi-badge__content{
+    background-color:#909399;
+}
+
+.wasabi-badge.danger .wasabi-badge__content{
+    background-color: #f56c6c;
+}
+

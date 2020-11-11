@@ -11,6 +11,8 @@ import LinkButton from "../../component/Buttons/LinkButton"
 import Tabs from "../../component/Navigation/Tabs";
 import Modal from "../../component/Layout/Modal";
 import TabPanel from "../../component/Navigation/TabPanel";
+import Badge from "../../component/Buttons/Badge"
+import Rate from "../../component/Form/Rate";
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -102,21 +104,11 @@ value:"你好"
   render() {
     return <div>
 <br></br>
-
-<Button key="1" theme="default" size="small"  onClick={this.onClick}>信息按钮</Button>
-<Button  key="2" theme="primary"   size="mini" onClick={this.onClick}>信息按钮</Button>
-<Button  key="3" theme="info"   onClick={this.onClick}>信息按钮</Button>
-<Button   key="4" theme="success"size="large" disabled={true} onClick={this.onClick}>信息按钮</Button>
-<Button  key="5" theme="warning" onClick={this.onClick}>信息按钮</Button>
-<Button  key="6" theme="danger" onClick={this.onClick}>信息按钮</Button>
-
-<LinkButton key="11" iconCls={"icon-txt"} theme="default" size="small"  onClick={this.onClick}>设计要求</LinkButton>
-<LinkButton  key="12"   iconCls="icon-txt" theme="primary"  title="设计要求"  size="mini" onClick={this.onClick}>设计要求</LinkButton>
-<LinkButton  key="13"  iconCls={"icon-txt"} theme="info"   onClick={this.onClick}>设计要求</LinkButton>
-<LinkButton   key="14"  iconCls={"icon-txt"} theme="success"size="large" disabled={true} onClick={this.onClick}>设计要求</LinkButton>
-<LinkButton  key="15"  iconCls={"icon-txt"} theme="warning" onClick={this.onClick}>设计要求</LinkButton>
-<LinkButton  key="16"  iconCls={"icon-txt"}  style={{fontSize:18}}theme="danger" title="查询" onClick={this.onClick}></LinkButton>
-
+<Input type="rate" value={0} label="评价" required={true}></Input>
+<Badge tag={10} max={9}><Button key="1a" theme="default" size="small"  onClick={this.onClick}>信息按钮</Button></Badge>
+<LinkButton key="st1" iconCls="icon-star"></LinkButton>
+<LinkButton  key="st2"  iconCls="icon-star_blank"></LinkButton>
+<LinkButton  key="st3"  iconCls="icon-star_half"></LinkButton>
     {/* <CheckBox  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></CheckBox> */}
     {/* <Radio  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Radio> */}
     {/* <Select  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Select> */}

@@ -163,8 +163,7 @@ class Select extends Component {
     
   }
   render() {
-    let componentClassName = 'wasabi-form-group ' +
-      (this.props.className != null ? this.props.className : ''); //组件的基本样式
+    let componentClassName = "wasabi-form-group "+(this.props.className||"")+" ";//组件的基本样式 
     let inputProps = {
       readOnly: this.props.readOnly == true ? 'readOnly' : null,
 
@@ -285,7 +284,7 @@ class Select extends Component {
                   : 'none'
             }}
           >
-            <div className='text'>{this.props.inValidateText}</div>
+            <div className='text' >{this.props.inValidateText}</div>
           </small>
         </div>
       </div>

@@ -151,6 +151,7 @@ class Text extends Component {
     }
 
     render() {
+        let componentClassName = "wasabi-form-group "+(this.props.className||"")+" ";//组件的基本样式 
         let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
         if (this.props.hide) {
             style.display = "none";
@@ -191,7 +192,7 @@ class Text extends Component {
                 onBlur={this.blurHandler}
                 value={(this.state.value == null || this.state.value == undefined) ? "" : this.state.value}></textarea>;
         }
-        return (<div className={"wasabi-form-group " + this.props.className + " " + this.state.validateClass} onPaste={this.onPaste} style={style}>
+        return (<div className={componentClassName+ + this.state.validateClass} onPaste={this.onPaste} style={style}>
             <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
             <div className={"wasabi-form-group-body "} >
                 {control}

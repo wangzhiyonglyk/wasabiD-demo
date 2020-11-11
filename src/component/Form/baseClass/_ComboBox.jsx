@@ -36,6 +36,9 @@ export default function (WrappedComponent) {
                 reloadData: false,//是否更新
                 valueField: this.props.valueField,
                 textField: this.props.textField,
+                validateClass:"",
+                inValidateShow:"none",
+                inValidateText:""
             }
             this.setValue = this.setValue.bind(this);
             this.getValue = this.getValue.bind(this);

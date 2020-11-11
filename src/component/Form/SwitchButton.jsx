@@ -56,8 +56,8 @@ class SwitchButton extends Component {
 
     }
     render() {      
-        let componentClassName = "wasabi-form-group ";//组件的基本样式
-        let className = "syncbtn " + this.props.className;
+        let componentClassName = "wasabi-form-group "+(this.props.className||"");//组件的基本样式 
+        let className = "syncbtn " ;
         if (this.state.checked) {
             className += "checktrue";
         } else {

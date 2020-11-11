@@ -18,7 +18,7 @@ import None from "./None.jsx";
 import props from "./config/propType.js";
 import config from "./config/inputConfig.js"
 import defaultProps from "./config/defaultProps.js";
-import Time from "./Time"
+import Rate from "./Rate"
 import("../Sass/Form/Input.css");
 class Input extends Component {
 
@@ -38,6 +38,11 @@ constructor(props)
     renderText() {//普通文本框
         return <Text ref="input" {...this.props} ></Text>
     }
+    renderRate(){
+             //评分
+            return <Rate ref="input" {...this.props} ></Rate>
+          
+    }
     renderUnInput(type) {//非输入框组件
         let control;//组件
         let props = { ...this.props }////原有的属性
@@ -45,7 +50,6 @@ constructor(props)
         if (type == "none") {//空占位组件
             control = <None ref="input" {...props} ></None>
         }
-      
         else if (type == "radio") {//单选按钮组
             control = <Radio ref="input" {...props} ></Radio>
         }
@@ -78,6 +82,9 @@ constructor(props)
             || this.props.type == "textarea") {//这几种类型统一为text
 
             return this.renderText();
+        }
+        else if(this.props.type=="rate"){
+            return this.renderRate();
         }
 
         else {//输入文本输入框类型

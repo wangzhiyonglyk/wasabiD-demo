@@ -522,13 +522,13 @@ class Picker extends Component {
 
     }
     render() {
-        let componentClassName = "wasabi-form-group ";//组件的基本样式 
+        let componentClassName = "wasabi-form-group "+(this.props.className||"");//组件的基本样式 
         let inputProps =
         {
             readOnly: this.props.readOnly == true ? "readOnly" : null,
             name: this.props.name,
             placeholder: (this.props.placeholder === "" || this.props.placeholder == null) ? this.props.required ? "必填项" : "" : this.props.placeholder,
-            className: "wasabi-form-control  " + (this.props.className != null ? this.props.className : ""),
+            className: "wasabi-form-control  " ,
             title: this.props.title,
 
         }//文本框的属性

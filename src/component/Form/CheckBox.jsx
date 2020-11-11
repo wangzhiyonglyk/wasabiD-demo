@@ -17,7 +17,7 @@ class CheckBox extends Component {
         }
     }
     render() {
-        let componentClassName = "wasabi-form-group ";//组件的基本样式
+        let componentClassName = "wasabi-form-group "+(this.props.className||"");//组件的基本样式 
         let control = null;
         if (this.props.data instanceof Array) {
 

@@ -95,6 +95,8 @@ class Tabs extends React.Component {
 }
 
 Tabs.propTypes = {
+    className:PropTypes.string,
+    style:PropTypes.object,
     theme: PropTypes.oneOf([//主题
         "primary",
         "default",
@@ -107,7 +109,8 @@ Tabs.propTypes = {
     onClose: PropTypes.func,//关闭事件
 };
 Tabs.defaultProps = {
-
+    className:"",
+    style:{},
     theme: "primary",
     activeIndex: 0,
     onClose: null,

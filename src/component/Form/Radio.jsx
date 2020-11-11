@@ -14,9 +14,8 @@ class Radio extends Component {
         }
     }
     render() {
-
-        var componentClassName = "wasabi-form-group " + this.props.className;//组件的基本样式 
-        var control = null;
+        let componentClassName = "wasabi-form-group "+(this.props.className||"");//组件的基本样式 
+        let control = null;
         let className = "wasabi-radio-btn " + (this.props.readOnly ? " readOnly" : "");
         if (this.props.data) {
             control = this.props.data.map((child, i) => {
