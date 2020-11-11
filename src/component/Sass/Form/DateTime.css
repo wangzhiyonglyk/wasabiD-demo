@@ -27,7 +27,7 @@ float: left;
 
 .wasabi-datetime-header a:hover
 {
-  color: #1c84c6;
+  color: #409eff;
 }
 .wasabi-datetime-header .header-text
 {
@@ -129,7 +129,7 @@ float: left;
 }
 
 .wasabi-datetime-month .datespan:hover,.wasabi-datetime-year .datespan:hover{
- color: #1c84c6;
+ color: #409eff;
   background-color: rgba(0,0,0,0.05);
 }
 .wasabi-datetime-month .datespan.chosed,.wasabi-datetime-year .datespan.chosed{
@@ -147,7 +147,7 @@ float: left;
   color: white;
   width:24px;
   height:24px;
-  background-color:#1c84c6;
+  background-color:#409eff;
   border-radius: 100%;
 }
 .wasabi-datetime-body .datespan  .onlyradius
@@ -155,7 +155,7 @@ float: left;
   color: white;
   width:24px;
   height:24px;
-  background-color:#1c84c6;
+  background-color:#409eff;
   border-radius: 100%;
 }
 
@@ -163,12 +163,12 @@ float: left;
 .wasabi-datetime-body .datespan.chosed
 {
   color: white;
-  background-color: #1c84c6;
+  background-color: #409eff;
 }
 .wasabi-datetime-body .datespan.begin
 {
   color: white;
-  background-color: #1c84c6;
+  background-color: #409eff;
 
 }
 .wasabi-datetime-body .datespan.begin .radius
@@ -176,7 +176,7 @@ float: left;
   color: white;
   width:24px;
   height:24px;
-  background-color:#1c84c6;
+  background-color:#409eff;
   border-radius: 100%;
 }
 .wasabi-datetime-body .datespan.begin .blank
@@ -190,7 +190,7 @@ float: left;
 .wasabi-datetime-body .datespan.end
 {
   color: white;
-  background-color: #1c84c6;
+  background-color: #409eff;
 }
 
 .wasabi-datetime-body .datespan.end .radius
@@ -199,7 +199,7 @@ float: left;
   width:24px;
   height:24px;
   float:right;
-  background-color:#1c84c6;
+  background-color:#409eff;
   border-radius: 100%;
 }
 .wasabi-datetime-body .datespan.end .blank
@@ -288,7 +288,7 @@ float: left;
   -o-border-radius: 50%;
 }
 .wasabi-time-container .hour:hover,.wasabi-time-container .hour.active{
-  background-color: #1c84c6;
+  background-color: #409eff;
   color: #fff;
 }
 .wasabi-time-container .time-container{

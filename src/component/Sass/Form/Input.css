@@ -165,19 +165,19 @@ input验证失败
 input验证通过
 */
 .wasabi-has-success .wasabi-form-control {
-  border-color: #1c84c6;
+  border-color: #409eff;
  
   
 }
 
 .wasabi-has-success input[type="checkbox"]{
-  border-color: #1c84c6;
+  border-color: #409eff;
  
 
 }
 
 .wasabi-has-success input[type="radio"]{
-  border-color: #1c84c6;
+  border-color: #409eff;
  
 
 }

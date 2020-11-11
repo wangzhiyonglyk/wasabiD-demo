@@ -31,8 +31,8 @@ desc:面板组件样式
 }
 .panel-primary>.panel-heading {
   color: #fff;
-  background-color: #1c84c6;
-  border-color: #1c84c6;
+  background-color: #409eff;
+  border-color: #409eff;
 }
 
 .panel-success>.panel-heading {
