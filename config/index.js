@@ -8,14 +8,8 @@
 //如果是单页面
 let entry = [
   {
-    filename: 'index', //文件名，
-    title: '后台管理系统', // 标题
-    src: './view/index/index.jsx' //脚本路径
-  },
-  
-  {
     filename: 'home', //文件名，
-    title: '后台管理系统', // 标题
+    title: '主页', // 标题
     src: './view/home/index.jsx' //脚本路径
   },
 ];

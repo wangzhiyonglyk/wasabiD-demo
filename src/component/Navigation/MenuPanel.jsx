@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-class Menu extends React.Component {
+class MenuPanel extends React.Component {
   constructor(props) {
     super(props);
   
@@ -32,21 +32,25 @@ onChange(){
 
   render() {
     return       <div   className={"dropdown "+this.props.className+" "+( this.props.expand?"expand":"")}>
-    <input name={this.props.title}  onChange={this.onChange.bind(this)} type="checkbox" checked={this.props.expand} value="menu"/>
     
-    <label htmlFor={this.props.title} onClick={this.props.expandHandler} >{this.props.title}</label>
+    <label htmlFor={this.props.title} onClick={this.props.expandHandler} > <icon className={ this.props.iconCls} style={{marginRight:10}}></icon> {this.props.title}</label>
     <i className={this.props.expand?"icon-down":"icon-up"} onClick={this.props.expandHandler} ></i>
     <ul className="" style={{display:this.props.expand?"block":"none"}}>
-        {
-            React.Children.map(this.props.children, (child, index) => {
-                    return  <li className={(this.state.activeIndex==index?"active":"")}key={index} onClick={this.activeChange.bind(this,index)}>{child}</li>
-            })
-        }
+        {this.props.children}
     </ul>
-  </div>;
+  </div>
   }
 
  
 }
+MenuPanel.propTypes = {
+  className:PropTypes.string,
+  iconCls:PropTypes.string,
+ 
+};
+MenuPanel.defaultProps = {
+  className:"",
+  iconCls: "icon-menu",
+};
 
-export default  Menu;
+export default  MenuPanel;

@@ -24,7 +24,7 @@ expandHandler(index)
   })
 }
   render() {
-    return <div style={this.props.style} className={"wasabi-menu "+this.props.className}>
+    return <div style={this.props.style} className={"wasabi-menu "+this.props.className +" "+this.props.theme}>
          {
                       React.  Children.map(this.props.children, (child, index) => {
 
@@ -41,5 +41,17 @@ expandHandler(index)
   }
 
 }
+Menus.propTypes = {
+  className:PropTypes.string,
+  theme: PropTypes.oneOf([//主题
+      "default",
+      "black",
+  ]),
+ 
+};
+Menus.defaultProps = {
+  className:"",
+  theme: "default",
+};
 
 export default  Menus;

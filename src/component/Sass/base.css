@@ -248,7 +248,7 @@ a {
 }
 a:hover,
 a:focus {
-  color: #16689E;
+  color:#409eff;  
   text-decoration: none;
 }
 a:focus {

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 import Menus from "../../component/Navigation/Menus";
 import MenuPanel from "../../component/Navigation/MenuPanel";
+import MenuItem from "../../component/Navigation/MenuItem";
 import Layout from "../../component/Layout/Layout";
 import Left from "../../component/Layout/Left";
 import Center from "../../component/Layout/Center";
@@ -19,6 +20,7 @@ class Index extends React.Component {
 
     this.state = {
       leftWidth: 200,
+      activeMenu:"",
       shortcuts: [
         { title: "首页", href: "" },
         { title: "个人设置", href: "" },
@@ -32,11 +34,14 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
-    this.refs.model.open();
+    //this.refs.model.open();
     api.message();
     api.location();
   }
   open(item) {
+    this.setState({
+      activeMenu:item.title
+    })
    let findIndex=null;
     let e = this.state.tabs.find((selfItem ,index)=> {
       if (selfItem.title == item.title) {
@@ -83,29 +88,16 @@ class Index extends React.Component {
   render() {
     return (
       <Layout>
-        <Header height={45}>
+        <Header height={44}>
           <div className='header'>
             <div className='system'>
               {" "}
               <img className='logo' src={require("./image/logo.png")}></img>
               <span className='title'>业务后台管理系统</span>
-              <img
-                className='logo'
-                onClick={this.menuHandler.bind(this)}
-                src={require("./image/menu.png")}
-                style={{
-                  width: 16,
-                  height: 16,
-                  marginTop: 16,
-                  marginLeft: 10
-                }}
-              ></img>
+           
             </div>
             <div className='user'>
-              <img
-                className='userheader'
-                src={require("./image/userheader.png")}
-              ></img>
+             
               <i
                 style={{
                   float: "right",
@@ -160,27 +152,13 @@ class Index extends React.Component {
           </div>
         </Header>
         <Left width={this.state.leftWidth}>
-          <Menus theme='default   '>
-            {configMenu.map((route, index) => {
-                return (
-                  <MenuPanel key={index} title={route.title} expand={true}>
-                   
-                        <a
-                          key={index  + ""}
-                          onClick={this.open.bind(this, route)}
-                          style={{ textAlign: "left", marginLeft: "40px" }}
-                        >
-                          <span className='icon-txt menuicon'>
-                            {route.title}
-                          </span>
-                        </a>
-                      );
-                    
-                  </MenuPanel>
-                );
-              
+          <Menus theme='default'>
+          <MenuPanel  expand={true} title={"订单管理"}>
+          {configMenu.map((route, index) => {
+              return   <MenuItem key={index} active={route.title==this.state.activeMenu} onClick={this.open.bind(this,route)}>{route.title}</MenuItem>
             })}
-
+                  </MenuPanel>
+            
            
           </Menus>
         </Left>

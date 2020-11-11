@@ -103,7 +103,7 @@ value:"你好"
     return <div>
 <br></br>
 
-{/* <Button key="1" theme="default" size="small"  onClick={this.onClick}>信息按钮</Button>
+<Button key="1" theme="default" size="small"  onClick={this.onClick}>信息按钮</Button>
 <Button  key="2" theme="primary"   size="mini" onClick={this.onClick}>信息按钮</Button>
 <Button  key="3" theme="info"   onClick={this.onClick}>信息按钮</Button>
 <Button   key="4" theme="success"size="large" disabled={true} onClick={this.onClick}>信息按钮</Button>
@@ -115,7 +115,7 @@ value:"你好"
 <LinkButton  key="13"  iconCls={"icon-txt"} theme="info"   onClick={this.onClick}>设计要求</LinkButton>
 <LinkButton   key="14"  iconCls={"icon-txt"} theme="success"size="large" disabled={true} onClick={this.onClick}>设计要求</LinkButton>
 <LinkButton  key="15"  iconCls={"icon-txt"} theme="warning" onClick={this.onClick}>设计要求</LinkButton>
-<LinkButton  key="16"  iconCls={"icon-txt"}  style={{fontSize:18}}theme="danger" title="查询" onClick={this.onClick}></LinkButton> */}
+<LinkButton  key="16"  iconCls={"icon-txt"}  style={{fontSize:18}}theme="danger" title="查询" onClick={this.onClick}></LinkButton>
 
     {/* <CheckBox  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></CheckBox> */}
     {/* <Radio  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Radio> */}
