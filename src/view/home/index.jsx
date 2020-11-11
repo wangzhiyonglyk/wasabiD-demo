@@ -100,11 +100,13 @@ value:"你好"
   beforeRename(){
     return false;
   }
-
+  onSelect(value,text,name){
+    console.log(value,text,name);
+  }
   render() {
     return <div>
 <br></br>
-<Input type="rate" value={0} label="评价" required={true}></Input>
+<Input type="rate" name={"评价"} value={5} readOnly={true} label="评价" required={true} onSelect={this.onSelect.bind(this)}></Input>
 <Badge tag={10} max={9}><Button key="1a" theme="default" size="small"  onClick={this.onClick}>信息按钮</Button></Badge>
 <LinkButton key="st1" iconCls="icon-star"></LinkButton>
 <LinkButton  key="st2"  iconCls="icon-star_blank"></LinkButton>

@@ -36,6 +36,9 @@ class Rate extends Component {
      return null;
  }
     onSelect(value) {
+        if(this.props.readOnly||this.props.disabled){
+            return;
+        }
         this.setState({
             value: value,
             hoverValue: 0,
@@ -54,12 +57,18 @@ class Rate extends Component {
         })
     }
     onMouseOver(value) {
+        if(this.props.readOnly||this.props.disabled){
+            return;
+        }
         this.setState({
             hoverValue: value,
 
         })
     }
     onMouseOut(){
+        if(this.props.readOnly||this.props.disabled){
+            return;
+        }
         this.setState({
             hoverValue:0,
         })
@@ -113,7 +122,7 @@ class Rate extends Component {
                 //只有在只读的情况才有半读的情况
                 let percent = this.props.percent;
                 let num =value / percent;//个数，有小数说明有半选的状态
-                num=num.toString().indexOf(".")>-1?num+1:num;//有小数点
+                num=num.toString().indexOf(".")>-1?parseInt(num)+1:num;//有小数点
                  return this.props.texts[num-1]||"";
             }
         }
@@ -141,7 +150,7 @@ class Rate extends Component {
                     {
                         this.renderStar()
                     }
-                    <a className="wasabi-rate-text" style={{color:this.props.textColor}}>{this.renderText()}</a>
+                    <a className="wasabi-rate-text" style={{color:this.props.textColor}}>{(this.props.readOnly || this.props.disabled||this.props.showValue)?this.state.value: this.renderText()}</a>
                 </div>
             </div>
         </div>
@@ -161,6 +170,7 @@ Rate.propTypes = {
     labelStyle: PropTypes.object,//标签样式
     percent: PropTypes.number,//每个星的值
     maxValue: PropTypes.number,//最大值
+    showValue:PropTypes.bool,//是否显示数值，
     disabled: PropTypes.bool,//禁止访问
     readOnly: PropTypes.bool,//只读
     hide: PropTypes.bool,//隐藏
@@ -178,6 +188,7 @@ Rate.defaultProps = {
     labelStyle: {},
     percent: 2,
     maxValue: 10,
+    showValue:false,
     disabled: false,
     readOnly: false,
     hide: false,
