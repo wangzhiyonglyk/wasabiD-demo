@@ -11,6 +11,7 @@ class Left extends  React.Component{
         super(props);
     }
     static defaultProps = {
+        className:"",
         title:"left",
         top:null,
         width:0,
@@ -22,12 +23,11 @@ class Left extends  React.Component{
         reduceHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }
     render() {
-        return <div className={"wasabi-layout-left  layout-panel "} 
+        return <div className={"wasabi-layout-left  layout-panel "+this.props.className} 
         style={{top:this.props.top,width:this.props.width,height: (this.props.reduceHeight?"calc(100% - "+(this.props.reduceHeight).toString()+"px":null) }}>
           {this.props.children}
         </div>
     }
 }
-
 
 export default  Left;

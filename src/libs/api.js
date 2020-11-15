@@ -8,7 +8,6 @@ import Mssaege from '../component/Info/Msg'
 import config from "./config"
 
 let ajax = function (settings) {
-
     let headers = getHeaders(settings.url)
     //说明要对接用管系统
     if (!func.isEmptyObject(headers)) {

@@ -50,7 +50,7 @@ class DataGrid extends Component {
       detailView: null, //详情行,
       detailIndex: null, //显示详情的行下标
       total: this.props.total || this.props.data.length || 0, //总记录数
-      loading: this.state.url || this.props.headerUrl ? true : false, //显示正在加载图示
+      loading: this.props.url || this.props.headerUrl ? true : false, //显示正在加载图示
       footer: this.props.footer, //页脚
       headers: this.props.headers, //表头会可能后期才传送,也会动态改变
       height: this.props.height, //如果没有设置高度还要从当前页面中计算出来空白高度,以适应布局
@@ -331,7 +331,7 @@ class DataGrid extends Component {
                   name={header.label}
                   style={{ textAlign: header.align }}
                 >
-                  <div>{content}</div>
+                 {content}
                   {panelIcon}
                   {saveIcon}
                 </div>
@@ -360,7 +360,7 @@ class DataGrid extends Component {
                   name={header.label}
                   style={{ textAlign: header.align }}
                 >
-                  <div>{content}</div>
+                 {content}
                   {panelIcon}
                   {saveIcon}
                 </div>

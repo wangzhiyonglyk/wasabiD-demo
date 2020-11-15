@@ -33,7 +33,7 @@ onChange(){
   render() {
     return       <div   className={"dropdown "+this.props.className+" "+( this.props.expand?"expand":"")}>
     
-    <label htmlFor={this.props.title} onClick={this.props.expandHandler} > <icon className={ this.props.iconCls} style={{marginRight:10}}></icon> {this.props.title}</label>
+    <label htmlFor={this.props.title} onClick={this.props.expandHandler} > <i className={ this.props.iconCls} style={{marginRight:10}}></i> {this.props.title}</label>
     <i className={this.props.expand?"icon-down":"icon-up"} onClick={this.props.expandHandler} ></i>
     <ul className="" style={{display:this.props.expand?"block":"none"}}>
         {this.props.children}

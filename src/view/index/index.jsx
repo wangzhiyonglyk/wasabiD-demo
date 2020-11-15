@@ -155,6 +155,9 @@ class Index extends React.Component {
           <Menus theme='default'>
           <MenuPanel  expand={true} title={"订单管理"}>
           {configMenu.map((route, index) => {
+            if(route.hide){
+              return null;
+            }
               return   <MenuItem key={index} active={route.title==this.state.activeMenu} onClick={this.open.bind(this,route)}>{route.title}</MenuItem>
             })}
                   </MenuPanel>
@@ -170,7 +173,7 @@ class Index extends React.Component {
                 <TabPanel key={item.title} title={item.title} iconCls={item.iconCls}>
                   <iframe
                     src={"./"+item.filename+".html"}
-                    style={{ width: "100%", height: "100%" }}
+                    style={{ width: "100%", height: "100%",border:"none" }}
                   ></iframe>
                 </TabPanel>
               );

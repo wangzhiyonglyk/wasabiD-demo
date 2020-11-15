@@ -43,7 +43,7 @@ class LinkButton extends Component {
     window.localStorage.setItem('wasabidrageleProps', JSON.stringify(newele));
   }
   render() {
-    let className = 'wasabi-linkbutton '+this.props.theme+" "; //按钮样式
+    let className = 'wasabi-linkbutton '+this.props.className +" "+this.props.theme+" "; //按钮样式
     if (this.props.className) {
       //自定义class
       className += ' ' + this.props.className;
@@ -214,6 +214,8 @@ class LinkButton extends Component {
 
 LinkButton.propTypes = {
   name: PropTypes.string, //名称
+  className:PropTypes.string,//样式
+  style:PropTypes.object,//样式
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   iconCls: PropTypes.string, //图片
   iconAlign: PropTypes.oneOf(['left', 'right', 'rightTop', 'rightBottom']), //图片位置
@@ -236,6 +238,8 @@ LinkButton.propTypes = {
 };
 LinkButton.defaultProps = {
   name: '', //关联值
+  className:"",
+  stlye:{},
   title: '',
   iconCls: null, //默认为空
   iconAlign: 'left', //图标位置

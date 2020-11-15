@@ -59,7 +59,7 @@ class Layout extends React.Component {
     render() {
         let widthHeight = this.calWidthHeight();//计算宽高
         
-        return <div className={"wasabi-layout clearfix"}
+        return <div className={"wasabi-layout clearfix " +this.props.className }
             style={{ width: this.props.width, height: this.props.height }}  >
             {
                 React.Children.map(this.props.children, (child, index) => {

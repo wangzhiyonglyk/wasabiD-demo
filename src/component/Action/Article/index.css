@@ -1,0 +1,103 @@
+.wasabi-article{
+position: relative;
+overflow: hidden;
+}
+.wasabi-article .wasabi-article-catalog {
+width: 100%;
+border-right: 1px solid #dcdfe6;    
+height: 100%;
+padding-top: 10px;
+overflow-y: hidden;
+}
+
+
+.wasabi-article .wasabi-article-catalog .tool{
+    width:100% ;
+    height: 44px;
+}
+.wasabi-article .wasabi-article-catalog .list{
+    height: 100%;
+    overflow-y: auto;
+    list-style: none;
+    margin-top: 10px;
+
+}
+
+.wasabi-article .wasabi-article-catalog .list li {
+    display: flex;
+    height: 50px;
+    padding-left: 10px;
+    border-top: 1px solid #dcdfe6;
+    align-items: center;
+    cursor: pointer;
+}
+.wasabi-article .wasabi-article-catalog .list li:last-child{
+    border-bottom: 1px solid #dcdfe6;
+}
+.wasabi-article .wasabi-article-catalog .list li:hover,.wasabi-article .wasabi-article-catalog .list li.active
+{
+    background-color: #f5f7fa;
+}
+.wasabi-article .wasabi-article-ellipsis{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 10px;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: 10px;
+    width: 220px;
+}
+.wasabi-article .wasabi-article-saveStatus{
+    position: absolute;
+    left: 5px;
+    top: 2px;
+}
+
+.wasabi-article .wasabi-article-content{
+    width: 100%;
+    height: 100%;
+    border-right: 1px solid #dcdfe6;
+}
+
+.wasabi-article .wasabi-article-title{
+    flex-shrink: 0;
+    width: 100%;
+    margin-top:20px; 
+    margin-left: 10px;
+    margin-bottom: 0;
+    padding: 0 80px 10px 40px;
+    border: none;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 30px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background-color: transparent;
+    outline: none;
+    border-radius: 0;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.wasabi-article .wasabi-article-headericon{
+    display: block;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    min-width: 48px;
+    min-height: 48px;
+    width: 48px;
+    height: 48px;
+    margin-left: 10px;
+}
+
+.wasabi-article .wasabi-article-author{
+    font-size: 16px;
+    font-weight: 500;
+    margin-right: 8px;
+}
+

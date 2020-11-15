@@ -12,6 +12,9 @@ import mixins from '../Mixins/mixins';
 import props from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
 import _ComboBox from "./baseClass/_ComboBox.jsx";
+import LinkButton from "../Buttons/LinkButton.jsx";
+import CheckBox from "./CheckBox.jsx";
+import propsTran from "../libs/propsTran.js";
 class TreePicker extends Component {
     constructor(props) {
         super(props);
@@ -19,6 +22,7 @@ class TreePicker extends Component {
             show: false,//是否显示下拉框
             text: this.props.text,
             value: this.props.value,
+          
             oldPropsValue: this.props.value,//保存初始化的值
         }
     }
@@ -67,10 +71,32 @@ class TreePicker extends Component {
         this.setState({
             value: value.join(","),
             text: text.join(","),
+           
+       
 
         });
         this.props.onSelect && this.props.onSelect(value.join(","), text.join(","), children, row, this.props.name);
 
+    }
+    choseAllHandler(value){
+        if(value){
+            let data=this.props.data;
+           let r= propsTran.getComboxValueAll(data);
+           this.setState({
+               value:r.values.join(","),
+               text:r.texts.join(","),
+              
+
+           })
+
+        }
+        else{
+            this.setState({
+                value:"",
+                text:"",
+               
+            })
+        }
     }
     render() {
         var componentClassName = "wasabi-form-group ";//组件的基本样式
@@ -98,6 +124,15 @@ class TreePicker extends Component {
                     <i className={"comboxbox-icon  " + (this.state.show ? "rotate" : "")} onClick={this.showPicker.bind(this, 1)}></i>
                     <input type="text" {...inputProps} value={this.state.text} onBlur={this.props.onBlur} onClick={this.showPicker.bind(this)} onChange={() => { }} />
                     <div className={"dropcontainter treepicker  "} style={{ height: this.props.height, display: this.state.show == true ? "block" : "none" }}  >
+                       <div
+                       style={{height:30,
+                        display: "flex",
+                        justifyContent: "flex-end"}}
+                       ><CheckBox name="wasabi-tree-choseall"
+                         ref="checkbox"
+                        
+                       onSelect={this.choseAllHandler.bind(this)} data={[{value:"1",text:"全选"}]}></CheckBox></div>
+                      
                         <Tree
                             ref="tree"
                             /**
@@ -106,7 +141,7 @@ class TreePicker extends Component {
                             {...this.props}
                             data={this.props.data} onChecked={this.onSelect.bind(this)}
                             checkAble={true}
-                            inputValue={this.state.value}
+                            inputValue={","+this.state.value+","}
 
                         ></Tree>
                     </div>

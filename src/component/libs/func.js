@@ -114,12 +114,12 @@ func.dealNumToEnglishFormat = function (num) {
 }
 
 // 日期格式化为字符串
-func.dateformat = function (date, format) {
+func.dateformat = function (date, format='yyyy-MM-dd HH:mm:ss') {
     /// <summary>
     /// 日期格式化为字符串
     /// </summary>
     /// <param name="date" type="date">日期</param>
-    /// <param name="format" type="string">格式化字符串，"yyyy-MM-dd hh:mm:ss","yyyy-MM-dd"</param>
+    /// <param name="format" type="string">格式化字符串，"yyyy-MM-dd HH:mm:ss","yyyy-MM-dd"</param>
      /**
          * 对Date的扩展，将 Date 转化为指定格式的String
          * 月(M)、日(d)、12小时(h)、24小时(H)、分(m)、秒(s)、周(E)、季度(q) 可以用 1-2 个占位符

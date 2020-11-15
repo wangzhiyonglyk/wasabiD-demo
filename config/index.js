@@ -10,12 +10,18 @@ let entry = [
   {
     filename: 'index', //文件名，
     title: '首页', // 标题
-    src: './view/index/index.jsx' //脚本路径
+    src: './view/index/index.jsx', //脚本路径
+    hide:true,
   },
   {
     filename: 'home', //文件名，
     title: '主页', // 标题
     src: './view/home/index.jsx' //脚本路径
+  },
+  {
+    filename: 'login', //文件名，
+    title: '登录', // 标题
+    src: './view/login/index.jsx' //脚本路径
   },
 ];
 

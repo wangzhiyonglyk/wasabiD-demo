@@ -13,8 +13,12 @@ class TreeNode extends Component {
 
     constructor(props) {
         super(props);
+        let checked=this.props.inputValue&&this.props.inputValue!=",," ? (this.props.inputValue.indexOf("," + this.props.id + ",") > -1?true:false):this.props.checked;
         this.state = {
             ...this.props,
+            oldPropsInputValue:this.props.inputValue ,//保存，方便treepicker的value发生改变
+            checked:checked,
+            oldChecked:checked,//保存旧的
             rename: false,//是否处于重命名状态
             checkValue: false,//勾选状态，不选，半选，勾选
             nodeid: Math.random().toString(36).slice(-8) + 'node' + func.dateformat(new Date(), 'yyyyMMddHHmmss'),
@@ -25,6 +29,27 @@ class TreeNode extends Component {
         this.showHandler = this.showHandler.bind(this)
     }
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        let newState={};
+        if(nextProps.inputValue!=prevState.oldPropsInputValue){
+            //处理treepicker的值问题
+            newState= {
+                inputValue:nextProps.inputValue,
+                oldPropsInputValue:nextProps.inputValue,
+                checked:nextProps.inputValue &&nextProps.inputValue!=",,"? nextProps.inputValue.indexOf("," + prevState.id + ",") > -1?true:false:nextProps.checked,
+            }
+        }
+        if(nextProps.checked!=prevState.oldChecked){
+            newState={
+                checked:nextProps.checked,
+                oldChecked:nextProps.checked,
+            } 
+        }
+        if(!func.isEmptyObject(newState)){
+            return newState;
+        }
+        return null;
+    }
     /**
      * 展开/折叠
      */
@@ -123,10 +148,10 @@ class TreeNode extends Component {
                     if (this.props.checkType.y.indexOf("p") > -1) {//影响父节点
                         //获取兄弟之间的勾选情况，来处理父节点的勾选
                         this.nodeGetBrotherCheckedNumForParent();
-                        console.log("d");
+                      
                     }
                     else {
-                        console.log("s");
+
                         //不影响父节点，直接回调
                         //todo 父节点，及子节点都会异步改变，回调的时间不定，暂时使用这个方法
                         setTimeout(() => {
@@ -563,8 +588,7 @@ class TreeNode extends Component {
         return this.state;
     }
     render() {
-       
-      
+   
         let nodeControl = [];
         let title = this.props.title ? this.props.title : this.state.text;//提示信息
         if (this.state.children&&this.state.children instanceof Array) {
@@ -596,7 +620,7 @@ class TreeNode extends Component {
                      * 
                      */
                     half={(this.props.checkType && this.props.checkType.y.indexOf("p") > -1 && ((this.state.checkValue || item.checkValue) == "half"))}
-                    checked={this.props.inputValue ? this.props.inputValue.indexOf("," + item.id + ",") > -1 ? true : false : this.state.checked}
+                    checked={this.state.checked}
                     isParent={isParent} parent={parent}
                     selectid={this.props.selectid} />);
             });
@@ -616,7 +640,7 @@ class TreeNode extends Component {
         }
        
         //节点元素
-        let nodeEement = [<Input key="1" forceChange={true} type={this.props.checkStyle || "checkbox"}
+        let nodeEement = [<Input key="1"  type={this.props.checkStyle || "checkbox"}
             hide={this.props.checkAble ? false : this.props.checkAble ? false : true}
             half={this.state.checkValue == "half"}
             name={"node" + this.props.id}

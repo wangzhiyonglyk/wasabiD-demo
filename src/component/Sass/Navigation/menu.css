@@ -41,7 +41,7 @@
 	color: white;
 	background-color: rgb(84, 92, 100);
 }
-.dropdown i{
+.dropdown .icon-down,.dropdown .icon-up{
 	position: absolute;
 	right: 0px;
 	right: 10px;

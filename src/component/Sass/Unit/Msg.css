@@ -21,17 +21,17 @@
   -webkit-transition: opacity 2s;
   transition:opacity 2s;
 }
-.wasabi-Msg.success
+.wasabi-message.success
 {
   background-color: #25d7b9;
 }
-.wasabi-Msg.error
+.wasabi-message.error
 {
   -webkit-animation: shake 0.5s;
           animation: shake 0.5s;
   background-color: #ff404c;
 }
-.wasabi-Msg.info
+.wasabi-message.info
 {
   background-color: #f58030;
 }
@@ -60,15 +60,15 @@
   left: -40px;
 
 }
-.wasabi-Msg.success .notice:before
+.wasabi-message.success .notice:before
 {
   background-image: url("../../img/icons/message_success.png");
 }
-.wasabi-Msg.error .notice:before
+.wasabi-message.error .notice:before
 {
   background-image: url("../../img/icons/message_error.png");
 }
-.wasabi-Msg.info .notice:before
+.wasabi-message.info .notice:before
 {
   background-image: url("../../img/icons/message_info.png");
 }

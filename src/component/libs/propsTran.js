@@ -62,18 +62,42 @@ let propsTran = {
         if (data && data instanceof Array && data.length > 0) {
             for (let i = 0; i < data.length; i++) {
                 if (("," + (value || "") + ",").indexOf("," + (data[i].value || data[i].id) + ",") > -1) {
-                    text.push(data[i].text || data[i][textField]);
+                    text.push(data[i].text);
                 }
                 if (data[i].children && data[i].children.length > 0) {
                     let r = propsTran.setComboxText(value, data[i].children);
-                    text = [].concat(text, r);
+                    text = [].concat( r);
                 }
             }
         }
         return text;
 
     },
+    /**
+     * 全选,为treepicker设置
+     * @param {*} value 
+     * @param {*} data 
+     */
+    getComboxValueAll(data) {
+        let values = [];
+            let   texts=[];
+        if (data && data instanceof Array && data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+                values.push(data[i].id);
+                texts.push(data[i].text);
+                if (data[i].children && data[i].children.length > 0) {
+                    let r = propsTran.getComboxValueAll(data[i].children);
+                    values = [].concat(r.values);
+                    texts=[].concat(r.texts)
+                }
+            }
+        }
+        return {
+            values:values,
+            texts:texts
+        };
 
+    },
     /**
    * 时间范围组件
    * @param {*} props 

@@ -244,9 +244,9 @@ desc:日期选择样式
 }
 /*下拉列表*/
 .combobox .treepicker{
-  width:250px;
+  width:300px;
   height:400px;
-
+overflow: auto;
 }
 .combobox .treepicker.default
 {

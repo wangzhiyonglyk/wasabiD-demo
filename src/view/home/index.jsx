@@ -13,6 +13,10 @@ import Modal from "../../component/Layout/Modal";
 import TabPanel from "../../component/Navigation/TabPanel";
 import Badge from "../../component/Buttons/Badge"
 import Rate from "../../component/Form/Rate";
+import Simulator  from "../../component/Action/Simulator"
+import Article  from "../../component/Action/Article"
+import DataGrid  from "../../component/Data/DataGrid"
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -105,47 +109,11 @@ value:"你好"
   }
   render() {
     return <div>
-<br></br>
-<Input type="rate" name={"评价"} value={5} readOnly={true} label="评价" required={true} onSelect={this.onSelect.bind(this)}></Input>
-<Badge tag={10} max={9}><Button key="1a" theme="default" size="small"  onClick={this.onClick}>信息按钮</Button></Badge>
-<LinkButton key="st1" iconCls="icon-star"></LinkButton>
-<LinkButton  key="st2"  iconCls="icon-star_blank"></LinkButton>
-<LinkButton  key="st3"  iconCls="icon-star_half"></LinkButton>
-    {/* <CheckBox  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></CheckBox> */}
-    {/* <Radio  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Radio> */}
-    {/* <Select  label="你好" help="这个性别" name={"dd"} data={[{value:1,text:"Wfdfsdf"},{value:2,text:"dddd"}]}></Select> */}
-    <Input key="1"  placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="datetimerange" label="你好" help="这个性别" name={"dd"}
-     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
-     <Input key="2"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="datetime" label="你好" help="这个性别" name={"dd"}
-     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
+      <Input type="treepicker" data={this.state.data} textField="name" name="tree" simpleData={true}></Input>
+      <DataGrid style={{width:500}} selectAble={true} headers={[{width:100,name:"id",label:"id"},{width:100,name:"name",label:"汉字"}]}  data={this.state.data}></DataGrid></div>
+
     
-    <Input  key="3"  placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="timerange" label="你好" help="这个性别" name={"dd"}
-     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
-    
-    <Input  key="4"  placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="date" label="你好" help="这个性别" name={"dd"}
-     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
-    
-    <Input key="5"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="time" label="你好" help="这个性别" name={"dd"}
-     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
-       <Input key="6"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="daterange" label="number" help="这个性别" name={"dd"}
-     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
-      <Input key="7"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="select" label="number" help="这个性别" name={"dd"}
-     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
-      <Input key="8"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="picker" label="number" help="这个性别" name={"dd"}
-     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
-      <Input key="9"   placeholder="请输入"  required={true} value={this.state.value} addAbled={true}  type="treepicker" label="number" help="这个性别" name={"dd"}
-     data={[{id:1,text:"Wfdfsdf"},{id:2,text:"dddd",children:[{id:3,text:"fsfaf"}]}]}></Input>
-       <Tabs  ref="tabs"  >
-            {this.state.tabs.map(item => {
-              return (
-                <TabPanel key={item.title} title={item.title} iconCls={item.iconCls}>
-                  <div></div>
-                </TabPanel>
-              );
-            })}
-          </Tabs>
-   
-    </div>;
+
   }
 }
 

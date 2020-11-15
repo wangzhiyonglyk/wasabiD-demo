@@ -50,7 +50,9 @@ class Label extends Component {
 
     render() {
         let style = this.props.style ? this.props.style : {};
-        return <div id={this.state.controlid} className={"wasabi-form-group-label " +  (this.props.readOnly||this.props.disabled ? " readOnly " : "") +(this.props.required ? " required" : "")}
+        style.display=this.props.children || this.props.name?"block":"none";
+        return <div id={this.state.controlid}
+         className={"wasabi-form-group-label " +  (this.props.readOnly||this.props.disabled ? " readOnly " : "") +(this.props.required ? " required" : "")}
             style={style}>
             <label>{this.props.children || this.props.name}
                 <a className="help" onClick={this.helpHandler.bind(this)}
