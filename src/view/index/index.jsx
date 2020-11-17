@@ -12,6 +12,7 @@ import Tabs from "../../component/Navigation/Tabs";
 import Modal from "../../component/Layout/Modal";
 import TabPanel from "../../component/Navigation/TabPanel";
 import configMenu from '../../../config/index'
+import Msg from "../../component/Info/Msg";
 import "./index.css";
 import api from "../../libs/api"
 class Index extends React.Component {
@@ -34,7 +35,25 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
-    //this.refs.model.open();
+    api.ajax({
+      url: 'http://10.136.1.104:20000/searchBigData/wbDetail',
+      type: 'POST',
+      
+      contentType:"application/json",
+      data: JSON.stringify({
+        userId:"123456",
+        tbName:"BROAD_OPEN_CARD_MODEL",
+        pageNo:1,
+        pageSize:20
+      }),
+      
+      success: res => {
+      
+      }
+      ,error(message){
+        Msg.error(message)
+      }
+    });
     api.message();
     api.location();
   }

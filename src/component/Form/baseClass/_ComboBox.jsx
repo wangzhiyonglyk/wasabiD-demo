@@ -71,7 +71,7 @@ export default function (WrappedComponent) {
             if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
                 //如果传了数据，并且发生改变
                 newState.rawData = nextProps.data;//保留原始数据
-                let newData = propsTran.setComboxValueAndText(nextProps.type, newState.value || prevState.value, nextProps.data, prevState.valueField, prevState.textField);
+                let newData = propsTran.setComboxValueAndText(nextProps.type, newState.value || prevState.value, nextProps.data, nextProps.type=="treepicker"?nextProps.idField: nextProps.valueField, prevState.textField);    
                 newState.data = newData.data;
                 newState.text = newData.text.join(",");
             }

@@ -143,6 +143,15 @@
   box-sizing:border-box;
  
 }
+.wasabi-grid .check-column{
+  width: 16px;
+}
+.wasabi-grid .check-column .wasabi-grid-cell{
+  width: 20px;
+}
+.wasabi-grid .wasabi-grid-order{
+  width: 30px;
+}
 /*
 表头文字不换行
 */
@@ -150,7 +159,7 @@
   white-space: nowrap;
 }
 .wasabi-grid .wasabi-grid-cell .wasabi-form-group{
-  width: 100%;
+  width: 20px;
 }
 
 

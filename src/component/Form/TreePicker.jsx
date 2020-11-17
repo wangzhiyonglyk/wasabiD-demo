@@ -126,7 +126,7 @@ class TreePicker extends Component {
                     <div className={"dropcontainter treepicker  "} style={{ height: this.props.height, display: this.state.show == true ? "block" : "none" }}  >
                        <div
                        style={{height:30,
-                        display: "flex",
+                        display: (this.props.checkStyle=="checkbox"?"flex":"none"),
                         justifyContent: "flex-end"}}
                        ><CheckBox name="wasabi-tree-choseall"
                          ref="checkbox"

@@ -31,7 +31,7 @@ let ajax = function (settings) {
             }
         }
     }
-    settings.url=config.url+settings.url;//请求
+    settings.url=settings.url;//请求
     wasabiapi.ajax(settings)
 }
 

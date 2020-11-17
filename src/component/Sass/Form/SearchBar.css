@@ -19,6 +19,23 @@ desc:菜单树的样式
     flex-wrap: wrap;
     width: calc(100% - 100px);
 }
+
+.wasabi-form .inputcontainer[cols="1"] .wasabi-form-group{
+  width: 99%;
+}
+.wasabi-form .inputcontainer[cols="2"] .wasabi-form-group{
+  width: 49.5%;
+}
+.wasabi-form .inputcontainer[cols="3"] .wasabi-form-group{
+  width: 32.5%;
+}
+.wasabi-form .inputcontainer[cols="4"] .wasabi-form-group{
+  width: 24.5%;
+}
+.wasabi-form .inputcontainer[cols="5"] .wasabi-form-group{
+  width: 19.5%;
+}
+
 .wasabi-searchbar .buttoncontainer{
   min-width: 100px;
 }

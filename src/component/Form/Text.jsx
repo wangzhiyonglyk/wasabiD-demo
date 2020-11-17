@@ -158,7 +158,7 @@ class Text extends Component {
         } else {
             style.display = "flex";
         }
-        let inputType = this.props.type == "password" ? this.props.type : "text";//统一使用text，否则在验证失效，没有onchange事件，拿不到值，则无法执行自定义验证事件
+        let inputType = this.props.type == "password"||this.props.type=="textarea" ? this.props.type : "text";//统一使用text，否则在验证失效，没有onchange事件，拿不到值，则无法执行自定义验证事件
         let inputProps =
         {
             readOnly: this.props.readOnly == true ? "readOnly" : null,
@@ -192,7 +192,7 @@ class Text extends Component {
                 onBlur={this.blurHandler}
                 value={(this.state.value == null || this.state.value == undefined) ? "" : this.state.value}></textarea>;
         }
-        return (<div className={componentClassName+ + this.state.validateClass} onPaste={this.onPaste} style={style}>
+        return (<div className={componentClassName+  this.state.validateClass} onPaste={this.onPaste} style={style}>
             <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
             <div className={"wasabi-form-group-body "} >
                 {control}

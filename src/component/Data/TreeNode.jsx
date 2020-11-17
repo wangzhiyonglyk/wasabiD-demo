@@ -81,6 +81,7 @@ class TreeNode extends Component {
      * @param {*} id 
      */
     onNodeChecked(value) {
+       
         let row = new TreeNodeRow();
         for (let key in row) {
             row[key] = this.state[key];
@@ -562,9 +563,7 @@ class TreeNode extends Component {
             if (this.state.children && this.state.children instanceof Array && this.state.children.length > 0) {
                 for (let ref in this.refs) {
                     if (ref.indexOf("treenode-") > -1) {
-                        //
-
-
+                        //                   
                         this.refs[ref].setNodeSelfChecked(checked, radioNode);//改变子节点
                         if (this.props.radioType == "all") {//如果是全部则继续改变子节点
                             this.refs[ref].setChildrenChecked(checked, radioNode);//子孙节点
@@ -601,6 +600,9 @@ class TreeNode extends Component {
                 else {
 
                 }
+                let checked=this.props.inputValue ? ("," + this.props.inputValue + ",").indexOf("," + item.id + ",") > -1 ? true : false : item.checked;
+                checked=this.props.checkStyle=="checkbox"?checked||this.state.checked:checked;//radio 不影响
+               
                 //父节点 toto 先保留，后期有用
 
                 let parent = { id: this.state.id, text: this.state.text, children: this.state.children };
@@ -620,7 +622,7 @@ class TreeNode extends Component {
                      * 
                      */
                     half={(this.props.checkType && this.props.checkType.y.indexOf("p") > -1 && ((this.state.checkValue || item.checkValue) == "half"))}
-                    checked={this.state.checked}
+                    checked={checked}
                     isParent={isParent} parent={parent}
                     selectid={this.props.selectid} />);
             });
@@ -644,6 +646,7 @@ class TreeNode extends Component {
             hide={this.props.checkAble ? false : this.props.checkAble ? false : true}
             half={this.state.checkValue == "half"}
             name={"node" + this.props.id}
+            style={{width:13}}
             value={this.state.checked ? this.state.id : ""} data={[{ value: this.state.id, text: "" }]}
             onSelect={this.onNodeChecked.bind(this)}></Input>,
         <div key="2" draggable={this.props.dragAble} onDragEnd={this.onDragEnd.bind(this)} onDragStart={this.onDragStart.bind(this)}
@@ -656,7 +659,7 @@ class TreeNode extends Component {
         return <li ref="node" style={{ display: this.state.hide ? "none" : "block" }} onDrop={this.onDrop.bind(this)} onDragOver={this.onDragOver.bind(this)} onDragLeave={this.onDragLeave.bind(this)} >
 
             <div id={this.state.nodeid} className={this.props.selectid == this.state.id ? "selected" : ""} >
-                <i className={this.state.open ? "icon-drop" : "icon-zright"} style={{transform:"translateY(2px)", opacity: this.state.isParent ? 1 : 0 }} onClick={this.showHandler}></i>
+                <i className={this.state.open ? "icon-drop" : "icon-zright"} style={{transform:"translateY(2px)", marginRight:3, opacity: this.state.isParent ? 1 : 0 }} onClick={this.showHandler}></i>
                 <div className="treenode"  title={title}  >
                     {this.state.rename ? <Input type="text" id={this.state.textid} required={true} onBlur={this.onBlur.bind(this)} onKeyUp={this.onKeyUp.bind(this)}
                         name={"key" + this.state.id} value={this.state.text} onChange={this.onChange.bind(this)}></Input> : nodeEement}

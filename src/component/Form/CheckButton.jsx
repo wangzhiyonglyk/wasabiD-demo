@@ -32,7 +32,7 @@ class CheckButton extends Component {
                     checked = true;
                 }
                 return <Button className={child.className} style={child.style} theme={checked ? this.props.theme|| "primary" : "default"} key={i}
-                     onClick={ this.props.readOnly?()=>{}:this.onSelect.bind(this, child.value, child.text, child)}
+                     onClick={ this.props.readOnly?()=>{}:this.props.onSelect.bind(this, child.value, child.text, child)}
                 >{child.text}</Button>
             });
 

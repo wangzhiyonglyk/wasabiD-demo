@@ -22,7 +22,7 @@ class Button extends Component {
     }
 
     if (this.props.onClick) {
-      //this.props.onClick(this.props.name, this.props.title, event);
+      this.props.onClick(this.props.name, this.props.title, event);
     }
   }
   render() {

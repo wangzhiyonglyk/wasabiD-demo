@@ -128,7 +128,7 @@ class SearchBar extends Component {
         className={"wasabi-searchbar clearfix " + this.props.className}
         style={this.props.style}
       >
-        <div className='inputcontainer'>
+        <div className='inputcontainer' cols={this.props.cols}>
           {React.Children.map(this.props.children, (child, index) => {
             if (typeof child.type !== "function") {
               //非react组件
@@ -201,7 +201,7 @@ SearchBar.defaultProps = {
   submitHide: false, //是否隐藏按钮
   submitTheme: "primary", //主题
   submitStyle: {}, //查询按钮的样式
-  cols: 4, //一行排几个
+  cols: 3, //一行排几个
   onSubmit: null, //提交成功后的回调事
   expand: false
 };

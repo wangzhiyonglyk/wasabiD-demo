@@ -17,14 +17,18 @@ require("../Sass/Data/Tree.css");
 class Tree extends Component {
     constructor(props) {
         super(props);
-        let newData = propsTran.setComboxValueAndText("tree", this.props.inputValue, this.props.data, this.props.idField, this.props.textField, this.props.simpleData);//对数据进行处理
+        let result = propsTran.setComboxValueAndText("tree", this.props.inputValue, this.props.data, this.props.idField, this.props.textField);//对数据进行处理
+        let newData=result.data||[];
+        if(this.props.simpleData){
+            newData=func.toTreeData(result.data,this.props.idField)
+        }
         this.state = {
             url: this.props.url,
             name: this.props.name,
             value: this.props.value,
-            text: newData.text,
+            text: result.text,
             selectid: "",
-            data: newData.data,//处理后数据
+            data: newData,//处理后数据
             rawData: func.clone(this.props.data),//原始数据，
             reloadData: false,
             idField: this.props.idField,
@@ -56,7 +60,11 @@ class Tree extends Component {
         if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
             //如果传了死数据
             newState.rawData = nextProps.data;
-            newState.data = propsTran.setComboxValueAndText("tree", this.props.inputValue, nextProps.data, prevState.idField, prevState.textField, prevState.simpleData);
+            let result= propsTran.setComboxValueAndText("tree", nextProps.inputValue, nextProps.data, prevState.idField, prevState.textField);
+            if(nextProps.simpleData){
+                newState.data=func.toTreeData(result.data,nextProps.idField)
+            }
+            newState.text=result.text;
         }
         if (func.isEmptyObject(newState)) {
             return null;
@@ -145,7 +153,7 @@ class Tree extends Component {
 
             if (this.state.data && this.state.data instanceof Array && this.state.data.length > 0) {
                 for (let ref in this.refs) {
-                    if (ref.indexOf("nodetree") > -1) {
+                    if (ref.indexOf("treenode-") > -1) {
                         //     
 
                         this.refs[ref].setNodeSelfChecked(false, { id: id, text: text });//改变子节点

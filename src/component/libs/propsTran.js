@@ -14,7 +14,8 @@ let propsTran = {
      * @param {*} idOrValueField id或value对应的字段
      * @param {*} textField  文本对应的字段
      */
-    setComboxValueAndText(type,value, data, idOrValueField = "value", textField = "text",simpleData=false) {
+    setComboxValueAndText(type,value, data, idOrValueField = "value", textField = "text") {
+      
         let text = [];//选中的文本值
         let realData=func.clone(data);//复制,否则影响父节点，导致重复更新
         if (realData && realData instanceof Array && realData.length > 0) {
@@ -32,7 +33,7 @@ let propsTran = {
                 }
                 //如果有子节点的时候.tree,treepicker,picker
                 if (realData[i].children && realData[i].children.length > 0) {
-                    let r = propsTran.setComboxValueAndText(type,value, realData[i].children, idOrValueField, textField,simpleData);
+                    let r = propsTran.setComboxValueAndText(type,value, realData[i].children, idOrValueField, textField);
                     realData[i].children = r.data;
                     if (r.text.length > 0) {
                         //专门用于树组件，父节点
@@ -45,10 +46,8 @@ let propsTran = {
                 }
             }
         }
-        if (simpleData) {//简单的json数据格式
-            realData = func.toTreeData(realData,idOrValueField);//转成树结构
-        }
-
+     
+       
         return { data: realData || [], text: text };
     },
 

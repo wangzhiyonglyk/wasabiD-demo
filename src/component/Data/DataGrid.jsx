@@ -49,7 +49,7 @@ class DataGrid extends Component {
       checkedIndex: new Map(),//勾选的下标
       detailView: null, //详情行,
       detailIndex: null, //显示详情的行下标
-      total: this.props.total || this.props.data.length || 0, //总记录数
+      total: this.props.total ||(this.props.data&& this.props.data.length) || 0, //总记录数
       loading: this.props.url || this.props.headerUrl ? true : false, //显示正在加载图示
       footer: this.props.footer, //页脚
       headers: this.props.headers, //表头会可能后期才传送,也会动态改变
@@ -382,8 +382,8 @@ class DataGrid extends Component {
       };
       if (headers1.length > 0) {
         headers1.unshift(
-          <th key='headercheckbox' name='check-column' style={{ width: 30 }}>
-            <div className='wasabi-grid-cell' name='check-column'>
+          <th key='headercheckbox' name='check-column'  className='check-column'>
+            <div className='wasabi-grid-cell'  >
               {this.props.singleSelect ? null : (
                 <CheckBox forceChange={true} {...thCheckProps}></CheckBox>
               )}
@@ -392,8 +392,8 @@ class DataGrid extends Component {
         );
       } else {
         headers2.unshift(
-          <th key='headercheckbox' name='check-column' style={{ width: 30 }}>
-            <div className='wasabi-grid-cell' name='check-column'>
+          <th key='headercheckbox' name='check-column'   className='check-column'>
+            <div className='wasabi-grid-cell'  >
               {this.props.singleSelect ? null : (
                 <CheckBox forceChange={true} {...thCheckProps}></CheckBox>
               )}
@@ -406,16 +406,16 @@ class DataGrid extends Component {
     //处理序号
     if (this.props.rowNumber) {
       if (headers1.length > 0) {
-        headers1.unshift(<th key='headerorder' rowSpan={2} name='order' style={{ width: 50 }}>
-          <div className='wasabi-grid-cell wasabi-tableorderIndex' name='order'>
+        headers1.unshift(<th key='headerorder' rowSpan={2} name='order' className="wasabi-grid-order">
+          <div className='wasabi-grid-cell ' name='order'>
             序号
         </div>
         </th>)
       }
       else {
         headers2.unshift(
-          <th key='headerorder' name='order' style={{ width: 50 }}>
-            <div className='wasabi-grid-cell' name='order'>
+          <th key='headerorder' name='order' className="wasabi-grid-order" >
+            <div className='wasabi-grid-cell ' name='order'>
               序号
           </div>
           </th>
@@ -459,8 +459,8 @@ class DataGrid extends Component {
       //序号列
       if (this.props.rowNumber) {
         ordertd = (
-          <td key={'bodyorder' + rowIndex.toString()} style={{ width: 50 }}>
-            <div className='wasabi-grid-cell wasabi-tableorderIndex'>
+          <td key={'bodyorder' + rowIndex.toString()} className="wasabi-grid-order">  
+            <div className='wasabi-grid-cell  '>
               {' '}
               {(
                 (this.state.pageIndex - 1) * this.state.pageSize +
@@ -484,7 +484,7 @@ class DataGrid extends Component {
           checkedtd = (
             <td
               key={'bodycheckbox' + rowIndex.toString()}
-              style={{ width: 30 }}
+             
               className='check-column'
             >
               <div className='wasabi-grid-cell'>
@@ -497,7 +497,7 @@ class DataGrid extends Component {
           checkedtd = (
             <td
               key={'bodycheckbox' + rowIndex.toString()}
-              style={{ width: 30 }}
+             
               className='check-column'
             >
               <div className='wasabi-grid-cell'>
@@ -529,7 +529,7 @@ class DataGrid extends Component {
             //本行没有选择框，先要事先处理好
             checkedtd = <td
               key={'bodycheckbox' + rowIndex.toString()}
-              style={{ width: 30 }}
+             
               className='check-column'
             >
               <div className='wasabi-grid-cell'>

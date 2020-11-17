@@ -7,6 +7,7 @@ import React, { Component } from "react";
 import func from "../libs/func.js";
 import FetchModel from "../Model/FetchModel.js";
 import Msg from "../Info/Msg.jsx";
+import diff from "../libs/diff"
 let DataGridHandler = {
 
     //列表自用处理函数
@@ -117,7 +118,7 @@ let DataGridHandler = {
         }
         else {//传了url
 
-            if (this.showUpdate(params, this.state.params)) {//参数发生改变,从第一页查起
+            if (diff(params, this.state.params)) {//参数发生改变,从第一页查起
                 this.updateHandler(url, this.state.pageSize, 1, this.state.sortName, this.state.sortOrder, params);
             }
             else {//从当前页查起，刷新
@@ -512,7 +513,7 @@ let DataGridHandler = {
         tableHtml += "<thead><tr>";
         for (let i = 0; i < lastIndex; i++) {
             let html = this.refs.realTable.children[0].children[0].children[i].outerHTML;
-            if (html.indexOf("wasabi-tableorderIndex") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
+            if (html.indexOf("wasabi-grid-order") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
                 continue;
             }
             tableHtml += html;
@@ -525,7 +526,7 @@ let DataGridHandler = {
                 tableHtml += "<tr>"
                 for (let i = 0; i < lastIndex; i++) {
                     let html = this.refs.realTable.children[1].children[value].children[i].outerHTML;
-                    if (html.indexOf("wasabi-tableorderIndex") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
+                    if (html.indexOf("wasabi-grid-order") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
                         continue;
                     }
                     tableHtml += html;
@@ -541,7 +542,7 @@ let DataGridHandler = {
                 for (let i = 0; i < lastIndex; i++) {
                     if (this.refs.realTable.children[1].children.length > rowIndex) {
                         let html = this.refs.realTable.children[1].children[rowIndex].children[i].outerHTML;
-                        if (html.indexOf("wasabi-tableorderIndex") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
+                        if (html.indexOf("wasabi-grid-order") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
                             continue;
                         }
                         tableHtml += html;
