@@ -7,7 +7,7 @@
 import React, { Component } from "react";
 
 import Label from "../Info/Label.jsx";
-
+import Button from "../Buttons/Button"
 import _CheckBox from "./baseClass/_CheckBox.jsx";
 
 class CheckButton extends Component {
@@ -18,7 +18,7 @@ class CheckButton extends Component {
         }
     }
     render() {
-        if (!props) {
+        if (!this.props) {
             return null;
         }
         let componentClassName = "wasabi-form-group "+(this.props.className||"");//组件的基本样式 
@@ -28,7 +28,7 @@ class CheckButton extends Component {
     
             control = this.props.data.map((child, i) => {
                 let checked = false;
-                if ((this.props.value != null && this.props.value != undefined) && (("," + this.props.value.toString()).indexOf("," + child[this.props.valueField ? this.props.valueField : "value"]) > -1)) {
+                if ((this.props.value != null && this.props.value != undefined) && (("," + this.props.value.toString()+",").indexOf("," + child[this.props.valueField ? this.props.valueField : "value"]+",") > -1)) {
                     checked = true;
                 }
                 return <Button className={child.className} style={child.style} theme={checked ? this.props.theme|| "primary" : "default"} key={i}

@@ -20,7 +20,7 @@ class Tree extends Component {
         let result = propsTran.setComboxValueAndText("tree", this.props.inputValue, this.props.data, this.props.idField, this.props.textField);//对数据进行处理
         let newData=result.data||[];
         if(this.props.simpleData){
-            newData=func.toTreeData(result.data,this.props.idField)
+            newData=func.toTreeData(result.data,this.props.idField||"id",this.props.parentField||"pId",this.props.textField)
         }
         this.state = {
             url: this.props.url,

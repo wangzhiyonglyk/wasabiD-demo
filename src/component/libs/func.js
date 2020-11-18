@@ -405,7 +405,7 @@ func.Error = {
 /**
  * 将二维json数据转树型结构
  */
-func.toTreeData = function (data,idField="id",  parentField="pId") {
+func.toTreeData = function (data,idField="id",  parentField="pId",textField="text") {
     let pos = {};
     let tree = [];
     let count = 0;
@@ -426,7 +426,7 @@ func.toTreeData = function (data,idField="id",  parentField="pId") {
         if (pId.indexOf(","+data[index][parentField]+",") > -1) {
             let item={
                 ...data[index],
-                text: data[index].text||data[index].name,
+                text: data[index][textField],
                 children: [],        
             }
             item[idField]=data[index][idField];//添加key
@@ -446,7 +446,7 @@ func.toTreeData = function (data,idField="id",  parentField="pId") {
 
                 let item={
                     ...data[index],
-                    text: data[index].text||data[index].name,
+                    text: data[index][textField],
                     children: [],        
                 }
                 item[idField]=data[index][idField];//添加key

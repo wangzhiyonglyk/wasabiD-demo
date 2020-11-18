@@ -93,7 +93,7 @@ class Select extends Component {
         value: newvalue,
         text: newtext
       });
-      this.validate(newvalue); //
+    
       if (this.props.onSelect != null) {
         this.props.onSelect(value, text, this.props.name, row);
       }
@@ -107,7 +107,7 @@ class Select extends Component {
         filterValue: null
       });
     }
-    this.validate(newvalue); //
+  
     if (this.props.onSelect != null) {
       this.props.onSelect(value, text, this.props.name, row);
     }

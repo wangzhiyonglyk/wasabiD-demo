@@ -30,6 +30,7 @@ export default function (WrappedComponent) {
                 oldPropsValue: this.props.value,//保存用于判断是否通过父组件强制更新值
                 rawData: this.props.data,//原始数据,用于判断是否通过父组件强制更新数据源
                 data: newData.data,
+                filterData:null,//筛选后的数据
                 value: this.props.value,
                 text: newData.text.join(","),
                 ulShow: false,//是否显示下拉选项
@@ -49,6 +50,7 @@ export default function (WrappedComponent) {
             this.onBlur = this.onBlur.bind(this);
             this.clearHandler = this.clearHandler.bind(this);
             this.addData = this.addData.bind(this);
+            this.filterHandler=this.filterHandler.bind(this)
         }
         static getDerivedStateFromProps(nextProps, prevState) {
             let newState = {};
@@ -64,6 +66,8 @@ export default function (WrappedComponent) {
 
                 newState.value = nextProps.value;//强行改变组件选择的值，不管状态中的值是什么
                 newState.oldPropsValue = nextProps.value;//保留之前的值，用于下次对比
+                 let text=  propsTran.setComboxText(newState.value,prevState.data);
+                 newState.text =text.join(",");
             }
             else {
 
@@ -188,8 +192,27 @@ export default function (WrappedComponent) {
             this.onSelect(value, text, this.props.name);//添加一个相当于选中
             this.props.addHandler && this.props.addHandler(value, text, data, this.props.name);
         }
+        filterHandler(text){
+
+            if(text){
+                this.setState({
+                    filterData:propsTran.treeFilter(text,this.state.data)
+                })
+            }
+            else{
+                this.setState({
+                    filterData:null
+                })
+            }
+          
+        }
         render() {
-            return <WrappedComponent {...this.props} {...this.state} onSelect={this.onSelect} clearHandler={this.clearHandler} addData={this.addData} onBlur={this.onBlur}></WrappedComponent>
+            let data =this.state.filterData?this.state.filterData:this.state.data;
+            return <WrappedComponent {...this.props} {...this.state} data={data}
+             onSelect={this.onSelect} clearHandler={this.clearHandler} 
+            addData={this.addData} onBlur={this.onBlur}
+            filterHandler={this.filterHandler}
+            ></WrappedComponent>
         }
     }
     _ComboBox.propTypes = props;

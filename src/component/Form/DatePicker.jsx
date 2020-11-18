@@ -79,7 +79,10 @@ class DatePicker extends Component {
   }
   getValue() {
     let value = this.state.value ? this.state.value : "";
-    if (this.props.type == "daterange" && value && this.props.attachTime) {
+    if(this.props.type=="date"&&value && this.props.attachTime){
+      value=value+" "+func.dateformat(new Date(),"HH:mm:ss");
+    }
+    else if (this.props.type == "daterange" && value && this.props.attachTime) {
       value = value.split(",");
       value[0] = value[0] + " 00:00:00";
       value[1] = value[1] + " 23:59:59";

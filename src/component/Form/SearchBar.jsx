@@ -13,8 +13,8 @@ class SearchBar extends Component {
     super(props);
     this.state = {
       dropType: this.props.expand
-        ? "wasabi-button wasabi-searchbar-up"
-        : "wasabi-button wasabi-searchbar-down"
+        ? "icon-up"
+        : "icon-down"
     };
     this.getData = this.getData.bind(this);
     this.setData = this.setData.bind(this);
@@ -117,9 +117,9 @@ class SearchBar extends Component {
   expandHandler() {
     this.setState({
       dropType:
-        this.state.dropType == "wasabi-button wasabi-searchbar-down"
-          ? "wasabi-button wasabi-searchbar-up"
-          : "wasabi-button wasabi-searchbar-down"
+        this.state.dropType == "icon-down"
+          ? "icon-up"
+          : "icon-down"
     });
   }
   render() {
@@ -135,7 +135,7 @@ class SearchBar extends Component {
               return child;
             } else {
               if (
-                this.state.dropType == "wasabi-button wasabi-searchbar-down" &&
+                this.state.dropType == "icon-down" &&
                 index >= this.props.cols
               ) {
                 //z不显示
@@ -158,8 +158,8 @@ class SearchBar extends Component {
          
         </div>
         <div className='buttoncontainer'>
-            <button
-              className={this.state.dropType}
+            <LinkButton
+              iconCls={this.state.dropType}
               style={{
                 display:
                   this.props.children.length > this.props.cols
@@ -167,7 +167,7 @@ class SearchBar extends Component {
                     : "none"
               }}
               onClick={this.expandHandler}
-            ></button>
+            ></LinkButton>
             <LinkButton
               onClick={this.onSubmit.bind(this, "submit")}
               theme={this.props.submitTheme}

@@ -23,7 +23,7 @@ class CheckBox extends Component {
 
             control = this.props.data.map((child, i) => {
                 let checked = false;
-                if ((this.props.value != null && this.props.value != undefined) && (("," + this.props.value.toString()).indexOf("," + child[this.props.valueField ? this.props.valueField : "value"]) > -1)) {
+                if ((this.props.value != null && this.props.value != undefined) && (("," + this.props.value.toString()+",").indexOf("," + child[this.props.valueField ? this.props.valueField : "value"]+",") > -1)) {
                     checked = true;
                 }
                 let subProps = {

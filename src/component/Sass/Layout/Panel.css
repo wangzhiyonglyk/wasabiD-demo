@@ -25,9 +25,9 @@ desc:面板组件样式
   
 }
 .panel-default>.panel-heading {
-  color: #666666;
-  background-color: #f5f5f5;
-  border-color: #ddd;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
 }
 .panel-primary>.panel-heading {
   color: #fff;
@@ -37,18 +37,18 @@ desc:面板组件样式
 
 .panel-success>.panel-heading {
   color: #fff;
-  background-color: #1ab394;
-  border-color: #1ab394;
+    background-color: #67c23a;
+    border-color: #67c23a;
 }
 .panel-info>.panel-heading {
   color: #fff;
-  background-color: #23c6c8;
-  border-color: #23c6c8;
+  background-color: #909399;
+  border-color: #909399;
 }
 .panel-warning>.panel-heading{
   color: #fff;
-  background-color: #f8ac59;
-  border-color: #f8ac59;
+  background-color: #e6a23c;
+  border-color: #e6a23c;
 }
 
 .panel-danger>.panel-heading{
@@ -72,10 +72,10 @@ desc:面板组件样式
   width:40px;
   height:20px;
 text-align: right;
-  color: #666666;
+  color: #606266;
 }
 .panel-icon i{
-  color: #666666;
+  color: #606266;
 }
 .panel-icon i:hover
 {
@@ -85,12 +85,11 @@ text-align: right;
 {
   
   height:calc(100% - 41px);
-  padding:0px;
+  padding-top:10px;
   padding-bottom: 10px;
   text-align: left;
   margin: 0;
   border: 0;
-  overflow: auto;
- 
+
 }
 

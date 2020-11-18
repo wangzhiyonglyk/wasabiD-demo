@@ -95,7 +95,7 @@ class Col extends React.Component {
         }
     }
     render() {
-        return <div className={"col-xs-" + this.props.cols+""}>{
+        return <div className={"col-xs-" + this.props.cols+" wasabi-cols "+ this.props.className} style={this.props.style}>{
            React.Children.map(this.props.children, (child, index) => {
         
             if (typeof child.type !== "function") {//非react组件

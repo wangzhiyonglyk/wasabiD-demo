@@ -37,6 +37,7 @@ export default function(WrappedComponent){
         }
     
         onSelect(value, text, row ) {//选中事件
+            console.log(value);
             let newvalue = ""; let newtext = "";
             if(this.props.type=="radio"){
                 newvalue=value;
@@ -58,28 +59,20 @@ export default function(WrappedComponent){
                 else {
                     oldtext = this.state.text.toString();
                 }
-                if (("," + oldvalue).indexOf("," + value) > -1) {
-                    //取消选中
-                    if (oldvalue.indexOf("," + value) > -1) {//说明不是第一个
-                        newvalue = (oldvalue).replace("," + value, "");
-                        newtext = (oldtext).replace("," + text, "");
-                    }
-                    else if (oldvalue.indexOf(value + ",") > -1) {//第一个
-                        newvalue = (oldvalue).replace(value + ",", "");
-                        newtext = (oldtext).replace(text + ",", "");
-                    }
-                    else if (oldvalue.indexOf(value) > -1) {//只有一个
-                        newvalue = (oldvalue).replace(value, "");
-                        newtext = (oldtext).replace(text, "");
-                    }
-        
+                if (("," + oldvalue+",").indexOf("," + value+",") > -1) {
+                    newvalue = ("," + oldvalue+",").replace(("," + value+","), "");
+                        newtext = ("," + oldtext+",").replace(("," + text+","), "");
+                        newvalue=newvalue.replace(/^,/,"").replace(/,$/,"");
+                        newtext=newtext.replace(/^,/,"").replace(/,$/,"");
+                        console.log(newvalue,newtext);
                 }
                 else {//选中
         
                     newvalue = oldvalue === "" ? value : oldvalue + "," + value;
                     newtext = oldvalue === "" ? text : oldtext + "," + text;
                 }
-            }          
+            }       
+            console.log(newvalue,newtext)   
             this.props.onSelect&& this.props.onSelect(newvalue, newtext, this.props.name, row);
            
         }
