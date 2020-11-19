@@ -32,7 +32,7 @@ export default function (WrappedComponent) {
                 data: newData.data,
                 filterData:null,//筛选后的数据
                 value: this.props.value,
-                text: newData.text.join(","),
+                text: newData&&newData.text&&newData.text.join(","),
                 ulShow: false,//是否显示下拉选项
                 reloadData: false,//是否更新
                 valueField: this.props.valueField,
@@ -104,7 +104,7 @@ export default function (WrappedComponent) {
             let text = propsTran.setComboxText(value, this.state.data);
             this.setState({
                 value: value,
-                text: text
+                text: text.join(",")
             })
         }
         getValue() {

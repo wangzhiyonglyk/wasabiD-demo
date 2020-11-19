@@ -37,6 +37,7 @@ class DataGrid extends Component {
       url: this.props.url,
       params: func.clone(this.props.params), //这里一定要复制,只有复制才可以比较两次参数是否发生改变没有,防止父组件状态任何改变而导致不停的查询
       pageIndex: this.props.pageIndex,//页号
+      oldPageIndex:this.props.pageIndex,//用于刷新
       pageSize: this.props.pageSize,//分页大小
       sortName: this.props.sortName,//排序名称
       sortOrder: this.props.sortOrder,//排序方式
@@ -81,68 +82,6 @@ class DataGrid extends Component {
     this.substitute = this.substitute.bind(this);
 
   }
-  //代码先保存
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  //   if (React.version < "16.3.0") {
-  //     /*      
-  //          headers可能是后期才传了,见Page组件可知
-  //          所以此处需要详细判断
-  //          */
-
-  //     if (
-  //       nextProps.headers &&
-  //       this.showUpdate(nextProps.headers, this.state.headers)
-  //     ) {
-  //       //存在着这种情况,后期才传headers,所以要更新一下
-  //       this.setState({
-  //         headers: nextProps.headers
-  //       });
-  //     }
-  //     if (this.state.headerUrl != nextProps.headerUrl) {
-  //       //有远程加载表头信息
-  //       this.getHeaderDataHandler(nextProps.headerUrl);
-  //     }
-
-
-  //     if (
-  //       nextProps.data != null &&
-  //       nextProps.data != undefined &&
-  //       nextProps.data instanceof Array
-  //     ) {
-  //       //如果传了死数据
-  //       this.setState({
-  //         data:
-  //           this.props.pagination == true
-  //             ? nextProps.data.slice(0, nextProps.pageSize)
-  //             : nextProps.data,
-  //         total: nextProps.total,
-  //         pageIndex: nextProps.pageIndex,
-  //         pageSize: nextProps.pageSize,
-  //         sortName: this.props.sortName,
-  //         sortOrder: nextProps.sortOrder,
-  //         loading: false,
-  //         headers: nextProps.headers, //表头可能会更新
-  //         controlPanel: nextProps.controlPanel
-  //       });
-  //     } else if (
-  //       nextProps.params &&
-  //       this.showUpdate &&
-  //       this.showUpdate(nextProps.params, this.state.params)
-  //     ) {
-  //       //如果参数有发生改变，也可更新
-  //       this.updateHandler(
-  //         nextProps.url,
-  //         this.state.pageSize,
-  //         1,
-  //         this.state.sortName,
-  //         this.state.sortOrder,
-  //         nextProps.params
-  //       );
-  //     }
-
-  //   }
-  // }
-
   static getDerivedStateFromProps(nextProps, prevState) {
     let newState = {};
     if (nextProps.url && nextProps.params &&
@@ -168,9 +107,12 @@ class DataGrid extends Component {
 
       newState.rawData = nextProps.data;
       newState.data = nextProps.pagination == true ? nextProps.data > prevState.pageSize
-        ? nextProps.data.slice((prevState.pageIndex - 1) * prevState.pageSize, prevState.pageSize)
+        ? nextProps.data.slice(((nextProps.pageIndex||prevState.pageIndex)- 1) * (nextProps.pageSize|| prevState.pageSize), (nextProps.pageSize|| prevState.pageSize))
         : nextProps.data : nextProps.data;
       newState.total = nextProps.total || nextProps.data.length || 0
+
+    }
+    if(nextProps.pageIndex!=prevState.oldPageIndex){
 
     }
     if (func.isEmptyObject(newState)) {
@@ -834,7 +776,7 @@ class DataGrid extends Component {
               <li
                 key='lilast'
                 className={
-                  'paginate_button previous' +
+                  'paginate_button previous ' +
                   (this.state.pageIndex * 1 == pageAll ? 'active' : '')
                 }
               >

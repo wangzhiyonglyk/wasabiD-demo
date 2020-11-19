@@ -12,7 +12,7 @@ let diff = function (oldParam, newParam) {//判断前后参数是否相同
         return true;
     }
     else if (newParam instanceof Array && oldParam instanceof Array) {//数组
-        return func.clone(newParam).sort().toString() != func.clone(oldParam).sort().toString();
+        return JSON.stringify( func.clone(newParam).sort()) !=JSON.stringify( func.clone(oldParam).sort());
     }
     else if (newParam instanceof Object && newParam instanceof Object) {//对象
         if (newParam && oldParam && (Object.keys(newParam).length != Object.keys(oldParam).length)) {//都有参数,但是参数个数已经不一样了

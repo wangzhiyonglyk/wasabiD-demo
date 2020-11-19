@@ -54,11 +54,13 @@
   
 }
 .wasabi-tree li>div:hover{
-  background-color:#eceeef;
+  background-color:#f5f7fa;
+  color: #409eff;
 }
 
 .wasabi-tree li>div.selected{
-  background-color: #eceeef;
+  background-color: #f5f7fa;
+  color: #409eff;
 }
 .wasabi-tree [class*=" icon-"],.wasabi-tree [class^=icon-] {
   color:#c0c4cc;

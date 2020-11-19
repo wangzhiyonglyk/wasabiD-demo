@@ -47,24 +47,16 @@ export default function(WrappedComponent){
                 if (this.props.readOnly) {
                     return;
                 }            
-                let oldvalue = "";
-                let oldtext = "";
-                if (!this.state.value) {//没有选择任何项
-                }
-                else {
-                    oldvalue = this.state.value.toString();
-                }
-                if (!this.state.text) {//没有选择任何项
-                }
-                else {
-                    oldtext = this.state.text.toString();
-                }
-                if (("," + oldvalue+",").indexOf("," + value+",") > -1) {
-                    newvalue = ("," + oldvalue+",").replace(("," + value+","), "");
-                        newtext = ("," + oldtext+",").replace(("," + text+","), "");
-                        newvalue=newvalue.replace(/^,/,"").replace(/,$/,"");
-                        newtext=newtext.replace(/^,/,"").replace(/,$/,"");
-                        console.log(newvalue,newtext);
+                let oldvalue = this.state.value||""
+                let oldtext = this.state.text||"";
+              
+                if (("," + oldvalue+",").indexOf("," + value+",") > -1) {//取消选中
+                    oldvalue = this.state.value.toString().split(',');
+                    oldtext = this.state.text.toString().split(',');
+                    oldvalue.splice(oldvalue.indexOf(value.toString()), 1);
+                    oldtext.splice(oldvalue.indexOf(value.toString()), 1);
+                    newvalue = oldvalue.join(',');
+                    newtext = oldtext.join(',');
                 }
                 else {//选中
         
@@ -72,7 +64,6 @@ export default function(WrappedComponent){
                     newtext = oldvalue === "" ? text : oldtext + "," + text;
                 }
             }       
-            console.log(newvalue,newtext)   
             this.props.onSelect&& this.props.onSelect(newvalue, newtext, this.props.name, row);
            
         }

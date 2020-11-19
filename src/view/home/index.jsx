@@ -111,7 +111,7 @@ value:"你好"
   }
   render() {
     return <div>
-      
+      <LinkButton iconCls="icon-down"></LinkButton>
      <SearchBar>
        <Input key="1" type="treepicker" data={this.state.data} checkStyle="radio" textField="name" name="tree1" simpleData={true}></Input>
        <Input key="2" type="date" data={this.state.data} checkStyle="radio" textField="name2" name="tree2" simpleData={true}></Input>

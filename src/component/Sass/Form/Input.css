@@ -23,7 +23,7 @@ label
 */
 
  .wasabi-form-group-label {
-    padding-right: 4px;
+    padding-right: 5px;
     height: 40px;
     line-height: 40px;
     text-align: right;
@@ -40,7 +40,7 @@ label
     }
     .wasabi-form-group-label  .help{
       margin-left: 2px;
-      color: #666666;
+      color: #606266;
     }
     .wasabi-form-group-label .help:hover{
       color: #f56c6c;

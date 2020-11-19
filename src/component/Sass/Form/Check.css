@@ -140,12 +140,15 @@ desc:表单输入框样式
   height: 8px;
   position: absolute;
   left: 4px;
-  top: 1px;
+  top: 4px;
   -webkit-border-radius: 100%;
   -moz-border-radius: 100%;
   border-radius: 100%;
   box-sizing: border-box;
   background-color: transparent;
+}
+.treenode .wasabi-radio-btn i {
+  top: 1px!important;
 }
 .wasabi-radio-btn.checkedRadio{
  border-color: #409eff;

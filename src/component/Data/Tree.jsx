@@ -133,6 +133,7 @@ class Tree extends Component {
     onClick(id, text, children) {
         this.setState({
             id: id,
+            selectid:id,
             text: text
         }, () => {
             this.props.onClick && this.props.onClick(id, text, children, this.props.name);

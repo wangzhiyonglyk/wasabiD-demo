@@ -2,10 +2,9 @@
     position: relative;
     vertical-align: middle;
     display: inline-block;
-}
-.wasabi-badge+.wasabi-badge{
     margin-left: 15px;
 }
+
 .wasabi-badge__content.is-fixed {
     position: absolute;
     top: 0;
