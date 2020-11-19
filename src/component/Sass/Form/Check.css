@@ -45,7 +45,7 @@ desc:表单输入框样式
   visibility: hidden;
 }
 .wasabi-checkul .checkbox + label {
-  font-family: icomoon!important;
+  font-family: 'iconfont'!important;
   width:16px;
   height:16px;
   border: 1px solid #dcdfe6;
@@ -55,7 +55,7 @@ desc:表单输入框样式
   top: 2px;
   left: 3px;
   border-radius: 2px;
-  transition: border-color .25s cubic-bezier(.71,-.46,.29,1.46),background-color .25s cubic-bezier(.71,-.46,.29,1.46);
+ 
 }
 
 .wasabi-checkul .checkbox + label[readOnly],.wasabi-checkul .checkbox + label[disabled] {
@@ -74,8 +74,8 @@ desc:表单输入框样式
   border: 1px solid transparent;
   background-color:#409eff;
 }
-.wasabi-checkul .checkbox:checked + label:after {
-  content: "\e95d";
+.wasabi-checkul .checkbox:checked+label:after {
+  content: "\e769";
   height: 12px;
   width: 12px;
   position: absolute;

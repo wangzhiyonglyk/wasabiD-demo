@@ -94,9 +94,7 @@ class Select extends Component {
         text: newtext
       });
     
-      if (this.props.onSelect != null) {
-        this.props.onSelect(value, text, this.props.name, row);
-      }
+     
     } else {
       newvalue = value;
       newtext = text;
@@ -109,7 +107,7 @@ class Select extends Component {
     }
   
     if (this.props.onSelect != null) {
-      this.props.onSelect(value, text, this.props.name, row);
+      this.props.onSelect(newvalue, newtext, this.props.name, row);
     }
   }
   onBlur(event) {
@@ -188,9 +186,9 @@ class Select extends Component {
           {this.props.data.map((child, i) => {
             let reg = new RegExp("^"+this.state.filterValue, 'i');//左匹配
             if (this.state.filterValue && child.text.search(reg) == -1) {
-              return;
+              return null;
             } else {
-              //TODO 这里要用正则，先保留
+             
               let checked = false;
               if (
                 this.state.value &&
@@ -255,7 +253,7 @@ class Select extends Component {
               }}
             ></i>
             <i
-              className={'comboxbox-icon ' + (this.state.show ? 'rotate' : '')}
+              className={'comboxbox-icon  icon-drop-down ' + (this.state.show ? ' rotate' : '')}
               onClick={this.showPicker.bind(this)}
             ></i>
             <input

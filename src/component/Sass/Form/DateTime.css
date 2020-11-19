@@ -35,35 +35,25 @@ float: left;
   line-height: 30px;
   width: 100%;
   text-align: center;
+  cursor: pointer;
 }
 .wasabi-datetime-header .triangle-left {
   float:left;
   cursor: pointer;
-  margin-top: -30px;
+  margin-top: -22px;
   margin-left: 10px;
 
 }
-.wasabi-datetime-header .triangle-left:after{
-  font-family: 'icomoon' !important;
-  font-size: 25px;
-  content:"\e903";
 
-
-}
 .wasabi-datetime-header .triangle-right {
 
   float: right;
   cursor: pointer;
-  margin-top: -30px;
+  margin-top: -22px;
   margin-right: 10px;
 
 }
-.wasabi-datetime-header .triangle-right:after{
-  font-family: 'icomoon' !important;
-  font-size: 25px;
-  content:"\e904";
 
-}
 
 
 
@@ -121,6 +111,16 @@ float: left;
 .wasabi-datetime-year
 {
   margin-top: 20px;
+}
+.wasabi-datetime-year input{
+  border: 1px solid #dcdfe6;
+  outline: none;
+}
+.wasabi-datetime-year input:hover {
+  border-color: #c0c4cc;
+}
+.wasabi-datetime-year input:focus {
+  border-color: #409eff;
 }
 .wasabi-datetime-month .datespan,.wasabi-datetime-year .datespan{
   width: 60px;

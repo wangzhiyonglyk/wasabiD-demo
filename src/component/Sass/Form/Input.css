@@ -205,7 +205,7 @@ input验证通过
 后台验证
  */
 .wasabi-form-group-body .valid,.wasabi-form-group-body .invalid,.wasabi-form-group-body .validing{
-  font-family: 'icomoon' !important;
+  font-family: 'iconfont' !important;
   font-style: normal;
   width: 14px;
   height: 14px;

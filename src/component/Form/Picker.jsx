@@ -546,9 +546,9 @@ class Picker extends Component {
                 <div className={"wasabi-form-group-body" + (this.props.readOnly || this.props.disabled ? " readOnly" : "")} style={{ width: !this.props.label ? "100%" : null }}>
                     <div className="combobox"     >
                         <i className={"combobox-clear"} onClick={this.props.clearHandler} style={{ display: this.props.readOnly ? "none" : (this.state.value == "" || !this.state.value) ? "none" : "inline" }}></i>
-                        <i className={"comboxbox-icon " + (this.state.show ? "rotate" : "")} onClick={this.showPicker.bind(this)}></i>
+                        <i className={"comboxbox-icon icon-drop-down " + (this.state.show ? "rotate" : "")} onClick={this.showPicker.bind(this)}></i>
                         <input type="text" {...inputProps} value={this.state.text} onBlur={this.props.onBlur} onClick={this.showPicker.bind(this)} onChange={this.changeHandler} />
-                        <div className={"dropcontainter  picker " + this.props.position} style={{ display: this.state.show == true ? "block" : "none" }}   >
+                        <div className={"dropcontainter  picker "} style={{ display: this.state.show == true ? "block" : "none" }}   >
                             {this.renderHot()}
                             <ul className="wrap" >
                                 <p>{this.props.placeholder}</p>

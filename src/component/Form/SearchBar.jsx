@@ -13,8 +13,8 @@ class SearchBar extends Component {
     super(props);
     this.state = {
       dropType: this.props.expand
-        ? "icon-up"
-        : "icon-down"
+        ? "icon-arrow-up"
+        : "icon-arrow-down"
     };
     this.getData = this.getData.bind(this);
     this.setData = this.setData.bind(this);

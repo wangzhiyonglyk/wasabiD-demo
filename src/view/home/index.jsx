@@ -116,7 +116,8 @@ value:"你好"
        <Input key="1" type="treepicker" data={this.state.data} checkStyle="radio" textField="name" name="tree1" simpleData={true}></Input>
        <Input key="2" type="date" data={this.state.data} checkStyle="radio" textField="name2" name="tree2" simpleData={true}></Input>
        <Input  key="3" type="datetime" data={this.state.data} checkStyle="radio" textField="name3" name="tree3" simpleData={true}></Input>
-       <Input key="4" type="select" data={this.state.data} checkStyle="radio" textField="name4" name="tree4" simpleData={true}></Input>
+       <Input key="4" type="select" data={this.state.data} checkStyle="radio" valueField="id" textField="name" name="tree4" simpleData={true}></Input>
+       <Input key="6" type="picker" data={this.state.data} checkStyle="radio" textField="name" name="tree2" simpleData={true}></Input>
        <Input key="5"  type="checkbox" data={this.state.data} textField="name" valueField="id" checkStyle="radio"  name="tree5" simpleData={true}></Input>
        
        </SearchBar> 

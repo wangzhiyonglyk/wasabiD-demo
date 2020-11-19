@@ -505,7 +505,7 @@ class DatePicker extends Component {
               }}
             ></i>
             <i
-              className={"comboxbox-icon datepicker  "}
+              className={"comboxbox-icon icon-calendar  "}
           
               onClick={this.showPicker.bind(this)}
             ></i>

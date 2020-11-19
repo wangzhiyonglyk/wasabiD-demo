@@ -53,7 +53,7 @@ desc:导入功能组件样式
 
 .import-downloadmodel:before
 {
-  font-family: 'icomoon' !important;
+  font-family: 'iconfont' !important;
   content: "\e914";
   color: #2ec9c2;
   background-size: 12px 12px;

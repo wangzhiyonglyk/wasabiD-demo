@@ -67,11 +67,11 @@ class CalendarHeader  extends Component{
         return(
             <div className="wasabi-datetime-header">
                 <div className="header-text" ><a  style={{marginRight:8}} onClick={this.changeYear}>
-                    <span>{this.props.year}</span><i style={{fontSize:12,marginTop:2}} className="icon-down"></i></a>
-                    <a   onClick={this.changeMonth}><span>{Lang.cn.Month[this.props.month-1]}</span><i style={{fontSize:12,marginTop:2}} className="icon-down"></i></a></div>
-                <a   className="triangle-left"    onClick={this.handleLeftClick}>
+                    <span>{this.props.year}</span><i style={{fontSize:12,marginTop:2}} className="icon-arrow-down"></i></a>
+                    <a   onClick={this.changeMonth}><span>{Lang.cn.Month[this.props.month-1]}</span><i style={{fontSize:12,marginTop:2}} className="icon-arrow-down"></i></a></div>
+                <a   className=" triangle-left icon-arrow-left"    onClick={this.handleLeftClick}>
                 </a>
-                <a   className="triangle-right" onClick={this.handleRightClick}></a>
+                <a   className="triangle-right icon-arrow-right" onClick={this.handleRightClick}></a>
             </div>
         )
     }

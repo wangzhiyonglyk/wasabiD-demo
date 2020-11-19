@@ -50,8 +50,9 @@
 .picker .wrap{
   position: relative;
   width: 100%;
-  background: #ffffff;
+  background: #fff;
   padding: 9px;
+  white-space: pre-wrap;
 }
 
 

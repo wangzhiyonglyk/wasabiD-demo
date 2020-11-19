@@ -18,8 +18,8 @@ desc:下拉框样式
   min-width: 120px;
 }
 .wasabi-select ul li {
-  height: 30px;
-  line-height: 30px;
+  height: 35px;
+  line-height: 35px;
   overflow: hidden;
   padding: 0 10px;
   cursor: pointer;
@@ -34,8 +34,8 @@ color: #409eff;
 }
 .wasabi-select ul li.active:after
 {
-  font-family: 'icomoon' !important;
-  content:"\e95d";
+  font-family: 'iconfont' !important;
+  content:"\e769";
   position: absolute;
   top:0px;
   right: 20px;

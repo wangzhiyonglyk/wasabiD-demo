@@ -7,7 +7,7 @@ desc:链接按钮
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import('../Sass/Buttons/linkbutton.css');
-import('../Sass/Buttons/icon.css');
+import('../Sass/Buttons/iconfont.css');
 
 class LinkButton extends Component {
   constructor(props) {
