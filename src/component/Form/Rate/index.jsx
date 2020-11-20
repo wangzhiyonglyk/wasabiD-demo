@@ -141,7 +141,7 @@ class Rate extends Component {
             style.display = 'flex';
         }
       return   <div
-            className={componentClassName + this.props.validateClass}
+            className={componentClassName + " "+this.props.validateClass}
             ref="rate"
             style={style} >
             <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>

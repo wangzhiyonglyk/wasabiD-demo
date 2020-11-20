@@ -100,9 +100,9 @@ class TreePicker extends Component {
     }
     filterHandler(event) {
         this.setState({
-            filterText: event.target.value
+            filterText: event.target.value.toString().trim()
         })
-        this.props.filterHandler && this.props.filterHandler(event.target.value);
+        this.props.filterHandler && this.props.filterHandler(event.target.value.toString().trim());
     }
     render() {
         var componentClassName = "wasabi-form-group ";//组件的基本样式
@@ -125,9 +125,9 @@ class TreePicker extends Component {
             <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
             <div className={"wasabi-form-group-body" + (this.props.readOnly || this.props.disabled ? " readOnly" : "")} style={{ width: !this.props.label ? "100%" : null }}>
                 <div className="combobox"    >
-                    <i className={"combobox-clear "} onClick={this.props.clearHandler.bind(this)} style={{ display: this.props.readOnly ? "none" : (this.state.value == "" || !this.state.value) ? "none" : "inline" }}></i>
+                    <i className={"combobox-clear icon-clear"} onClick={this.props.clearHandler.bind(this)} style={{ display: this.props.readOnly ? "none" : (this.state.value == "" || !this.state.value) ? "none" : "inline" }}></i>
                     <i className={"comboxbox-icon icon-drop-down " + (this.state.show ? "rotate" : "")} onClick={this.showPicker.bind(this, 1)}></i>
-                    <input type="text" {...inputProps} value={this.state.text} onBlur={this.props.onBlur} onClick={this.showPicker.bind(this)} onChange={() => { }} />
+                    <input type="text" {...inputProps} value={this.state.text} onBlur={this.props.onBlur} onClick={this.showPicker.bind(this)} onChange={() => { }} autoComplete="off" />
                     <div className={"dropcontainter treepicker  "} style={{ height: this.props.height, display: this.state.show == true ? "block" : "none" }}  >
                         <div
                             style={{

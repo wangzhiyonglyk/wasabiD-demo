@@ -43,49 +43,21 @@ desc:日期选择样式
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
 }
-/*下拉添加图标*/
-.combobox .pickeradd{
-  font-family: 'iconfont' !important;
-  font-style: normal;
-  display: block;
-  width: 34px;
-  height: 34px;
 
-  border-left: 1px solid #e4e7ed;
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  cursor: pointer;
-}
-.combobox .pickeradd:before
-{
-  content: "\e93e";
-  color: #e4e7ed;
-  font-size: 18px;
-  padding: 0px;
-  position: absolute;
-  top: 6px;
-  left: 6.6666px;
-  font-weight: normal;
-}
 /*清空图标*/
 .combobox .combobox-clear{
-  font-family: "iconfont";
+  font-family: iconfont;
   font-style: normal;
   width: 12px;
   height: 12px;
   position: absolute;
-  right: 32px;
-  top: 9px;
+  right: 40px;
+  top: 14px;
+  color: #e4e7ed;
   cursor: pointer;
+
 }
 
-
-.combobox .combobox-clear:before{
-  font-size:16px;
-  content: "\e90c";
-  color: #bbbbbb;
-}
 
 /**/
 .combobox .dropcontainter{

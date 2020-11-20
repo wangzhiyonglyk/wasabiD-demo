@@ -482,7 +482,7 @@ class DatePicker extends Component {
 
     return (
       <div
-        className={componentClassName + this.state.validateClass}
+        className={componentClassName + " "+this.props.validateClass}
         ref='picker'
         id={this.state.cotainerid}
         style={style}
@@ -494,7 +494,7 @@ class DatePicker extends Component {
         >
           <div className='combobox'>
             <i
-              className={"combobox-clear"}
+              className={"combobox-clear icon-clear"}
               onClick={this.clearHandler}
               style={{
                 display: this.props.readOnly
@@ -517,6 +517,7 @@ class DatePicker extends Component {
               onClick={this.showPicker.bind(this)}
               onChange={this.changeHandler}
               onBlur={this.onBlur}
+              autoComplete="off"
             />
             <div
               ref="pickerc"

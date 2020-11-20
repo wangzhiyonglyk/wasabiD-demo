@@ -234,7 +234,7 @@ class Select extends Component {
     return (
 
       <div
-        className={componentClassName + this.props.validateClass}
+        className={componentClassName + " "+this.props.validateClass}
         ref="select"
         style={style}
       >
@@ -242,7 +242,7 @@ class Select extends Component {
         <div className={'wasabi-form-group-body' +(this.props.readOnly||this.props.disabled?" readOnly":"")}>
           <div className={'combobox wasabi-select'}>
             <i
-              className={'combobox-clear'}
+              className={'combobox-clear icon-clear'}
               onClick={this.props.clearHandler}
               style={{
                 display: this.props.readOnly
@@ -269,6 +269,7 @@ class Select extends Component {
               onClick={this.showPicker.bind(this)}
               onBlur={this.onBlur}
               onChange={this.filterChangeHandler}
+              autoComplete="off"
             />
  <div className={"dropcontainter  select" } style={{ display: this.state.show == true ? "block" : "none" }}   >    {control}</div>
         

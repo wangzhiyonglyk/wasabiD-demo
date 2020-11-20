@@ -37,7 +37,6 @@ export default function(WrappedComponent){
         }
     
         onSelect(value, text, row ) {//选中事件
-            console.log(value);
             let newvalue = ""; let newtext = "";
             if(this.props.type=="radio"){
                 newvalue=value;

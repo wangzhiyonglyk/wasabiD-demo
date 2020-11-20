@@ -16,7 +16,7 @@ class Panel extends React.Component {
             close: false,
             expand: this.props.expand,
             iconTip: (this.props.expand == true) ? "折叠" : "展开",
-            iconCls: (this.props.expand == true) ? "icon-up" : "icon-down",
+            iconCls: (this.props.expand == true) ? "icon-arrow-up" : "icon-arrow-down",
 
         }
         this.expandHandler = this.expandHandler.bind(this);
@@ -27,7 +27,7 @@ class Panel extends React.Component {
         this.setState({
             expand: expand,
             iconTip: expand == true ? "折叠" : "展开",
-            iconCls: expand ? "icon-up" : "icon-down",
+            iconCls: expand ? "icon-arrow-up" : "icon-arrow-down",
 
         })
     }

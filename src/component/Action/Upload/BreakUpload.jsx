@@ -11,6 +11,7 @@ import Modal from '../../Layout/Modal.jsx';
 import Button from '../../Buttons/Button.jsx';
 import Msg from '../../Info/Msg.jsx';
 import fileType from "../../libs/fileType";
+import func from "../../libs/func"
 import('../../Sass/Action/Import.css');
 class Upload extends Component {
     constructor(props) {

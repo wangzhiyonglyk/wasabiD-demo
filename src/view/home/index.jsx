@@ -18,6 +18,7 @@ import Article  from "../../component/Action/Article"
 import DataGrid  from "../../component/Data/DataGrid"
 import SearchBar from "../../component/Form/SearchBar"
 import Upload from "../../component/Action/Upload/index"
+import SearchBox from "../../component/Form/SearchBox"
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -36,6 +37,7 @@ class Home extends React.Component {
 
   }
   componentDidMount() {
+    this.refs.upload.open()
     this.setState({
       data:[ { id:1, pId:0, name:"父节点1 - 展开", open:true},
       { id:11, pId:1, name:"父节点11 - 折叠"},
@@ -122,7 +124,8 @@ value:"你好"
        <Input key="5"  type="checkbox" data={this.state.data} textField="name" valueField="id" checkStyle="radio"  name="tree5" simpleData={true}></Input>
        
        </SearchBar> 
-       <Upload plain={true} accept="image" name="file" uploadurl={"http://wechat.bluehy.com/Images/Upload"}></Upload>
+       <SearchBox></SearchBox>
+       <Upload ref="upload" plain={false} accept="image" name="file" uploadurl={"http://wechat.bluehy.com/Images/Upload"}></Upload>
       <DataGrid style={{width:500}} selectAble={true} headers={[{width:100,name:"id",label:"id"},{width:100,name:"name",label:"汉字"}]}  data={this.state.data}></DataGrid></div>
 
     

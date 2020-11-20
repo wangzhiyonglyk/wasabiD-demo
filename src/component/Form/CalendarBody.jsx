@@ -35,6 +35,8 @@ class CalendarBody extends Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         if(nextProps.year!=prevState.oldYear){
             return {
+                year:nextProps.year,
+                oldYear:nextProps.year,
                 tempyear:nextProps.year
             }
         }
@@ -50,7 +52,7 @@ class CalendarBody extends Component {
     }
     yearOnChange(event) {
         this.setState({
-            tempyear: event.target.value,
+            tempyear: event.target.value.toString().trim(),
         })
     }
     changeYearHandler(value) {
@@ -173,7 +175,7 @@ class CalendarBody extends Component {
                 </div>
                 <div className="wasabi-datetime-year" style={{ display: this.props.changeYear ? "block" : "none" }}>
                     <div style={{ display: "block", textAlign: "center", marginBottom: 10 }}>
-                    <input value={this.state.tempyear} name="year" onBlur={this.yearonBlur}
+                    <input type="text" value={this.state.tempyear} name="year" onBlur={this.yearonBlur}
                      onKeyUp={this.yearOKHandler} style={{ width: 60, height: 30, paddingLeft: 5 }} 
                      title="回车确认" onChange={this.yearOnChange}></input></div>
                     {yearControl}</div>

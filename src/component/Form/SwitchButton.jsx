@@ -73,7 +73,7 @@ class SwitchButton extends Component {
             style.display = "flex";
         }
         return (
-            <div className={componentClassName + this.state.validateClass} style={style}>
+            <div className={componentClassName + " "+this.props.validateClass} style={style}>
                 <Label ref="label" readOnly={this.props.readOnly||this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
                 <div className={"wasabi-form-group-body"} style={{ width: !this.props.label ? "100%" : null }}>
                     <div style={this.props.style} className={className} onClick={this.handleClick}>

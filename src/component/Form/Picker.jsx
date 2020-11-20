@@ -541,13 +541,13 @@ class Picker extends Component {
             style.display = "flex";
         }
         return (
-            <div className={componentClassName + this.props.validateClass} ref="picker" style={style} >
+            <div className={componentClassName + " "+this.props.validateClass} ref="picker" style={style} >
                 <Label ref="label" readOnly={this.props.readOnly||this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
                 <div className={"wasabi-form-group-body" + (this.props.readOnly || this.props.disabled ? " readOnly" : "")} style={{ width: !this.props.label ? "100%" : null }}>
                     <div className="combobox"     >
-                        <i className={"combobox-clear"} onClick={this.props.clearHandler} style={{ display: this.props.readOnly ? "none" : (this.state.value == "" || !this.state.value) ? "none" : "inline" }}></i>
+                        <i className={"combobox-clear icon-clear"} onClick={this.props.clearHandler} style={{ display: this.props.readOnly ? "none" : (this.state.value == "" || !this.state.value) ? "none" : "inline" }}></i>
                         <i className={"comboxbox-icon icon-drop-down " + (this.state.show ? "rotate" : "")} onClick={this.showPicker.bind(this)}></i>
-                        <input type="text" {...inputProps} value={this.state.text} onBlur={this.props.onBlur} onClick={this.showPicker.bind(this)} onChange={this.changeHandler} />
+                        <input type="text" {...inputProps} value={this.state.text} onBlur={this.props.onBlur} onClick={this.showPicker.bind(this)} autoComplete="off" onChange={this.changeHandler} />
                         <div className={"dropcontainter  picker "} style={{ display: this.state.show == true ? "block" : "none" }}   >
                             {this.renderHot()}
                             <ul className="wrap" >

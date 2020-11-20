@@ -201,6 +201,18 @@ let DataGridHandler = {
 
                 this.props.updateHandler(pageSize, pageIndex, sortName, sortOrder);
             }
+            else{
+                if(this.state.rowData.length==this.state.total){
+                    //说明传的数据就是全部的
+                    this.setState({
+                        pageSize:pageSize,
+                        pageIndex:pageIndex,
+                        sortName:sortName,
+                        sortOrder:sortOrder,
+                        data:this.state.rawData.slice((pageIndex - 1) * pageSize,pageSize)
+                    })
+                }
+            }
         }
 
     },

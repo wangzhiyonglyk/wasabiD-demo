@@ -53,13 +53,14 @@ class Text extends Component {
         return null;
     }
     onChange(event) {
+        let value=event.target.value.toString().trim();//除去空格
         let isvalidate=true;
         if(this.props.type == "number"||this.props.type == "integer"){
              /**
          * 数字与整数要先验证，
          * 验证时，当一个字符是+,或者-是被认为是正确，不能使用正则验证,否则通不过，但失去焦点则可以使用正则
          */
-             isvalidate = (event.target.value == "+" || event.target.value == "-") || this.validate(event.target.value);    
+             isvalidate = (value == "+" || value == "-") || this.validate(value);    
         }
        
         if (isvalidate) {
@@ -67,7 +68,7 @@ class Text extends Component {
                 value: event.target.value,
                 text: event.target.value,
             })
-            this.props.onChange && this.props.onChange(event.target.value, event.target.value, this.props.name);//自定义的改变事件
+            this.props.onChange && this.props.onChange(value, value, this.props.name);//自定义的改变事件
         }
     }
     keyDownHandler(event) {
@@ -192,7 +193,7 @@ class Text extends Component {
                 onBlur={this.blurHandler}
                 value={(this.state.value == null || this.state.value == undefined) ? "" : this.state.value}></textarea>;
         }
-        return (<div className={componentClassName+  this.state.validateClass} onPaste={this.onPaste} style={style}>
+        return (<div className={componentClassName + " "+this.props.validateClass} onPaste={this.onPaste} style={style}>
             <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
             <div className={"wasabi-form-group-body "} >
                 {control}

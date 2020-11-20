@@ -14,7 +14,7 @@
  
 }
 .wasabi-searchbox input {
-  width: 90%;
+  width: 100%;
   border: 1px solid #e4e7ed;
   box-shadow: none !important;
   outline: none;
@@ -24,16 +24,12 @@
   margin: auto;
   padding-left: 20px;
 }
-.wasabi-searchbox .icon {
-
-  font-family: 'iconfont' !important;
+.wasabi-searchbox .icon-search {
   position: absolute;
-  right: 30px;
-  top: 6px;
+  right: 25px;
+  top: 9px;
   width: 14px;
   height: 14px;
   font-size: 14px;
-}
-.wasabi-searchbox .icon:before{
-  content:"\e945";
+  color: #e4e7ed;
 }

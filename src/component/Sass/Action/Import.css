@@ -74,6 +74,7 @@ desc:导入功能组件样式
   background-color: #fafafa;
   width: 100%;
   border-top: 1px solid #ebebeb;
+  padding-right: 15px;
 }
 .import-upload-info
 {

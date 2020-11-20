@@ -117,9 +117,9 @@ class SearchBar extends Component {
   expandHandler() {
     this.setState({
       dropType:
-        this.state.dropType == "icon-down"
-          ? "icon-up"
-          : "icon-down"
+        this.state.dropType == "icon-arrow-down"
+          ? "icon-arrow-up"
+          : "icon-arrow-down"
     });
   }
   render() {
@@ -134,14 +134,8 @@ class SearchBar extends Component {
               //非react组件
               return child;
             } else {
-              if (
-                this.state.dropType == "icon-down" &&
-                index >= this.props.cols
-              ) {
-                //z不显示
-
-                return null;
-              } else {
+            
+            
                 //这里有个问题，value与text在第二次会被清除,防止数据丢失
                 let data = child.props.data
                   ? JSON.parse(JSON.stringify(child.props.data))
@@ -150,9 +144,11 @@ class SearchBar extends Component {
                 return React.cloneElement(child, {
                   data: data,
                   key: index,
-                  ref: child.ref ? child.ref : index
+                  ref: child.ref ? child.ref : index,
+                  hide: this.state.dropType == "icon-arrow-down" &&
+                  index >= this.props.cols?true:false
                 });
-              }
+              
             }
           })}
          

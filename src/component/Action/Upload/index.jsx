@@ -8,13 +8,27 @@
 import React, { Component } from 'react';
 import PlainUpload from "./PlainUpload"
 import BreakUpload from "./BreakUpload"
-export default function(props) {
+class Upload extends Component {
 
-  if(props.plain){
-return <PlainUpload {...props}></PlainUpload>
-  }
-  else{
-    return <BreakUpload {...props}></BreakUpload>  
-  }
-  
+constructor(props){
+  super(props)
 }
+open(){
+this.refs.upload.open();
+}
+close(){
+  this.refs.upload.close();
+}
+  render() {
+    if (this.props.plain) {
+      return <PlainUpload ref="upload" {...this.props}></PlainUpload>
+    }
+    else {
+      return <BreakUpload  ref="upload" {...this.props}></BreakUpload>
+    }
+  }
+
+
+
+}
+export default Upload;
