@@ -5,7 +5,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
 
-import ("../sass/Layout/Drop.css");
 class Drop extends  React.Component {
     constructor(props) {
         super(props);

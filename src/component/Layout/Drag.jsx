@@ -5,8 +5,8 @@
  */
 import React from 'react';
 import PropTypes from "prop-types";
-import func from '../../component/libs/unit'
-import "../../component/Sass/Layout/Drop.css"
+import func from '../../component/libs/func'
+import "../Sass/Layout/Drag.css"
 class Drag extends React.Component {
   constructor() {
     super();

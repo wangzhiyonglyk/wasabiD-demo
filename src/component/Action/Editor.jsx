@@ -8,6 +8,7 @@ desc 富文本框
 import React from "react";
 import PropTypes from 'prop-types';
 import E from "wangeditor";
+import Upload from "./Upload/BreakUpload";
 //引入富文本框
 
 class Editor extends React.Component {
@@ -19,6 +20,7 @@ class Editor extends React.Component {
 
             content: this.props.content
         }
+        this.openFile=this.openFile.bind(this)
 
     }
     componentDidMount() {
@@ -37,14 +39,26 @@ class Editor extends React.Component {
         }
         this.editor.create();//创建富文本框
         this.editor.txt.html(this.state.content);
+        let obj = document.getElementsByClassName("w-e-toolbar");
+        let contentobj = document.getElementsByClassName("w-e-text-container");
+        contentobj[0].style.zIndex = 1;
+        window.openFile = this.openFile;
+        let innerHTML = obj[0].innerHTML + `<div class="w-e-menu" style="z-index:10001" onclick="openFile()"> <i class="icon-file"></i></div>`
+        innerHTML = innerHTML.replace(/10001/g, "1");
+        obj[0].innerHTML = innerHTML;
     }
-
+    openFile() {
+        this.refs.upload.open();
+    }
     getData() {
         return this.state.content;
     }
     setData(content) {
         this.editor.txt.html(content);
     }
+    /**
+     * 上传的组件的属性就不在这里定义的了
+     */
     static defaultProps = {
 
         style: null,
@@ -60,7 +74,9 @@ class Editor extends React.Component {
     render() {
         {/* 将生成编辑器 */ }
 
-        return <div ref="editorElem"  className={this.props.className} style={this.props.style}>
+        return <div> <div ref="editorElem" className={this.props.className} style={this.props.style}>
+        </div>
+        <Upload ref="upload" {...this.props}></Upload>
         </div>
 
 

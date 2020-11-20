@@ -143,7 +143,7 @@ class DatePicker extends Component {
       };
       return returnvalue;
     } else {
-      return null;
+      return "";
     }
   }
   splitDateTime(datetime) {
@@ -165,11 +165,12 @@ class DatePicker extends Component {
         };
         return returnvalue;
       } else {
-        return null;
+        return "";
       }
     } else {
-      return null;
+      return "";
     }
+    
   }
   showPicker(e) {
     
@@ -202,14 +203,7 @@ class DatePicker extends Component {
 
     this.props.onSelect && this.props.onSelect(value, text, this.props.name, null);
   }
-  clearHandler() {
-    //清除数据
-    this.setState({
-      value: "",
-      text: ""
-    });
-    this.props.onSelect && this.props.onSelect("", "", this.props.name, null);
-  }
+
   changeHandler(event) { }
 
   clearHandler() {
@@ -279,7 +273,8 @@ class DatePicker extends Component {
     );
   }
   renderDateTime() {
-    var dateobj = this.splitDateTime(this.state.value);
+    let dateobj = this.splitDateTime(this.state.value);
+      dateobj=dateobj||{};
     return (
       <DateTime
         ref='combobox'

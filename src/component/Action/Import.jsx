@@ -10,8 +10,7 @@ let Modal = require('../Layout/Modal.jsx');
 let Button = require('../Buttons/Button.jsx');
 let Msg = require('../Info/Msg.jsx');
 let fileType = require('../libs/fileType.js');
-// var unit = require('../libs/unit.js');
-require('../Sass/Action/Import.css');
+import ('../Sass/Action/Import.css');
 let Import = React.createClass({
   propTypes: {
     name: PropTypes.string, //文件字段名称

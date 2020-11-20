@@ -1,24 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import CheckBox from "../../component/Form/CheckBox"
-import Select from "../../component/Form/Select"
-import Radio from "../../component/Form/Radio"
-import Input from "../../component/Form/Input"
-import Label from "../../component/Info/Label"
-import Button from "../../component/Buttons/Button"
-import LinkButton from "../../component/Buttons/LinkButton"
-import Tabs from "../../component/Navigation/Tabs";
-import Modal from "../../component/Layout/Modal";
-import TabPanel from "../../component/Navigation/TabPanel";
-import Badge from "../../component/Buttons/Badge"
-import Rate from "../../component/Form/Rate";
-import Simulator  from "../../component/Action/Simulator"
-import Article  from "../../component/Action/Article"
-import DataGrid  from "../../component/Data/DataGrid"
-import SearchBar from "../../component/Form/SearchBar"
-import Upload from "../../component/Action/Upload/index"
-import SearchBox from "../../component/Form/SearchBox"
+import {Input,DataGrid ,SearchBar,SearchBox} from "../../component"
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -37,7 +20,7 @@ class Home extends React.Component {
 
   }
   componentDidMount() {
-    this.refs.upload.open()
+   
     this.setState({
       data:[ { id:1, pId:0, name:"父节点1 - 展开", open:true},
       { id:11, pId:1, name:"父节点11 - 折叠"},
@@ -114,7 +97,7 @@ value:"你好"
   }
   render() {
     return <div>
-      <LinkButton iconCls="icon-down"></LinkButton>
+     
      <SearchBar>
        <Input key="1" type="treepicker" data={this.state.data} checkStyle="radio" textField="name" name="tree1" simpleData={true}></Input>
        <Input key="2" type="date" data={this.state.data} checkStyle="radio" textField="name2" name="tree2" simpleData={true}></Input>
@@ -125,7 +108,7 @@ value:"你好"
        
        </SearchBar> 
        <SearchBox></SearchBox>
-       <Upload ref="upload" plain={false} accept="image" name="file" uploadurl={"http://wechat.bluehy.com/Images/Upload"}></Upload>
+   
       <DataGrid style={{width:500}} selectAble={true} headers={[{width:100,name:"id",label:"id"},{width:100,name:"name",label:"汉字"}]}  data={this.state.data}></DataGrid></div>
 
     

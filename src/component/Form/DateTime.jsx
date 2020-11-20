@@ -42,8 +42,8 @@ class DateTime extends Component {
         if ((nextProps.year || "") + "-" + (nextProps.month || "") + "-" + (nextProps.day || "") + " " + (nextProps.time || "") != prevState.oldPropsValue) {
             newState.year = nextProps.year ? nextProps.year : prevState.year;
             newState.month = nextProps.month ? nextProps.month : prevState.month;
-            newState.day = nextProps.day;
-            newState.time = nextProps.time;
+            newState.day = nextProps.day||prevState.day;
+            newState.time = nextProps.time||prevState.time;
             newState.oldPropsValue = (nextProps.year || "") + "-" + (nextProps.month || "") + "-" + (nextProps.day || "") + " " + (nextProps.time || "");
             return newState;
         }

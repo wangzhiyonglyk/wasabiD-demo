@@ -5,13 +5,13 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-require("../Sass/Data/Transfer.css");
+
 import diff from "../libs/diff";
 import propsTran from "../libs/propsTran";
-let LinkButton = require("../Buttons/LinkButton.jsx");
+import LinkButton  from "../Buttons/LinkButton.jsx";
 
 import FetchModel from "../Model/FetchModel.js";
-
+import ("../Sass/Data/Transfer.css");
 class Transfer extends React.Component {
 
     constructor(props) {
@@ -361,4 +361,4 @@ Transfer.defaultProps = {
     onSelect: null,
 
 };
-module.exports = Transfer;
+export default Transfer;
