@@ -18,8 +18,10 @@ import  Toolbar from  './Buttons/Toolbar.jsx' ;//LinkButton按钮集合组件
 import  DataGrid from  './Data/DataGrid.jsx' ;//数据列表组件
 import  Tree from  './Data/Tree.jsx' ;//树的组件
 import  Transfer from  './Data/Transfer.jsx' ;//穿梭框组件
-
-
+import  Progress from  './Data/Progress' ;//进度条
+import  Track from  './Data/Track.jsx' ;//物流跟踪
+import  Step from  './Data/Step' ;//进度条
+import  StepItem from  './Data/Step/StepItem' ;//进度条
 /*****************表单组件******************/
 import  SearchBar from  './Form/SearchBar.jsx' ;//表单查询组件
 import  Form from  './Form/Form.jsx' ;//表单提交组件
@@ -64,7 +66,7 @@ import  MenuPanel from './Navigation/MenuPanel.jsx' ;//菜单面板组件
 import  MenuItem from './Navigation/MenuItem.jsx' ;//菜单节点组件
 import  Tabs from  './Navigation/Tabs.jsx' ;//页签组件
 import  TabPanel from './Navigation/TabPanel.jsx' ;//页签面板组件
-import  Track from  './Navigation/Track.jsx' ;//物流跟踪
+
 
 
 /*****************消息组件******************/
@@ -86,7 +88,7 @@ import  ClickAway from  './libs/ClickAway.js' ;//全局单击事件
 
 export   {
     Button,LinkButton,Toolbar, Badge,
-    DataGrid,Tree,Transfer,
+    DataGrid,Tree,Transfer,Progress,Step,StepItem,
     SearchBar,Input,Form,SearchBox,
     Time,DateD,DateTime,DateTimeRange,TimeRange,DateRange,
     Box,Drag,Drop,Layout,Center,Header,Footer,Left,Right,Container,Row,Col,
