@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {Input,DataGrid ,SearchBar,SearchBox} from "../../component"
+import {Input,DataGrid ,SearchBar,SearchBox,Form} from "../../component"
+import api from "../../libs/api"
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -21,6 +22,17 @@ class Home extends React.Component {
   }
   componentDidMount() {
    
+    api.ajax({
+      url:"http://locahost:7007/user/login",
+      type:"post",
+      data:{
+        code:"dfsdfds",
+        appid:"cd"
+      },
+      success:(res)=>{
+        console.log(res)
+      }
+    })
     this.setState({
       data:[ { id:1, pId:0, name:"父节点1 - 展开", open:true},
       { id:11, pId:1, name:"父节点11 - 折叠"},
@@ -98,15 +110,15 @@ value:"你好"
   render() {
     return <div>
      
-     <SearchBar>
+     <Form>
        <Input key="1" type="treepicker" data={this.state.data} checkStyle="radio" textField="name" name="tree1" simpleData={true}></Input>
        <Input key="2" type="date" data={this.state.data} checkStyle="radio" textField="name2" name="tree2" simpleData={true}></Input>
        <Input  key="3" type="datetime" data={this.state.data} checkStyle="radio" textField="name3" name="tree3" simpleData={true}></Input>
        <Input key="4" type="select" data={this.state.data} checkStyle="radio" valueField="id" textField="name" name="tree4" simpleData={true}></Input>
        <Input key="6" type="picker" data={this.state.data} checkStyle="radio" textField="name" name="tree2" simpleData={true}></Input>
-       <Input key="5"  type="checkbox" data={this.state.data} textField="name" valueField="id" checkStyle="radio"  name="tree5" simpleData={true}></Input>
+       <Input key="5"  type="checkbutton" data={this.state.data} textField="name" valueField="id" checkStyle="radio"  name="tree5" simpleData={true}></Input>
        
-       </SearchBar> 
+       </Form> 
        <SearchBox></SearchBox>
    
       <DataGrid style={{width:500}} selectAble={true} headers={[{width:100,name:"id",label:"id"},{width:100,name:"name",label:"汉字"}]}  data={this.state.data}></DataGrid></div>

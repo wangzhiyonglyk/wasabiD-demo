@@ -17,7 +17,7 @@ class SwitchButton extends Component {
         super(props);
         this.state = {
             oldPropsValue: this.props.value,
-            checked: this.props.value ? true : false,//用于回传给表单组件
+            checked: this.props.value ? 1 : 0,//用于回传给表单组件
         }
         this.handleClick = this.handleClick.bind(this)
     }
@@ -25,7 +25,7 @@ class SwitchButton extends Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         if(nextProps.value!=prevState.oldPropsValue){
             return {
-                checked:nextProps.value?true:false
+                checked:nextProps.value?1:0
             }
         }
         return null;
@@ -34,12 +34,12 @@ class SwitchButton extends Component {
         return true;
     }
     getValue() {//获取值
-        return this.state.checked ? this.state.value : "";
+        return this.state.checked ? 1 : 0;
     }
     setValue(value) {//设置值
         this.setState({
             value: value,
-            checked: this.props.value ? true : false
+            checked: this.props.value ? 1 : 0
         })
     }
     handleClick() {
@@ -51,7 +51,7 @@ class SwitchButton extends Component {
         });
 
         if (this.props.onSelect != null) {//返回给comboBox组件
-            this.props.onSelect(!this.state.checked ? this.props.value : "", !this.state.checked ? this.props.value : "", this.props.name);
+            this.props.onSelect(!this.state.checked,this.state.checked, this.props.name);
         }
 
     }
