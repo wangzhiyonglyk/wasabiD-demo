@@ -6,26 +6,25 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import func from "../libs/func.js";
 import('../Sass/Buttons/button.css');
 class Button extends Component {
   constructor(props) {
     super(props);
     this.title = null; //初始化
-    this.clickHandler = this.clickHandler.bind(this);
+    this.onClick = this.onClick.bind(this);
     this.state = {};
   }
 
-  clickHandler(event) {
+  onClick(event) {
     event.preventDefault();
     if (this.props.disabled == true) {
       return;
     }
-
-    if (this.props.onClick) {
-      this.props.onClick(this.props.name, this.props.title, event);
-    }
+    this.props.onClick && this.props.onClick(this.props.name, this.props.title, event);
   }
   render() {
+
     let props = {
       className:
         'wasabi-button ' +
@@ -39,17 +38,18 @@ class Button extends Component {
       //文字提示
       title: this.props.title
     };
-    return (
-    
-      <button {...props} onClick={this.clickHandler} type='button' >
-       <span>{this.props.children ? this.props.children : this.props.title}</span> 
-      </button>
-    );
+    return (this.props.children || this.props.title || this.props.iconCls )? <button {...props} onClick={this.onClick} type='button' >
+        {this.props.iconCls && this.props.iconAlign == "left" ? <i className={"left " + this.props.iconCls}></i> : null}
+        <span>{this.props.children ? this.props.children : this.props.title}</span>
+        {this.props.iconCls && this.props.iconAlign == "right" ? <i className={"right " + this.props.iconCls}></i> : null}
+      </button> : null
   }
 }
 Button.propTypes = {
   name: PropTypes.string, //按钮名称
   title: PropTypes.string, //按钮提示信息
+  iconCls: PropTypes.string, //图标
+  iconAlign: PropTypes.oneOf(["left", "right"]),//图标的位置
   theme: PropTypes.oneOf([
     //主题
     'primary',
@@ -75,6 +75,8 @@ Button.propTypes = {
 Button.defaultProps = {
   name: '',
   title: null,
+  iconCls: "",
+  iconAlign: "left",
   theme: 'primary',
   size: 'default',
   style: {},

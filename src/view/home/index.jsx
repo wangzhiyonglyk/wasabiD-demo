@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {Input,DataGrid ,SearchBar,SearchBox,Form,Progress, Button,Step,StepItem} from "../../component"
+import {Input,DataGrid ,SearchBar,SearchBox,Form,Progress, Button,Step,StepItem,Dropdown,DropdownItem} from "../../component"
 import api from "../../libs/api"
 class Home extends React.Component {
   constructor(props) {
@@ -110,12 +110,19 @@ value:"你好"
   }
   render() {
     return <div>
-     <Step ref="s" >
+     <Step ref="s" activeIndex={0} >
        <StepItem key="1" title={"步骤1"} >测试中</StepItem>
        <StepItem key="2"  title={"步骤2"} ></StepItem>
        </Step>
      <Progress ref="p" value={50} type="circle"></Progress>
-     <Button onClick={this.onClick.bind(this)}>test</Button>
+     <Button iconCls="icon-search" onClick={this.onClick.bind(this)}>test</Button>
+
+     <Dropdown   plain={false} menuIconCls="icon-category">
+<DropdownItem>按钮1</DropdownItem>
+<DropdownItem>按钮2</DropdownItem>
+<DropdownItem>按钮3</DropdownItem>
+<DropdownItem>按钮4</DropdownItem>
+     </Dropdown>
      <Form>
        <Input key="1" type="treepicker" data={this.state.data} checkStyle="radio" textField="name" name="tree1" simpleData={true}></Input>
        <Input key="2" type="date" data={this.state.data} checkStyle="radio" textField="name2" name="tree2" simpleData={true}></Input>

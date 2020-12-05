@@ -6,7 +6,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import('./css/badge.css');
+import('./index.css');
 class Badge extends Component {
     constructor(props) {
         super(props)

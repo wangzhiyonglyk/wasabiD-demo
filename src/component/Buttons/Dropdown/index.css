@@ -1,0 +1,175 @@
+.wasabi-dropdown{
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+}
+.wasabi-dropdown .wasabi-button{
+    margin-left: 0px;
+}
+.wasabi-dropdown.unplain.default,.wasabi-dropdown.unplain.cancel{
+    background: #fff;
+      border: 1px solid #dcdfe6;
+      color: #606266;
+  }
+ 
+  .wasabi-dropdown.unplain.default.active, .wasabi-dropdown.unplain.default:active,.wasabi-dropdown.unplain.cancel.active, .wasabi-dropdown.unplain.cancel:active{
+    color: #3a8ee6;
+    border-color: #3a8ee6;
+    outline: none;
+  }
+  
+
+.wasabi-dropdown.unplain.primary {
+  color: #fff;
+  background-color: #409eff;
+  border-color: #409eff;
+}
+
+.wasabi-dropdown.unplain.primary.active, .wasabi-dropdown.unplain.primary:active{
+  background: #3a8ee6;
+    border-color: #3a8ee6;
+    color: #fff;
+}
+
+
+.wasabi-dropdown.unplain.success {
+  color: #fff;
+    background-color: #67c23a;
+    border-color: #67c23a;
+}
+
+.wasabi-dropdown.unplain.success.active, .wasabi-dropdown.unplain.success:active{
+  background: #5daf34;
+  border-color: #5daf34;
+  color: #fff;
+}
+
+
+.wasabi-dropdown.unplain.info {
+  color: #fff;
+  background-color: #909399;
+  border-color: #909399;
+
+}
+
+.wasabi-dropdown.unplain.info.active, .wasabi-dropdown.unplain.info:active{
+  background: #82848a;
+  border-color: #82848a;
+  color: #fff;
+} 
+
+
+.wasabi-dropdown.unplain.warning {
+  color: #fff;
+  background-color: #e6a23c;
+  border-color: #e6a23c;
+}
+
+.wasabi-dropdown.unplain.warning.active, .wasabi-dropdown.unplain.warning:active{
+  background: #cf9236;
+  border-color: #cf9236;
+  color: #fff;
+} 
+
+  
+.wasabi-dropdown.unplain.danger {
+  color: #fff;
+  background-color: #f56c6c;
+  border-color: #f56c6c;
+}
+
+.wasabi-dropdown.unplain.danger.active, .wasabi-dropdown.unplain.danger:active{
+  background: #dd6161;
+  border-color: #dd6161;
+  color: #fff;
+} 
+ 
+.wasabi-dropdown[disabled] {
+  -khtml-opacity: 0.40;
+  -moz-opacity: 0.40;
+  opacity: 0.40;
+  cursor: not-allowed;
+}
+
+.wasabi-dropdown .wasabi-dropdown::after{
+    content: "1";
+    color: transparent;
+    border-left-color: hsla(0,0%,100%,.5);
+    border-left-width: 1px;
+    border-left-style: solid;
+    position: absolute;
+    right: 20px;
+    height: calc(100% - 10px);
+    top: 5px;
+}
+
+.wasabi-dropdown .wasabi-dropdown-arrow{
+    padding-left: 10px;
+    padding-right: 5px;
+    margin-left: 0px;
+    border-left-color: hsla(0,0%,100%,.5);
+    border-left-width: 1px;
+    border-left-style: solid;
+}
+
+.wasabi-dropdown-menu{
+    position: absolute;
+    width: 100%;
+    overflow: visible;
+    right: -60px;
+    top: 20px;
+    z-index: 10;
+    padding: 10px 0;
+    margin: 5px 0;
+    background-color: #fff;
+    border: 1px solid #ebeef5;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    display: none;
+    min-width: 100px;
+}
+.wasabi-dropdown-menu.unplain{
+    top: 44px;
+}
+.wasabi-dropdown-menu:after, .wasabi-dropdown-menu:before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-width: 8px;
+    border-style: solid;
+    position: absolute;
+    left: 25px;
+    
+}
+.wasabi-dropdown-menu:before {
+    border-color: transparent transparent #fff;
+    z-index: 1;
+    top: -16px;
+}
+.wasabi-dropdown-menu:after {
+    border-color: transparent transparent #ebeef5;
+    top: -17px;
+}
+.wasabi-dropdown-item{
+    list-style: none;
+    line-height: 36px;
+    padding: 0 20px;
+    margin: 0;
+    font-size: 14px;
+    color: #606266;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+    text-align: center;
+}
+
+.wasabi-dropdown-item:hover{
+      background-color: #ecf5ff;
+        color: #66b1ff;
+}

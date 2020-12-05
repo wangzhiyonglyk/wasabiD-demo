@@ -12,7 +12,6 @@ class StepItem extends React.Component {
         super(props)
     }
     render() {
-        console.log("thi",this.props)
         return <div className={"wasabi-step-item " +( this.props.active? this.props.theme:" ")} >
             <div className="wasabi-step-item-header">
                 <div className={"wasabi-step-line "} ></div>

@@ -11,7 +11,9 @@
 /*****************按钮组件******************/
 import  Button from  './Buttons/Button.jsx' ;//普通按钮
 import  LinkButton from  './Buttons/LinkButton.jsx' ;//可移动，可带图标，可带链接的按钮
-import Badge from "./Buttons/Badge.jsx";//带数字标记组件
+import Badge from "./Buttons/Badge";//带数字标记组件
+import Dropdown from "./Buttons/Dropdown";//下拉菜单按钮
+import DropdownItem from "./Buttons/Dropdown/DropdownItem";//下拉菜单的选项
 import  Toolbar from  './Buttons/Toolbar.jsx' ;//LinkButton按钮集合组件
 
 /*****************数据组件******************/
@@ -87,7 +89,7 @@ import  ClickAway from  './libs/ClickAway.js' ;//全局单击事件
 
 
 export   {
-    Button,LinkButton,Toolbar, Badge,
+    Button,LinkButton,Toolbar, Badge,Dropdown,DropdownItem,
     DataGrid,Tree,Transfer,Progress,Step,StepItem,
     SearchBar,Input,Form,SearchBox,
     Time,DateD,DateTime,DateTimeRange,TimeRange,DateRange,

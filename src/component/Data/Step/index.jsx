@@ -39,7 +39,6 @@ class Step extends React.Component {
                             if (typeof child.type !== "function") {//非react组件
                                 return child;
                             } else {
-                              console.log(index,this.state.activeIndex,this.state.activeIndex!=null&&this.state.activeIndex!=undefined&&this.state.activeIndex<=(index))
                                 return React. cloneElement(child, {key: index, theme:this.props.theme,active:this.state.activeIndex!=null&&this.state.activeIndex!=undefined&&this.state.activeIndex>=(index)?true:false,stepIndex:(index+1) })
                             }
 

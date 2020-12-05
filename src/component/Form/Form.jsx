@@ -2,58 +2,51 @@
 //date:2016-04-05后开始独立改造
 //edit date:2020-04-05
 //desc:表单组件
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import  Button  from "../Buttons/Button.jsx";
-if(React.version<="17.0.0"){
+import Button from "../Buttons/Button.jsx";
+if (React.version <= "17.0.0") {
     console.warn("请将react升级到了17+版本");
 }
-import ("../Sass/Form/Form.css");
-class   Form extends Component {
-    constructor(props){
+import("../Sass/Form/Form.css");
+class Form extends Component {
+    constructor(props) {
         super(props)
-        this.state={
-           
+        this.state = {
+
         }
-this.validate=this.validate.bind(this);
-this.getData=this.getData.bind(this);
-this.setData=this.setData.bind(this);
-this.clearData=this.clearData.bind(this);
-this.onSubmit=this.onSubmit.bind(this);
+        this.validate = this.validate.bind(this);
+        this.getData = this.getData.bind(this);
+        this.setData = this.setData.bind(this);
+        this.clearData = this.clearData.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
-  
-    // UNSAFE_componentWillReceiveProps (nextProps) {
-    //     this.setState({
-    //         disabled: nextProps.disabled,
-    //     })
-    // }
-    
+
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
             disabled: nextProps.disabled,
         }
     }
-    validate () {
-        
+    validate() {
+
         let isva = true;
         for (let v in this.refs) {
-          
-            if(isva)
-            {//如果验证是正确的，继续获取值
+
+            if (isva) {//如果验证是正确的，继续获取值
                 isva = this.refs[v].validate ? this.refs[v].validate() : isva;
             }
-           else{//如果前一个验证失败，则验证不拿值
-            this.refs[v].validate ? this.refs[v].validate():void(0);
-           }
-            
+            else {//如果前一个验证失败，则验证不拿值
+                this.refs[v].validate ? this.refs[v].validate() : void (0);
+            }
+
         }
         return isva;
     }
-    getData () {
+    getData() {
         var data = {}
-        for (let v in this.refs) {      
-            if (this.refs[v].props.name&&this.refs[v].getValue) {//说明是表单控件
+        for (let v in this.refs) {
+            if (this.refs[v].props.name && this.refs[v].getValue) {//说明是表单控件
                 if (this.refs[v].props.name.indexOf(",") > -1) {//含有多个字段
                     var nameSplit = this.refs[v].props.name.split(",");
                     if (this.refs[v].getValue()) {
@@ -75,52 +68,50 @@ this.onSubmit=this.onSubmit.bind(this);
                     data[this.refs[v].props.name] = this.refs[v].getValue();
                 }
             }
-            else if(this.refs[v].getData){//布局组件或者表单组件
-                data=Object.assign(data,this.refs[v].getData())
-            } 
+            else if (this.refs[v].getData) {//布局组件或者表单组件
+                data = Object.assign(data, this.refs[v].getData())
+            }
 
 
         }
         return data;
     }
-    setData (data) {//设置值,data是对象
+    setData(data) {//设置值,data是对象
 
         if (!data) {
             return;
         }
         for (let v in this.refs) {
-            if (this.refs[v].props.name&&data[this.refs[v].props.name]!=null&&data[this.refs[v].props.name]!=undefined) {
-                this.refs[v].setValue&&this.refs[v].setValue(data[this.refs[v].props.name]);
+            if (this.refs[v].props.name && data[this.refs[v].props.name] != null && data[this.refs[v].props.name] != undefined) {
+                this.refs[v].setValue && this.refs[v].setValue(data[this.refs[v].props.name]);
             }
-            else if(this.refs[v].setData)
-                {//表单或者布局组件
-                    this.refs[v].setData(data);
-                }
+            else if (this.refs[v].setData) {//表单或者布局组件
+                this.refs[v].setData(data);
+            }
         }
     }
-    clearData () {
+    clearData() {
         for (let v in this.refs) {
-          this.refs[v].setValue && this.refs[v].setValue("");
+            this.refs[v].setValue && this.refs[v].setValue("");
             this.refs[v].clearData && this.refs[v].clearData();
         }
     }
 
-    onSubmit () {
+    onSubmit() {
         //提交 数据
         var data = {};//各个字段对应的值
         let isva = true;
         for (let v in this.refs) {
             //如果没有验证方法说明不是表单控件，保留原来的值
-            if(isva)
-            {//如果验证是正确的，继续获取值
+            if (isva) {//如果验证是正确的，继续获取值
                 isva = this.refs[v].validate ? this.refs[v].validate() : isva;
             }
-           else{//如果前一个验证失败，则验证不拿值
-            this.refs[v].validate ? this.refs[v].validate():void(0);
-           }
+            else {//如果前一个验证失败，则验证不拿值
+                this.refs[v].validate ? this.refs[v].validate() : void (0);
+            }
 
             if (this.refs[v].props.name && this.refs[v].getValue) {//说明是表单控件
-           
+
                 if (this.refs[v].props.name.indexOf(",") > -1) {//含有多个字段
                     var nameSplit = this.refs[v].props.name.split(",");
                     let value = this.refs[v].getValue();
@@ -145,12 +136,12 @@ this.onSubmit=this.onSubmit.bind(this);
                 else {
                     data[this.refs[v].props.name] = this.refs[v].getValue();
                 }
-            } else if(this.refs[v].getData){//布局组件或者表单组件
-                data=Object.assign(data,this.refs[v].getData())
-            } 
+            } else if (this.refs[v].getData) {//布局组件或者表单组件
+                data = Object.assign(data, this.refs[v].getData())
+            }
         }
         if (isva) {
-            if (this.props.onSubmit ) {
+            if (this.props.onSubmit) {
                 this.props.onSubmit(data);
             }
             else {
@@ -162,24 +153,24 @@ this.onSubmit=this.onSubmit.bind(this);
     render() {
         return (
             <div className={"wasabi-form  clearfix " + " " + this.props.className} style={this.props.style}>
-                <div className={"form-body clearfix "}  cols={this.props.cols}>
+                <div className={"form-body clearfix "} cols={this.props.cols}>
 
                     {
-                      React.  Children.map(this.props.children, (child, index) => {
+                        React.Children.map(this.props.children, (child, index) => {
 
-                           
+
                             if (typeof child.type !== "function") {//非react组件
                                 return child;
                             } else {
-                              
-                                return React. cloneElement(child, { disabled:this.props.disabled?this.props.disabled:child.props.disabled,   readOnly: this.props.disabled?this.props.disabled:child.props.readOnly, key: index, ref: child.ref?child.ref:index })
+
+                                return React.cloneElement(child, { disabled: this.props.disabled ? this.props.disabled : child.props.disabled, readOnly: this.props.disabled ? this.props.disabled : child.props.readOnly, key: index, ref: child.ref ? child.ref : index })
                             }
 
                         })
                     }
                 </div>
-                <div className="form-submit clearfix" style={{display:this.props.submitHide?"none":null}}  >
-                    <Button theme={this.props.submitTheme} onClick={this.onSubmit} title={this.props.submitTitle} style={{display:this.props.submitHide?"none":null}} disabled={this.props.disabled}  >
+                <div className="form-submit clearfix" style={{ display: this.props.submitHide ? "none" : null }}  >
+                    <Button theme={this.props.submitTheme} onClick={this.onSubmit} title={this.props.submitTitle} style={{ display: this.props.submitHide ? "none" : null }} disabled={this.props.disabled}  >
                     </Button>
 
                 </div>
@@ -188,7 +179,7 @@ this.onSubmit=this.onSubmit.bind(this);
     }
 }
 
-Form. propTypes= {
+Form.propTypes = {
     style: PropTypes.object,//样式
     className: PropTypes.string,//自定义样式
     disabled: PropTypes.bool,//是否只读
@@ -196,16 +187,16 @@ Form. propTypes= {
     submitHide: PropTypes.bool,
     submitTheme: PropTypes.string,
     onSubmit: PropTypes.func,//提交成功后的回调事件
-    cols:PropTypes.number//一行几列
+    cols: PropTypes.number//一行几列
 };
-Form.defaultProps= {
-        style: {},
-        className: "",
-        disabled: false,
-        submitTitle: "提交",//查询按钮的标题
-        submitHide: false,//是否隐藏按钮
-        submitTheme: "primary",//主题
-        onSubmit: null,//提交成功后的回调事 
-        cols:3,//默认3个
-    };
+Form.defaultProps = {
+    style: {},
+    className: "",
+    disabled: false,
+    submitTitle: "提交",//查询按钮的标题
+    submitHide: false,//是否隐藏按钮
+    submitTheme: "primary",//主题
+    onSubmit: null,//提交成功后的回调事 
+    cols: 3,//默认3个
+};
 export default Form;

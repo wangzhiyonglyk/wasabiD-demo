@@ -10,10 +10,10 @@ import React, { Component } from "react";
 import func from "../libs/func.js";
 import FetchModel from "../Model/FetchModel.js";
 import Msg from "../Info/Msg.jsx";
-let DataGridExtend= {
+let DataGridExtend = {
     //列表常用操作
-    onClick: function (rowIndex,rowData) {
-     
+    onClick: function (rowIndex, rowData) {
+
         if (this.props.selectChecked == true) {
             let key = this.getKey(rowIndex);//获取关键字
             if (this.state.checkedData.has(key)) {
@@ -24,16 +24,16 @@ let DataGridExtend= {
             }
         }
         if (this.props.onClick != null) {
-            this.props.onClick(rowData,rowIndex);//注意参数换了位置,因为早期版本就是这样子
+            this.props.onClick(rowData, rowIndex);//注意参数换了位置,因为早期版本就是这样子
         }
 
     },
-    onDoubleClick: function (rowIndex,rowData ) {
+    onDoubleClick: function (rowIndex, rowData) {
         if (this.props.onDoubleClick != null) {//如果自定义了,
-            this.props.onDoubleClick(rowData,rowIndex );
+            this.props.onDoubleClick(rowData, rowIndex);
 
         }
-        else if(this.state.editAble) {//没有自定义,允许编辑表格
+        else if (this.state.editAble) {//没有自定义,允许编辑表格
             if (this.state.editIndex != null && this.state.editIndex != rowIndex) {//说明上一行编辑完成
                 this.remoteUpdateRow(rowIndex);
             }
@@ -44,8 +44,8 @@ let DataGridExtend= {
             }
         }
     },
-    pageUpdateHandler:function (pageSize,pageIndex) {//改变分页大小，或者跳转
-        this.updateHandler(this.state.url,pageSize*1, pageIndex*1, this.state.sortName, this.state.sortOrder,this.state.params);
+    pageUpdateHandler: function (pageSize, pageIndex) {//改变分页大小，或者跳转
+        this.updateHandler(this.state.url, pageSize * 1, pageIndex * 1, this.state.sortName, this.state.sortOrder, this.state.params);
     },
     //详情页面
     detailViewHandler: function (detail) {
@@ -57,7 +57,7 @@ let DataGridExtend= {
         }
         this.setState({
             detailIndex: key,
-            detailView: <tr key={key+"detail"}>
+            detailView: <tr key={key + "detail"}>
                 <td colSpan={colSpan}>
                     <div className="wasabi-detail">{detail}</div>
                 </td>
@@ -70,8 +70,8 @@ let DataGridExtend= {
 
     /**与表头右键菜单相关事件 */
 
-     headerContextMenuHandler:function(event) {//显示菜单
-        if(this.refs.headermenu.style.display=="block") {//已经出现了,不处理
+    headerContextMenuHandler: function (event) {//显示菜单
+        if (this.refs.headermenu.style.display == "block") {//已经出现了,不处理
 
         }
         else {//
@@ -87,104 +87,98 @@ let DataGridExtend= {
 
     },
 
-    gridMouseDownHandler:function(event){//全局列表鼠标按下事件
+    gridMouseDownHandler: function (event) {//全局列表鼠标按下事件
 
-      
-        if(event.button!=2)
-        {//不是鼠标右键
-            if(event.target.className=="header-menu-item")
-            {//点击中的就是菜单项不处理
+
+        if (event.button != 2) {//不是鼠标右键
+            if (event.target.className == "header-menu-item") {//点击中的就是菜单项不处理
 
             }
-            else
-            {
+            else {
                 this.hideMenuHandler();//隐藏菜单
             }
 
         }
-        else
-        {//又是鼠标右键
-            if(event.target.className=="header-menu-item")
-            {//点击中的就是菜单项不处理
+        else {//又是鼠标右键
+            if (event.target.className == "header-menu-item") {//点击中的就是菜单项不处理
 
             }
-            else
-            {//隐藏
+            else {//隐藏
                 this.hideMenuHandler();//隐藏菜单
             }
         }
 
     },
-    hideMenuHandler:function (event) {//隐藏菜单，远程更新某一行
-        this.refs.headermenu.style.display="none";//表头菜单隐藏
-        this.menuHeaderName=null;//清空全局列名
+    hideMenuHandler: function (event) {//隐藏菜单，远程更新某一行
+        this.refs.headermenu.style.display = "none";//表头菜单隐藏
+        this.menuHeaderName = null;//清空全局列名
         this.unbindClickAway();//卸载全局单击事件
     },
-    
+
     headerMouseDownHandler: function (event) {//表头列,鼠标按下事件
-            this.refs.headermenu.style.display="none";//隐藏菜单
-            // 设置为空
-            this.moveHeaderName = null;
-        
-        
+        this.refs.headermenu.style.display = "none";//隐藏菜单
+        // 设置为空
+        this.moveHeaderName = null;
+
+
 
 
     },
-   
-    menuHideHandler:function(event) {//菜单面板中的处理事件 没有使用单击事件,用户有可能继续使用鼠标右键,隐藏某一列的事件
+
+    menuHideHandler: function (event) {//菜单面板中的处理事件 没有使用单击事件,用户有可能继续使用鼠标右键,隐藏某一列的事件
         let headers = this.state.headers;//列表数据
-        let headerMenu=this.state.headerMenu;
+        let headerMenu = this.state.headerMenu;
         for (let index = 0; index < headers.length; index++) {
             //使用label,因为多个列可能绑定一个字段
             if (headers[index].label == this.menuHeaderName) {//需要隐藏的列
                 headerMenu.push(this.menuHeaderName);//放入隐藏列中
-                headers[index].hide=true;
+                headers[index].hide = true;
                 this.hideMenuHandler();//隐藏菜单
             }
 
         }
         this.setState({
-            headers:headers,
-            headerMenu:headerMenu
+            headers: headers,
+            headerMenu: headerMenu
         })
 
     },
-    menuShowHandler:function(itemIndex,label) {//菜单面板中的处理事件 没有使用单击事件,用户有可能继续使用鼠标右键,显示某列
+    menuShowHandler: function (itemIndex, label) {//菜单面板中的处理事件 没有使用单击事件,用户有可能继续使用鼠标右键,显示某列
 
         let headers = this.state.headers;//列表数据
-        let headerMenu=this.state.headerMenu;
+        let headerMenu = this.state.headerMenu;
 
 
         for (let index = 0; index < headers.length; index++) {
             //使用label,因为多个列可能绑定一个字段
             if (headers[index].label == label) {//需要显示的列
-                headerMenu.splice(itemIndex,1);//从隐藏列中删除
-                headers[index].hide=false;//显示此列
+                headerMenu.splice(itemIndex, 1);//从隐藏列中删除
+                headers[index].hide = false;//显示此列
                 this.hideMenuHandler();//隐藏菜单
 
             }
 
         }
         this.setState({
-            headers:headers,
-            headerMenu:headerMenu
+            headers: headers,
+            headerMenu: headerMenu
         })
     },
     /**与表头右键菜单相关事件 */
-  
+
 
     /**列表样式问题 */
     tableBodyScrollHandler: function (event) {//监听列表的横向滚动的事件,以便固定表头可以一同滚动
-       // this.refs.fixedTableContainer.style.left = "-" + event.target.scrollLeft + "px";
+        // this.refs.fixedTableContainer.style.left = "-" + event.target.scrollLeft + "px";
 
     },
 
 
-    resizeTableWidthHandler:function () { //表格宽度调整
+    resizeTableWidthHandler: function () { //表格宽度调整
         this.setCellAlign();//调整单元格对齐问题
 
     },
-    setCellAlign:function () {//调整单元格对齐问题
+    setCellAlign: function () {//调整单元格对齐问题
         //处理对齐问题
         var fixedTableHeaderth = this.refs.fixedTable.children[0].children[0].children;
         //列表的原始表头的列
@@ -195,46 +189,44 @@ let DataGridExtend= {
             if (realTableHeaderth[index].getBoundingClientRect().width != fixedTableHeaderth[index].getBoundingClientRect().width) {
                 let thwidth = realTableHeaderth[index].children[0].getBoundingClientRect().width;
                 //设置cell
-                fixedTableHeaderth[index].children[0].style.width = ( thwidth) + "px";
+                fixedTableHeaderth[index].children[0].style.width = (thwidth) + "px";
                 realTableHeaderth[index].children[0].style.width = (thwidth) + "px";
             }
         }
     },
 
-      /**列表样式问题 */
+    /**列表样式问题 */
 
     /**扩展功能 自定义操作面板，粘贴 */
-    getHeaderDataHandler:function (headerUrl) {//从后台获取自定义列
-        if(!headerUrl){
-            headerUrl=this.state.headerUrl;
+    getHeaderDataHandler: function (headerUrl) {//从后台获取自定义列
+        if (!headerUrl) {
+            headerUrl = this.state.headerUrl;
         }
-        if(headerUrl)
-        {
-            let type=this.props.httpType?this.props.httpType:"POST";
-             type=type.toUpperCase();
-            var fetchmodel=new FetchModel(headerUrl,this.getHeaderDataHandlerSuccess,{url:this.state.url},this.ajaxError,type);
-             fetchmodel.headers=this.props.httpHeaders;
-            if(this.props.contentType){
+        if (headerUrl) {
+            let type = this.props.httpType ? this.props.httpType : "POST";
+            type = type.toUpperCase();
+            var fetchmodel = new FetchModel(headerUrl, this.getHeaderDataHandlerSuccess, { url: this.state.url }, this.ajaxError, type);
+            fetchmodel.headers = this.props.httpHeaders;
+            if (this.props.contentType) {
                 //如果传contentType值则采用传入的械
                 //否则默认
-              
-                fetchmodel.contentType=  this.props.contentType;
-                fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
-              }
-            console.log("datagrid-header-get:",fetchmodel);
-            type=="POST"?func.fetch.post(fetchmodel):func.fetch.get(fetchmodel);
+
+                fetchmodel.contentType = this.props.contentType;
+                fetchmodel.data = fetchmodel.contentType == "application/json" ? JSON.stringify(fetchmodel.data) : fetchmodel.data;
+            }
+            console.log("datagrid-header-get:", fetchmodel);
+            type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
         }
         this.setState({
-            loading:true,//正在加载
+            loading: true,//正在加载
         })
 
     },
-    getHeaderDataHandlerSuccess:function (result) {
-        if(result.rows)
-        {
-            result.data=result.rows;
+    getHeaderDataHandlerSuccess: function (result) {
+        if (result.rows) {
+            result.data = result.rows;
         }
-      var filterResult=  this.headerFilterHandler(result.data);
+        var filterResult = this.headerFilterHandler(result.data);
         //更新
         this.setState({
             headers: filterResult.headers,
@@ -244,60 +236,60 @@ let DataGridExtend= {
 
     },
 
-    panelShow:function () {//操作面板面板显示/隐藏
+    panelShow: function () {//操作面板面板显示/隐藏
         this.setState({
-            panelShow:!this.state.panelShow
+            panelShow: !this.state.panelShow
         })
     },
-     //excel粘贴事件
+    //excel粘贴事件
     onPaste: function (event) { //excel粘贴事件   
         //调用公共用的粘贴处理函数
         this.pasteHandler(event, this.pasteSuccess);
     },
-        //粘贴事件
+    //粘贴事件
     pasteSuccess: function (data) {
-     typeof this.props.pasteSuccess =="function" &&this.props.pasteSuccess();
+        typeof this.props.pasteSuccess == "function" && this.props.pasteSuccess();
     },
     /**扩展功能 自定义操作面板，粘贴 */
-    
+
 
     /****新增，修改，删除*/
-    addRow:function(rowData,editAble) {//添加一行,如果editable为true，说明添加以后处理编辑状态
-        let newData=this.state.data;
+    addRow: function (rowData, editAble) {//添加一行,如果editable为true，说明添加以后处理编辑状态
+        let newData = this.state.data;
         newData.unshift(rowData);
-        this.state.addData.set(this.getKey(0),rowData);//添加到脏数据里
-        this.focusIndex=0;
+        this.state.addData.set(this.getKey(0), rowData);//添加到脏数据里
+        this.focusIndex = 0;
         this.setState({
             detailIndex: null,
             detailView: null,
-            data:newData,
-            total:this.state.total+1,
-            addData:this.state.addData,
-            editIndex:editAble?0:null,
+            data: newData,
+            total: this.state.total + 1,
+            addData: this.state.addData,
+            editIndex: editAble ? 0 : null,
         });
     },
-    deleteRow:function (rowIndex) {//删除指定行数据
+    deleteRow: function (rowIndex) {//删除指定行数据
 
-        this.state.deleteData.push(this.state.data.splice(rowIndex,1));
-        let newData=this.state.data.splice(rowIndex,1);
+        this.state.deleteData.push(this.state.data.splice(rowIndex, 1));
+        let newData = this.state.data.splice(rowIndex, 1);
 
         this.setState({
-            data:newData,
-            total:this.state.total-1,
-            deleteData:this.state.deleteData
+            data: newData,
+            total: this.state.total - 1,
+            deleteData: this.state.deleteData
         });
     },
-    editRow:function (rowIndex) {//让某一个处理编辑状态
+    editRow: function (rowIndex) {//让某一个处理编辑状态
 
         this.setState({
-            editIndex:rowIndex
+            editIndex: rowIndex
         })
 
     },
-    updateRow:function(rowIndex,rowData) {// //只读函数,更新某一行数据
-        this.state.updatedData.set(this.getKey(rowIndex),rowData);//更新某一行
+    updateRow: function (rowIndex, rowData) {// //只读函数,更新某一行数据
+        this.state.updatedData.set(this.getKey(rowIndex), rowData);//更新某一行
 
-        if(rowIndex>=0&&rowIndex<this.state.data.length) {
+        if (rowIndex >= 0 && rowIndex < this.state.data.length) {
             var newData = this.state.data;
             newData[rowIndex] = rowData;
             this.setState(
@@ -307,87 +299,84 @@ let DataGridExtend= {
                 });
         }
     },
-    rowEditHandler:function (columnIndex,value, text, name, data) {  //编辑时单元格内的表单onchange的监听事件
-          if (this.state.headers[columnIndex].editor && typeof this.state.headers[columnIndex].editor.edited === "function") {
-              //得到新的一行数据
-              this.state.data[this.state.editIndex] = this.state.headers[columnIndex].editor.edited(value, text, this.state.data[this.state.editIndex]);//先将值保存起来，不更新状态
+    rowEditHandler: function (columnIndex, value, text, name, data) {  //编辑时单元格内的表单onchange的监听事件
+        if (this.state.headers[columnIndex].editor && typeof this.state.headers[columnIndex].editor.edited === "function") {
+            //得到新的一行数据
+            this.state.data[this.state.editIndex] = this.state.headers[columnIndex].editor.edited(value, text, this.state.data[this.state.editIndex]);//先将值保存起来，不更新状态
 
-          }
-          else if(this.state.headers[columnIndex].editor ) {
-              //没有则默认以value作为值
-              this.state.data[this.state.editIndex][name] = value;//先将值保存起来，不更新状态值
-          }
+        }
+        else if (this.state.headers[columnIndex].editor) {
+            //没有则默认以value作为值
+            this.state.data[this.state.editIndex][name] = value;//先将值保存起来，不更新状态值
+        }
 
-        if(this.state.addData.has(this.state.editIndex))
-        {//说明是属于新增的
-            this.state.addData.set(this.getKey(this.state.editIndex),this.state.data[this.state.editIndex]);
+        if (this.state.addData.has(this.state.editIndex)) {//说明是属于新增的
+            this.state.addData.set(this.getKey(this.state.editIndex), this.state.data[this.state.editIndex]);
         }
         else {//属于修改的
-            this.state.updatedData.set(this.getKey(this.state.editIndex),this.state.data[this.state.editIndex]);
+            this.state.updatedData.set(this.getKey(this.state.editIndex), this.state.data[this.state.editIndex]);
         }
     },
 
-    getAddData:function () {//获取新增数据
-        var addData=[];
+    getAddData: function () {//获取新增数据
+        var addData = [];
         for (let value of this.state.addData.values()) {
             addData.push(value);
         }
         return addData;
     },
-    getUpdateData:function () {//获取被修改过的数据
-        var updatedData=[];
-        for (let value of this.state.updatedData.values()) {
-            updatedData.push(value);
-        }
-        return updatedData;
+    getUpdateData: function () {//获取被修改过的数据
+
+        this.setState({
+            editIndex: null,//
+        })
+        return this.state.updatedData;
     },
-    getDeleteData:function () {//获取被删除的数据
-      return this.state.deleteData;
+    getDeleteData: function () {//获取被删除的数据
+        return this.state.deleteData;
     },
-    clearDirtyData:function () {//清除脏数据
+    clearDirtyData: function () {//清除脏数据
 
         //清除脏数据
         this.setState({
-            addData:new Map(),
-            updatedData:new Map(),
-            deleteData:[],
+            addData: new Map(),
+            updatedData: new Map(),
+            deleteData: [],
         })
     },
-     remoteUpdateRow:function (newEditIndex) {//远程提交某一行数据
+    remoteUpdateRow: function (newEditIndex) {//远程提交某一行数据
         if (this.state.updateUrl) {//定义url,保存上一行
-            let type=this.props.httpType?this.props.httpType:"POST";
-            type=type.toUpperCase();
-            var fetchmodel = new FetchModel(this.state.updateUrl, this.remoteUpdateRowuccess.bind(this,newEditIndex), {model: this.state.data[this.state.editIndex]}, this.ajaxError,type);
-            fetchmodel.headers=this.props.httpHeaders;
-            if(this.props.contentType){
+            let type = this.props.httpType ? this.props.httpType : "POST";
+            type = type.toUpperCase();
+            var fetchmodel = new FetchModel(this.state.updateUrl, this.remoteUpdateRowuccess.bind(this, newEditIndex), { model: this.state.data[this.state.editIndex] }, this.ajaxError, type);
+            fetchmodel.headers = this.props.httpHeaders;
+            if (this.props.contentType) {
                 //如果传contentType值则采用传入的械
                 //否则默认
-              
-                fetchmodel.contentType=  this.props.contentType;
-                fetchmodel.data=fetchmodel.contentType=="application/json"? JSON.stringify(fetchmodel.data):fetchmodel.data;
-              }
+
+                fetchmodel.contentType = this.props.contentType;
+                fetchmodel.data = fetchmodel.contentType == "application/json" ? JSON.stringify(fetchmodel.data) : fetchmodel.data;
+            }
             console.log("datagrid-updateRow:", fetchmodel);
-            type=="POST"?func.fetch.post(fetchmodel):func.fetch.get(fetchmodel);
+            type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
         }
         else {//没有定义url
-            if(this.state.addData.has(this.getKey(this.state.editIndex)))
-            {//说明是属于新增的
-                this.state.addData.set(this.getKey(this.state.editIndex),this.state.data[this.state.editIndex]);
+            if (this.state.addData.has(this.getKey(this.state.editIndex))) {//说明是属于新增的
+                this.state.addData.set(this.getKey(this.state.editIndex), this.state.data[this.state.editIndex]);
             }
             else {//属于修改的
-                this.state.updatedData.set(this.getKey(this.state.editIndex),this.state.data[this.state.editIndex]);
+                this.state.updatedData.set(this.getKey(this.state.editIndex), this.state.data[this.state.editIndex]);
             }
             this.setState({
                 editIndex: newEditIndex,
-                data:this.state.data,
-                addData:this.state.addData,
-                updatedData:this.state.updatedData
+                data: this.state.data,
+                addData: this.state.addData,
+                updatedData: this.state.updatedData
             })
         }
     },
-    remoteUpdateRowuccess:function (newEditIndex,result) {//远程提交某一行数据
-        if(this.state.addData.has(this.getKey(this.state.editIndex)))
-        {//说明是属于新增的
+    remoteUpdateRowuccess: function (newEditIndex, result) {//远程提交某一行数据
+        if (this.state.addData.has(this.getKey(this.state.editIndex))) {//说明是属于新增的
             this.state.addData.delete(this.getKey(this.state.editIndex));
         }
         else {//属于修改的
@@ -400,10 +389,10 @@ let DataGridExtend= {
         }
     },
     //错误处理事件
-    ajaxError:function (errorCode,message) {//错误处理事件
+    ajaxError: function (errorCode, message) {//错误处理事件
         Msg.error(message);
     }
-      /****新增，修改，删除*/
+    /****新增，修改，删除*/
 }
 export default DataGridExtend;
 

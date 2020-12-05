@@ -27,6 +27,12 @@
   margin-left: 10px;
 }
 
+.wasabi-button .left{
+  margin-right: 5px;
+}
+.wasabi-button .right{
+  margin-left: 5px;
+}
 .wasabi-button.size-large{
      padding: 10px 16px;
     font-size: 18px;
