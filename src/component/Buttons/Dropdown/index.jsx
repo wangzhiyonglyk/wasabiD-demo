@@ -79,7 +79,7 @@ class Dropdown extends Component {
                 buttonControl
             }
 
-            <ul className={"wasabi-dropdown-menu "  +(this.props.plain?"":" unplain ")}  style={{ display: this.state.menuShow ? "block" : "none" }}>
+            <ul className={"wasabi-dropdown-menu "  +(this.props.plain?" ":" unplain ") +this.props.size}  style={{ display: this.state.menuShow ? "block" : "none" }}>
                 {
                     React.Children.map(this.props.children, (child, index) => {
                         return React.cloneElement(child, { index: index, key: index, onClick: this.menuClickHandler })
@@ -106,8 +106,15 @@ Dropdown.propTypes = {
         'danger',
         'cancel'
     ]),
-
+    size: PropTypes.oneOf([
+        //按钮大小
+        'large',
+        'default',
+        'small',
+        "mini"
+      ]),
     onClick: PropTypes.func, //按钮单击事件
+    menuClick: PropTypes.func, //按钮单击事件
     style: PropTypes.object, //样式
     className: PropTypes.string, //自定义样式
     disabled: PropTypes.bool,//按钮是否无效
@@ -124,6 +131,7 @@ Dropdown.defaultProps = {
     style: {},
     className: '',
     onClick: null,
+    menuClick:null,
     disabled: false,
     plain: false,
 };

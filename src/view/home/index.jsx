@@ -117,7 +117,7 @@ value:"你好"
      <Progress ref="p" value={50} type="circle"></Progress>
      <Button iconCls="icon-search" onClick={this.onClick.bind(this)}>test</Button>
 
-     <Dropdown   plain={false} menuIconCls="icon-category">
+     <Dropdown   plain={false} menuIconCls="icon-category" size="mini">
 <DropdownItem>按钮1</DropdownItem>
 <DropdownItem>按钮2</DropdownItem>
 <DropdownItem>按钮3</DropdownItem>
