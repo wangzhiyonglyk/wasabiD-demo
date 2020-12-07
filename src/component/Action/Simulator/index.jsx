@@ -13,7 +13,6 @@ class Simulator extends React.Component {
         this.state = {
             containerid: func.uuid(),
             frameid: func.uuid(),
-            content: this.props.content
         }
 
     }
@@ -28,7 +27,7 @@ class Simulator extends React.Component {
                 <div className="wasabi-preview-view">
                     {
                         this.props.url ? <iframe id="wasabi-preview" src={this.props.url}  scrolling="yes"></iframe> :
-                            this.props.content
+                            this.props.children
                     }
 
                 </div>
@@ -40,13 +39,10 @@ Simulator.propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
     url: PropTypes.string,//url地址
-    //内容
-    content: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.node, PropTypes.element])
 }
 Simulator.defaultProps = {
     className: "",
     style: {},
     url: "",
-    content: ""
 }
 export default Simulator;

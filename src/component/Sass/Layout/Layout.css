@@ -3,6 +3,12 @@ date:2017-01-09
 desc:圣杯布局样式
 */
 @import url("../base.css");
+.wasabi-container{
+	width: 100%;
+	height: 100%;
+	margin:0px;
+	padding: 0px;
+}
 .wasabi-layout {
 	position: relative;
 	margin: 0;

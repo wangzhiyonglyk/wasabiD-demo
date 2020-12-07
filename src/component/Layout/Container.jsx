@@ -6,7 +6,7 @@
  */
 import React from 'react';
 import PropTypes from "prop-types";
-
+import ("../Sass/Layout/Layout.css");
 class Container extends React.Component {
     constructor(props) {
         super(props);
@@ -74,7 +74,7 @@ class Container extends React.Component {
         }
     }
     render() {
-        return <div className="container">{
+        return <div  className={"wasabi-container "+this.props.className} style={this.props.style}>{
             React.Children.map(this.props.children, (child, index) => {
                 if (typeof child.type !== "function") {//非react组件
                     return child;

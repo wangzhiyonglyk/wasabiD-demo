@@ -14,7 +14,7 @@ import  LinkButton from  './Buttons/LinkButton.jsx' ;//可移动，可带图标�
 import Badge from "./Buttons/Badge";//带数字标记组件
 import Dropdown from "./Buttons/Dropdown";//下拉菜单按钮
 import DropdownItem from "./Buttons/Dropdown/DropdownItem";//下拉菜单的选项
-import  Toolbar from  './Buttons/Toolbar.jsx' ;//LinkButton按钮集合组件
+import Toolbar from  './Buttons/Toolbar.jsx' ;//LinkButton按钮集合组件
 
 /*****************数据组件******************/
 import  DataGrid from  './Data/DataGrid.jsx' ;//数据列表组件
@@ -24,6 +24,9 @@ import  Progress from  './Data/Progress' ;//进度条
 import  Track from  './Data/Track.jsx' ;//物流跟踪
 import  Step from  './Data/Step' ;//进度条
 import  StepItem from  './Data/Step/StepItem' ;//进度条
+import Avatar from "./Data/Avatar";//头像上传组件
+
+
 /*****************表单组件******************/
 import  SearchBar from  './Form/SearchBar.jsx' ;//表单查询组件
 import  Form from  './Form/Form.jsx' ;//表单提交组件
@@ -82,7 +85,7 @@ import  Msg from  './Info/Msg.jsx' ;//消息组件
 
 import  Upload from  './Action/Upload' ;//上传组件
 import  Editor from  './Action/Editor.jsx' ;//上传组件
-
+import Article from "./Action/Article";//文章编辑
 import  func from  './libs/func.js' ;//常用函数
 import  ClickAway from  './libs/ClickAway.js' ;//全局单击事件
 
@@ -90,14 +93,14 @@ import  ClickAway from  './libs/ClickAway.js' ;//全局单击事件
 
 export   {
     Button,LinkButton,Toolbar, Badge,Dropdown,DropdownItem,
-    DataGrid,Tree,Transfer,Progress,Step,StepItem,
+    DataGrid,Tree,Transfer,Progress,Step,StepItem,Avatar,
     SearchBar,Input,Form,SearchBox,
     Time,DateD,DateTime,DateTimeRange,TimeRange,DateRange,
     Box,Drag,Drop,Layout,Center,Header,Footer,Left,Right,Container,Row,Col,
     Modal,Panel,Resize,SlidePanel,
     Menus,MenuPanel,MenuItem,Tabs,TabPanel,Track,
     Label,Msg,
-    Upload,Editor,
+    Upload,Editor,Article,
     func,ClickAway
 
 }

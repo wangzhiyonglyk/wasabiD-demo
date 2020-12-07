@@ -65,6 +65,8 @@
     border-radius: 40px;
      position: relative;
     transition: all .5s ease;
+    overflow-x: hidden;
+    overflow-y: auto;
 
 }
 .wasabi-preview-phone .wasabi-preview-view iframe{
