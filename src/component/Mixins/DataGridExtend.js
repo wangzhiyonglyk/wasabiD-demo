@@ -330,7 +330,12 @@ let DataGridExtend = {
         this.setState({
             editIndex: null,//
         })
-        return this.state.updatedData;
+      let updateData={}; 
+      
+      this.state.updatedData&&this.state.updatedData.forEach(function(value, key) {
+           updateData[key]=value;
+          })
+       return updateData;
     },
     getDeleteData: function () {//获取被删除的数据
         return this.state.deleteData;
