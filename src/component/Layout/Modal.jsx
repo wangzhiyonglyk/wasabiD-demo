@@ -169,6 +169,7 @@ Modal.defaultProps = {
     style: {},
     resize: false,//是否可以改变大小
     modal: true,//默认有遮罩层
+    destroy:false,
     closedHandler: null,
     OKHandler: null,//确定按钮的事件,
     cancelHandler: null,
