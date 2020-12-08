@@ -1,5 +1,7 @@
 /**
- * 手机模拟器
+ * 内容编辑器
+ * add by wangzhiyong
+ * date:2020-12-08
  */
 
 import React from "react";
