@@ -404,6 +404,10 @@ func.Error = {
 }
 /**
  * 将二维json数据转树型结构
+ * @param {Array} data 数据
+ * @param {string } idField 节点key
+ * @param {string } parentField 父节点key
+ * @param {string } textField 文本key
  */
 func.toTreeData = function (data,idField="id",  parentField="pId",textField="text") {
     let pos = {};

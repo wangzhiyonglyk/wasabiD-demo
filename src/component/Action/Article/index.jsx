@@ -10,8 +10,10 @@ import Left from "../../Layout/Left";
 import Center from "../../Layout/Center";
 import Msg from "../../Info/Msg";
 import Simulator from "../Simulator";
-import LinkButton from "../../Buttons/LinkButton"
-import PlainUpload from "../Upload/PlainUpload"
+import LinkButton from "../../Buttons/LinkButton";
+import PlainUpload from "../Upload/PlainUpload";
+import diff from "../../libs/diff";
+import func from "../../libs/func"
 import "./index.css"
 import Container from "../../Layout/Container";
 class Article extends React.Component {
@@ -20,29 +22,60 @@ class Article extends React.Component {
 
         this.state = {
             containerid: func.uuid(),
-            wordNum: 0,
+            wordNum: this.props.content instanceof Array?this.computeWordNum(this.props.content):0,
             frameid: func.uuid(),
             activeIndex: null,
-            title: "消息队列Kafka、RocketMQ、RabbitMQ的优劣势比较",
-            content: [
-
-                {
-                    type: "txt",
-                    content: "在高并发业务场景下，典型的阿里双11秒杀等业务，消息队列中间件在流量削峰、解耦上有不可替代的作用。",
-                }, {
-                    type: "image",
-                    content: "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2914710188,1187059819&fm=26&gp=0.jpg"
-                }
-
-            ],
+            title: this.props.title,
+            content: this.props.content,
+            oldPropsTitle: this.props.title,
+            oldPropsContent: this.props.content
         }
         this.add = this.add.bind(this);
-        this.delete=this.delete.bind(this);
+        this.delete = this.delete.bind(this);
         this.titleChangeHandler = this.titleChangeHandler.bind(this);
         this.editSection = this.editSection.bind(this)
-        this.imgUploadSuccess=this.imgUploadSuccess.bind(this)
+        this.imgUploadSuccess = this.imgUploadSuccess.bind(this)
 
     }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        let newState = {};
+        if (diff(nextProps.content, prevState.oldPropsContent)) {
+            newState.content = nextProps.content;
+            newState.oldPropsContent = nextProps.content;
+        }
+        if (nextProps.title != prevState.oldPropsTitle) {
+            newState.title = nextProps.title;
+            newState.oldPropsTitle = nextProps.title;
+        }
+        if (func.isEmptyObject(newState)) {
+            return null;
+        }
+        else {
+            return newState;
+        }
+    }
+    getContent() {
+        return this.state.content;
+    }
+    setContent(content) {
+        if (content && content instanceof Array) {
+            this.setState({
+                content: content
+            })
+        }
+    }
+    getTitle() {
+        return this.state.title;
+
+    }
+    setTitle(title) {
+        this.setState({
+            title: title
+        })
+    }
+     getWordNum(){
+         return this.computeWordNum(this.state.content);
+     }
     getTypeIcon(type) {
         switch (type) {
             case "title":
@@ -95,15 +128,15 @@ class Article extends React.Component {
 
 
     }
-    delete(index){
-       
-        Msg.confirm("确定删除此段吗？",()=>{
-            let content=this.state.content;
-             content.splice(index,1);
-           
+    delete(index) {
+
+        Msg.confirm("确定删除此段吗？", () => {
+            let content = this.state.content;
+            content.splice(index, 1);
+
             this.setState({
-                content:content,
-                wordNum:this.getwordNum(content)
+                content: content,
+                wordNum: this.computeWordNum(content)
             })
         })
     }
@@ -130,25 +163,28 @@ class Article extends React.Component {
         setTimeout(() => {
             this.setState({
                 content: this.state.content,
-                wordNum: this.getwordNum(this.state.content)
+                wordNum: this.computeWordNum(this.state.content)
             })
         }, 100);
 
 
     }
-    imgUploadSuccess(res){
-        let content=this.state.content;     
-        if(res.data){
-            content[this.state.activeIndex].content=res.data;
+    imgUploadSuccess(res) {
+        let content = this.state.content;
+        if(this.props.imgUploadSuccess){
+            res=this.props.imgUploadSuccess(res);//自行计算
         }
-        else{
-            content[this.state.activeIndex].content=res;       
+        if (res.data) {
+            content[this.state.activeIndex].content = res.data;
+        }
+        else {
+            content[this.state.activeIndex].content = res;
         }
         this.setState({
-            content:content
+            content: content
         })
     }
-    getwordNum(content) {
+    computeWordNum(content) {
         let wordNum = 0;
         for (let i = 0; i < content.length; i++) {
             let sub = content[i];
@@ -158,7 +194,7 @@ class Article extends React.Component {
                     wordNum += sub.content.length;
                     break;
             }
-           
+
         }
         return wordNum;
     }
@@ -187,11 +223,11 @@ class Article extends React.Component {
 
                                 } */}
                                 {
-                                    <span className="wasabi-article-ellipsis">{item.type=="image"?<img style={{width:40,height:40}} src={item.content}></img>:item.content}</span>
+                                    <span className="wasabi-article-ellipsis">{item.type == "image" ? <img style={{ width: 40, height: 40 }} src={item.content}></img> : item.content}</span>
 
                                 }
                                 {
-                                    <LinkButton iconCls="icon-remove" title="删除" theme="info" onClick={this.delete.bind(this,index)} style={{ marginTop: 2 }}></LinkButton>
+                                    <LinkButton iconCls="icon-remove" title="删除" theme="info" onClick={this.delete.bind(this, index)} style={{ marginTop: 2 }}></LinkButton>
                                 }
                             </li>;
                         })
@@ -220,22 +256,22 @@ class Article extends React.Component {
                                     let control = null;
                                     switch (item.type) {
                                         case "title":
-                                            control = <div  key={"title"+index} className="title" contentEditable={true} dangerouslySetInnerHTML={{ __html: item.content }} onBlur={this.contentTxtChange.bind(this, index)}></div>;
+                                            control = <div key={"title" + index} className="title" contentEditable={true} dangerouslySetInnerHTML={{ __html: item.content }} onBlur={this.contentTxtChange.bind(this, index)}></div>;
                                             break;
                                         case "txt":
-                                            control = <div key={"txt"+index} className="txt" contentEditable={true} dangerouslySetInnerHTML={{ __html: item.content }} onBlur={this.contentTxtChange.bind(this, index)}></div>
+                                            control = <div key={"txt" + index} className="txt" contentEditable={true} dangerouslySetInnerHTML={{ __html: item.content }} onBlur={this.contentTxtChange.bind(this, index)}></div>
                                             break;
                                         case "image":
-                                            control = item.content ? <img key={"img"+index} className="img" src={item.content}></img> :
+                                            control = item.content ? <img key={"img" + index} className="img" src={item.content}></img> :
                                                 <PlainUpload
-                                                key={"upload"+index}
+                                                    key={"upload" + index}
                                                     httpHeaders={this.props.httpHeaders}
                                                     params={this.props.params}
                                                     name={this.props.uploadFileName}
                                                     accept={"image"}
                                                     uploadurl={this.props.uploadurl}
                                                     uploadSuccess={this.imgUploadSuccess}
-                                                     type="image"></PlainUpload>
+                                                    type="image"></PlainUpload>
                                             break;
 
                                     }
@@ -268,7 +304,7 @@ Article.propTypes = {
     params: PropTypes.object,//其他参数
     uploadurl: PropTypes.string.isRequired, //上传地址
     uploadFileName: PropTypes.string,//上传图片时文件参数名称
-
+    imgUploadSuccess:PropTypes.func,//图片上传成功后的事件，返回处理好的结果
 }
 Article.defaultProps = {
     className: "",
@@ -281,7 +317,8 @@ Article.defaultProps = {
     httpHeaders: {},
     params: {},
     uploadurl: "",
-    uploadFileName: ""
+    uploadFileName: "",
+    imgUploadSuccess:null
 
 }
 export default Article;

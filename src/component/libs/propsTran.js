@@ -9,10 +9,10 @@ let propsTran = {
 
     /**
      * 设置下拉组件的初始化数据，checkbox ,radio,select ,picker,treepicker
-     * @param {*} value 选择的值
-     * @param {*} realData 数据
-     * @param {*} idOrValueField id或value对应的字段
-     * @param {*} textField  文本对应的字段
+     * @param {string|number} value 选择的值
+     * @param {Array} realData 数据
+     * @param {string } idOrValueField id或value对应的字段
+     * @param {string} textField  文本对应的字段
      */
     setComboxValueAndText(type, value, data, idOrValueField = "value", textField = "text") {
 
@@ -32,7 +32,7 @@ let propsTran = {
                 realData[i].text = realData[i]&&realData[i][textField];
                 if (("," + (value || "") + ",").indexOf("," + ((type == "tree" || type == "treepicker") ? realData[i].id : realData[i].value) + ",") > -1) {
                     realData[i].checked = true;//专门用于树组件
-                    text.push(  realData[i]&& realData[i].text);
+                    text.push(realData[i]&& realData[i].text);
                 }
                 //如果有子节点的时候.tree,treepicker,picker
                 if (realData[i].children && realData[i].children.length > 0) {

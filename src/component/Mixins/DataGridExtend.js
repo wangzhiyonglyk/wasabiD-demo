@@ -394,7 +394,7 @@ let DataGridExtend = {
         }
     },
     //错误处理事件
-    ajaxError: function (errorCode, message) {//错误处理事件
+    ajaxError: function (message) {//错误处理事件
         Msg.error(message);
     }
     /****新增，修改，删除*/

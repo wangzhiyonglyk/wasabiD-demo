@@ -37,7 +37,6 @@ export default {
             contentType:"",//http的request的数据类型
             httpHeader:null,
             multiple:false,
-            idField:"id",
             valueField:"value",
             textField:"text",
             url:null,
@@ -57,8 +56,8 @@ export default {
             hotTitle:"热门选择",
             hotData:null,
             idField:"id",
-            parentField:"pId",
-            simpleData:false,//树组件
+            parentField:"pId",//树组件，picker
+            simpleData:false,//树组件,picker
             attachTime:false
            
         }

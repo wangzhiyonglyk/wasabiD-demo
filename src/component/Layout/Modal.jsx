@@ -19,11 +19,11 @@ class Modal extends React.Component {
         let height = (this.props.style && this.props.style.height) ? parseInt(this.props.style.height) : 400;
         style.width = width;
         style.height = height;
-        style.left ="calc(50% - "+(width/2).toFixed(2)+"px)";
-        style.top = "calc(50% - "+(height/2).toFixed(2)+"px)";
+        style.left = "calc(50% - " + (width / 2).toFixed(2) + "px)";
+        style.top = "calc(50% - " + (height / 2).toFixed(2) + "px)";
         this.state = {
             title: this.props.title,
-            style:style,
+            style: style,
             visible: false,
         }
         this.close = this.close.bind(this);
@@ -47,7 +47,7 @@ class Modal extends React.Component {
     }
 
     open(title) {//打开事件
-        this.setState({ visible: true, title: title?title:this.state.title });
+        this.setState({ visible: true, title: title ? title : this.state.title });
     }
     /**
      * 鼠标移动事件
@@ -122,7 +122,7 @@ class Modal extends React.Component {
             if (this.props.OKHandler) {
                 buttons.push(
                     <Button title="取消" key="cancel" theme="cancel" onClick={this.cancelHandler}
-                        style={{ width: 60, height: 30, backgroundColor: "gray" }}></Button>
+                        style={{ width: 60, height: 30 }}></Button>
                 )
             }
             footer = <div className="wasabi-modal-footer">
@@ -131,21 +131,15 @@ class Modal extends React.Component {
                 }
             </div>;
         }
-       
-     
-        return <div className={activename}>
+        //如果有destroy销毁字段，在隐藏的时候破坏子组件，这样就可以把表单的内容清空
+        return this.props.destroy && this.state.visible == false ? null : <div className={activename}>
             <div className={" wasabi-overlay " + (this.props.modal == true ? "active" : "")}></div>
             <Resize ref="resize"
                 className={"wasabi-modal fadein " + this.props.className} style={this.state.style} resize={true}>
                 <a className="wasabi-modal-close" onClick={this.close}></a>
-                <div className="wasabi-modal-header" ref="header"
-
-
-
-                >
+                <div className="wasabi-modal-header" ref="header" >
                     <div style={{ display: "inline" }}>{this.state.title}</div>
                 </div>
-
                 <div className="wasabi-modal-content" >
                     {
                         this.props.children
@@ -156,28 +150,28 @@ class Modal extends React.Component {
                 }
             </Resize>
         </div>
-
-
     }
 }
 
 Modal.propTypes = {
     className: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     style: PropTypes.object,
-    resize: PropTypes.bool,
-    closedHandler: PropTypes.func,
-    OKHandler: PropTypes.func,
+    resize: PropTypes.bool,//是否可以改变大小
+    modal: PropTypes.bool,//是否有遮罩层
+    destroy: PropTypes.bool,//是否销毁
+    closedHandler: PropTypes.func,//关闭事件
+    OKHandler: PropTypes.func,//确定事件
     cancelHandler: PropTypes.func,
 }
 
 Modal.defaultProps = {
     className: "",
     style: {},
-    width: 400,//宽度
-    height: 400,//高度
     resize: false,//是否可以改变大小
     modal: true,//默认有遮罩层
+    closedHandler: null,
     OKHandler: null,//确定按钮的事件,
+    cancelHandler: null,
 }
 
 export default Modal;

@@ -33,7 +33,7 @@ class Tree extends Component {
             reloadData: false,
             idField: this.props.idField,
             textField: this.props.textField,
-            simpleData: this.props.simpleData
+            simpleData: this.props.simpleData,//保留设置
         }
         //单击与双击需要改变样式
         this.onClick = this.onClick.bind(this);
@@ -60,9 +60,10 @@ class Tree extends Component {
         if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
             //如果传了死数据
             newState.rawData = nextProps.data;
-            let result= propsTran.setComboxValueAndText("tree", nextProps.inputValue, nextProps.data, prevState.idField, prevState.textField);
+            let result= propsTran.setComboxValueAndText("tree", nextProps.inputValue, nextProps.data, nextProps.idField, nextProps.textField);
             if(nextProps.simpleData){
-                newState.data=func.toTreeData(result.data,nextProps.idField)
+                newState.data=func.toTreeData(result.data,nextProps.idField,nextProps.parentField,nextProps.textField)
+            
             }
             newState.text=result.text;
         }

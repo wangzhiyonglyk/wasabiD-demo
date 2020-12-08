@@ -21,25 +21,34 @@ export default function (WrappedComponent) {
     class _ComboBox extends Component {
         constructor(props) {
             super(props);
-            let valueField = this.props.type == "treepicker" ? this.props.idField : this.props.valueField
+            let idOrValueField = this.props.type == "treepicker" ? this.props.idField : this.props.valueField;//如果是下拉树，则取id
             //对传来的数据进行格式化
-            let newData = propsTran.setComboxValueAndText(this.props.type, this.props.value, this.props.data, valueField, this.props.textField);
+            let newData = propsTran.setComboxValueAndText(this.props.type, this.props.value, this.props.data, idOrValueField, this.props.textField);
+            let realData;
+            if (this.props.type == "picker" && this.props.simpleData) {//如果是简单数据类型
+                realData = func.toTreeData(newData.data, this.props.valueField || this.props.idField || "id", this.props.parentField || "pId", this.props.textField)
+            } else {
+                //treepicker在tree组件处理了
+                realData = newData.data;
+            }
             this.state = {
                 url: this.props.url,//传来的url
                 params: func.clone(this.props.params),//参数
                 oldPropsValue: this.props.value,//保存用于判断是否通过父组件强制更新值
                 rawData: this.props.data,//原始数据,用于判断是否通过父组件强制更新数据源
-                data: newData.data,
-                filterData:null,//筛选后的数据
+                data: realData,
+                filterData: null,//筛选后的数据
                 value: this.props.value,
-                text: newData&&newData.text&&newData.text.join(","),
+                text: newData && newData.text && newData.text.join(","),
                 ulShow: false,//是否显示下拉选项
-                reloadData: false,//是否更新
+                reloadData: false,//是否更新,
+                idField: this.props.idField,
                 valueField: this.props.valueField,
                 textField: this.props.textField,
-                validateClass:"",
-                inValidateShow:"none",
-                inValidateText:""
+                validateClass: "",
+                inValidateShow: "none",
+                inValidateText: "",
+                simpleData: this.props.simpleData,//保存，方便对比
             }
             this.setValue = this.setValue.bind(this);
             this.getValue = this.getValue.bind(this);
@@ -50,7 +59,7 @@ export default function (WrappedComponent) {
             this.onBlur = this.onBlur.bind(this);
             this.clearHandler = this.clearHandler.bind(this);
             this.addData = this.addData.bind(this);
-            this.filterHandler=this.filterHandler.bind(this)
+            this.filterHandler = this.filterHandler.bind(this)
         }
         static getDerivedStateFromProps(nextProps, prevState) {
             let newState = {};
@@ -66,8 +75,8 @@ export default function (WrappedComponent) {
 
                 newState.value = nextProps.value;//强行改变组件选择的值，不管状态中的值是什么
                 newState.oldPropsValue = nextProps.value;//保留之前的值，用于下次对比
-                 let text=  propsTran.setComboxText(newState.value,prevState.data);
-                 newState.text =text.join(",");
+                let text = propsTran.setComboxText(newState.value, prevState.data);
+                newState.text = text.join(",");
             }
             else {
 
@@ -75,8 +84,15 @@ export default function (WrappedComponent) {
             if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
                 //如果传了数据，并且发生改变
                 newState.rawData = nextProps.data;//保留原始数据
-                let newData = propsTran.setComboxValueAndText(nextProps.type, newState.value || prevState.value, nextProps.data, nextProps.type=="treepicker"?nextProps.idField: nextProps.valueField, prevState.textField);    
-                newState.data = newData.data;
+                let newData = propsTran.setComboxValueAndText(nextProps.type, newState.value || prevState.value, nextProps.data, nextProps.type == "treepicker" ? nextProps.idField : nextProps.valueField, prevState.textField);
+                let realData;
+                if (this.props.type == "picker" && prevState.simpleData) {//如果是简单数据类型
+                    realData = func.toTreeData(newData.data, nextProps.valueField || nextProps.idField || "id", nextProps.parentField || "pId", nextProps.textField);
+                } else {
+                    //treepicker在tree组件处理了
+                    realData = newData.data;
+                }
+                newState.data = realData;
                 newState.text = newData.text.join(",");
             }
 
@@ -192,26 +208,26 @@ export default function (WrappedComponent) {
             this.onSelect(value, text, this.props.name);//添加一个相当于选中
             this.props.addHandler && this.props.addHandler(value, text, data, this.props.name);
         }
-        filterHandler(text){
+        filterHandler(text) {
 
-            if(text){
+            if (text) {
                 this.setState({
-                    filterData:propsTran.treeFilter(text,this.state.data)
+                    filterData: propsTran.treeFilter(text, this.state.data)
                 })
             }
-            else{
+            else {
                 this.setState({
-                    filterData:null
+                    filterData: null
                 })
             }
-          
+
         }
         render() {
-            let data =this.state.filterData?this.state.filterData:this.state.data;
+            let data = this.state.filterData ? this.state.filterData : this.state.data;
             return <WrappedComponent {...this.props} {...this.state} data={data}
-             onSelect={this.onSelect} clearHandler={this.clearHandler} 
-            addData={this.addData} onBlur={this.onBlur}
-            filterHandler={this.filterHandler}
+                onSelect={this.onSelect} clearHandler={this.clearHandler}
+                addData={this.addData} onBlur={this.onBlur}
+                filterHandler={this.filterHandler}
             ></WrappedComponent>
         }
     }

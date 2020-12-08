@@ -55,8 +55,8 @@ export default {
         thirdParamsKey:PropTypes.string,//第三层节点的后台参数中传递二级节点value值的参数名称
         hotTitle:PropTypes.string,//热门选择标题
         hotData:PropTypes.array,//热门选择的数据
-        idField:PropTypes.string,//树组件id字段名称
-        parentField:PropTypes.string,//树组件pId字段名称
-        simpleData:PropTypes.bool,//树组件是否启用简单数据格式
+        idField:PropTypes.string,//树组件/picker id字段名称
+        parentField:PropTypes.string,//树组件/picker pId字段名称
+        simpleData:PropTypes.bool,//树组件/picker 是否启用简单数据格式
         attachTime:PropTypes.bool,//日期组件时是否附带时间
 }
