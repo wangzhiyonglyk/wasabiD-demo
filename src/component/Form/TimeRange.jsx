@@ -36,25 +36,21 @@ class TimeRange extends Component {
         else {
             state.firstTime = value;
         }
-        if (state.firstTime) {
-
-            state.firstTime = this.formatValue(state.firstTime);
-
+        if (state.firstTime&&state.firstTime.split(":").length>=2) {
+          
             let hour = state.firstTime.split(":")[0] * 1;
             let minute = state.firstTime.split(":")[1] * 1;
-            let second = this.props.hideSecond ? "" : state.firstTime.split(":").length == 3 ? state.firstTime.split(":")[2] * 1 : "00";
-            state.first_hour = hour,
-                state.first_minute = minute,
-                state.first_second = second
+            state.first_hour = hour;
+                state.first_minute = minute;
+               
         }
-        if (state.secondTime) {
-            state.secondTime = this.formatValue(secondTime);
+        if (state.secondTime&&state.secondTime.split(":").length>=2) {
+         
             let hour = state.secondTime.split(":")[0] * 1;
             let minute = state.secondTime.split(":")[1] * 1;
-            let second = this.props.hideSecond ? "" : state.secondTime.split(":").length == 3 ? state.secondTime.split(":")[2] * 1 : "00";
-            state.second_hour = hour,
-                state.second_minute = minute,
-                state.second_second = second
+               state.second_hour = hour;
+                state.second_minute = minute;
+               
         }
         return state;
 
@@ -83,6 +79,10 @@ class TimeRange extends Component {
      */
     secondHandler(value) {
 
+        if(this.props.attachSecond){
+            value=value.split(":");
+            value=value[0]+":"+value[1]+":59";//结束时间如果带上秒一定是59
+        }
         this.setState({
             secondTime: value,
 
@@ -94,29 +94,16 @@ class TimeRange extends Component {
         })
 
     }
-
-    /**
-     * 格式化值
-     * @param {*} value 
-     */
-    formatValue(value) {
-        if (this.props.hideSecond) {
-            value = value.split(":").length == 3 ? value.substring(0, value.lastIndexOf(":")) : value
-        }
-        return value;
-    }
-
-
     render() {
 
         return <div style={{display:"flex"}} >
             <div style={{marginRight:19}}><Time key="begin"
-                hour={this.state.first_hour} second={this.state.first_second} minute={this.state.first_minute} hideSecond={this.props.hideSecond}
+                hour={this.state.first_hour} minute={this.state.first_minute} attachSecond={this.props.attachSecond} allMinute={this.props.allMinute}
                 onSelect={this.firstHandler.bind(this)}
             ></Time></div>
             <div>  <Time key="end"
                 onSelect={this.secondHandler.bind(this)}
-                hour={this.state.second_hour} second={this.state.second_second} minute={this.state.second_minute} hideSecond={this.props.hideSecond}></Time></div>
+                hour={this.state.second_hour}  minute={this.state.second_minute} attachSecond={this.props.attachSecond} allMinute={this.props.allMinute}></Time></div>
           
         </div>
     }
@@ -126,12 +113,14 @@ TimeRange.propTypes = {
     name: PropTypes.string,//表单字段名称
     firstTime: PropTypes.string,//第一个时间
     secondTime: PropTypes.string,//第二个时间
-    hideSecond: PropTypes.bool,//隐藏秒
+    attachSecond: PropTypes.bool,//附带秒
+    allMinute: PropTypes.bool,//是否显示全部分钟
 };
 TimeRange.defaultProps = {
     name:"",
     firstTime: "",
     secondTime: "",
-    hideSecond: false,
+    attachSecond: true,
+    allMinute:false,
 }
 export default TimeRange;

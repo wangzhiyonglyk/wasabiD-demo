@@ -63,10 +63,13 @@ class Text extends Component {
              isvalidate = (value == "+" || value == "-") || this.validate(value);    
         }
        
+       
         if (isvalidate) {
+            this.state.value= event.target.value.trim();
+            this.state.text= event.target.value.trim();
             this.setState({
-                value: event.target.value,
-                text: event.target.value,
+                value:  event.target.value.trim(),
+                text:  event.target.value.trim(),
             })
             this.props.onChange && this.props.onChange(value, value, this.props.name);//自定义的改变事件
         }

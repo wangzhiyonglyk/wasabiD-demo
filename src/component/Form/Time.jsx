@@ -20,40 +20,36 @@ class Time extends Component {
     }
     getValue() {//获取值
         let value = (this.state.hour * 1 >= 10 ? this.state.hour : "0" + this.state.hour) + ":" + (this.state.minute * 1 >= 10 ? this.state.minute : "0" + this.state.minute)
-            + (this.props.hideSecond * 1 ? "" : ":" + (this.state.second * 1 >= 10 ? this.state.second : "0" + this.state.second));
+            + (!this.props.attachSecond  ? "" : ":00");
         return value;
     }
     setValue(value) {//设置值 
-        value = this.formatValue(value);
-        if (value) {
+        if (value&&value.split(":").length>=2) {
             let hour = value.split(":")[0] * 1;
             let minute = value.split(":")[1] * 1;
-            let second = this.props.hideSecond ? "" : value.split(":").length == 3 ? value.split(":")[2] * 1 : "00";
+          
             this.setState({
                 hour: hour,
                 minute: minute,
-                second: second
+              
             })
         }
         else {
             this.setState({
-                hour: "",
-                minute: "",
-                second: ""
+                hour:null,
+                minute:null,
             })
         }
 
     }
     setInitValue(props) {
-        var date = new Date();
-
-        var hour = props.hour != null && props.hour != undefined ? props.hour : date.getHours();
-        var minute = props.minute != null && props.minute != undefined ? props.minute : date.getMinutes();
-        var second = props.second != null && props.second != undefined ? props.second : date.getSeconds();
+        let date = new Date();
+        let hour = props.hour ? props.hour : date.getHours();
+        let minute = props.minute? props.minute : date.getMinutes();
+      
         return {
-            hour: (hour*1 < 10) ? "0" + hour : hour,
-            minute: (minute*1 < 10) ? "0" + minute : minute,
-            second: (second*1 < 10) ? "0" + second : second,
+            hour:  hour,
+            minute:  minute,
             showMinute: false,
            
         }
@@ -82,32 +78,21 @@ class Time extends Component {
             showMinute: false
         }, () => {
             if (this.props.onSelect != null) {
-                //todo 太麻烦，后期改
-                value = this.formatValue((this.state.hour * 1 < 10 ? "0" + this.state.hour : this.state.hour) + ":" + (value * 1 < 10 ? "0" + value : value) + ":00")
-                this.props.onSelect(value, value, this.props.name, true);
+              let value=this.getValue();
+                this.props.onSelect(value, value, this.props.name,value);
             }
 
         })
 
     }
 
-    /**
-     * 格式化值
-     * @param {*} value 
-     */
-    formatValue(value) {
-        if (this.props.hideSecond) {
-            value = value.split(":").length == 3 ? value.substring(0, value.lastIndexOf(":")) : value
-        }
-        return value;
-    }
+   
     renderHour() {
         let hourControl = [];
         for (let i = 0; i < 24; i++) {
-
             if (this.state.hour == i) {
-                hourControl.push(<li key={i} ><span className={"hour " + (this.state.hour == i ? "active" : "")}>{i < 10 ? "0" + i : i}</span>
-                    {<ul className="time-container" style={{ display: this.state.showMinute ? "block" : "none" }}><p>分钟</p>{this.rendMinute()}</ul>}
+                hourControl.push(<li key={i} ><span onClick={this.hourHandler.bind(this, i)}  className={"hour " + (this.state.hour == i ? "active" : "")}>{i < 10 ? "0" + i : i}</span>
+                    {<ul className={"second-container "+(this.props.allMinute?"all":"")} style={{ display: this.state.showMinute ? "block" : "none" }}><p>分钟</p>{this.rendMinute()}</ul>}
                 </li>)
             }
             else {
@@ -121,10 +106,13 @@ class Time extends Component {
     }
     rendMinute() {
         let minuteControl = [];
-        for (let i = 0; i <= 59; i += 5) {
+        let step=this.props.allMinute?1:5;
+        for (let i = 0; i <= 59; i += step) {
             minuteControl.push(<li key={i} >
                 <span onClick={this.minuteHandler.bind(this, i)} className={"hour " + (this.state.minute == i ? "active" : "")}>{i < 10 ? "0" + i : i}</span></li>)
         }
+        //追加59
+        step==5? minuteControl.push( <li key={59} ><span onClick={this.minuteHandler.bind(this,59)} className={"hour " + (this.state.minute == 59 ? "active" : "")}>59</span></li>):void(0);
         return minuteControl;
     }
     render() {
@@ -144,18 +132,16 @@ Time.propTypes = {
     name: PropTypes.string,//表单字段名称
     hour: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//小时
     minute: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//分钟
-    second: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), //秒
-    hideSecond: PropTypes.bool,//是否隐藏秒
-  
+    attachSecond: PropTypes.bool,//是否带上秒
+    allMinute: PropTypes.bool,//是否显示全部分钟
 };
 Time.defaultProps = () => {
-    var date = new Date();
+    let date = new Date();
     return {
         hour: date.getHours(),
         minute: date.getMinutes(),
-        second: date.getSeconds(),
-        hideSecond: false,
-     
+        attachSecond: true,
+        allMinute:false,
     }
 };
 export default Time;

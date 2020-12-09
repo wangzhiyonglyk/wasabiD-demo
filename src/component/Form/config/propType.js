@@ -13,7 +13,7 @@ export default {
         help:PropTypes.string,//帮助信息
         
         //基础属性
-        value:PropTypes.oneOfType([PropTypes.number,PropTypes.string]),//默认值,
+        value:PropTypes.oneOfType([PropTypes.number,PropTypes.string,PropTypes.bool]),//默认值,
         text:PropTypes.oneOfType([PropTypes.number,PropTypes.string]),//默认文本值
         placeholder:PropTypes.oneOfType([PropTypes.number,PropTypes.string]),//输入框预留文字
         readOnly:PropTypes.bool,//是否只读
@@ -59,4 +59,6 @@ export default {
         parentField:PropTypes.string,//树组件/picker pId字段名称
         simpleData:PropTypes.bool,//树组件/picker 是否启用简单数据格式
         attachTime:PropTypes.bool,//日期组件时是否附带时间
+        attachSecond:PropTypes.bool,//时间组件是否附带秒
+        allMinute:PropTypes.bool,//时间组件是否显示全部分钟
 }

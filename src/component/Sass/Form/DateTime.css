@@ -291,7 +291,7 @@ float: left;
   background-color: #409eff;
   color: #fff;
 }
-.wasabi-time-container .time-container{
+.wasabi-time-container .second-container{
      display: none;
     border: 1px solid #e4e7ed;
     background: #ffffff;
@@ -310,7 +310,10 @@ float: left;
     text-align: left;
    
 }
-.wasabi-time-container .time-container::before{
+.wasabi-time-container .second-container.all{
+  width: 460px;
+}
+.wasabi-time-container .second-container::before{
   border-color: transparent transparent #ffffff;
     top: -17px;
     z-index: 1;
@@ -321,11 +324,11 @@ float: left;
   width: 420px;
   height: 500px;
 }
-.wasabi-time-container .time-container::after {
+.wasabi-time-container .second-container::after {
   border-color: transparent transparent #dcdfe6;
   top: -20px;
 }
-.wasabi-time-container .time-container::before, .wasabi-time-container .time-container::after {
+.wasabi-time-container .second-container::before, .wasabi-time-container .second-container::after {
   content: '';
   display: block;
   width: 0;

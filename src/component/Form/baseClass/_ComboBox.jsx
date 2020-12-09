@@ -180,6 +180,9 @@ export default function (WrappedComponent) {
             if (this.props.readOnly || this.props.disabled) {
                 return;
             }
+            //防止异步取值
+            this.state.value=value;
+            this.state.text=text;
             this.setState({
                 value: value,
                 text: text

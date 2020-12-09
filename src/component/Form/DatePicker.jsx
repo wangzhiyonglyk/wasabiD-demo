@@ -1,7 +1,7 @@
 /**
  * Created by zhiyongwang on 2016-04-26
  * desc:通用下拉日期,时间组件
- *
+ * todo 日期要合并到combobox中,后期改
  */
 
 import React, { Component } from "react";
@@ -195,6 +195,10 @@ class DatePicker extends Component {
   onSelect(value, text, name, hide = true) {
     let isvalidate = this.validate(value);//只是验证一下，不影响回传给父组件
     //选中事件
+      //防止异步取值
+      this.state.value=value;
+      this.state.text=text;
+
     this.setState({
       show: !hide,
       value: value,
@@ -267,8 +271,8 @@ class DatePicker extends Component {
         name={this.props.name}
         value={this.state.value}
         onSelect={this.onSelect}
-
-        hideSecond={this.props.hideSecond}
+        allMinute={this.props.allMinute}
+        attachSecond={this.props.attachSecond}
       ></Time>
     );
   }
@@ -357,7 +361,8 @@ class DatePicker extends Component {
         name={this.props.name}
         value={this.state.value}
         onSelect={this.onSelect}
-        hideSecond={this.props.hideSecond}
+        allMinute={this.props.allMinute}
+        attachSecond={this.props.attachSecond}
       ></TimeRange>
     );
   }

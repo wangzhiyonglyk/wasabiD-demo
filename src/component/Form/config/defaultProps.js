@@ -58,6 +58,7 @@ export default {
             idField:"id",
             parentField:"pId",//树组件，picker
             simpleData:false,//树组件,picker
-            attachTime:false
-           
+            attachTime:false,
+            attachSecond:true,
+            allMinute:false,
         }

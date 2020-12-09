@@ -127,12 +127,14 @@ class DataGrid extends Component {
    * 更新函数
    */
   componentDidUpdate() {
+    //重新加数据
     if (this.state.reloadData) {
       this.setState({
         reloadData: false,
       })
       this.reload();
     }
+    //重新加表头
     if (this.state.reloadHeaderData) {
       this.setState({
         reloadHeaderData: false,

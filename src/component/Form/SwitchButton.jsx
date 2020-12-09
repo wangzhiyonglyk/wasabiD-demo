@@ -37,6 +37,8 @@ class SwitchButton extends Component {
         return this.state.checked ? 1 : 0;
     }
     setValue(value) {//设置值
+        //防止异步取值
+        this.state.value=value;
         this.setState({
             value: value,
             checked: this.props.value ? 1 : 0

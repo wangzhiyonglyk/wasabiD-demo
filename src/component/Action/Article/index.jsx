@@ -15,7 +15,6 @@ import Simulator from "../Simulator";
 import LinkButton from "../../Buttons/LinkButton";
 import PlainUpload from "../Upload/PlainUpload";
 import diff from "../../libs/diff";
-import func from "../../libs/func"
 import "./index.css"
 import Container from "../../Layout/Container";
 class Article extends React.Component {
