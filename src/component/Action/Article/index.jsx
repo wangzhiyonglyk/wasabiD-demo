@@ -20,14 +20,14 @@ import Container from "../../Layout/Container";
 class Article extends React.Component {
     constructor(props) {
         super(props);
-
+        let content = this.formatContent(this.props.content);
         this.state = {
             containerid: func.uuid(),
-            wordNum: this.props.content instanceof Array?this.computeWordNum(this.props.content):0,
+            wordNum: content instanceof Array ? this.computeWordNum(content) : 0,
             frameid: func.uuid(),
             activeIndex: null,
             title: this.props.title,
-            content: this.props.content,
+            tempContent: content,//因为content似乎有问题，所以换名字
             oldPropsTitle: this.props.title,
             oldPropsContent: this.props.content
         }
@@ -41,7 +41,7 @@ class Article extends React.Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         let newState = {};
         if (diff(nextProps.content, prevState.oldPropsContent)) {
-            newState.content = nextProps.content;
+            newState.tempContent = this.formatContent(nextProps.content);
             newState.oldPropsContent = nextProps.content;
         }
         if (nextProps.title != prevState.oldPropsTitle) {
@@ -55,13 +55,48 @@ class Article extends React.Component {
             return newState;
         }
     }
+    formatContent(oldContent) {
+
+        let content = [];
+        if (oldContent) {
+            if (typeof oldContent === "string") {
+                content.push({
+                    type: "txt",
+                    cotent: oldContent
+                })
+            }
+            else if (typeof oldContent === "object" && oldContent instanceof Array) {
+                for (let i = 0; i < oldContent.length; i++) {
+                    if (typeof oldContent[i] === "string") {
+                        content.push({
+                            type: "txt",
+                            content: oldContent[i]
+                        })
+                    }
+                    else if (typeof oldContent[i] === "object") {
+                        content.push(oldContent[i]);
+                    }
+                    else {
+                        console.log("传的格式不正确")
+                    }
+                }
+            }
+            else {
+                console.log("传的格式不正确")
+            }
+        }
+
+        return content;
+
+    }
     getContent() {
         return this.state.content;
     }
-    setContent(content) {
+    setContent(newContent) {
+        let content = this.formatContent(newContent);
         if (content && content instanceof Array) {
             this.setState({
-                content: content
+                tempContent: content
             })
         }
     }
@@ -74,9 +109,9 @@ class Article extends React.Component {
             title: title
         })
     }
-     getWordNum(){
-         return this.computeWordNum(this.state.content);
-     }
+    getWordNum() {
+        return this.computeWordNum(this.state.tempContent);
+    }
     getTypeIcon(type) {
         switch (type) {
             case "title":
@@ -172,8 +207,8 @@ class Article extends React.Component {
     }
     imgUploadSuccess(res) {
         let content = this.state.content;
-        if(this.props.imgUploadSuccess){
-            res=this.props.imgUploadSuccess(res);//自行计算
+        if (this.props.imgUploadSuccess) {
+            res = this.props.imgUploadSuccess(res);//自行计算
         }
         if (res.data) {
             content[this.state.activeIndex].content = res.data;
@@ -216,7 +251,7 @@ class Article extends React.Component {
                 </div>
                 <ul className="list">
                     {
-                        this.state.content && this.state.content.map((item, index) => {
+                        this.state.tempContent && this.state.tempContent.map((item, index) => {
                             return <li key={index} className={this.state.activeIndex == index ? "active" : ""} onClick={this.editSection.bind(this, index)}>
 
                                 {/* {
@@ -241,8 +276,8 @@ class Article extends React.Component {
             <Center>
                 <Simulator style={{ marginLeft: 0 }}>
                     <Container className={"wasabi-article-center"}>
-                        <div contentEditable={true} className="wasabi-article-title" dangerouslySetInnerHTML={{ __html: this.state.title }} onChange={this.titleChangeHandler}></div>
-                        <div style={{ display: "flex", alignItems: "center" }}>
+                        <div style={{ display: this.state.title ? "block" : "none" }} contentEditable={true} className="wasabi-article-title" dangerouslySetInnerHTML={{ __html: this.state.title }} onChange={this.titleChangeHandler}></div>
+                        <div style={{ display: this.state.title ? "flex" : "none", alignItems: "center" }}>
                             <img className="wasabi-article-headericon" src={this.props.headerIcon ? this.props.headerIcon : require("./icon.jpg")}></img>
                             <div style={{ marginLeft: 10, textAlign: "left" }}>
                                 <div><span className="wasabi-article-author">{this.props.author ? this.props.author : "匿名"}</span></div>
@@ -253,7 +288,7 @@ class Article extends React.Component {
                         </div>
                         <ul className="wasabi-article-content">
                             {
-                                this.state.content && this.state.content.map((item, index) => {
+                                this.state.tempContent && this.state.tempContent.map((item, index) => {
                                     let control = null;
                                     switch (item.type) {
                                         case "title":
@@ -300,12 +335,12 @@ Article.propTypes = {
     title: PropTypes.string,//标题
     author: PropTypes.string,//作者
     headerIcon: PropTypes.string,//头像
-    content: PropTypes.array,//内容
+    content: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),//内容
     httpHeaders: PropTypes.object,//请求的头部信息
     params: PropTypes.object,//其他参数
     uploadurl: PropTypes.string.isRequired, //上传地址
     uploadFileName: PropTypes.string,//上传图片时文件参数名称
-    imgUploadSuccess:PropTypes.func,//图片上传成功后的事件，返回处理好的结果
+    imgUploadSuccess: PropTypes.func,//图片上传成功后的事件，返回处理好的结果
 }
 Article.defaultProps = {
     className: "",
@@ -319,7 +354,7 @@ Article.defaultProps = {
     params: {},
     uploadurl: "",
     uploadFileName: "",
-    imgUploadSuccess:null
+    imgUploadSuccess: null
 
 }
 export default Article;

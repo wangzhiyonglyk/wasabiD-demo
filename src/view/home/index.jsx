@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {Article,Avatar,Input} from "../../component"
+import {Article,Avatar,Input,DataGrid} from "../../component"
 import api from "../../libs/api"
 class Home extends React.Component {
   constructor(props) {
@@ -111,6 +111,7 @@ value:"你好"
   render() {
     return <div style={{height:"100%"}}><Avatar uploadurl={"http://wechat.bluehy.com/Images/Upload"} name="file" ></Avatar>
     <Input type="radio" allMinute={true} onSelect={this.onSelect.bind(this)} data={[{text:"选中",value:1},{text:"不选中",value:2}]}></Input>
+    <DataGrid headers={[{name:"id",label:"id"},{name:"name",label:"名称"}]} data={this.state.data}></DataGrid>
     <Article title="上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄" uploadurl={"http://wechat.bluehy.com/Images/Upload"}  uploadFileName="file" ></Article>
     </div>
 

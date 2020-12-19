@@ -109,6 +109,7 @@ class Text extends Component {
         //     this.refs.input.focus();
         //     this.refs.input.select();
         // }
+        this.props.onBlur&&this.props.onBlur(event.target.value,event.target.value,event);
     }
     clickHandler(event) {//单击事件
         this.props.onClick && this.props.onClick(value, text, this.props.name);

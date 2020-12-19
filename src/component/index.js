@@ -17,7 +17,7 @@ import DropdownItem from "./Buttons/Dropdown/DropdownItem";//下拉菜单的选�
 import Toolbar from  './Buttons/Toolbar.jsx' ;//LinkButton按钮集合组件
 
 /*****************数据组件******************/
-import  DataGrid from  './Data/DataGrid.jsx' ;//数据列表组件
+import  DataGrid from  './Data/DataGrid' ;//数据列表组件
 import  Tree from  './Data/Tree.jsx' ;//树的组件
 import  Transfer from  './Data/Transfer.jsx' ;//穿梭框组件
 import  Progress from  './Data/Progress' ;//进度条

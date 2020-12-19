@@ -7,9 +7,9 @@
  * 作为DataGrid扩展功能
  */
 import React, { Component } from "react";
-import func from "../libs/func.js";
-import FetchModel from "../Model/FetchModel.js";
-import Msg from "../Info/Msg.jsx";
+import func from "../../libs/func.js";
+import FetchModel from "../../Model/FetchModel.js";
+import Msg from "../../Info/Msg.jsx";
 let DataGridExtend = {
     //列表常用操作
     onClick: function (rowIndex, rowData) {
@@ -66,27 +66,6 @@ let DataGridExtend = {
     },
 
 
-
-
-    /**与表头右键菜单相关事件 */
-
-    headerContextMenuHandler: function (event) {//显示菜单
-        if (this.refs.headermenu.style.display == "block") {//已经出现了,不处理
-
-        }
-        else {//
-            this.menuHeaderName = event.target.getAttribute("name");//保存当前列名
-            //调整菜单位置
-            this.refs.headermenu.style.left = (event.clientX - this.refs.grid.getBoundingClientRect().left) + "px";
-            this.refs.headermenu.style.top = (event.clientY - this.refs.grid.getBoundingClientRect().top) + "px";
-            this.refs.headermenu.style.display = "block";
-            event.preventDefault();//阻止默认事件
-
-        }
-        this.bindClickAway();//绑定全局单击事件
-
-    },
-
     gridMouseDownHandler: function (event) {//全局列表鼠标按下事件
 
 
@@ -109,61 +88,8 @@ let DataGridExtend = {
         }
 
     },
-    hideMenuHandler: function (event) {//隐藏菜单，远程更新某一行
-        this.refs.headermenu.style.display = "none";//表头菜单隐藏
-        this.menuHeaderName = null;//清空全局列名
-        this.unbindClickAway();//卸载全局单击事件
-    },
-
-    headerMouseDownHandler: function (event) {//表头列,鼠标按下事件
-        this.refs.headermenu.style.display = "none";//隐藏菜单
-        // 设置为空
-        this.moveHeaderName = null;
-
-
-
-
-    },
-
-    menuHideHandler: function (event) {//菜单面板中的处理事件 没有使用单击事件,用户有可能继续使用鼠标右键,隐藏某一列的事件
-        let headers = this.state.headers;//列表数据
-        let headerMenu = this.state.headerMenu;
-        for (let index = 0; index < headers.length; index++) {
-            //使用label,因为多个列可能绑定一个字段
-            if (headers[index].label == this.menuHeaderName) {//需要隐藏的列
-                headerMenu.push(this.menuHeaderName);//放入隐藏列中
-                headers[index].hide = true;
-                this.hideMenuHandler();//隐藏菜单
-            }
-
-        }
-        this.setState({
-            headers: headers,
-            headerMenu: headerMenu
-        })
-
-    },
-    menuShowHandler: function (itemIndex, label) {//菜单面板中的处理事件 没有使用单击事件,用户有可能继续使用鼠标右键,显示某列
-
-        let headers = this.state.headers;//列表数据
-        let headerMenu = this.state.headerMenu;
-
-
-        for (let index = 0; index < headers.length; index++) {
-            //使用label,因为多个列可能绑定一个字段
-            if (headers[index].label == label) {//需要显示的列
-                headerMenu.splice(itemIndex, 1);//从隐藏列中删除
-                headers[index].hide = false;//显示此列
-                this.hideMenuHandler();//隐藏菜单
-
-            }
-
-        }
-        this.setState({
-            headers: headers,
-            headerMenu: headerMenu
-        })
-    },
+  
+   
     /**与表头右键菜单相关事件 */
 
 
@@ -236,11 +162,7 @@ let DataGridExtend = {
 
     },
 
-    panelShow: function () {//操作面板面板显示/隐藏
-        this.setState({
-            panelShow: !this.state.panelShow
-        })
-    },
+ 
     //excel粘贴事件
     onPaste: function (event) { //excel粘贴事件   
         //调用公共用的粘贴处理函数
@@ -299,22 +221,34 @@ let DataGridExtend = {
                 });
         }
     },
-    rowEditHandler: function (columnIndex, value, text, name, data) {  //编辑时单元格内的表单onchange的监听事件
-        if (this.state.headers[columnIndex].editor && typeof this.state.headers[columnIndex].editor.edited === "function") {
+   /**
+    * 
+    * @param {*} rowIndex 行的序号
+    * @param {*} headerRowIndex 表头的行号
+    * @param {*} headerColumnIndex 表头的列号
+    * @param {*} columnIndex 真正的列序号
+    * @param {*} value 值
+    * @param {*} text 文本值
+    * @param {*} name 对字段名
+    * @param {*} data 行数据
+    */
+    rowEditHandler: function (rowIndex, headerRowIndex,headerColumnIndex, columnIndex, value, text, name) {  //编辑时单元格内的表单onchange的监听事件
+        currentHeader=headerRowIndex?this.state.headers[headerRowIndex][headerColumnIndex]:this.state.headers[headerColumnIndex];
+        if (currentHeader.editor && typeof currentHeader.editor.edited === "function") {
             //得到新的一行数据
-            this.state.data[this.state.editIndex] = this.state.headers[columnIndex].editor.edited(value, text, this.state.data[this.state.editIndex]);//先将值保存起来，不更新状态
+            this.state.data[rowIndex] = currentHeader.editor.edited(value, text, this.state.data[rowIndex]);//先将值保存起来，不更新状态
 
         }
-        else if (this.state.headers[columnIndex].editor) {
+        else if (currentHeader.editor) {
             //没有则默认以value作为值
-            this.state.data[this.state.editIndex][name] = value;//先将值保存起来，不更新状态值
+            this.state.data[rowIndex][name] = value;//先将值保存起来，不更新状态值
         }
 
-        if (this.state.addData.has(this.state.editIndex)) {//说明是属于新增的
-            this.state.addData.set(this.getKey(this.state.editIndex), this.state.data[this.state.editIndex]);
+        if (this.state.addData.has(rowIndex)) {//说明是属于新增的
+            this.state.addData.set(this.getKey(rowIndex), this.state.data[rowIndex]);
         }
         else {//属于修改的
-            this.state.updatedData.set(this.getKey(this.state.editIndex), this.state.data[this.state.editIndex]);
+            this.state.updatedData.set(this.getKey(rowIndex), this.state.data[rowIndex]);
         }
     },
 

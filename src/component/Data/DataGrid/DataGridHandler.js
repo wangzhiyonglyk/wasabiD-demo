@@ -4,10 +4,10 @@
  * 将DataGrid拆分,基本处理事件存在这里
  */
 import React, { Component } from "react";
-import func from "../libs/func.js";
-import FetchModel from "../Model/FetchModel.js";
-import Msg from "../Info/Msg.jsx";
-import diff from "../libs/diff"
+import func from "../../libs/func.js";
+import FetchModel from "../../Model/FetchModel.js";
+import Msg from "../../Info/Msg.jsx";
+import diff from "../../libs/diff"
 let DataGridHandler = {
 
     //列表自用处理函数
