@@ -7,174 +7,56 @@
  * 作为DataGrid扩展功能
  */
 import React, { Component } from "react";
-import func from "../../libs/func.js";
-import FetchModel from "../../Model/FetchModel.js";
-import Msg from "../../Info/Msg.jsx";
+import func from "../../../libs/func.js";
+import FetchModel from "../../../Model/FetchModel.js";
+import Msg from "../../../Info/Msg.jsx";
 let DataGridExtend = {
-    //列表常用操作
-    onClick: function (rowIndex, rowData) {
-
-        if (this.props.selectChecked == true) {
-            let key = this.getKey(rowIndex);//获取关键字
-            if (this.state.checkedData.has(key)) {
-                this.onChecked(rowIndex, "");
-            }
-            else {
-                this.onChecked(rowIndex, key);
-            }
-        }
-        if (this.props.onClick != null) {
-            this.props.onClick(rowData, rowIndex);//注意参数换了位置,因为早期版本就是这样子
-        }
-
-    },
-    onDoubleClick: function (rowIndex, rowData) {
-        if (this.props.onDoubleClick != null) {//如果自定义了,
-            this.props.onDoubleClick(rowData, rowIndex);
-
-        }
-        else if (this.state.editAble) {//没有自定义,允许编辑表格
-            if (this.state.editIndex != null && this.state.editIndex != rowIndex) {//说明上一行编辑完成
-                this.remoteUpdateRow(rowIndex);
-            }
-            else {//没有上一行
-                this.setState({
-                    editIndex: rowIndex
-                })
-            }
-        }
-    },
-    pageUpdateHandler: function (pageSize, pageIndex) {//改变分页大小，或者跳转
-        this.updateHandler(this.state.url, pageSize * 1, pageIndex * 1, this.state.sortName, this.state.sortOrder, this.state.params);
-    },
-    //详情页面
-    detailViewHandler: function (detail) {
-        var colSpan = this.state.headers.length;
-
-        var key = this.getKey(this.focusIndex);
-        if (this.props.selectAble == true) {
-            colSpan++;
-        }
-        this.setState({
-            detailIndex: key,
-            detailView: <tr key={key + "detail"}>
-                <td colSpan={colSpan}>
-                    <div className="wasabi-detail">{detail}</div>
-                </td>
-            </tr>,
-        })
-    },
-
-
-    gridMouseDownHandler: function (event) {//全局列表鼠标按下事件
-
-
-        if (event.button != 2) {//不是鼠标右键
-            if (event.target.className == "header-menu-item") {//点击中的就是菜单项不处理
-
-            }
-            else {
-                this.hideMenuHandler();//隐藏菜单
-            }
-
-        }
-        else {//又是鼠标右键
-            if (event.target.className == "header-menu-item") {//点击中的就是菜单项不处理
-
-            }
-            else {//隐藏
-                this.hideMenuHandler();//隐藏菜单
-            }
-        }
-
-    },
   
-   
-    /**与表头右键菜单相关事件 */
+    /**
+     * 点击弹出详情
+     * @param {*} rowData 
+     * @param {*} rowIndex 
+     */
+    detailHandler: function (rowData,rowIndex) {//执行显示详情功能
+        var key = this.getKey(rowIndex);//获取关键值
+        if (key == this.state.detailIndex) {
+            this.setState({
+                detailIndex: null,
+                detailView: null,
+            })
+        }
+        else {
+            if (this.props.detailHandler != null) {
+                let  detail = this.props.detailHandler(rowData);
+                if (!detail) {
+                    this.setState({
+                        detailIndex: null,//方便下次操作
+                        detailView: null,
+                    })
+                }
+                else {
+                    let  colSpan = this.columnSum;//总列数
+            
+                    if (this.props.selectAble) {
+                        colSpan++;
+                    }
+                    if (this.props.rowNumber ) {
+                        colSpan++;
+                    }
 
+                    this.setState({
+                        detailIndex: key,
+                        detailView: <tr key={key + "detail"}>
+                            <td colSpan={colSpan}><div className="wasabi-detail" >{detail}</div></td>
+                        </tr>,
+                    })
+                }
 
-    /**列表样式问题 */
-    tableBodyScrollHandler: function (event) {//监听列表的横向滚动的事件,以便固定表头可以一同滚动
-        // this.refs.fixedTableContainer.style.left = "-" + event.target.scrollLeft + "px";
-
-    },
-
-
-    resizeTableWidthHandler: function () { //表格宽度调整
-        this.setCellAlign();//调整单元格对齐问题
-
-    },
-    setCellAlign: function () {//调整单元格对齐问题
-        //处理对齐问题
-        var fixedTableHeaderth = this.refs.fixedTable.children[0].children[0].children;
-        //列表的原始表头的列
-        var realTableHeaderth = this.refs.realTable.children[0].children[0].children;
-
-        for (let index = 0; index < realTableHeaderth.length; index++) {//遍历，如果原始表头的列的宽度与固定表头对应列不一样,就设置
-            //设置th的宽度
-            if (realTableHeaderth[index].getBoundingClientRect().width != fixedTableHeaderth[index].getBoundingClientRect().width) {
-                let thwidth = realTableHeaderth[index].children[0].getBoundingClientRect().width;
-                //设置cell
-                fixedTableHeaderth[index].children[0].style.width = (thwidth) + "px";
-                realTableHeaderth[index].children[0].style.width = (thwidth) + "px";
             }
         }
     },
-
-    /**列表样式问题 */
-
-    /**扩展功能 自定义操作面板，粘贴 */
-    getHeaderDataHandler: function (headerUrl) {//从后台获取自定义列
-        if (!headerUrl) {
-            headerUrl = this.state.headerUrl;
-        }
-        if (headerUrl) {
-            let type = this.props.httpType ? this.props.httpType : "POST";
-            type = type.toUpperCase();
-            var fetchmodel = new FetchModel(headerUrl, this.getHeaderDataHandlerSuccess, { url: this.state.url }, this.ajaxError, type);
-            fetchmodel.headers = this.props.httpHeaders;
-            if (this.props.contentType) {
-                //如果传contentType值则采用传入的械
-                //否则默认
-
-                fetchmodel.contentType = this.props.contentType;
-                fetchmodel.data = fetchmodel.contentType == "application/json" ? JSON.stringify(fetchmodel.data) : fetchmodel.data;
-            }
-            console.log("datagrid-header-get:", fetchmodel);
-            type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
-        }
-        this.setState({
-            loading: true,//正在加载
-        })
-
-    },
-    getHeaderDataHandlerSuccess: function (result) {
-        if (result.rows) {
-            result.data = result.rows;
-        }
-        var filterResult = this.headerFilterHandler(result.data);
-        //更新
-        this.setState({
-            headers: filterResult.headers,
-            remoteHeaders: filterResult.remoteHeaders,
-            loading: false,//正在加载
-        })
-
-    },
-
  
-    //excel粘贴事件
-    onPaste: function (event) { //excel粘贴事件   
-        //调用公共用的粘贴处理函数
-        this.pasteHandler(event, this.pasteSuccess);
-    },
-    //粘贴事件
-    pasteSuccess: function (data) {
-        typeof this.props.pasteSuccess == "function" && this.props.pasteSuccess();
-    },
-    /**扩展功能 自定义操作面板，粘贴 */
-
-
+ 
     /****新增，修改，删除*/
     addRow: function (rowData, editAble) {//添加一行,如果editable为true，说明添加以后处理编辑状态
         let newData = this.state.data;

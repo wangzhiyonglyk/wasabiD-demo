@@ -26,7 +26,6 @@ class  FormModel {
         this.valueField=valueField;//下拉框数据字段值名称
         this.textField=textField;//下拉框数据字段文本名称
         this.url=url;//ajax的后台地址
-        this.backSource=null;//ajax的返回的数据源中哪个属性作为数据源,为null时直接后台返回的数据作为数据源
         this.data=data;//数据源
         this.onSelect=null;//下拉框的选中事件
         this.extraData=extraData;//下拉框附加的数据

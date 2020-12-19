@@ -7,7 +7,7 @@
  */
 import React, { Component } from 'react';
 import LinkButton from "../../../Buttons/LinkButton"
-import CheckBox from "../../../Form/CheckButton"
+import CheckBox from "../../../Form/CheckBox"
 
 let SingleHeader = {
     renderSingleHeader() {
@@ -76,19 +76,12 @@ let SingleHeader = {
                         name={header.label}//以label为准，是因为name可能没有设置
                         {...props}
                         className={'' + sortOrder + (header.export === false ? " wasabi-noexport" : "")}
-                        style={{
-                            width: header.width ? header.width : null,
-                            textAlign: header.align
-                        }}
                         rowSpan={header.rowSpan}
                         colSpan={header.colSpan}
-
-
                     >
                         <div
                             className='wasabi-grid-cell'
                             name={header.label}
-                            style={{ textAlign: header.align }}
                         >
                             {content}
                             {saveIcon}
@@ -105,17 +98,13 @@ let SingleHeader = {
                         name={header.label}//以label为准，是因为name可能没有设置
                         {...props}
                         className={'' + sortOrder + (header.export === false ? " wasabi-noexport" : "")}
-                        style={{
-                            width: header.width ? header.width : null,
-                            textAlign: header.align
-                        }}
                         rowSpan={header.rowSpan}
                         colSpan={header.colSpan}
                     >
                         <div
                             className='wasabi-grid-cell'
                             name={header.label}
-                            style={{ textAlign: header.align }}
+
                         >
                             {content}
                             {saveIcon}
@@ -134,22 +123,23 @@ let SingleHeader = {
                 onSelect: this.checkedAllHandler,
                 name: 'all'
             };
+            console.log("thc",thCheckProps)
             if (headers1.length > 0) {
                 headers1.unshift(
-                    <th key='headercheckbox' name='check-column' className='check-column'>
+                    <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column'>
                         <div className='wasabi-grid-cell' rowSpan={2}  >
                             {this.props.singleSelect ? null : (
-                                <CheckBox forceChange={true} {...thCheckProps}></CheckBox>
+                                <CheckBox {...thCheckProps}></CheckBox>
                             )}
                         </div>
                     </th>
                 );
             } else {
                 headers2.unshift(
-                    <th key='headercheckbox' name='check-column' className='check-column'>
+                    <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column'>
                         <div className='wasabi-grid-cell'  >
                             {this.props.singleSelect ? null : (
-                                <CheckBox forceChange={true} {...thCheckProps}></CheckBox>
+                                <CheckBox  {...thCheckProps}></CheckBox>
                             )}
                         </div>
                     </th>
@@ -159,7 +149,7 @@ let SingleHeader = {
         //处理序号列
         if (this.props.rowNumber) {
             if (headers1.length > 0) {
-                headers1.unshift(<th key='headerorder' rowSpan={2} name='order' className="wasabi-grid-order">
+                headers1.unshift(<th key='headerorder' rowSpan={2} name='wasabi-order-column' className="wasabi-order-column">
                     <div className='wasabi-grid-cell '>
                         序号
         </div>
@@ -167,7 +157,7 @@ let SingleHeader = {
             }
             else {
                 headers2.unshift(
-                    <th key='headerorder' name='order' className="wasabi-grid-order" >
+                    <th key='headerorder' name='wasabi-order-column' className="wasabi-order-column" >
                         <div className='wasabi-grid-cell ' >
                             序号
           </div>

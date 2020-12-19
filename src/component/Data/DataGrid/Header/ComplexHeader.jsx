@@ -19,8 +19,9 @@ export default {
         let headerControl = [];
         //处理表头
         this.state.headers.map((trheader, headerRowIndex) => {
+
             if (trheader instanceof Array) {
-                let trcontrol = [];
+                let trcontrol = [];//当前行
                 trheader.map((header, headerColumnIndex) => {
                     {
                         //排序图标
@@ -71,7 +72,7 @@ export default {
                             content = header.label;
                         }
 
-                        trheader.push(
+                        trcontrol.push(
                             // 绑定右键菜单事件
                             //使用label作为元素name属性，是因为可能有多个列对应同一个字段
                             <th
@@ -79,17 +80,13 @@ export default {
                                 name={header.label}//以label为准，是因为name可能没有设置
                                 {...props}
                                 className={'' + sortOrder + (header.export === false ? " wasabi-noexport" : "")}
-                                style={{
-                                    width: header.width ? header.width : null,
-                                    textAlign: header.align
-                                }}
                                 rowSpan={header.rowSpan}
                                 colSpan={header.colSpan}
                             >
                                 <div
                                     className='wasabi-grid-cell'
                                     name={header.label}
-                                    style={{ textAlign: header.align }}
+
                                 >
                                     {content}
                                     {saveIcon}
@@ -117,7 +114,7 @@ export default {
             };
 
             headerControl[0].unshift(
-                <th key='headercheckbox' name='check-column' className='check-column' rowSpan={headerControl.length}>
+                <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column' rowSpan={headerControl.length}>
                     <div className='wasabi-grid-cell'  >
                         {this.props.singleSelect ? null : (
                             <CheckBox forceChange={true} {...thCheckProps}></CheckBox>
@@ -131,14 +128,17 @@ export default {
 
         //处理序号
         if (this.props.rowNumber) {
-            headerControl[0].unshift(<th key='headerorder' rowSpan={headerControl.length} name='order' className="wasabi-grid-order">
+            headerControl[0].unshift(<th key='headerorder' rowSpan={headerControl.length} name='wasabi-order-column' className="wasabi-order-column">
                 <div className='wasabi-grid-cell ' >
                     序号
 </div>
             </th>)
         }
         return <thead>
-            {headerControl}
+            {
+                headerControl && headerControl.map((tritem, rowindex) => {
+                   return   <tr key={rowindex}>{tritem}</tr>
+                })}
         </thead>
 
     },

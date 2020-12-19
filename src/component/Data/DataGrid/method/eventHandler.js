@@ -4,13 +4,85 @@
  * 将DataGrid拆分,基本处理事件存在这里
  */
 import React, { Component } from "react";
-import func from "../../libs/func.js";
-import FetchModel from "../../Model/FetchModel.js";
-import Msg from "../../Info/Msg.jsx";
-import diff from "../../libs/diff"
+import func from "../../../libs/func.js";
+import FetchModel from "../../../Model/FetchModel.js";
+import Msg from "../../../Info/Msg.jsx";
+import diff from "../../../libs/diff"
 let DataGridHandler = {
 
-    //列表自用处理函数
+    /**
+     * 鼠标按下事件
+     * @param {*} index 
+     * @param {*} event 
+     */
+    onTRMouseDown: function (index, event) {//行事件，一定要用鼠标按下事件,不保存在状态值中，
+        if (this.props.focusAble) {
+            let node = event.target;
+            while (node.nodeName.toLowerCase() != "tr" && node.nodeName.toLowerCase() != "body") {
+                node = node.parentElement;
+            }
+            var trs = this.refs.realTable.children[2].children;
+            for (var i = 0; i < trs.length; i++) {
+                trs[i].className = trs[i].className.replace("selected", "");//先去掉
+            }
+            if (node.className.indexOf("selected") > -1) {
+
+            }
+            else {
+                node.className = "selected" + (node.className ? " " + node.className : "");
+            }
+        }
+        this.focusIndex = index;//不更新状态值，否则导致频繁的更新
+
+    },
+      /**
+       * 单击事件
+       * @param {*} rowIndex 
+       * @param {*} rowData 
+       */
+      onClick: function (rowData,rowIndex) {
+
+        if (this.props.selectChecked == true) {
+            console.log("dd")
+            let key = this.getKey(rowIndex);//获取关键字
+            if (this.state.checkedData.has(key)) {
+                this.onChecked(rowIndex, "");
+            }
+            else {
+                this.onChecked(rowIndex, key);
+            }
+        }
+        this.props.onClick &&this.props.onClick(rowData, rowIndex);//注意参数换了位置,因为早期版本就是这样子
+
+    },
+    /**
+     * 双击事件
+     * @param {*} rowData 
+     * @param {*} rowIndex 
+     */
+
+    onDoubleClick: function (rowData,rowIndex) {
+        if (this.props.onDoubleClick != null) {//如果自定义了,
+            this.props.onDoubleClick(rowData, rowIndex);
+
+        }
+        else if (this.state.editAble) {//没有自定义,允许编辑表格
+            if (this.state.editIndex != null && this.state.editIndex != rowIndex) {//说明上一行编辑完成
+                this.remoteUpdateRow(rowIndex);
+            }
+            else {//没有上一行
+                this.setState({
+                    editIndex: rowIndex
+                })
+            }
+        }
+    },
+
+
+    /**
+     * 页号改变
+     * @param {*} pageIndex 
+     */
     paginationHandler: function (pageIndex) {//分页处理函数
         if (pageIndex == this.state.pageIndex) {//当前页,不处理
             return;
@@ -20,7 +92,10 @@ let DataGridHandler = {
             this.updateHandler(this.state.url, this.state.pageSize, pageIndex, this.state.sortName, this.state.sortOrder, null, null);
         }
     },
-    prePaginationHandler: function () {//上一页
+    /**
+     * 上一页数据
+     */
+    prePaginationHandler: function () {
 
         if (this.state.pageIndex == 1) {
 
@@ -30,7 +105,10 @@ let DataGridHandler = {
         }
 
     },
-    nextPaginationHandler: function () {//下一页
+    /**
+     * 下一页
+     */
+    nextPaginationHandler: function () {
 
         var pageAll = (parseInt(this.state.total / this.state.pageSize));//共多少页
         var lastPageNum = (this.state.total % this.state.pageSize);
@@ -44,66 +122,25 @@ let DataGridHandler = {
             this.paginationHandler(this.state.pageIndex + 1);
         }
     },
+    /**
+     * 页号大小改变
+     * @param {*} event 
+     */
     pageSizeHandler: function (event) {
 
         this.updateHandler(this.state.url, event.target.value * 1, this.state.pageIndex, this.state.sortName, this.state.sortOrder, null);
     },
-    sumHandler: function (footerModel) {//计算某一列的总和
-        var sum = null;
-        if (this.state.data instanceof Array) {
-            this.state.data.map((rowData, rowIndex) => {
 
-                var footerModelValue = rowData[footerModel.name];//当前行当前列的值
-                if (typeof footerModel.content === "function") {//有函数则通过计算得到值
-                    footerModelValue = footerModel.content(rowData, rowIndex);//
-                }
-
-                if (typeof (footerModelValue * 1) == "number") {//如果值可以传为数值
-                    if (sum == null) {
-                        sum = 0;//可以计算则先设置为0
-                    }
-                    sum += footerModelValue * 1;
-                }
-                else {
-
-                }
-            });
-        }
-        else {
-        }
-        return sum;
-
-
-    },
-    avgHandler: function (footerModel) {//计算某一列的平均值
-        var sum = 0; var avg = null;
-        if (this.state.data instanceof Array) {
-            this.state.data.map((rowData, rowIndex) => {
-                var footerModelValue = rowData[footerModel.name];//当前行当前列的值
-                if (typeof footerModel.content === "function") {//有函数则通过计算得到值
-                    footerModelValue = footerModel.content(rowData, rowIndex);//
-                }
-
-                if (typeof (footerModelValue * 1) == "number") {
-                    if (sum == null) {
-                        sum = 0;//可以计算则先设置为0
-                    }
-                    sum += footerModelValue * 1;
-                } else {
-
-                }
-
-            });
-            avg = (sum / this.state.data.length).toFixed(2);
-        }
-        else {
-        }
-        return avg;
-    },
+    /**
+     * 排序事件
+     * @param {*} sortName 
+     * @param {*} sortOrder 
+     */
     onSort: function (sortName, sortOrder) {  //排序事件
         this.updateHandler(this.state.url, this.state.pageSize, 1, sortName, sortOrder);
 
     },
+
     /**
      * 更新方法
      * @param {*} params 
@@ -127,7 +164,16 @@ let DataGridHandler = {
 
         }
     },
-    //更新函数
+    
+    /**
+     * 数据更新处理
+     * @param {*} url 请求的url
+     * @param {*} pageSize 分页大小
+     * @param {*} pageIndex 页号
+     * @param {*} sortName  排序字段
+     * @param {*} sortOrder  排序方式
+     * @param {*} params 参数
+     */
     updateHandler: function (url, pageSize, pageIndex, sortName, sortOrder, params) {////数据处理函数,更新
 
 
@@ -141,6 +187,15 @@ let DataGridHandler = {
             this.updateHandlerConfirm(url, pageSize, pageIndex, sortName, sortOrder, params);
         }
     },
+    /**
+     * 更新确认函数
+     * @param {*} url 请求的url
+     * @param {*} pageSize 分页大小
+     * @param {*} pageIndex 页号
+     * @param {*} sortName  排序字段
+     * @param {*} sortOrder  排序方式
+     * @param {*} params 参数
+     */
     updateHandlerConfirm: function (url, pageSize, pageIndex, sortName, sortOrder, params) {
         /*
      url与params而url可能是通过reload方法传进来的,并没有作为状态值绑定
@@ -216,12 +271,21 @@ let DataGridHandler = {
         }
 
     },
+    /**
+     * 加载成功事件
+     * @param {*} url 
+     * @param {*} pageSize 
+     * @param {*} pageIndex 
+     * @param {*} sortName 
+     * @param {*} sortOrder 
+     * @param {*} params 
+     * @param {*} result 
+     */
     loadSuccess (url, pageSize, pageIndex, sortName, sortOrder, params, result) {//数据加载成功
 
 
         if (this.props.loadSuccess) {
             //如果父组件指定了数据加载后的方法，先执行，然后再处理数据
-
             result = this.props.loadSuccess(result);
             if (!result) {
                 Msg.error("您传递的loadSuccess方法没有返回值");
@@ -316,6 +380,10 @@ let DataGridHandler = {
 
     },
 
+    /**
+     * 加载失败
+     * @param {*} message 
+     */
     loadError: function (message) {//查询失败
         console.log("datagrid-error", message);
         Msg.error(message);
@@ -323,9 +391,13 @@ let DataGridHandler = {
             loading: false,
         })
     },
-    //选择处理函数
-    getKey: function (index, pageIndex) {//获取指定行的关键字，没有指定页号则为当前页
-        let key;//TODO
+    /**
+     * 获取当行的key
+     * @param {*} index 
+     * @param {*} pageIndex 
+     */
+    getKey: function (index, pageIndex) {//todo 暂时以下标
+        let key="";
         if (!pageIndex) {
 
             pageIndex = this.state.pageIndex;
@@ -334,13 +406,16 @@ let DataGridHandler = {
             console.log(new Error("index 值传错"));
         }
         else {
-            key = pageIndex.toString() + "-" + index.toString();//默认用序号作为关键字
+           key = pageIndex.toString() + "-" + index.toString();//默认用序号作为关键字
         }
-
-
-
         return key;
     },
+
+    /**
+     * 勾选事件
+     * @param {*} index 
+     * @param {*} value 
+     */
     onChecked: function (index, value) {//选中事件
         let checkedData = (this.state.checkedData);//已经选中的行
         let checkedIndex = (this.state.checkedIndex);//已经选中的行的序号，用于导出
@@ -369,27 +444,11 @@ let DataGridHandler = {
             this.props.onChecked(data);//用于返回
         }
     },
-    onTRMouseDown: function (index, event) {//行事件，一定要用鼠标按下事件,不保存在状态值中
-        if (this.props.focusAble) {
-            let node = event.target;
-            while (node.nodeName.toLowerCase() != "tr" && node.nodeName.toLowerCase() != "body") {
-                node = node.parentElement;
-            }
-            var trs = this.refs.realTable.children[1].children;
-            for (var i = 0; i < trs.length; i++) {
-                trs[i].className = trs[i].className.replace("selected", "");//先去掉
-            }
-            if (node.className.indexOf("selected") > -1) {
 
-            }
-            else {
-                node.className = "selected" + (node.className ? " " + node.className : "");
-            }
-        }
-        this.focusIndex = index;//不更新状态值，否则导致频繁的更新
-
-    },
-    checkCurrentPageCheckedAll: function () {//判断当前页是否全部选中
+   /**
+    * 判断当前页是否全部选中
+    */
+    checkCurrentPageCheckedAll: function () {//
         if (this.state.data instanceof Array) {
 
         }
@@ -409,6 +468,10 @@ let DataGridHandler = {
         }
         return ischeckall;
     },
+    /**
+     * 全选事件
+     * @param {*} value 
+     */
     checkedAllHandler: function (value) {//全选按钮的单击事件
         if (this.state.data instanceof Array) {
 
@@ -449,133 +512,5 @@ let DataGridHandler = {
 
     },
 
-    //只读函数,父组件通过refs调用
-    clearData: function () {//清空数据
-        this.setState({
-            data: [],
-            params: [],
-        });
-    },
-  
-    getFocusIndex: function () { //只读函数,用于父组件获取数据
-
-        return this.focusIndex;
-    },
-    getFocusRowData: function (index) {//获取当前焦点行的数据
-        if (index != null && index != undefined) {
-
-        }
-        else {
-            index = this.focusIndex;
-        }
-        return this.state.data[index];
-    },
-    getChecked: function () {
-        //获取选中的行数据
-        var data = [];
-        for (let value of this.state.checkedData.values()) {
-            data.push(value);
-        }
-        return data;
-    },
-    getFooterData: function () {//获取得页脚的统计值
-        return this.footerActualData;
-    },
-    detailHandler: function (rowIndex, rowData) {//执行显示详情功能
-        var key = this.getKey(rowIndex);//获取关键值
-        if (key == this.state.detailIndex) {
-            this.setState({
-                detailIndex: null,
-                detailView: null,
-            })
-        }
-        else {
-            if (this.props.detailHandler != null) {
-                var detail = this.props.detailHandler(rowData);
-                if (!detail) {
-                    this.setState({
-                        detailIndex: null,//方便下次操作
-                        detailView: null,
-                    })
-                }
-                else {
-                    var colSpan = this.state.headers.length;
-                    if (this.props.selectAble == true) {
-                        colSpan++;
-                    }
-
-                    this.setState({
-                        detailIndex: key,
-                        detailView: <tr key={key + "detail"}>
-                            <td colSpan={colSpan}><div className="wasabi-detail" >{detail}</div></td>
-                        </tr>,
-                    })
-                }
-
-            }
-        }
-    }
-    ,
-    export(selected, title) {
-
-        title = title ? title : "excel" + func.dateformat(new Date(), "yyyy-MM-dd");
-        let tableHtml = "<table border='1'> ";
-        let lastIndex = this.refs.realTable.children[1].children[0].children.length;//列数
-        //导出表头
-        tableHtml += "<thead><tr>";
-        for (let i = 0; i < lastIndex; i++) {
-            let html = this.refs.realTable.children[0].children[0].children[i].outerHTML;
-            if (html.indexOf("wasabi-grid-order") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
-                continue;
-            }
-            tableHtml += html;
-        }
-        tableHtml += "</tr></thead><tbody>";
-        //导出表体
-        if (selected) {
-
-            for (let value of this.state.checkedIndex.values()) {
-                tableHtml += "<tr>"
-                for (let i = 0; i < lastIndex; i++) {
-                    let html = this.refs.realTable.children[1].children[value].children[i].outerHTML;
-                    if (html.indexOf("wasabi-grid-order") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
-                        continue;
-                    }
-                    tableHtml += html;
-                }
-                tableHtml += "</tr>";
-            }
-
-
-        }
-        else {
-            for (let rowIndex = 0; i < this.state.data; rowIndex++) {
-                tableHtml += "<tr>"
-                for (let i = 0; i < lastIndex; i++) {
-                    if (this.refs.realTable.children[1].children.length > rowIndex) {
-                        let html = this.refs.realTable.children[1].children[rowIndex].children[i].outerHTML;
-                        if (html.indexOf("wasabi-grid-order") > -1 || html.indexOf("check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
-                            continue;
-                        }
-                        tableHtml += html;
-                    }
-                }
-                tableHtml += "</tr>";
-            }
-
-
-        }
-        tableHtml += "</tbody></table>";
-        let html = "<html><head><meta charset='UTF-8'></head><body>" + tableHtml + "</body></html>";
-        html=html.replace(/export=\"1\"/g,"style=\"mso-number-format:\'\@\';\"");
-        // 创建一个Blob对象，第一个参数是文件的数据，第二个参数是文件类型属性对象
-        var blob = new Blob([html], { type: "application/vnd.ms-excel" });
-        var downloadA = document.createElement('a');
-        downloadA.href = window.URL.createObjectURL(blob);
-        downloadA.download = title + ".xls";
-        downloadA.click(); // 点我，点我，快点我
-        window.URL.revokeObjectURL(downloadA.href);
-
-    }
 }
 export default DataGridHandler;

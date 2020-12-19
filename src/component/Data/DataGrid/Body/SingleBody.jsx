@@ -31,7 +31,7 @@ export default {
             //序号列
             if (this.props.rowNumber) {
                 ordertd = (
-                    <td key={'bodyorder' + rowIndex.toString()} className="wasabi-grid-order">
+                    <td key={'bodyorder' + rowIndex.toString()} className="wasabi-order-column" name="wasabi-order-column">
                         <div className='wasabi-grid-cell  '>
                             {' '}
                             {(
@@ -56,8 +56,8 @@ export default {
                     checkedControl = (
                         <td
                             key={'bodycheckbox' + rowIndex.toString()}
-
-                            className='check-column'
+                            name="wasabi-check-column"
+                            className='wasabi-check-column'
                         >
                             <div className='wasabi-grid-cell'>
 
@@ -69,8 +69,8 @@ export default {
                     checkedControl = (
                         <td
                             key={'bodycheckbox' + rowIndex.toString()}
-
-                            className='check-column'
+                            name="wasabi-check-column"
+                            className='wasabi-check-column'
                         >
                             <div className='wasabi-grid-cell'>
                                 <CheckBox forceChange={true} {...props}></CheckBox>
@@ -82,7 +82,7 @@ export default {
 
             //生成数据列
             let columnIndex = 0;//真正的列序号
-            this.state.headers.map((header, headerColumnIndex) => { 
+            this.state.headers.map((header, headerColumnIndex) => {
                 if (header.colSpan && header.colSpan > 1) {
                     return;
                 }
@@ -102,7 +102,7 @@ export default {
                         checkedControl = <td
                             key={'bodycheckbox' + rowIndex.toString()}
 
-                            className='check-column'
+                            className='wasabi-check-column'
                         >
                             <div className='wasabi-grid-cell'>
 
@@ -150,8 +150,8 @@ export default {
                     //处理数据单元格
                     tds.push(
                         <td
-                            onClick={this.onClick.bind(this, rowIndex, rowData)}
-                            onDoubleClick={this.onDoubleClick.bind(this, rowIndex, rowData)}
+                            onClick={this.onClick.bind(this, rowData, rowIndex)}
+                            onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
                             key={'col-' + rowIndex.toString() + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                             export={"1"}//为了导出时处理数字化的问题
                             style={{
@@ -180,16 +180,17 @@ export default {
                 } else {
                     if (columnIndex == 0 && this.props.detailAble) {
                         //在第一列显示详情
-                        let iconCls = 'icon-down'; //详情列的图标
+                        let iconCls = 'icon-arrow-down'; //详情列的图标
                         if (this.state.detailIndex == key) {
-                            iconCls = 'icon-up'; //详情列-展开
+                            iconCls = 'icon-arrow-up'; //详情列-展开
                         }
 
                         tds.push(
                             <td
                                 export={"1"}
                                 className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-                                onClick={this.detailHandler.bind(this, rowIndex, rowData)}
+                                onClick={this.onClick.bind(this, rowData, rowIndex)}
+                                onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
                                 key={'col-' + rowIndex.toString() + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                             >
                                 <div
@@ -200,7 +201,7 @@ export default {
                                     }}
                                 >
                                     <div style={{ float: 'left' }}> {content}</div>
-                                    <LinkButton iconCls={iconCls} tip='查看详情'></LinkButton>
+                                    <LinkButton iconCls={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)} title='查看详情'></LinkButton>
                                 </div>
                             </td>
                         );
@@ -209,8 +210,8 @@ export default {
                             <td
                                 export={"1"}//为了导出时处理数字化的问题
                                 className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-                                onClick={this.onClick.bind(this, rowIndex, rowData)}
-                                onDoubleClick={this.onDoubleClick.bind(this, rowIndex, rowData)}
+                                onClick={this.onClick.bind(this, rowData,rowIndex)}
+                                onDoubleClick={this.onDoubleClick.bind(this,rowData, rowIndex)}
                                 key={'col-' + rowIndex.toString() + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                             >
                                 <div
@@ -228,7 +229,6 @@ export default {
                 }
                 columnIndex++;
             });
-            console.log(tds);
             trobj.push(
                 <tr
                     key={'row' + rowIndex.toString()}

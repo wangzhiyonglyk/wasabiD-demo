@@ -2,7 +2,18 @@
  * Created by wangzhiyong on 2016/11/8.
  * 将复制粘贴功能独立出来
  */
-let pasteExtend={
+export default {
+    
+    //excel粘贴事件
+    onPaste: function (event) { //excel粘贴事件   
+        //调用公共用的粘贴处理函数
+        this.pasteHandler(event, this.pasteSuccess);
+    },
+    //粘贴事件
+    pasteSuccess: function (data) {
+        typeof this.props.pasteSuccess == "function" && this.props.pasteSuccess();
+    },
+  
     pasteHandler:function(event,callBack) {
         if ( !(event.clipboardData && event.clipboardData.items) ) {//浏览器不支持这个功能
         }
@@ -55,5 +66,3 @@ let pasteExtend={
 
     },
 }
-
-export default pasteExtend;

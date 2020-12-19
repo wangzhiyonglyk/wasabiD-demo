@@ -109,11 +109,9 @@ value:"你好"
     console.log(value,text,name);
   }
   render() {
-    return <div style={{height:"100%"}}><Avatar uploadurl={"http://wechat.bluehy.com/Images/Upload"} name="file" ></Avatar>
-    <Input type="radio" allMinute={true} onSelect={this.onSelect.bind(this)} data={[{text:"选中",value:1},{text:"不选中",value:2}]}></Input>
-    <DataGrid headers={[{name:"id",label:"id"},{name:"name",label:"名称"}]} data={this.state.data}></DataGrid>
-    <Article title="上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄" uploadurl={"http://wechat.bluehy.com/Images/Upload"}  uploadFileName="file" ></Article>
-    </div>
+    return <div style={{height:"100%"}}>
+   <DataGrid pagination={true} selectAble={true} headers={[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",width:100,sortAble:true},{name:"name",label:"名称"}]]} data={this.state.data}></DataGrid>
+   </div>
 
   }
 }
