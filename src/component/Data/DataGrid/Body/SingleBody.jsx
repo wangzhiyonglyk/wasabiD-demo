@@ -200,8 +200,8 @@ export default {
                                         textAlign: header.align ? header.align : "center"
                                     }}
                                 >
-                                    <div style={{ float: 'left' }}> {content}</div>
-                                    <LinkButton iconCls={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)} title='查看详情'></LinkButton>
+                                  
+                                    <LinkButton iconCls={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)} title='查看详情'> {content}</LinkButton>
                                 </div>
                             </td>
                         );

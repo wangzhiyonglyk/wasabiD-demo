@@ -8,7 +8,7 @@ import func from "../../../libs/func.js";
 import FetchModel from "../../../Model/FetchModel.js";
 import Msg from "../../../Info/Msg.jsx";
 import diff from "../../../libs/diff"
-let DataGridHandler = {
+export default {
 
     /**
      * 鼠标按下事件
@@ -35,15 +35,16 @@ let DataGridHandler = {
         this.focusIndex = index;//不更新状态值，否则导致频繁的更新
 
     },
-      /**
-       * 单击事件
-       * @param {*} rowIndex 
-       * @param {*} rowData 
-       */
-      onClick: function (rowData,rowIndex) {
-
+    /**
+     * 单击事件
+     * @param {*} rowIndex 
+     * @param {*} rowData 
+     */
+    onClick: function (rowData, rowIndex, event) {
+        event.preventDefault();
+        event.stopPropagation();
         if (this.props.selectChecked == true) {
-            console.log("dd")
+
             let key = this.getKey(rowIndex);//获取关键字
             if (this.state.checkedData.has(key)) {
                 this.onChecked(rowIndex, "");
@@ -52,7 +53,7 @@ let DataGridHandler = {
                 this.onChecked(rowIndex, key);
             }
         }
-        this.props.onClick &&this.props.onClick(rowData, rowIndex);//注意参数换了位置,因为早期版本就是这样子
+        this.props.onClick && this.props.onClick(rowData, rowIndex);//注意参数换了位置,因为早期版本就是这样子
 
     },
     /**
@@ -61,7 +62,9 @@ let DataGridHandler = {
      * @param {*} rowIndex 
      */
 
-    onDoubleClick: function (rowData,rowIndex) {
+    onDoubleClick: function (rowData, rowIndex,event) {
+        event.preventDefault();
+        event.stopPropagation();
         if (this.props.onDoubleClick != null) {//如果自定义了,
             this.props.onDoubleClick(rowData, rowIndex);
 
@@ -146,8 +149,8 @@ let DataGridHandler = {
      * @param {*} params 
      * @param {*} url 
      */
-    reload: function (params, url="") {//重新查询数据,
-        url = url||this.state.url;//得到旧的url
+    reload: function (params, url = "") {//重新查询数据,
+        url = url || this.state.url;//得到旧的url
         if (!url) {//没有url,不自行加载，则调用更新事件
             if (this.props.updateHandler) {//用户自定义了更新事件
                 this.props.updateHandler(this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder);
@@ -164,7 +167,7 @@ let DataGridHandler = {
 
         }
     },
-    
+
     /**
      * 数据更新处理
      * @param {*} url 请求的url
@@ -202,7 +205,7 @@ let DataGridHandler = {
      headers可能是后期才传了,见Page组件可知
      所以此处需要详细判断
      */
-        url=url||this.state.url;
+        url = url || this.state.url;
         if (url) {
             this.setState({
                 loading: true,
@@ -236,8 +239,8 @@ let DataGridHandler = {
 
             let type = this.props.httpType ? this.props.httpType : "POST";
             type = type.toUpperCase();
-            let fetchmodel = new FetchModel(url, this.loadSuccess.bind(this, url, pageSize, pageIndex, sortName, sortOrder, params), httpParams, this.loadError, type,this.props.httpHeaders);
-            fetchmodel.headers=this.props.httpHeaders;
+            let fetchmodel = new FetchModel(url, this.loadSuccess.bind(this, url, pageSize, pageIndex, sortName, sortOrder, params), httpParams, this.loadError, type, this.props.httpHeaders);
+            fetchmodel.headers = this.props.httpHeaders;
             if (this.props.contentType) {
                 //如果传contentType值则采用传入的械
                 //否则默认
@@ -256,15 +259,15 @@ let DataGridHandler = {
 
                 this.props.updateHandler(pageSize, pageIndex, sortName, sortOrder);
             }
-            else{
-                if(this.state.rawData.length==this.state.total){
+            else {
+                if (this.state.rawData.length == this.state.total) {
                     //说明传的数据就是全部的
                     this.setState({
-                        pageSize:pageSize,
-                        pageIndex:pageIndex,
-                        sortName:sortName,
-                        sortOrder:sortOrder,
-                        data:this.state.rawData.slice((pageIndex - 1) * pageSize,(pageIndex - 1) * pageSize+pageSize-1)
+                        pageSize: pageSize,
+                        pageIndex: pageIndex,
+                        sortName: sortName,
+                        sortOrder: sortOrder,
+                        data: this.state.rawData.slice((pageIndex - 1) * pageSize, (pageIndex - 1) * pageSize + pageSize - 1)
                     })
                 }
             }
@@ -281,7 +284,7 @@ let DataGridHandler = {
      * @param {*} params 
      * @param {*} result 
      */
-    loadSuccess (url, pageSize, pageIndex, sortName, sortOrder, params, result) {//数据加载成功
+    loadSuccess(url, pageSize, pageIndex, sortName, sortOrder, params, result) {//数据加载成功
 
 
         if (this.props.loadSuccess) {
@@ -397,7 +400,7 @@ let DataGridHandler = {
      * @param {*} pageIndex 
      */
     getKey: function (index, pageIndex) {//todo 暂时以下标
-        let key="";
+        let key = "";
         if (!pageIndex) {
 
             pageIndex = this.state.pageIndex;
@@ -406,7 +409,7 @@ let DataGridHandler = {
             console.log(new Error("index 值传错"));
         }
         else {
-           key = pageIndex.toString() + "-" + index.toString();//默认用序号作为关键字
+            key = pageIndex.toString() + "-" + index.toString();//默认用序号作为关键字
         }
         return key;
     },
@@ -445,9 +448,9 @@ let DataGridHandler = {
         }
     },
 
-   /**
-    * 判断当前页是否全部选中
-    */
+    /**
+     * 判断当前页是否全部选中
+     */
     checkCurrentPageCheckedAll: function () {//
         if (this.state.data instanceof Array) {
 
@@ -513,4 +516,3 @@ let DataGridHandler = {
     },
 
 }
-export default DataGridHandler;

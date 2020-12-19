@@ -117,7 +117,7 @@ export default {
                             return;//选择列，不处理内容了
 
                         }
-                
+
                         //内容
                         let content = header.content;
 
@@ -154,9 +154,9 @@ export default {
                             //处理数据单元格
                             tds.push(
                                 <td
-                                    onClick={this.onClick.bind(this, rowData,rowIndex)}
-                                    onDoubleClick={this.onDoubleClick.bind(this,rowData, rowIndex)}
-                                    key={'col-' + rowIndex.toString() +"-"+headerRowIndex+"-"+headerColumnIndex+ '-' + columnIndex.toString()}
+                                    onClick={this.onClick.bind(this, rowData, rowIndex)}
+                                    onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
+                                    key={'col-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                                     export={"1"}//为了导出时处理数字化的问题
                                     style={{
                                         width: header.width ? header.width : null,
@@ -174,14 +174,15 @@ export default {
                                             name={header.name}
                                             value={currentValue}
                                             text={currentText}
-                                            onChange={this.rowEditHandler.bind(this, rowIndex, headerRowIndex,headerColumnIndex, columnIndex)}
-                                            onSelect={this.rowEditHandler.bind(this,rowIndex,headerRowIndex,headerColumnIndex, columnIndex)}
+                                            onChange={this.rowEditHandler.bind(this, rowIndex, headerRowIndex, headerColumnIndex, columnIndex)}
+                                            onSelect={this.rowEditHandler.bind(this, rowIndex, headerRowIndex, headerColumnIndex, columnIndex)}
                                             label={''}//没有描述
                                         ></Input>
                                     </div>
                                 </td>
                             );
-                        } else {
+                        }
+                        else {
                             if (columnIndex == 0 && this.props.detailAble) {
                                 //在第一列显示详情
                                 let iconCls = 'icon-arrow-down'; //详情列的图标
@@ -193,10 +194,10 @@ export default {
                                     <td
                                         export={"1"}
                                         className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-                                        onClick={this.onClick.bind(this, rowData,rowIndex)}
-                                        onDoubleClick={this.onDoubleClick.bind(this,rowData, rowIndex)}
-                                      
-                                        key={'col-' + rowIndex.toString() +"-"+headerRowIndex+"-"+headerColumnIndex+ '-' + columnIndex.toString()}
+                                        onClick={this.onClick.bind(this, rowData, rowIndex)}
+                                        onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
+
+                                        key={'col-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                                     >
                                         <div
                                             className='wasabi-grid-cell'
@@ -205,10 +206,10 @@ export default {
                                                 textAlign: header.align ? header.align : "center"
                                             }}
                                         >
-                                            <div style={{ float: 'left' }}> {content}</div>
-                                            <LinkButton iconCls={iconCls} title='查看详情' 
-                                              onClick={this.detailHandler.bind(this, rowData,rowIndex)}//查看详情
-                                            ></LinkButton>
+
+                                            <LinkButton iconCls={iconCls} title='查看详情'
+                                                onClick={this.detailHandler.bind(this, rowData, rowIndex)}//查看详情
+                                            > {content}</LinkButton>
                                         </div>
                                     </td>
                                 );
@@ -217,9 +218,9 @@ export default {
                                     <td
                                         export={"1"}//为了导出时处理数字化的问题
                                         className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-                                        onClick={this.onClick.bind(this, rowData,rowIndex)}
-                                        onDoubleClick={this.onDoubleClick.bind(this,rowData, rowIndex)}
-                                        key={'col-' + rowIndex.toString() +"-"+headerRowIndex+"-"+headerColumnIndex+ '-' + columnIndex.toString()}
+                                        onClick={this.onClick.bind(this, rowData, rowIndex)}
+                                        onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
+                                        key={'col-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                                     >
                                         <div
                                             className='wasabi-grid-cell'
@@ -235,7 +236,7 @@ export default {
                             }
                         }
 
-
+                        columnIndex++;
                     });
                 }
 

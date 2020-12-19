@@ -10,14 +10,17 @@ import React, { Component } from "react";
 import func from "../../../libs/func.js";
 import FetchModel from "../../../Model/FetchModel.js";
 import Msg from "../../../Info/Msg.jsx";
-let DataGridExtend = {
+export default  {
   
     /**
      * 点击弹出详情
      * @param {*} rowData 
      * @param {*} rowIndex 
      */
-    detailHandler: function (rowData,rowIndex) {//执行显示详情功能
+    detailHandler: function (rowData,rowIndex,name,title,event) {//执行显示详情功能
+        event.preventDefault();
+        event.stopPropagation();
+        console.log("dd")
         var key = this.getKey(rowIndex);//获取关键值
         if (key == this.state.detailIndex) {
             this.setState({
@@ -27,7 +30,7 @@ let DataGridExtend = {
         }
         else {
             if (this.props.detailHandler != null) {
-                let  detail = this.props.detailHandler(rowData);
+                let  detail = this.props.detailHandler(rowData,rowIndex);
                 if (!detail) {
                     this.setState({
                         detailIndex: null,//方便下次操作
@@ -215,5 +218,4 @@ let DataGridExtend = {
     }
     /****新增，修改，删除*/
 }
-export default DataGridExtend;
 

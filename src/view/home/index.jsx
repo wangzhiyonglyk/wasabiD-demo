@@ -110,7 +110,7 @@ value:"你好"
   }
   render() {
     return <div style={{height:"100%"}}>
-   <DataGrid pagination={true} selectAble={true} headers={[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",width:100,sortAble:true},{name:"name",label:"名称"}]]} data={this.state.data}></DataGrid>
+   <DataGrid pagination={true} detailAble={true} detailHandler={(rowData,rowIndex)=>{return "我的详情"}} selectAble={true} headers={[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",width:100,sortAble:true},{name:"name",label:"名称"}]]} data={this.state.data}></DataGrid>
    </div>
 
   }
