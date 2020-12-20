@@ -71,7 +71,8 @@
 .wasabi-grid .table {
     clear: both;
     max-width: none;
-    border: 1px solid #ebeef5;
+    border-top: 1px solid #ebeef5;
+    border-left: 1px solid #ebeef5;
     width: 100%;
     border-spacing: 0;
     border-collapse: collapse;
@@ -80,19 +81,13 @@
     table-layout: fixed;
 }
 .table td,.table th
-{    border: 1px solid #ebeef5;
+{    border-bottom: 1px solid #ebeef5;
+  border-right: 1px solid #ebeef5;
    padding: 10px 5px;
     vertical-align: middle;
     box-sizing: border-box;
     text-align:center;
 }
-
-.table>thead>tr>th {
-     border-bottom: 1px solid #ebeef5;
-     font-size: 13px;
-  
-}
-
 /*
 没有边框的时候
 */
@@ -106,9 +101,6 @@
    border-bottom: 1px solid #ebeef5;
 }
 
-
-
-
 /*
 背景颜色
 */
@@ -119,7 +111,7 @@
 .wasabi-grid .table > tbody > tr.selected {
   background-color: #fbec88;
   border: 1px solid #fad42e;
-
+  color: #409eff;
  }
 
 .wasabi-grid .table > tbody > tr:hover {
@@ -128,6 +120,7 @@
 .wasabi-grid .table > tbody > tr.selected:hover {
   background-color: #fbec88;
   border: 1px solid #fad42e;
+  color: #409eff;
 }
 /*
 单元格样式
@@ -135,11 +128,13 @@
 .wasabi-grid .wasabi-grid-cell{
   width: 100%;
   box-sizing:border-box;
-  overflow: visible;
-  text-overflow: ellipsis;
   white-space: normal;
   word-break: break-all;
- 
+}
+.wasabi-pivot .wasabi-grid .wasabi-grid-cell{
+  overflow: hidden;
+  white-space: pre-wrap;
+  text-overflow: ellipsis;
 }
 
 .wasabi-grid .wasabi-check-column .wasabi-grid-cell{

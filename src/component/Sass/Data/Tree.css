@@ -1,9 +1,23 @@
 
 @import url("../base.css");
+
 .wasabi-tree {
-  margin:5px;
-  color:#666;
-  z-index: 4;
+ position: relative;
+}
+.wasabi-pivot .wasabi-tree{
+  border-top:1px solid #ebeef5 ;
+  
+}
+.wasabi-tree .treenode-container{
+ line-height: 41px;
+ height: 41px;
+ box-sizing: border-box;
+
+}
+.wasabi-pivot .wasabi-tree .treenode-container{
+  border-bottom:1px solid #ebeef5 ;
+
+ 
 }
 .wasabi-tree .treenode{
   display: inline-block;
@@ -36,10 +50,7 @@
   
 }
 
-.wasabi-tree li>div{
-  height: 25px;
-  line-height: 25px;
-}
+
 .wasabi-tree li>div.wasabi-radio-btn{
   height: 18px;
   margin-top: 8px;
@@ -52,9 +63,12 @@
 }
 
 .wasabi-tree li>div.selected{
-  background-color: #f5f7fa;
+  background-color:#f5f7fa;
   color: #409eff;
 }
+
+
+
 .wasabi-tree [class*=" icon-"],.wasabi-tree [class^=icon-] {
   color:#c0c4cc;
 }

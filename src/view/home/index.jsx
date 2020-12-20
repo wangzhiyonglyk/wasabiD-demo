@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {Article,Avatar,Input,DataGrid} from "../../component"
+import {Article,Avatar,Input,DataGrid,Tree, Left, Right} from "../../component"
 import api from "../../libs/api"
 class Home extends React.Component {
   constructor(props) {
@@ -51,7 +51,7 @@ class Home extends React.Component {
       { id:232, pId:23, name:"叶子节点232"},
       { id:233, pId:23, name:"叶子节点233"},
       { id:234, pId:23, name:"叶子节点234"},
-      { id:3, pId:0, name:"父节点3 - 没有子节点父节点3 - 没有子节点父节点3 - 没有子节点父节点3 - 没有子节点父节点3 - 没有子节点", isParent:true}]
+      { id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}]
     })
   
   }
@@ -98,10 +98,12 @@ value:"你好"
     console.log(value,text,name);
   }
   render() {
-    return <div style={{height:"100%"}}>
-   <DataGrid  pagination={true} detailAble={true} detailHandler={(rowData,rowIndex)=>{return "我的详情"}} 
-    headers={[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",sortAble:true,},{name:"name",label:"名称",width:140}]]} data={this.state.data}></DataGrid>
-   </div>
+    return <div className="wasabi-pivot" style={{height:"100%"}}>
+     <div style={{float:"left",width:400,paddingTop:82}}><Tree data={this.state.data} simpleData={true} idField="id" textField="name"></Tree></div> 
+     <div style={{float:"right",width:"calc(100% - 400px)"}}> <DataGrid  pagination={false}  detailHandler={(rowData,rowIndex)=>{return "我的详情"}} 
+    headers={[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",sortAble:true,},{name:"name",label:"名称"}]]} data={this.state.data}></DataGrid></div>
+    </div>
+ 
 
   }
 }
