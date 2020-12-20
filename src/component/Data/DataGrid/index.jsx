@@ -54,8 +54,10 @@ class DataGrid extends Component {
         if (this.props.data instanceof Array) {
             data = this.props.data;
         }
+     
         this.state = {
             gridcontainerid: func.uuid(),
+            realTableid:func.uuid(),
             url: this.props.url,
             params: func.clone(this.props.params), //这里一定要复制,只有复制才可以比较两次参数是否发生改变没有,防止父组件状态任何改变而导致不停的查询
             pageIndex: this.props.pageIndex,//页号
@@ -112,10 +114,9 @@ class DataGrid extends Component {
 
         if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
             //如果传了死数据
-
             newState.rawData = nextProps.data;
-            newState.data = nextProps.pagination == true ? nextProps.data > prevState.pageSize
-                ? nextProps.data.slice(((nextProps.pageIndex || prevState.pageIndex) - 1) * (nextProps.pageSize || prevState.pageSize), (nextProps.pageSize || prevState.pageSize))
+            newState.data = nextProps.pagination == true ? nextProps.data.length > prevState.pageSize
+                ? nextProps.data.slice(((prevState.pageIndex)- 1) *  prevState.pageSize, prevState.pageSize)
                 : nextProps.data : nextProps.data;
             newState.total = nextProps.total || nextProps.data.length || 0
 
@@ -142,7 +143,12 @@ class DataGrid extends Component {
             })
             this.reload();
         }
-
+      //处理出现滚动条的现象
+        this.containerWidth = document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
+       if(this.containerWidth<this.tableWidth){
+           //说明出现了滚动条，重新计算一下
+           this.computeHeaderStyleAndColumnWidth();
+       }
     }
 
     componentDidMount() {
@@ -169,6 +175,7 @@ class DataGrid extends Component {
     computeHeaderStyleAndColumnWidth() {
         //数据网格的宽度
         this.containerWidth = document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
+        this.containerWidth=  this.containerWidth-1;//除去边框的问题
         this.single = true;//是否简单的表头
         this.columnSum = 0;//总列数
         this.releaseWidth = this.containerWidth;//剩余可分配宽度
@@ -226,6 +233,10 @@ class DataGrid extends Component {
                         }
                     }
                 }
+            }
+            if(this.props.detailAble){//存在详情列
+                this.releaseWidth -= 30;
+                this.tableWidth += 30;
             }
             if (this.props.selectAble) {//存在勾选列
                 this.releaseWidth -= 60;

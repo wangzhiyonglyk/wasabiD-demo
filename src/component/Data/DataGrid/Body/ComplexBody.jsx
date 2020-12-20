@@ -23,17 +23,29 @@ export default {
         }
 
         this.state.data.map((rowData, rowIndex) => {
+            let detailtd = null;//详情列
             let ordertd = null;
             let checkedControl = null;//本行是否有选择框
+           
             let tds = []; //当前的列集合
             let key = this.getKey(rowIndex); //获取这一行的关键值
-
+            //详情列
+            if (this.props.detailAble) {
+                let iconCls = 'icon-arrow-down'; //详情列的图标
+                    if (this.state.detailIndex == key) {
+                        iconCls = 'icon-arrow-up'; //详情列-展开
+                    }
+                detailtd= <td key={'bodydetail' + rowIndex.toString()} name="wasabi-detail-column" className="wasabi-detail-column">
+                <div className='wasabi-grid-cell  '>
+                    <i style={{cursor:"pointer"}} className={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)}></i>
+                </div>
+            </td>
+            }
             //序号列
             if (this.props.rowNumber) {
                 ordertd = (
                     <td key={'bodyorder' + rowIndex.toString()} name="wasabi-order-column" className="wasabi-order-column">
-                        <div className='wasabi-grid-cell  '>
-                            {' '}
+                        <div className='wasabi-grid-cell  '> 
                             {(
                                 (this.state.pageIndex - 1) * this.state.pageSize +
                                 rowIndex +
@@ -79,6 +91,7 @@ export default {
                     );
                 }
             }
+
 
             //生成数据列
             let columnIndex = 0;//真正的序号列
@@ -158,10 +171,6 @@ export default {
                                     onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
                                     key={'col-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                                     export={"1"}//为了导出时处理数字化的问题
-                                    style={{
-                                        width: header.width ? header.width : null,
-                                        textAlign: header.align ? header.align : "center"
-                                    }}
                                     className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
                                 >
                                     <div
@@ -183,57 +192,20 @@ export default {
                             );
                         }
                         else {
-                            if (columnIndex == 0 && this.props.detailAble) {
-                                //在第一列显示详情
-                                let iconCls = 'icon-arrow-down'; //详情列的图标
-                                if (this.state.detailIndex == key) {
-                                    iconCls = 'icon-arrow-up'; //详情列-展开
-                                }
+                            tds.push(
+                                <td
+                                    export={"1"}//为了导出时处理数字化的问题
+                                    className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
+                                    onClick={this.onClick.bind(this, rowData, rowIndex)}
+                                    onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
+                                    key={'col-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
+                                >
+                                    <div className='wasabi-grid-cell' >
+                                        {content}
+                                    </div>
+                                </td>
+                            );
 
-                                tds.push(
-                                    <td
-                                        export={"1"}
-                                        className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-                                        onClick={this.onClick.bind(this, rowData, rowIndex)}
-                                        onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
-
-                                        key={'col-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
-                                    >
-                                        <div
-                                            className='wasabi-grid-cell'
-                                            style={{
-                                                width: header.width ? header.width : null,
-                                                textAlign: header.align ? header.align : "center"
-                                            }}
-                                        >
-
-                                            <LinkButton iconCls={iconCls} title='查看详情'
-                                                onClick={this.detailHandler.bind(this, rowData, rowIndex)}//查看详情
-                                            > {content}</LinkButton>
-                                        </div>
-                                    </td>
-                                );
-                            } else {
-                                tds.push(
-                                    <td
-                                        export={"1"}//为了导出时处理数字化的问题
-                                        className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-                                        onClick={this.onClick.bind(this, rowData, rowIndex)}
-                                        onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
-                                        key={'col-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
-                                    >
-                                        <div
-                                            className='wasabi-grid-cell'
-                                            style={{
-                                                width: header.width ? header.width : null,
-                                                textAlign: header.align
-                                            }}
-                                        >
-                                            {content}
-                                        </div>
-                                    </td>
-                                );
-                            }
                         }
 
                         columnIndex++;
@@ -250,6 +222,7 @@ export default {
                     key={'row' + rowIndex.toString()}
                     onMouseDown={this.onTRMouseDown.bind(this, rowIndex)}
                 >
+                    {detailtd}
                     {ordertd}
                     {checkedControl}
                     {tds}

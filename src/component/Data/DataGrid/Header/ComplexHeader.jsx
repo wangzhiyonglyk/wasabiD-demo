@@ -134,6 +134,13 @@ export default {
 </div>
             </th>)
         }
+             //处理详情列
+             if(this.props.detailAble){
+                headerControl[0].unshift(<th key='headerdetail' rowSpan={headerControl.length} name='wasabi-detail-column' className="wasabi-detail-column">
+                <div className='wasabi-grid-cell ' >      
+</div>
+            </th>)
+             }
         return <thead>
             {
                 headerControl && headerControl.map((tritem, rowindex) => {

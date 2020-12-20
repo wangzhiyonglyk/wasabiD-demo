@@ -5,7 +5,7 @@
 .wasabi-grid {
   width: 100%;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 /*
 列表内部一组件的样式
@@ -77,16 +77,14 @@
     border-collapse: collapse;
     background-color: transparent;
     box-sizing: border-box;
+    table-layout: fixed;
 }
 .table td,.table th
 {    border: 1px solid #ebeef5;
-   padding: 12px 5px;
+   padding: 10px 5px;
     vertical-align: middle;
     box-sizing: border-box;
     text-align:center;
-}
-.table th .wasabi-grid-cell{
-  color: #5f6371;
 }
 
 .table>thead>tr>th {
@@ -135,24 +133,16 @@
 单元格样式
 */
 .wasabi-grid .wasabi-grid-cell{
-  display: inline-block;
   width: 100%;
-  overflow: visible;
   box-sizing:border-box;
+  overflow: visible;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-all;
  
 }
 
 .wasabi-grid .wasabi-check-column .wasabi-grid-cell{
-  width: 20px;
-}
-
-/*
-表头文字不换行
-*/
-.wasabi-grid th .wasabi-grid-cell{
-  white-space: nowrap;
-}
-.wasabi-grid .wasabi-grid-cell .wasabi-form-group{
   width: 20px;
 }
 

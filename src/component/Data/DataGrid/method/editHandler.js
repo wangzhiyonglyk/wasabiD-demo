@@ -6,7 +6,7 @@
  * 2020-03-15 增加contentType值
  * 作为DataGrid扩展功能
  */
-import React, { Component } from "react";
+import React from "react";
 import func from "../../../libs/func.js";
 import FetchModel from "../../../Model/FetchModel.js";
 import Msg from "../../../Info/Msg.jsx";
@@ -17,10 +17,9 @@ export default  {
      * @param {*} rowData 
      * @param {*} rowIndex 
      */
-    detailHandler: function (rowData,rowIndex,name,title,event) {//执行显示详情功能
+    detailHandler: function (rowData,rowIndex,event) {//执行显示详情功能
         event.preventDefault();
         event.stopPropagation();
-        console.log("dd")
         var key = this.getKey(rowIndex);//获取关键值
         if (key == this.state.detailIndex) {
             this.setState({
@@ -38,7 +37,7 @@ export default  {
                     })
                 }
                 else {
-                    let  colSpan = this.columnSum;//总列数
+                    let  colSpan = this.columnSum+1;//总列数+1,因为本身存在详情列
             
                     if (this.props.selectAble) {
                         colSpan++;

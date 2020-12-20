@@ -22,17 +22,6 @@ class Home extends React.Component {
   }
   componentDidMount() {
    
-    api.ajax({
-      url:"http://locahost:7007/user/login",
-      type:"post",
-      data:{
-        code:"dfsdfds",
-        appid:"cd"
-      },
-      success:(res)=>{
-        console.log(res)
-      }
-    })
     this.setState({
       data:[ { id:1, pId:0, name:"父节点1 - 展开", open:true},
       { id:11, pId:1, name:"父节点11 - 折叠"},
@@ -62,7 +51,7 @@ class Home extends React.Component {
       { id:232, pId:23, name:"叶子节点232"},
       { id:233, pId:23, name:"叶子节点233"},
       { id:234, pId:23, name:"叶子节点234"},
-      { id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}]
+      { id:3, pId:0, name:"父节点3 - 没有子节点父节点3 - 没有子节点父节点3 - 没有子节点父节点3 - 没有子节点父节点3 - 没有子节点", isParent:true}]
     })
   
   }
@@ -110,7 +99,8 @@ value:"你好"
   }
   render() {
     return <div style={{height:"100%"}}>
-   <DataGrid pagination={true} detailAble={true} detailHandler={(rowData,rowIndex)=>{return "我的详情"}} selectAble={true} headers={[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",width:100,sortAble:true},{name:"name",label:"名称"}]]} data={this.state.data}></DataGrid>
+   <DataGrid  pagination={true} detailAble={true} detailHandler={(rowData,rowIndex)=>{return "我的详情"}} 
+    headers={[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",sortAble:true,},{name:"name",label:"名称",width:140}]]} data={this.state.data}></DataGrid>
    </div>
 
   }

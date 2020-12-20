@@ -16,10 +16,14 @@ export default {
         ) {
             return;
         }
+        if (this.props.detailAble) {
+            colgroup.push(<col key="wasabi-check-column" name="wasabi-check-column" width={30}></col>)
+        }
         //处理序号列的宽度
         if (this.props.rowNumber) {
             colgroup.push(<col key="wasabi-order-column" name="wasabi-order-column" width={60}></col>)
         }
+        //处理选择列的宽度
         if (this.props.selectAble) {
             colgroup.push(<col key="wasabi-check-column" name="wasabi-check-column" width={60}></col>)
         }
@@ -346,7 +350,7 @@ export default {
                 ref='realTableContainer'
             >
 
-                <table style={{width:this.tableWidth?this.tableWidth:"100%"}} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} key='realTable' ref='realTable'>
+                <table id="realTableid" style={{width:this.tableWidth?this.tableWidth:"100%"}} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} key='realTable' ref='realTable'>
                     {
                         /**colgroup */
                         this.renderColGruop()
@@ -370,7 +374,7 @@ export default {
         /* 头部分页 */
         grid.push(
             <div
-                className='wasabi-pagination row'
+                className='wasabi-pagination '
                 ref='toppagination'
                 key="toppagination"
                 style={{
@@ -391,7 +395,7 @@ export default {
         {/* 底部分页 */ }
         grid.push(<div
             key="bottompagination"
-            className='wasabi-pagination row'
+            className='wasabi-pagination '
             ref='bottompagination'
             style={{
                 display:

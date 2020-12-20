@@ -165,6 +165,25 @@ let SingleHeader = {
                 );
             }
         }
+        //处理详情列
+        if(this.props.detailAble){
+            if (headers1.length > 0) {
+                headers1.unshift(<th key='headerdetail' rowSpan={2} name='wasabi-detail-column' className="wasabi-detail-column">
+                    <div className='wasabi-grid-cell '>
+                       
+        </div>
+                </th>)
+            }
+            else {
+                headers2.unshift(
+                    <th key='headerdetail' name='wasabi-detail-column' className="wasabi-detail-column" >
+                        <div className='wasabi-grid-cell ' >
+                            
+          </div>
+                    </th>
+                );
+            }
+        }
         //返回数据
         if (headers1.length > 0) {
             //多行

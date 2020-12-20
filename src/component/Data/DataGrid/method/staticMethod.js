@@ -64,14 +64,13 @@ export default {
 
         title = title+ func.dateformat(new Date(), "yyyy-MM-dd");
         let tableHtml = "<table border='1'> ";
-        let lastIndex = this.refs.realTable.children[2].children[0].children.length;//列数
         //导出表头
         tableHtml += "<thead>";
         for(let rowIndex=0;rowIndex<this.refs.realTable.children[1].children.length;rowIndex++){
             tableHtml+="<tr>"
             for (let columnIndex = 0; columnIndex <this.refs.realTable.children[1].children[rowIndex].children.length; columnIndex++) {
                 let html = this.refs.realTable.children[1].children[rowIndex].children[columnIndex].outerHTML;
-                if (html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
+                if (html.indexOf("wasabi-detail-column") > -1||html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
                     continue;
                 }
                 tableHtml += html;
@@ -85,9 +84,9 @@ export default {
 
             for (let value of this.state.checkedIndex.values()) {
                 tableHtml += "<tr>"
-                for (let i = 0; i < lastIndex; i++) {
-                    let html = this.refs.realTable.children[2].children[value].children[i].outerHTML;
-                    if (html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
+                for (let columnIndex = 0; columnIndex <  this.refs.realTable.children[2].children[rowIndex].children.length; columnIndex++) {
+                    let html = this.refs.realTable.children[2].children[value].children[columnIndex].outerHTML;
+                    if (html.indexOf("wasabi-detail-column") > -1||html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
                         continue;
                     }
                     tableHtml += html;
@@ -100,10 +99,10 @@ export default {
         else {//导出全部行
             for (let rowIndex = 0; rowIndex < this.state.data.length; rowIndex++) {
                 tableHtml += "<tr>"
-                for (let columnIndex = 0; columnIndex < lastIndex; columnIndex++) {
+                for (let columnIndex = 0; columnIndex < this.refs.realTable.children[2].children[rowIndex].children.length; columnIndex++) {
                     if (this.refs.realTable.children[2].children.length > rowIndex) {
                         let html = this.refs.realTable.children[2].children[rowIndex].children[columnIndex].outerHTML;
-                        if (html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
+                        if (html.indexOf("wasabi-detail-column") > -1||html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
                             continue;
                         }
                         tableHtml += html;
