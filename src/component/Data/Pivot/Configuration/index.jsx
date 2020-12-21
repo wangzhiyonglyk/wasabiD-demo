@@ -5,8 +5,9 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import func from "../../libs/func";
-import diff from "../../libs/diff";
+import func from "../../../libs/func";
+import diff from "../../../libs/diff";
+
 class Configuration extends Component {
     constructor(props) {
         super(props);
@@ -41,8 +42,11 @@ class Configuration extends Component {
         }
        
     }
+    initData(){
+       
+    }
     render(){
-
+         return null;
     }
 }
 
@@ -62,5 +66,7 @@ Configuration.defaultProps = {
     columns:[],//列维度
     values: [],//统计参数
     filters:[],//筛选条件
-    applyHandler:[],//请求数据
+    applyHandler:null,//请求数据处理
 }
+
+export default Configuration;

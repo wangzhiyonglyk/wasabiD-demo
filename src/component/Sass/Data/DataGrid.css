@@ -15,25 +15,14 @@
   padding:0px;
   min-height:0px;
   margin:0px;
+  height: 20px;
 }
 .wasabi-grid .wasabi-checkul
 {
   margin: 0px;
   padding: 0px;
-  height: 12px;
 }
-.wasabi-grid .wasabi-checkul li
-{
-  margin:0px;
-  padding:0px;
-  height: 12px;
-  width: 12px;
-}
-.wasabi-grid .wasabi-checkul .checkbox + label {
-  top: 0px;
-  left: 0px;
-  margin: 0px;
-}
+
 
    /*
    表格容器
@@ -108,6 +97,10 @@
 .wasabi-grid .table > tbody > tr:nth-of-type(odd) {
   background-color: #fafafa;
 }
+.wasabi-pivot .wasabi-grid .table > tbody > tr:nth-of-type(odd) {
+  background-color: white;
+}
+
 .wasabi-grid .table > tbody > tr.selected {
   background-color: #fbec88;
   border: 1px solid #fad42e;
@@ -116,6 +109,9 @@
 
 .wasabi-grid .table > tbody > tr:hover {
     background-color: #f5f7fa;
+}
+.wasabi-pivot .wasabi-grid .table > tbody > tr:hover {
+  background-color: #f5f7fa;
 }
 .wasabi-grid .table > tbody > tr.selected:hover {
   background-color: #fbec88;
@@ -136,13 +132,6 @@
   white-space: pre-wrap;
   text-overflow: ellipsis;
 }
-
-.wasabi-grid .wasabi-check-column .wasabi-grid-cell{
-  width: 20px;
-}
-
-
-
 
 /*
 排序样式

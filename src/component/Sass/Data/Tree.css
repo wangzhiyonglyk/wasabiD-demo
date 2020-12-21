@@ -6,6 +6,7 @@
 }
 .wasabi-pivot .wasabi-tree{
   border-top:1px solid #ebeef5 ;
+ 
   
 }
 .wasabi-tree .treenode-container{
@@ -27,16 +28,18 @@
 
 .wasabi-tree .wasabi-form-group{
   padding: 0;
-  margin-top: -4px;
   min-height: 0;
-  height: 16px;
+  margin: 0px;
+  width: 25px;
+  margin-right: 10px;
+  margin-top: 1px;
 
 }
 .wasabi-tree .wasabi-has-error .checkbox-label{
   border: 1px solid #dcdfe6;
 }
 .wasabi-tree .wasabi-checkul .checkbox:checked+label:after{
-  top:-4px;
+  top:-12px;
 }
 .wasabi-tree .checkbox-label,.wasabi-tree .checktext{
   display: none;
@@ -107,13 +110,12 @@
 }
 
 .wasabi-tree li ul {
-  margin-left: 10px;
+  margin-left: 30px;
   display: none;
-  padding-left: 20px;
 }
 .wasabi-tree li ul.wasabi-checkul{
   display: block;
-  margin: 0px;
+  margin: 10px;
     padding: 0px;
 }
 .wasabi-tree li ul.show

@@ -25,7 +25,7 @@ import  Track from  './Data/Track.jsx' ;//物流跟踪
 import  Step from  './Data/Step' ;//进度条
 import  StepItem from  './Data/Step/StepItem' ;//进度条
 import Avatar from "./Data/Avatar";//头像上传组件
-
+import Pivot from "./Data/Pivot";//交叉表
 
 /*****************表单组件******************/
 import  SearchBar from  './Form/SearchBar.jsx' ;//表单查询组件
@@ -93,7 +93,7 @@ import  ClickAway from  './libs/ClickAway.js' ;//全局单击事件
 
 export   {
     Button,LinkButton,Toolbar, Badge,Dropdown,DropdownItem,
-    DataGrid,Tree,Transfer,Progress,Step,StepItem,Avatar,
+    DataGrid,Tree,Transfer,Progress,Step,StepItem,Avatar,Pivot,
     SearchBar,Input,Form,SearchBox,
     Time,DateD,DateTime,DateTimeRange,TimeRange,DateRange,
     Box,Drag,Drop,Layout,Center,Header,Footer,Left,Right,Container,Row,Col,

@@ -1,4 +1,15 @@
 .wasabi-pivot{
     position: relative;
     width: 100%;
+    display: flex;
+}
+
+.wasabi-pivot-left{
+    height: 100%;
+    width: 400px;
+
+}
+
+.wasabi-pivot-right {
+    width: calc(100% - 400px);
 }

@@ -25,7 +25,7 @@ export default {
         }
         //处理选择列的宽度
         if (this.props.selectAble) {
-            colgroup.push(<col key="wasabi-check-column" name="wasabi-check-column" width={60}></col>)
+            colgroup.push(<col key="wasabi-check-column" name="wasabi-check-column" width={37}></col>)
         }
         if (this.single) {
             colgroup = this.renderSingleColGroup(colgroup);

@@ -239,8 +239,8 @@ class DataGrid extends Component {
                 this.tableWidth += 30;
             }
             if (this.props.selectAble) {//存在勾选列
-                this.releaseWidth -= 60;
-                this.tableWidth += 60;
+                this.releaseWidth -= 37;
+                this.tableWidth += 37;
             }
             if (this.props.rowNumber) {////存在序号列
                 this.releaseWidth -= 60;

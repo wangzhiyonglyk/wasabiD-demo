@@ -12,34 +12,26 @@ desc:日期选择样式
 
 /*下拉图标*/
 .combobox .comboxbox-icon{
-  font-family: "iconfont";
   font-style: normal;
   display: block;
   width: 22px;
-  height: 40px;
+  height: 24px;
   position: absolute;
-  right: 15px;
-  top: 4px;
+  right: 10px;
+  top: 8px;
   cursor: pointer;
   text-align: center;
-
+  transition: all,transform .6s;
 }
 .wasabi-form-group-body.readOnly .combobox .comboxbox-icon{
   cursor: not-allowed;
 }
 
 .combobox .comboxbox-icon:before{
-  transition: all,transform .6s;
-  font-size: 32px;
-
+  font-size: 24px;
   color: #e4e7ed;
-  -webkit-transition: all,transform .6s;
-  -moz-transition: all,transform .6s;
-  -ms-transition: all,transform .6s;
-  -o-transition: all,transform .6s;
 }
-
-.combobox .comboxbox-icon.rotate:before{
+.combobox .comboxbox-icon.rotate{
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
 }
@@ -55,6 +47,7 @@ desc:日期选择样式
   top: 14px;
   color: #e4e7ed;
   cursor: pointer;
+  font-size: 12px;
 
 }
 

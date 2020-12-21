@@ -1,59 +1,59 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {Article,Avatar,Input,DataGrid,Tree, Left, Right} from "../../component"
+import { Article, Avatar, Input, DataGrid, Tree, Left, Right, Pivot } from "../../component"
 import api from "../../libs/api"
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data:[
-		
-       
+      data: [
+
+
       ],
       tabs: [{
-        title:"你好"
-      },{
-        title:"我好"
+        title: "你好"
+      }, {
+        title: "我好"
       }],
     }
-    this.onClick=this.onClick.bind(this)
+    this.onClick = this.onClick.bind(this)
 
   }
   componentDidMount() {
-   
+
     this.setState({
-      data:[ { id:1, pId:0, name:"父节点1 - 展开", open:true},
-      { id:11, pId:1, name:"父节点11 - 折叠"},
-      { id:111, pId:11, name:"叶子节点111"},
-      { id:112, pId:11, name:"叶子节点112"},
-      { id:113, pId:11, name:"叶子节点113"},
-      { id:114, pId:11, name:"叶子节点114"},
-      { id:12, pId:1, name:"父节点12 - 折叠"},
-      { id:121, pId:12, name:"叶子节点121"},
-      { id:122, pId:12, name:"叶子节点122"},
-      { id:123, pId:12, name:"叶子节点123"},
-      { id:124, pId:12, name:"叶子节点124"},
-      { id:13, pId:1, name:"父节点13 - 没有子节点", isParent:true},
-      { id:2, pId:0, name:"父节点2 - 折叠"},
-      { id:21, pId:2, name:"父节点21 - 展开", open:true},
-      { id:211, pId:21, name:"叶子节点211"},
-      { id:212, pId:21, name:"叶子节点212"},
-      { id:213, pId:21, name:"叶子节点213"},
-      { id:214, pId:21, name:"叶子节点214"},
-      { id:22, pId:2, name:"父节点22 - 折叠"},
-      { id:221, pId:22, name:"叶子节点221"},
-      { id:222, pId:22, name:"叶子节点222"},
-      { id:223, pId:22, name:"叶子节点223"},
-      { id:224, pId:22, name:"叶子节点224"},
-      { id:23, pId:2, name:"父节点23 - 折叠"},
-      { id:231, pId:23, name:"叶子节点231"},
-      { id:232, pId:23, name:"叶子节点232"},
-      { id:233, pId:23, name:"叶子节点233"},
-      { id:234, pId:23, name:"叶子节点234"},
-      { id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}]
+      data: [{ id: 1, pId: 0, name: "父节点1 - 展开", open: true },
+      { id: 11, pId: 1, name: "父节点11 - 折叠" },
+      { id: 111, pId: 11, name: "叶子节点111" },
+      { id: 112, pId: 11, name: "叶子节点112" },
+      { id: 113, pId: 11, name: "叶子节点113" },
+      { id: 114, pId: 11, name: "叶子节点114" },
+      { id: 12, pId: 1, name: "父节点12 - 折叠" },
+      { id: 121, pId: 12, name: "叶子节点121" },
+      { id: 122, pId: 12, name: "叶子节点122" },
+      { id: 123, pId: 12, name: "叶子节点123" },
+      { id: 124, pId: 12, name: "叶子节点124" },
+      { id: 13, pId: 1, name: "父节点13 - 没有子节点", isParent: true },
+      { id: 2, pId: 0, name: "父节点2 - 折叠" },
+      { id: 21, pId: 2, name: "父节点21 - 展开", open: true },
+      { id: 211, pId: 21, name: "叶子节点211" },
+      { id: 212, pId: 21, name: "叶子节点212" },
+      { id: 213, pId: 21, name: "叶子节点213" },
+      { id: 214, pId: 21, name: "叶子节点214" },
+      { id: 22, pId: 2, name: "父节点22 - 折叠" },
+      { id: 221, pId: 22, name: "叶子节点221" },
+      { id: 222, pId: 22, name: "叶子节点222" },
+      { id: 223, pId: 22, name: "叶子节点223" },
+      { id: 224, pId: 22, name: "叶子节点224" },
+      { id: 23, pId: 2, name: "父节点23 - 折叠" },
+      { id: 231, pId: 23, name: "叶子节点231" },
+      { id: 232, pId: 23, name: "叶子节点232" },
+      { id: 233, pId: 23, name: "叶子节点233" },
+      { id: 234, pId: 23, name: "叶子节点234" },
+      { id: 3, pId: 0, name: "父节点3 - 没有子节点", isParent: true }]
     })
-  
+
   }
   beforeRename(id, text) {
 
@@ -75,35 +75,48 @@ class Home extends React.Component {
 
   }
   onChecked(checked) {
-   let data= this.refs.tree.getChecked();
-   console.log("data",data);
+    let data = this.refs.tree.getChecked();
+    console.log("data", data);
   }
   onClick() {
-  this.refs.p.setValue(80);
-  this.refs.s.setActiveIndex(0);
-  this.setState({
-value:"你好"
-  })
+    this.refs.p.setValue(80);
+    this.refs.s.setActiveIndex(0);
+    this.setState({
+      value: "你好"
+    })
   }
-  onEdit(){
+  onEdit() {
     console.log("de")
   }
-  ontreeClick(){
+  ontreeClick() {
     console.log("de1")
   }
-  beforeRename(){
+  beforeRename() {
     return false;
   }
-  onSelect(value,text,name){
-    console.log(value,text,name);
+  onSelect(value, text, name) {
+    console.log(value, text, name);
   }
   render() {
-    return <div className="wasabi-pivot" style={{height:"100%"}}>
-     <div style={{float:"left",width:400,paddingTop:82}}><Tree data={this.state.data} simpleData={true} idField="id" textField="name"></Tree></div> 
-     <div style={{float:"right",width:"calc(100% - 400px)"}}> <DataGrid  pagination={false}  detailHandler={(rowData,rowIndex)=>{return "我的详情"}} 
-    headers={[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",sortAble:true,},{name:"name",label:"名称"}]]} data={this.state.data}></DataGrid></div>
+    return <div>
+      <Input key="select" type="select"></Input>
+      <Input key="picker" type="picker"></Input>
+      <Input key="time" type="time"></Input>
+      <Input key="date" type="date"></Input>
+      <Input key="datetime" type="datetime"></Input>
+      <Pivot columns={[{ name: "bank", label: "银行" }, { name: "branch", label: "支行" },{ name: "username", label: "姓名" }]} data={[
+      { bank: "中国银行", branch: "深圳分行", username: "王志勇" },
+      { bank: "中国银行", branch: "深圳分行", username: "田玉红" },
+      { bank: "中国银行", branch: "深圳分行", username: "多多" },
+      { bank: "建设银行", branch: "深圳分行", username: "王志勇" },
+      { bank: "建设银行", branch: "深圳分行", username: "田玉红" },
+      { bank: "中国银行", branch: "罗湖分行", username: "王志勇" },
+      { bank: "中国银行", branch: "罗湖分行", username: "田玉红" },
+      { bank: "建设银行", branch: "罗湖分行", username: "王志勇" },
+      { bank: "建设银行", branch: "罗湖分行", username: "田玉红" }
+    ]}></Pivot>
+
     </div>
- 
 
   }
 }

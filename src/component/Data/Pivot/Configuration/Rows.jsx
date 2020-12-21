@@ -1,13 +1,13 @@
 /**
  * create by wangzhiyong
  * date:2020-12-21
- * desc 交叉表中统计字段
+ * desc 交叉表中行维度
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import func from "../../libs/func";
-import diff from "../../libs/diff";
-class Values extends Component {
+import func from "../../../libs/func";
+import diff from "../../../libs/diff";
+class Rows extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,16 +28,18 @@ class Values extends Component {
 
     }
     render() {
-
+        return null;
     }
 }
 
 
-Values.propTypes = {
+Rows.propTypes = {
     data: PropTypes.array,//数据,
 }
 
-Values.defaultProps = {
+Rows.defaultProps = {
     data: [],//数据,
 
 }
+
+export default Rows;

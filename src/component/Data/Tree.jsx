@@ -319,6 +319,8 @@ Tree.propTypes = {
     beforeRightClick: PropTypes.func,//鼠标右键前事件
 }
 Tree.defaultProps = {
+    style:{},
+    className:"",
     name: null,
     text: null,
     id: null,

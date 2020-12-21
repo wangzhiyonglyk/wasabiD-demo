@@ -5,9 +5,9 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import func from "../../libs/func";
-import diff from "../../libs/diff";
-class Fields extends Component {
+import func from "../../../libs/func";
+import diff from "../../../libs/diff";
+class Filters extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,16 +28,18 @@ class Fields extends Component {
 
     }
     render() {
-
+         return null;
     }
 }
 
 
-Fields.propTypes = {
+Filters.propTypes = {
     data: PropTypes.array,//数据,
 }
 
-Fields.defaultProps = {
+Filters.defaultProps = {
     data: [],//数据,
 
 }
+
+export default Filters;

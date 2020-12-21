@@ -646,7 +646,7 @@ class TreeNode extends Component {
             hide={this.props.checkAble ? false : this.props.checkAble ? false : true}
             half={this.state.checkValue == "half"}
             name={"node" + this.props.id}
-            style={{width:13}}
+           
             value={this.state.checked ? this.state.id : ""} data={[{ value: this.state.id, text: "" }]}
             onSelect={this.onNodeChecked.bind(this)}></Input>,
         <div key="2" draggable={this.props.dragAble} onDragEnd={this.onDragEnd.bind(this)} onDragStart={this.onDragStart.bind(this)}
