@@ -145,14 +145,16 @@ class DataGrid extends Component {
         }
       //处理出现滚动条的现象
         this.containerWidth = document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
-       if(this.containerWidth<this.tableWidth){
-           //说明出现了滚动条，重新计算一下
-           this.computeHeaderStyleAndColumnWidth();
+       if(this.containerWidth<this.tableWidth||this.containerWidth<=0){
+           //说明出现了滚动条，或者父组件还没有渲染完成，重新计算一下
+           setTimeout(()=>{
+            this.computeHeaderStyleAndColumnWidth();
+           },500) 
        }
     }
 
     componentDidMount() {
-
+        this.computeHeaderStyleAndColumnWidth();//计算列，宽度等参数
         if (this.state.url) {
             //如果存在url,
             this.updateHandler(
@@ -164,7 +166,7 @@ class DataGrid extends Component {
                 this.state.params
             );
         }
-        this.computeHeaderStyleAndColumnWidth();//计算列，宽度等参数
+       
 
     }
 

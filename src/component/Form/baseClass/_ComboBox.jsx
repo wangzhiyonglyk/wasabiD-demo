@@ -32,6 +32,7 @@ export default function (WrappedComponent) {
                 realData = newData.data;
             }
             this.state = {
+                type:this.props.type,
                 url: this.props.url,//传来的url
                 params: func.clone(this.props.params),//参数
                 oldPropsValue: this.props.value,//保存用于判断是否通过父组件强制更新值
@@ -86,7 +87,7 @@ export default function (WrappedComponent) {
                 newState.rawData = nextProps.data;//保留原始数据
                 let newData = propsTran.setComboxValueAndText(nextProps.type, newState.value || prevState.value, nextProps.data, nextProps.type == "treepicker" ? nextProps.idField : nextProps.valueField, prevState.textField);
                 let realData;
-                if (this.props.type == "picker" && prevState.simpleData) {//如果是简单数据类型
+                if (prevState.type == "picker" && prevState.simpleData) {//如果是简单数据类型
                     realData = func.toTreeData(newData.data, nextProps.valueField || nextProps.idField || "id", nextProps.parentField || "pId", nextProps.textField);
                 } else {
                     //treepicker在tree组件处理了

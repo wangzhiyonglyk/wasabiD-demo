@@ -16,6 +16,7 @@ desc:表单输入框样式
   float: left;
   white-space: nowrap;
   min-height: 40px;
+  min-width: 200px;
 }
 
 /*

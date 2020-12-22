@@ -14,13 +14,13 @@ export default {
      * @param {*} data 
      */
     setRowsAndColumns(columns, rows, data) {
-        console.log(1)
+      
         if (data && data instanceof Array) {
             for (let i = 0; i < data.length; i++) {
                 for (let c = 0; c < columns.length; c++) {
                     if (!columns[c].data) { columns[c].data = [] };
-                    if (columns[c].data.indexOf(data[i][columns[c].name]) <= -1) {
-                        columns[c].data.push(data[i][columns[c].name]);//插入
+                    if (columns[c].rows.indexOf(data[i][columns[c].name]) <= -1) {
+                        columns[c].rows.push(data[i][columns[c].name]);//插入
                     }
 
                 }

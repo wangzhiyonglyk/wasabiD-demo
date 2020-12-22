@@ -18,7 +18,7 @@ desc:日期选择样式
   height: 24px;
   position: absolute;
   right: 10px;
-  top: 8px;
+  top: 10px;
   cursor: pointer;
   text-align: center;
   transition: all,transform .6s;
@@ -28,7 +28,7 @@ desc:日期选择样式
 }
 
 .combobox .comboxbox-icon:before{
-  font-size: 24px;
+  font-size: 20px;
   color: #e4e7ed;
 }
 .combobox .comboxbox-icon.rotate{

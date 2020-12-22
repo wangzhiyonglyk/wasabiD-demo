@@ -99,6 +99,7 @@ class Home extends React.Component {
   }
   render() {
     return <div>
+        <Input key="idcard" type="idcard"></Input>
       <Input key="select" type="select"></Input>
       <Input key="picker" type="picker"></Input>
       <Input key="time" type="time"></Input>
