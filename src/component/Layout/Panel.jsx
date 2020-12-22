@@ -47,7 +47,7 @@ class Panel extends React.Component {
             style.width = "100%";
 
         }
-        style.height = this.state.expand ? style.height : 0;
+        style.height = this.props.expand ? style.height : 0;
         style.display = this.state.close ? "none" : "inline-block";
         return (
             <div className={"wasabi-panel panel-" + this.props.theme + " " + this.props.className} style={style}  >

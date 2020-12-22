@@ -111,7 +111,7 @@ export default {
                             <option key="7" value={500}>500</option>
                             <option key="8" value={1000}>1000</option>
                         </select>&nbsp;条&nbsp;&nbsp; 
-                        {<i title="刷新"  style={{fontSize:16,cursor:"pointer"}} className="icon-refresh" onClick={this.reload.bind(this)}></i>}
+                        {<i title="刷新"  style={{fontSize:16,cursor:"pointer"}} className="icon-refresh" onClick={this.reload.bind(this,this.state.params,this.state.url)}></i>}
                         &nbsp;&nbsp;
                         {
                            <div style={{display:"inline-block",height:20,position:"relative",width:30}}> <i title="导出" style={{cursor:"pointer", fontSize:20,position:"absolute",top:5}} className="icon-excel" onClick={this.export.bind(this,false,"grid-")}></i></div>

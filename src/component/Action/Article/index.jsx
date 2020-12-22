@@ -125,7 +125,7 @@ class Article extends React.Component {
         }
     }
     add(type) {
-        let content = this.state.content;
+        let content = this.state.tempContent;
 
         switch (type) {
             case "title":
@@ -155,11 +155,16 @@ class Article extends React.Component {
 
         }
         this.setState({
-            content: content,
+            tempContent: content,
             activeIndex: content.length - 1
         }, () => {
             let contentNode = document.getElementsByClassName("wasabi-article-content");
-            contentNode[0].children[contentNode[0].children.length - 1].children[0].focus();
+            try{
+                contentNode[0].children[contentNode[0].children.length - 1].children[0].focus();
+            }catch(e){
+
+            }
+          
         })
 
 
@@ -167,11 +172,11 @@ class Article extends React.Component {
     delete(index) {
 
         Msg.confirm("确定删除此段吗？", () => {
-            let content = this.state.content;
+            let content = this.state.tempContent;
             content.splice(index, 1);
 
             this.setState({
-                content: content,
+                tempContent: content,
                 wordNum: this.computeWordNum(content)
             })
         })
@@ -190,15 +195,21 @@ class Article extends React.Component {
             activeIndex: index
         }, () => {
             let contentNode = document.getElementsByClassName("wasabi-article-content");
-            contentNode[0].children[index].children[0].focus();
+            try{
+                contentNode[0].children[index].children[0].focus();
+            }
+            catch(e){
+
+            }
+           
         })
     }
     contentTxtChange(index, event) {
 
-        this.state.content[index].content = event.target.textContent;
+        this.state.tempContent[index].content = event.target.textContent;
         setTimeout(() => {
             this.setState({
-                content: this.state.content,
+                tempContent: this.state.content,
                 wordNum: this.computeWordNum(this.state.content)
             })
         }, 100);
@@ -206,7 +217,7 @@ class Article extends React.Component {
 
     }
     imgUploadSuccess(res) {
-        let content = this.state.content;
+        let content = this.state.tempContent;
         if (this.props.imgUploadSuccess) {
             res = this.props.imgUploadSuccess(res);//自行计算
         }
@@ -217,7 +228,7 @@ class Article extends React.Component {
             content[this.state.activeIndex].content = res;
         }
         this.setState({
-            content: content
+            tempContent: content
         })
     }
     computeWordNum(content) {

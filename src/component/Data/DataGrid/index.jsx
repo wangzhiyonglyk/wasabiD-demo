@@ -185,7 +185,7 @@ class DataGrid extends Component {
         this.preColumnWidth = 0;//每一列的宽度
         this.tableWidth = 0;//表格宽度，因为有可能表格列都设置宽度，总宽度不够网格的整体宽表
 
-        if (this.state.headers && this.state.headers instanceof Array) {
+        if (this.containerWidth>0&&this.state.headers && this.state.headers instanceof Array) {
             for (let i = 0; i < this.state.headers.length; i++) {
 
                 if (this.state.headers[i] instanceof Array) {
@@ -262,6 +262,9 @@ class DataGrid extends Component {
             this.setState({})
 
         }
+        else {
+            this.containerWidth="100%";
+        }
     }
 
 
@@ -277,7 +280,7 @@ class DataGrid extends Component {
 
                 style={style}
             >
-                {this.containerWidth > 0 ? this.renderGrid() : null}
+                {this.containerWidth ? this.renderGrid() : null}
             </div>
         );
     }
