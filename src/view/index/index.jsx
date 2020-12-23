@@ -35,25 +35,7 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
-    api.ajax({
-      url: 'http://10.136.1.104:20000/searchBigData/wbDetail',
-      type: 'POST',
-      
-      contentType:"application/json",
-      data: JSON.stringify({
-        userId:"123456",
-        tbName:"BROAD_OPEN_CARD_MODEL",
-        pageNo:1,
-        pageSize:20
-      }),
-      
-      success: res => {
-      
-      }
-      ,error(message){
-        Msg.error(message)
-      }
-    });
+ 
     api.message();
     api.location();
   }

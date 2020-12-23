@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Article, Avatar, Input, DataGrid, Tree, Left, Right, Pivot } from "../../component"
+import { Article, Avatar, Input, DataGrid, Tree, Left, Right, Pivot,TabPanel,Tabs } from "../../component"
 import api from "../../libs/api"
 class Home extends React.Component {
   constructor(props) {
@@ -99,23 +99,8 @@ class Home extends React.Component {
   }
   render() {
     return <div>
-        <Input key="idcard" type="idcard"></Input>
-      <Input key="select" type="select"></Input>
-      <Input key="picker" type="picker"></Input>
-      <Input key="time" type="time"></Input>
-      <Input key="date" type="date"></Input>
-      <Input key="datetime" type="datetime"></Input>
-      <Pivot columns={[{ name: "bank", label: "银行" }, { name: "branch", label: "支行" },{ name: "username", label: "姓名" }]} data={[
-      { bank: "中国银行", branch: "深圳分行", username: "王志勇" },
-      { bank: "中国银行", branch: "深圳分行", username: "田玉红" },
-      { bank: "中国银行", branch: "深圳分行", username: "多多" },
-      { bank: "建设银行", branch: "深圳分行", username: "王志勇" },
-      { bank: "建设银行", branch: "深圳分行", username: "田玉红" },
-      { bank: "中国银行", branch: "罗湖分行", username: "王志勇" },
-      { bank: "中国银行", branch: "罗湖分行", username: "田玉红" },
-      { bank: "建设银行", branch: "罗湖分行", username: "王志勇" },
-      { bank: "建设银行", branch: "罗湖分行", username: "田玉红" }
-    ]}></Pivot>
+<DataGrid pagination={false}  
+    headers={[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",sortAble:true,},{name:"name",label:"名称"}]]} data={this.state.data}></DataGrid>
 
     </div>
 

@@ -102,7 +102,7 @@ let location = function () {
 
             path = './home.html'
         }
-        window.location.href = path + window.location.search//
+        window.location.href = path + window.location.href.substring(window.location.href.indexOf("?"))//
     }
 
 

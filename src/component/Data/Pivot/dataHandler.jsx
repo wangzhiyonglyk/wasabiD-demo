@@ -14,7 +14,7 @@ export default {
      * @param {*} data 
      */
     setRowsAndColumns(columns, rows, data) {
-      
+      return;
         if (data && data instanceof Array) {
             for (let i = 0; i < data.length; i++) {
                 for (let c = 0; c < columns.length; c++) {

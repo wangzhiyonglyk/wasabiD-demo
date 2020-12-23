@@ -52,12 +52,17 @@ class DataGrid extends Component {
         let data = [];
         this.containerWidth = 0;//表格的宽度
         if (this.props.data instanceof Array) {
-            data = this.props.data;
+            data = func.clone(this.props.data);
         }
-     
+        this.single = true;//默认是简单的表头
+        for (let i = 0; i < this.props.headers.length; i++) {
+            if (this.props.headers[i] instanceof Array) {
+                this.single = false;//复杂表头
+            }
+        }
         this.state = {
             gridcontainerid: func.uuid(),
-            realTableid:func.uuid(),
+            realTableid: func.uuid(),
             url: this.props.url,
             params: func.clone(this.props.params), //这里一定要复制,只有复制才可以比较两次参数是否发生改变没有,防止父组件状态任何改变而导致不停的查询
             pageIndex: this.props.pageIndex,//页号
@@ -116,7 +121,7 @@ class DataGrid extends Component {
             //如果传了死数据
             newState.rawData = nextProps.data;
             newState.data = nextProps.pagination == true ? nextProps.data.length > prevState.pageSize
-                ? nextProps.data.slice(((prevState.pageIndex)- 1) *  prevState.pageSize, prevState.pageSize)
+                ? nextProps.data.slice(((prevState.pageIndex) - 1) * prevState.pageSize, prevState.pageSize)
                 : nextProps.data : nextProps.data;
             newState.total = nextProps.total || nextProps.data.length || 0
 
@@ -136,6 +141,11 @@ class DataGrid extends Component {
      * 更新函数
      */
     componentDidUpdate() {
+        let newcontainerWidth =document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
+        if(newcontainerWidth<=0){
+            this.computeHeaderStyleAndColumnWidth();//
+            
+        }
         //重新加数据
         if (this.state.reloadData) {
             this.setState({
@@ -143,18 +153,13 @@ class DataGrid extends Component {
             })
             this.reload();
         }
-      //处理出现滚动条的现象
-        this.containerWidth = document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
-       if(this.containerWidth<this.tableWidth||this.containerWidth<=0){
-           //说明出现了滚动条，或者父组件还没有渲染完成，重新计算一下
-           setTimeout(()=>{
-            this.computeHeaderStyleAndColumnWidth();
-           },500) 
-       }
+        //处理出现滚动条的现象
+    
     }
 
     componentDidMount() {
         this.computeHeaderStyleAndColumnWidth();//计算列，宽度等参数
+       
         if (this.state.url) {
             //如果存在url,
             this.updateHandler(
@@ -166,7 +171,10 @@ class DataGrid extends Component {
                 this.state.params
             );
         }
-       
+        else{
+            this.setState({});//刷新一下
+        }
+
 
     }
 
@@ -177,15 +185,15 @@ class DataGrid extends Component {
     computeHeaderStyleAndColumnWidth() {
         //数据网格的宽度
         this.containerWidth = document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
-        this.containerWidth=  this.containerWidth-1;//除去边框的问题
+        this.containerWidth = this.containerWidth - 1;//除去边框的问题
         this.single = true;//是否简单的表头
         this.columnSum = 0;//总列数
         this.releaseWidth = this.containerWidth;//剩余可分配宽度
         this.releaseColumn = 0;//剩余要计算宽度的列
         this.preColumnWidth = 0;//每一列的宽度
-        this.tableWidth = 0;//表格宽度，因为有可能表格列都设置宽度，总宽度不够网格的整体宽表
+        this.tableWidth = 0;//表格宽度，因为有可能表格列都设置宽度，总宽度与网格的整体宽表不同
 
-        if (this.containerWidth>0&&this.state.headers && this.state.headers instanceof Array) {
+        if (this.containerWidth > 0 && this.state.headers && this.state.headers instanceof Array) {
             for (let i = 0; i < this.state.headers.length; i++) {
 
                 if (this.state.headers[i] instanceof Array) {
@@ -236,7 +244,7 @@ class DataGrid extends Component {
                     }
                 }
             }
-            if(this.props.detailAble){//存在详情列
+            if (this.props.detailAble) {//存在详情列
                 this.releaseWidth -= 30;
                 this.tableWidth += 30;
             }
@@ -259,17 +267,15 @@ class DataGrid extends Component {
                 }
 
             }
-            this.setState({})
+         
 
-        }
-        else {
-            this.containerWidth="100%";
         }
     }
 
 
     render() {
-        let style=func.clone(this.props.style)||{};
+        let style = func.clone(this.props.style) || {};
+        let height=style.height;
         return (
             /* excel粘贴事件 注册鼠标按下事件，从而隐藏菜单*/
             <div

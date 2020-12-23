@@ -102,7 +102,6 @@ class Select extends Component {
         show: false,
         value: newvalue,
         text: newtext,
-        filterValue: null
       });
     }
   
@@ -149,16 +148,9 @@ class Select extends Component {
     //筛选查询
     this.refs.ul.scrollTop = 0; //回到顶部
     this.setState({ 
-      filterValue: event.target.value,
-      value:event.target.value?this.state.value:"",//如果清空了，则选择值也清空
-      text:event.target.value?this.state.text:"",
+      filterValue: event.target.value,    
       show: true
     });
-  
-    if(!event.target.value){
-      this.props.clearHandler&&this.props.clearHandler();
-    }
-    
   }
   render() {
     let componentClassName = "wasabi-form-group "+(this.props.className||"")+" ";//组件的基本样式 
@@ -184,7 +176,7 @@ class Select extends Component {
           ref='ul'
         >
           {this.props.data.map((child, i) => {
-            let reg = new RegExp("^"+this.state.filterValue, 'i');//左匹配
+            let reg = new RegExp(this.state.filterValue, 'i');//左匹配
             if (this.state.filterValue && child.text.search(reg) == -1) {
               return null;
             } else {
@@ -232,7 +224,6 @@ class Select extends Component {
     }
 
     return (
-
       <div
         className={componentClassName + " "+this.props.validateClass}
         ref="select"
@@ -259,19 +250,27 @@ class Select extends Component {
             <input
               type='text'
               {...inputProps}
-              title={this.props.addAbled ? '输入搜索，回车添加' : '输入搜索'}
-              onKeyUp={this.keyUpHandler}
               value={
-                this.state.filterValue
-                  ? this.state.filterValue || ''
-                  : this.state.text || ''
+                this.state.text || ''
               }
               onClick={this.showPicker.bind(this)}
-              onBlur={this.onBlur}
-              onChange={this.filterChangeHandler}
+              onChange={()=>{
+
+              }}
               autoComplete="off"
             />
- <div className={"dropcontainter  select" } style={{ display: this.state.show == true ? "block" : "none" }}   >    {control}</div>
+ <div className={"dropcontainter  select" } style={{ display: this.state.show == true ? "block" : "none" }}   > 
+ <input 
+ className="wasabi-form-control" 
+  title={this.props.addAbled ? '输入搜索，回车添加' : '输入搜索'}
+              onKeyUp={this.keyUpHandler}
+              value={
+                this.state.filterValue||""
+              }
+              onBlur={this.onBlur}
+              onChange={this.filterChangeHandler}
+              ></input>
+    {control}</div>
         
           </div>
           <small
