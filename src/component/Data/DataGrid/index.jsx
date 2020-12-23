@@ -99,6 +99,7 @@ class DataGrid extends Component {
                 }
             });
         });
+        this.computeHeaderStyleAndColumnWidth=this.computeHeaderStyleAndColumnWidth.bind(this)
     }
     static getDerivedStateFromProps(nextProps, prevState) {
         let newState = {};
@@ -141,11 +142,7 @@ class DataGrid extends Component {
      * 更新函数
      */
     componentDidUpdate() {
-        let newcontainerWidth =document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
-        if(newcontainerWidth<=0){
-            this.computeHeaderStyleAndColumnWidth();//
-            
-        }
+
         //重新加数据
         if (this.state.reloadData) {
             this.setState({
@@ -153,13 +150,19 @@ class DataGrid extends Component {
             })
             this.reload();
         }
-        //处理出现滚动条的现象
+        //处理出现纵向滚动条而导致宽度的变化导致在计算宽度出现点横向滚动条，延迟一点，防止没有获取成功
+        setTimeout(()=>{
+            this.containerWidth = document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
+            if(this.containerWidth>0&&this.tableWidth-this.containerWidth<=20&&this.tableWidth-this.containerWidth>=1){//滚动条的原因
+          
+            this.computeHeaderStyleAndColumnWidth();
     
+           }
+        },100)
+      
     }
 
     componentDidMount() {
-        this.computeHeaderStyleAndColumnWidth();//计算列，宽度等参数
-       
         if (this.state.url) {
             //如果存在url,
             this.updateHandler(
@@ -172,20 +175,18 @@ class DataGrid extends Component {
             );
         }
         else{
-            this.setState({});//刷新一下
+        
         }
-
-
+         this.computeHeaderStyleAndColumnWidth();
     }
 
 
     /**
      * 计算出是表头是简单表头，还是复杂表头
      */
-    computeHeaderStyleAndColumnWidth() {
+    computeHeaderStyleAndColumnWidth() {  
         //数据网格的宽度
         this.containerWidth = document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
-        this.containerWidth = this.containerWidth - 1;//除去边框的问题
         this.single = true;//是否简单的表头
         this.columnSum = 0;//总列数
         this.releaseWidth = this.containerWidth;//剩余可分配宽度
@@ -195,7 +196,6 @@ class DataGrid extends Component {
 
         if (this.containerWidth > 0 && this.state.headers && this.state.headers instanceof Array) {
             for (let i = 0; i < this.state.headers.length; i++) {
-
                 if (this.state.headers[i] instanceof Array) {
                     this.single = false;//复杂表头
                     for (let j = 0; j < this.state.headers[i].length; j++) {
@@ -268,14 +268,21 @@ class DataGrid extends Component {
 
             }
          
-
+      this.setState({})
         }
+        else if(this.containerWidth<=0){
+            //防止父组件被隐藏了，datagrid无法得到真实的宽度
+            setTimeout( this.computeHeaderStyleAndColumnWidth,1000)
+        }
+      
     }
 
 
     render() {
+        console.log("r",this.containerWidth)
         let style = func.clone(this.props.style) || {};
-        let height=style.height;
+         let height=style.height;
+         style.height=null;
         return (
             /* excel粘贴事件 注册鼠标按下事件，从而隐藏菜单*/
             <div
@@ -286,7 +293,7 @@ class DataGrid extends Component {
 
                 style={style}
             >
-                {this.containerWidth ? this.renderGrid() : null}
+                {this.containerWidth ? this.renderGrid(height) : null}
             </div>
         );
     }

@@ -342,12 +342,24 @@ export default {
     /**
      * 真实的表格
      */
-    renderRealTable() {
+    renderRealTable(height) {
+       
         return <div className='table-container' key="table-container">
+             <div key="table-fixedTableHeader">
+             <table id="realTableheader" style={{width:this.tableWidth?this.tableWidth:"100%"}} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} key='realTable' ref='realTable'>
+                    {
+                        /**colgroup */
+                        this.renderColGruop()
+                    }
+                    {/* 表头 */}
+                    {this.renderHeader()}
+                 </table>
+                 </div>           
             <div
             key="table-realTable"
-                className='table-realTable'
+                className={'table-realTable '+(height?" overflow-y ":"")}
                 ref='realTableContainer'
+                style={{height:height}}
             >
 
                 <table id="realTableid" style={{width:this.tableWidth?this.tableWidth:"100%"}} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} key='realTable' ref='realTable'>
@@ -355,8 +367,6 @@ export default {
                         /**colgroup */
                         this.renderColGruop()
                     }
-                    {/* 表头 */}
-                    {this.renderHeader()}
                     {/* 表体 */}
                     <tbody>{this.renderBody()}</tbody>
                     {/* 表尾 */}
@@ -368,7 +378,7 @@ export default {
     /**
      * 渲染全部网格组件
      */
-    renderGrid() {
+    renderGrid(height) {
         let grid = [];
 
         /* 头部分页 */
@@ -390,7 +400,7 @@ export default {
             </div>)
 
         {/* 真实表格容器 */ }
-        grid.push(this.renderRealTable())
+        grid.push(this.renderRealTable(height))
 
         {/* 底部分页 */ }
         grid.push(<div

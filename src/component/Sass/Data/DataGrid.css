@@ -31,7 +31,6 @@
  .wasabi-grid .table-container {
    width: 100%;
    position: relative;
-   overflow: hidden;
  }
 /*
 固定表头容器
@@ -54,6 +53,13 @@
 .wasabi-grid .table-realTable {
   width: 100%;
   margin-bottom: 1px;
+}
+.wasabi-grid .table-realTable.overflow-y{
+  overflow-y: auto;
+}
+.wasabi-grid .table-realTable.overflow-x
+{
+  overflow-x: auto;
 }
 /*
 表格基本样式

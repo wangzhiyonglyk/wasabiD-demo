@@ -51,7 +51,7 @@ class Home extends React.Component {
       { id: 232, pId: 23, name: "叶子节点232" },
       { id: 233, pId: 23, name: "叶子节点233" },
       { id: 234, pId: 23, name: "叶子节点234" },
-      { id: 3, pId: 0, name: "父节点3 - 没有子节点", isParent: true }]
+      { id: 3, pId: 0, name: "父节点3 - 没有子节点父节点3 - 没有子节点父节点3 - 没有子节点父节点3 - 没有子节点父节点3 - 没有子节点父节点3 - 没有子节点父节点3 - 没有子节点", isParent: true }]
     })
 
   }
@@ -99,8 +99,13 @@ class Home extends React.Component {
   }
   render() {
     return <div>
-<DataGrid pagination={false}  
-    headers={[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",sortAble:true,},{name:"name",label:"名称"}]]} data={this.state.data}></DataGrid>
+      <Tabs>
+        <TabPanel title="11"><DataGrid pagination={false} 
+    headers={[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",sortAble:true,},{name:"name",label:"名称",width:200}]]} data={this.state.data}></DataGrid></TabPanel>
+        <TabPanel title="22">
+          11
+</TabPanel>
+      </Tabs>
 
     </div>
 
