@@ -45,7 +45,7 @@ class Select extends Component {
       return;
     }
     this.setState({
-      show:  !this.state.show
+      show: !this.state.show
     });
     this.props.onClick && this.props.onClick();
     this.bindClickAway();//绑定全局单击事件
@@ -93,8 +93,8 @@ class Select extends Component {
         value: newvalue,
         text: newtext
       });
-    
-     
+
+
     } else {
       newvalue = value;
       newtext = text;
@@ -104,7 +104,7 @@ class Select extends Component {
         text: newtext,
       });
     }
-  
+
     if (this.props.onSelect != null) {
       this.props.onSelect(newvalue, newtext, this.props.name, row);
     }
@@ -113,10 +113,10 @@ class Select extends Component {
     if (this.props && this.props.addAbled) {
       this.addHandler(event);
     }
-    else{
-      this.props.onBlur&&this.props.onBlur();
+    else {
+      this.props.onBlur && this.props.onBlur();
     }
-    
+
   }
   keyUpHandler(event) {
     if (this.props && this.props.addAbled && event.keyCode == 13) {
@@ -128,7 +128,7 @@ class Select extends Component {
    * @param {*} event 
    */
   addHandler(event) {
-    if(event.target.value){
+    if (event.target.value) {
       let filter = this.props.data.filter((item, index) => {
         return item.text == event.target.value;
       });
@@ -136,24 +136,24 @@ class Select extends Component {
         this.setState({
           value: event.target.value,
           text: event.target.value,
-          filterValue:""//一定清空。否则出现添加空白列
+          filterValue: ""//一定清空。否则出现添加空白列
         });
-        this.props.addData&&  this.props.addData( event.target.value,  event.target.value)
-  
+        this.props.addData && this.props.addData(event.target.value, event.target.value)
+
       }
     }
-  
+
   }
   filterChangeHandler(event) {
     //筛选查询
     this.refs.ul.scrollTop = 0; //回到顶部
-    this.setState({ 
-      filterValue: event.target.value,    
+    this.setState({
+      filterValue: event.target.value,
       show: true
     });
   }
   render() {
-    let componentClassName = "wasabi-form-group "+(this.props.className||"")+" ";//组件的基本样式 
+    let componentClassName = "wasabi-form-group " + (this.props.className || "") + " ";//组件的基本样式 
     let inputProps = {
       readOnly: this.props.readOnly == true ? 'readOnly' : null,
 
@@ -180,7 +180,7 @@ class Select extends Component {
             if (this.state.filterValue && child.text.search(reg) == -1) {
               return null;
             } else {
-             
+
               let checked = false;
               if (
                 this.state.value &&
@@ -225,12 +225,12 @@ class Select extends Component {
 
     return (
       <div
-        className={componentClassName + " "+this.props.validateClass}
+        className={componentClassName + " " + this.props.validateClass}
         ref="select"
         style={style}
       >
-        <Label ref="label" readOnly={this.props.readOnly||this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
-        <div className={'wasabi-form-group-body' +(this.props.readOnly||this.props.disabled?" readOnly":"")}>
+        <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
+        <div className={'wasabi-form-group-body' + (this.props.readOnly || this.props.disabled ? " readOnly" : "")}>
           <div className={'combobox wasabi-select'}>
             <i
               className={'combobox-clear icon-clear'}
@@ -254,24 +254,24 @@ class Select extends Component {
                 this.state.text || ''
               }
               onClick={this.showPicker.bind(this)}
-              onChange={()=>{
+              onChange={() => {
 
               }}
               autoComplete="off"
             />
- <div className={"dropcontainter  select" } style={{ display: this.state.show == true ? "block" : "none" }}   > 
- <input 
- className="wasabi-form-control" 
-  title={this.props.addAbled ? '输入搜索，回车添加' : '输入搜索'}
-              onKeyUp={this.keyUpHandler}
-              value={
-                this.state.filterValue||""
-              }
-              onBlur={this.onBlur}
-              onChange={this.filterChangeHandler}
+            <div className={"dropcontainter  select"} style={{ display: this.state.show == true ? "block" : "none" }}   >
+              <input
+                className="wasabi-form-control"
+                title={this.props.addAbled ? '输入搜索，回车添加' : '输入搜索'}
+                onKeyUp={this.keyUpHandler}
+                value={
+                  this.state.filterValue || ""
+                }
+                onBlur={this.onBlur}
+                onChange={this.filterChangeHandler}
               ></input>
-    {control}</div>
-        
+              {control}</div>
+
           </div>
           <small
             className={'wasabi-help-block '}
@@ -290,6 +290,6 @@ class Select extends Component {
   }
 }
 Select.propTypes = props;
-Select.defaultProps = Object.assign(defaultProps,{type:"select"});
+Select.defaultProps = Object.assign(defaultProps, { type: "select" });
 mixins(Select, [ClickAway]);
-export default _ComboBox( Select);
+export default _ComboBox(Select);

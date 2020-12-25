@@ -95,6 +95,7 @@ export default {
 
             //生成数据列
             let columnIndex = 0;//真正的序号列
+          
             this.state.headers.map((trheader, headerRowIndex) => {
                 if (trheader instanceof Array) {
 

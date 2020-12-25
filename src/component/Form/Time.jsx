@@ -20,7 +20,7 @@ class Time extends Component {
     }
     getValue() {//获取值
         let value = (this.state.hour * 1 >= 10 ? this.state.hour : "0" + this.state.hour) + ":" + (this.state.minute * 1 >= 10 ? this.state.minute : "0" + this.state.minute)
-            + (!this.props.attachSecond  ? "" : ":00");
+            + (!this.props.attachSecond  ? "" : this.props.secondRange?":59":":00");
         return value;
     }
     setValue(value) {//设置值 

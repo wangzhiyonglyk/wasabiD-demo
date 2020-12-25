@@ -130,7 +130,7 @@ export default {
      * @param {*} event 
      */
     pageSizeHandler: function (event) {
-
+        console.log(event)
         this.updateHandler(this.state.url, event.target.value * 1, this.state.pageIndex, this.state.sortName, this.state.sortOrder, null);
     },
 

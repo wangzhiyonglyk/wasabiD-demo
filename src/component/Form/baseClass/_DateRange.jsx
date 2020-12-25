@@ -224,6 +224,8 @@ export default function (WrappedComponent) {
         secondDate: PropTypes.string,//第二个日期
         firstTime: PropTypes.string,//第一个时间
         secondTime: PropTypes.string,//第二个时间
+        attachSecond: PropTypes.bool,//是否带上秒
+        allMinute: PropTypes.bool,//是否显示全部分钟
         onSelect: PropTypes.func,//确定事件
     };
     _DateRange.defaultProps = {
@@ -232,6 +234,8 @@ export default function (WrappedComponent) {
         secondDate: "",
         firstTime: "",
         secondTime: "",
+        attachSecond:true,
+        allMinute:false,
         onSelect: null,//
 
     };

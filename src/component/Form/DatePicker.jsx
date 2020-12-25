@@ -316,6 +316,7 @@ class DatePicker extends Component {
         }
       }
     }
+   
     return (
       <DateTimeRange
         ref='combobox'
@@ -440,7 +441,7 @@ class DatePicker extends Component {
     }
 
     let componentClassName = "wasabi-form-group "+(this.props.className||"")+" ";//组件的基本样式 
-
+console.log("componentClassName",this.props.type,componentClassName)
     let inputProps = {
       readOnly: this.props.readOnly == true ? "readOnly" : null,
 
@@ -452,8 +453,8 @@ class DatePicker extends Component {
             : ""
           : this.props.placeholder,
       className:
-        "wasabi-form-control  " +
-        (this.props.className != null ? this.props.className : ""),
+        "wasabi-form-control  " ,
+      
       title: this.props.title
     }; //文本框的属性
 
@@ -469,6 +470,7 @@ class DatePicker extends Component {
 
     let width = null;
     switch (this.props.type) {
+      case "datetime":
       case "daterange":
         width = 210;
         break;
@@ -482,7 +484,7 @@ class DatePicker extends Component {
 
     return (
       <div
-        className={componentClassName + " "+this.props.validateClass}
+        className={componentClassName + " "+this.state.validateClass}
         ref='picker'
         id={this.state.cotainerid}
         style={style}

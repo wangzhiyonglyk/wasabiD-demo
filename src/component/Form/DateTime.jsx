@@ -23,7 +23,7 @@ class DateTime extends Component {
             year: this.props.year ? this.props.year : year * 1,
             month: this.props.month ? this.props.month : month * 1,
             day: this.props.day ? this.props.day : newDate.getDate(),
-            time: this.props.time ? this.props.time : func.dateformat(newDate, 'HH:mm:ss'),
+            time: this.props.time ? this.props.time :this.props.attachSecond? func.dateformat(newDate, 'HH:mm:')+"00":func.dateformat(newDate, 'HH:mm'),
             changeYear: false,//选择年份
             changeMonth: false,//选择月份
         }
@@ -148,7 +148,7 @@ class DateTime extends Component {
                         value={this.state.time} onClick={this.timeHandler.bind(this)} onChange={() => { }}></input>
 
                     <div style={{ display: this.state.showTime ? "inline-block" : "none" ,zIndex:1}}><Time onSelect={this.timeOnChange.bind(this)}
-                        ref="time" type="time" key="end" value={this.state.time} ></Time></div>
+                        ref="time" type="time" key="end" value={this.state.time}  attachSecond={this.props.attachSecond} allMinute={this.props.allMinute}></Time></div>
                 </div>
                 <div className="wasabi-datetime"  >
                     <CalendarHeader
@@ -179,6 +179,8 @@ DateTime.propTypes = {
     month: PropTypes.number,//月
     day: PropTypes.number,//日
     time: PropTypes.string,//时间
+    attachSecond: PropTypes.bool,//是否带上秒
+    allMinute: PropTypes.bool,//是否显示全部分钟
     onSelect: PropTypes.func,//选择后的事件
 
 }
@@ -190,6 +192,9 @@ DateTime.defaultProps =
     month: null,
     day: null,
     time: null,
+    attachSecond: true,
+    allMinute:false,
+    onSelect:null
 };
 
 export default mixins(DateTime, [validate]);

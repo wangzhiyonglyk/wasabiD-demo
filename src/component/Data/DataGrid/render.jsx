@@ -8,7 +8,7 @@ export default {
     /**
      *渲染列的样式
      */
-    renderColGruop() {
+    renderColGruop(fixed = false) {
         let colgroup = [];
         if (
             !(this.state.data instanceof Array) ||
@@ -28,20 +28,33 @@ export default {
             colgroup.push(<col key="wasabi-check-column" name="wasabi-check-column" width={37}></col>)
         }
         if (this.single) {
-            colgroup = this.renderSingleColGroup(colgroup);
+            colgroup = this.renderSingleColGroup(colgroup, fixed);
         }
         else {
-      
+
             colgroup = this.renderComplexColGroup(colgroup);
         }
         return <colgroup>{colgroup}</colgroup>;
 
     },
     /**
+     * 固定列的样式
+     */
+    renderFixedColGruop() {
+        return this.renderColGruop(true);
+    },
+    /**
     * 处理表头
     */
     renderHeader() {
+
         return this.single ? this.renderSingleHeader() : this.renderComplexHeader();
+    },
+    /**
+     * 处理固定列的表头
+     */
+    renderFixedHeader() {
+        return this.single ? this.renderSingleHeader(true) : this.renderComplexHeader();
     },
 
     /**
@@ -49,6 +62,12 @@ export default {
      */
     renderBody() {
         return this.single ? this.renderSingleBody() : this.renderComplexBody();
+    },
+    /**
+     * 处理固定列的表体
+     */
+    renderFixedBody() {
+        return this.single ? this.renderSingleBody(true) : this.renderComplexBody();
     },
     /**
      * 得到单元格内容
@@ -110,14 +129,14 @@ export default {
                             <option key="6" value={200}>200</option>
                             <option key="7" value={500}>500</option>
                             <option key="8" value={1000}>1000</option>
-                        </select>&nbsp;条&nbsp;&nbsp; 
-                        {<i title="刷新"  style={{fontSize:16,cursor:"pointer"}} className="icon-refresh" onClick={this.reload.bind(this,this.state.params,this.state.url)}></i>}
+                        </select>&nbsp;条&nbsp;&nbsp;
+                        {<i title="刷新" style={{ fontSize: 16, cursor: "pointer" }} className="icon-refresh" onClick={this.reload.bind(this, this.state.params, this.state.url)}></i>}
                         &nbsp;&nbsp;
                         {
-                           <div style={{display:"inline-block",height:20,position:"relative",width:30}}> <i title="导出" style={{cursor:"pointer", fontSize:20,position:"absolute",top:5}} className="icon-excel" onClick={this.export.bind(this,false,"grid-")}></i></div>
+                            <div style={{ display: "inline-block", height: 20, position: "relative", width: 30 }}> <i title="导出" style={{ cursor: "pointer", fontSize: 20, position: "absolute", top: 5 }} className="icon-excel" onClick={this.export.bind(this, false, "grid-")}></i></div>
                         }
 
-          </div>
+                    </div>
                 </div>
             );
         } else {
@@ -343,37 +362,46 @@ export default {
      * 真实的表格
      */
     renderRealTable(height) {
-       
-        return <div className='table-container' key="table-container">
-             <div key="table-fixedTableHeader">
-             <table id="realTableheader" style={{width:this.tableWidth?this.tableWidth:"100%"}} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} key='realTable' ref='realTable'>
+
+        return <div className='table-container' key="table-container"     style={{ height: height }} >
+            <div>
+                
+            </div>
+            <div key="table-fixedTableBody" className="table-boby-fixed" >
+                <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}  >
+                    {
+                        /**colgroup */
+                        this.renderFixedColGruop()
+                    }
+                     {/* 表头 */}
+                     {this.renderFixedHeader()}
+                    {/* 表体 */}
+                    <tbody>{this.renderFixedBody()}</tbody>
+                    {/* 表尾  todo */}
+                    {/* <tfoot>{this.renderFooter()}</tfoot> */}
+                </table>
+
+            </div>
+            <div key="table-realTable"
+                className={'table-realTable ' }
+                ref='realTableContainer'
+            >
+                <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} ref="realTable" >
                     {
                         /**colgroup */
                         this.renderColGruop()
                     }
                     {/* 表头 */}
                     {this.renderHeader()}
-                 </table>
-                 </div>           
-            <div
-            key="table-realTable"
-                className={'table-realTable '+(height?" overflow-y ":"")}
-                ref='realTableContainer'
-                style={{height:height}}
-            >
-
-                <table id="realTableid" style={{width:this.tableWidth?this.tableWidth:"100%"}} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} key='realTable' ref='realTable'>
-                    {
-                        /**colgroup */
-                        this.renderColGruop()
-                    }
                     {/* 表体 */}
                     <tbody>{this.renderBody()}</tbody>
                     {/* 表尾 */}
-                    <tfoot>{this.renderFooter()}</tfoot>
+                    {/* <tfoot>{this.renderFooter()}</tfoot> */}
                 </table>
             </div>
-        </div>
+
+
+        </div >
     },
     /**
      * 渲染全部网格组件

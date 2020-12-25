@@ -10,12 +10,13 @@ import LinkButton from "../../../Buttons/LinkButton"
 import CheckBox from "../../../Form/CheckBox"
 
 let SingleHeader = {
-    renderSingleHeader() {
+    renderSingleHeader(fixed = false) {
         //渲染表头
         let headers1 = [];
         let headers2 = [];
+        let headers = fixed ? this.state.fixedHeaders : this.state.headers;
         //处理表头
-        this.state.headers.map((header, headerColumnIndex) => {
+        headers.map((header, headerColumnIndex) => {
             //排序图标
             let sortOrder =
                 header.sortAble == true
@@ -34,6 +35,7 @@ let SingleHeader = {
                         )
                         : this.onSort.bind(this, header.name, 'asc')
                     : null;
+                sortOrder=fixed == false && this.state.fixedHeaders.length > 0 ?"":sortOrder;//有固定列的时候
             //表格处理编辑时的保存按钮
             let saveIcon =
                 this.state.editIndex != null && headerColumnIndex == 0 ? (
@@ -69,7 +71,7 @@ let SingleHeader = {
 
             if ((header.rowSpan && header.rowSpan > 1) || (header.colSpan && header.colSpan > 1)) {
                 headers1.push(
-                    // 绑定右键菜单事件
+                   
                     //使用label作为元素name属性，是因为可能有多个列对应同一个字段
                     <th
                         key={'header-' + headerColumnIndex.toString()}
@@ -83,15 +85,15 @@ let SingleHeader = {
                             className='wasabi-grid-cell'
                             name={header.label}
                         >
-                            {content}
-                            {saveIcon}
+                            {fixed == false && this.state.fixedHeaders.length > 0 && headerColumnIndex < this.state.fixedHeaders.length ? "" : content}
+                            {fixed == false && this.state.fixedHeaders.length > 0 && headerColumnIndex < this.state.fixedHeaders.length ? "" : saveIcon}
                         </div>
                     </th>
                 );
             }
             else {
                 headers2.push(
-                    // 绑定右键菜单事件
+                   
                     //使用label作为元素name属性，是因为可能有多个列对应同一个字段
                     <th
                         key={'header-' + headerColumnIndex.toString()}
@@ -106,8 +108,8 @@ let SingleHeader = {
                             name={header.label}
 
                         >
-                            {content}
-                            {saveIcon}
+                            {fixed == false && this.state.fixedHeaders.length > 0 && headerColumnIndex < this.state.fixedHeaders.length ? "" : content}
+                            {fixed == false && this.state.fixedHeaders.length > 0 && headerColumnIndex < this.state.fixedHeaders.length ? "" : saveIcon}
                         </div>
                     </th>
                 );
@@ -123,13 +125,12 @@ let SingleHeader = {
                 onSelect: this.checkedAllHandler,
                 name: 'all'
             };
-            console.log("thc",thCheckProps)
             if (headers1.length > 0) {
                 headers1.unshift(
                     <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column'>
                         <div className='wasabi-grid-cell' rowSpan={2}  >
                             {this.props.singleSelect ? null : (
-                                <CheckBox {...thCheckProps}></CheckBox>
+                                fixed == false && this.state.fixedHeaders.length > 0 ? "" : <CheckBox {...thCheckProps}></CheckBox>
                             )}
                         </div>
                     </th>
@@ -139,7 +140,7 @@ let SingleHeader = {
                     <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column'>
                         <div className='wasabi-grid-cell'  >
                             {this.props.singleSelect ? null : (
-                                <CheckBox  {...thCheckProps}></CheckBox>
+                                fixed == false && this.state.fixedHeaders.length > 0 ? "" : <CheckBox  {...thCheckProps}></CheckBox>
                             )}
                         </div>
                     </th>
@@ -151,35 +152,35 @@ let SingleHeader = {
             if (headers1.length > 0) {
                 headers1.unshift(<th key='headerorder' rowSpan={2} name='wasabi-order-column' className="wasabi-order-column">
                     <div className='wasabi-grid-cell '>
-                        序号
-        </div>
+                        {fixed == false && this.state.fixedHeaders.length > 0 ? "" : "序号"}
+                    </div>
                 </th>)
             }
             else {
                 headers2.unshift(
                     <th key='headerorder' name='wasabi-order-column' className="wasabi-order-column" >
                         <div className='wasabi-grid-cell ' >
-                            序号
-          </div>
+                            {fixed == false && this.state.fixedHeaders.length > 0 ? "" : "序号"}
+                        </div>
                     </th>
                 );
             }
         }
         //处理详情列
-        if(this.props.detailAble){
+        if (this.props.detailAble) {
             if (headers1.length > 0) {
                 headers1.unshift(<th key='headerdetail' rowSpan={2} name='wasabi-detail-column' className="wasabi-detail-column">
                     <div className='wasabi-grid-cell '>
-                       
-        </div>
+
+                    </div>
                 </th>)
             }
             else {
                 headers2.unshift(
                     <th key='headerdetail' name='wasabi-detail-column' className="wasabi-detail-column" >
                         <div className='wasabi-grid-cell ' >
-                            
-          </div>
+
+                        </div>
                     </th>
                 );
             }

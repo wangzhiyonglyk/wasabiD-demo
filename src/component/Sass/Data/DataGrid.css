@@ -31,19 +31,23 @@
  .wasabi-grid .table-container {
    width: 100%;
    position: relative;
+   overflow-y: auto;
+ }
+ .wasabi-grid .table-body{
+   position: relative;
+   width: 100%;
  }
 /*
 固定表头容器
 */
-.wasabi-grid .table-fixed
+.wasabi-grid .table-boby-fixed
 {
   margin-bottom: 0px;
-  width: 100%;
   position: absolute;
   top: 0px;
   left: 0px;
-
-
+  z-index: 1;
+  background-color: white;
 }
 
 
@@ -52,15 +56,10 @@
 */
 .wasabi-grid .table-realTable {
   width: 100%;
-  margin-bottom: 1px;
+  overflow-x:auto
 }
-.wasabi-grid .table-realTable.overflow-y{
-  overflow-y: auto;
-}
-.wasabi-grid .table-realTable.overflow-x
-{
-  overflow-x: auto;
-}
+
+
 /*
 表格基本样式
 */
@@ -133,6 +132,12 @@
   box-sizing:border-box;
   white-space: normal;
   word-break: break-all;
+
+}
+.wasabi-grid .wasabi-grid-cell.nowrap{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .wasabi-pivot .wasabi-grid .wasabi-grid-cell{
   overflow: hidden;

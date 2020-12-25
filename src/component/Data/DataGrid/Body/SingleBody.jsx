@@ -12,7 +12,7 @@ import CheckBox from '../../../Form/CheckBox.jsx';
 import Input from '../../../Form/Input.jsx';
 import Radio from '../../../Form/Radio.jsx';
 export default {
-    renderSingleBody() {
+    renderSingleBody(fixed = false) {
         //渲染表体
         let trobj = [];
         if (
@@ -21,7 +21,7 @@ export default {
         ) {
             return;
         }
-
+        let cellClassName="wasabi-grid-cell "+(this.props.fixedHeaders.length>0?" nowrap ":"")
         this.state.data.map((rowData, rowIndex) => {
             let detailtd = null;//详情列
             let ordertd = null;
@@ -30,22 +30,26 @@ export default {
             let key = this.getKey(rowIndex); //获取这一行的关键值
             //详情列
             if (this.props.detailAble) {
+
                 let iconCls = 'icon-arrow-down'; //详情列的图标
                 if (this.state.detailIndex == key) {
                     iconCls = 'icon-arrow-up'; //详情列-展开
                 }
                 detailtd = <td key={'bodydetail' + rowIndex.toString()} name="wasabi-detail-column" className="wasabi-detail-column">
-                    <div className='wasabi-grid-cell  '>
-                        <i style={{cursor:"pointer"}} className={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)}></i>
+                    <div className={cellClassName}>
+                        {fixed == false && this.state.fixedHeaders.length > 0 ? "" : <i style={{ cursor: "pointer" }} className={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)}></i>}
                     </div>
                 </td>
+
             }
             //序号列
             if (this.props.rowNumber) {
+
+
                 ordertd = (
                     <td key={'bodyorder' + rowIndex.toString()} className="wasabi-order-column" name="wasabi-order-column">
-                        <div className='wasabi-grid-cell  '>
-                            {(
+                        <div className={cellClassName}>
+                            {fixed == false && this.state.fixedHeaders.length > 0 ? "" : (
                                 (this.state.pageIndex - 1) * this.state.pageSize +
                                 rowIndex +
                                 1
@@ -53,9 +57,11 @@ export default {
                         </div>
                     </td>
                 );
+
             }
             //通过全局属性，设置这一行的选择列
             if (this.props.selectAble) {
+
                 let props = {
                     value: this.state.checkedData.has(key) == true ? key : null,
                     data: [{ value: key, text: '' }],
@@ -70,9 +76,9 @@ export default {
                             name="wasabi-check-column"
                             className='wasabi-check-column'
                         >
-                            <div className='wasabi-grid-cell'>
+                            <div className={cellClassName}>
 
-                                <Radio forceChange={true} {...props}></Radio>
+                                {fixed == false && this.state.fixedHeaders.length > 0 ? "" : <Radio forceChange={true} {...props}></Radio>}
                             </div>
                         </td>
                     );
@@ -83,17 +89,20 @@ export default {
                             name="wasabi-check-column"
                             className='wasabi-check-column'
                         >
-                            <div className='wasabi-grid-cell'>
-                                <CheckBox forceChange={true} {...props}></CheckBox>
+                            <div className={cellClassName}>
+                                {fixed == false && this.state.fixedHeaders.length > 0 ? "" : <CheckBox forceChange={true} {...props}></CheckBox>}
                             </div>
                         </td>
                     );
+
                 }
+
             }
 
             //生成数据列
             let columnIndex = 0;//真正的列序号
-            this.state.headers.map((header, headerColumnIndex) => {
+            let headers = fixed ? this.state.fixedHeaders : this.state.headers;
+            headers.map((header, headerColumnIndex) => {
                 if (header.colSpan && header.colSpan > 1) {
                     return;
                 }
@@ -115,7 +124,7 @@ export default {
 
                             className='wasabi-check-column'
                         >
-                            <div className='wasabi-grid-cell'>
+                            <div className={cellClassName}>
 
 
                             </div>
@@ -127,7 +136,6 @@ export default {
                 }
                 //内容
                 let content = header.content;
-
                 if (typeof content === 'string') {
                     //指定的列
                     content = this.substitute(content, rowData);
@@ -168,10 +176,10 @@ export default {
                             className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
                         >
                             <div
-                                className='wasabi-grid-cell'
+                                className={cellClassName}
                                 style={{ textAlign: header.align }}
                             >
-                                <Input
+                                {fixed == false && this.state.fixedHeaders.length > 0 && headerColumnIndex < this.state.fixedHeaders.length ? "" : <Input
                                     {...header.editor.options}
                                     type={header.editor.type}
                                     name={header.name}
@@ -180,7 +188,7 @@ export default {
                                     onChange={this.rowEditHandler.bind(this, rowIndex, null, headerColumnIndex, columnIndex)}
                                     onSelect={this.rowEditHandler.bind(this, rowIndex, null, headerColumnIndex, columnIndex)}
                                     label={''}
-                                ></Input>
+                                ></Input>}
                             </div>
                         </td>
                     );
@@ -193,8 +201,8 @@ export default {
                             onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
                             key={'col-' + rowIndex.toString() + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                         >
-                            <div className='wasabi-grid-cell'>
-                                {content}
+                            <div className={cellClassName}>
+                                {fixed == false && this.state.fixedHeaders.length > 0 && headerColumnIndex < this.state.fixedHeaders.length ? "" : content}
                             </div>
                         </td>
                     );
@@ -207,7 +215,7 @@ export default {
                     key={'row' + rowIndex.toString()}
                     onMouseDown={this.onTRMouseDown.bind(this, rowIndex)}
                 >
-                     {detailtd}
+                    {detailtd}
                     {ordertd}
                     {checkedControl}
                     {tds}

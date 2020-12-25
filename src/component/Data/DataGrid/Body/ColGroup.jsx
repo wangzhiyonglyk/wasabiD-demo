@@ -5,8 +5,9 @@
  */
 import React from 'react';
  let ColGroup={
-     renderSingleColGroup(colgroup){
-        this.state.headers.map((header, headerColumnIndex) => {
+     renderSingleColGroup(colgroup,fiexd=false){
+         let headers=fiexd?this.state.fixedHeaders:this.state.headers;
+         headers.map((header, headerColumnIndex) => {
             if (header.colSpan && header.colSpan > 1) {
                 return;
             }
@@ -22,7 +23,6 @@ import React from 'react';
         return colgroup;
      },
      renderComplexColGroup(colgroup){
-     
         this.state.headers.map((trheader, headerRowIndex) => {
             if (trheader instanceof Array) {
                 trheader.map((header, headerColumnIndex) => {

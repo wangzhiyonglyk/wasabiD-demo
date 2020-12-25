@@ -14,10 +14,10 @@ class DateTimeRange extends Component {
         super(props);
         this.state = {
             oldPropsValue: (this.props.firstTime || "") + (this.props.secondTime || ""),
-            firstTime: this.props.firstTime || func.dateformat(new Date(), "HH:mm:ss"),
-            secondTime: this.props.secondTime || func.dateformat(new Date(), "HH:mm:ss"),
-            showfirstTime:false,
-            showsecondTime:false,
+            firstTime: this.props.firstTime || func.dateformat(new Date(), "HH:mm:")+"00",
+            secondTime: this.props.secondTime || func.dateformat(new Date(), "HH:mm:")+"59",
+            showfirstTime: false,
+            showsecondTime: false,
         }
     }
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -28,7 +28,7 @@ class DateTimeRange extends Component {
             }
         }
         return null;
-    } 
+    }
     onSelectHandler() {
         let firstDate, secondDate;
         if (this.state.first_min != "") {
@@ -57,14 +57,14 @@ class DateTimeRange extends Component {
             firstTime: time,
             showfirstTime: false
         })
-        this.props.beginTimeHandler&&this.props.beginTimeHandler(time);
+        this.props.beginTimeHandler && this.props.beginTimeHandler(time);
     }
     endTimeHandler(time) {
         this.setState({
             secondTime: time,
             showsecondTime: false,
         })
-        this.props.endTimeHandler&&this.props.endTimeHandler(time);
+        this.props.endTimeHandler && this.props.endTimeHandler(time);
     }
     firstTimeShowHandler() {
         this.setState({
@@ -86,21 +86,21 @@ class DateTimeRange extends Component {
 
                     <div style={{ display: this.state.showfirstTime ? "inline-block" : "none" }}><Time
                         name="begin" type="time" key="begin"
-                        onSelect={this.beginTimeHandler.bind(this)}
+                        onSelect={this.beginTimeHandler.bind(this)} attachSecond={this.props.attachSecond} allMinute={this.props.allMinute}
                         ref="time" type="time" key="end" value={this.state.firstTime} ></Time>
                     </div>
                 </div>
                 <div style={{ position: "absolute", right: 110 }}>
                     <input className=" wasabi-form-control timeinput"
-                        value={this.state.secondTime} onClick={this.secondTimeShowHandler.bind(this)}  onChange={() => { }}></input>
+                        value={this.state.secondTime} onClick={this.secondTimeShowHandler.bind(this)} onChange={() => { }}></input>
 
                     <div style={{ display: this.state.showsecondTime ? "inline-block" : "none" }}><Time
                         name="begin" type="time" key="begin"
-                        onSelect={this.endTimeHandler.bind(this)}
-                        ref="time" type="time" key="end" value={this.state.secondTime} ></Time>
+                        onSelect={this.endTimeHandler.bind(this)} attachSecond={this.props.attachSecond} allMinute={this.props.allMinute}
+                        ref="time" type="time" key="end" value={this.state.secondTime} secondRange={true} ></Time>
                     </div>
                 </div>
-              
+
             </div>
             <DateD isRange={true} year={this.props.first_year} month={this.props.first_month} day={this.props.first_day}
                 rangeBegin={this.props.first_rangeBegin} rangeEnd={this.props.first_rangeEnd}
@@ -121,7 +121,20 @@ DateTimeRange.propTypes = {
     firstTime: PropTypes.string,//第一个时间
     secondDate: PropTypes.string,//第二个日期
     secondTime: PropTypes.string,//第二个时间
+    attachSecond: PropTypes.bool,//是否带上秒
+    allMinute: PropTypes.bool,//是否显示全部分钟
     onSelect: PropTypes.func,//确定事件
+};
+DateTimeRange.defaultProps =
+{
+
+    firstDate: "",
+    secondDate: "",
+    firstTime: "",
+    secondTime: "",
+    attachSecond: true,
+    allMinute: false,
+    onSelect: null
 };
 
 export default _DateRange(DateTimeRange);

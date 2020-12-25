@@ -109,7 +109,7 @@ let propsTran = {
         let newDate = new Date();
         //设置第一日期的值
         let firstDate = props.firstDate;//给的第一个值
-        let firstTime = props.type == "daterange" ? "" : props.firstTime || func.dateformat(newDate, "HH:mm:ss");
+        let firstTime = props.type == "daterange" ? "" : props.firstTime || func.dateformat(newDate, "HH:mm:")+"00";
         //先设置默认值
         let first_year = newDate.getFullYear();
         let first_month = newDate.getMonth() + 1;
@@ -138,7 +138,7 @@ let propsTran = {
 
         //设置第二日期的值
         let secondDate = props.secondDate;//给的第二日期值，字符串
-        let secondTime = props.type == "daterange" ? "" : props.secondTime || func.dateformat(newDate, "HH:mm:ss");
+        let secondTime = props.type == "daterange" ? "" : props.secondTime || func.dateformat(newDate, "HH:mm:")+"59";
         //先设置默认值
         let second_year = first_year; //默认与第一个同年
         let second_month;
