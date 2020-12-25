@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import func from '../../libs/func.js';
 export default {
 
+    onScroll(event) {
+        this.onRealTableScoll(event);
+    },
 
     /**
      *渲染列的样式
@@ -363,36 +366,66 @@ export default {
      */
     renderRealTable(height) {
 
-        return <div className='table-container' key="table-container"     style={{ height: height }} >
-            <div>
-                
-            </div>
-            <div key="table-fixedTableBody" className="table-boby-fixed" >
-                <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}  >
+        let colgroup = this.renderColGruop();
+        let headerControl = this.renderHeader();
+        return <div className='table-container' key="table-container"   >
+             {height&&this.state.fixedHeaders && this.state.fixedHeaders.length > 0 ? 
+                    
+                   <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }} className={this.props.borderAble ? 'table-fixedHeaders-fixed-table table ' : 'table-fixedHeaders-fixed-table table table-no-bordered '}
+                    >
+                        {
+                            /**colgroup */
+                            this.renderFixedColGruop()
+                        }
+                        {/* 表头 */}
+                        {this.renderFixedHeader()}
+                    </table>: null}
+            {
+                height ? <div className="table-fixedHeaders" ref="fixedHeadersContainer">
+                       
+                   
+                    <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} ref="fixedHeaders" >
+                        {
+                            /**colgroup */
+                            colgroup
+                        }
+                        {/* 表头 */}
+                        {headerControl}
+                    </table>
+                </div> : null
+
+            }
+            {this.state.fixedHeaders && this.state.fixedHeaders.length > 0 ? <div key="table-fixed" className="table-fixed" ref="fixedTableContainer" >
+                <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}
+                    ref="fixedTable"
+                >
                     {
                         /**colgroup */
                         this.renderFixedColGruop()
                     }
-                     {/* 表头 */}
-                     {this.renderFixedHeader()}
+                    {/* 表头 */}
+                    {this.renderFixedHeader()}
                     {/* 表体 */}
                     <tbody>{this.renderFixedBody()}</tbody>
                     {/* 表尾  todo */}
                     {/* <tfoot>{this.renderFooter()}</tfoot> */}
                 </table>
 
-            </div>
+            </div> : null
+            }
             <div key="table-realTable"
-                className={'table-realTable ' }
+                className={'table-realTable '}
                 ref='realTableContainer'
+                onScroll={this.onScroll.bind(this)}
+                style={{ height: height }}
             >
                 <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} ref="realTable" >
                     {
                         /**colgroup */
-                        this.renderColGruop()
+                        colgroup
                     }
                     {/* 表头 */}
-                    {this.renderHeader()}
+                    {headerControl}
                     {/* 表体 */}
                     <tbody>{this.renderBody()}</tbody>
                     {/* 表尾 */}

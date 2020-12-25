@@ -106,7 +106,7 @@ class Home extends React.Component {
           <Input  key="checkbox" type="checkbox" data={this.state.data} valueField="id" textField="name"></Input>
         </TabPanel>
         <TabPanel title="11"><DataGrid pagination={true} style={{width:800,height:600}}
-        fixedHeaders={[{name:"id",label:"id",sortAble:true,width:300}]} 
+      fixedHeaders={[{name:"name",label:"名称",width:200}]}
     headers={[{name:"name",label:"名称",width:200},{name:"name",label:"名称",width:200},{name:"name",label:"名称",width:200},{name:"name",label:"名称",width:200},{name:"name",label:"名称",width:200},{name:"name",label:"名称",width:200}]} data={this.state.data}></DataGrid></TabPanel>
         <TabPanel title="22">
           11

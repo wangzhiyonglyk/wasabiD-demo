@@ -81,6 +81,16 @@ export default {
         }
     },
 
+    /**
+     * 真实表格的鼠标滚动事件
+     */
+    onRealTableScoll:function(event){
+        setTimeout(() => {
+            this.refs.fixedTableContainer.style.top=(0-this.refs.realTableContainer.scrollTop)+"px";
+            this.refs.fixedHeadersContainer.style.left=(0-this.refs.realTableContainer.scrollLeft)+"px";
+        }, 50);
+     
+    },
 
     /**
      * 页号改变

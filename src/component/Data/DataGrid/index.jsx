@@ -62,9 +62,15 @@ class DataGrid extends Component {
             }
         }
         let headers = func.clone(this.props.headers);
+
+        //处理复杂表头的问题
+        let fixedHeaders=func.clone(this.props.fixedHeaders);
         if (this.props.fixedHeaders && this.props.fixedHeaders instanceof Array && this.props.fixedHeaders.length > 0) {
-            if (this.single && this.props.fixedHeaders[0] instanceof Array) {
-                Msg.error("固定列的表头，数据格式与普通列的表头不一致");
+            //有固定表头
+            if ( this.props.fixedHeaders[0] instanceof Array||this.props.headers&&this.props.headers instanceof Array&&this.props.headers[0] instanceof Array) {
+                //二维数组不支持
+                Msg.error("有固定列目前只支持一维数组格式的表头");
+                fixedHeaders=[];//清除
 
             }
             else {
@@ -81,7 +87,7 @@ class DataGrid extends Component {
             pageSize: this.props.pageSize,//分页大小
             sortName: this.props.sortName,//排序名称
             sortOrder: this.props.sortOrder,//排序方式
-            fixedHeaders: func.clone(this.props.fixedHeaders),//固定列的表头
+            fixedHeaders: fixedHeaders,//固定列的表头
             rawFixedHeaders: func.clone(this.props.fixedHeaders),//固定列的表头,保存用于更新
             headers: headers, //表头会可能后期才传送,也会动态改变
             rawHeaders: func.clone(this.props.headers),//保存起来，用于更新
@@ -125,44 +131,7 @@ class DataGrid extends Component {
                 params: nextProps.params,
             }
         }
-        // //处理固定列
-        // if (
-        //     nextProps.fixedHeaders && diff(nextProps.fixedHeaders, prevState.rawFixedHeaders)
-        // ) {
-        //     //存在着这种情况,后期才传fixedHeaders,所以要更新一下 ，这种情况极少
-        //     newState.fixedHeaders = func.clone(nextProps.fixedHeaders);
-        //     newState.rawFixedHeaders = func.clone(nextProps.rawFixedHeaders);
-        //     this.headerChange = true;//表头更新了
-        // }
-        // //处理普通列
-        // if (
-        //     nextProps.headers && diff(nextProps.headers, prevState.rawHeaders)
-        // ) {
-        //     //存在着这种情况,后期才传headers,所以要更新一下   ，这种情况极少
-        //     newState.headers = func.clone(nextProps.headers);
-        //     newState.rawHeaders = func.clone(nextProps.headers);
-        //     this.headerChange = true;//表头更新了
-        // }
-        // //判断情况
-        // this.single = true;//默认是简单的表头
-        // for (let i = 0; i < nextProps.headers.length; i++) {
-        //     if (nextProps.headers[i] instanceof Array) {
-        //         this.single = false;//复杂表头
-        //     }
-        // }
-
-        // //合并固定列到普通列中
-        // {
-        //     if (nextProps.fixedHeaders && nextProps.fixedHeaders instanceof Array && nextProps.fixedHeaders.length > 0) {
-        //         if (this.single && nextProps.fixedHeaders[0] instanceof Array) {
-        //             Msg.error("固定列的表头，数据格式与普通列的表头不一致");
-
-        //         }
-        //         else {
-        //             newState.headers = [].concat(nextProps.fixedHeaders, nextProps.headers);//合并列
-        //         }
-        //     }
-        // }
+       
         //todo 此处理还要仔细研究
         if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
             //如果传了死数据

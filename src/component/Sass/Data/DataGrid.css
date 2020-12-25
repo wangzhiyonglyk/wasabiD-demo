@@ -31,24 +31,41 @@
  .wasabi-grid .table-container {
    width: 100%;
    position: relative;
-   overflow-y: auto;
+   overflow: hidden;
  }
  .wasabi-grid .table-body{
    position: relative;
    width: 100%;
  }
-/*
-固定表头容器
-*/
-.wasabi-grid .table-boby-fixed
-{
-  margin-bottom: 0px;
+
+ /* 固定表头容器 */
+ .wasabi-grid .table-fixedHeaders{
   position: absolute;
   top: 0px;
   left: 0px;
   z-index: 1;
   background-color: white;
+ }
+ .wasabi-grid  .table-fixedHeaders-fixed-table{
+   position: absolute;
+   top: 0px;
+   left: 0px;
+   z-index: 3;
+   background-color: white;
+ }
+/*
+固定列容器
+*/
+.wasabi-grid .table-fixed
+{
+  margin-bottom: 0px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 2;
+  background-color: white;
 }
+
 
 
 /*
@@ -56,7 +73,7 @@
 */
 .wasabi-grid .table-realTable {
   width: 100%;
-  overflow-x:auto
+  overflow: auto;
 }
 
 
@@ -71,7 +88,6 @@
     width: 100%;
     border-spacing: 0;
     border-collapse: collapse;
-    background-color: transparent;
     box-sizing: border-box;
     table-layout: fixed;
 }
@@ -181,6 +197,7 @@
 .wasabi-pagination
 {
   line-height: 38px;
+  height: 38px;;
 }
 
 

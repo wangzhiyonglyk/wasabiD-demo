@@ -35,7 +35,7 @@ let SingleHeader = {
                         )
                         : this.onSort.bind(this, header.name, 'asc')
                     : null;
-                sortOrder=fixed == false && this.state.fixedHeaders.length > 0 ?"":sortOrder;//有固定列的时候
+            sortOrder = sortOrder;//有固定列的时候
             //表格处理编辑时的保存按钮
             let saveIcon =
                 this.state.editIndex != null && headerColumnIndex == 0 ? (
@@ -71,7 +71,7 @@ let SingleHeader = {
 
             if ((header.rowSpan && header.rowSpan > 1) || (header.colSpan && header.colSpan > 1)) {
                 headers1.push(
-                   
+
                     //使用label作为元素name属性，是因为可能有多个列对应同一个字段
                     <th
                         key={'header-' + headerColumnIndex.toString()}
@@ -85,15 +85,15 @@ let SingleHeader = {
                             className='wasabi-grid-cell'
                             name={header.label}
                         >
-                            {fixed == false && this.state.fixedHeaders.length > 0 && headerColumnIndex < this.state.fixedHeaders.length ? "" : content}
-                            {fixed == false && this.state.fixedHeaders.length > 0 && headerColumnIndex < this.state.fixedHeaders.length ? "" : saveIcon}
+                            {content}
+                            {saveIcon}
                         </div>
                     </th>
                 );
             }
             else {
                 headers2.push(
-                   
+
                     //使用label作为元素name属性，是因为可能有多个列对应同一个字段
                     <th
                         key={'header-' + headerColumnIndex.toString()}
@@ -108,8 +108,8 @@ let SingleHeader = {
                             name={header.label}
 
                         >
-                            {fixed == false && this.state.fixedHeaders.length > 0 && headerColumnIndex < this.state.fixedHeaders.length ? "" : content}
-                            {fixed == false && this.state.fixedHeaders.length > 0 && headerColumnIndex < this.state.fixedHeaders.length ? "" : saveIcon}
+                            {content}
+                            { saveIcon}
                         </div>
                     </th>
                 );
@@ -130,7 +130,7 @@ let SingleHeader = {
                     <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column'>
                         <div className='wasabi-grid-cell' rowSpan={2}  >
                             {this.props.singleSelect ? null : (
-                                fixed == false && this.state.fixedHeaders.length > 0 ? "" : <CheckBox {...thCheckProps}></CheckBox>
+                                <CheckBox {...thCheckProps}></CheckBox>
                             )}
                         </div>
                     </th>
@@ -140,7 +140,7 @@ let SingleHeader = {
                     <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column'>
                         <div className='wasabi-grid-cell'  >
                             {this.props.singleSelect ? null : (
-                                fixed == false && this.state.fixedHeaders.length > 0 ? "" : <CheckBox  {...thCheckProps}></CheckBox>
+                                <CheckBox  {...thCheckProps}></CheckBox>
                             )}
                         </div>
                     </th>
@@ -152,7 +152,7 @@ let SingleHeader = {
             if (headers1.length > 0) {
                 headers1.unshift(<th key='headerorder' rowSpan={2} name='wasabi-order-column' className="wasabi-order-column">
                     <div className='wasabi-grid-cell '>
-                        {fixed == false && this.state.fixedHeaders.length > 0 ? "" : "序号"}
+                        {"序号"}
                     </div>
                 </th>)
             }
@@ -160,7 +160,7 @@ let SingleHeader = {
                 headers2.unshift(
                     <th key='headerorder' name='wasabi-order-column' className="wasabi-order-column" >
                         <div className='wasabi-grid-cell ' >
-                            {fixed == false && this.state.fixedHeaders.length > 0 ? "" : "序号"}
+                            {"序号"}
                         </div>
                     </th>
                 );

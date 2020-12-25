@@ -37,7 +37,7 @@ export default {
                 }
                 detailtd = <td key={'bodydetail' + rowIndex.toString()} name="wasabi-detail-column" className="wasabi-detail-column">
                     <div className={cellClassName}>
-                        {fixed == false && this.state.fixedHeaders.length > 0 ? "" : <i style={{ cursor: "pointer" }} className={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)}></i>}
+                        { <i style={{ cursor: "pointer" }} className={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)}></i>}
                     </div>
                 </td>
 
@@ -49,7 +49,7 @@ export default {
                 ordertd = (
                     <td key={'bodyorder' + rowIndex.toString()} className="wasabi-order-column" name="wasabi-order-column">
                         <div className={cellClassName}>
-                            {fixed == false && this.state.fixedHeaders.length > 0 ? "" : (
+                            { (
                                 (this.state.pageIndex - 1) * this.state.pageSize +
                                 rowIndex +
                                 1
@@ -78,7 +78,7 @@ export default {
                         >
                             <div className={cellClassName}>
 
-                                {fixed == false && this.state.fixedHeaders.length > 0 ? "" : <Radio forceChange={true} {...props}></Radio>}
+                                { <Radio forceChange={true} {...props}></Radio>}
                             </div>
                         </td>
                     );
@@ -90,7 +90,7 @@ export default {
                             className='wasabi-check-column'
                         >
                             <div className={cellClassName}>
-                                {fixed == false && this.state.fixedHeaders.length > 0 ? "" : <CheckBox forceChange={true} {...props}></CheckBox>}
+                                { <CheckBox forceChange={true} {...props}></CheckBox>}
                             </div>
                         </td>
                     );
@@ -179,7 +179,7 @@ export default {
                                 className={cellClassName}
                                 style={{ textAlign: header.align }}
                             >
-                                {fixed == false && this.state.fixedHeaders.length > 0 && headerColumnIndex < this.state.fixedHeaders.length ? "" : <Input
+                                { <Input
                                     {...header.editor.options}
                                     type={header.editor.type}
                                     name={header.name}
@@ -202,7 +202,7 @@ export default {
                             key={'col-' + rowIndex.toString() + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                         >
                             <div className={cellClassName}>
-                                {fixed == false && this.state.fixedHeaders.length > 0 && headerColumnIndex < this.state.fixedHeaders.length ? "" : content}
+                                { content}
                             </div>
                         </td>
                     );
