@@ -99,19 +99,7 @@ class Home extends React.Component {
   }
   render() {
     return <div>
-      <Tabs>
-        <TabPanel title="22">
-        <Input key="datetimerange" type="datetimerange" name="datetimerange"></Input>
-          <Input key="datetime" type="datetime" name="datetime"></Input>
-          <Input  key="checkbox" type="checkbox" data={this.state.data} valueField="id" textField="name"></Input>
-        </TabPanel>
-        <TabPanel title="11"><DataGrid pagination={true} style={{width:800,height:600}}
-      fixedHeaders={[{name:"name",label:"名称",width:200}]}
-    headers={[{name:"name",label:"名称",width:200},{name:"name",label:"名称",width:200},{name:"name",label:"名称",width:200},{name:"name",label:"名称",width:200},{name:"name",label:"名称",width:200},{name:"name",label:"名称",width:200}]} data={this.state.data}></DataGrid></TabPanel>
-        <TabPanel title="22">
-          11
-</TabPanel>
-      </Tabs>
+    <Pivot></Pivot>
 
     </div>
 

@@ -18,13 +18,13 @@ class Pivot extends Component {
     constructor(props) {
         super(props);
         let p={ 
-            data1:[],
             fields:func.clone(this.props.fields),//所有的字段
             rows:func.clone(this.props.rows),//行维度
             columns:func.clone(this.props.columns),//列维度
             values:func.clone(this.props.values),//统计参数
             filters:func.clone(this.props.filters),//筛选条件
             data:func.clone(this.props.data),//数据
+            headers:[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",sortAble:true,},{name:"name",label:"名称"}]],
         }
         let s={};
         for(let key in p){
@@ -54,7 +54,7 @@ class Pivot extends Component {
         this.initData();
         setTimeout(()=>{
             this.setState({
-                data1:[ { id:1, pId:0, name:"父节点1 - 展开", open:true},
+                data:[ { id:1, pId:0, name:"父节点1 - 展开", open:true},
                 { id:11, pId:1, name:"父节点11 - 折叠"},
                 { id:111, pId:11, name:"叶子节点111"},
                 { id:112, pId:11, name:"叶子节点112"},
@@ -92,16 +92,26 @@ class Pivot extends Component {
         this.setRowsAndColumns(this.state.columns,this.state.rows,this.state.data);
     }
     render(){
+        console.log(this.state.data)
+        let treeTop=0;
+        if(this.state.headers instanceof Array&&this.state.headers.length>0){
+            if(this.state.headers[0] instanceof Array){
+                treeTop=this.state.headers.length*41;
+            }
+            else{
+                treeTop=41;
+            }
+        }
        return <div className="wasabi-pivot">
                <div className="wasabi-pivot-left">
-                  <Configuration></Configuration>
-                  <div className="wasabi-pivot-rows">
-                  <Tree  data={this.state.data1} simpleData={true} idField="id" textField="name"></Tree>
+                  <Configuration height={treeTop}></Configuration>
+                  <div className="wasabi-pivot-rowsData" >
+                  <Tree  data={this.state.data} simpleData={true} idField="id" textField="name"></Tree>
                   </div>
                </div>
                <div className="wasabi-pivot-right">
-               <DataGrid pagination={false}  
-    headers={[[{label:"树结构",colSpan:2}],[{name:"id",label:"id",sortAble:true,},{name:"name",label:"名称"}]]} data={this.state.data1}></DataGrid>
+               <DataGrid pagination={this.props.pagination}  rowNumber={false}
+    headers={this.state.headers} data={this.state.data}></DataGrid>
                </div>
        </div>
     }

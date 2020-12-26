@@ -7,6 +7,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import func from "../../../libs/func";
 import diff from "../../../libs/diff";
+import LinkButton from "../../../Buttons/LinkButton";
+import Button from "../../../Buttons/Button";
+import Modal from "../../../Layout/Modal";
+import Fields from "./Fields";
+import Filters from "./Filters";
+import Rows from "./Rows";
+import Columns from "./Columns";
+import Values from "./Values"
 
 class Configuration extends Component {
     constructor(props) {
@@ -24,6 +32,9 @@ class Configuration extends Component {
             s["old"+key]=p[key];//保留一份方便更新
         }
         this.state =s;
+        this.open=this.open.bind(this);
+        this.close=this.close.bind(this);
+        this.applyHandler=this.applyHandler.bind(this)
     }
     static getDerivedStateFromProps(nextProps, prevState) {
         let newState={};
@@ -45,8 +56,54 @@ class Configuration extends Component {
     initData(){
        
     }
+    /**
+     * 打开设置面板
+     */
+    open(){
+        this.refs.modal.open();
+    }
+    /**
+     * 关闭设置面板
+     */
+    close(){
+        this.refs.modal.close();
+    }
+    applyHandler(){
+        this.refs.modal.close();
+        this.props.applyHandler&&this.props.applyHandler(this.state.rows,this.state.columns,this.state.values,this.state.filters);
+        
+    }
+    renderTool(){
+        return <div style={{position:"absolute",width:"calc(100% - 20px)",paddingRight:10}}>
+            <span style={{fontSize:16,fontWeight:"bold",}}>交叉表配置</span>
+        <div style={{float:"right"}}>
+
+            <Button key="cancel" theme="default" onClick={this.close}>取消</Button>
+            <Button key="success" theme="success" onClick={this.applyHandler}>提交</Button>
+        </div>
+        </div>
+    }
     render(){
-         return null;
+         return <div>
+             <div className="wasabi-pivot-configuration" onClick={this.open.bind(this)} style={{height:this.props.height,lineHeight:this.props.height+"px"}}>
+             <LinkButton iconCls="icon-setting" style={{fontSize:20,marginTop:-3}}></LinkButton><span style={{ cursor:"pointer", fontSize:16,fontWeight:"bold",marginLeft:10}}>单击此处设计</span>
+             
+         </div>
+             <Modal ref="modal" style={{width:1000,height:600,top:10,left:10}} title={this.renderTool()} >
+                 {
+                     <div className="wasabi-pivot-configuration-panel"> 
+                           <Fields></Fields>
+                            <div className="wasabi-pivot-configuration-set">
+                                <Filters></Filters>
+                                <Columns></Columns>
+                                <Rows></Rows>
+                                <Values></Values>
+                            </div>
+                     </div>
+                   
+                    
+                 }
+                 </Modal></div>;
     }
 }
 

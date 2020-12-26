@@ -51,7 +51,7 @@ class Panel extends React.Component {
         style.display = this.state.close ? "none" : "inline-block";
         return (
             <div className={"wasabi-panel panel-" + this.props.theme + " " + this.props.className} style={style}  >
-                <div className="panel-heading" ><span >{this.props.title}</span>
+                <div className="panel-header"  style={this.props.headerStyle}><i className={this.props.iconCls}></i><span >{this.props.title}</span>
                     <div className="panel-buttons"><Toolbars buttons={this.props.buttons} onClick={this.buttonClick}></Toolbars></div>
                     <div className="panel-icon" style={{ display: (this.props.expandAble) ? "block" : "none" }}>
                         <i title={this.state.iconTip} className={this.state.iconCls} onClick={this.expandHandler.bind(this)}></i>
@@ -68,6 +68,8 @@ class Panel extends React.Component {
 }
 
 Panel.propTypes = {
+    className:PropTypes.string,
+    style:PropTypes.object,
     theme: PropTypes.oneOf([
         "default",
         "primary",
@@ -76,22 +78,25 @@ Panel.propTypes = {
         "warning",
         "danger",
     ]),//主题
+    iconCls:PropTypes.string,//图标
     closeAble: PropTypes.bool,//是否可以关闭
     expand: PropTypes.bool,//是否展开
     expandAble: PropTypes.bool,//是否允许展开
-    title: PropTypes.string,//标题
+    title: PropTypes.any,//标题
+    headerStyle:PropTypes.object,//头部样式
     buttons: PropTypes.array,//按钮
     buttonClick: PropTypes.func,//按钮的单击事件
 };
 Panel.defaultProps = {
+    className: "",
+    style:{},
     theme: "default",
+    iconCls:"",
     closeAble: false,
     expand: true,
-    className: "",
     expandAble: true,
     title: "",
-    height: 400,
-    backgroundColor: null,
+    headerStyle: {},
     buttons: [],
     buttonClick: null,
 };

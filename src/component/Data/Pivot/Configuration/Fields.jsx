@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import func from "../../../libs/func";
 import diff from "../../../libs/diff";
+import Panel from "../../../Layout/Panel"
 class Fields extends Component {
     constructor(props) {
         super(props);
@@ -28,7 +29,9 @@ class Fields extends Component {
 
     }
     render() {
-return null;
+return <div className="wasabi-pivot-configuration-fields" >
+    <Panel title="字段" iconCls="icon-form"  headerStyle={{backgroundColor:"#f5f7fa"}} expandAble={false} style={{height:"calc(100% - 10px)"}}></Panel>
+</div>;
     }
 }
 

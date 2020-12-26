@@ -83,7 +83,6 @@ class DataGrid extends Component {
             url: this.props.url,
             params: func.clone(this.props.params), //这里一定要复制,只有复制才可以比较两次参数是否发生改变没有,防止父组件状态任何改变而导致不停的查询
             pageIndex: this.props.pageIndex,//页号
-            oldPageIndex: this.props.pageIndex,//用于刷新
             pageSize: this.props.pageSize,//分页大小
             sortName: this.props.sortName,//排序名称
             sortOrder: this.props.sortOrder,//排序方式
@@ -148,9 +147,7 @@ class DataGrid extends Component {
             newState.total = nextProps.total || nextProps.data.length || 0
 
         }
-        if (nextProps.pageIndex != prevState.oldPageIndex) {
-
-        }
+        
         if (func.isEmptyObject(newState)) {
             return null;
         }

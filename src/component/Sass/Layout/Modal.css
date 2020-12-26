@@ -40,15 +40,12 @@ desc:模态窗口样式
 
 .wasabi-modal-container .wasabi-modal {
   position: absolute;
-  border: 2px solid #c9cbce;
+  border: 1px solid #ebeef5;
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: 0 0 20px #888888;
+  box-shadow:0 2px 12px 0 rgba(0,0,0,.1);
   overflow: hidden;
-}
-.wasabi-modal-container .wasabi-modal.fadein {
-  -webkit-animation: modal 0.218s ease-in;
-  animation: modal 0.218s ease-in;
+  padding: 0px;
 }
 
  .wasabi-modal-close {
@@ -61,6 +58,7 @@ desc:模态窗口样式
    position: absolute;
    right: 10px;
    top: 18px;
+   cursor: pointer;
 
 }
 .wasabi-modal-close:hover {
@@ -69,13 +67,11 @@ desc:模态窗口样式
 
  .wasabi-modal-header {
     font-size: 16px;
-    height:42px;
-    line-height: 42px;
-    color: #333333;
-    background-color: #fafafa;
+    height:50px;
+    line-height: 50px;
     padding-left:20px;
     text-align: left;
-    border-bottom: 1px solid #ebebeb;
+    border-bottom: 1px solid #ebeef5;
     cursor: move;
     -webkit-user-select:none;
      -moz-user-select:none;
@@ -89,7 +85,8 @@ desc:模态窗口样式
   width: 100%;
   position: relative;
   text-align: left;
-  height: calc(100% - 40px);
+  height: calc(100% - 50px);
+ 
 }
 .wasabi-modal-container .wasabi-modal{
   text-align: right;
@@ -104,8 +101,7 @@ desc:模态窗口样式
 }
 .wasabi-modal-footer{
   width: 100%;
-  background-color: #fafafa;
-  border-top: 1px solid #ebebeb;
+  border-top: 1px solid #ebeef5;
   position: absolute;
   left: 0;
   bottom: 0;

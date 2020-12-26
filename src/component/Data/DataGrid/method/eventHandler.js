@@ -17,19 +17,29 @@ export default {
      */
     onTRMouseDown: function (index, event) {//行事件，一定要用鼠标按下事件,不保存在状态值中，
         if (this.props.focusAble) {
-            let node = event.target;
-            while (node.nodeName.toLowerCase() != "tr" && node.nodeName.toLowerCase() != "body") {
-                node = node.parentElement;
+           
+
+            let  trs = this.refs.realTable.children[2].children;
+            let fixtrs=this.refs.fixedTable&&this.refs.fixedTable.children[2].children;
+            for (let  i = 0; i < trs.length; i++) {
+                trs[i].className =trs[i].className&& trs[i].className.replace("selected", "");//先去掉
+                if(fixtrs){
+                    fixtrs[i].className =  fixtrs[i].className&&fixtrs[i].className.replace("selected", "");//先去掉
+                }
             }
-            var trs = this.refs.realTable.children[2].children;
-            for (var i = 0; i < trs.length; i++) {
-                trs[i].className = trs[i].className.replace("selected", "");//先去掉
-            }
+            let node=trs[index];
+            let fixedNode=fixtrs&&fixtrs[index];
             if (node.className.indexOf("selected") > -1) {
 
             }
             else {
                 node.className = "selected" + (node.className ? " " + node.className : "");
+            }
+            if (fixedNode&&fixedNode.className.indexOf("selected") > -1) {
+
+            }
+            else if(fixedNode){
+                fixedNode.className = "selected" + (fixedNode.className ? " " + fixedNode.className : "");
             }
         }
         this.focusIndex = index;//不更新状态值，否则导致频繁的更新
@@ -88,7 +98,7 @@ export default {
         setTimeout(() => {
             this.refs.fixedTableContainer.style.top=(0-this.refs.realTableContainer.scrollTop)+"px";
             this.refs.fixedHeadersContainer.style.left=(0-this.refs.realTableContainer.scrollLeft)+"px";
-        }, 50);
+        }, 0);
      
     },
 

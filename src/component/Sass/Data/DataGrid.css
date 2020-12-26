@@ -125,21 +125,14 @@
 
 .wasabi-grid .table > tbody > tr.selected {
   background-color: #fbec88;
-  border: 1px solid #fad42e;
+  /* border: 1px solid #fad42e; */
   color: #409eff;
  }
 
-.wasabi-grid .table > tbody > tr:hover {
-    background-color: #f5f7fa;
-}
-.wasabi-pivot .wasabi-grid .table > tbody > tr:hover {
+ .wasabi-pivot  .wasabi-grid .table > tbody > tr.selected {
   background-color: #f5f7fa;
-}
-.wasabi-grid .table > tbody > tr.selected:hover {
-  background-color: #fbec88;
-  border: 1px solid #fad42e;
   color: #409eff;
-}
+ }
 /*
 单元格样式
 */

@@ -12,46 +12,51 @@ desc:面板组件样式
   border-radius: 4px;
   -webkit-transition: height 1s;
   transition:height 1s;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow:0 2px 12px 0 rgba(0,0,0,.1);
+  border: 1px solid #ebeef5;
 }
 
-.wasabi-panel .panel-heading
+.wasabi-panel .panel-header
 {
   position: relative;
-  padding: 10px 15px;
-  border-bottom: 1px solid transparent;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-bottom: 1px solid #ebeef5;
   
 }
-.panel-default>.panel-heading {
+.wasabi-panel .panel-header [class^="icon-"], [class*=" icon-"]{
+  margin-right: 5px;
+}
+.panel-default>.panel-header {
   background: #fff;
-  border: 1px solid #dcdfe6;
+  border-bottom: 1px solid #dcdfe6;
   color: #606266;
 }
-.panel-primary>.panel-heading {
+.panel-primary>.panel-header {
   color: #fff;
   background-color: #409eff;
   border-color: #409eff;
 }
 
-.panel-success>.panel-heading {
+.panel-success>.panel-header {
   color: #fff;
     background-color: #67c23a;
     border-color: #67c23a;
 }
-.panel-info>.panel-heading {
+.panel-info>.panel-header {
   color: #fff;
   background-color: #909399;
   border-color: #909399;
 }
-.panel-warning>.panel-heading{
+.panel-warning>.panel-header{
   color: #fff;
   background-color: #e6a23c;
   border-color: #e6a23c;
 }
 
-.panel-danger>.panel-heading{
+.panel-danger>.panel-header{
   color: #fff;
   background-color: #f56c6c;
   border-color: #f56c6c;
@@ -84,7 +89,7 @@ text-align: right;
 .wasabi-panel .panel-body
 {
   
-  height:calc(100% - 41px);
+  height:calc(100% - 40px);
   padding-top:10px;
   padding-bottom: 10px;
   text-align: left;
