@@ -100,7 +100,7 @@ export default {
             let rowidstr="";//用于树组件
             for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
                 //
-                if(rowsTreeData.filter(item=>item.id==)
+                // if(rowsTreeData.filter(item=>item.id==)
 
 
             }
