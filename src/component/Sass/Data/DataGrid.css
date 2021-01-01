@@ -139,7 +139,7 @@
 .wasabi-grid .wasabi-grid-cell{
   width: 100%;
   box-sizing:border-box;
-  white-space: normal;
+  white-space: pre-wrap;
   word-break: break-all;
 
 }
@@ -150,7 +150,7 @@
 }
 .wasabi-pivot .wasabi-grid .wasabi-grid-cell{
   overflow: hidden;
-  white-space: pre-wrap;
+  white-space:nowrap;;
   text-overflow: ellipsis;
 }
 
