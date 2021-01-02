@@ -15,10 +15,8 @@ export default {
      * @param {*} index 
      * @param {*} event 
      */
-    onTRMouseDown: function (index, event) {//行事件，一定要用鼠标按下事件,不保存在状态值中，
+    onTRMouseDown: function (index, event,self=true) {//行事件，一定要用鼠标按下事件,不保存在状态值中，
         if (this.props.focusAble) {
-
-
             let trs = this.refs.realTable.children[2].children;
             let fixtrs = this.refs.fixedTable && this.refs.fixedTable.children[2].children;
             for (let i = 0; i < trs.length; i++) {
@@ -33,13 +31,28 @@ export default {
 
             }
             else {
-                node.className = "selected" + (node.className ? " " + node.className : "");
+                if(this.props.isPivot&&self){
+                    setTimeout(() => {
+                        node.className = "selected" + (node.className ? " " + node.className : "");
+                    }, 100);
+                }
+                else{
+                    node.className = "selected" + (node.className ? " " + node.className : "");
+                }
+               
             }
             if (fixedNode && fixedNode.className.indexOf("selected") > -1) {
 
             }
             else if (fixedNode) {
+                if(this.props.isPivot&&self){
+                    setTimeout(() => {
+                        fixedNode.className = "selected" + (fixedNode.className ? " " + fixedNode.className : "");
+                    }, 100);
+                }
+                else{
                 fixedNode.className = "selected" + (fixedNode.className ? " " + fixedNode.className : "");
+                }
             }
         }
         this.focusIndex = index;//不更新状态值，否则导致频繁的更新
@@ -70,12 +83,10 @@ export default {
      * 专门用于交叉表
      * @param {*} _id 
      */
-    setClick(_id) {
-      
+    setClick(_id) {   
         for (let i = 0; i < this.state.data.length; i++) {
-
             if (this.state.data[i]["_id"] == _id) {
-                this.onTRMouseDown(i);
+                this.onTRMouseDown(i,null,false);
                 break;
             }
         }

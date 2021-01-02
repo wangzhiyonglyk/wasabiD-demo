@@ -64,12 +64,19 @@
   background-color:#f5f7fa;
   color: #409eff;
 }
+.wasabi-pivot .wasabi-tree li>div:hover{
+  background-color:white;
+  color: #606266;
+}
 
 .wasabi-tree li>div.selected{
   background-color:#f5f7fa;
   color: #409eff;
 }
-
+.wasabi-pivot .wasabi-tree li>div.selected{
+  background-color:#f5f7fa;
+  color: #409eff;
+}
 
 
 .wasabi-tree [class*=" icon-"],.wasabi-tree [class^=icon-] {
@@ -82,6 +89,10 @@
 }
 .wasabi-tree a:focus,.wasabi-tree a:hover{
   color:#409eff;
+}
+
+.wasabi-pivot .wasabi-tree a:focus,.wasabi-pivot .wasabi-tree a:hover{
+  color:#606266;
 }
 
 .wasabi-tree .wasabi-tree-txt{

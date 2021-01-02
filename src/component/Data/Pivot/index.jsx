@@ -70,11 +70,11 @@ class Pivot extends Component {
         this.setRowsAndColunmsAndData(this.state.columns, this.state.rows, this.state.values, this.state.data);
     }
     dataGridClick(rowData, rowIndex) {
+        
         this.refs.tree.setClickNode(rowData._id);
 
     }
     treeClick(_id) {
-
         this.refs.grid.setClick(_id);
     }
     render() {

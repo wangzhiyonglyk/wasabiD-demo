@@ -132,13 +132,22 @@ class Tree extends Component {
      * @param {*} children 子节点
      */
     onClick(id, text, children) {
-        this.setState({
-            id: id,
-            selectid:id,
-            text: text
-        }, () => {
-            this.props.onClick && this.props.onClick(id, text, children, this.props.name);
-        })
+        if(this.props.isPivot){
+            setTimeout(() => {
+                this.setState({
+                    id: id,
+                    selectid:id,
+                    text: text
+                })
+            }, 20);
+        }else{
+            this.setState({
+                id: id,
+                selectid:id,
+                text: text
+            })
+        }
+        this.props.onClick && this.props.onClick(id, text, children, this.props.name);
 
     }
     setClickNode(id){
@@ -147,6 +156,7 @@ class Tree extends Component {
         for(let i=0;i<rawData.length;i++){
             if(id==rawData.id){
                 text=rawData.text;
+                break;
             }
         }
         this.setState({
@@ -154,6 +164,8 @@ class Tree extends Component {
             selectid:id,
             text: text
         })
+      
+      
     }
     /**
      * 单选按钮 radioType="all"
