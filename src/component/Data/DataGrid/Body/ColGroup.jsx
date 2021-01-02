@@ -7,6 +7,7 @@ import React from 'react';
  let ColGroup={
      renderSingleColGroup(colgroup,fiexd=false){
          let headers=fiexd?this.state.fixedHeaders:this.state.headers;
+        
          headers.map((header, headerColumnIndex) => {
             if (header.colSpan && header.colSpan > 1) {
                 return;

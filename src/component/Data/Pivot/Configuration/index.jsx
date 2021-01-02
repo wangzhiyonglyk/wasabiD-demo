@@ -88,9 +88,11 @@ class Configuration extends Component {
     }
     render() {
         return <div>
-            <div className="wasabi-pivot-configuration" onClick={this.open.bind(this)} style={{ height: this.props.height, lineHeight: this.props.height + "px" }}>
-                <LinkButton iconCls="icon-setting" style={{ fontSize: 20, marginTop: -3 }}></LinkButton><span style={{ cursor: "pointer", fontSize: 16, fontWeight: "bold", marginLeft: 10 }}>单击此处设计</span>
-
+            <div className="wasabi-pivot-configuration" onClick={this.props.applyHandler?this.open.bind(this):()=>{}} style={{ height: this.props.height, lineHeight: this.props.height + "px" }}>
+             {this.props.applyHandler?
+             <div><LinkButton iconCls="icon-setting" style={{ fontSize: 20, marginTop: -3 }}></LinkButton><span style={{ cursor: "pointer", fontSize: 16, fontWeight: "bold", marginLeft: 10 }}>单击此处设计</span></div> 
+              :null
+             }
             </div>
             <Modal ref="modal" style={{ width: 1000, height: 600, top: 10, left: 10 }} title={this.renderTool()} >
                 {

@@ -141,6 +141,20 @@ class Tree extends Component {
         })
 
     }
+    setClickNode(id){
+        let rawData=this.state.rawData;
+        let text="";
+        for(let i=0;i<rawData.length;i++){
+            if(id==rawData.id){
+                text=rawData.text;
+            }
+        }
+        this.setState({
+            id: id,
+            selectid:id,
+            text: text
+        })
+    }
     /**
      * 单选按钮 radioType="all"
      * @param {*} id 
@@ -317,6 +331,10 @@ Tree.propTypes = {
     beforeRemove: PropTypes.func,//删除前事件
     beforeRename: PropTypes.func,//重命名前事件
     beforeRightClick: PropTypes.func,//鼠标右键前事件
+    /**
+     * pivot 专门为交叉提供的属性
+     */
+    isPivot:PropTypes.bool
 }
 Tree.defaultProps = {
     style:{},
@@ -360,5 +378,10 @@ Tree.defaultProps = {
     beforeRemove: null,
     beforeRename: null,
     beforeRightClick: null,
+
+     /**
+     * pivot 专门为交叉提供的属性
+     */
+    isPivot:false,
 }
 export default Tree;

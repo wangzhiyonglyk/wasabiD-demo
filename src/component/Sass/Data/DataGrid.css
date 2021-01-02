@@ -141,6 +141,7 @@
   box-sizing:border-box;
   white-space: pre-wrap;
   word-break: break-all;
+  min-height: 20px;
 
 }
 .wasabi-grid .wasabi-grid-cell.nowrap{

@@ -6,13 +6,13 @@
 
 .wasabi-pivot-left{
     height: 100%;
-    width: 400px;
+    width: 300px;
     position: relative;
 
 }
 
 .wasabi-pivot-right {
-    width: calc(100% - 400px);
+    width: calc(100% - 300px);
 }
 
 .wasabi-pivot-configuration{

@@ -427,7 +427,7 @@ func.toTreeData = function (data,idField="id",  parentField="pId",textField="tex
     let index = 0;
     while (data.length != 0 && count < 200000) {
         count++;
-        if (pId.indexOf(","+data[index][parentField]+",") > -1) {
+        if (pId.indexOf(","+data[index][parentField]+",") > -1||!data[index][parentField]) {
             let item={
                 ...data[index],
                 text: data[index][textField],

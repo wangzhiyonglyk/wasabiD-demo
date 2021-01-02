@@ -30,7 +30,7 @@ export default {
         if (this.props.selectAble) {
             colgroup.push(<col key="wasabi-check-column" name="wasabi-check-column" width={37}></col>)
         }
-        if (this.single) {
+        if (this.state.single) {
             colgroup = this.renderSingleColGroup(colgroup, fixed);
         }
         else {
@@ -51,26 +51,26 @@ export default {
     */
     renderHeader() {
 
-        return this.single ? this.renderSingleHeader() : this.renderComplexHeader();
+        return this.state.single ? this.renderSingleHeader() : this.renderComplexHeader();
     },
     /**
      * 处理固定列的表头
      */
     renderFixedHeader() {
-        return this.single ? this.renderSingleHeader(true) : this.renderComplexHeader();
+        return this.state.single ? this.renderSingleHeader(true) : this.renderComplexHeader();
     },
 
     /**
      * 处理表体
      */
     renderBody() {
-        return this.single ? this.renderSingleBody() : this.renderComplexBody();
+        return this.state.single ? this.renderSingleBody() : this.renderComplexBody();
     },
     /**
      * 处理固定列的表体
      */
     renderFixedBody() {
-        return this.single ? this.renderSingleBody(true) : this.renderComplexBody();
+        return this.state.single ? this.renderSingleBody(true) : this.renderComplexBody();
     },
     /**
      * 得到单元格内容
