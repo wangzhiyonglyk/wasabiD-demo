@@ -10,11 +10,14 @@ import Msg from "../../../Info/Msg.jsx";
 import diff from "../../../libs/diff"
 export default {
 
+   /**
+    * 
     /**
      * 鼠标按下事件
-     * @param {*} index 
-     * @param {*} event 
-     */
+    * @param {*} index 
+    * @param {*} event 
+    * @param {*} self 是否是自身的点击
+    */
     onTRMouseDown: function (index, event,self=true) {//行事件，一定要用鼠标按下事件,不保存在状态值中，
         if (this.props.focusAble) {
             let trs = this.refs.realTable.children[2].children;
@@ -31,7 +34,7 @@ export default {
 
             }
             else {
-                if(this.props.isPivot&&self){
+                if(this.props.isPivot&&self){//是交叉表，但是不是自身单击
                     setTimeout(() => {
                         node.className = "selected" + (node.className ? " " + node.className : "");
                     }, 100);
@@ -45,7 +48,7 @@ export default {
 
             }
             else if (fixedNode) {
-                if(this.props.isPivot&&self){
+                if(this.props.isPivot&&self){//是交叉表，但是不是自身单击
                     setTimeout(() => {
                         fixedNode.className = "selected" + (fixedNode.className ? " " + fixedNode.className : "");
                     }, 100);
@@ -86,7 +89,7 @@ export default {
     setClick(_id) {   
         for (let i = 0; i < this.state.data.length; i++) {
             if (this.state.data[i]["_id"] == _id) {
-                this.onTRMouseDown(i,null,false);
+                this.onTRMouseDown(i,null,false);//由交叉表引来的单击
                 break;
             }
         }
