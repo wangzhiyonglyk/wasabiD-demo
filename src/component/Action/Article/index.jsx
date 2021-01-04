@@ -42,7 +42,7 @@ class Article extends React.Component {
         let newState = {};
         if (diff(nextProps.content, prevState.oldPropsContent)) {
             newState.tempContent = this.formatContent(nextProps.content);
-            newState.oldPropsContent = nextProps.content;
+            newState.oldPropsContent = func.clone(nextProps.content);
         }
         if (nextProps.title != prevState.oldPropsTitle) {
             newState.title = nextProps.title;
@@ -62,7 +62,7 @@ class Article extends React.Component {
             if (typeof oldContent === "string") {
                 content.push({
                     type: "txt",
-                    cotent: oldContent
+                    content: oldContent
                 })
             }
             else if (typeof oldContent === "object" && oldContent instanceof Array) {
@@ -90,7 +90,7 @@ class Article extends React.Component {
 
     }
     getContent() {
-        return this.state.content;
+        return this.state.tempContent;
     }
     setContent(newContent) {
         let content = this.formatContent(newContent);
@@ -209,13 +209,17 @@ class Article extends React.Component {
         this.state.tempContent[index].content = event.target.textContent;
         setTimeout(() => {
             this.setState({
-                tempContent: this.state.content,
-                wordNum: this.computeWordNum(this.state.content)
+                tempContent: this.state.tempContent,
+                wordNum: this.computeWordNum(this.state.tempContent)
             })
         }, 100);
 
 
     }
+    /**
+     * 图片上传成功
+     * @param {*} res 
+     */
     imgUploadSuccess(res) {
         let content = this.state.tempContent;
         if (this.props.imgUploadSuccess) {
@@ -231,6 +235,10 @@ class Article extends React.Component {
             tempContent: content
         })
     }
+    /**
+     * 计算字数
+     * @param {*} content 
+     */
     computeWordNum(content) {
         let wordNum = 0;
         for (let i = 0; i < content.length; i++) {
