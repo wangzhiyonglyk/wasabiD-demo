@@ -44,11 +44,11 @@ class CalendarBody extends Component {
     }
  
    
-    dayHandler(day,e) {
+    dayHandler(day,event) {
         this.setState({
             day: day
         })
-       this.props.dayHandler&& this.props.dayHandler(day); // 执行父组件回调函数，改变父组件状态值
+       this.props.dayHandler&& this.props.dayHandler(day,event); // 执行父组件回调函数，改变父组件状态值
     }
     yearOnChange(event) {
         this.setState({

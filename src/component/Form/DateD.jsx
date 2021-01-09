@@ -55,8 +55,8 @@ class DateD extends Component {
             this.props.updateYearAndMonth(filterYear, filterMonth);
         }
     }
-    dayHandler(day) {
-        event.stopPropagation();//阻止冒泡，防止下拉时注册的全局事件找不到父节点
+    dayHandler(day,event) {
+        event&& event.stopPropagation();//阻止冒泡，防止下拉时注册的全局事件找不到父节点
         this.setState({
             day: day,
 
