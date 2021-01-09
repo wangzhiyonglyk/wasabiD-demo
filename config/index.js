@@ -22,11 +22,6 @@ let entry = [
     filename: 'login', //文件名，
     title: '登录', // 标题
     src: './view/login/index.jsx' //脚本路径
-  },
-  {
-    filename:"test",
-    title:"测试",
-    src:"./view/test/test.jsx"
   }
 ];
 

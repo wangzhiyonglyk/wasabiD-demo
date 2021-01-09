@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import ("./home.css")
 import { Article, Avatar, Input, DataGrid, Tree, Left, Right, Pivot,TabPanel,Tabs } from "../../component"
 import api from "../../libs/api"
 class Home extends React.Component {
