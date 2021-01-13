@@ -15,7 +15,6 @@ class LinkButton extends Component {
     this.clickHandler = this.clickHandler.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
-    this.dragStartHandler = this.dragStartHandler.bind(this);
     this.state = {};
   }
   clickHandler(event) {

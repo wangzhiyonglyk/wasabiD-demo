@@ -70,6 +70,7 @@ class Tree extends Component {
             }
             newState.text=result.text;
         }
+        
         if (func.isEmptyObject(newState)) {
             return null;
         }

@@ -92,7 +92,7 @@ class Pivot extends Component {
             <div className="wasabi-pivot-left">
                 <Configuration height={treeTop}></Configuration>
                 <div className="wasabi-pivot-rowsData" >
-                    <Tree checkAble={true} ref="tree" onClick={this.treeClick.bind(this)} isPivot={true} data={this.state.rowsTreeData} simpleData={true} ></Tree>
+                    <Tree checkAble={this.props.checkAble} ref="tree" onClick={this.treeClick.bind(this)} isPivot={true} data={this.state.rowsTreeData} simpleData={true} ></Tree>
                 </div>
             </div>
             <div className="wasabi-pivot-right">
@@ -111,7 +111,9 @@ Pivot.propTypes = {
     values: PropTypes.array,//统计参数
     filters: PropTypes.array,//筛选条件
     data: PropTypes.array,//数据,
+    checkAble:PropTypes.bool,//是否可以勾选
     applyHandler: PropTypes.func,//请求数据处理
+  
 }
 
 Pivot.defaultProps = {
@@ -121,7 +123,9 @@ Pivot.defaultProps = {
     values: [],//统计参数
     filters: [],//筛选条件
     data: [],//数据,
+    checkAble:false,//是否允许勾选
     applyHandler: null,//请求数据处理
+
 }
 mixins(Pivot, [dataHandler])
 export default Pivot;

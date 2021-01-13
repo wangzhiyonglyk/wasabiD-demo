@@ -609,7 +609,7 @@ class TreeNode extends Component {
                 nodeControl.push(<TreeNode
                     {...this.props}
                     {...this.state}
-                    {...item}
+                    {...item}//属性会覆盖前面的属性
                     children={item.children||[]}
                     key={"treenode-"+ this.state.id+"-"+item.id+"-"+index}
                     parentRemoveChild={this.parentRemoveChild.bind(this)}
@@ -643,7 +643,7 @@ class TreeNode extends Component {
        
         //节点元素
         let nodeEement = [<Input key="1"  type={this.props.checkStyle || "checkbox"}
-            hide={this.props.checkAble ? false : this.props.checkAble ? false : true}
+            hide={this.props.checkAble ? false : true}
             half={this.state.checkValue == "half"}
             name={"node" + this.props.id}
            

@@ -218,7 +218,8 @@ class Home extends React.Component {
               year: "2020",
               sex: "女",
               income: 15000,
-              consume: 14700
+              consume: 14700,
+              checkAble:false
           },
           ]
 
@@ -232,9 +233,12 @@ this.refs.grid.export(true,"test")
   }
   render() {
     return <Layout>
-        <Left width={300} ></Left>
+        <Left width={300} >
+
+            <Tree checkAble={true} data={this.state.data} idField="consume" textField="province"></Tree>
+        </Left>
         <Center>    <Button  onClick={this.onClick.bind(this)}>导出</Button>
-    <Pivot rows={this.state.rows} values={this.state.values} columns={this.state.columns} data={this.state.data} ></Pivot>
+    <Pivot rows={this.state.rows} checkAble={true} values={this.state.values} columns={this.state.columns} data={this.state.data} ></Pivot>
 <DataGrid ref="grid" data={this.state.data} headers={this.state.headers} selectAble={true}></DataGrid></Center>
 <Right width={300} ></Right>
     </Layout>
