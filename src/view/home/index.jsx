@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ("./home.css")
-import { Article, Avatar, Input, DataGrid, Tree, Right, Pivot,TabPanel,Tabs, Button ,Layout,Left,Center} from "../../component"
+import { Article, Avatar, Input, Modal, DataGrid, Tree, Right, Pivot,TabPanel,Tabs, Button ,Layout,Left,Center} from "../../component"
 import api from "../../libs/api"
 class Home extends React.Component {
   constructor(props) {
@@ -229,6 +229,7 @@ class Home extends React.Component {
 
   }
   onClick(){
+      this.refs.modal.open()
 this.refs.grid.export(true,"test")
   }
   render() {
@@ -238,6 +239,7 @@ this.refs.grid.export(true,"test")
             <Tree checkAble={true} data={this.state.data} idField="consume" textField="province"></Tree>
         </Left>
         <Center>    <Button  onClick={this.onClick.bind(this)}>导出</Button>
+        <Modal ref="modal"></Modal>
     <Pivot rows={this.state.rows} checkAble={true} values={this.state.values} columns={this.state.columns} data={this.state.data} ></Pivot>
 <DataGrid ref="grid" data={this.state.data} headers={this.state.headers} selectAble={true}></DataGrid></Center>
 <Right width={300} ></Right>

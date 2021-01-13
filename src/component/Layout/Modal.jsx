@@ -41,7 +41,6 @@ class Modal extends React.Component {
     }
 
     close() {//关闭事件
-        console.log("close")
         this.setState({ visible: false });
         if (this.props.closedHandler != null) {
             this.props.closedHandler();
