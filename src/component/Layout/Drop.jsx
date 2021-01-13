@@ -37,12 +37,8 @@ class Drop extends  React.Component {
         this.setState({
             dropClass: "drop"
         })
-        var eleProps = (window.localStorage.getItem("wasabidrageleProps"));
-        if (eleProps) {
-            eleProps = JSON.parse(eleProps);
-        }
-        this.props.onDrop(eleProps);
-        window.localStorage.removeItem("wasabidrageleProps")
+        this.props.onDrop();
+   
     }
 
     render() {

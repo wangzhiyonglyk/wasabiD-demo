@@ -6,12 +6,16 @@ desc:圣杯布局
 
 import React from 'react';
 import PropTypes from "prop-types";
-
 import ("../Sass/Layout/Layout.css");
 class Layout extends React.Component {
     constructor(props) {
         super(props);
         this.calWidthHeight = this.calWidthHeight.bind(this);
+        this.state={
+            leftid: Math.random().toString(36).slice(-8),
+            rightid: Math.random().toString(36).slice(-8),
+            centerid: Math.random().toString(36).slice(-8),
+        }
     }
     static propTypes = {
         width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -66,11 +70,11 @@ class Layout extends React.Component {
                  
                     switch (child.props.title) {
                         case "center":
-                            return React.cloneElement(child, { key: index, ref: index, ...widthHeight });
+                            return React.cloneElement(child, {leftid:this.state.leftid,centerid:this.state.centerid,rightid:this.state.rightid,key: index, ref: index, ...widthHeight });
                         case "left":
-                            return React.cloneElement(child, { key: index, ref: index, ...widthHeight });
+                            return React.cloneElement(child, { leftid:this.state.leftid,centerid:this.state.centerid,rightid:this.state.rightid, key: index, ref: index, ...widthHeight });
                         case "right":
-                            return React.cloneElement(child, { key: index, ref: index, ...widthHeight });
+                            return React.cloneElement(child, {leftid:this.state.leftid,centerid:this.state.centerid,rightid:this.state.rightid,key: index, ref: index, ...widthHeight });
                         default:
                             return React.cloneElement(child, { key: index, ref: index });
 

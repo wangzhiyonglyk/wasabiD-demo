@@ -61,7 +61,6 @@ export default {
      * @param {*} title 导出标题
      */
     export(selected, title="grid-") {
-
         title = title+ func.dateformat(new Date(), "yyyy-MM-dd");
         let tableHtml = "<table border='1'> ";
         //导出表头
@@ -84,7 +83,7 @@ export default {
 
             for (let value of this.state.checkedIndex.values()) {
                 tableHtml += "<tr>"
-                for (let columnIndex = 0; columnIndex <  this.refs.realTable.children[2].children[rowIndex].children.length; columnIndex++) {
+                for (let columnIndex = 0; columnIndex <  this.refs.realTable.children[2].children[value].children.length; columnIndex++) {
                     let html = this.refs.realTable.children[2].children[value].children[columnIndex].outerHTML;
                     if (html.indexOf("wasabi-detail-column") > -1||html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-check-column") > -1||html.indexOf("wasabi-noexport")>-1) {//除去序号列与选择列及不需要导出的列
                         continue;

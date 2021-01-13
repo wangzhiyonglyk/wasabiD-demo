@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ("./home.css")
-import { Article, Avatar, Input, DataGrid, Tree, Left, Right, Pivot,TabPanel,Tabs } from "../../component"
+import { Article, Avatar, Input, DataGrid, Tree, Right, Pivot,TabPanel,Tabs, Button ,Layout,Left,Center} from "../../component"
 import api from "../../libs/api"
 class Home extends React.Component {
   constructor(props) {
@@ -25,6 +25,36 @@ class Home extends React.Component {
     
     setTimeout(() => {
       this.setState({
+          headers:[
+            {
+                name: "province",
+                label: "省",
+            },
+            {
+                name: "city",
+                label: "市"
+            },
+            {
+                name: "year",
+                label: "年"
+            }, {
+                name: "sex",
+                label: "性别"
+            },
+            {
+                name: "income",
+                label: "收入",
+                collectName:"平均值",
+                collectType:"avg"
+
+            }, {
+                name: "consume",
+                label: "消费",
+                collectName:"平均值",
+                collectType:"avg"
+
+            }
+          ],
           rows: [
               {
                   name: "province",
@@ -197,12 +227,17 @@ class Home extends React.Component {
 
 
   }
-
+  onClick(){
+this.refs.grid.export(true,"test")
+  }
   render() {
-    return <div>
+    return <Layout>
+        <Left width={300} ></Left>
+        <Center>    <Button  onClick={this.onClick.bind(this)}>导出</Button>
     <Pivot rows={this.state.rows} values={this.state.values} columns={this.state.columns} data={this.state.data} ></Pivot>
-
-    </div>
+<DataGrid ref="grid" data={this.state.data} headers={this.state.headers} selectAble={true}></DataGrid></Center>
+<Right width={300} ></Right>
+    </Layout>
 
   }
 }

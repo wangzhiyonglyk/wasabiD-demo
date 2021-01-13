@@ -92,7 +92,7 @@ class Pivot extends Component {
             <div className="wasabi-pivot-left">
                 <Configuration height={treeTop}></Configuration>
                 <div className="wasabi-pivot-rowsData" >
-                    <Tree ref="tree" onClick={this.treeClick.bind(this)} isPivot={true} data={this.state.rowsTreeData} simpleData={true} ></Tree>
+                    <Tree checkAble={true} ref="tree" onClick={this.treeClick.bind(this)} isPivot={true} data={this.state.rowsTreeData} simpleData={true} ></Tree>
                 </div>
             </div>
             <div className="wasabi-pivot-right">

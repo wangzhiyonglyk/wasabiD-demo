@@ -65,6 +65,9 @@ class Tree extends Component {
                 newState.data=func.toTreeData(result.data,nextProps.idField,nextProps.parentField,nextProps.textField)
             
             }
+            else {
+                newState.data=func.clone(nextProps.data);
+            }
             newState.text=result.text;
         }
         if (func.isEmptyObject(newState)) {
