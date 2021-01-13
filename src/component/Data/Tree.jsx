@@ -257,21 +257,24 @@ class Tree extends Component {
    * @param {*} childIndex 
    */
     parentRemoveChild(childid, childText, subChildren) {
-        let children = func.clone(this.state.data);
-        let childIndex = null;
-        for (let i = 0; i < children.length; i++) {
-            if (children[i].id == childid) {
-                childIndex = i; break;
+        Msg.confirm("确定删除节点吗？",()=>{
+            let children = func.clone(this.state.data);
+            let childIndex = null;
+            for (let i = 0; i < children.length; i++) {
+                if (children[i].id == childid) {
+                    childIndex = i; break;
+                }
             }
-        }
-        if (childIndex != null) {
-            children.splice(childIndex, 1);
-            this.setState({
-                data: children
-            })
-        }
-
-        this.props.onRemove && this.props.onRemove(childid, childText, subChildren);
+            if (childIndex != null) {
+                children.splice(childIndex, 1);
+                this.setState({
+                    data: children
+                })
+            }
+    
+            this.props.onRemove && this.props.onRemove(childid, childText, subChildren);
+        })
+      
     }
 
     render() {  

@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import Input from "../Form/Input"
 import func from "../libs/func";
 import TreeNodeRow from "../Model/TreeNodeRow"
+import Msg from "../Info/Msg";
 class TreeNode extends Component {
 
     constructor(props) {
@@ -345,21 +346,24 @@ class TreeNode extends Component {
      * @param {*} childIndex 
      */
     parentRemoveChild(childid, childText, subChildren) {
-        let children = func.clone(this.state.children);
-        let childIndex = null;
-        for (let i = 0; i < children.length; i++) {
-            if (children[i].id == childid) {
-                childIndex = i; break;
+        Msg.confirm("确定删除节点吗？",()=>{
+            let children = func.clone(this.state.children);
+            let childIndex = null;
+            for (let i = 0; i < children.length; i++) {
+                if (children[i].id == childid) {
+                    childIndex = i; break;
+                }
             }
-        }
-        if (childIndex != null) {
-            children.splice(childIndex, 1);
-            this.setState({
-                children: children
-            })
-        }
-        //父节点删除后再调用删除后的事件
-        this.props.onRemove && this.props.onRemove(childid, childText, subChildren);
+            if (childIndex != null) {
+                children.splice(childIndex, 1);
+                this.setState({
+                    children: children
+                })
+            }
+            //父节点删除后再调用删除后的事件
+            this.props.onRemove && this.props.onRemove(childid, childText, subChildren);
+        })
+     
     }
 
     onEdit() {
