@@ -15,6 +15,7 @@ class TreeNodeRow {
         this.href = "";//节点的链接
         this.hide = "";//是否隐藏
         this.children = "";//子节点
+        this.nodeData={};//额外的数据
     }
 }
 export default TreeNodeRow;

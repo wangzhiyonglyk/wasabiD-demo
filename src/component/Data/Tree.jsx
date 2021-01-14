@@ -135,7 +135,7 @@ class Tree extends Component {
    
      * @param {*} children 子节点
      */
-    onClick(id, text, children) {
+    onClick(id, text, children,nodeData) {
         if(this.props.isPivot){
             setTimeout(() => {
                 this.setState({
@@ -151,7 +151,7 @@ class Tree extends Component {
                 text: text
             })
         }
-        this.props.onClick && this.props.onClick(id, text, children, this.props.name);
+        this.props.onClick && this.props.onClick(id, text, children,nodeData, this.props.name);
 
     }
     setClickNode(id){
@@ -194,7 +194,7 @@ class Tree extends Component {
                 }
             }
             setTimeout(() => {
-                this.onChecked(true, id, text, children,row);
+                this.onChecked(true, id, text, children,nodeData);
             }, 200);
             //只有一个单选
 
@@ -207,8 +207,8 @@ class Tree extends Component {
      * @param {*} text 
      * @param {*} children 
      */
-    onDoubleClick(id, text, children) {
-        this.props.onDoubleClick && this.props.onDoubleClick(id, text, children, this.props.name);
+    onDoubleClick(id, text, children,row) {
+        this.props.onDoubleClick && this.props.onDoubleClick(id, text, children,row, this.props.name);
     }
     onChecked(checked, id, text, children,row) {
         this.props.onChecked && this.props.onChecked(checked, id, text, children,row, this.props.name);
@@ -256,7 +256,7 @@ class Tree extends Component {
    * 由节点的父组件处理删除与移动时的删除
    * @param {*} childIndex 
    */
-    parentRemoveChild(childid, childText, subChildren) {
+    parentRemoveChild(childid, childText, subChildren,row) {
         Msg.confirm("确定删除节点吗？",()=>{
             let children = func.clone(this.state.data);
             let childIndex = null;
@@ -272,7 +272,7 @@ class Tree extends Component {
                 })
             }
     
-            this.props.onRemove && this.props.onRemove(childid, childText, subChildren);
+            this.props.onRemove && this.props.onRemove(childid, childText, subChildren,row);
         })
       
     }
@@ -294,7 +294,7 @@ class Tree extends Component {
                     {...item}
                     half={(this.props.checkType && this.props.checkType.y.indexOf("p") > -1 && ((this.state.checkValue || item.checkValue) == "half"))}
                     checked={this.props.inputValue ? ("," + this.props.inputValue + ",").indexOf("," + item.id + ",") > -1 ? true : false : item.checked}
-                    data={this.state.rawData}
+                    nodeData={item}
                     isParent={isParent} selectid={this.state.selectid}
                     /** 其他事件不需要绑定，因为父组件设定 */
                     onClick={this.onClick}

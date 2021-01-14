@@ -65,7 +65,11 @@ class TreeNode extends Component {
      * @param {*} text 
      */
     onClick(id, text, children) {
-        this.props.onClick && this.props.onClick(id, text, children)
+        let row = new TreeNodeRow();
+        for (let key in row) {
+            row[key] = this.state[key];
+        }
+        this.props.onClick && this.props.onClick(id, text, children,row)
 
     }
     /**
@@ -73,8 +77,12 @@ class TreeNode extends Component {
      * @param {*} id 
      * @param {*} text 
      */
-    onDoubleClick(id, text) {
-        this.props.onDoubleClick && this.props.onDoubleClick(id, text)
+    onDoubleClick(id, text,children) {
+        let row = new TreeNodeRow();
+        for (let key in row) {
+            row[key] = this.state[key];
+        }
+        this.props.onDoubleClick && this.props.onDoubleClick(id, text,children,row)
     }
 
     /**
@@ -304,7 +312,11 @@ class TreeNode extends Component {
      * @param {*} newText 
      */
     onRename(oldText, newText) {
-        this.props.onRename && this.props.onRename(this.state.id, oldText, newText, this.state.children);
+        let row = new TreeNodeRow();
+        for (let key in row) {
+            row[key] = this.state[key];
+        }
+        this.props.onRename && this.props.onRename(this.state.id, oldText, newText, this.state.children,row);
     }
 
     /**
@@ -313,7 +325,11 @@ class TreeNode extends Component {
     beforeRename() {
         let rename = true;
         if (this.props.beforeRename) {
-            rename = this.props.beforeRename(this.state.id, this.state.text, this.state.children)
+            let row = new TreeNodeRow();
+            for (let key in row) {
+                row[key] = this.state[key];
+            }
+            rename = this.props.beforeRename(this.state.id, this.state.text, this.state.children,row)
         }
         if (rename) {
             this.setState({
@@ -334,10 +350,18 @@ class TreeNode extends Component {
     beforeRemove(index) {
         let remove = true;
         if (this.props.beforeRemove) {
-            remove = this.props.beforeRemove(this.state.id, this.state.text, this.state.children);
+            let row = new TreeNodeRow();
+            for (let key in row) {
+                row[key] = this.state[key];
+            }
+            remove = this.props.beforeRemove(this.state.id, this.state.text, this.state.children,row);
         }
         if (remove) {
-            this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.id, this.state.text, this.state.children)
+            let row = new TreeNodeRow();
+            for (let key in row) {
+                row[key] = this.state[key];
+            }
+            this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.id, this.state.text, this.state.children,row)
         }
     }
 
@@ -345,7 +369,7 @@ class TreeNode extends Component {
      * 由节点的父组件处理删除
      * @param {*} childIndex 
      */
-    parentRemoveChild(childid, childText, subChildren) {
+    parentRemoveChild(childid, childText, subChildren,subrow) {
         Msg.confirm("确定删除节点吗？",()=>{
             let children = func.clone(this.state.children);
             let childIndex = null;
@@ -361,13 +385,17 @@ class TreeNode extends Component {
                 })
             }
             //父节点删除后再调用删除后的事件
-            this.props.onRemove && this.props.onRemove(childid, childText, subChildren);
+            this.props.onRemove && this.props.onRemove(childid, childText, subChildren,subrow);
         })
      
     }
 
     onEdit() {
-        this.props.onEdit && this.props.onEdit(this.state.id, this.state.text, this.state.children);
+        let row = new TreeNodeRow();
+        for (let key in row) {
+            row[key] = this.state[key];
+        }
+        this.props.onEdit && this.props.onEdit(this.state.id, this.state.text, this.state.children,row);
     }
 
     /**
@@ -390,7 +418,11 @@ class TreeNode extends Component {
         if (this.state.dragAble) {
             let dragAble = true;
             if (this.props.beforeDrag) {
-                dragAble = this.props.beforeDrag(this.state.id, this.state.text, this.state.children);
+                let row = new TreeNodeRow();
+                for (let key in row) {
+                    row[key] = this.state[key];
+                }
+                dragAble = this.props.beforeDrag(this.state.id, this.state.text, this.state.children,row);
             }
             if (dragAble) {
                 let obj = func.clone(this.state);
@@ -410,7 +442,11 @@ class TreeNode extends Component {
 
         if (window.localStorage.getItem("moveed")) {
             window.localStorage.removeItem("moveed");
-            this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.id, this.state.text, this.state.children);
+            let row = new TreeNodeRow();
+            for (let key in row) {
+                row[key] = this.state[key];
+            }
+            this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.id, this.state.text, this.state.children,row);
             this.props.onDrag && this.props.onDrag(this.state.id, this.state.text, this.state.children);
         }
 
@@ -469,7 +505,7 @@ class TreeNode extends Component {
 
     }
     /**
-     * 拖动后父节点删除
+     * 拖动后父节点删除??todo 是否没用了
      */
     onDragForParent(childid, childText, subChildren) {
         this.parentRemoveChild(childid, childText, subChildren)
@@ -614,6 +650,7 @@ class TreeNode extends Component {
                     {...this.props}
                     {...this.state}
                     {...item}//属性会覆盖前面的属性
+                    nodeData={item}
                     children={item.children||[]}
                     key={"treenode-"+ this.state.id+"-"+item.id+"-"+index}
                     parentRemoveChild={this.parentRemoveChild.bind(this)}
@@ -654,7 +691,7 @@ class TreeNode extends Component {
             value={this.state.checked ? this.state.id : ""} data={[{ value: this.state.id, text: "" }]}
             onSelect={this.onNodeChecked.bind(this)}></Input>,
         <div key="2" draggable={this.props.dragAble} onDragEnd={this.onDragEnd.bind(this)} onDragStart={this.onDragStart.bind(this)}
-            onClick={this.onClick.bind(this, this.state.id, this.state.text)} onDoubleClick={this.onDoubleClick.bind(this, this.state.id, this.state.text)}>
+            onClick={this.onClick.bind(this, this.state.id, this.state.text)} onDoubleClick={this.onDoubleClick.bind(this, this.state.id, this.state.text,this.state.children)}>
             <i key="3" className={iconCls} 
              onClick={this.onClick.bind(this, this.state.id, this.state.text, this.state.children)}></i> <a  href={this.state.href} className="wasabi-tree-txt">{this.state.text}&nbsp;&nbsp;</a></div>
         ]
