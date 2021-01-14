@@ -34,7 +34,6 @@ class Right extends React.Component {
     componentDidMount() {//设置鼠标事件
         let center = document.getElementById(this.props.centerid);
         if(center){
-            console.log(1)
             events.on(document, "mousedown", this.mouseDownHandler)
         }
       
