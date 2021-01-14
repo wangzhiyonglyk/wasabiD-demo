@@ -1,5 +1,5 @@
 /*
-create by wangzy
+create by wangzhiyong
  date:2016-07
 create by wangzhiyong 创建树组件
  edit 2020-10 参照ztree改造
@@ -132,7 +132,6 @@ class Tree extends Component {
      * 单击事件
      * @param {*} id 值
      * @param {*} text 文本
-   
      * @param {*} children 子节点
      */
     onClick(id, text, children,nodeData) {
@@ -257,7 +256,7 @@ class Tree extends Component {
    * @param {*} childIndex 
    */
     parentRemoveChild(childid, childText, subChildren,row) {
-        Msg.confirm("确定删除节点吗？",()=>{
+        Msg.confirm("您确定删除["+childText+"]吗？",()=>{
             let children = func.clone(this.state.data);
             let childIndex = null;
             for (let i = 0; i < children.length; i++) {

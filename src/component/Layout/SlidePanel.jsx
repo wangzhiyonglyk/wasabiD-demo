@@ -1,6 +1,6 @@
 /*
 滑动面板
-create by wangzy
+create by wangzhiyong
 date:2016-04-05
 desc:滑动面板
 */

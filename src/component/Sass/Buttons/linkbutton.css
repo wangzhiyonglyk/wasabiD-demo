@@ -1,4 +1,4 @@
-/*create by wangzy
+/*create by wangzhiyong
 date:2016-03-02
 desc:小图标按钮样式
 */
@@ -14,12 +14,12 @@ desc:小图标按钮样式
     text-decoration: none;
     outline: none;
     cursor: pointer;
-    padding: 0;
-    font-size: 14px;
-    font-weight: 500;
-    margin-left: 10px;
+    padding: 0px;
 }
 
+.wasabi-linkbutton+.wasabi-linkbutton{
+    margin-left: 10px;
+}
 /**
 继承字体大小
 */

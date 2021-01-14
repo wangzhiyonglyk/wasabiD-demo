@@ -1,4 +1,4 @@
-//create by wangzy
+//create by wangzhiyong
 //date:2016-02-18
 //标签页组
 import React from "react";

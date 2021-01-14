@@ -1,5 +1,5 @@
 /*
- create by wangzy
+ create by wangzhiyong
  date:2016-04-05后开始独立改造
  2017-08-14改造
  desc:表单组件窗口
@@ -70,6 +70,9 @@ constructor(props)
 
 
         return control;
+    }
+    reload(url,params){
+        this.refs.input.reload&& this.refs.input.reload(url,params);
     }
     render() {
 

@@ -18,36 +18,36 @@ class Drop extends  React.Component {
     }
     dragOverHandler(event) {//在ondragover中一定要执行preventDefault()，否则ondrop事件不会被触发
         event.preventDefault();
-        return true;
-    }
-
-    dragEnterHandler() {
         this.setState({
             dropClass: "drop dragEnter"//停靠的背景色
         })
+      
+    }
+
+    dragEnterHandler() {
+        // this.setState({
+        //     dropClass: "drop dragEnter"//停靠的背景色
+        // })
     }
 
     dragLeaveHandler() {
+
         this.setState({
             dropClass: "drop"//
         })
     }
-
     dropHandler() {
         this.setState({
             dropClass: "drop"
         })
-        this.props.onDrop();
+        let dragData=window.localStorage.getItem("wasabi-dragItem")||"";
+        window.localStorage.removeItem("wasabi-dragItem");
+        this.props.onDrop(JSON.parse(dragData));
    
     }
-
     render() {
-        var props =
-            {
-                style: this.props.style,
-            }
         return (
-            <div className={this.props.className + " " + this.state.dropClass} {...props} onDrop={this.dropHandler}
+            <div className={this.props.className + " " + this.state.dropClass} style={this.props.style} onDrop={this.dropHandler}
                  onDragEnter={this.dragEnterHandler} onDragOver={this.dragOverHandler}
                  onDragLeave={this.dragLeaveHandler}>
                 {
@@ -59,5 +59,9 @@ class Drop extends  React.Component {
 }
 Drop.propTypes={
     onDrop: PropTypes.func.isRequired,//元素停靠事件
+}
+Drop.defaultProps={
+    className:"",
+    style:{}
 }
 export default Drop;

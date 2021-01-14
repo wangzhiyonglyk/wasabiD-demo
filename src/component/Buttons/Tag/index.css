@@ -1,0 +1,43 @@
+.wasabi-tag {
+    display: inline-block;
+    height: 32px;
+    padding: 0 10px;
+    line-height: 30px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    white-space: nowrap;
+  
+}
+.wasabi-tag [class*="icon-"]{
+    margin-left: 5px;
+    font-size: 12px;
+}
+.wasabi-tag+.wasabi-tag{
+    margin-left: 10px;
+}
+.wasabi-tag.primary{
+    background-color: #ecf5ff;
+    color: #409eff;
+    border: 1px solid #d9ecff;
+}
+.wasabi-tag.success{
+    background-color: #f0f9eb;
+    border-color: #e1f3d8;
+    color: #67c23a;
+}
+.wasabi-tag.info {
+    background-color: #f4f4f5;
+    border-color: #e9e9eb;
+    color: #909399;
+}
+.wasabi-tag.warning {
+    background-color: #fdf6ec;
+    border-color: #faecd8;
+    color: #e6a23c;
+}
+
+.wasabi-tag.danger {
+    background-color: #fef0f0;
+    border-color: #fde2e2;
+    color: #f56c6c;
+}

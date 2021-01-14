@@ -1,4 +1,4 @@
-//create by wangzy
+//create by wangzhiyong
 //date:2016-04-05后开始独立改造
 //edit date:2020-04-05
 //desc:表单组件

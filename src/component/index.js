@@ -1,5 +1,5 @@
 /**
- * Created by wangzy on 16/6/17.
+ * Created by wangzhiyong on 16/6/17.
  * edit by wangzhiyong 
  * date:2017-08-14 进行大改版
  * date 2020-11-20 调整组件，去掉不需要的组件
@@ -9,6 +9,7 @@
 'use strict';
 
 /*****************按钮组件******************/
+import Tag from "./Buttons/Tag";//标签
 import  Button from  './Buttons/Button.jsx' ;//普通按钮
 import  LinkButton from  './Buttons/LinkButton.jsx' ;//可移动，可带图标，可带链接的按钮
 import Badge from "./Buttons/Badge";//带数字标记组件
@@ -92,7 +93,7 @@ import  ClickAway from  './libs/ClickAway.js' ;//全局单击事件
 
 
 export   {
-    Button,LinkButton,Toolbar, Badge,Dropdown,DropdownItem,
+    Tag, Button,LinkButton,Toolbar, Badge,Dropdown,DropdownItem,
     DataGrid,Tree,Transfer,Progress,Step,StepItem,Avatar,Pivot,
     SearchBar,Input,Form,SearchBox,
     Time,DateD,DateTime,DateTimeRange,TimeRange,DateRange,

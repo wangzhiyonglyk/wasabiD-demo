@@ -1,4 +1,4 @@
-//creete by wangzy
+//creete by wangzhiyong
 //date:2016-11-25
 //desc 表单中空的占位组件,方便排版
 //属性与状态值保留,可能以后有用

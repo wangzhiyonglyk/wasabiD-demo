@@ -1,5 +1,5 @@
 /*
- create by wangzy
+ create by wangzhiyong
  date:2016-06-12
  desc:时间选择组件 TODO 需要重新改造
  */

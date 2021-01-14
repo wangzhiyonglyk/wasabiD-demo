@@ -1,5 +1,5 @@
 /*
-create by wangzy
+create by wangzhiyong
 date:2016-15-18
 desc:面板组件
  */

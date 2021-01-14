@@ -46,6 +46,9 @@ class ComboBox extends Component {
     renderTreePicker() {
         return <TreePicker ref="combobox" {...this.props}></TreePicker>;
     }
+    reload(url,params){
+        this.refs.combobox.reload&& this.refs.combobox.reload(url,params);
+    }
 
     render() {
 

@@ -1,7 +1,7 @@
 /**
  * Created by jiaxuanliang
  * date:2016-04-05后开始独立改造
- * edit by wangzy
+ * edit by wangzhiyong
  * date:2016-04-26
  * desc:重命名为SwitchButton 并将完善
  */

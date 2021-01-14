@@ -1,5 +1,5 @@
 /*
- create by wangzy
+ create by wangzhiyong
  date:2016-05-23
  desc:级联选择组件
  采用了es6语法

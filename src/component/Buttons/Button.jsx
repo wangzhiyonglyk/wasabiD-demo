@@ -1,5 +1,5 @@
 /*
- create by wangzy
+ create by wangzhiyong
  date:2016-04-05后开始独立改造
  edit 2019-12-18
  desc:按钮组件,从linkbutton独立出来
@@ -11,9 +11,10 @@ import('../Sass/Buttons/button.css');
 class Button extends Component {
   constructor(props) {
     super(props);
-    this.title = null; //初始化
-    this.onClick = this.onClick.bind(this);
+
     this.state = {};
+    this.onClick = this.onClick.bind(this);
+    this.onDoubleClick = this.onDoubleClick.bind(this);
   }
 
   onClick(event) {
@@ -22,6 +23,13 @@ class Button extends Component {
       return;
     }
     this.props.onClick && this.props.onClick(this.props.name, this.props.title, event);
+  }
+  onDoubleClick(event) {
+    event.preventDefault();
+    if (this.props.disabled == true) {
+      return;
+    }
+    this.props.onDoubleClick && this.props.onDoubleClick(this.props.name, this.props.title, event);
   }
   render() {
 
@@ -38,11 +46,11 @@ class Button extends Component {
       //文字提示
       title: this.props.title
     };
-    return (this.props.children || this.props.title || this.props.iconCls )? <button {...props} onClick={this.onClick} type='button' >
-        {this.props.iconCls && this.props.iconAlign == "left" ? <i className={"left " + this.props.iconCls}></i> : null}
-        <span>{this.props.children ? this.props.children : this.props.title}</span>
-        {this.props.iconCls && this.props.iconAlign == "right" ? <i className={"right " + this.props.iconCls}></i> : null}
-      </button> : null
+    return (this.props.children || this.props.title || this.props.iconCls) ? <button {...props} onDoubleClick={this.onDoubleClick} onClick={this.onClick} type='button' >
+      {this.props.iconCls && this.props.iconAlign == "left" ? <i className={"left " + this.props.iconCls}></i> : null}
+      <span>{this.props.children ? this.props.children : this.props.title}</span>
+      {this.props.iconCls && this.props.iconAlign == "right" ? <i className={"right " + this.props.iconCls}></i> : null}
+    </button> : null
   }
 }
 Button.propTypes = {

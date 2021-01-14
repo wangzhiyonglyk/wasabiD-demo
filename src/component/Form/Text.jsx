@@ -1,4 +1,4 @@
-//creete by wangzy
+//creete by wangzhiyong
 //date:2016-08-02
 //edit by wangzhiyong 2020-10-18 todo blur事件要改
 //desc 将输入框从Input中独立出来

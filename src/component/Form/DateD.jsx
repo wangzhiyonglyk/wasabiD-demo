@@ -1,4 +1,4 @@
-//create by wangzy
+//create by wangzhiyong
 //date:2016-04-25
 //edit 2016-09-27重写
 //desc:日期组件，

@@ -14,12 +14,12 @@ class TreeNode extends Component {
 
     constructor(props) {
         super(props);
-        let checked=this.props.inputValue&&this.props.inputValue!=",," ? (this.props.inputValue.indexOf("," + this.props.id + ",") > -1?true:false):this.props.checked;
+        let checked = this.props.inputValue && this.props.inputValue != ",," ? (this.props.inputValue.indexOf("," + this.props.id + ",") > -1 ? true : false) : this.props.checked;
         this.state = {
             ...this.props,
-            oldPropsInputValue:this.props.inputValue ,//保存，方便treepicker的value发生改变
-            checked:checked,
-            oldChecked:checked,//保存旧的
+            oldPropsInputValue: this.props.inputValue,//保存，方便treepicker的value发生改变
+            checked: checked,
+            oldChecked: checked,//保存旧的
             rename: false,//是否处于重命名状态
             checkValue: false,//勾选状态，不选，半选，勾选
             nodeid: Math.random().toString(36).slice(-8) + 'node' + func.dateformat(new Date(), 'yyyyMMddHHmmss'),
@@ -31,22 +31,22 @@ class TreeNode extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        let newState={};
-        if(nextProps.inputValue!=prevState.oldPropsInputValue){
+        let newState = {};
+        if (nextProps.inputValue != prevState.oldPropsInputValue) {
             //处理treepicker的值问题
-            newState= {
-                inputValue:nextProps.inputValue,
-                oldPropsInputValue:nextProps.inputValue,
-                checked:nextProps.inputValue &&nextProps.inputValue!=",,"? nextProps.inputValue.indexOf("," + prevState.id + ",") > -1?true:false:nextProps.checked,
+            newState = {
+                inputValue: nextProps.inputValue,
+                oldPropsInputValue: nextProps.inputValue,
+                checked: nextProps.inputValue && nextProps.inputValue != ",," ? nextProps.inputValue.indexOf("," + prevState.id + ",") > -1 ? true : false : nextProps.checked,
             }
         }
-        if(nextProps.checked!=prevState.oldChecked){
-            newState={
-                checked:nextProps.checked,
-                oldChecked:nextProps.checked,
-            } 
+        if (nextProps.checked != prevState.oldChecked) {
+            newState = {
+                checked: nextProps.checked,
+                oldChecked: nextProps.checked,
+            }
         }
-        if(!func.isEmptyObject(newState)){
+        if (!func.isEmptyObject(newState)) {
             return newState;
         }
         return null;
@@ -69,7 +69,7 @@ class TreeNode extends Component {
         for (let key in row) {
             row[key] = this.state[key];
         }
-        this.props.onClick && this.props.onClick(id, text, children,row)
+        this.props.onClick && this.props.onClick(id, text, children, row)
 
     }
     /**
@@ -77,12 +77,12 @@ class TreeNode extends Component {
      * @param {*} id 
      * @param {*} text 
      */
-    onDoubleClick(id, text,children) {
+    onDoubleClick(id, text, children) {
         let row = new TreeNodeRow();
         for (let key in row) {
             row[key] = this.state[key];
         }
-        this.props.onDoubleClick && this.props.onDoubleClick(id, text,children,row)
+        this.props.onDoubleClick && this.props.onDoubleClick(id, text, children, row)
     }
 
     /**
@@ -90,7 +90,7 @@ class TreeNode extends Component {
      * @param {*} id 
      */
     onNodeChecked(value) {
-       
+
         let row = new TreeNodeRow();
         for (let key in row) {
             row[key] = this.state[key];
@@ -158,7 +158,7 @@ class TreeNode extends Component {
                     if (this.props.checkType.y.indexOf("p") > -1) {//影响父节点
                         //获取兄弟之间的勾选情况，来处理父节点的勾选
                         this.nodeGetBrotherCheckedNumForParent();
-                      
+
                     }
                     else {
 
@@ -316,7 +316,7 @@ class TreeNode extends Component {
         for (let key in row) {
             row[key] = this.state[key];
         }
-        this.props.onRename && this.props.onRename(this.state.id, oldText, newText, this.state.children,row);
+        this.props.onRename && this.props.onRename(this.state.id, oldText, newText, this.state.children, row);
     }
 
     /**
@@ -329,7 +329,7 @@ class TreeNode extends Component {
             for (let key in row) {
                 row[key] = this.state[key];
             }
-            rename = this.props.beforeRename(this.state.id, this.state.text, this.state.children,row)
+            rename = this.props.beforeRename(this.state.id, this.state.text, this.state.children, row)
         }
         if (rename) {
             this.setState({
@@ -354,14 +354,14 @@ class TreeNode extends Component {
             for (let key in row) {
                 row[key] = this.state[key];
             }
-            remove = this.props.beforeRemove(this.state.id, this.state.text, this.state.children,row);
+            remove = this.props.beforeRemove(this.state.id, this.state.text, this.state.children, row);
         }
         if (remove) {
             let row = new TreeNodeRow();
             for (let key in row) {
                 row[key] = this.state[key];
             }
-            this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.id, this.state.text, this.state.children,row)
+            this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.id, this.state.text, this.state.children, row)
         }
     }
 
@@ -369,8 +369,8 @@ class TreeNode extends Component {
      * 由节点的父组件处理删除
      * @param {*} childIndex 
      */
-    parentRemoveChild(childid, childText, subChildren,subrow) {
-        Msg.confirm("确定删除节点吗？",()=>{
+    parentRemoveChild(childid, childText, subChildren, subrow) {
+        Msg.confirm("您确定删除[" + childText + "]吗？", () => {
             let children = func.clone(this.state.children);
             let childIndex = null;
             for (let i = 0; i < children.length; i++) {
@@ -385,9 +385,9 @@ class TreeNode extends Component {
                 })
             }
             //父节点删除后再调用删除后的事件
-            this.props.onRemove && this.props.onRemove(childid, childText, subChildren,subrow);
+            this.props.onRemove && this.props.onRemove(childid, childText, subChildren, subrow);
         })
-     
+
     }
 
     onEdit() {
@@ -395,7 +395,7 @@ class TreeNode extends Component {
         for (let key in row) {
             row[key] = this.state[key];
         }
-        this.props.onEdit && this.props.onEdit(this.state.id, this.state.text, this.state.children,row);
+        this.props.onEdit && this.props.onEdit(this.state.id, this.state.text, this.state.children, row);
     }
 
     /**
@@ -412,7 +412,7 @@ class TreeNode extends Component {
     }
 
     /**
-     * 拖动事件
+     * 拖动组件，拖动事件
      */
     onDragStart(event) {
         if (this.state.dragAble) {
@@ -422,11 +422,14 @@ class TreeNode extends Component {
                 for (let key in row) {
                     row[key] = this.state[key];
                 }
-                dragAble = this.props.beforeDrag(this.state.id, this.state.text, this.state.children,row);
+                dragAble = this.props.beforeDrag(this.state.id, this.state.text, this.state.children, row);
             }
             if (dragAble) {
-                let obj = func.clone(this.state);
-                window.localStorage.setItem("treenode", JSON.stringify(obj));
+                let row = new TreeNodeRow();
+                for (let key in row) {
+                    row[key] = this.state[key];
+                }
+                window.localStorage.setItem("wasabi-dragItem", JSON.stringify(row));//用于拖动到其他地方
             }
 
         }
@@ -434,25 +437,25 @@ class TreeNode extends Component {
 
     }
     /**
-     * 拖动结束。todo 要优化
+     * 拖动组件，拖动结束
      */
     onDragEnd(event) {
         event.preventDefault()
         event.stopPropagation();
 
-        if (window.localStorage.getItem("moveed")) {
+        if (window.localStorage.getItem("moveed")) {//拖动到树的正确的地方了
             window.localStorage.removeItem("moveed");
             let row = new TreeNodeRow();
             for (let key in row) {
                 row[key] = this.state[key];
             }
-            this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.id, this.state.text, this.state.children,row);
-            this.props.onDrag && this.props.onDrag(this.state.id, this.state.text, this.state.children);
+            this.props.parentRemoveChild && this.props.parentRemoveChild(this.state.id, this.state.text, this.state.children, row);
         }
+        this.props.onDragEnd && this.props.onDragEnd(this.state.id, this.state.text, this.state.children, row);
 
     }
     /**
-     * 停靠事件
+     * 容器停靠事件,要阻止默认事件，否则浏览默认是搜索
      */
     onDragOver(event) {
         event.preventDefault()
@@ -461,7 +464,7 @@ class TreeNode extends Component {
         document.getElementById(this.state.nodeid).style.borderTop = "1px solid red";
     }
     /**
-     * 离开事件
+     * 容器离开事件
      * @param {} event 
      */
     onDragLeave(event) {
@@ -471,14 +474,17 @@ class TreeNode extends Component {
 
     }
     /**
-     * 停靠组件的事件
+     * 容器组件的事件
      */
     onDrop(event) {
         event.preventDefault();
         event.stopPropagation();
 
-        let node = JSON.parse(window.localStorage.getItem("treenode"));
+        let node = JSON.parse(window.localStorage.getItem("wasabi-dragItem"));
 
+        if (!node) {
+            return;
+        }
         if ((node.id == this.state.id && node.text == this.state.text) || (node.parent && node.parent.id == this.state.id && node.parent.text == this.state.text)) {
             //相同，不处理
         }
@@ -488,9 +494,9 @@ class TreeNode extends Component {
                 dropAble = this.props.beforeDrop(node, this.state);//存在并且返回
             }
             if (dropAble) {
-                window.localStorage.setItem("moveed", "true");
+                window.localStorage.setItem("moveed", "true");//标记拖动到树的正确地方
                 let children = func.clone(this.state.children) || [];
-                children.unshift(node); //不能前插
+                children.unshift(node);
 
                 this.setState({
                     children: children,
@@ -501,16 +507,10 @@ class TreeNode extends Component {
 
         }
         document.getElementById(this.state.nodeid).style.borderTop = "none";
-        window.localStorage.removeItem("treenode")
+        window.localStorage.removeItem("wasabi-dragItem")
 
     }
-    /**
-     * 拖动后父节点删除??todo 是否没用了
-     */
-    onDragForParent(childid, childText, subChildren) {
-        this.parentRemoveChild(childid, childText, subChildren)
 
-    }
 
     /**
      * refs方法
@@ -627,10 +627,10 @@ class TreeNode extends Component {
         return this.state;
     }
     render() {
-   
+
         let nodeControl = [];
         let title = this.props.title ? this.props.title : this.state.text;//提示信息
-        if (this.state.children&&this.state.children instanceof Array) {
+        if (this.state.children && this.state.children instanceof Array) {
             this.state.children.map((item, index) => {
 
                 let isParent = false;//是否为父节点
@@ -640,9 +640,9 @@ class TreeNode extends Component {
                 else {
 
                 }
-                let checked=this.props.inputValue ? ("," + this.props.inputValue + ",").indexOf("," + item.id + ",") > -1 ? true : false : item.checked;
-                checked=this.props.checkStyle=="checkbox"?checked||this.state.checked:checked;//radio 不影响
-               
+                let checked = this.props.inputValue ? ("," + this.props.inputValue + ",").indexOf("," + item.id + ",") > -1 ? true : false : item.checked;
+                checked = this.props.checkStyle == "checkbox" ? checked || this.state.checked : checked;//radio 不影响
+
                 //父节点 toto 先保留，后期有用
 
                 let parent = { id: this.state.id, text: this.state.text, children: this.state.children };
@@ -651,13 +651,13 @@ class TreeNode extends Component {
                     {...this.state}
                     {...item}//属性会覆盖前面的属性
                     nodeData={item}
-                    children={item.children||[]}
-                    key={"treenode-"+ this.state.id+"-"+item.id+"-"+index}
+                    children={item.children || []}
+                    key={"treenode-" + this.state.id + "-" + item.id + "-" + index}
                     parentRemoveChild={this.parentRemoveChild.bind(this)}
                     parentSetChecked={this.parentSetChecked.bind(this)}
                     parentGetChildCheckedNum={this.parentGetChildCheckedNum.bind(this)}
                     parentSetBrotherRadioChecked={this.parentSetBrotherRadioChecked.bind(this)}
-                    ref={"treenode-"+ this.state.id+"-"+item.id+"-"+index}
+                    ref={"treenode-" + this.state.id + "-" + item.id + "-" + index}
                     /**
                      * 可以影响父节点并且是 是否半选
                      * 
@@ -681,27 +681,27 @@ class TreeNode extends Component {
         else {
 
         }
-       
+
         //节点元素
-        let nodeEement = [<Input key="1"  type={this.props.checkStyle || "checkbox"}
+        let nodeEement = [<Input key="1" type={this.props.checkStyle || "checkbox"}
             hide={this.props.checkAble ? false : true}
             half={this.state.checkValue == "half"}
             name={"node" + this.props.id}
-           
+
             value={this.state.checked ? this.state.id : ""} data={[{ value: this.state.id, text: "" }]}
             onSelect={this.onNodeChecked.bind(this)}></Input>,
         <div key="2" draggable={this.props.dragAble} onDragEnd={this.onDragEnd.bind(this)} onDragStart={this.onDragStart.bind(this)}
-            onClick={this.onClick.bind(this, this.state.id, this.state.text)} onDoubleClick={this.onDoubleClick.bind(this, this.state.id, this.state.text,this.state.children)}>
-            <i key="3" className={iconCls} 
-             onClick={this.onClick.bind(this, this.state.id, this.state.text, this.state.children)}></i> <a  href={this.state.href} className="wasabi-tree-txt">{this.state.text}&nbsp;&nbsp;</a></div>
+            onClick={this.onClick.bind(this, this.state.id, this.state.text)} onDoubleClick={this.onDoubleClick.bind(this, this.state.id, this.state.text, this.state.children)}>
+            <i key="3" className={iconCls}
+                onClick={this.onClick.bind(this, this.state.id, this.state.text, this.state.children)}></i> <a href={this.state.href} className="wasabi-tree-txt">{this.state.text}&nbsp;&nbsp;</a></div>
         ]
         //判断是否可以拖动
-        
+
         return <li ref="node" style={{ display: this.state.hide ? "none" : "block" }} onDrop={this.onDrop.bind(this)} onDragOver={this.onDragOver.bind(this)} onDragLeave={this.onDragLeave.bind(this)} >
 
             <div id={this.state.nodeid} className={this.props.selectid == this.state.id ? "treenode-container selected" : "treenode-container"} >
-               { this.props.isPivot?null: <i className={this.state.open ? "icon-arrow-down" : "icon-arrow-right"} style={{transform:"translateY(2px)", marginRight:3, opacity: this.state.isParent ? 1 : 0 }} onClick={this.showHandler}></i>}
-                <div className="treenode"  title={title}  >
+                {this.props.isPivot ? null : <i className={this.state.open ? "icon-arrow-down" : "icon-arrow-right"} style={{ transform: "translateY(2px)", marginRight: 3, opacity: this.state.isParent ? 1 : 0 }} onClick={this.showHandler}></i>}
+                <div className="treenode" title={title}  >
                     {this.state.rename ? <Input type="text" id={this.state.textid} required={true} onBlur={this.onBlur.bind(this)} onKeyUp={this.onKeyUp.bind(this)}
                         name={"key" + this.state.id} value={this.state.text} onChange={this.onChange.bind(this)}></Input> : nodeEement}
                 </div>
@@ -715,10 +715,10 @@ class TreeNode extends Component {
                     !this.state.rename && this.props.editAble ? <i key="set" className={"icon-setting"} title="编辑" onClick={this.onEdit.bind(this)} style={{ fontSize: 13, transform: "translateY(2px)" }}></i> : null
                 }
             </div>
-    
+
             {
                 nodeControl.length > 0 ? <ul className={this.state.open ? "clearfix show" : "clearfix "}>
-              {nodeControl}
+                    {nodeControl}
                 </ul> : null
             }
 
@@ -753,7 +753,7 @@ TreeNode.propTypes = {
     onEdit: PropTypes.func,//编辑事件
     onRemove: PropTypes.func,//删除事件
     onRightClick: PropTypes.func,//右键菜单
-    onDrag: PropTypes.func,//拖动事件
+    onDragEnd: PropTypes.func,//拖动事件
     onDrop: PropTypes.func,//停靠事件
     onAsyncSuccess: PropTypes.func,//异步回调事件
 
@@ -792,7 +792,7 @@ TreeNode.defaultProps = {
     onEdit: null,
     onRemove: null,
     onRightClick: null,
-    onDrag: null,
+    onDragEnd: null,
     onDrop: null,
     onAsyncSuccess: null,
 

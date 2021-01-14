@@ -176,6 +176,20 @@ export default function (WrappedComponent) {
                 text: newData.text.join(",")
             })
         }
+        /**
+         * 刷新
+         * @param {*} url 
+         * @param {*} params 
+         */
+        reload(url,params){
+            url=url||this.state.url;
+            params=params|| this.state.params;
+            this.setState({
+                url:url,
+                params:params
+            })
+            this.loadData(url,params);
+        }
         onSelect(value, text, name, row) {
 
             if (this.props.readOnly || this.props.disabled) {
