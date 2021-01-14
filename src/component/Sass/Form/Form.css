@@ -12,11 +12,7 @@ desc:表单样式
     padding-top: 5px;
     width:100%;
     display: block;
-   
-
-
 }
-
 .wasabi-form .form-body{
     width:100%;
     display: flex;

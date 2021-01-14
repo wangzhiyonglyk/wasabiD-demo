@@ -17,7 +17,6 @@ desc:圣杯布局样式
 	width: 100%;
 	box-sizing: border-box;
 	min-height: 500px;
-	overflow: hidden;
 	height: 100%;
 }
 
