@@ -233,6 +233,7 @@ class Home extends React.Component {
         console.log("d")
         this.refs.modal.open()
         this.refs.grid.export(true, "test")
+        this.refs.input.reload()
     }
     onDrop(data) {
         let dropData = this.state.dropData;
@@ -248,6 +249,7 @@ class Home extends React.Component {
                 <Tree checkAble={true} data={this.state.data} idField="consume" textField="province"></Tree>
             </Left>
             <Center>  
+                <Input ref="input" type="select" data={this.state.data} valueField="consume" textField="province"></Input>
              <Tag key="1" removeAble={true}>标签一</Tag>    <Tag key="2" theme="success">标签二</Tag>  
                  <Drag data={{ title: "导出", onClick: ()=>{this.onClick()} }}><Button onClick={this.onClick.bind(this)}>导出</Button></Drag>
                 <Drop style={{ width: 200, height: 50, border: "1px solid #dddddd" }} onDrop={this.onDrop.bind(this)}>
