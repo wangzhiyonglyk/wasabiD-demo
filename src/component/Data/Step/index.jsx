@@ -15,11 +15,11 @@ class Step extends React.Component {
             oldPropsActiveIndex:this.props.activeIndex,
         }
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.activeIndex != prevState.oldPropsActiveIndex) {
+    static getDerivedStateFromProps(props, state) {
+        if (props.activeIndex != state.oldPropsActiveIndex) {
             return {
-                activeIndex: nextProps.activeIndex,
-                oldPropsActiveIndex: nextProps.activeIndex
+                activeIndex: props.activeIndex,
+                oldPropsActiveIndex: props.activeIndex
             }
         }
         return null;

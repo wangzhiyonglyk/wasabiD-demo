@@ -136,8 +136,12 @@ export default {
                         {<i title="刷新" style={{ fontSize: 16, cursor: "pointer" }} className="icon-refresh" onClick={this.reload.bind(this, this.state.params, this.state.url)}></i>}
                         &nbsp;&nbsp;
                         {
-                            <div style={{ display: "inline-block", height: 20, position: "relative", width: 30 }}> <i title="导出" style={{ cursor: "pointer", fontSize: 20, position: "absolute", top: 5 }} className="icon-excel" onClick={this.export.bind(this, false, "grid-")}></i></div>
+                          this.props.exportAble?  <div style={{ display: "inline-block", height: 20, position: "relative", width: 30 }}> <i title="导出" style={{ cursor: "pointer", fontSize: 20, position: "absolute", top: 5 }} className="icon-excel" onClick={this.export.bind(this, false, "grid-")}></i></div>:null
                         }
+                       
+                         {
+                            this.props.uploadUrl? <div style={{ display: "inline-block", height: 20, position: "relative", width: 30 }}> <i title="导入" style={{ cursor: "pointer", fontSize: 20, position: "absolute", top: 5 }} className="icon-upload" onClick={this.upload.bind(this)}></i></div>:null
+                         }
 
                     </div>
                 </div>
@@ -449,6 +453,7 @@ export default {
                 ref='toppagination'
                 key="toppagination"
                 style={{
+                    width:this.containerWidth,
                     display:
                         this.props.pagePosition == 'top' ||
                             this.props.pagePosition == 'both'
@@ -469,6 +474,7 @@ export default {
             className='wasabi-pagination '
             ref='bottompagination'
             style={{
+                width:this.containerWidth,
                 display:
                     this.props.pagePosition == 'bottom' ||
                         this.props.pagePosition == 'both'

@@ -193,7 +193,7 @@ input验证通过
   display: none;
   white-space: pre-wrap;
   overflow: visible;
-  z-index: 2;
+  z-index: 1;
   font-size: 12px;
   position: absolute;
   top: 100%;

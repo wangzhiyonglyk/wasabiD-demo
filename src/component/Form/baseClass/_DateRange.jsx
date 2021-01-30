@@ -22,10 +22,10 @@ export default function (WrappedComponent) {
             this.cancelHandler = this.cancelHandler.bind(this);
         }
 
-        static getDerivedStateFromProps(nextProps, prevState) {
+        static getDerivedStateFromProps(props, state) {
            
-            if ((nextProps.firstDate || "") +(nextProps.firstTime||"")+ (nextProps.secondDate || "")+(nextProps.secondTime||"") != prevState.oldPropsValue) {
-                return propsTran.setDateRangeDefaultState(nextProps);
+            if ((props.firstDate || "") +(props.firstTime||"")+ (props.secondDate || "")+(props.secondTime||"") != state.oldPropsValue) {
+                return propsTran.setDateRangeDefaultState(props);
             }
             return null;
 

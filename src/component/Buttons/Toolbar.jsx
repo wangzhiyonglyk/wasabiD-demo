@@ -17,7 +17,7 @@ class Toolbar extends Component {
     this.state = {};
   }
   onClick(name, title, event) {
-    this.props.onClick(name, title, event); //执行父组件的事件
+   this.props.onClick&& this.props.onClick(name, title, event); //执行父组件的事件
   }
   render() {
     let props = {
@@ -26,16 +26,15 @@ class Toolbar extends Component {
     };
     var buttonlist = [];
     if (this.props.buttons != null) {
-      this.props.buttons.map(child => {
+      this.props.buttons.map((child, index) => {
         if (this.props.type == 'button') {
-          let key = child.name ? child.name : child.title;
           buttonlist.push(
-            <Button key={key} {...child} onClick={this.onClick}></Button>
+            <Button key={index} {...child} onClick={this.onClick}></Button>
           );
         } else {
           buttonlist.push(
             <LinkButton
-              key={key}
+              key={index}
               {...child}
               onClick={this.onClick}
             ></LinkButton>

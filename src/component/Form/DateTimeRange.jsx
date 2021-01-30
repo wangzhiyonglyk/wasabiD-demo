@@ -20,11 +20,11 @@ class DateTimeRange extends Component {
             showsecondTime: false,
         }
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if (((nextProps.firstTime || "") + (nextProps.secondTime || "")) != prevState.oldPropsValue) {
+    static getDerivedStateFromProps(props, state) {
+        if (((props.firstTime || "") + (props.secondTime || "")) != state.oldPropsValue) {
             return {
-                firstTime: nextProps.firstTime,
-                secondTime: nextProps.secondTime,
+                firstTime: props.firstTime,
+                secondTime: props.secondTime,
             }
         }
         return null;

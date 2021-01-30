@@ -18,11 +18,11 @@ class CircleProgress extends React.Component {
         }
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.value != prevState.oldPropsValue) {
+    static getDerivedStateFromProps(props, state) {
+        if (props.value != state.oldPropsValue) {
             return {
-                value: nextProps.value,
-                oldPropsValue: nextProps.value
+                value: props.value,
+                oldPropsValue: props.value
             }
         }
         return null;

@@ -47,26 +47,26 @@ class Tree extends Component {
          * 其他事件则自行定义就可以了
          */
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(props, state) {
         let newState = {};
-        if (nextProps.url && nextProps.params &&
-            diff(nextProps.params, prevState.params)) {//如果有url
+        if (props.url && props.params &&
+            diff(props.params, state.params)) {//如果有url
             newState = {
                 reloadData: true,
-                url: nextProps.url,
-                params: nextProps.params,
+                url: props.url,
+                params: props.params,
             }
         }
-        if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
+        if (props.data && props.data instanceof Array && diff(props.data, state.rawData)) {
             //如果传了死数据
-            newState.rawData = nextProps.data;
-            let result= propsTran.setComboxValueAndText("tree", nextProps.inputValue, nextProps.data, nextProps.idField, nextProps.textField);
-            if(nextProps.simpleData){
-                newState.data=func.toTreeData(result.data,nextProps.idField,nextProps.parentField,nextProps.textField)
+            newState.rawData = props.data;
+            let result= propsTran.setComboxValueAndText("tree", props.inputValue, props.data, props.idField, props.textField);
+            if(props.simpleData){
+                newState.data=func.toTreeData(result.data,props.idField,props.parentField,props.textField)
             
             }
             else {
-                newState.data=func.clone(nextProps.data);
+                newState.data=func.clone(props.data);
             }
             newState.text=result.text;
         }

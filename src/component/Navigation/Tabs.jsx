@@ -21,19 +21,19 @@ class Tabs extends React.Component {
         this.onClose = this.onClose.bind(this);
     }
 
-    static getDerivedStateFromProps(nextProps, prevState)
+    static getDerivedStateFromProps(props, state)
     {  
-        let activeIndex=prevState.activeIndex;
-        if (nextProps.children.length >prevState.childrenlength) {
-            activeIndex = nextProps.children.length - 1
+        let activeIndex=state.activeIndex;
+        if (props.children.length >state.childrenlength) {
+            activeIndex = props.children.length - 1
         }
-        else  if (nextProps.activeIndex!=prevState.oldActiveIndex) {
-            activeIndex=nextProps.activeIndex;//强行刷新
+        else  if (props.activeIndex!=state.oldActiveIndex) {
+            activeIndex=props.activeIndex;//强行刷新
         }
 
       return {
             activeIndex: activeIndex,
-            childrenlength:nextProps.children.length||0
+            childrenlength:props.children.length||0
         }
     }
     componentDidMount(){

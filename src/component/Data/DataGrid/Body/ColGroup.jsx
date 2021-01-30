@@ -13,7 +13,7 @@ import React from 'react';
                 return;
             }
             else{
-                let width=header.width?header.width:this.preColumnWidth||null;
+                let width=header.width?header.width:this.perColumnWidth||null;
                 colgroup.push(<col  
                      key={headerColumnIndex}
                      name={header.label}//以label为准，是因为name可能没有设置
@@ -32,7 +32,7 @@ import React from 'react';
                         return;
                     }
                     else{
-                        let width=header.width?header.width:this.preColumnWidth||null;
+                        let width=header.width?header.width:this.perColumnWidth||null;
                         colgroup.push(<col 
                             key={headerRowIndex+"-"+headerColumnIndex}
                              name={header.label}//以label为准，是因为name可能没有设置

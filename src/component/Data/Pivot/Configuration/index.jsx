@@ -36,13 +36,13 @@ class Configuration extends Component {
         this.close = this.close.bind(this);
         this.applyHandler = this.applyHandler.bind(this)
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(props, state) {
         let newState = {};
-        for (let key in nextProps) {
-            if (prevState.hasOwnProperty(["old" + key]) && diff(prevState["old" + key], nextProps[key])) {
+        for (let key in props) {
+            if (state.hasOwnProperty(["old" + key]) && diff(state["old" + key], props[key])) {
                 //更新此字段
-                newState["old" + key] = nextProps[key];
-                newState[key] = nextProps[key];
+                newState["old" + key] = props[key];
+                newState[key] = props[key];
             }
         }
         if (func.isEmptyObject(newState)) {

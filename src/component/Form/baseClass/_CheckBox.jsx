@@ -25,12 +25,12 @@ export default function(WrappedComponent){
             }
             this.onSelect = this.onSelect.bind(this);
         }
-        static getDerivedStateFromProps(nextProps, prevState) {
-            if (nextProps.value != prevState.oldPropsValue) {//父组件强行更新了            
+        static getDerivedStateFromProps(props, state) {
+            if (props.value != state.oldPropsValue) {//父组件强行更新了            
                 return {
-                    value: nextProps.value,
-                    text: nextProps.text,
-                    oldPropsValue:nextProps.value
+                    value: props.value,
+                    text: props.text,
+                    oldPropsValue:props.value
                 }
             }
             return null;

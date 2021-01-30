@@ -23,6 +23,7 @@ class Article extends React.Component {
         let content = this.formatContent(this.props.content);
         this.state = {
             containerid: func.uuid(),
+            ulid:func.uuid(),
             wordNum: content instanceof Array ? this.computeWordNum(content) : 0,
             frameid: func.uuid(),
             activeIndex: null,
@@ -38,15 +39,15 @@ class Article extends React.Component {
         this.imgUploadSuccess = this.imgUploadSuccess.bind(this)
 
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(props, state) {
         let newState = {};
-        if (diff(nextProps.content, prevState.oldPropsContent)) {
-            newState.tempContent = this.formatContent(nextProps.content);
-            newState.oldPropsContent = func.clone(nextProps.content);
+        if (diff(props.content, state.oldPropsContent)) {
+            newState.tempContent = this.formatContent(props.content);
+            newState.oldPropsContent = func.clone(props.content);
         }
-        if (nextProps.title != prevState.oldPropsTitle) {
-            newState.title = nextProps.title;
-            newState.oldPropsTitle = nextProps.title;
+        if (props.title != state.oldPropsTitle) {
+            newState.title = props.title;
+            newState.oldPropsTitle = props.title;
         }
         if (func.isEmptyObject(newState)) {
             return null;
@@ -158,9 +159,9 @@ class Article extends React.Component {
             tempContent: content,
             activeIndex: content.length - 1
         }, () => {
-            let contentNode = document.getElementsByClassName("wasabi-article-content");
+            let contentNode = document.getElementById(this.state.ulid);
             try{
-                contentNode[0].children[contentNode[0].children.length - 1].children[0].focus();
+                contentNode.children[contentNode.children.length - 1].children[0].focus();
             }catch(e){
 
             }
@@ -194,9 +195,9 @@ class Article extends React.Component {
         this.setState({
             activeIndex: index
         }, () => {
-            let contentNode = document.getElementsByClassName("wasabi-article-content");
+            let contentNode = document.getElementById(this.state.ulid);
             try{
-                contentNode[0].children[index].children[0].focus();
+                contentNode.children[index].children[0].focus();
             }
             catch(e){
 

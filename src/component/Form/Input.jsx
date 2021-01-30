@@ -71,8 +71,8 @@ constructor(props)
 
         return control;
     }
-    reload(url,params){
-        this.refs.input.reload&& this.refs.input.reload(url,params);
+    reload(params,url){
+        this.refs.input.reload&& this.refs.input.reload(params,url);
     }
     render() {
 

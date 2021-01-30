@@ -48,20 +48,14 @@ import('../../Sass/Data/DataGrid.css');
 import('../../Sass/Data/DataGridDetail.css');
 class DataGrid extends Component {
     constructor(props) {
-        super(props);
-        let data = [];
-        this.containerWidth = 0;//表格的宽度
-
-        if (this.props.data instanceof Array) {
-            data = func.clone(this.props.data);
-        }
-
-
+        super(props); 
+        this.containerWidth = 0;//表格的宽度 
         this.state = {
             gridcontainerid: func.uuid(),
             realTableid: func.uuid(),
             url: this.props.url,
-            params: func.clone(this.props.params), //这里一定要复制,只有复制才可以比较两次参数是否发生改变没有,防止父组件状态任何改变而导致不停的查询
+            params: 1, //参数
+            rawParams:null,//保留旧的，用于对比
             pageIndex: this.props.pageIndex,//页号
             pageSize: this.props.pageSize,//分页大小
             sortName: this.props.sortName,//排序名称
@@ -82,7 +76,7 @@ class DataGrid extends Component {
             checkedIndex: new Map(),//勾选的下标
             detailView: null, //详情行,
             detailIndex: null, //显示详情的行下标
-            total: this.props.total || (this.props.data && this.props.data.length) || 0, //总记录数
+            total:0, //总记录数
             loading: this.props.url ? true : false, //显示正在加载图示
             footer: this.props.footer, //页脚
             updateUrl: this.props.updateUrl,
@@ -104,14 +98,15 @@ class DataGrid extends Component {
         });
         this.computeHeaderStyleAndColumnWidth = this.computeHeaderStyleAndColumnWidth.bind(this)
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(props, state) {
         let newState = {};//新的状态值
-        if (nextProps.url && nextProps.params &&
-            diff(nextProps.params, prevState.params)) {//如果有url
+        if (props.url && props.params &&
+            diff(props.params, state.rawParams)) {//父如果参数有变
             newState = {
                 reloadData: true,
-                url: nextProps.url,
-                params: nextProps.params,
+                url: props.url,
+                rawParams:func.clone(props.params),
+                params: func.clone(props.params),
             }
         }
         //处理Headers
@@ -119,73 +114,66 @@ class DataGrid extends Component {
             //处理非固定列
             {
                 let single = true;//默认是简单的表头
-                for (let i = 0; i < nextProps.headers.length; i++) {
-                    if (nextProps.headers[i] instanceof Array) {
+                for (let i = 0; i < props.headers.length; i++) {
+                    if (props.headers[i] instanceof Array) {
                         single = false;//复杂表头
 
                     }
                 }
                 //是否是简单表头
-                if (single != prevState.single) {
+                if (single != state.single) {
                     newState.single = single;
                 }
-                if (diff(nextProps.headers, prevState.rawHeaders)) {
+                if (diff(props.headers, state.rawHeaders)) {
                     //有改变
                     newState.headerChange = true;
-                    newState.rawHeaders = nextProps.headers;
-                    newState.headers = func.clone(nextProps.headers);
+                    newState.rawHeaders = props.headers;
+                    newState.headers = func.clone(props.headers);
 
                 }
             }
-
             {
                 //处理固定列
-                if (diff(nextProps.fixedHeaders, prevState.rawFixedHeaders)) {
+                if (diff(props.fixedHeaders, state.rawFixedHeaders)) {
                     //有改变
-                    newState.fixedHeaders = func.clone(nextProps.fixedHeaders);
-                    newState.rawFixedHeaders = nextProps.fixedHeaders;
-
-                    if (nextProps.fixedHeaders && nextProps.fixedHeaders instanceof Array && nextProps.fixedHeaders.length > 0) {//
+                    newState.fixedHeaders = func.clone(props.fixedHeaders);
+                    newState.rawFixedHeaders = props.fixedHeaders;
+                    if (props.fixedHeaders && props.fixedHeaders instanceof Array && props.fixedHeaders.length > 0) {//
                         //有固定表头
-                        if (fixedHeaders[0] instanceof Array || (nextProps.headers && nextProps.headers instanceof Array && nextProps.headers[0] instanceof Array)) {
+                        if (fixedHeaders[0] instanceof Array || (props.headers && props.headers instanceof Array && props.headers[0] instanceof Array)) {
                             //二维数组不支持
                             Msg.error("有固定列目前只支持一维数组格式的表头");
                             newState.fixedHeaders = [];//清除
-
                         }
                         else {
 
-                            newState.headers = [].concat(nextProps.fixedHeaders, nextProps.headers);//合并列
+                            newState.headers = [].concat(props.fixedHeaders, props.headers);//合并列
                         }
                     }
-
                 }
                 else {//没有改变
-                    if (nextProps.fixedHeaders && nextProps.fixedHeaders instanceof Array && nextProps.fixedHeaders.length > 0) {//没有改变，但是有固定列
+                    if (props.fixedHeaders && props.fixedHeaders instanceof Array && props.fixedHeaders.length > 0) {//没有改变，但是有固定列
                         newState.headerChange = true;
-                        newState.headers = [].concat(nextProps.fixedHeaders, nextProps.headers);//合并列
+                        newState.headers = [].concat(props.fixedHeaders, props.headers);//合并列
                     }
                 }
             }
-
         }
         //todo 此处理还要仔细研究
-        if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
+        if (props.data && props.data instanceof Array && diff(props.data, state.rawData)) {
             //如果传了死数据
-            newState.rawData = nextProps.data;
+            newState.rawData = props.data;
             try {
                 //防止数据切割的时候报错
-                newState.data = nextProps.pagination == true ? nextProps.data.length > prevState.pageSize
-                    ? nextProps.data.slice(((prevState.pageIndex) - 1) * prevState.pageSize, prevState.pageSize)
-                    : nextProps.data : nextProps.data;
+                newState.data = props.pagination == true ? props.data.length > state.pageSize
+                    ? props.data.slice(((state.pageIndex) - 1) * state.pageSize, state.pageSize)
+                    : props.data : props.data;
             }
             catch (e) {
-                newState.data = nextProps.data;
+                newState.data = props.data;
             }
-            newState.total = nextProps.total || nextProps.data.length || 0
-
+            newState.total = props.total || props.data.length || 0
         }
-
         if (func.isEmptyObject(newState)) {
             return null;
         }
@@ -197,17 +185,17 @@ class DataGrid extends Component {
     /**
      * 更新函数
      */
-    componentDidUpdate() {
-
+    componentDidUpdate(prevProps, prevState, snapshot) {
         //重新加数据
         if (this.state.reloadData) {
+         
             this.setState({
                 reloadData: false,
             })
             this.reload();
         }
         if (this.state.headerChange) {//表头发生了改变
-
+        
             this.setState({
                 headerChange: false,
             },()=>{
@@ -263,7 +251,7 @@ class DataGrid extends Component {
         this.releaseWidth = this.containerWidth;//剩余可分配宽度
         this.releaseColumn = 0;//剩余要计算宽度的列
         this.fixedreleaseColumn = 0;//剩余要计算宽度的固定列
-        this.preColumnWidth = 0;//每一列的宽度
+        this.perColumnWidth = 0;//每一列的宽度
         this.tableWidth = 0;//表格宽度，因为有可能表格列都设置宽度，总宽度与网格的整体宽表不同
         this.fixedTableWidth = 0;//固定表格的宽表
         if (this.containerWidth > 0 && this.state.headers && this.state.headers instanceof Array) {
@@ -351,17 +339,7 @@ class DataGrid extends Component {
                         else {
                             if(this.props.isPivot){
                                 //如果是交叉表，则自动计算宽度
-                               let headerlabel= this.state.headers[i].label.split("");
-                               let width=0;
-                               for(let i=0;i<headerlabel.length;i++){
-                                let  reg = new RegExp("[\\u4E00-\\u9FFF]+","g");
-                                if(reg.test(headerlabel[i])){
-                                    width+=20;//汉字20个像素
-                                }
-                                else{
-                                    width+=10;
-                                }
-                               }
+                                let width= func.charWidth( this.state.headers[i].label);
                                this.state.headers[i].width=width;//设置宽度
                                this.tableWidth += this.state.headers[i].width;//计算表格宽度
                                this.releaseWidth = this.releaseWidth -width;
@@ -391,9 +369,9 @@ class DataGrid extends Component {
             this.fixedreleaseColumn = this.fixedcolumnSum - this.fixedreleaseColumn;//剩余要分配的固定列
             if (this.releaseColumn) {//防止有0的情况
                 try {
-                    this.preColumnWidth = parseInt((this.releaseWidth) / this.releaseColumn);//得到剩余要分配的列的平均宽度
+                    this.perColumnWidth = parseInt((this.releaseWidth) / this.releaseColumn);//得到剩余要分配的列的平均宽度
               
-                    this.tableWidth +=  this.preColumnWidth*this.releaseColumn;//得到表格的宽度
+                    this.tableWidth +=  this.perColumnWidth*this.releaseColumn;//得到表格的宽度
                 }
                 catch (e) {
                     console.error("计算宽度报错", e);
@@ -401,8 +379,9 @@ class DataGrid extends Component {
 
             }
             if (this.fixedreleaseColumn) {//还有剩下的列
-                this.fixedTableWidth += this.fixedreleaseColumn * this.preColumnWidth;
+                this.fixedTableWidth += this.fixedreleaseColumn * this.perColumnWidth;
             }
+            //?? todo 
             if(this.props.isPivot&& this.tableWidth<this.containerWidth){//如果小于宽度
                 this.tableWidth=this.containerWidth;
             }
@@ -455,7 +434,7 @@ DataGrid.propTypes = {
     editAble: PropTypes.bool, //是否允许编辑
     clearChecked: PropTypes.bool, //刷新数据后是否清除选择,true
     selectChecked: PropTypes.bool, //选择行的时候是否同时选中,false
-
+    exportAble:PropTypes.bool,//是否允许导出
 
 
     /**
@@ -489,6 +468,7 @@ DataGrid.propTypes = {
     contentType: PropTypes.string,//请求的参数传递类型
     httpHeaders: PropTypes.object,//请求的头部
     params: PropTypes.object, //查询条件
+    uploadUrl:PropTypes.string,//excel导入的时候地址
 
     /**
      * 数据源
@@ -528,6 +508,7 @@ DataGrid.defaultProps = {
     editAble: false,
     clearChecked: true, //是否清空选择的
     selectChecked: true,
+    exportAble:true,
 
     /**
     * 分页
@@ -537,7 +518,7 @@ DataGrid.defaultProps = {
     pageIndex: 1,
     pageSize: 20,
     sortName: 'id',
-    sortOrder: 'asc',
+    sortOrder: 'desc',
 
     /**
    * 数据设置
@@ -558,7 +539,7 @@ DataGrid.defaultProps = {
     contentType: "application/x-www-form-urlencoded",
     httpHeaders: {},//http请求的头部字段
     params: null,
-
+    uploadUrl:null,
     /**
       * 数据源
       */

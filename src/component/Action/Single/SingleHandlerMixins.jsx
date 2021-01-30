@@ -8,6 +8,16 @@ let Msg = require('../../Info/Msg.jsx');
 let unit = require('../../libs/func.js');
 let FetchModel = require('../../Model/FetchModel.js');
 let PageHandlerMixins = {
+
+    /**
+   * 筛选查询
+   * @param {*} params 
+   */
+  filterHandler: function(params) {
+    params={...this.state.params,...params};
+    this.refs.datagrid.reload(params);
+  },
+  
   getHandler: function(id, disabled) {
     //获取一个实例模型
     var getUrl = this.state.getUrl;
@@ -44,19 +54,26 @@ let PageHandlerMixins = {
       });
     }
   },
+  /**
+   * 打开新增面板
+   */
   addOpen: function() {
-    this.refs.slide.open();
+    this.refs.slide.open(this.props.title+"-新增");
     this.state.model = this.state.model.map((item, index) => {
       item.value = '';
       return item;
     });
-    console.log(this.state.model);
+   
     this.setState({
       panelTitle: '新增',
       opType: 'add',
       model: this.state.model
     });
   },
+  /**
+   * 新增事件
+   * @param {*} model 
+   */
   addHandler: function(model) {
     //新增事件
     let fetchModel = new FetchModel(
@@ -71,7 +88,12 @@ let PageHandlerMixins = {
     //新增成功
     this.refs.datagrid.reload(); //刷新列表
   },
-  deleteHandler: function(id) {
+  /**
+   * 删除事件
+   * @param {*} rowData 
+   * @param {*} rowIndex 
+   */
+  deleteHandler: function(rowData,rowIndex) {
     //删除事件
     Msg.confirm('确定删除这条记录吗?', () => {
       var deleteUrl = this.state.deleteUrl;
@@ -126,10 +148,7 @@ let PageHandlerMixins = {
     //更新成功
     this.refs.datagrid.reload(); //刷新列表
   },
-  filterHandler: function(params) {
-    //筛选查询
-    this.refs.datagrid.reload(params);
-  },
+
   openSlideHandler: function(type, id) {
     //打开表单面板
     this.refs.form.clearData(); //先清空原来值

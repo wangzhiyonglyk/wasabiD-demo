@@ -15,10 +15,10 @@ class Badge extends Component {
             oldPropsHide:this.props.hide,
         }
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if(nextProps.hide!=prevState.oldPropsHide){
+    static getDerivedStateFromProps(props, state) {
+        if(props.hide!=state.oldPropsHide){
             return {
-                hide:nextProps.hide
+                hide:props.hide
             }
         }
         return null;

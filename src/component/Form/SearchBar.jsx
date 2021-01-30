@@ -158,22 +158,33 @@ class SearchBar extends Component {
               iconCls={this.state.dropType}
               style={{
                 display:
-                  this.props.children.length > this.props.cols
+                this.props.children&&this.props.children.length > this.props.cols
                     ? "inline"
                     : "none"
               }}
               onClick={this.expandHandler}
             ></LinkButton>
             <LinkButton
-              onClick={this.onSubmit.bind(this, "submit")}
+              onClick={this.onSubmit.bind(this, "search")}
               theme={this.props.submitTheme}
               hide={this.props.onSubmit ? false : true}
               iconCls='icon-search'
               style={this.props.submitStyle}
               title={this.props.submitTitle}
             >
-              {this.props.submitTitle}
-            </LinkButton>
+              {this.props.submitTitle||"搜索"}
+            </LinkButton>{
+              this.props.addAble?
+              <LinkButton
+              onClick={this.props.onAdd}
+              theme={this.props.submitTheme}
+              iconCls='icon-add'
+              style={this.props.submitStyle}
+              title={this.props.addTitle}
+            >
+              {this.props.addTitle||"添加"}
+            </LinkButton>:null
+            }
           </div>
       </div>
     );
@@ -182,19 +193,23 @@ class SearchBar extends Component {
 SearchBar.propTypes = {
   style: PropTypes.object, //样式
   className: PropTypes.string, //自定义样式
-  submitTitle: PropTypes.string,
-  submitHide: PropTypes.bool,
+  submitTitle: PropTypes.string,//查询按钮的标题
+  addTitle:PropTypes.string,//添加按钮的标题
+  submitHide: PropTypes.bool,//是否隐藏按钮
+  addAble: PropTypes.bool,//是否有添加按钮
   submitTheme: PropTypes.string,
   submitStyle: PropTypes.object,
   cols: PropTypes.number, //多余几个隐藏
-  onSubmit: PropTypes.func,
+  onSubmit: PropTypes.func,//提交事件
   expand: PropTypes.bool //是否默认展开
 };
 SearchBar.defaultProps = {
   style: {},
   className: "",
   submitTitle: "搜索", //查询按钮的标题
+  addTitle: "添加", //查询按钮的标题
   submitHide: false, //是否隐藏按钮
+  addAble:false,//是否有添加按钮
   submitTheme: "primary", //主题
   submitStyle: {}, //查询按钮的样式
   cols: 3, //一行排几个

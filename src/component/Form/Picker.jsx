@@ -52,17 +52,17 @@ class Picker extends Component {
         this.activeProvince = this.activeProvince.bind(this);
         this.loadCitySuccess = this.loadCitySuccess.bind(this);
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(props, state) {
         let newState = {};
-        if (nextProps.value != prevState.oldPropsValue) {//父组件强行更新了
+        if (props.value != state.oldPropsValue) {//父组件强行更新了
             newState = {
-                value: nextProps.value,
-                text: nextProps.text,
-                oldPropsValue: nextProps.value
+                value: props.value,
+                text: props.text,
+                oldPropsValue: props.value
             }
         }
-        if (nextProps.data && diff(nextProps.data, prevState.rawData)) {
-            let realData = func.clone(nextProps.data);
+        if (props.data && diff(props.data, state.rawData)) {
+            let realData = func.clone(props.data);
             newState = {
                 data: realData,
                 rawData: realData

@@ -109,82 +109,85 @@ let SingleHeader = {
 
                         >
                             {content}
-                            { saveIcon}
+                            {saveIcon}
                         </div>
                     </th>
                 );
             }
 
         });
-        //处理选择列
-        if (this.props.selectAble) {
-            let thCheckProps = {
-                //设置checkbox的属性
-                value: this.checkCurrentPageCheckedAll() == true ? 'yes' : null, //判断当前页是否选中
-                data: [{ value: 'yes', text: '' }],
-                onSelect: this.checkedAllHandler,
-                name: 'all'
-            };
-            if (headers1.length > 0) {
-                headers1.unshift(
-                    <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column'>
-                        <div className='wasabi-grid-cell' rowSpan={2}  >
-                            {this.props.singleSelect ? null : (
-                                <CheckBox {...thCheckProps}></CheckBox>
-                            )}
-                        </div>
-                    </th>
-                );
-            } else {
-                headers2.unshift(
-                    <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column'>
-                        <div className='wasabi-grid-cell'  >
-                            {this.props.singleSelect ? null : (
-                                <CheckBox  {...thCheckProps}></CheckBox>
-                            )}
-                        </div>
-                    </th>
-                );
+        if (headers && headers.length > 0) {
+            //处理选择列
+            if (this.props.selectAble) {
+                let thCheckProps = {
+                    //设置checkbox的属性
+                    value: this.checkCurrentPageCheckedAll() == true ? 'yes' : null, //判断当前页是否选中
+                    data: [{ value: 'yes', text: '' }],
+                    onSelect: this.checkedAllHandler,
+                    name: 'all'
+                };
+                if (headers1.length > 0) {
+                    headers1.unshift(
+                        <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column'>
+                            <div className='wasabi-grid-cell' rowSpan={2}  >
+                                {this.props.singleSelect ? null : (
+                                    <CheckBox {...thCheckProps}></CheckBox>
+                                )}
+                            </div>
+                        </th>
+                    );
+                } else {
+                    headers2.unshift(
+                        <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column'>
+                            <div className='wasabi-grid-cell'  >
+                                {this.props.singleSelect ? null : (
+                                    <CheckBox  {...thCheckProps}></CheckBox>
+                                )}
+                            </div>
+                        </th>
+                    );
+                }
             }
-        }
-        //处理序号列
-        if (this.props.rowNumber) {
-            if (headers1.length > 0) {
-                headers1.unshift(<th key='headerorder' rowSpan={2} name='wasabi-order-column' className="wasabi-order-column">
-                    <div className='wasabi-grid-cell '>
-                        {"序号"}
-                    </div>
-                </th>)
-            }
-            else {
-                headers2.unshift(
-                    <th key='headerorder' name='wasabi-order-column' className="wasabi-order-column" >
-                        <div className='wasabi-grid-cell ' >
+            //处理序号列
+            if (this.props.rowNumber) {
+                if (headers1.length > 0) {
+                    headers1.unshift(<th key='headerorder' rowSpan={2} name='wasabi-order-column' className="wasabi-order-column">
+                        <div className='wasabi-grid-cell '>
                             {"序号"}
                         </div>
-                    </th>
-                );
+                    </th>)
+                }
+                else {
+                    headers2.unshift(
+                        <th key='headerorder' name='wasabi-order-column' className="wasabi-order-column" >
+                            <div className='wasabi-grid-cell ' >
+                                {"序号"}
+                            </div>
+                        </th>
+                    );
+                }
             }
-        }
-        //处理详情列
-        if (this.props.detailAble) {
-            if (headers1.length > 0) {
-                headers1.unshift(<th key='headerdetail' rowSpan={2} name='wasabi-detail-column' className="wasabi-detail-column">
-                    <div className='wasabi-grid-cell '>
-
-                    </div>
-                </th>)
-            }
-            else {
-                headers2.unshift(
-                    <th key='headerdetail' name='wasabi-detail-column' className="wasabi-detail-column" >
-                        <div className='wasabi-grid-cell ' >
+            //处理详情列
+            if (this.props.detailAble) {
+                if (headers1.length > 0) {
+                    headers1.unshift(<th key='headerdetail' rowSpan={2} name='wasabi-detail-column' className="wasabi-detail-column">
+                        <div className='wasabi-grid-cell '>
 
                         </div>
-                    </th>
-                );
+                    </th>)
+                }
+                else {
+                    headers2.unshift(
+                        <th key='headerdetail' name='wasabi-detail-column' className="wasabi-detail-column" >
+                            <div className='wasabi-grid-cell ' >
+
+                            </div>
+                        </th>
+                    );
+                }
             }
         }
+
         //返回数据
         if (headers1.length > 0) {
             //多行

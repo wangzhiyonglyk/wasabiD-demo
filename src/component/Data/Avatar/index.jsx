@@ -34,11 +34,11 @@ class Avatar extends Component {
         this.clear=this.clear.bind(this);
 
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if(nextProps.icon!=prevState.oldPropsIcon){
+    static getDerivedStateFromProps(props, state) {
+        if(props.icon!=state.oldPropsIcon){
             return {
-                icon:nextProps.icon,
-                oldPropsIcon:nextProps.icon,
+                icon:props.icon,
+                oldPropsIcon:props.icon,
             }
         }
         return null;

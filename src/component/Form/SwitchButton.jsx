@@ -22,10 +22,10 @@ class SwitchButton extends Component {
         this.handleClick = this.handleClick.bind(this)
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if(nextProps.value!=prevState.oldPropsValue){
+    static getDerivedStateFromProps(props, state) {
+        if(props.value!=state.oldPropsValue){
             return {
-                checked:nextProps.value?1:0
+                checked:props.value?1:0
             }
         }
         return null;

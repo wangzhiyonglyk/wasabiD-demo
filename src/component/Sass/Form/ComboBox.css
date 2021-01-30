@@ -154,7 +154,8 @@ desc:日期选择样式
 */
 .combobox .select
 {
-  width:210px;
+  width: 100%;
+  min-width:210px;
   height:auto;
 
 

@@ -30,20 +30,20 @@ class TreeNode extends Component {
         this.showHandler = this.showHandler.bind(this)
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(props, state) {
         let newState = {};
-        if (nextProps.inputValue != prevState.oldPropsInputValue) {
+        if (props.inputValue != state.oldPropsInputValue) {
             //处理treepicker的值问题
             newState = {
-                inputValue: nextProps.inputValue,
-                oldPropsInputValue: nextProps.inputValue,
-                checked: nextProps.inputValue && nextProps.inputValue != ",," ? nextProps.inputValue.indexOf("," + prevState.id + ",") > -1 ? true : false : nextProps.checked,
+                inputValue: props.inputValue,
+                oldPropsInputValue: props.inputValue,
+                checked: props.inputValue && props.inputValue != ",," ? props.inputValue.indexOf("," + state.id + ",") > -1 ? true : false : props.checked,
             }
         }
-        if (nextProps.checked != prevState.oldChecked) {
+        if (props.checked != state.oldChecked) {
             newState = {
-                checked: nextProps.checked,
-                oldChecked: nextProps.checked,
+                checked: props.checked,
+                oldChecked: props.checked,
             }
         }
         if (!func.isEmptyObject(newState)) {

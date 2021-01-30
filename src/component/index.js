@@ -79,7 +79,10 @@ import  TabPanel from './Navigation/TabPanel.jsx' ;//页签面板组件
 import  Label from  './Info/Label.jsx' ;//消息组件
 import  Msg from  './Info/Msg.jsx' ;//消息组件
 
-
+/*****************动画组件******************/
+import RotateChart from "./Animate/RotateChart";//旋转环
+import PageIn from "./Animate/PageIn";//放大弹出组件
+import ProgressChart from "./Animate/ProgressChart";//线性报表
 
 /*****************功能组件******************/
 
@@ -89,7 +92,7 @@ import  Editor from  './Action/Editor.jsx' ;//上传组件
 import Article from "./Action/Article";//文章编辑
 import  func from  './libs/func.js' ;//常用函数
 import  ClickAway from  './libs/ClickAway.js' ;//全局单击事件
-
+import Single from "./Action/Single";//单表组件
 
 
 export   {
@@ -101,7 +104,8 @@ export   {
     Modal,Panel,Resize,SlidePanel,
     Menus,MenuPanel,MenuItem,Tabs,TabPanel,Track,
     Label,Msg,
-    Upload,Editor,Article,
+    RotateChart,PageIn,ProgressChart,
+    Upload,Editor,Article,Single,
     func,ClickAway
 
 }

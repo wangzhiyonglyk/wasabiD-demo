@@ -32,13 +32,13 @@ class DateD extends Component {
         this.changeMonthHandler = this.changeMonthHandler.bind(this);
     }
    
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(props, state) {
         let newState = {};
-        if ((nextProps.year || "") + "-"+(nextProps.month || "") + "-" + (nextProps.day || "") != prevState.oldPropsValue) {
-            newState.year = nextProps.year ? nextProps.year : prevState.year;
-            newState.month = nextProps.month ? nextProps.month : prevState.month;
-            newState.day = nextProps.day;
-            newState.oldPropsValue=(nextProps.year || "") + "-"+(nextProps.month || "") + "-" + (nextProps.day || "");
+        if ((props.year || "") + "-"+(props.month || "") + "-" + (props.day || "") != state.oldPropsValue) {
+            newState.year = props.year ? props.year : state.year;
+            newState.month = props.month ? props.month : state.month;
+            newState.day = props.day;
+            newState.oldPropsValue=(props.year || "") + "-"+(props.month || "") + "-" + (props.day || "");
             return newState;
         }
         return null;

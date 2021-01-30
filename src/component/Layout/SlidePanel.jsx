@@ -42,7 +42,10 @@ class SlidePanel extends  React.Component{
         url:null
     }
 
-     open() {//打开事件，用于外部调用
+     open(title) {//打开事件，用于外部调用
+        this.setState({
+            title:title||this.state.title
+        })
        this.slideHandler();
    }
     close() {//关闭事件,用于外部调用
@@ -52,24 +55,29 @@ class SlidePanel extends  React.Component{
         if(this.state.panelwidth!=0)
         {//关闭时，外面宽度等过渡效果完成后再设置
             this.setState({
-                containerwidth: this.state.containerwidth == 0 ? this.state.width - 34 : 0,
-                overlayOpacity:this.state.overlayOpacity==0?0.5:0
+                containerwidth:0,
+                overlayOpacity:0,
+                
             });
             setTimeout(()=>{
                 this.setState({
                     panelwidth:0
+                },()=>{
+                    this.props.slideHandler&&this.props.slideHandler(0);
                 })
-                this.props.slideHandler&&this.props.slideHandler(0);
-            },700);//过渡效果结束后立即关闭
+              
+            },1000);//过渡效果结束后立即关闭
         }
        else
         {//打开时，立即将外面宽度设置
             this.setState({
-                containerwidth: this.state.containerwidth == 0 ? this.state.width - 34 : 0,
-                overlayOpacity:this.state.overlayOpacity==0?0.5:0,
+                containerwidth: this.state.width - 34 ,
+                overlayOpacity:0.5,
                 panelwidth:this.state.width
+            },()=>{
+                this.props.slideHandler&&this.props.slideHandler(1);
             });
-            this.props.slideHandler&&this.props.slideHandler(1);
+          
         }
 
     }
@@ -85,9 +93,9 @@ class SlidePanel extends  React.Component{
                 <div className="slide-overlay" onClick={this.slideHandler} style={{width:this.state.panelwidth,opacity:this.state.overlayOpacity}}></div>
                 <div className="slide-container" style={{width:this.state.containerwidth}}>
 
-                        <div className="slide-header">
-                            <div className="title">{this.state.title}</div>
-
+                        <div className="slide-header" >
+                            <div className="title" onClick={this.slideHandler}><i className="icon-back" style={{marginRight:10}}></i>{this.state.title}</div>
+                            <div className="slide-toolbar"><Toolbar buttons={this.state.buttons} onClick={this.buttonClick}></Toolbar></div>
 
                         </div>
                         <div className="slide-body">
@@ -96,15 +104,7 @@ class SlidePanel extends  React.Component{
                             }
 
                         </div>
-                    <div className="slide-footer">
-
-                            <div className="slide-toolbar"><Toolbar buttons={this.state.buttons} buttonClick={this.buttonClick}></Toolbar></div>
-                        <div className="slide-close">
-                            <Button name="close" title="关闭" onClick={this.slideHandler}></Button>
-                        </div>
-
-
-                    </div>
+               
                 </div>
             </div>
         }

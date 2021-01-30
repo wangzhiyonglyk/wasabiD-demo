@@ -19,7 +19,6 @@ class  FormModel {
         this.required = required; // 是否必填，默认为 false
         this.regexp=null;//正则表达式
         this.placeholder="";//占位提示文字
-        this.onlyline=false;//表单控件是否占一行
         this.rows=5;//textarea行数
         this.hide=hide;//是否隐藏
         this.text="";//下拉框默认显示的文本值

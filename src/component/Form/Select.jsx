@@ -26,12 +26,12 @@ class Select extends Component {
     this.hidePicker = this.hidePicker.bind(this);
     this.keyUpHandler = this.keyUpHandler.bind(this);
   }
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.value != prevState.oldPropsValue) {//父组件强行更新了
+  static getDerivedStateFromProps(props, state) {
+    if (props.value != state.oldPropsValue) {//父组件强行更新了
       return {
-        value: nextProps.value,
-        text: nextProps.text,
-        oldPropsValue: nextProps.value
+        value: props.value,
+        text: props.text,
+        oldPropsValue: props.value
       }
     }
     return null;
@@ -110,7 +110,9 @@ class Select extends Component {
     }
   }
   onBlur(event) {
-    if (this.props && this.props.addAbled) {
+    
+    if (this.props && (this.props.addAbled||this.props.addAble)) {
+      ////为了兼容旧属性
       this.addHandler(event);
     }
     else {
@@ -119,8 +121,10 @@ class Select extends Component {
 
   }
   keyUpHandler(event) {
-    if (this.props && this.props.addAbled && event.keyCode == 13) {
+    if (this.props &&  (this.props.addAbled||this.props.addAble) && event.keyCode == 13) {
+      ////为了兼容旧属性
       this.addHandler(event);
+      
     }
   }
   /**
@@ -262,7 +266,7 @@ class Select extends Component {
             <div className={"dropcontainter  select"} style={{ display: this.state.show == true ? "block" : "none" }}   >
               <input
                 className="wasabi-form-control"
-                title={this.props.addAbled ? '输入搜索，回车添加' : '输入搜索'}
+                title={(this.props.addAbled ||this.props.addAble)? '输入搜索，回车添加' : '输入搜索'}
                 onKeyUp={this.keyUpHandler}
                 value={
                   this.state.filterValue || ""

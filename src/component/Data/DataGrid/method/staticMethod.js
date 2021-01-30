@@ -123,5 +123,11 @@ export default {
         downloadA.click();
         window.URL.revokeObjectURL(downloadA.href);//移除！！！！
 
+    },
+    /**
+     * 导入
+     */
+    upload(){
+
     }
 }

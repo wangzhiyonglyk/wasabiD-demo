@@ -26,11 +26,11 @@ class RotateChart extends React.Component {
   /**
    * 生成动画
    */
-  animate() {
+  animate(index=0) {
     this.clear()//清除定时器 
     if (this.props.data && this.props.data instanceof Array && this.props.data.length > 0) {
 
-      this.activeIndex = 0//激活下标
+      this.activeIndex = index//激活下标
       this.draw(this.props.data, this.activeIndex)//先绘制
 
       if (this.props.disabled) {
@@ -100,18 +100,29 @@ class RotateChart extends React.Component {
       let model = []//数据模型
       if (arr instanceof Array && arr.length <= 8) {
         let sumAngle = 360 - (arr.length * 2)//总共多少度
-        let sum = 0
-        for (let i = 0; i < arr.length; i++) {
-          sum += arr[i]
+        let sum = 0;//求和
+        if(this.props.countType=="sum"){
+          for (let i = 0; i < arr.length; i++) {
+            sum += arr[i]
+          }
+          for (let i = 0; i < arr.length; i++) {
+            model.push({
+              sAngle: start,
+              eAngle: start + ((arr[i] / sum) * sumAngle).toFixed(this.props.decimal ? 2 : 0) * 1,
+            })
+            start += ((arr[i] / sum) * sumAngle).toFixed(this.props.decimal ? 2 : 0) * 1 + 2//下一个开始
+          }
+        }else{//直接传的就是百分比
+          for (let i = 0; i < arr.length; i++) {
+            let angle=parseFloat(arr[i]);
+              angle=angle>1?angle/100:angle;//百分比转成小数
+              model.push({
+              sAngle: start,
+              eAngle: start + angle*sumAngle,
+            })
+            start += angle*sumAngle + 2//下一个开始
+          }
         }
-        for (let i = 0; i < arr.length; i++) {
-          model.push({
-            sAngle: start,
-            eAngle: start + ((arr[i] / sum) * sumAngle).toFixed(this.props.decimal ? 2 : 0) * 1,
-          })
-          start += ((arr[i] / sum) * sumAngle).toFixed(this.props.decimal ? 2 : 0) * 1 + 2//下一个开始
-        }
-
         requestAnimationFrame(() => {
           ctx.clearRect(0, 0, this.width, this.height)//先清除
           ctx.fillStyle = 'rgba(255, 255, 255, 0)'
@@ -142,7 +153,7 @@ class RotateChart extends React.Component {
           }
           //画文字
           let text = this.props.text instanceof Array && this.props.text.length > 0 ?
-            this.props.text[activeIndex] : (arr[activeIndex] * 100 / sum).toFixed(this.props.decimal ? 2 : 0) + '%'
+           this.props.text[activeIndex] : this.props.countType=="sum"? (arr[activeIndex] * 100 / sum).toFixed(this.props.decimal ? 2 : 0) + '%':(arr[activeIndex]+"").replace("%","")+"%"
           this.drawText(ctx, text)
         })
       }
@@ -304,8 +315,16 @@ class RotateChart extends React.Component {
     }
   }
 
+  /**
+   * 旋转到指定的下标
+   * @param {*} index 
+   */
+  turnIndex(index){
+    this.animate(index);
+  }
+
   render() {
-    let style = this.props.style ? func.clone(this.props.style) : {}
+    let style = this.props.style ? unit.clone(this.props.style) : {}
     style.width = (style.width) || 100
     style.height = (style.height) || 100//设置
 
@@ -324,7 +343,7 @@ RotateChart.defaultProps = {
   style: { width: 100, height: 100 },//样式，或者百分比
   activeColor: '#ffa63f',//激活颜色
   color: '#c3c3c3',//非激活颜色
-  blankColor: '#1b366c',
+  blankColor: 'white',
   innerColor: 'transparent',//
   fontColor: '#ffa63f',
   fontSize: 24,
@@ -337,6 +356,7 @@ RotateChart.defaultProps = {
   oneFinishHandler: null,
   disabled: false,
   decimal: false,
+  countType:"sum",
 }
 RotateChart.propTypes = {
   style: PropTypes.object,//样式，最重要的宽度与高度，用数字与百分比也可以，百分比父容器的高度与宽度必须有值
@@ -356,5 +376,6 @@ RotateChart.propTypes = {
   oneFinishHandler: PropTypes.func,//转完一个响应事件
   disabled: PropTypes.bool,//是否不允许动画
   decimal: PropTypes.bool,//是否保留小数
+  countType:PropTypes.oneOf(["sum","void"]),//是求和,还是直接显示
 }
 export default RotateChart;

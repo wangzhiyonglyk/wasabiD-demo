@@ -114,60 +114,60 @@ func.dealNumToEnglishFormat = function (num) {
 }
 
 // 日期格式化为字符串
-func.dateformat = function (date, format='yyyy-MM-dd HH:mm:ss') {
+func.dateformat = function (date = new Date(), format = 'yyyy-MM-dd HH:mm:ss') {
     /// <summary>
     /// 日期格式化为字符串
     /// </summary>
     /// <param name="date" type="date">日期</param>
     /// <param name="format" type="string">格式化字符串，"yyyy-MM-dd HH:mm:ss","yyyy-MM-dd"</param>
-     /**
-         * 对Date的扩展，将 Date 转化为指定格式的String
-         * 月(M)、日(d)、12小时(h)、24小时(H)、分(m)、秒(s)、周(E)、季度(q) 可以用 1-2 个占位符
-         * 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
-         * eg:
-         * Utils.formatDate(new Date(),'yyyy-MM-dd') ==> 2014-03-02
-         * Utils.formatDate(new Date(),'yyyy-MM-dd hh:mm') ==> 2014-03-02 05:04
-         * Utils.formatDate(new Date(),'yyyy-MM-dd HH:mm') ==> 2014-03-02 17:04
-         * Utils.formatDate(new Date(),'yyyy-MM-dd hh:mm:ss.S') ==> 2006-07-02 08:09:04.423
-         * Utils.formatDate(new Date(),'yyyy-MM-dd E HH:mm:ss') ==> 2009-03-10 二 20:09:04
-         * Utils.formatDate(new Date(),'yyyy-MM-dd EE hh:mm:ss') ==> 2009-03-10 周二 08:09:04
-         * Utils.formatDate(new Date(),'yyyy-MM-dd EEE hh:mm:ss') ==> 2009-03-10 星期二 08:09:04
-         * Utils.formatDate(new Date(),'yyyy-M-d h:m:s.S') ==> 2006-7-2 8:9:4.18
-         */
-        if (!date) return;
-        var o = {
-            "M+": date.getMonth() + 1, //月份
-            "d+": date.getDate(), //日
-            "h+": (date.getHours() % 12 == 0 ? 12 : date.getHours() % 12), //小时
-            "H+": date.getHours(), //小时
-            "m+": date.getMinutes(), //分
-            "s+": date.getSeconds(), //秒
-            "q+": Math.floor((date.getMonth() + 3) / 3), //季度
-            "S": date.getMilliseconds() //毫秒
-        };
-        var week = {
-            "0": "\u65e5",
-            "1": "\u4e00",
-            "2": "\u4e8c",
-            "3": "\u4e09",
-            "4": "\u56db",
-            "5": "\u4e94",
-            "6": "\u516d"
-        };
+    /**
+        * 对Date的扩展，将 Date 转化为指定格式的String
+        * 月(M)、日(d)、12小时(h)、24小时(H)、分(m)、秒(s)、周(E)、季度(q) 可以用 1-2 个占位符
+        * 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
+        * eg:
+        * Utils.formatDate(new Date(),'yyyy-MM-dd') ==> 2014-03-02
+        * Utils.formatDate(new Date(),'yyyy-MM-dd hh:mm') ==> 2014-03-02 05:04
+        * Utils.formatDate(new Date(),'yyyy-MM-dd HH:mm') ==> 2014-03-02 17:04
+        * Utils.formatDate(new Date(),'yyyy-MM-dd hh:mm:ss.S') ==> 2006-07-02 08:09:04.423
+        * Utils.formatDate(new Date(),'yyyy-MM-dd E HH:mm:ss') ==> 2009-03-10 二 20:09:04
+        * Utils.formatDate(new Date(),'yyyy-MM-dd EE hh:mm:ss') ==> 2009-03-10 周二 08:09:04
+        * Utils.formatDate(new Date(),'yyyy-MM-dd EEE hh:mm:ss') ==> 2009-03-10 星期二 08:09:04
+        * Utils.formatDate(new Date(),'yyyy-M-d h:m:s.S') ==> 2006-7-2 8:9:4.18
+        */
+    if (!date) return;
+    var o = {
+        "M+": date.getMonth() + 1, //月份
+        "d+": date.getDate(), //日
+        "h+": (date.getHours() % 12 == 0 ? 12 : date.getHours() % 12), //小时
+        "H+": date.getHours(), //小时
+        "m+": date.getMinutes(), //分
+        "s+": date.getSeconds(), //秒
+        "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+        "S": date.getMilliseconds() //毫秒
+    };
+    var week = {
+        "0": "\u65e5",
+        "1": "\u4e00",
+        "2": "\u4e8c",
+        "3": "\u4e09",
+        "4": "\u56db",
+        "5": "\u4e94",
+        "6": "\u516d"
+    };
 
-        if (/(y+)/.test(format)) {
-            format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-        }
+    if (/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
 
-        if (/(E+)/.test(format)) {
-            format = format.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? "\u661f\u671f" : "\u5468") : "") + week[date.getDay() + ""]);
+    if (/(E+)/.test(format)) {
+        format = format.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? "\u661f\u671f" : "\u5468") : "") + week[date.getDay() + ""]);
+    }
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(format)) {
+            format = format.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         }
-        for (var k in o) {
-            if (new RegExp("(" + k + ")").test(format)) {
-                format = format.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            }
-        }
-        return format;
+    }
+    return format;
 }
 
 func.log = function (text) {
@@ -252,6 +252,30 @@ func.fetch = {
         api.ajax(fetchmodel);
     }
 
+}
+/**
+ * 根据字符计算宽度
+ * @param {*} str 字符
+ */
+func.charWidth = function (str = "") {
+    let width = 0;
+    try {
+        let strArr = str.split("");
+
+        for (let i = 0; i < strArr.length; i++) {
+            let reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
+            if (reg.test(strArr[i])) {
+                width += 20;//汉字20个像素
+            }
+            else {
+                width += 10;
+            }
+        }
+    } catch (e) {
+
+    }
+
+    return width;
 }
 
 func.showError = function (msg) {
@@ -409,33 +433,33 @@ func.Error = {
  * @param {string } parentField 父节点key
  * @param {string } textField 文本key
  */
-func.toTreeData = function (data,idField="id",  parentField="pId",textField="text") {
+func.toTreeData = function (data, idField = "id", parentField = "pId", textField = "text") {
     let pos = {};
     let tree = [];
     let count = 0;
     let pId = "";//一级父节点pid值
-    let ids= "";//所有id值
+    let ids = "";//所有id值
     for (let i = 0; i < data.length; i++) {
-        ids+=","+data[i][idField]+","
+        ids += "," + data[i][idField] + ","
     }
-  
+
     for (let i = 0; i < data.length; i++) {
-        if (ids.indexOf(","+data[i][parentField]+",") <= -1) {//属于一级节点的pid值
-            pId +=","+ data[i][parentField]+",";
+        if (ids.indexOf("," + data[i][parentField] + ",") <= -1) {//属于一级节点的pid值
+            pId += "," + data[i][parentField] + ",";
         }
     }
     let index = 0;
     while (data.length != 0 && count < 200000) {
         count++;
-        if (pId.indexOf(","+data[index][parentField]+",") > -1||!data[index][parentField]) {
-            let item={
+        if (pId.indexOf("," + data[index][parentField] + ",") > -1 || !data[index][parentField]) {
+            let item = {
                 ...data[index],
                 text: data[index][textField],
-                children: [],        
+                children: [],
             }
-            item[idField]=data[index][idField];//添加key
+            item[idField] = data[index][idField];//添加key
             tree.push(item);
-            
+
             pos[data[index][idField]] = [tree.length - 1];
             data.splice(index, 1);
             index--;
@@ -448,12 +472,12 @@ func.toTreeData = function (data,idField="id",  parentField="pId",textField="tex
                     obj = obj.children[posArr[j]];
                 }
 
-                let item={
+                let item = {
                     ...data[index],
                     text: data[index][textField],
-                    children: [],        
+                    children: [],
                 }
-                item[idField]=data[index][idField];//添加key
+                item[idField] = data[index][idField];//添加key
                 obj.children.push(item);
                 pos[data[index][idField]] = posArr.concat([obj.children.length - 1]);
                 data.splice(index, 1);
@@ -465,7 +489,7 @@ func.toTreeData = function (data,idField="id",  parentField="pId",textField="tex
             index = 0;
         }
     }
-    if(data.length>0){
+    if (data.length > 0) {
         console.error("数据格式不正确，或者是数据量过大，请使用异步请求,");
     }
     return tree;

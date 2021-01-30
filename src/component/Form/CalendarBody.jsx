@@ -29,15 +29,15 @@ class CalendarBody extends Component {
     }
     /**
      * 
-     * @param {*} nextProps 
-     * @param {*} prevState 
+     * @param {*} props 
+     * @param {*} state 
      */
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if(nextProps.year!=prevState.oldYear){
+    static getDerivedStateFromProps(props, state) {
+        if(props.year!=state.oldYear){
             return {
-                year:nextProps.year,
-                oldYear:nextProps.year,
-                tempyear:nextProps.year
+                year:props.year,
+                oldYear:props.year,
+                tempyear:props.year
             }
         }
        return null;

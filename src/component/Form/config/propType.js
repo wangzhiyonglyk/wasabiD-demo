@@ -45,7 +45,8 @@ export default {
         data:PropTypes.array,//自定义数据源
         // extraData:PropTypes.array,//额外的数据,对url有效
         onSelect: PropTypes.func,//选中后的事件，回传，value,与text,data
-        addAbled:PropTypes.bool,//select是否可以添加数据
+        addAbled:PropTypes.bool,//select是否可以添加数据.todo 旧版本
+        addAble:PropTypes.bool,//select是否可以添加数据
         //其他属性 picker
         secondUrl:PropTypes.string,//第二层节点的后台地址,
         secondParams:PropTypes.object,//第二层节点的后台参数

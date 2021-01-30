@@ -181,7 +181,7 @@ export default {
      * @param {*} event 
      */
     pageSizeHandler: function (event) {
-        console.log(event)
+       
         this.updateHandler(this.state.url, event.target.value * 1, this.state.pageIndex, this.state.sortName, this.state.sortOrder, null);
     },
 
@@ -200,19 +200,19 @@ export default {
      * @param {*} params 
      * @param {*} url 
      */
-    reload: function (params, url = "") {//重新查询数据,
+    reload: function (params=null, url = "") {//重新查询数据,
         url = url || this.state.url;//得到旧的url
+        params=params||this.state.params;//如果不传则用旧的
         if (!url) {//没有url,不自行加载，则调用更新事件
             if (this.props.updateHandler) {//用户自定义了更新事件
                 this.props.updateHandler(this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder);
             }
         }
-        else {//传了url
-
-            if (diff(params, this.state.params)) {//参数发生改变,从第一页查起
+        else {//传了url        
+            if (diff(params, this.state.params)) {//为参数发生改变,从第一页查起           
                 this.updateHandler(url, this.state.pageSize, 1, this.state.sortName, this.state.sortOrder, params);
             }
-            else {//从当前页查起，刷新
+            else {//从当前页查起，就是刷新
                 this.updateHandler(url, this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder, params);
             }
 
@@ -256,22 +256,14 @@ export default {
      headers可能是后期才传了,见Page组件可知
      所以此处需要详细判断
      */
+   
         url = url || this.state.url;
         if (url) {
             this.setState({
                 loading: true,
                 url: url,//更新,有可能从reload那里直接改变了url
-
-            })
-            let httpParams = {};//本次请求的参数
-            if (!params && this.state.params && typeof this.state.params == "object") {//新的参数为null或者undefined，旧参数不为空
-                httpParams = func.clone(this.state.params);//
-                params = func.clone(this.state.params);//保存以便下一次更新
-            }
-            else {//新参数不为空
-                httpParams = func.clone(params);//复制，否则后面参数就会多加四个默认参数
-            }
-
+            })  
+            let httpParams = typeof params=="object" ?func.clone(params):{};//本次请求的参数
             if (this.props.pagination == true) {
                 if (!httpParams) {
                     httpParams = {};
@@ -413,6 +405,7 @@ export default {
                     }
                 }
             }
+         
             this.setState({
                 pageSize: pageSize,
                 params: func.clone(params),//这里一定要复制,只有复制才可以比较两次参数是否发生改变没有,防止父组件状态任何改变而导致不停的查询

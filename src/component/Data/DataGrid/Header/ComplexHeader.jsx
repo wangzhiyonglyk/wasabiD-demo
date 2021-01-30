@@ -15,11 +15,9 @@ import CheckBox from '../../../Form/CheckBox.jsx';
 
 export default {
     renderComplexHeader() {
-
         let headerControl = [];
         //处理表头
         this.state.headers.map((trheader, headerRowIndex) => {
-
             if (trheader instanceof Array) {
                 let trcontrol = [];//当前行
                 trheader.map((header, headerColumnIndex) => {
@@ -101,50 +99,52 @@ export default {
             }
 
         });
+        if (this.state.headers && this.state.headers.length > 0) {
+            //处理选择列
+            if (this.props.selectAble) {
+                let thCheckProps = {
+                    //设置checkbox的属性
+                    value: this.checkCurrentPageCheckedAll() == true ? 'yes' : null, //判断当前页是否选中
+                    data: [{ value: 'yes', text: '' }],
+                    onSelect: this.checkedAllHandler,
+                    name: 'all'
+                };
 
+                headerControl[0].unshift(
+                    <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column' rowSpan={headerControl.length}>
+                        <div className='wasabi-grid-cell'  >
+                            {this.props.singleSelect ? null : (
+                                <CheckBox forceChange={true} {...thCheckProps}></CheckBox>
+                            )}
+                        </div>
 
-        //处理选择列
-        if (this.props.selectAble) {
-            let thCheckProps = {
-                //设置checkbox的属性
-                value: this.checkCurrentPageCheckedAll() == true ? 'yes' : null, //判断当前页是否选中
-                data: [{ value: 'yes', text: '' }],
-                onSelect: this.checkedAllHandler,
-                name: 'all'
-            };
+                    </th>
+                );
 
-            headerControl[0].unshift(
-                <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column' rowSpan={headerControl.length}>
-                    <div className='wasabi-grid-cell'  >
-                        {this.props.singleSelect ? null : (
-                            <CheckBox forceChange={true} {...thCheckProps}></CheckBox>
-                        )}
-                    </div>
+            }
 
-                </th>
-            );
-
-        }
-
-        //处理序号
-        if (this.props.rowNumber) {
-            headerControl[0].unshift(<th key='headerorder' rowSpan={headerControl.length} name='wasabi-order-column' className="wasabi-order-column">
-                <div className='wasabi-grid-cell ' >
-                    序号
+            //处理序号
+            if (this.props.rowNumber) {
+                headerControl[0].unshift(<th key='headerorder' rowSpan={headerControl.length} name='wasabi-order-column' className="wasabi-order-column">
+                    <div className='wasabi-grid-cell ' >
+                        序号
 </div>
-            </th>)
-        }
-             //处理详情列
-             if(this.props.detailAble){
+                </th>)
+            }
+            //处理详情列
+            if (this.props.detailAble) {
                 headerControl[0].unshift(<th key='headerdetail' rowSpan={headerControl.length} name='wasabi-detail-column' className="wasabi-detail-column">
-                <div className='wasabi-grid-cell ' >      
-</div>
-            </th>)
-             }
+                    <div className='wasabi-grid-cell ' >
+                    </div>
+                </th>)
+            }
+        }
+
+
         return <thead>
             {
                 headerControl && headerControl.map((tritem, rowindex) => {
-                   return   <tr key={rowindex}>{tritem}</tr>
+                    return <tr key={rowindex}>{tritem}</tr>
                 })}
         </thead>
 

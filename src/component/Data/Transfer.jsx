@@ -31,21 +31,21 @@ class Transfer extends React.Component {
 
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(props, state) {
         let newState = {};
-        if (nextProps.url && nextProps.params &&
-            diff(nextProps.params, prevState.params)) {//如果有url
+        if (props.url && props.params &&
+            diff(props.params, state.params)) {//如果有url
             newState = {
                 reloadData: true,//重新加载
-                url: nextProps.url,
-                params: func.clone(nextProps.params),
+                url: props.url,
+                params: func.clone(props.params),
             }
         }
-        if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.data)) {
+        if (props.data && props.data instanceof Array && diff(props.data, state.data)) {
             //如果传了死数据
-            newState.data = propsTran.setComboxValueAndText("transfer","",nextProps.data, prevState.valueField, prevState.textField);
+            newState.data = propsTran.setComboxValueAndText("transfer","",props.data, state.valueField, state.textField);
             newState.data= newState.data.data;
-            newState.selectData = propsTran.setComboxValueAndText("transfer","",nextProps.selectData, prevState.valueField, prevState.textField);
+            newState.selectData = propsTran.setComboxValueAndText("transfer","",props.selectData, state.valueField, state.textField);
             newState.selectData= newState.selectData.data;
         }
         if (func.isEmptyObject(newState)) {

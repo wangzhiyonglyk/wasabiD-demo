@@ -26,7 +26,7 @@ desc:面板组件样式
   border-bottom: 1px solid #ebeef5;
   
 }
-.wasabi-panel .panel-header [class^="icon-"], [class*=" icon-"]{
+.wasabi-panel .panel-header [class^="icon-"],.wasabi-panel .panel-header [class*=" icon-"]{
   margin-right: 5px;
 }
 .panel-default>.panel-header {

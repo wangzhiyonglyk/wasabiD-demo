@@ -16,11 +16,11 @@ class Values extends Component {
             data: func.clone(this.props.data),//数据
         }
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if (diff(nextProps.data, prevState.oldData)) {
+    static getDerivedStateFromProps(props, state) {
+        if (diff(props.data, state.oldData)) {
             return {
-                oldData: func.clone(nextProps.data),
-                data: func.clone(nextProps.data),
+                oldData: func.clone(props.data),
+                data: func.clone(props.data),
             }
         }
         else {

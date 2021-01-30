@@ -25,11 +25,11 @@ class Rate extends Component {
     }
 
 
- static getDerivedStateFromProps(nextProps, prevState) {
-     if(nextProps.value!=prevState.oldPropsValue){//强行刷新
+ static getDerivedStateFromProps(props, state) {
+     if(props.value!=state.oldPropsValue){//强行刷新
          return {
-             value:nextProps.value,
-             oldPropsValue:nextProps.value,
+             value:props.value,
+             oldPropsValue:props.value,
              hoverValue:0,
          }
      }
@@ -141,7 +141,7 @@ class Rate extends Component {
             style.display = 'flex';
         }
       return   <div
-            className={componentClassName + " "+this.props.validateClass}
+            className={componentClassName + " "+this.state.validateClass}
             ref="rate"
             style={style} >
             <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>

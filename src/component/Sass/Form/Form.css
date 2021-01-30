@@ -24,31 +24,34 @@ desc:表单样式
     width: 99%;
 }
 .wasabi-form .form-body[cols="2"]>.wasabi-form-group{
-    width: 49.5%;
+    width: 49%;
 }
 .wasabi-form .form-body[cols="3"]>.wasabi-form-group{
-    width: 32.5%;
+    width: 32%;
 }
 .wasabi-form .form-body[cols="4"]>.wasabi-form-group{
-    width: 24.5%;
+    width: 24%;
 }
 .wasabi-form .form-body[cols="5"]>.wasabi-form-group{
-    width: 19.5%;
+    width: 19%;
 }
-.wasabi-form .form-body[cols="1"]>.wasab-cols{
+/**
+控制col组件的布局
+*/
+.wasabi-form .form-body[cols="1"]>.wasabi-cols{
     width: 99%;
 }
-.wasabi-form .form-body[cols="2"]>.wasab-cols{
-    width: 49.5%;
+.wasabi-form .form-body[cols="2"]>.wasabi-cols{
+    width: 49%;
 }
-.wasabi-form .form-body[cols="3"]>.wasab-cols{
-    width: 32.5%;
+.wasabi-form .form-body[cols="3"]>.wasabi-cols{
+    width: 32%;
 }
-.wasabi-form .form-body[cols="4"]>.wasab-cols{
-    width: 24.5%;
+.wasabi-form .form-body[cols="4"]>.wasabi-cols{
+    width: 24%;
 }
-.wasabi-form .form-body[cols="5"]>.wasab-cols{
-    width: 19.5%;
+.wasabi-form .form-body[cols="5"]>.wasabi-cols{
+    width: 19%;
 }
 .wasabi-form .form-submit
 {

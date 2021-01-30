@@ -62,33 +62,33 @@ export default function (WrappedComponent) {
             this.addData = this.addData.bind(this);
             this.filterHandler = this.filterHandler.bind(this)
         }
-        static getDerivedStateFromProps(nextProps, prevState) {
+        static getDerivedStateFromProps(props, state) {
             let newState = {};
-            if (nextProps.url && nextProps.params &&
-                diff(nextProps.params, prevState.params)) {//如果有url
+            if (props.url && props.params &&
+                diff(props.params, state.params)) {//如果有url
                 newState = {
                     reloadData: true,//重新加载
-                    url: nextProps.url,
-                    params: func.clone(nextProps.params),
+                    url: props.url,
+                    params: func.clone(props.params),
                 }
             }
-            if (nextProps.value != prevState.oldPropsValue) {//说明父节点改变了传递的值
+            if (props.value != state.oldPropsValue) {//说明父节点改变了传递的值
 
-                newState.value = nextProps.value;//强行改变组件选择的值，不管状态中的值是什么
-                newState.oldPropsValue = nextProps.value;//保留之前的值，用于下次对比
-                let text = propsTran.setComboxText(newState.value, prevState.data);
+                newState.value = props.value;//强行改变组件选择的值，不管状态中的值是什么
+                newState.oldPropsValue = props.value;//保留之前的值，用于下次对比
+                let text = propsTran.setComboxText(newState.value, state.data);
                 newState.text = text.join(",");
             }
             else {
 
             }
-            if (nextProps.data && nextProps.data instanceof Array && diff(nextProps.data, prevState.rawData)) {
+            if (props.data && props.data instanceof Array && diff(props.data, state.rawData)) {
                 //如果传了数据，并且发生改变
-                newState.rawData = nextProps.data;//保留原始数据
-                let newData = propsTran.setComboxValueAndText(nextProps.type, newState.value || prevState.value, nextProps.data, nextProps.type == "treepicker" ? nextProps.idField : nextProps.valueField, prevState.textField);
+                newState.rawData = props.data;//保留原始数据
+                let newData = propsTran.setComboxValueAndText(props.type, newState.value || state.value, props.data, props.type == "treepicker" ? props.idField : props.valueField, state.textField);
                 let realData;
-                if (prevState.type == "picker" && prevState.simpleData) {//如果是简单数据类型
-                    realData = func.toTreeData(newData.data, nextProps.valueField || nextProps.idField || "id", nextProps.parentField || "pId", nextProps.textField);
+                if (state.type == "picker" && state.simpleData) {//如果是简单数据类型
+                    realData = func.toTreeData(newData.data, props.valueField || props.idField || "id", props.parentField || "pId", props.textField);
                 } else {
                     //treepicker在tree组件处理了
                     realData = newData.data;
@@ -178,10 +178,10 @@ export default function (WrappedComponent) {
         }
         /**
          * 刷新
-         * @param {*} url 
          * @param {*} params 
+        * @param {*} url 
          */
-        reload(url,params){
+        reload(params,url){
             url=url||this.state.url;
             params=params|| this.state.params;
             this.setState({
