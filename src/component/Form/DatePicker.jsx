@@ -441,7 +441,6 @@ class DatePicker extends Component {
     }
 
     let componentClassName = "wasabi-form-group "+(this.props.className||"")+" ";//组件的基本样式 
-console.log("componentClassName",this.props.type,componentClassName)
     let inputProps = {
       readOnly: this.props.readOnly == true ? "readOnly" : null,
 

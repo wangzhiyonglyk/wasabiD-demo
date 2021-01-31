@@ -324,7 +324,7 @@ class RotateChart extends React.Component {
   }
 
   render() {
-    let style = this.props.style ? unit.clone(this.props.style) : {}
+    let style = this.props.style ? func.clone(this.props.style) : {}
     style.width = (style.width) || 100
     style.height = (style.height) || 100//设置
 

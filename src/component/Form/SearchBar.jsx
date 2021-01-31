@@ -61,7 +61,7 @@ class SearchBar extends Component {
       return;
     }
     for (let v in this.refs) {
-      if (this.refs[v].props.name&&data[this.refs[v].props.name]!=null&&data[this.refs[v].props.name]!=undefined) {
+      if (this.refs[v].props.name && data[this.refs[v].props.name] != null && data[this.refs[v].props.name] != undefined) {
         this.refs[v].setValue &&
           this.refs[v].setValue(data[this.refs[v].props.name]);
       } else if (this.refs[v].setData) {
@@ -130,12 +130,13 @@ class SearchBar extends Component {
       >
         <div className='inputcontainer' cols={this.props.cols}>
           {React.Children.map(this.props.children, (child, index) => {
-            if (typeof child.type !== "function") {
-              //非react组件
-              return child;
-            } else {
-            
-            
+            if (child) {
+              if (typeof child.type !== "function") {
+                //非react组件
+                return child;
+              } else {
+
+
                 //这里有个问题，value与text在第二次会被清除,防止数据丢失
                 let data = child.props.data
                   ? JSON.parse(JSON.stringify(child.props.data))
@@ -146,46 +147,51 @@ class SearchBar extends Component {
                   key: index,
                   ref: child.ref ? child.ref : index,
                   hide: this.state.dropType == "icon-arrow-down" &&
-                  index >= this.props.cols?true:false
+                    index >= this.props.cols ? true : false
                 });
-              
+
+              }
             }
+            else {
+              return child;
+            }
+
           })}
-         
+
         </div>
         <div className='buttoncontainer'>
-            <LinkButton
-              iconCls={this.state.dropType}
-              style={{
-                display:
-                this.props.children&&this.props.children.length > this.props.cols
-                    ? "inline"
-                    : "none"
-              }}
-              onClick={this.expandHandler}
-            ></LinkButton>
-            <LinkButton
-              onClick={this.onSubmit.bind(this, "search")}
-              theme={this.props.submitTheme}
-              hide={this.props.onSubmit ? false : true}
-              iconCls='icon-search'
-              style={this.props.submitStyle}
-              title={this.props.submitTitle}
-            >
-              {this.props.submitTitle||"搜索"}
-            </LinkButton>{
-              this.props.addAble?
+          <LinkButton
+            iconCls={this.state.dropType}
+            style={{
+              display:
+                this.props.children && this.props.children.length > this.props.cols
+                  ? "inline"
+                  : "none"
+            }}
+            onClick={this.expandHandler}
+          ></LinkButton>
+          <LinkButton
+            onClick={this.onSubmit.bind(this, "search")}
+            theme={this.props.submitTheme}
+            hide={this.props.onSubmit ? false : true}
+            iconCls='icon-search'
+            style={this.props.submitStyle}
+            title={this.props.submitTitle}
+          >
+            {this.props.submitTitle || "搜索"}
+          </LinkButton>{
+            this.props.addAble ?
               <LinkButton
-              onClick={this.props.onAdd}
-              theme={this.props.submitTheme}
-              iconCls='icon-add'
-              style={this.props.submitStyle}
-              title={this.props.addTitle}
-            >
-              {this.props.addTitle||"添加"}
-            </LinkButton>:null
-            }
-          </div>
+                onClick={this.props.onAdd}
+                theme={this.props.submitTheme}
+                iconCls='icon-add'
+                style={this.props.submitStyle}
+                title={this.props.addTitle}
+              >
+                {this.props.addTitle || "添加"}
+              </LinkButton> : null
+          }
+        </div>
       </div>
     );
   }
@@ -194,7 +200,7 @@ SearchBar.propTypes = {
   style: PropTypes.object, //样式
   className: PropTypes.string, //自定义样式
   submitTitle: PropTypes.string,//查询按钮的标题
-  addTitle:PropTypes.string,//添加按钮的标题
+  addTitle: PropTypes.string,//添加按钮的标题
   submitHide: PropTypes.bool,//是否隐藏按钮
   addAble: PropTypes.bool,//是否有添加按钮
   submitTheme: PropTypes.string,
@@ -209,7 +215,7 @@ SearchBar.defaultProps = {
   submitTitle: "搜索", //查询按钮的标题
   addTitle: "添加", //查询按钮的标题
   submitHide: false, //是否隐藏按钮
-  addAble:false,//是否有添加按钮
+  addAble: false,//是否有添加按钮
   submitTheme: "primary", //主题
   submitStyle: {}, //查询按钮的样式
   cols: 3, //一行排几个

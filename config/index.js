@@ -22,6 +22,11 @@ let entry = [
     filename: 'login', //文件名，
     title: '登录', // 标题
     src: './view/login/index.jsx' //脚本路径
+  },
+  {
+    filename: 'pivot', //文件名，
+    title: '登录', // 标题
+    src: './view/pivot/index.jsx' //脚本路径
   }
 ];
 

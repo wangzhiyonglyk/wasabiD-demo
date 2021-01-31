@@ -24,7 +24,7 @@ class Home extends React.Component {
     }
    
     render() {
-        return <Single model={this.state.model} title="活动管理"  pageUrl={"http://localhost:7007/rest/page"} attachParams={{tableName:"ideadata"}}></Single>;
+        return <Single model={this.state.model} title="活动管理" deleteUrl="http://localhost:7007/ideadata/delete" updateUrl="http://localhost:7007/ideadata/save" addUrl="http://localhost:7007/ideadata/save"  pageUrl={"http://localhost:7007/ideadata/page"} ></Single>;
             
 
     }

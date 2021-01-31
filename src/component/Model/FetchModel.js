@@ -1,5 +1,5 @@
 /**
- * Created by zhiyongwang on 2016-03-26.
+ * Created by wangzhiyong on 2016-03-26.
  * desc:fetch 查询时的数据模型
  *
  */

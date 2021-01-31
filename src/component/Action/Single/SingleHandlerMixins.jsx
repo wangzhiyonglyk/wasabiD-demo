@@ -2,197 +2,203 @@
 create by wangzhiyong
 date:2016-10-30
 desc:单页面应用的事件处理模型
+ * edit 2021-01-15
  */
-// let React = require('react');
-let Msg = require('../../Info/Msg.jsx');
-let unit = require('../../libs/func.js');
-let FetchModel = require('../../Model/FetchModel.js');
-let PageHandlerMixins = {
 
-    /**
-   * 筛选查询
-   * @param {*} params 
+import Msg from "../../Info/Msg.jsx";
+import unit from "../../libs/func.js"
+import FetchModel from '../../Model/FetchModel.js';
+let SingleHandlerMixins = {
+  /**
+   * 自定义按钮组事件
+   * @param {*} name 
    */
-  filterHandler: function(params) {
-    params={...this.state.params,...params};
+  btnHandler(name) {
+    this.props.btnHandler && this.props.btnHandler(name);
+  },
+
+  /**
+ * 筛选查询
+ * @param {*} params 
+ */
+  filterHandler: function (params) {
+    params = { ...this.state.params, ...params };
     this.refs.datagrid.reload(params);
   },
-  
-  getHandler: function(id, disabled) {
-    //获取一个实例模型
-    var getUrl = this.state.getUrl;
-    if (getUrl.indexOf('?') > 0) {
-      //已经带了参数
-
-      getUrl = getUrl + '&id=' + id;
-    } else {
-      getUrl = getUrl + '?id=' + id;
-    }
-    let fetchModel = new FetchModel(
-      getUrl,
-      this.getSuccess.bind(disabled),
-      null,
-      this.fetchErrorHandler
-    );
-    unit.fetch.get(fetchModel);
-  },
-  getSuccess: function(result, disabled) {
-    //
-    if (result.data) {
-      var model = this.state.model;
-      for (var index = 0; index < model.length; index++) {
-        if (result.data[model[index].name]) {
-          model[index].value = result.data[model[index].name];
-        } else {
-          model[index].value = null; //清空
-        }
-      }
-      this.setState({
-        model: model,
-        disabled: false, //非只读
-        submitButton: this.submitButton(disabled) //提交按钮是否有效
-      });
-    }
-  },
   /**
-   * 打开新增面板
+   * 滑动面板的提交事件
    */
-  addOpen: function() {
-    this.refs.slide.open(this.props.title+"-新增");
-    this.state.model = this.state.model.map((item, index) => {
-      item.value = '';
-      return item;
-    });
-   
+  panelSubmitHandler() {
+
+    if (this.state.opType == "edit") {
+      if (this.refs.form.validate()) {
+        this.updateHandler(this.refs.form.getData());
+      }
+
+    }
+    else if (this.state.opType == "add") {
+      if (this.refs.form.validate()) {
+        this.addHandler(this.refs.form.getData());
+      }
+    }
+  },
+
+
+  /**
+   * 以下是增删改的事件
+   */
+
+
+  /**
+  * 打开新增面板
+  */
+  addOpen: function () {
+
+    this.refs.slide.open(this.props.title + "-新增");
+    this.state.opType != "add" ? this.refs.form.clearData() : void (0);
+    this.refs.form.setDisabled(false);
     this.setState({
-      panelTitle: '新增',
       opType: 'add',
-      model: this.state.model
+      submitButton: [
+        {
+            name: "wasabi-save",
+            title: "提交",
+            size:"small",
+            iconCls: "icon-save"
+        }
+    ],
     });
   },
   /**
    * 新增事件
    * @param {*} model 
    */
-  addHandler: function(model) {
+  addHandler: function (model) {
     //新增事件
-    let fetchModel = new FetchModel(
-      this.state.addUrl,
-      this.addSuccess,
-      model,
-      this.fetchErrorHandler
-    );
-    unit.fetch.post(fetchModel);
+    if (this.props.addUrl) {
+      let fetchModel = new FetchModel(
+        this.props.addUrl,
+        this.opSuccess,
+        model,
+        this.fetchErrorHandler
+      );
+      unit.fetch.post(fetchModel);
+    }
+    else {
+      Msg.error("您没有设置新增接口");
+    }
+
+
   },
-  addSuccess: function(result) {
-    //新增成功
-    this.refs.datagrid.reload(); //刷新列表
-  },
+
   /**
-   * 删除事件
+   * 打开编辑
    * @param {*} rowData 
    * @param {*} rowIndex 
    */
-  deleteHandler: function(rowData,rowIndex) {
-    //删除事件
-    Msg.confirm('确定删除这条记录吗?', () => {
-      var deleteUrl = this.state.deleteUrl;
-      if (deleteUrl.indexOf('?') > 0) {
-        //已经带了参数
-
-        deleteUrl = deleteUrl + '&id=' + id;
-      } else {
-        deleteUrl = deleteUrl + '?id=' + id;
-      }
-      let fetchModel = new FetchModel(
-        deleteUrl,
-        this.deleteSuccess,
-        null,
-        this.fetchErrorHandler
-      );
-      unit.fetch.get(fetchModel);
+  openEdit(rowData, rowIndex) {
+    this.refs.slide.open(this.props.title + "-编辑");
+    this.refs.form.setData(rowData);
+    this.refs.form.setDisabled(false);
+    this.setState({
+      opType: 'edit',
+      submitButton: [
+        {
+            name: "wasabi-save",
+            title: "提交",
+            size:"small",
+            iconCls: "icon-save"
+        }
+    ],
     });
   },
-  deleteSuccess: function(result) {
+
+  /**
+   * 更新处理
+   * @param {*} model 
+   */
+  updateHandler(model) {
+
+    if (this.props.updateUrl) {
+      let fetchModel = new FetchModel(
+        this.props.updateUrl,
+        this.opSuccess,
+        model,
+        this.fetchErrorHandler
+      );
+      unit.fetch.post(fetchModel);
+    }
+    else {
+      Msg.error("您没有设置更新接口");
+    }
+  },
+
+  /**
+   * 操作成功
+   * @param {*} result 
+   */
+  opSuccess: function (result) {
+    if (result.statusCode == 200) {
+      this.refs.slide.close();
+      this.refs.datagrid.reload(); //刷新列表
+      this.refs.form.clearData();
+    }
+
+  },
+  /**
+    * 删除事件
+    * @param {*} rowData 
+    * @param {*} rowIndex 
+    */
+  deleteHandler: function (rowData, rowIndex) {
+    //删除事件
+    Msg.confirm('确定删除这条记录吗?', () => {
+      if (this.props.deleteUrl) {
+        let params={};
+        params[this.props.key]=rowData[this.props.key];
+        let fetchModel = new FetchModel(
+          this.props.deleteUrl,
+          this.opSuccess,
+          params,
+          this.fetchErrorHandler
+        );
+        unit.fetch.get(fetchModel);
+      }
+      else{
+        Msg.error("您没有设置删除接口");
+      }
+
+    });
+  },
+  deleteSuccess: function (result) {
     //删除成功
     this.refs.datagrid.reload(); //刷新列表
   },
-  updateOpen: function() {
-    let model = this.refs.datagrid.getFocusRowData();
-    if (model) {
-      this.refs.slide.open();
-      this.state.model = this.state.model.map((item, index) => {
-        item.value = model[item.name];
-        return item;
-      });
-      this.setState({
-        panelTitle: '修改',
-        opType: 'update',
-        model: this.state.model
-      });
-    } else {
-      Msg.alert('请选择一条记录');
-    }
-  },
-  updateHandler: function(model) {
-    //更新事件
-    let fetchModel = new FetchModel(
-      this.state.updateUrl,
-      this.addSuccess,
-      model,
-      this.fetchErrorHandler
-    );
-    unit.fetch.post(fetchModel);
-  },
-  updateSuccess: function(result) {
-    //更新成功
-    this.refs.datagrid.reload(); //刷新列表
+
+  /**
+   * 查看详情
+   * @param {*} rowData 
+   * @param {*} rowIndex 
+   */
+  openDetail(rowData, rowIndex) {
+    this.refs.slide.open(this.props.title + "-详情");
+    this.refs.form.setData(rowData);
+    this.refs.form.setDisabled(true);
+    this.setState({
+      opType: 'read',
+      submitButton: [
+        
+    ],
+    });
   },
 
-  openSlideHandler: function(type, id) {
-    //打开表单面板
-    this.refs.form.clearData(); //先清空原来值
-    switch (type) {
-      case 'add':
-        //新增
-        this.setState({
-          disabled: false, //非只读
-          submitButton: this.submitButton(false) //提交按钮有效
-        });
-        break;
-      case 'update':
-        //更新
-        this.getHandler(id, false); //提交按钮有效
-        break;
-      case 'search':
-        //查询
-        this.getHandler(id, true); //提交按钮无效
-        break;
-    }
-  },
-  submitHandler: function() {
-    //提交按钮事件
-    var model = this.refs.form.getData(); //获取数据
-    switch (this.state.opType) {
-      case 'add':
-        this.addHandler(model);
-        break;
-      case 'update':
-        this.updateHandler(model);
-        break;
-    }
-  },
-  btnHandler: function(name, title) {
-    if (name == 'add') {
-      this.addOpen();
-    } else if (name == 'update') {
-      this.updateOpen();
-    }
-  },
-  fetchErrorHandler: function(errorCode, errorMssage) {
+
+
+  fetchErrorHandler: function (errorCode, errorMssage) {
     //统一错误处理
     console.log(errorCode, errorMssage);
     Msg.error('操作失败，原因' + errorMssage);
   }
 };
-module.exports = PageHandlerMixins;
+
+export default SingleHandlerMixins;

@@ -453,7 +453,7 @@ export default {
                 ref='toppagination'
                 key="toppagination"
                 style={{
-                    width:this.containerWidth,
+                    width:this.tableWidth,
                     display:
                         this.props.pagePosition == 'top' ||
                             this.props.pagePosition == 'both'
@@ -474,7 +474,7 @@ export default {
             className='wasabi-pagination '
             ref='bottompagination'
             style={{
-                width:this.containerWidth,
+                width:this.tableWidth,
                 display:
                     this.props.pagePosition == 'bottom' ||
                         this.props.pagePosition == 'both'

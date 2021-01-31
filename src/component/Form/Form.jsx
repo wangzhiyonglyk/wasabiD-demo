@@ -15,7 +15,8 @@ class Form extends Component {
     constructor(props) {
         super(props)
         this.state = {
-
+            disabled:this.props.disabled,
+            rawDisabled:this.props.disabled
         }
         this.validate = this.validate.bind(this);
         this.getData = this.getData.bind(this);
@@ -25,9 +26,14 @@ class Form extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        return {
-            disabled: props.disabled,
+        if(props.disabled!=state.rawDisabled){
+            return {
+                rawDisabled:props.disabled,
+                disabled: props.disabled,
+            }
         }
+        return null;
+       
     }
     validate() {
 
@@ -151,6 +157,11 @@ class Form extends Component {
 
         }
     }
+    setDisabled(disabled){
+        this.setState({
+            disabled:!!disabled
+        })
+    }
 
     /**
      * 得到表单中标签的最大宽度，方便对齐
@@ -158,7 +169,8 @@ class Form extends Component {
     computerLabelWidth(){
         let maxWidth=0;//得到最大宽度
         React.Children.map(this.props.children, (child,index)=>{
-            if(child.props.label){
+
+            if(child&&child.props.label){
                 let labelStyle=func.clone(child.labelStyle)||{};
                 if(labelStyle&&labelStyle.width){
                     //如果设置宽度，则不参与计算
@@ -181,22 +193,27 @@ class Form extends Component {
                     {
                         React.Children.map(this.props.children, (child, index) => {
 
-
-                            if (typeof child.type !== "function") {//非react组件
-                                return child;
-                            } else {
-                                    let labelStyle=func.clone(child.labelStyle)||{};
-                                   
-                                     if(labelStyle.width&&labelStyle.width.indexOf("%")<=-1&&parseFloat(labelStyle.width)<maxWidth){
-                                        labelStyle.width=maxWidth;
-                                    }
-                                    else if(!labelStyle.width){
-                                        labelStyle.width=maxWidth;
-                                    }
-                                 
-                                    return React.cloneElement(child,
-                                     { labelStyle:labelStyle,disabled: this.props.disabled ? this.props.disabled : child.props.disabled, readOnly: this.props.disabled ? this.props.disabled : child.props.readOnly, key: index, ref: child.ref ? child.ref : index })
+                            if(child){
+                                if (typeof child.type !== "function") {//非react组件
+                                    return child;
+                                } else {
+                                        let labelStyle=func.clone(child.labelStyle)||{};
+                                       
+                                         if(labelStyle.width&&labelStyle.width.indexOf("%")<=-1&&parseFloat(labelStyle.width)<maxWidth){
+                                            labelStyle.width=maxWidth;
+                                        }
+                                        else if(!labelStyle.width){
+                                            labelStyle.width=maxWidth;
+                                        }
+                                     
+                                        return React.cloneElement(child,
+                                         { labelStyle:labelStyle,disabled: this.state.disabled ? this.state.disabled : child.props.disabled, readOnly: this.state.disabled ? this.state.disabled : child.props.readOnly, key: index, ref: child.ref ? child.ref : index })
+                                }
                             }
+                            else{
+                                return null;
+                            }
+                         
 
                         })
                     }

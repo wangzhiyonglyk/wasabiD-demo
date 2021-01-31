@@ -44,16 +44,30 @@ position: fixed;
 .wasabi-slidepanel .slide-container .slide-header .title {
   position: absolute;
   left: 0px;
-color:#409eff;
+  background-color: #0d4043;
   font-size: 16px;
   height: 30px;
   line-height: 30px;
   min-width: 100px;
   text-align: center;
+  color: white;
+  font-weight: bold;
   cursor: pointer;
-
 }
 
+.wasabi-slidepanel .slide-container  .slide-header .title:after
+{
+  content: "11111";
+  color: transparent;
+  width: 15px;
+  height: 30px;
+  right: -15px;
+  position: absolute;
+background-image: url("../../img/slidetitle.png");
+  background-repeat: no-repeat;
+  background-size: 15px 30px;
+
+}
 
 .wasabi-slidepanel .slide-container .slide-header .slide-toolbar{
   float: right;

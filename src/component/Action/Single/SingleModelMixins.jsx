@@ -13,6 +13,7 @@ let PageModelMixins = {
    * @param {*} props 
    */
   initState(props) {
+  
     let newState = {};
     newState.headers = this.initHeaders(props);
     newState.filterModel = this.initFilterModel(props);
@@ -25,7 +26,28 @@ let PageModelMixins = {
     let filterModel = [];
     if (props.model && props.model instanceof Array) {
       for (let i = 0; i < props.model.length; i++) {
-        if (props.model[i].filterAble) {
+        if(props.model[i].filterAble&&props.model[i].type=="datetime")
+        {
+          filterModel.push({
+            ...props.model[i],
+            required:false,
+            readOnly: false,
+            disabled: false,
+            name:"begin_"+props.model[i]+",end_"+props.model[i],
+            type:"datetimerange"
+          })
+        }
+        else if(props.model[i].filterAble&&props.model[i].type=="date"){
+          filterModel.push({
+            ...props.model[i],
+            required:false,
+            readOnly: false,
+            disabled: false,
+            name:"begin_"+props.model[i]+",end_"+props.model[i],
+            type:"daterange"
+          })
+        }
+       else if (props.model[i].filterAble) {
           filterModel.push({
             ...props.model[i],
             required:false,
@@ -41,7 +63,7 @@ let PageModelMixins = {
    * 初始化表头
    */
   initHeaders: function (props) {
-
+ console.log("initHeaders",this.props)
     let headers = [];
     if (props.model && props.model instanceof Array) {
       for (let i = 0; i < props.model.length; i++) {
@@ -54,14 +76,15 @@ let PageModelMixins = {
           })
         }
       }
+   
       headers.push({
         name: "op",
         label: "操作",
         content: (rowData, rowIndex) => {
           return <div>
-            <LinkButton key="1" iconCls="icon-search" title="查看" onClick={this.detailHandler.bind(this, rowData, rowIndex)} >查看</LinkButton>
-            <LinkButton key="2" iconCls="icon-edit" title="编辑" onClick={this.editHandler.bind(this, rowData, rowIndex)} >编辑</LinkButton>
-            <LinkButton key="2" iconCls="icon-remove" title="删除" onClick={this.deleteHandler.bind(this, rowData, rowIndex)} >删除</LinkButton>
+            <LinkButton key="1" iconCls="icon-search" title="查看" onClick={this.openDetail.bind(this, rowData, rowIndex)} >查看</LinkButton>
+            <LinkButton key="2" iconCls="icon-edit" title="编辑" onClick={this.openEdit.bind(this, rowData, rowIndex)} >编辑</LinkButton>
+            <LinkButton key="3" iconCls="icon-remove" title="删除" onClick={this.deleteHandler.bind(this, rowData, rowIndex)} >删除</LinkButton>
 
           </div>
         }

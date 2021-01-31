@@ -21,7 +21,6 @@ class Single extends React.Component {
     y
     constructor(props) {
         super(props);
-
         let newState={};
         newState = this.initState(props);
         newState.model = func.clone(props.model);
@@ -53,9 +52,7 @@ class Single extends React.Component {
                 }
             });
         });
-        this.panelSubmitHandler = this.panelSubmitHandler.bind(this);
-        this.openAddPanel = this.openAddPanel.bind(this);
-        this.btnHandler = this.btnHandler.bind(this)
+     
     }
     static getDerivedStateFromProps(props, state) {
        return null;
@@ -66,40 +63,6 @@ class Single extends React.Component {
             title[0].innerHTML = this.props.title;
         }
        
-    }
-
-    /**
-     * 打开新增
-     */
-    openAddPanel() {
-        this.setState({
-            opType:"add"
-        })
-        this.refs.slide.open("新增");
-    }
-    /**
-     * 按钮组事件
-     * @param {*} name 
-     */
-    btnHandler(name) {
-        this.props.btnHandler && this.props.btnHandler(name);
-    }
-    /**
-     * 滑动面板的提交事件
-     */
-    panelSubmitHandler() {
-      
-        if (this.state.opType == "edit") {
-            if (this.refs.form.validate()) {
-                this.editHandler(this.refs.form.getData());
-            }
-
-        }
-        else if (this.state.opType == "add") {
-            if (this.refs.form.validate()) {
-                this.addHandler(this.refs.form.getData());
-            }
-        }
     }
     render() {
         console.log("reander single")
@@ -120,17 +83,12 @@ class Single extends React.Component {
                         model={this.state.filterModel}
                         onSubmit={this.filterHandler}
                         addAble={true}
-                        onAdd={this.openAddPanel}
+                        onAdd={this.addOpen}
                         cols={4}
                     >
                         {
                             this.state.filterModel && this.state.filterModel instanceof Array && this.state.filterModel.map((item, index) => {
-                                if (item.hide) {
-                                    return null;
-                                }
-                                else {
-                                    return <Input {...item} key={index}></Input>
-                                }
+                                return <Input {...item} key={index}></Input>
 
                             })
                         }
@@ -176,12 +134,7 @@ class Single extends React.Component {
                     >
                         {
                             this.state.model && this.state.model instanceof Array && this.state.model.map((item, index) => {
-                                if (item.hide) {
-                                    return null;
-                                }
-                                else {
-                                    return <Input {...item} key={index}></Input>
-                                }
+                                return <Input {...item} key={index}></Input>
 
                             })
                         }

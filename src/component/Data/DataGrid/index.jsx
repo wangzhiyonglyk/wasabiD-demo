@@ -11,7 +11,7 @@
  */
 
 import React, { Component } from 'react';
-import PropTypes, { array } from 'prop-types';
+import PropTypes from 'prop-types';
 
 /**
  * 公共方法
@@ -381,8 +381,8 @@ class DataGrid extends Component {
             if (this.fixedreleaseColumn) {//还有剩下的列
                 this.fixedTableWidth += this.fixedreleaseColumn * this.perColumnWidth;
             }
-            //?? todo 
-            if(this.props.isPivot&& this.tableWidth<this.containerWidth){//如果小于宽度
+           
+            if(this.props.isPivot&& this.tableWidth<this.containerWidth){//如果是交叉表，防止计算出列的宽度后小于容器的宽度，造成页面丑
                 this.tableWidth=this.containerWidth;
             }
             this.setState({

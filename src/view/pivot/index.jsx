@@ -242,29 +242,7 @@ class PivotPage extends React.Component {
     }
 
     render() {
-        return <Layout>
-            <Left width={300} >
-
-                <Tree checkAble={true} data={this.state.data} idField="consume" textField="province"></Tree>
-            </Left>
-            <Center>  
-                <RotateChart ref="rotate" data={[1,2,3,4,5]}></RotateChart>
-                <Input ref="input" type="select" data={this.state.data} valueField="consume" textField="province"></Input>
-             <Tag key="1" removeAble={true}>标签一</Tag>    <Tag key="2" theme="success">标签二</Tag>  
-                 <Drag data={{ title: "导出", onClick: ()=>{this.onClick()} }}><Button onClick={this.onClick.bind(this)}>导出</Button></Drag>
-                <Drop style={{ width: 200, height: 50, border: "1px solid #dddddd" }} onDrop={this.onDrop.bind(this)}>
-                    {
-                        this.state.dropData.map((item,index) => {
-                    
-                            return <Button key={index+item.title} onClick={this.onClick.bind(this)}>{item.title}</Button>
-                        })
-                    }
-                </Drop>
-                <Modal ref="modal"></Modal>
-                <Pivot rows={this.state.rows} checkAble={true} values={this.state.values} columns={this.state.columns} data={this.state.data} ></Pivot>
-                <DataGrid ref="grid" data={this.state.data} headers={this.state.headers} selectAble={true}></DataGrid></Center>
-            <Right width={300} ></Right>
-        </Layout>
+        return   <Pivot rows={this.state.rows} checkAble={true} values={this.state.values} columns={this.state.columns} data={this.state.data} ></Pivot>
 
     }
 }

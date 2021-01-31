@@ -37,7 +37,7 @@ export default {
                 }
                 detailtd = <td key={'bodydetail' + rowIndex.toString()} name="wasabi-detail-column" className="wasabi-detail-column">
                     <div className={cellClassName}>
-                        { <i style={{ cursor: "pointer" }} className={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)}></i>}
+                        { <i style={{ cursor: "pointer" }} title="详情" className={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)}></i>}
                     </div>
                 </td>
 
