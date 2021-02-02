@@ -1,5 +1,6 @@
 /**
  * Created by zhiyongwang on 2016-03-24.
+ * edit:2021-02-01
  */
 
 
@@ -27,7 +28,7 @@ let  validation= {
         string: '最小长度不能少于 {0} 个字符'
     },
     number: '必须为数字',
-    password: '密码含有非法字符',
+    password: '密码中必须包含字母、数字、特称字符，至少8个字符，最多30个字符',
     url: 'url格式不正确',
     email: '邮箱格式不正确',
     fileSize: '最大上传文件大小不能超过 {0} KB'

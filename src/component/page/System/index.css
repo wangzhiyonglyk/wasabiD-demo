@@ -1,13 +1,13 @@
-.header{
+.wasabi-system .header{
    background-color: #2977c7;
    height: 100%;
 }
-.header .system{
+.wasabi-system .header .system{
    height: 100%;
    float: left;
 }
 
-.system .logo {
+.wasabi-system .system .logo {
    height:20px;
    width:20px;
    margin-left:10px;
@@ -22,16 +22,16 @@
    height: 44px;
    float: left;
 }
-.header .nav{
+.wasabi-system .header .nav{
 float:right;
 height: 100%;
 }
-.header .nav ul{
+.wasabi-system .header .nav ul{
    list-style-type: none;
    height: 100%;
   
 }
-.header .nav ul li{
+.wasabi-system .header .nav ul li{
    display: inline-block;
    line-height: 3.333;
    height: 100%;
@@ -42,28 +42,28 @@ height: 100%;
     cursor: pointer;
     
 }
-.header .nav ul li:hover
+.wasabi-system .header .nav ul li:hover
 {
    background-color: rgba(255,255,255,0.2)
 }
-.header .nav li.active{
-   background-color: #111;
+.wasabi-system .header .nav li.active{
+   background-color: #66b1ff;
 }
 
-.header .user{
+.wasabi-system .header .user{
    float: right;
    height: 100%;
    margin-right: 30px;
    position: relative;
 }
 
-.user .userheader {
+.wasabi-system .user .userheader {
    height: 25px;
    width: 25px;
    margin-left:10px;
    margin-top:8px;
 }
-.user .title{
+.wasabi-system .user .title{
    margin-left: 5px;
    color: #fff;
    font-size: 14px;
@@ -71,11 +71,11 @@ height: 100%;
 
    float: right;
 }
-.user .user-menus{
+.wasabi-system .user .user-menus{
    
    position: absolute;
-   left: 10px;
    top: 44px;
+   right: -20px;
    min-width: 100%;
    line-height: 36px;
    padding: 5px 0;
@@ -86,28 +86,28 @@ height: 100%;
    border-radius: 2px;
    white-space: nowrap;
 }
-.user .user-menus.show{
+.wasabi-system .user .user-menus.show{
    display: block;
 }
 
-.user .user-menus.hide{
+.wasabi-system .user .user-menus.hide{
    display: none;
 }
-.user .user-menu:hover{
+.wasabi-system .user .user-menu:hover{
    background-color: #409eff;
    color: #fff;
 }
-.user .user-menu{
+.wasabi-system .user .user-menu{
    color:#333;
    padding: 0 20px;
    cursor: pointer;
 }
-.menuicon{
+.wasabi-system .menuicon{
    display: inline-block!important;
    padding:0px!important;
    position: relative;
 }
- .menuicon::before{
+.wasabi-system .menuicon::before{
    left: -20px;
     top: 1px;
 position: absolute;

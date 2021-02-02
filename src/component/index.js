@@ -94,7 +94,9 @@ import  func from  './libs/func.js' ;//常用函数
 import  ClickAway from  './libs/ClickAway.js' ;//全局单击事件
 import Single from "./Action/Single";//单表组件
 
-
+/**************** 页面组件 ************************/
+import Login from "./page/Login"
+import System from "./page/System"
 export   {
     Tag, Button,LinkButton,Toolbar, Badge,Dropdown,DropdownItem,
     DataGrid,Tree,Transfer,Progress,Step,StepItem,Avatar,Pivot,
@@ -106,7 +108,8 @@ export   {
     Label,Msg,
     RotateChart,PageIn,ProgressChart,
     Upload,Editor,Article,Single,
-    func,ClickAway
+    func,ClickAway,
+    Login,System
 
 }
 

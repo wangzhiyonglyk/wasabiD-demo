@@ -977,16 +977,16 @@ hr {
   margin-right: auto;
 }
 .pull-right {
-  float: right !important;
+  float: right ;
 }
 .pull-left {
-  float: left !important;
+  float: left ;
 }
 .hide {
-  display: none !important;
+  display: none ;
 }
 .show {
-  display: block !important;
+  display: block;
 }
 .invisible {
   visibility: hidden;
