@@ -34,7 +34,7 @@ class Index extends React.Component {
       title:"系统管理",
        name:"system",
        children:[
-        { name:"index", title: "首页",iconCls:"icon-home", url: "./home.html" },
+        { name:"index", title: "首页",iconCls:"icon-home", url: "./pivot.html" },
         { name:"user", title: "个人设置",iconCls:"icon-users", url: "./user.html" },
         { name:"system", title: "系统设置",iconCls:"icon-set", url: "./system.html" },
      

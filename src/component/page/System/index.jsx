@@ -196,7 +196,7 @@ class System extends React.Component {
               return (
                 <TabPanel key={item.title} title={item.title} iconCls={item.iconCls}>
                   <iframe
-                    src={"./" + item.filename + ".html"}
+                    src={item.url}
                     style={{ width: "100%", height: "100%", border: "none" }}
                   ></iframe>
                 </TabPanel>

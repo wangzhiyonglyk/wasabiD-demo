@@ -3,7 +3,7 @@
 	height: 100%;
 }
 .wasabi-menu.default{
-	background-color: white;
+	background-color: #eeeeee;
 	border-right: 1px solid #e4e7ed;
 }
 .wasabi-menu.black{
@@ -103,12 +103,12 @@
 
 
 
-.wasabi-menu.default .dropdown ul li.active * {
-	color: #409eff;
+.wasabi-menu.default .dropdown ul li.active  {
+	color: white;
+	background-color: #0072c6;
 	
+}
+.wasabi-menu.default .dropdown ul li.active *{
+	color: white;
 }
 
-.wasabi-menu.black .dropdown ul li.active * {
-	color: rgb(255, 208, 75);
-	
-}
