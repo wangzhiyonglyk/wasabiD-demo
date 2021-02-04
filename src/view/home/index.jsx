@@ -15,8 +15,6 @@ class Home extends React.Component {
     }
     componentDidMount() {
 
-
-
     }
     onClick() {
      
