@@ -24,7 +24,7 @@ class Index extends React.Component {
       user=JSON.parse(user);
        nick=user.nick;
     }
-    return <System nick={nick} title={"BI大数据分析系统"} shortcuts={[
+    return <System  nick={nick} title={"BI大数据分析系统"} shortcuts={[
       { name:"index", title: "首页",iconCls:"icon-home", url: "./home.html" },
       { name:"user", title: "个人设置",iconCls:"icon-users", url: "./user.html" },
       { name:"system", title: "系统设置",iconCls:"icon-set", url: "./system.html" },

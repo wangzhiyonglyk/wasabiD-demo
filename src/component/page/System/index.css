@@ -1,6 +1,15 @@
 .wasabi-system .header{
+
+   height: 60px;
+   line-height: 60px;
+   
+}
+.wasabi-system.default .header{
    background-color: #0072C6;
-   height: 100%;
+}
+.wasabi-system.black .header{
+   background-color: #2f353c;
+
 }
 .wasabi-system .header .system{
    height: 100%;
@@ -11,15 +20,15 @@
    height:20px;
    width:20px;
    margin-left:10px;
-   margin-top:12px;
+   margin-top:22px;
    float: left;
 }
 .system .title{
    margin-left: 5px;
    color: #fff;
    font-size: 16px;
-   line-height: 44px;
-   height: 44px;
+   line-height: 60px;
+   height:60px;
    float: left;
 }
 .wasabi-system .header .nav{

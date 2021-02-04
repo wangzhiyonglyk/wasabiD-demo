@@ -33,8 +33,11 @@ onChange(){
   render() {
     return       <div   className={"dropdown "+this.props.className+" "+( this.props.expand?"expand":"")}>
     
-    <label htmlFor={this.props.title} onClick={this.props.expandHandler} > <i className={ this.props.iconCls} style={{marginRight:10}}></i> {this.props.title}</label>
-    <i className={this.props.expand?"icon-down":"icon-up"} onClick={this.props.expandHandler} ></i>
+    <label htmlFor={this.props.title} onClick={this.props.expandHandler} >
+     <i className={ this.props.iconCls} style={{marginRight:10}}></i> {this.props.title}
+     <i style={{float:"right",marginRight:10,marginTop:20}} className={this.props.expand?"icon-arrow-down":"icon-arrow-up"} onClick={this.props.expandHandler} ></i>
+     </label>
+    
     <ul className="" style={{display:this.props.expand?"block":"none"}}>
         {this.props.children}
     </ul>
@@ -50,7 +53,7 @@ MenuPanel.propTypes = {
 };
 MenuPanel.defaultProps = {
   className:"",
-  iconCls: "icon-menu",
+  iconCls: "icon-category",
 };
 
 export default  MenuPanel;

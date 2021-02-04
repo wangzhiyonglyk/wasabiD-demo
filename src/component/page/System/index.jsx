@@ -16,7 +16,7 @@ class System extends React.Component {
     super(props);
 
     this.state = {
-      leftWidth: 200,
+      leftWidth: 250,
       activeMenu: "",
       shortcuts: this.props.shortcuts,
       tabs: [],
@@ -103,8 +103,8 @@ class System extends React.Component {
   }
   render() {
     return (
-      <Layout className="wasabi-system">
-        <Header height={44}>
+      <Layout className={"wasabi-system "+this.props.theme }>
+        <Header height={60}>
           <div className='header'>
             <div className='system'>
               {" "}
@@ -212,6 +212,7 @@ class System extends React.Component {
 System.propTypes = {
   title: PropTypes.string,//标题
   logo: PropTypes.string,//图标
+  theme:PropTypes.string,//主题
   // [
   //   { name:"index", title: "首页",iconCls:"", href: "" },
   //   { name:"user", title: "个人设置",iconCls:"", href: "" },
@@ -227,6 +228,9 @@ System.propTypes = {
   // ]
   menus: PropTypes.array,//菜单
   nick:PropTypes.string,//登陆用户昵称
+}
+System.defaultProps={
+  theme:"default",
 }
 
 export default System;
