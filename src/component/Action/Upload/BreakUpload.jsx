@@ -214,6 +214,11 @@ class Upload extends Component {
         let obj = document.getElementById(this.state.uploadid);
         obj.value = "";
 
+        this.setState({
+            
+            uploadDisabled:false
+        })
+
     }
     render() {
         let props = {

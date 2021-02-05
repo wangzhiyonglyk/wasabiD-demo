@@ -227,10 +227,10 @@ class Article extends React.Component {
             res = this.props.imgUploadSuccess(res);//自行计算
         }
         if (res.data) {
-            content[this.state.activeIndex].content = res.data;
+            content[this.state.activeIndex].content =res.data;
         }
         else {
-            content[this.state.activeIndex].content = res;
+            content[this.state.activeIndex].content =res;
         }
         this.setState({
             tempContent: content
@@ -318,7 +318,7 @@ class Article extends React.Component {
                                             control = <div key={"txt" + index} className="txt" contentEditable={true} dangerouslySetInnerHTML={{ __html: item.content }} onBlur={this.contentTxtChange.bind(this, index)}></div>
                                             break;
                                         case "image":
-                                            control = item.content ? <img key={"img" + index} className="img" src={item.content}></img> :
+                                            control = item.content ? <img key={"img" + index} className="img" src={((this.props.urlPrefix|+""))+item.content}></img> :
                                                 <PlainUpload
                                                     key={"upload" + index}
                                                     httpHeaders={this.props.httpHeaders}
@@ -361,6 +361,7 @@ Article.propTypes = {
     uploadurl: PropTypes.string.isRequired, //上传地址
     uploadFileName: PropTypes.string,//上传图片时文件参数名称
     imgUploadSuccess: PropTypes.func,//图片上传成功后的事件，返回处理好的结果
+    urlPrefix:PropTypes.string,//图片上传后url地址前缀，防止保存需要不是图片地址，但是又要预览
 }
 Article.defaultProps = {
     className: "",
@@ -374,7 +375,8 @@ Article.defaultProps = {
     params: {},
     uploadurl: "",
     uploadFileName: "",
-    imgUploadSuccess: null
+    imgUploadSuccess: null,
+    urlPrefix:""
 
 }
 export default Article;
