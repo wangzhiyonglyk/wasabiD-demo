@@ -5,13 +5,13 @@
     margin-left: 15px;
 }
 
-.wasabi-badge__content.is-fixed {
+.wasabi-badge-content.is-fixed {
     position: absolute;
     top: 0;
     right: 10px;
     transform: translateY(-50%) translateX(100%);
 }
-.wasabi-badge__content {
+.wasabi-badge-content {
     background-color: #f56c6c;
     border-radius: 10px;
     color: #fff;
@@ -24,27 +24,27 @@
     white-space: nowrap;
     border: 1px solid #fff;
 }
-.wasabi-badge.default .wasabi-badge__content{
+.wasabi-badge.default .wasabi-badge-content{
     background-color: #f56c6c;
 }
 
-.wasabi-badge.primary .wasabi-badge__content{
+.wasabi-badge.primary .wasabi-badge-content{
     background-color: #409eff;
 }
 
-.wasabi-badge.success .wasabi-badge__content{
+.wasabi-badge.success .wasabi-badge-content{
     background-color: #67c23a;
 }
 
-.wasabi-badge.warning .wasabi-badge__content{
+.wasabi-badge.warning .wasabi-badge-content{
     background-color: #e6a23c;
 }
 
-.wasabi-badge.info .wasabi-badge__content{
+.wasabi-badge.info .wasabi-badge-content{
     background-color:#909399;
 }
 
-.wasabi-badge.danger .wasabi-badge__content{
+.wasabi-badge.danger .wasabi-badge-content{
     background-color: #f56c6c;
 }
 

@@ -6,7 +6,7 @@
  * desc:框架入口
  */
 
-'use strict';
+import ("./Sass/base.css");
 
 /*****************按钮组件******************/
 import Tag from "./Buttons/Tag";//标签

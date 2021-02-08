@@ -7,8 +7,6 @@ desc:链接按钮
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import('../Sass/Buttons/linkbutton.css');
-import('../Sass/Buttons/iconfont.css');
-
 class LinkButton extends Component {
   constructor(props) {
     super(props);
@@ -139,7 +137,6 @@ class LinkButton extends Component {
         return (
           <a
             ref='link'
-
             title={this.props.title}
             href={this.props.href}
             onClick={this.clickHandler}

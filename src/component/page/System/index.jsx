@@ -18,7 +18,6 @@ class System extends React.Component {
     this.state = {
       leftWidth: 250,
       activeMenu: "",
-      shortcuts: this.props.shortcuts,
       tabs: [],
       activeShortCuts: null,
       adminExpand: false
@@ -102,8 +101,7 @@ class System extends React.Component {
     window.location.href = "./login.html"
   }
   render() {
-    return (
-      <Layout className={"wasabi-system "+this.props.theme }>
+    return    <Layout className={"wasabi-system "+this.props.theme }>
         <Header height={60}>
           <div className='header'>
             <div className='system'>
@@ -149,7 +147,7 @@ class System extends React.Component {
             <div className='nav'>
               {" "}
               <ul>
-                {this.state.shortcuts.map((item, index) => {
+                {this.props.shortcuts&&this.props.shortcuts.map((item, index) => {
                   return (
                     <li
                       key={index}
@@ -192,7 +190,7 @@ class System extends React.Component {
         <Center>
           <Modal ref="model"></Modal>
           <Tabs onClose={this.onMenuClose.bind(this)} ref="tabs" >
-            {this.state.tabs.map(item => {
+            {this.state.tabs&&this.state.tabs.map(item => {
               return (
                 <TabPanel key={item.title} title={item.title} iconCls={item.iconCls}>
                   <iframe
@@ -205,7 +203,6 @@ class System extends React.Component {
           </Tabs>
         </Center>
       </Layout>
-    );
   }
 }
 

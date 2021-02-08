@@ -1,7 +1,7 @@
 /**
 列表样式
  */
-@import url("../base.css");
+ @import url("../base.css");
 .wasabi-grid {
   width: 100%;
   position: relative;
@@ -142,6 +142,7 @@
   white-space: pre-wrap;
   word-break: break-all;
   min-height: 20px;
+  cursor: pointer;
 
 }
 .wasabi-grid .wasabi-grid-cell.nowrap{
