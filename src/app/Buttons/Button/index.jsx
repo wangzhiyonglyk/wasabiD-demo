@@ -6,8 +6,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import func from "../libs/func.js";
-import('../Sass/Buttons/button.css');
+import('./index````.css');
 class Button extends Component {
   constructor(props) {
     super(props);
@@ -23,13 +22,6 @@ class Button extends Component {
       return;
     }
     this.props.onClick && this.props.onClick(this.props.name, this.props.title, event);
-  }
-  onDoubleClick(event) {
-    event.preventDefault();
-    if (this.props.disabled == true) {
-      return;
-    }
-    this.props.onDoubleClick && this.props.onDoubleClick(this.props.name, this.props.title, event);
   }
   render() {
 
@@ -70,7 +62,6 @@ Button.propTypes = {
   ]),
   size: PropTypes.oneOf([
     //按钮大小
-    'large',
     'default',
     'small',
     "mini"
