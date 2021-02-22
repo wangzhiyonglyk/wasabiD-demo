@@ -1,14 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import("./home.css")
-import { LinkButton ,Tag,Badge,Button } from "../../component"
-import api from "../../libs/api"
-import model from "./model"
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-        model:model
+      
         }
 
 
@@ -20,7 +17,11 @@ class Home extends React.Component {
     }
    
     render() {
-        return <div><LinkButton>LinkButton</LinkButton><Tag>Tag</Tag><Badge tag={9}>Badge</Badge><Button iconCls="icon-add"></Button></div>
+        return <div>
+  <div><label style={{width:80}}>用户名</label>  <input></input></div>  
+   <div><label  style={{width:80}}>密码</label> <input></input></div> 
+     <button>   ` 登陆</button>
+       </div>
     }
 }
 
