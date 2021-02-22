@@ -257,6 +257,7 @@ class Select extends Component {
               value={
                 this.state.text || ''
               }
+              onBlur={this.onBlur}
               onClick={this.showPicker.bind(this)}
               onChange={() => {
 
@@ -271,7 +272,6 @@ class Select extends Component {
                 value={
                   this.state.filterValue || ""
                 }
-                onBlur={this.onBlur}
                 onChange={this.filterChangeHandler}
               ></input>
               {control}</div>

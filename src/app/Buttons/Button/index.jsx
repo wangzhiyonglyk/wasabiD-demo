@@ -6,14 +6,12 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import('./index````.css');
+import('./index.css');
 class Button extends Component {
   constructor(props) {
     super(props);
-
     this.state = {};
     this.onClick = this.onClick.bind(this);
-    this.onDoubleClick = this.onDoubleClick.bind(this);
   }
 
   onClick(event) {

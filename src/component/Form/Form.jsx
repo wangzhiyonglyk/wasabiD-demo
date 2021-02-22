@@ -170,7 +170,7 @@ class Form extends Component {
         let maxWidth=0;//得到最大宽度
         React.Children.map(this.props.children, (child,index)=>{
 
-            if(child&&child.props.label){
+            if(child&&child.props&&child.props.label){
                 let labelStyle=func.clone(child.labelStyle)||{};
                 if(labelStyle&&labelStyle.width){
                     //如果设置宽度，则不参与计算
