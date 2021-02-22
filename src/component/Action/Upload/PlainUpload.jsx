@@ -256,7 +256,7 @@ class Upload extends Component {
                     }
                     {
                     this.props.type=="image"&&this.state.files&&this.state.files.length==1&&this.state.files.map((item,index)=>{
-                        return <div style={{height:"100%"}}>
+                        return <div style={{height:"100%"}} key={"k"+index}>
                             <img style={{width:"100%", height:"100%"}} src={window.URL.createObjectURL(item)}></img> 
                             { this.state.uploadDisabled? <i style={{left:"50%",top:"20%",color:"#ffffff",zIndex:2}} className="icon-loading wasabi-upload-icon"></i>:null}
                         </div> 
