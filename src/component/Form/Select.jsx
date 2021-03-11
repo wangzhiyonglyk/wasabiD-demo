@@ -1,6 +1,7 @@
 /**
  * Created by zhiyongwang
  * date:2016-04-05后开始独立改造
+ * edit 2021-03-11 修复bug
  * 下拉框
  */
 import React, { Component } from 'react';
@@ -75,20 +76,18 @@ class Select extends Component {
       if (oldvalue.indexOf(value.toString()) > -1) {
         //取消选中
         oldvalue.splice(oldvalue.indexOf(value.toString()), 1);
-        oldtext.splice(oldvalue.indexOf(value.toString()), 1);
-        newvalue = oldvalue.join(',');
-        newtext = oldtext.join(',');
+        oldtext.splice(oldtext.indexOf(text.toString()), 1);
+     
       }
       else {
-        //选中
-        if (this.state.value) {
-          newvalue = this.state.value + ',' + value;
-          newtext = this.state.text + ',' + text;
-        } else {
-          newvalue = value;
-          newtext = text;
-        }
+        oldvalue.push(value);
+        oldtext.push(text);
+      
       }
+      console.log(oldvalue,oldtext)
+      newvalue = oldvalue.join(',');
+      newtext = oldtext.join(',');
+
       this.setState({
         value: newvalue,
         text: newtext

@@ -184,8 +184,8 @@ export default {
                                             name={header.name}
                                             value={currentValue}
                                             text={currentText}
-                                            onChange={this.rowEditHandler.bind(this, rowIndex, headerRowIndex, headerColumnIndex, columnIndex)}
-                                            onSelect={this.rowEditHandler.bind(this, rowIndex, headerRowIndex, headerColumnIndex, columnIndex)}
+                                            onChange={this.rowEditHandler.bind(this, rowIndex,columnIndex, headerRowIndex, headerColumnIndex )}
+                                            onSelect={this.rowEditHandler.bind(this, rowIndex,columnIndex, headerRowIndex, headerColumnIndex)}
                                             label={''}//没有描述
                                         ></Input>
                                     </div>

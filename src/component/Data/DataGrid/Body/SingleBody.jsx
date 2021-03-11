@@ -185,8 +185,8 @@ export default {
                                     name={header.name}
                                     value={currentValue}
                                     text={currentText}
-                                    onChange={this.rowEditHandler.bind(this, rowIndex, null, headerColumnIndex, columnIndex)}
-                                    onSelect={this.rowEditHandler.bind(this, rowIndex, null, headerColumnIndex, columnIndex)}
+                                    onChange={this.rowEditHandler.bind(this, rowIndex, columnIndex,null, headerColumnIndex )}
+                                    onSelect={this.rowEditHandler.bind(this, rowIndex,columnIndex, null, headerColumnIndex )}
                                     label={''}
                                 ></Input>}
                             </div>

@@ -108,22 +108,21 @@ export default  {
    /**
     * 
     * @param {*} rowIndex 行的序号
+    * @param {*} columnIndex 真正的列序号
     * @param {*} headerRowIndex 表头的行号
     * @param {*} headerColumnIndex 表头的列号
-    * @param {*} columnIndex 真正的列序号
     * @param {*} value 值
     * @param {*} text 文本值
     * @param {*} name 对字段名
-    * @param {*} data 行数据
     */
-    rowEditHandler: function (rowIndex, headerRowIndex,headerColumnIndex, columnIndex, value, text, name) {  //编辑时单元格内的表单onchange的监听事件
+    rowEditHandler: function (rowIndex, columnIndex,headerRowIndex,headerColumnIndex, value, text, name) {  //编辑时单元格内的表单onchange的监听事件
         currentHeader=headerRowIndex?this.state.headers[headerRowIndex][headerColumnIndex]:this.state.headers[headerColumnIndex];
-        if (currentHeader.editor && typeof currentHeader.editor.edited === "function") {
+        if (currentHeader&&currentHeader.editor && typeof currentHeader.editor.edited === "function") {
             //得到新的一行数据
             this.state.data[rowIndex] = currentHeader.editor.edited(value, text, this.state.data[rowIndex]);//先将值保存起来，不更新状态
 
         }
-        else if (currentHeader.editor) {
+        else {
             //没有则默认以value作为值
             this.state.data[rowIndex][name] = value;//先将值保存起来，不更新状态值
         }

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Input from '../../component/Form/Input'
 import("./home.css")
 class Home extends React.Component {
     constructor(props) {
@@ -18,10 +19,8 @@ class Home extends React.Component {
    
     render() {
         return <div>
-  <div><label style={{width:80}}>用户名</label>  <input></input></div>  
-   <div><label  style={{width:80}}>密码</label> <input></input></div> 
-     <button>   ` 登陆</button>
-       </div>
+<Input type="select" multiple={true} data={[{text:"选择1",value:1},{text:"选择2",value:2}]}></Input>
+        </div>
     }
 }
 
