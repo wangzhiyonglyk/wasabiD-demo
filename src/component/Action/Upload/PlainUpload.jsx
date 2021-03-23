@@ -39,7 +39,8 @@ class Upload extends Component {
      */
     onChange(event) {
         //选择文件
-      this.setFile(event.target.files)
+      this.setFile(event.target.files);
+      this.props.onChange&&this.props.onChange(event.target.files);
      
     }
     onDrop(event){
@@ -67,7 +68,10 @@ class Upload extends Component {
                 files: files ,
                 uploadDisabled:true,                
             },()=>{
-               this.props.multiple!=true&&this.importHandler();//
+                if(this.props.autoUpload){
+                    this.props.multiple!=true&&this.importHandler();//
+                }
+           
             });
         }
        
@@ -223,6 +227,13 @@ class Upload extends Component {
        
     }
 
+     /**
+     * 给父组件调用
+     */
+      open(){
+        this.importHandler();
+    }
+
     render() {
         let props = {
             accept: this.props.accept,
@@ -232,7 +243,7 @@ class Upload extends Component {
         return (
 
             <div className={"wasabi-upload " +this.props.className+" "+(this.props.disabled?"disabled":"")} onDrop={this.onDrop.bind(this)} onDragOver={this.onDragOver.bind(this)}>
-                <div key="1" style={{display:this.state.files.length>0?"none":"block"}} >
+                <div key="1" style={{display:this.state.files.length>0||this.props.value?"none":"block"}} >
                 <i className="icon-upload wasabi-upload-icon"></i>
         <div className="wasabi-upload-text">将{this.props.type=="file"?"文件":"图片"}拖到此处，或<LinkButton onClick={this.onClick.bind(this)}>点击上传</LinkButton></div>
                 <input id={this.state.uploadid} type="file" name="file" ref="file"  {...props} onChange={this.onChange.bind(this)} className="wasabi-upload-input" />
@@ -265,13 +276,18 @@ class Upload extends Component {
                     }
                   
                 </div>
-               
+               <div key="3" onClick={this.onClick.bind(this)}  className="wasabi-uplaod-files" style={{display:(!this.state.files||
+                (this.state.files&&this.state.files.length==0)&&this.props.value?"block":"none")}}>
+                    <img src={this.props.value} alt="点击上传" style={{width:"100%"}}></img>
+
+               </div>
             </div>
         );
     }
 }
 
 Upload.propTypes = {
+    autoUpload:PropTypes.bool, //是否自动上传
     className: PropTypes.string,//
     style: PropTypes.object,//
     type:PropTypes.oneOf(["file","image"]),//上传的是文件还是纯图片
@@ -285,8 +301,10 @@ Upload.propTypes = {
     uploadSuccess: PropTypes.func, //上传成功事件
     disabled:PropTypes.bool,//是否禁止
     preview:PropTypes.bool,//是否可以预览
+    value:PropTypes.string, //默认图片值
 };
 Upload.defaultProps = {
+    autoUpload:true,//允许
     className:"",
     style:{},
     type:"file",
@@ -297,10 +315,9 @@ Upload.defaultProps = {
     multiple: false,
     size: null,
     name:"",
-    uploadSuccess: () => {
-
-    },
+    uploadSuccess:null,
     disabled:false,
-    preview:false
+    preview:true,
+    value:"",
 };
 export default Upload;

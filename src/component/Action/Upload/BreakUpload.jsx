@@ -48,6 +48,7 @@ class Upload extends Component {
             return;
         }
         this.files = event.target.files;//拿到文件
+        this.props.onChange&&this.props.onChange(this.files);
         let filenames = '';
         if (this.files.length > 0) {
             for (let index = 0; index < this.files.length; index++) {
@@ -177,6 +178,7 @@ class Upload extends Component {
     //上传完成
     uploadComplete(event) {
         let xhr = event.target;
+        this.clear();//先清空
         if (xhr.readyState == 4 && ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304)) {
             let result = JSON.parse(xhr.responseText);
 
@@ -195,7 +197,7 @@ class Upload extends Component {
 
         }
         else {
-            this.clear();
+           
             Msg.error(xhr.statusText);//弹出错误;
         }
 
@@ -220,6 +222,7 @@ class Upload extends Component {
         })
 
     }
+   
     render() {
         let props = {
             accept: this.props.accept,
@@ -273,9 +276,11 @@ Upload.propTypes = {
     multiple: PropTypes.bool, //是否允许多选
     size: PropTypes.number,//上传大小限制
     name: PropTypes.string, //名称
-    uploadSuccess: PropTypes.func //上传成功事件
+    uploadSuccess: PropTypes.func, //上传成功事件
+    onChange:PropTypes.func //选择文件事件
 };
 Upload.defaultProps = {
+    autoUpload:true,//
     httpHeaders: {},
     params: null,
     name: null,
@@ -283,8 +288,7 @@ Upload.defaultProps = {
     size: null,
     accept: null,
     uploadurl: null,
-    uploadSuccess: () => {
-
-    }
+    uploadSuccess:null,
+    onChange:null,
 };
 export default Upload;

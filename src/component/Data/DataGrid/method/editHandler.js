@@ -116,7 +116,7 @@ export default  {
     * @param {*} name 对字段名
     */
     rowEditHandler: function (rowIndex, columnIndex,headerRowIndex,headerColumnIndex, value, text, name) {  //编辑时单元格内的表单onchange的监听事件
-        currentHeader=headerRowIndex?this.state.headers[headerRowIndex][headerColumnIndex]:this.state.headers[headerColumnIndex];
+       let  currentHeader=headerRowIndex?this.state.headers[headerRowIndex][headerColumnIndex]:this.state.headers[headerColumnIndex];
         if (currentHeader&&currentHeader.editor && typeof currentHeader.editor.edited === "function") {
             //得到新的一行数据
             this.state.data[rowIndex] = currentHeader.editor.edited(value, text, this.state.data[rowIndex]);//先将值保存起来，不更新状态

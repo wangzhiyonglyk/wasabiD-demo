@@ -182,7 +182,7 @@ export default {
      */
     pageSizeHandler: function (event) {
        
-        this.updateHandler(this.state.url, event.target.value * 1, this.state.pageIndex, this.state.sortName, this.state.sortOrder, null);
+        this.updateHandler(this.state.url, event.target.value * 1, this.state.pageIndex, this.state.sortName, this.state.sortOrder, this.state.params);
     },
 
     /**
@@ -357,7 +357,7 @@ export default {
                 totalResult = result.total;
             }
             else {
-                totalResult = null;
+                totalResult = dataResult.length;
                 throw ("datagrid分页了,但返回的数据没有指定total");
             }
 
