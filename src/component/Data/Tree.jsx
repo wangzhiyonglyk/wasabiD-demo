@@ -315,6 +315,7 @@ Tree.propTypes = {
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//选中的id值
     text: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//选中的标题
     idField: PropTypes.string,//数据字段值名称
+    parentField: PropTypes.string,//数据字段父节点名称
     textField: PropTypes.string,//数据字段文本名称
     url: PropTypes.string,//后台查询地址
     params: PropTypes.object,//向后台传输的额外参数
@@ -361,7 +362,9 @@ Tree.defaultProps = {
     text: null,
     id: null,
     idField: "id",
+    parentField:"pId",
     textField: "text",
+
     url: null,
     params: null,
     dataSource: "data",

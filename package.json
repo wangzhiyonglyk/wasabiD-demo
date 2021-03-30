@@ -18,7 +18,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "wangeditor": "^3.1.1",
-    "wasabi-api": "^0.8.7"
+    "wasabi-api": "^0.8.9"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

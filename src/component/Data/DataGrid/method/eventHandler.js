@@ -143,7 +143,7 @@ export default {
         }
         else {//跳转到指定页
 
-            this.updateHandler(this.state.url, this.state.pageSize, pageIndex, this.state.sortName, this.state.sortOrder, null, null);
+            this.updateHandler(this.state.url, this.state.pageSize, pageIndex, this.state.sortName, this.state.sortOrder, this.state.params);
         }
     },
     /**

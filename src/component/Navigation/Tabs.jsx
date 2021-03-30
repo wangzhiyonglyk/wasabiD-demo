@@ -107,6 +107,7 @@ Tabs.propTypes = {
     ]),
     activeIndex: PropTypes.number,//活动下标
     onClose: PropTypes.func,//关闭事件
+    tabClick: PropTypes.func,//单击事件
 };
 Tabs.defaultProps = {
     className:"",
@@ -114,7 +115,7 @@ Tabs.defaultProps = {
     theme: "primary",
     activeIndex: 0,
     onClose: null,
-
+    tabClick:null
 
 };
 export default Tabs;
