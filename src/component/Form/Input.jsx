@@ -36,7 +36,7 @@ constructor(props)
         this.refs.input.setValue(value);
     }
     renderText() {//普通文本框
-        return <Text ref="input" {...this.props} ></Text>
+        return <Text ref="input" {...this.props} >{this.props.children}</Text>
     }
     renderRate(){
              //评分

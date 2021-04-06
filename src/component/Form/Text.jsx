@@ -53,23 +53,25 @@ class Text extends Component {
         return null;
     }
     onChange(event) {
-        let value=event.target.value.toString().trim();//除去空格
-        let isvalidate=true;
-        if(this.props.type == "number"||this.props.type == "integer"){
-             /**
-         * 数字与整数要先验证，
-         * 验证时，当一个字符是+,或者-是被认为是正确，不能使用正则验证,否则通不过，但失去焦点则可以使用正则
-         */
-             isvalidate = (value == "+" || value == "-") || this.validate(value);    
+        let value = event.target.value.toString().trim();//除去空格
+        let isvalidate = true;
+        if (this.props.type == "number" || this.props.type == "integer") {
+            /**
+        * 数字与整数要先验证，
+        * 验证时，当一个字符是+,或者-是被认为是正确，不能使用正则验证,否则通不过，但失去焦点则可以使用正则
+        */
+            isvalidate = (value == "+" || value == "-") || this.validate(value);
         }
-       
-       
+        else {
+            isvalidate = this.validate(value);
+        }
+
         if (isvalidate) {
-            this.state.value= event.target.value.trim();
-            this.state.text= event.target.value.trim();
+            this.state.value = event.target.value.trim();
+            this.state.text = event.target.value.trim();
             this.setState({
-                value:  event.target.value.trim(),
-                text:  event.target.value.trim(),
+                value: event.target.value.trim(),
+                text: event.target.value.trim(),
             })
             this.props.onChange && this.props.onChange(value, value, this.props.name);//自定义的改变事件
         }
@@ -109,10 +111,10 @@ class Text extends Component {
         //     this.refs.input.focus();
         //     this.refs.input.select();
         // }
-        this.props.onBlur&&this.props.onBlur(event.target.value,event.target.value,event);
+        this.props.onBlur && this.props.onBlur(event.target.value, event.target.value, event);
     }
     clickHandler(event) {//单击事件
-        this.props.onClick && this.props.onClick(value, text, this.props.name);
+        this.props.onClick && this.props.onClick(value, text, this.props.name, event);
     }
 
     getValue() {//获取值
@@ -156,14 +158,14 @@ class Text extends Component {
     }
 
     render() {
-        let componentClassName = "wasabi-form-group "+(this.props.className||"")+" ";//组件的基本样式
+        let componentClassName = "wasabi-form-group " + (this.props.className || "") + " ";//组件的基本样式
         let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
         if (this.props.hide) {
             style.display = "none";
         } else {
             style.display = "flex";
         }
-        let inputType = this.props.type == "password"||this.props.type=="textarea" ? this.props.type : "text";//统一使用text，否则在验证失效，没有onchange事件，拿不到值，则无法执行自定义验证事件
+        let inputType = this.props.type == "password" || this.props.type == "textarea" ? this.props.type : "text";//统一使用text，否则在验证失效，没有onchange事件，拿不到值，则无法执行自定义验证事件
         let inputProps =
         {
             readOnly: this.props.readOnly == true ? "readOnly" : null,
@@ -197,10 +199,11 @@ class Text extends Component {
                 onBlur={this.blurHandler}
                 value={(this.state.value == null || this.state.value == undefined) ? "" : this.state.value}></textarea>;
         }
-        return (<div className={componentClassName + " "+this.state.validateClass} onPaste={this.onPaste} style={style}>
+        return (<div className={componentClassName + " " + this.state.validateClass} onPaste={this.onPaste} style={style}>
             <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
             <div className={"wasabi-form-group-body "} >
                 {control}
+                {this.props.children}
                 <i className={this.state.validateState} style={{ display: (this.state.validateState ? "block" : "none") }} ></i>
                 <small className={"wasabi-help-block "} style={{ display: (this.state.inValidateText && this.state.inValidateText != "") ? this.state.inValidateShow : "none" }}>
                     {this.state.inValidateText}</small>

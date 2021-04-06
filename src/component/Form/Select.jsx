@@ -258,15 +258,21 @@ class Select extends Component {
               }
               onBlur={this.onBlur}
               onClick={this.showPicker.bind(this)}
-              onChange={() => {
-
+              onKeyUp={this.keyUpHandler}
+              onChange={(event) => {
+                 this.setState({
+                   text:event.target.value,
+                   value:event.target.value
+                 })
               }}
+              placeholder={(this.props.addAbled ||this.props.addAble)? '回车添加' : ''}
               autoComplete="off"
             />
             <div className={"dropcontainter  select"} style={{ display: this.state.show == true ? "block" : "none" }}   >
               <input
                 className="wasabi-form-control"
-                title={(this.props.addAbled ||this.props.addAble)? '输入搜索，回车添加' : '输入搜索'}
+                title={(this.props.addAbled ||this.props.addAble)? '搜索筛选,回车添加' : '搜索筛选'}
+                placeholder={(this.props.addAbled ||this.props.addAble)? '搜索筛选,回车添加' : '搜索筛选'}
                 onKeyUp={this.keyUpHandler}
                 value={
                   this.state.filterValue || ""

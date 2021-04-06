@@ -242,7 +242,66 @@ class PivotPage extends React.Component {
     }
 
     render() {
-        return   <Pivot rows={this.state.rows} checkAble={true} values={this.state.values} columns={this.state.columns} data={this.state.data} ></Pivot>
+        return  <div>
+            <div style={{textAlign:"center",padding:20}}><Input addAble={true} type="select" multiple={true} valueField="consume" textField="city" data={[
+                {
+                    province: "广东省",
+                    city: "广州市",
+                    year: "2019",
+                    sex: "男",
+                    income: 11000,
+                    consume: 8400
+                },
+                {
+                    province: "广东省",
+                    city: "广州市",
+                    year: "2020",
+                    sex: "男",
+                    income: 14000,
+                    consume: 12000
+                },
+                {
+                    province: "广东省",
+                    city: "广州市",
+                    year: "2019",
+                    sex: "女",
+                    income: 15000,
+                    consume: 12900
+                },
+                {
+                    province: "广东省",
+                    city: "广州市",
+                    year: "2020",
+                    sex: "女",
+                    income: 13000,
+                    consume: 12000
+                },
+                {
+                    province: "广东省",
+                    city: "深圳市",
+                    year: "2020",
+                    sex: "男",
+                    income: 15000,
+                    consume: 11400
+                },
+                {
+                    province: "广东省",
+                    city: "深圳市",
+                    year: "2019",
+                    sex: "男",
+                    income: 14000,
+                    consume: 8800
+                },
+
+                {
+                    province: "广东省",
+                    city: "深圳市",
+                    year: "2019",
+                    sex: "女",
+                    income: 14000,
+                    consume: 8600
+                },]}></Input></div>
+            <Pivot rows={this.state.rows} checkAble={true} values={this.state.values} columns={this.state.columns} data={this.state.data} ></Pivot></div> 
 
     }
 }
