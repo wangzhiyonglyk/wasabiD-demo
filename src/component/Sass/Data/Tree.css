@@ -7,6 +7,9 @@
  
   
 }
+.wasabi-treegrid .wasabi-tree{
+  border-top:1px solid #ebeef5 ;
+}
 .wasabi-tree .treenode-container{
  line-height: 41px;
  height: 41px;
@@ -14,6 +17,11 @@
 
 }
 .wasabi-pivot .wasabi-tree .treenode-container{
+  border-bottom:1px solid #ebeef5 ;
+
+ 
+}
+.wasabi-treegrid  .wasabi-tree .treenode-container{
   border-bottom:1px solid #ebeef5 ;
 
  
@@ -66,6 +74,10 @@
   background-color:white;
   color: #606266;
 }
+.wasabi-treegrid .wasabi-tree li>div:hover{
+  background-color:white;
+  color: #606266;
+}
 
 .wasabi-tree li>div.selected{
   background-color:#f5f7fa;
@@ -76,7 +88,10 @@
   color: #409eff;
 }
 
-
+.wasabi-treegrid .wasabi-tree li>div.selected{
+  background-color:#f5f7fa;
+  color: #409eff;
+}
 .wasabi-tree [class*=" icon-"],.wasabi-tree [class^=icon-] {
   color:#c0c4cc;
 }
@@ -92,7 +107,9 @@
 .wasabi-pivot .wasabi-tree a:focus,.wasabi-pivot .wasabi-tree a:hover{
   color:#606266;
 }
-
+.wasabi-treegrid .wasabi-tree a:focus,.wasabi-treegrid .wasabi-tree a:hover{
+  color:#606266;
+}
 .wasabi-tree .wasabi-tree-txt{
   margin-left: 3px;
   transform: translateY(1px);

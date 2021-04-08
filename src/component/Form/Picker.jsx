@@ -192,7 +192,7 @@ class Picker extends Component {
                     //否则默认
 
                     fetchmodel.contentType = this.props.contentType;
-                    fetchmodel.data = fetchmodel.contentType == "application/json" ? JSON.stringify(fetchmodel.data) : fetchmodel.data;
+                    fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data? JSON.stringify(fetchmodel.data) :"{}": fetchmodel.data;
                 }
                 type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
                 console.log("picker-second", fetchmodel);

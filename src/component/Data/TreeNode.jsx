@@ -27,7 +27,7 @@ class TreeNode extends Component {
             children: func.clone(this.props.children)
         }
         this.onClick = this.onClick.bind(this);
-        this.showHandler = this.showHandler.bind(this)
+        this.expandHandler = this.expandHandler.bind(this)
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -54,10 +54,11 @@ class TreeNode extends Component {
     /**
      * 展开/折叠
      */
-    showHandler() {
+    expandHandler() {
         this.setState({
             open: !this.state.open
         })
+        this.props.expandHandler&&this.props.expandHandler (!this.state.open,this.state.id, this.state.text, this.state.children)
     }
     /**
      * 单击事件
@@ -700,7 +701,7 @@ class TreeNode extends Component {
         return <li ref="node" style={{ display: this.state.hide ? "none" : "block" }} onDrop={this.onDrop.bind(this)} onDragOver={this.onDragOver.bind(this)} onDragLeave={this.onDragLeave.bind(this)} >
 
             <div id={this.state.nodeid} className={this.props.selectid == this.state.id ? "treenode-container selected" : "treenode-container"} >
-                {this.props.isPivot ? null : <i className={this.state.open ? "icon-arrow-down" : "icon-arrow-right"} style={{ transform: "translateY(2px)", marginRight: 3, opacity: this.state.isParent ? 1 : 0 }} onClick={this.showHandler}></i>}
+                 <i className={this.state.open ? "icon-arrow-down" : "icon-arrow-right"} style={{ transform: "translateY(2px)", marginRight: 3, opacity: this.state.isParent ? 1 : 0 }} onClick={this.expandHandler.bind(this)}></i>
                 <div className="treenode" title={title}  >
                     {this.state.rename ? <Input type="text" id={this.state.textid} required={true} onBlur={this.onBlur.bind(this)} onKeyUp={this.onKeyUp.bind(this)}
                         name={"key" + this.state.id} value={this.state.text} onChange={this.onChange.bind(this)}></Input> : nodeEement}
@@ -773,7 +774,7 @@ TreeNode.defaultProps = {
     iconCls: "icon-text",
     iconClose: "icon-folder",
     iconOpen: "icon-open-folder",
-    open: false,
+    open: true,
     checked: false,
     checkAble: false,
     dragAble: false,

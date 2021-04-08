@@ -23,6 +23,9 @@ export default {
         }
 
         this.state.data.map((rowData, rowIndex) => {
+            if(rowData.hide){//隐藏该行
+                return;
+            }
             let detailtd = null;//详情列
             let ordertd = null;
             let checkedControl = null;//本行是否有选择框

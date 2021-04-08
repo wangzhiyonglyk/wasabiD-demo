@@ -1,16 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import("./index.css")
-import { Article, Avatar,Tag, RotateChart, Input, Modal, Drag, Drop, DataGrid, Tree, Right, Pivot, TabPanel, Tabs, Button, Layout, Left, Center } from "../../component"
+import {  Pivot,TreeGrid,Input} from "../../component"
 import api from "../../libs/api"
 class PivotPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             dropData: [],
-            data: [
-
-
+            headers: [
+                {
+                    name: "text",
+                    label: "省",
+                },
+             
+            ],
+            data:  [
+                {id:1,pId:"",text: "父节点1", children: [
+                    {id:11,pId:1,text: "子节点11"},
+                    {id:12,pId:1,text: "子节点12"}
+                ]},
+                {id:2,pId:"",text: "父节点2", children: [
+                    {id:21,pId:2,text: "子节点21"},
+                    {id:22,pId:2,text: "子节点22"}
+                ]}
             ],
             tabs: [{
                 title: "你好"
@@ -90,139 +103,7 @@ class PivotPage extends React.Component {
 
                     }
                 ],
-                data: [{
-                    province: "湖南省",
-                    city: "长沙市",
-                    year: "2019",
-                    sex: "男",
-                    income: 10000,
-                    consume: 8000
-                },
-                {
-                    province: "湖南省",
-                    city: "长沙市",
-                    year: "2020",
-                    sex: "男",
-                    income: 11000,
-                    consume: 10000
-                },
-                {
-                    province: "湖南省",
-                    city: "长沙市",
-                    year: "2019",
-                    sex: "女",
-                    income: 11000,
-                    consume: 8000
-                },
-                {
-                    province: "湖南省",
-                    city: "长沙市",
-                    year: "2020",
-                    sex: "女",
-                    income: 12000,
-                    consume: 12000
-                },
-
-                {
-                    province: "湖南省",
-                    city: "衡阳市",
-                    year: "2019",
-                    sex: "男",
-                    income: 13000,
-                    consume: 8500
-                },
-                {
-                    province: "湖南省",
-                    city: "衡阳市",
-                    year: "2020",
-                    sex: "男",
-                    income: 12000,
-                    consume: 11000
-                },
-                {
-                    province: "湖南省",
-                    city: "衡阳市",
-                    year: "2019",
-                    sex: "女",
-                    income: 13000,
-                    consume: 8300
-                },
-                {
-                    province: "湖南省",
-                    city: "衡阳市",
-                    year: "2020",
-                    sex: "女",
-                    income: 14000,
-                    consume: 14000
-                },
-
-                {
-                    province: "广东省",
-                    city: "广州市",
-                    year: "2019",
-                    sex: "男",
-                    income: 11000,
-                    consume: 8400
-                },
-                {
-                    province: "广东省",
-                    city: "广州市",
-                    year: "2020",
-                    sex: "男",
-                    income: 14000,
-                    consume: 12000
-                },
-                {
-                    province: "广东省",
-                    city: "广州市",
-                    year: "2019",
-                    sex: "女",
-                    income: 15000,
-                    consume: 12900
-                },
-                {
-                    province: "广东省",
-                    city: "广州市",
-                    year: "2020",
-                    sex: "女",
-                    income: 13000,
-                    consume: 12000
-                },
-                {
-                    province: "广东省",
-                    city: "深圳市",
-                    year: "2020",
-                    sex: "男",
-                    income: 15000,
-                    consume: 11400
-                },
-                {
-                    province: "广东省",
-                    city: "深圳市",
-                    year: "2019",
-                    sex: "男",
-                    income: 14000,
-                    consume: 8800
-                },
-
-                {
-                    province: "广东省",
-                    city: "深圳市",
-                    year: "2019",
-                    sex: "女",
-                    income: 14000,
-                    consume: 8600
-                },
-                {
-                    province: "广东省",
-                    city: "深圳市",
-                    year: "2020",
-                    sex: "女",
-                    income: 15000,
-                    consume: 14700,
-                    checkAble: false
-                },
-                ]
+                
 
             })
         }, 0)
@@ -243,65 +124,8 @@ class PivotPage extends React.Component {
 
     render() {
         return  <div>
-            <div style={{textAlign:"center",padding:20}}><Input addAble={true} type="select" multiple={true} valueField="consume" textField="city" data={[
-                {
-                    province: "广东省",
-                    city: "广州市",
-                    year: "2019",
-                    sex: "男",
-                    income: 11000,
-                    consume: 8400
-                },
-                {
-                    province: "广东省",
-                    city: "广州市",
-                    year: "2020",
-                    sex: "男",
-                    income: 14000,
-                    consume: 12000
-                },
-                {
-                    province: "广东省",
-                    city: "广州市",
-                    year: "2019",
-                    sex: "女",
-                    income: 15000,
-                    consume: 12900
-                },
-                {
-                    province: "广东省",
-                    city: "广州市",
-                    year: "2020",
-                    sex: "女",
-                    income: 13000,
-                    consume: 12000
-                },
-                {
-                    province: "广东省",
-                    city: "深圳市",
-                    year: "2020",
-                    sex: "男",
-                    income: 15000,
-                    consume: 11400
-                },
-                {
-                    province: "广东省",
-                    city: "深圳市",
-                    year: "2019",
-                    sex: "男",
-                    income: 14000,
-                    consume: 8800
-                },
-
-                {
-                    province: "广东省",
-                    city: "深圳市",
-                    year: "2019",
-                    sex: "女",
-                    income: 14000,
-                    consume: 8600
-                },]}></Input></div>
-            <Pivot rows={this.state.rows} checkAble={true} values={this.state.values} columns={this.state.columns} data={this.state.data} ></Pivot></div> 
+            
+            <TreeGrid data={this.state.data}  headers={this.state.headers} ></TreeGrid></div> 
 
     }
 }

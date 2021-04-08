@@ -65,8 +65,6 @@ class Text extends Component {
         else {
             isvalidate = this.validate(value);
         }
-
-        if (isvalidate) {
             this.state.value = event.target.value.trim();
             this.state.text = event.target.value.trim();
             this.setState({
@@ -74,7 +72,7 @@ class Text extends Component {
                 text: event.target.value.trim(),
             })
             this.props.onChange && this.props.onChange(value, value, this.props.name);//自定义的改变事件
-        }
+        
     }
     keyDownHandler(event) {
 
@@ -138,7 +136,7 @@ class Text extends Component {
             //否则默认
 
             fetchmodel.contentType = this.props.contentType;
-            fetchmodel.data = fetchmodel.contentType == "application/json" ? JSON.stringify(fetchmodel.data) : fetchmodel.data;
+            fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data? JSON.stringify(fetchmodel.data) :"{}": fetchmodel.data;
         }
         type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
 

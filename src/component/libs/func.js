@@ -454,8 +454,10 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
         if (pId.indexOf("," + data[index][parentField] + ",") > -1 || !data[index][parentField]) {
             let item = {
                 ...data[index],
+                id:data[index][idField],
+                pId: data[index][parentField],
                 text: data[index][textField],
-                children: [],
+                children: data[index].children||[],
             }
             item[idField] = data[index][idField];//添加key
             tree.push(item);
@@ -474,8 +476,10 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
 
                 let item = {
                     ...data[index],
+                    id:data[index][idField],
+                    pId: data[index][parentField],
                     text: data[index][textField],
-                    children: [],
+                    children: data[index].children||[],
                 }
                 item[idField] = data[index][idField];//添加key
                 obj.children.push(item);
@@ -490,6 +494,7 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
         }
     }
     if (data.length > 0) {
+        console.log("Data",data);
         console.error("数据格式不正确，或者是数据量过大，请使用异步请求,");
     }
     return tree;

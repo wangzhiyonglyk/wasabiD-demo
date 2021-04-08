@@ -16,7 +16,7 @@ let propsTran = {
      */
     setComboxValueAndText(type, value, data, idOrValueField = "value", textField = "text") {
 
-        if(!data){
+        if (!data) {
             return [];
         }
         let text = [];//选中的文本值
@@ -24,15 +24,15 @@ let propsTran = {
         if (realData && realData instanceof Array && realData.length > 0) {
             for (let i = 0; i < realData.length; i++) {
                 if (type == "tree" || type == "treepicker") {
-                    realData[i].id =realData[i]&& realData[i][idOrValueField];
+                    realData[i].id = realData[i] && realData[i][idOrValueField];
                 }
                 else {
-                    realData[i].value = realData[i]&&realData[i][idOrValueField];
+                    realData[i].value = realData[i] && realData[i][idOrValueField];
                 }
-                realData[i].text = realData[i]&&realData[i][textField];
+                realData[i].text = realData[i] && realData[i][textField];
                 if (("," + (value || "") + ",").indexOf("," + ((type == "tree" || type == "treepicker") ? realData[i].id : realData[i].value) + ",") > -1) {
                     realData[i].checked = true;//专门用于树组件
-                    text.push(realData[i]&& realData[i].text);
+                    text.push(realData[i] && realData[i].text);
                 }
                 //如果有子节点的时候.tree,treepicker,picker
                 if (realData[i].children && realData[i].children.length > 0) {
@@ -109,7 +109,7 @@ let propsTran = {
         let newDate = new Date();
         //设置第一日期的值
         let firstDate = props.firstDate;//给的第一个值
-        let firstTime = props.type == "daterange" ? "" : props.firstTime || func.dateformat(newDate, "HH:mm:")+"00";
+        let firstTime = props.type == "daterange" ? "" : props.firstTime || func.dateformat(newDate, "HH:mm:") + "00";
         //先设置默认值
         let first_year = newDate.getFullYear();
         let first_month = newDate.getMonth() + 1;
@@ -138,7 +138,7 @@ let propsTran = {
 
         //设置第二日期的值
         let secondDate = props.secondDate;//给的第二日期值，字符串
-        let secondTime = props.type == "daterange" ? "" : props.secondTime || func.dateformat(newDate, "HH:mm:")+"59";
+        let secondTime = props.type == "daterange" ? "" : props.secondTime || func.dateformat(newDate, "HH:mm:") + "59";
         //先设置默认值
         let second_year = first_year; //默认与第一个同年
         let second_month;
@@ -206,12 +206,12 @@ let propsTran = {
      */
     treeFilter(filterText, data) {
 
-       let  filterResult = [];
-          data && data.forEach((item, index) => {
+        let filterResult = [];
+        data && data.forEach((item, index) => {
             if (item.children && item.children.length > 0) {
                 let result = propsTran.treeFilter(filterText, item.children);
                 if (result.length > 0) {
-                    filterResult.push( {
+                    filterResult.push({
                         ...item,
                         children: result
                     })
@@ -219,13 +219,42 @@ let propsTran = {
             }
             else {
                 if (item.text.indexOf(filterText) > -1) {
-                    filterResult.push({...item})
+                    filterResult.push({ ...item })
                 }
             }
 
         })
         return filterResult;
-    }
+    },
+    /**
+     * 表格是否隐藏某行数据
+     * @param {*} data 
+     * @param {*} open 
+     * @param {*} children 
+     * @returns 
+     */
+    gridShowOrHideData(data, open, children) {
+        let ids=[];
+        if (children && children instanceof Array && children.length > 0) {
+            for(let i=0;i<children.length;i++){
+                ids.push(children[i].id);
+            }
+        }
+        ids=","+ids.join(",")+",";
+        if (data && data instanceof Array && data.length > 0) {
 
+            for (let i = 0; i < data.length; i++) {
+                if (ids.indexOf(","+data[i].id+",")>-1) {
+                    data[i].hide = !open;//隐藏该行
+                }
+                else{
+                    data[i].hide =false;
+                }
+
+
+            }
+        }
+        return data;
+    }
 }
 export default propsTran;

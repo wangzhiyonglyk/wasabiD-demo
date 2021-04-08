@@ -122,7 +122,9 @@
 .wasabi-pivot .wasabi-grid .table > tbody > tr:nth-of-type(odd) {
   background-color: white;
 }
-
+.wasabi-treegrid .wasabi-grid .table > tbody > tr:nth-of-type(odd) {
+  background-color: white;
+}
 .wasabi-grid .table > tbody > tr.selected {
   background-color: #fbec88;
   /* border: 1px solid #fad42e; */
@@ -130,6 +132,11 @@
  }
 
  .wasabi-pivot  .wasabi-grid .table > tbody > tr.selected {
+  background-color: #f5f7fa;
+  color: #409eff;
+ }
+ 
+ .wasabi-treegrid  .wasabi-grid .table > tbody > tr.selected {
   background-color: #f5f7fa;
   color: #409eff;
  }
@@ -155,7 +162,11 @@
   white-space:nowrap;;
   text-overflow: ellipsis;
 }
-
+.wasabi-treegrid .wasabi-grid .wasabi-grid-cell{
+  overflow: hidden;
+  white-space:nowrap;;
+  text-overflow: ellipsis;
+}
 /*
 排序样式
 */
