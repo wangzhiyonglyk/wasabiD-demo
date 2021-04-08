@@ -248,10 +248,8 @@ let propsTran = {
                     data[i].hide = !open;//隐藏该行
                 }
                 else{
-                    data[i].hide =false;
+                   
                 }
-
-
             }
         }
         return data;
