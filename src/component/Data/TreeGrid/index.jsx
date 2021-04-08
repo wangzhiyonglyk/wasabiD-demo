@@ -234,7 +234,7 @@ class TreeGrid extends Component {
             <div className="wasabi-treegrid-left">
                 <div className="wasabi-treegrid-configuration" style={{ height: treeTop }}></div>
                 <div className="wasabi-treegrid-rowsData" >
-                    <Tree checkAble={this.props.checkAble} ref="tree" onClick={this.treeClick.bind(this)} data={this.state.realTreeData} simpleData={true}
+                    <Tree  checkAble={this.props.checkAble} checkStyle={this.props.checkStyle} ref="tree"  onClick={this.treeClick.bind(this)} data={this.state.realTreeData} simpleData={true}
                         onChecked={this.onChecked.bind(this)} isPivot={true} expandHandler={this.expandHandler.bind(this)}
                     ></Tree>
                 </div>
@@ -296,7 +296,7 @@ TreeGrid.defaultProps = {
     parentField: "pId",
     textField: "text",
     simpleData: true,//默认为真
-    checkAble: false,
+    checkAble: true,
     checkStyle: "checkbox",
     checkType: { "y": "ps", "n": "ps" },//默认勾选/取消勾选都影响父子节点，todo 暂时还没完成
     radioType: "all",//todo 
