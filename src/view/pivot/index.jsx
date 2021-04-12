@@ -124,7 +124,7 @@ class PivotPage extends React.Component {
 
     render() {
         return  <div>
-            
+              <Input type="treepicker" checkStyle="radio" data={this.state.realTreeData} simpleData={true}></Input>
             <TreeGrid data={this.state.data}  headers={this.state.headers} ></TreeGrid></div> 
 
     }

@@ -136,7 +136,7 @@ class TreePicker extends Component {
                                 justifyContent: "flex-end"
                             }}
                         >
-                            <input className=" wasabi-form-control timeinput" style={{ left: 5 }}
+                            <input className=" wasabi-form-control treepickerinput" 
                                 value={this.state.filterText} onChange={this.filterHandler.bind(this)}  ></input>
                             {
                                 this.props.checkStyle == "checkbox" ? <CheckBox name="wasabi-tree-choseall"

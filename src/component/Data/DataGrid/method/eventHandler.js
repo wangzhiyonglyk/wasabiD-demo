@@ -83,12 +83,12 @@ export default {
 
     },
     /**
-     * 专门用于交叉表
-     * @param {*} _id 
+     * 专门用于交叉表与树表格
+     * @param {*} id 
      */
-    setClick(_id) {   
+    setClick(id) {   
         for (let i = 0; i < this.state.data.length; i++) {
-            if (this.state.data[i]["_id"] == _id) {
+            if (this.state.data[i]["id"] == id) {
                 this.onTRMouseDown(i,null,false);//由交叉表引来的单击
                 break;
             }

@@ -17,7 +17,7 @@ import diff from "../../libs/diff";
 import DataGrid from "../DataGrid";
 import propsTran from "../../libs/propsTran";
 import Tree from "../Tree";
-
+import FetchModel from "../../Model/FetchModel";
 import("./index.css")
 class TreeGrid extends Component {
     constructor(props) {
@@ -32,6 +32,9 @@ class TreeGrid extends Component {
             realGridData: [],
             loadData:false,
         }
+        this.loadData=this.loadData.bind(this);
+        this.loadSuccess=this.loadSuccess.bind(this);
+        this.loadError=this.loadError.bind(this);
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};
@@ -113,7 +116,7 @@ class TreeGrid extends Component {
                 fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data? JSON.stringify(fetchmodel.data) :"{}": fetchmodel.data;
             }
             type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
-            console.log("tree-fetch", fetchmodel);
+            console.log("treegrid-fetch", fetchmodel);
         }
 
     }
@@ -186,7 +189,7 @@ class TreeGrid extends Component {
      * @param {*} nodeData 
      */
     treeClick(id, text, children, nodeData) {
-
+        this.refs.grid.setClick(id);
         this.props.onClick && this.props.onClick(nodeData);
     }
     /**
@@ -218,6 +221,19 @@ class TreeGrid extends Component {
            realGridData:realGridData
        })
     }
+    /**
+     * 获取勾选的数据
+     * @returns 
+     */
+    getChecked(){
+        return this.refs.tree.getChecked();
+    }
+    /**
+     * 强制刷新
+     */
+    reload(){
+        this.loadData(this.state.url,this.state.params);
+    }
     render() {
   
         let treeTop = 0;
@@ -232,7 +248,9 @@ class TreeGrid extends Component {
 
         return <div className="wasabi-treegrid">
             <div className="wasabi-treegrid-left">
-                <div className="wasabi-treegrid-configuration" style={{ height: treeTop }}></div>
+                <div className="wasabi-treegrid-configuration" style={{ height: treeTop }}>
+                  
+                </div>
                 <div className="wasabi-treegrid-rowsData" >
                     <Tree  checkAble={this.props.checkAble} checkStyle={this.props.checkStyle} ref="tree"  onClick={this.treeClick.bind(this)} data={this.state.realTreeData} simpleData={true}
                         onChecked={this.onChecked.bind(this)} isPivot={true} expandHandler={this.expandHandler.bind(this)}
@@ -297,7 +315,7 @@ TreeGrid.defaultProps = {
     textField: "text",
     simpleData: true,//默认为真
     checkAble: true,
-    checkStyle: "checkbox",
+    checkStyle: "radio",
     checkType: { "y": "ps", "n": "ps" },//默认勾选/取消勾选都影响父子节点，todo 暂时还没完成
     radioType: "all",//todo 
 

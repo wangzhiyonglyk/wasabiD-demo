@@ -208,7 +208,7 @@ class Tree extends Component {
                 }
             }
             setTimeout(() => {
-                this.onChecked(true, id, text, children, nodeData);
+                this.onChecked(true, id, text, children, row);
             }, 200);
             //只有一个单选
 

@@ -1,7 +1,7 @@
 /**
  * 2020-11-07edit 此方法要改
  * @param {*} derivedCtor 
- * @param {*} baseCtors 
+ * @param {Array} baseCtors 
  */
 function applyMixins(derivedCtor, baseCtors) {
    

@@ -28,14 +28,12 @@ import  StepItem from  './Data/Step/StepItem' ;//进度条
 import Avatar from "./Data/Avatar";//头像上传组件
 import Pivot from "./Data/Pivot";//交叉表
 import TreeGrid from "./Data/TreeGrid";//树型表格
+
 /*****************表单组件******************/
 import  SearchBar from  './Form/SearchBar.jsx' ;//表单查询组件
 import  Form from  './Form/Form.jsx' ;//表单提交组件
 import  Input from  './Form/Input.jsx' ;//通用表单组件
 import SearchBox from "./Form/SearchBox";//搜索栏组件
-/*****************表单组件******************/
-
-
 
 
 /*****************日期组件******************/
@@ -85,18 +83,21 @@ import PageIn from "./Animate/PageIn";//放大弹出组件
 import ProgressChart from "./Animate/ProgressChart";//线性报表
 
 /*****************功能组件******************/
-
-
 import  Upload from  './Action/Upload' ;//上传组件
 import  Editor from  './Action/Editor.jsx' ;//上传组件
 import Article from "./Action/Article";//文章编辑
-import  func from  './libs/func.js' ;//常用函数
-import  ClickAway from  './libs/ClickAway.js' ;//全局单击事件
 import Single from "./Action/Single";//单表组件
 import Simulator from "./Action/Simulator";//手机模拟器
+
+
 /**************** 页面组件 ************************/
 import Login from "./page/Login"
 import System from "./page/System"
+
+/*********************** 常用函数 *****************/
+import  func from  './libs/func.js' ;//常用函数
+import  mixins from  './Mixins/mixins' ;//mixins
+import  regs from "./Lang/regs";//常用的正则
 export   {
     Tag, Button,LinkButton,Toolbar, Badge,Dropdown,DropdownItem,
     DataGrid,Tree,Transfer,Progress,Step,StepItem,Avatar,Pivot,TreeGrid,
@@ -108,8 +109,8 @@ export   {
     Label,Msg,
     RotateChart,PageIn,ProgressChart,
     Upload,Editor,Article,Single,Simulator,
-    func,ClickAway,
-    Login,System
+    Login,System,
+    func,mixins,regs
 
 }
 

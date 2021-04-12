@@ -29,7 +29,7 @@
 .wasabi-tree .treenode{
   display: inline-block;
   position: relative;
-  width: calc(100% - 20px);
+
 }
 
 .wasabi-tree .wasabi-form-group{
