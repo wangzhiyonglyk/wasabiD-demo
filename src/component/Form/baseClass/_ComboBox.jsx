@@ -60,7 +60,7 @@ export default function (WrappedComponent) {
             this.onSelect = this.onSelect.bind(this);
             this.onBlur = this.onBlur.bind(this);
             this.clearHandler = this.clearHandler.bind(this);
-            this.addData = this.addData.bind(this);
+           
             this.filterHandler = this.filterHandler.bind(this)
         }
         static getDerivedStateFromProps(props, state) {
@@ -217,20 +217,7 @@ export default function (WrappedComponent) {
         onBlur() {
             this.validate(this.state.value);//验证
         }
-        /**
-         * 专门用于select
-         * @param {*} value 
-         * @param {*} text 
-         */
-        addData(value, text) {
-            let data = this.state.data || [];
-            data.unshift({ value: value, text: text });
-            this.setState({
-                data: data
-            })
-            this.onSelect(value, text, this.props.name);//添加一个相当于选中
-            this.props.addHandler && this.props.addHandler(value, text, data, this.props.name);
-        }
+  
         filterHandler(text) {
 
             if (text) {
@@ -249,7 +236,7 @@ export default function (WrappedComponent) {
             let data = this.state.filterData ? this.state.filterData : this.state.data;
             return <WrappedComponent {...this.props} {...this.state} data={data}
                 onSelect={this.onSelect} clearHandler={this.clearHandler}
-                addData={this.addData} onBlur={this.onBlur}
+                onBlur={this.onBlur}
                 filterHandler={this.filterHandler}
             ></WrappedComponent>
         }
