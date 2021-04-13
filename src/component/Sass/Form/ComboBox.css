@@ -32,8 +32,9 @@ desc:日期选择样式
   color: #e4e7ed;
 }
 .combobox .comboxbox-icon.rotate{
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
+  transform: rotate(180deg) translateY(3px);
+  -webkit-transform: rotate(180deg) translateY(3px);
+
 }
 
 /*清空图标*/

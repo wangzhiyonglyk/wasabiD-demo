@@ -7,7 +7,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import DatePicker from "./DatePicker.jsx";
 import Picker from "./Picker.jsx";
-import Select from "./Select.jsx";
+import Select from "./Select";
 import TreePicker from "./TreePicker.jsx";
 import props from "./config/propType.js";
 import config from "./config/comboboxConfig.js";

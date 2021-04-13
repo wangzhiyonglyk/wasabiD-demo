@@ -41,6 +41,7 @@ export default function (WrappedComponent) {
                 filterData: null,//筛选后的数据
                 value: this.props.value,
                 text: newData && newData.text && newData.text.join(","),
+                 inputText:newData && newData.text && newData.text.join(","),//专门用于下拉框可以手动输入的情况
                 ulShow: false,//是否显示下拉选项
                 reloadData: false,//是否更新,
                 idField: this.props.idField,
@@ -133,7 +134,8 @@ export default function (WrappedComponent) {
 
             this.setState({
                 value: '',
-                text: ''
+                text: '',
+                inputText:""
             });
             this.props.onSelect && this.props.onSelect('', '', this.props.name, null);
         }
@@ -190,7 +192,7 @@ export default function (WrappedComponent) {
             })
             this.loadData(url,params);
         }
-        onSelect(value, text, name, row) {
+        onSelect(value, text, name, row,inputText) {
 
             if (this.props.readOnly || this.props.disabled) {
                 return;
@@ -198,12 +200,15 @@ export default function (WrappedComponent) {
             //防止异步取值
             this.state.value=value;
             this.state.text=text;
+            this.state.inputText=inputText;
+            //更新
             this.setState({
                 value: value,
-                text: text
+                text: text,
+                inputText:inputText
             })
             this.validate(value);
-
+            //inputText不再向上传了
             this.props.onSelect && this.props.onSelect(value, text, name, row);
         }
         /**

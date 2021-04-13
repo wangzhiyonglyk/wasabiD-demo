@@ -3,7 +3,7 @@ class TreeNodeRow {
         this.isParent = "";//是否是父节点
         this.id = "";//值
         this.text = "";//标题
-        this.tip = "";//提示信息
+        this.title = "";//提示信息
         this.iconCls = "";//默认图标
         this.iconClose = "";//[父节点]关闭图标
         this.iconOpen = "";//[父节点]打开图标
