@@ -32,7 +32,7 @@ export default function (WrappedComponent) {
                 realData = newData.data;
             }
             this.state = {
-                type:this.props.type,
+                type: this.props.type,
                 url: this.props.url,//传来的url
                 params: func.clone(this.props.params),//参数
                 oldPropsValue: this.props.value,//保存用于判断是否通过父组件强制更新值
@@ -41,7 +41,7 @@ export default function (WrappedComponent) {
                 filterData: null,//筛选后的数据
                 value: this.props.value,
                 text: newData && newData.text && newData.text.join(","),
-                 inputText:newData && newData.text && newData.text.join(","),//专门用于下拉框可以手动输入的情况
+                inputText: newData && newData.text && newData.text.join(","),//专门用于下拉框可以手动输入的情况
                 ulShow: false,//是否显示下拉选项
                 reloadData: false,//是否更新,
                 idField: this.props.idField,
@@ -60,7 +60,7 @@ export default function (WrappedComponent) {
             this.onSelect = this.onSelect.bind(this);
             this.onBlur = this.onBlur.bind(this);
             this.clearHandler = this.clearHandler.bind(this);
-           
+
             this.filterHandler = this.filterHandler.bind(this)
         }
         static getDerivedStateFromProps(props, state) {
@@ -135,7 +135,7 @@ export default function (WrappedComponent) {
             this.setState({
                 value: '',
                 text: '',
-                inputText:""
+                inputText: ""
             });
             this.props.onSelect && this.props.onSelect('', '', this.props.name, null);
         }
@@ -151,7 +151,7 @@ export default function (WrappedComponent) {
                     //否则默认
 
                     fetchmodel.contentType = this.props.contentType;
-                    fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data? JSON.stringify(fetchmodel.data) :"{}": fetchmodel.data;
+                    fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
                 }
                 type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
                 console.log("checkbox-fetch", fetchmodel);
@@ -183,29 +183,29 @@ export default function (WrappedComponent) {
          * @param {*} params 
         * @param {*} url 
          */
-        reload(params,url){
-            url=url||this.state.url;
-            params=params|| this.state.params;
+        reload(params, url) {
+            url = url || this.state.url;
+            params = params || this.state.params;
             this.setState({
-                url:url,
-                params:params
+                url: url,
+                params: params
             })
-            this.loadData(url,params);
+            this.loadData(url, params);
         }
-        onSelect(value, text, name, row,inputText) {
+        onSelect(value, text, name, row, inputText) {
 
             if (this.props.readOnly || this.props.disabled) {
                 return;
             }
             //防止异步取值
-            this.state.value=value;
-            this.state.text=text;
-            this.state.inputText=inputText;
+            this.state.value = value;
+            this.state.text = text;
+            this.state.inputText = inputText;
             //更新
             this.setState({
                 value: value,
                 text: text,
-                inputText:inputText
+                inputText: inputText
             })
             this.validate(value);
             //inputText不再向上传了
@@ -217,7 +217,10 @@ export default function (WrappedComponent) {
         onBlur() {
             this.validate(this.state.value);//验证
         }
-  
+        /**
+         * 筛选过滤
+         * @param {*} text 
+         */
         filterHandler(text) {
 
             if (text) {
