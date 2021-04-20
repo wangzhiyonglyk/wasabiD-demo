@@ -111,11 +111,12 @@ export default  {
     * @param {*} columnIndex 真正的列序号
     * @param {*} headerRowIndex 表头的行号
     * @param {*} headerColumnIndex 表头的列号
+    * @param {func} callBack 自定义的回调函数
     * @param {*} value 值
     * @param {*} text 文本值
     * @param {*} name 对字段名
     */
-    rowEditHandler: function (rowIndex, columnIndex,headerRowIndex,headerColumnIndex, value, text, name) {  //编辑时单元格内的表单onchange的监听事件
+    rowEditHandler: function (rowIndex, columnIndex,headerRowIndex,headerColumnIndex, callBack, value, text, name) {  //编辑时单元格内的表单onchange的监听事件
        let  currentHeader=headerRowIndex?this.state.headers[headerRowIndex][headerColumnIndex]:this.state.headers[headerColumnIndex];
         if (currentHeader&&currentHeader.editor && typeof currentHeader.editor.edited === "function") {
             //得到新的一行数据
@@ -132,6 +133,10 @@ export default  {
         }
         else {//属于修改的
             this.state.updatedData.set(this.getKey(rowIndex), this.state.data[rowIndex]);
+        }
+        //自定义的回调函数
+        if(callBack&&typeof callBack=="function"){
+            callBack(value,text,name);
         }
     },
 
@@ -190,7 +195,7 @@ export default  {
                 this.state.updatedData.set(this.getKey(this.state.editIndex), this.state.data[this.state.editIndex]);
             }
             this.setState({
-                editIndex: newEditIndex,
+                editIndex:this.state.editIndex==newEditIndex?null: newEditIndex,//编辑完
                 data: this.state.data,
                 addData: this.state.addData,
                 updatedData: this.state.updatedData

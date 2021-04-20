@@ -15,6 +15,10 @@ let ClickAway= {
 
     bindClickAway () {//绑定事件
         const fn = this.getClickAwayEvent();//得到要执行事件
+        //先解除绑定
+        Events.off(document, 'click', fn);
+        Events.off(document, 'touchstart', fn);
+        //再绑定
         Events.on(document, 'click', fn);
         Events.on(document, 'touchstart', fn);
     },

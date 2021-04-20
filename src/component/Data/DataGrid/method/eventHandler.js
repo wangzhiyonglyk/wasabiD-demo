@@ -61,12 +61,14 @@ export default {
         this.focusIndex = index;//不更新状态值，否则导致频繁的更新
 
     },
-    /**
-     * 单击事件
-     * @param {*} rowIndex 
-     * @param {*} rowData 
-     */
-    onClick: function (rowData, rowIndex, event) {
+  /**
+   * 单击事件
+   * @param {*} rowData 行数据
+   * @param {*} rowIndex 行号
+   * @param {*} columnIndex 列号
+   * @param {*} event 
+   */
+    onClick: function (rowData, rowIndex,columnIndex, event) {
         event.preventDefault();
         event.stopPropagation();
         if (this.props.selectChecked == true) {
@@ -79,7 +81,7 @@ export default {
                 this.onChecked(rowIndex, key);
             }
         }
-        this.props.onClick && this.props.onClick(rowData, rowIndex);//注意参数换了位置,因为早期版本就是这样子
+        this.props.onClick && this.props.onClick(rowData, rowIndex,columnIndex);//
 
     },
     /**
@@ -94,29 +96,36 @@ export default {
             }
         }
     },
+
     /**
      * 双击事件
-     * @param {*} rowData 
-     * @param {*} rowIndex 
+     * @param {*} rowData 行数据
+     * @param {*} rowIndex 行号
+     * @param {*} columnIndex 列号
+     * @param {*} event 
      */
-
-    onDoubleClick: function (rowData, rowIndex, event) {
+    onDoubleClick: function (rowData, rowIndex, columnIndex,event) {
         event.preventDefault();
         event.stopPropagation();
-        if (this.props.onDoubleClick != null) {//如果自定义了,
-            this.props.onDoubleClick(rowData, rowIndex);
-
-        }
-        else if (this.state.editAble) {//没有自定义,允许编辑表格
+        
+         if (this.state.editAble) {//没有自定义,允许编辑表格
             if (this.state.editIndex != null && this.state.editIndex != rowIndex) {//说明上一行编辑完成
                 this.remoteUpdateRow(rowIndex);
             }
-            else {//没有上一行
-                this.setState({
-                    editIndex: rowIndex
-                })
+            else {//没有上一行，或者是还是当前行
+                if(rowIndex==this.state.editIndex){
+                    this.remoteUpdateRow(rowIndex);//本行编辑完成
+                   
+                }
+                else{//设置为编辑状态
+                    this.setState({
+                        editIndex: rowIndex
+                    })
+                }
+                
             }
         }
+        this.props.onDoubleClick(rowData, rowIndex,columnIndex);
     },
 
     /**

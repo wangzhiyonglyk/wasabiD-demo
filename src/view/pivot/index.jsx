@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Select from "../../component/Form/Select"
 import("./index.css")
-import {  Pivot,TreeGrid,Input} from "../../component"
-import api from "../../libs/api"
 class PivotPage extends React.Component {
     constructor(props) {
         super(props);
@@ -13,17 +12,21 @@ class PivotPage extends React.Component {
                     name: "text",
                     label: "省",
                 },
-             
+
             ],
-            data:  [
-                {id:1,pId:"",text: "父节点1", children: [
-                    {id:11,pId:1,text: "子节点11"},
-                    {id:12,pId:1,text: "子节点12"}
-                ]},
-                {id:2,pId:"",text: "父节点2", children: [
-                    {id:21,pId:2,text: "子节点21"},
-                    {id:22,pId:2,text: "子节点22"}
-                ]}
+            data: [
+                {
+                    id: 1, pId: "", name:"good", label:"机构尖", editor:{type:"date"}, text: "父节点1",value:"父节点1", children: [
+                        { id: 11, pId: 1, text: "子节点11", },
+                        { id: 12, pId: 1, text: "子节点12" }
+                    ]
+                },
+                {
+                    id: 2, pId: "", name:"good1",label:"机构尖1", editor:{type:"select"}, text: "父节点2",value:"子节点11", children: [
+                        { id: 21, pId: 2, text: "子节点21" },
+                        { id: 22, pId: 2, text: "子节点22" }
+                    ]
+                }
             ],
             tabs: [{
                 title: "你好"
@@ -37,81 +40,9 @@ class PivotPage extends React.Component {
     componentDidMount() {
 
 
-        setTimeout(() => {
-            this.setState({
-                headers: [
-                    {
-                        name: "province",
-                        label: "省",
-                    },
-                    {
-                        name: "city",
-                        label: "市"
-                    },
-                    {
-                        name: "year",
-                        label: "年"
-                    }, {
-                        name: "sex",
-                        label: "性别"
-                    },
-                    {
-                        name: "income",
-                        label: "收入",
-                        collectName: "平均值",
-                        collectType: "avg"
-
-                    }, {
-                        name: "consume",
-                        label: "消费",
-                        collectName: "平均值",
-                        collectType: "avg"
-
-                    }
-                ],
-                rows: [
-                    {
-                        name: "province",
-                        label: "省",
-                    },
-                    {
-                        name: "city",
-                        label: "市"
-                    }
-                ],
-                columns: [
-                    {
-                        name: "year",
-                        label: "年"
-                    }, {
-                        name: "sex",
-                        label: "性别"
-                    }
-                ],
-                values: [
-                    {
-                        name: "income",
-                        label: "收入",
-                        collectName: "平均值",
-                        collectType: "avg"
-
-                    }, {
-                        name: "consume",
-                        label: "消费",
-                        collectName: "平均值",
-                        collectType: "avg"
-
-                    }
-                ],
-                
-
-            })
-        }, 0)
-
-
     }
     onClick() {
-     
+
         this.refs.rotate.turnIndex(3);
     }
     onDrop(data) {
@@ -123,12 +54,14 @@ class PivotPage extends React.Component {
     }
 
     render() {
-        return  <div style={{padding:20}}>
-              <Input type="select" style={{width:300}} checkStyle="radio" valueField="id" data={this.state.data} multiple={true} simpleData={true}></Input>
-              <Input type="treepicker"  checkStyle="radio" valueField="id" data={this.state.data} multiple={true} simpleData={true}></Input>
-              {/* <Input type="gridpciker" style={{width:300}} checkStyle="radio" valueField="id" data={this.state.data} multiple={true} simpleData={true}></Input> */}
-            {/* <TreeGrid data={this.state.data}  headers={this.state.headers} ></TreeGrid>  */}
+        return <div style={{ padding: 20 }}>
+            <div><Select required={true} removeAble={true} type="select" style={{ width: 300 }} checkStyle="radio" valueField="id" data={this.state.data} multiple={true} simpleData={true}></Select>
             </div>
+            {/* <Input type="daterange" key="1"></Input>
+            <Input type="datetime" key="2"></Input> */}
+        
+            {/* <DataGrid data={this.state.data} headers={this.state.headers}></DataGrid> */}
+        </div>
 
     }
 }

@@ -21,9 +21,10 @@ export default {
         ) {
             return;
         }
-        let cellClassName="wasabi-grid-cell "+(this.props.fixedHeaders.length>0?" nowrap ":"")
+        //如果有固定表头的现象，不能换行，否则对不齐
+        let cellClassName = "wasabi-grid-cell " + (this.props.fixedHeaders.length > 0 ? " nowrap " : "")
         this.state.data.map((rowData, rowIndex) => {
-            if(rowData.hide){//隐藏该行
+            if (rowData.hide) {//隐藏该行
                 return;
             }
             let detailtd = null;//详情列
@@ -40,7 +41,7 @@ export default {
                 }
                 detailtd = <td key={'bodydetail' + rowIndex.toString()} name="wasabi-detail-column" className="wasabi-detail-column">
                     <div className={cellClassName}>
-                        { <i style={{ cursor: "pointer" }} title="详情" className={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)}></i>}
+                        {<i style={{ cursor: "pointer" }} title="详情" className={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)}></i>}
                     </div>
                 </td>
 
@@ -52,7 +53,7 @@ export default {
                 ordertd = (
                     <td key={'bodyorder' + rowIndex.toString()} className="wasabi-order-column" name="wasabi-order-column">
                         <div className={cellClassName}>
-                            { (
+                            {(
                                 (this.state.pageIndex - 1) * this.state.pageSize +
                                 rowIndex +
                                 1
@@ -81,7 +82,7 @@ export default {
                         >
                             <div className={cellClassName}>
 
-                                { <Radio forceChange={true} {...props}></Radio>}
+                                {<Radio forceChange={true} {...props}></Radio>}
                             </div>
                         </td>
                     );
@@ -93,7 +94,7 @@ export default {
                             className='wasabi-check-column'
                         >
                             <div className={cellClassName}>
-                                { <CheckBox forceChange={true} {...props}></CheckBox>}
+                                {<CheckBox forceChange={true} {...props}></CheckBox>}
                             </div>
                         </td>
                     );
@@ -139,7 +140,7 @@ export default {
                 }
                 //内容
                 let content = header.content;
-                if (typeof content === 'string') {
+                if (typeof content === 'string' && content) {
                     //指定的列
                     content = this.substitute(content, rowData);
                 } else if (typeof content === 'function') {
@@ -160,20 +161,11 @@ export default {
                     this.state.editIndex == rowIndex &&
                     header.editor
                 ) {
-                    let currentValue = rowData[header.name];
-                    let currentText = rowData[header.name];
-                    if (typeof header.editor.content === 'function') {
-                        let valueResult = header.editor.content(rowData, rowIndex);
-                        if (valueResult) {
-                            currentValue = valueResult.value;
-                            currentText = valueResult.text;
-                        }
-                    }
                     //处理数据单元格
                     tds.push(
                         <td
-                            onClick={this.onClick.bind(this, rowData, rowIndex)}
-                            onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
+                            onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
+                            onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex, columnIndex)}
                             key={'col-' + rowIndex.toString() + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                             export={"1"}//为了导出时处理数字化的问题
                             className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
@@ -182,14 +174,13 @@ export default {
                                 className={cellClassName}
                                 style={{ textAlign: header.align }}
                             >
-                                { <Input
+                                {<Input
                                     {...header.editor.options}
                                     type={header.editor.type}
                                     name={header.name}
-                                    value={currentValue}
-                                    text={currentText}
-                                    onChange={this.rowEditHandler.bind(this, rowIndex, columnIndex,null, headerColumnIndex )}
-                                    onSelect={this.rowEditHandler.bind(this, rowIndex,columnIndex, null, headerColumnIndex )}
+                                    value={rowData[header.name]}
+                                    onChange={this.rowEditHandler.bind(this, rowIndex, columnIndex, null, headerColumnIndex, headerColumnIndex, header.editor && header.editor.options && header.editor.options.onChange || null)}
+                                    onSelect={this.rowEditHandler.bind(this, rowIndex, columnIndex, null, headerColumnIndex, headerColumnIndex, header.editor && header.editor.options && header.editor.options.onSelect || null)}
                                     label={''}
                                 ></Input>}
                             </div>
@@ -200,12 +191,12 @@ export default {
                         <td
                             export={"1"}//为了导出时处理数字化的问题
                             className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-                            onClick={this.onClick.bind(this, rowData, rowIndex)}
-                            onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
+                            onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
+                            onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex, columnIndex)}
                             key={'col-' + rowIndex.toString() + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                         >
                             <div className={cellClassName}>
-                                { content}
+                                {content}
                             </div>
                         </td>
                     );

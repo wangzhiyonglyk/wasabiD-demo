@@ -138,7 +138,7 @@ export default {
                         //内容
                         let content = header.content;
 
-                        if (typeof content === 'string') {
+                        if (typeof content === 'string'&&content) {
                             //指定的列
                             content = this.substitute(content, rowData);
                         } else if (typeof content === 'function') {
@@ -171,8 +171,8 @@ export default {
                             //处理数据单元格
                             tds.push(
                                 <td
-                                    onClick={this.onClick.bind(this, rowData, rowIndex)}
-                                    onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
+                                    onClick={this.onClick.bind(this, rowData, rowIndex,columnIndex)}
+                                    onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex.columnIndex)}
                                     key={'col-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                                     export={"1"}//为了导出时处理数字化的问题
                                     className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
@@ -187,8 +187,10 @@ export default {
                                             name={header.name}
                                             value={currentValue}
                                             text={currentText}
-                                            onChange={this.rowEditHandler.bind(this, rowIndex,columnIndex, headerRowIndex, headerColumnIndex )}
-                                            onSelect={this.rowEditHandler.bind(this, rowIndex,columnIndex, headerRowIndex, headerColumnIndex)}
+                                            onChange={this.rowEditHandler.bind(this, rowIndex,columnIndex, headerRowIndex,
+                                                 headerColumnIndex,header.editor&&header.editor.options&&header.editor.options.onChange||null )}
+                                            onSelect={this.rowEditHandler.bind(this, rowIndex,columnIndex, headerRowIndex,
+                                                 headerColumnIndex,header.editor&&header.editor.options&&header.editor.options.onSelect||null)}
                                             label={''}//没有描述
                                         ></Input>
                                     </div>
@@ -200,8 +202,8 @@ export default {
                                 <td
                                     export={"1"}//为了导出时处理数字化的问题
                                     className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-                                    onClick={this.onClick.bind(this, rowData, rowIndex)}
-                                    onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex)}
+                                    onClick={this.onClick.bind(this, rowData, rowIndex,columnIndex)}
+                                    onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex,columnIndex)}
                                     key={'col-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                                 >
                                     <div className='wasabi-grid-cell' >

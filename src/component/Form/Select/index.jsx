@@ -6,37 +6,37 @@
  * 下拉框
  */
 import React, { Component } from 'react';
+import PropTypes from "prop-types";
+//libs
 import ClickAway from "../../libs/ClickAway.js";
-import mixins from '../../Mixins/mixins';
-import props from '../config/propType.js';
 import func from "../../libs/func.js";
-import defaultProps from "../config/defaultProps.js";
 import diff from "../../libs/diff.js";
-import _ComboBox from "../baseClass/_ComboBox.jsx";
-import Msg from "../../Info/Msg";
-import WrappedComponent from "./render"
+//mixins
+import mixins from '../../Mixins/mixins';
+
+//hoc
+import _ComboBox from "../baseClass/_ComboBox";
+
+//component
+import Label from "../../Info/Label";
+import ArrowInput from "./ArrowInput"
+import ComboList from "./SelectbleList"
+import("../../Sass/Form/Select.css")
 class Select extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            sortType: "",//排序方式
             rawData: [],//原数据
             data: [],//数据
             show: false,//是否显示下拉框
             value: this.props.value,
             text: this.props.text,
             //在可以自由添加的时候，清除输入，不会清除选择项
-            inputText: this.props.inputText || this.props.text,//输入框的值默认传下来的文本值
+            inputText: this.props.text,//输入框的值默认传下来的文本值
             oldPropsValue: this.props.value,//保存初始化的值
         };
-        this.regValue = this.regValue.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.onBlur = this.onBlur.bind(this);
-        this.filter = this.filter.bind(this);
-        this.addHandler = this.addHandler.bind(this);
-        this.onSelect = this.onSelect.bind(this);
-        this.hidePicker = this.hidePicker.bind(this);
-        this.keyUpHandler = this.keyUpHandler.bind(this);
-        this.clearHandler = this.clearHandler.bind(this);
+
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};
@@ -44,111 +44,26 @@ class Select extends Component {
             newState = {
                 value: props.value,
                 text: props.text,
-                inputText: props.inputText,
                 oldPropsValue: props.value
             }
         }
         if (props.data && props.data instanceof Array && diff(props.data, state.rawData)) {
+            /**
+             * 如原数据发生改变才更新数据源
+             */
             newState.rawData = (props.data);
+
             newState.data = func.clone(props.data)//复制一份
+
         }
         return newState;
     }
     componentDidMount() {
+
         this.registerClickAway(this.hidePicker, this.refs.select);//注册全局单击事件
     }
-    showPicker() {
-
-        //显示下拉选项
-        if (this.props.readOnly) {
-            return;
-        }
-        this.setState({
-            show: true
-        });
-        this.props.onClick && this.props.onClick();
-        this.bindClickAway();//绑定全局单击事件
-    }
-    hidePicker(event) {
-        this.setState({
-            show: false
-        });
-        try {
-            this.refs.label.hideHelp(); //隐藏帮助信息
-        }
-        catch (e) {
-
-        }
-        this.unbindClickAway();//卸载全局单击事件
-    }
-    onSelect(value, text, row) {
-        if (value) {
-            //选中事件
-            let newValue = [], newText = [];
-            let inputText = [];
-            if (this.props.multiple) {//多选
-                if (this.state.value) {
-                    newValue = this.state.value ? this.state.value.toString().split(',') : [];
-                    newText = this.state.text ? this.state.text.toString().split(',') : [];
-                    inputText = this.state.inputText ? this.state.inputText.split(",") : [];
-                }
-                if (newValue.indexOf(value.toString()) > -1) {
-                    //取消选中
-                    newValue.splice(newValue.indexOf(value.toString()), 1);
-                    newText.splice(newText.indexOf(text.toString()), 1);
-                    let findIndex = inputText.findIndex(item => item == value || item == text);
-                    if (findIndex > -1) {//输入框可能不含有
-                        inputText.splice(findIndex, 1);
-                    }
-
-                }
-                else {//选中
-                    newValue.push(value);
-                    newText.push(text);
-                    inputText.push(text);
-                }
-                this.setState({
-                    inputText: inputText.join(","),
-                    value: newValue.join(","),
-                    text: newText.join(",")
-                });
-                /**
-        * 注意了，这里多了一个inputText值
-        */
-                this.props.onSelect && this.props.onSelect(newValue.join(","), newText.join(","), this.props.name, row, inputText.join(","));
 
 
-            } else {
-                newValue = value;
-                newText = text;
-                this.setState({
-                    show: false,
-                    value: newValue.join,
-                    text: newText,
-                    inputText: newText
-                });
-                /**
-           * 注意了，这里多了一个inputText值
-           */
-                this.props.onSelect && this.props.onSelect(newValue, newText, this.props.name, row, inputText);
-            }
-
-
-        }
-        else {
-            Msg.info("值是空值");
-        }
-
-    }
-    /**
-     * 失去焦点
-     * @param {*} event 
-     */
-    onBlur(event) {
-        // this.addHandler(event);
-        // this.props.onBlur && this.props.onBlur();
-
-    }
     /**
      * 键盘事件
      * @param {*} event 
@@ -167,21 +82,25 @@ class Select extends Component {
      */
     addHandler(event) {
         let formatValue = this.regValue(event);
+        let newValue = this.state.value ? this.state.value.toString().split(",") : [];
+        let newText = this.state.text ? this.state.text.toString().split(",") : [];
         ////如果允许添加，则把未匹配的，添加到数据源中
         if (this.props && (this.props.addAbled || this.props.addAble) && formatValue.length > 0) {
+            //允许添加，并且输入有值
             let filterData = this.filter(event);//筛选数据
             /**
              * 注意了
              * 添加时不能把旧的选择删除了
-             * 新选择中的值与文本,
+             * 新增选择中的值与文本,
              */
-            let newValue = this.state.value ? this.state.value.split(",") : [];
-            let newText = this.state.text ? this.state.text.split(",") : [];
+
             let addItems = [];//需要追加的数据项
             for (let i = 0; i < formatValue.length; i++) {
+                //先从精确匹配的数据查找
                 let findIndex = filterData.absFilter.findIndex(item => item.value == formatValue[i] || item.text == formatValue[i]);
+                //精确匹配的肯定不是追加项
                 if (findIndex > -1) {
-                    //已经存在,不追加到数据中，但是要判断选中的值是否存在
+                    //已经存在,不追加到数据中，但是要判断选中的值与文本是否都区别，防止用户输入的是值或者文本
                     if (newValue.findIndex(item => item == formatValue[i]) > -1) {//存在了
 
                     }
@@ -189,14 +108,12 @@ class Select extends Component {
 
                     }
                     else {
-                        //
-
+                        //不存在，添加
                         newValue.push(formatValue[i]);
                         newText.push(formatValue[i]);
                     }
                 }
                 else {
-
                     ////追加新的数据项
                     addItems.push({
                         value: formatValue[i],
@@ -210,12 +127,13 @@ class Select extends Component {
 
             }
             this.setState({
-                value: newValue.length > 0 ? newValue.join(",") : formatValue.join(","),
-                text: newValue.length > 0 ? newText.join(",") : formatValue.join(","),
+                value: newValue.join(","),
+                text: newText.join(","),
                 data: [].concat(addItems, filterData.absFilter, filterData.dimFilter, filterData.undimFilter)//先添加的荐放在最前面，模糊的次之，非模糊居后
             })
-            //todo 这里传row参数有问题，需要修改
-            this.props.onSelect && this.props.onSelect(newValue.length > 0 ? newValue.join(",") : formatValue.join(","), newValue.length > 0 ? newText.join(",") : formatValue.join(","), this.props.name, [], this.state.inputText);
+
+            this.props.onSelect && this.props.onSelect(newValue.join(","), newText.join(","),
+                this.props.name, [{ text: newText.join(","), value: newValue.join(",") }]);
 
 
         }
@@ -272,20 +190,8 @@ class Select extends Component {
         }
     }
     /**
-     * onchage
-     * @param {*} event 
-     */
-    onChange(event) {
-        let filterData = this.filter(event);//筛选
-        this.setState({
-            show: true,
-            inputText: event.target.value,
-            data: [].concat(filterData.absFilter, filterData.dimFilter, filterData.undimFilter),
-        })
-    }
-    /**
-     * 格式化输入
-     */
+    * 格式化输入
+    */
     regValue(event) {
         let formatValue = event.target.value.trim().replace(/[，|]/g, ",");//除去空格，替换汉字逗号，及用|作为分隔符，为英文逗号
         // todo 后期改用正则,再次除去每一个的两端空格，但是不除去文字内部空格
@@ -297,35 +203,333 @@ class Select extends Component {
         });
         return formatValue;
     }
+
     /**
-     * 全部清除
+     * 显示下拉框
+     * @returns 
      */
-    clearHandler() {
+    showPicker() {
+
+        //显示下拉选项
+        if (this.props.readOnly) {
+            return;
+        }
+        this.setState({
+            show: true
+        });
+        this.bindClickAway();//绑定全局单击事件
+    }
+    /**
+     * 隐藏下拉框
+     * @param {*} event 
+     */
+    hidePicker(event) {
+        this.setState({
+            show: false
+        });
+        try {
+            this.refs.label.hideHelp(); //隐藏帮助信息
+            this.unbindClickAway();//卸载全局单击事件
+            //在此处处理失去焦点事件
+            this.props.onBlur && this.props.onBlur(this.state.value,this.state.text,this.props.name);
+        }
+        catch (e) {
+
+        }
+
+    }
+    /***
+     * 
+     */
+    onClick(event) {
+        this.showPicker();
+        this.props.onClick && this.props.onClick(event);
+    }
+    /**
+     * 选择事件
+     * @param {*} value 值
+     * @param {*} text 文本
+     * @param {*} row 此行数据
+     */
+    onSelect(value, text, row) {
+        if (value) {
+            //选中事件
+            let newValue = [], newText = [];
+            let inputText = [];
+            if (this.props.multiple) {//多选
+                if (this.state.value) {
+                    newValue = this.state.value ? this.state.value.toString().split(',') : [];
+                    newText = this.state.text ? this.state.text.toString().split(',') : [];
+                    inputText = this.state.inputText ? this.state.inputText.split(",") : [];
+                }
+                if (newValue.indexOf(value.toString()) > -1) {
+                    //取消选中
+                    newValue.splice(newValue.indexOf(value.toString()), 1);
+                    newText.splice(newText.indexOf(text.toString()), 1);
+                    let findIndex = inputText.findIndex(item => item == value || item == text);
+                    if (findIndex > -1) {//输入框可能不含有
+                        inputText.splice(findIndex, 1);
+                    }
+
+                }
+                else {//选中
+                    newValue.push(value);
+                    newText.push(text);
+                    inputText.push(text);
+                }
+                this.setState({
+                    inputText: inputText.join(","),
+                    value: newValue.join(","),
+                    text: newText.join(",")
+                });
+                /**
+        * 注意了，这里多了一个inputText值
+        */
+                this.props.onSelect && this.props.onSelect(newValue.join(","), newText.join(","), this.props.name, row);
+
+
+            } else {
+                newValue = value;
+                newText = text;
+                this.setState({
+                    show: false,
+                    value: newValue.join,
+                    text: newText,
+                    inputText: newText
+                });
+                /**
+           * 注意了，这里多了一个inputText值
+           */
+                this.props.onSelect && this.props.onSelect(newValue, newText, this.props.name, row);
+            }
+
+
+        }
+        else {
+            Msg.info("值是空值");
+        }
+
+    }
+    /**
+     * onchage 事件
+     * @param {*} event 
+     */
+    onChange(event) {
+        let filterData = this.filter(event);//筛选数据
+        this.setState({
+            show: true,
+            inputText: event.target.value.trim(),
+            data: [].concat(filterData.absFilter, filterData.dimFilter, filterData.undimFilter),
+        })
+        this.props.onChange && this.props.onChange(event.target.value.trim());
+    }
+    /**
+   * 全部清除
+   */
+    onClear(event) {
+        /**
+         * 此处因为要清除inputText，不可以直接调用父组件的
+         */
         this.setState({
             inputText: "",
             value: "",
-            text: ""
+            text: "",
+            show: true,
         })
-        this.props.clearHandler && this.props.clearHandler();
+        this.props.onChange && this.props.onChange("", event);
+
+    }
+    /**
+     * 移除某个节点
+     */
+    onRemove(index) {
+        let data = this.state.data;
+        data.splice(index, 1);
+        this.setState({
+            data: data
+        })
+    }
+    /**
+     * 排序
+     */
+    onSort() {
+        let data = this.state.data;
+        let sortType = this.state.sortType;
+        if (data && data.length > 0) {
+            data.sort((second, first) => {
+                let secondProp = second[this.props.valueField] || second.value;
+                let firstProp = first[this.props.valueField] || first.value;
+                if (secondProp > firstProp) {
+                    return sortType == "asc" ? 1 : -1;
+                }
+                else if (secondProp < firstProp) {
+                    return sortType == "asc" ? -1 : 1;
+                }
+                else {
+                    return 0;
+                }
+            })
+
+            this.setState({
+                show: true,
+                data: data,
+                sortType: sortType == "asc" ? "desc" : "asc"
+            })
+        }
     }
     render() {
-        return <WrappedComponent {...this.props} {...this.state}
-            showPicker={this.showPicker.bind(this)}
-            hidePicker={this.hidePicker.bind(this)}
-            onSelect={this.onSelect.bind(this)}
-            onBlur={this.onBlur.bind(this)}
-            keyUpHandler={this.keyUpHandler.bind(this)}
-            addHandler={this.addHandler.bind(this)}
-            filter={this.filter.bind(this)}
-            onChange={this.onChange.bind(this)}
-            regValue={this.regValue.bind(this)}
-            clearHandler={this.clearHandler.bind(this)}
-        ></WrappedComponent>
+        {
+            let componentClassName = "wasabi-form-group " + (this.props.className || "") + " ";//组件的基本样式 
+            let style = this.props.style
+                ? JSON.parse(JSON.stringify(this.props.style))
+                : {};
+            if (this.props.hide) {
+                style.display = 'none';
+            } else {
+                style.display = 'flex';
+            }
+
+            return (
+                <div
+                    className={componentClassName + " " + this.props.validateClass}
+                    ref="select"
+                    style={style}
+                >
+                    <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} help={this.props.help} required={this.props.required}>{this.props.label}</Label>
+                    <div className={'wasabi-form-group-body' + (this.props.readOnly || this.props.disabled ? " readOnly" : "")}>
+                        <div className={'combobox wasabi-select'}>
+                            <ArrowInput
+                                value={this.state.inputText}
+                                addAble={this.props.addAble}
+                                /**兼容旧版本 */
+                                addAbled={this.props.addAbled}
+                                name={this.props.name}
+                                rotate={this.state.show}
+                                title={this.props.title}
+                                placeholder={this.props.placeholder}
+                                sortType={this.state.sortType}
+                                readOnly={this.props.readOnly}
+                                onChange={this.onChange.bind(this)}
+                                onClear={this.onClear.bind(this)}
+                                onKeyUp={this.keyUpHandler.bind(this)}
+                              
+                                onClick={this.onClick.bind(this)}
+                                onSort={this.onSort.bind(this)}
+                            ></ArrowInput>
+                            <ComboList
+                                show={this.state.show}
+                                value={this.state.value}
+                                data={this.state.data}
+                                removeAble={this.props.removeAble}
+                                onSelect={this.onSelect.bind(this)}
+                                onRemove={this.onRemove.bind(this)}
+                            ></ComboList>
+
+                        </div>
+                        <small
+                            className={'wasabi-help-block '}
+                            style={{
+                                display:
+                                    this.props.inValidateText && this.props.inValidateText != ''
+                                        ? this.props.inValidateShow
+                                        : 'none'
+                            }}
+                        >
+                            <div className='text' >{this.props.inValidateText}</div>
+                        </small>
+                    </div>
+                </div>
+            );
+        }
     }
 
 }
-Select.propTypes = props;
-Select.defaultProps = Object.assign(defaultProps, { type: "select" });
+Select.propTypes = {
+      //公共属性
+    type: PropTypes.string,//字段类型，
+    name: PropTypes.string,//字段名
+    label: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.element, PropTypes.node]),//字段文字说明属性
+    title: PropTypes.string,//提示信息
+    help: PropTypes.string,//帮助信息
+
+    //基础属性
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool]),//默认值,
+    text: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//默认文本值
+    placeholder: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//输入框预留文字
+    readOnly: PropTypes.bool,//是否只读
+    required: PropTypes.bool,//是否必填
+    hide: PropTypes.bool,//是否隐藏
+    regexp: PropTypes.string,//正则表达式
+    invalidTip: PropTypes.string,//无效时的提示字符
+    style: PropTypes.object,//自定义style
+    className: PropTypes.string,//自定义class
+
+    //其他属性 text
+    min: PropTypes.number,//最小值,最小长度,最少选项
+    max: PropTypes.number,//最大值,最大长度,最多选项
+    onClick: PropTypes.func,//单击事件
+    onChange: PropTypes.func,//值改变事件
+
+    //其他属性 combobox
+    contentType: PropTypes.string,//http请求的request类型
+    httpHeader: PropTypes.object,//http请求的头部
+    multiple: PropTypes.bool,//是否允许多选
+    valueField: PropTypes.string,//数据字段值名称
+    textField: PropTypes.string,//数据字段文本名称
+    url: PropTypes.string,//ajax的后台地址
+    params: PropTypes.object,//查询参数
+    dataSource: PropTypes.string,//ajax的返回的数据源中哪个属性作为数据源,为null时直接后台返回的数据作为数据源
+    data: PropTypes.array,//自定义数据源
+    sortAble: PropTypes.bool,//是否允许排序
+    onSelect: PropTypes.func,//选中后的事件，回传，value,与text,data
+    addAbled: PropTypes.bool,//select是否可以添加数据.todo 旧版本
+    addAble: PropTypes.bool,//select是否可以添加数据
+    removeAble: PropTypes.bool,//select 是否可以删除
+
+};
+Select.defaultProps = {
+    //公共属性
+    type: "select",
+    name: "",
+    label: null,
+    title: null,
+    help: "",
+ 
+    //基础属性
+    value: "",
+    text: "",
+    placeholder: "",
+    readOnly: false,
+    required: false,
+    hide: false,
+    regexp: null,
+    invalidTip: null,
+    style: {},
+    className: "",
+
+    //其他属性 text
+    min: null,
+    max: null,
+    onClick: null,
+    onChange: null,
+
+
+    //其他属性 combobox
+    contentType: "",//http的request的数据类型
+    httpHeader: null,
+    multiple: false,
+    valueField: "value",
+    textField: "text",
+    url: null,
+    params: null,
+    dataSource: "data",
+    data: null,
+    sortAble: true,
+    onSelect: null,
+    addAbled: true,//旧版本
+    addAble: true,
+
+}
 mixins(Select, [ClickAway]);
 export default _ComboBox(Select);
 

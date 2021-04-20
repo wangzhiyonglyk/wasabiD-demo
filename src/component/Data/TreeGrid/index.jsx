@@ -23,22 +23,22 @@ class TreeGrid extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value:this.props.value,
-            headers:this.props.headers,
+            value: this.props.value,
+            headers: this.props.headers,
             url: this.props.url,
-            params:null,
+            params: null,
             rawData: [],
             rowsTreeData: [],
             realGridData: [],
-            loadData:false,
+            loadData: false,
         }
-        this.loadData=this.loadData.bind(this);
-        this.loadSuccess=this.loadSuccess.bind(this);
-        this.loadError=this.loadError.bind(this);
+        this.loadData = this.loadData.bind(this);
+        this.loadSuccess = this.loadSuccess.bind(this);
+        this.loadError = this.loadError.bind(this);
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};
-      
+
         if (props.url && props.params &&
             diff(props.params, state.params)) {//如果有url
             newState = {
@@ -93,10 +93,10 @@ class TreeGrid extends Component {
         if (this.state.reloadData) {
             this.setState({
                 reloadData: false
-            },()=>{
+            }, () => {
                 this.loadData(this.state.url, this.state.params);
             })
-        
+
         }
     }
     componentDidMount() {
@@ -113,7 +113,7 @@ class TreeGrid extends Component {
                 //否则默认
 
                 fetchmodel.contentType = this.props.contentType;
-                fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data? JSON.stringify(fetchmodel.data) :"{}": fetchmodel.data;
+                fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
             }
             type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
             console.log("treegrid-fetch", fetchmodel);
@@ -121,45 +121,45 @@ class TreeGrid extends Component {
 
     }
     loadSuccess(data) {//数据加载成功
-        let  realData = data;
-        let realTreeData=[];
-        let realGridData=[];
+        let realData = data;
+        let realTreeData = [];
+        let realGridData = [];
         if (this.props.dataSource == null) {
         }
         else {
             realData = func.getSource(data, this.props.dataSource);
         }
         //根据value值拿到text
-        let result = propsTran.setComboxValueAndText("tree", this.state.value,realData,this. props.idField, this.props.textField);
-       
+        let result = propsTran.setComboxValueAndText("tree", this.state.value, realData, this.props.idField, this.props.textField);
+
         if (this.props.simpleData) {
             //生成树结构
-            realTreeData = func.toTreeData(result.data, this. props.idField, this. props.parentField, this. props.textField)
+            realTreeData = func.toTreeData(result.data, this.props.idField, this.props.parentField, this.props.textField)
 
         }
 
-         /**
-             *为了保存顺序，要根据树的数据，生成表格的数据 
-             */
-             let gridpush = (data) => {
-                let result = [];
-                if (data && data instanceof Array) {
-                    for (let i = 0; i < data.length; i++) {
-                        result.push(data[i]);
-                        if (data[i].children && data[i].children.length > 0) {
-                            result = result.concat(gridpush(data[i].children));
-                        }
+        /**
+            *为了保存顺序，要根据树的数据，生成表格的数据 
+            */
+        let gridpush = (data) => {
+            let result = [];
+            if (data && data instanceof Array) {
+                for (let i = 0; i < data.length; i++) {
+                    result.push(data[i]);
+                    if (data[i].children && data[i].children.length > 0) {
+                        result = result.concat(gridpush(data[i].children));
                     }
                 }
-                return result;
             }
-            if (realTreeData) {
-              realGridData = gridpush(realTreeData);
-            }  
+            return result;
+        }
+        if (realTreeData) {
+            realGridData = gridpush(realTreeData);
+        }
         this.setState({
             realTreeData: realTreeData,
-            realGridData:realGridData,
-            text:result.text,
+            realGridData: realGridData,
+            text: result.text,
         })
     }
 
@@ -175,7 +175,7 @@ class TreeGrid extends Component {
      * @param {*} rowIndex 
      */
     dataGridClick(rowData, rowIndex) {
-       
+
         this.refs.tree._setClickNode(rowData[this.props.idField || "id"]);
 
         this.props.onClick && this.props.onClick(rowData);
@@ -204,7 +204,7 @@ class TreeGrid extends Component {
         this.props.onChecked && this.props.onChecked(checked, row);
     }
 
-   
+
     /**
      * 树展开与折叠事件
      * @param {*} open 是否展开
@@ -213,29 +213,29 @@ class TreeGrid extends Component {
      * @param {*} children  子节点
      * @param {*} row 当前行节点
      */
-     expandHandler(open,id,text,children,row){
-       
-      let realGridData=propsTran.gridShowOrHideData(this.state.realGridData,open,children);
-     
-       this.setState({
-           realGridData:realGridData
-       })
+    expandHandler(open, id, text, children, row) {
+
+        let realGridData = propsTran.gridShowOrHideData(this.state.realGridData, open, children);
+
+        this.setState({
+            realGridData: realGridData
+        })
     }
     /**
      * 获取勾选的数据
      * @returns 
      */
-    getChecked(){
+    getChecked() {
         return this.refs.tree.getChecked();
     }
     /**
      * 强制刷新
      */
-    reload(){
-        this.loadData(this.state.url,this.state.params);
+    reload() {
+        this.loadData(this.state.url, this.state.params);
     }
     render() {
-  
+
         let treeTop = 0;
         if (this.state.headers instanceof Array && this.state.headers.length > 0) {
             if (this.state.headers[0] instanceof Array) {
@@ -249,10 +249,10 @@ class TreeGrid extends Component {
         return <div className="wasabi-treegrid">
             <div className="wasabi-treegrid-left">
                 <div className="wasabi-treegrid-configuration" style={{ height: treeTop }}>
-                  
+                        {this.props.treeHeader}
                 </div>
                 <div className="wasabi-treegrid-rowsData" >
-                    <Tree  checkAble={this.props.checkAble} checkStyle={this.props.checkStyle} ref="tree"  onClick={this.treeClick.bind(this)} data={this.state.realTreeData} simpleData={true}
+                    <Tree checkAble={this.props.checkAble} checkStyle={this.props.checkStyle} ref="tree" onClick={this.treeClick.bind(this)} data={this.state.realTreeData} simpleData={true}
                         onChecked={this.onChecked.bind(this)} isPivot={true} expandHandler={this.expandHandler.bind(this)}
                     ></Tree>
                 </div>

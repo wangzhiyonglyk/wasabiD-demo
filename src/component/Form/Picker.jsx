@@ -547,7 +547,10 @@ class Picker extends Component {
                     <div className="combobox"     >
                         <i className={"combobox-clear icon-clear"} onClick={this.props.clearHandler} style={{ display: this.props.readOnly ? "none" : (this.state.value == "" || !this.state.value) ? "none" : "inline" }}></i>
                         <i className={"comboxbox-icon icon-drop-down " + (this.state.show ? "rotate" : "")} onClick={this.showPicker.bind(this)}></i>
-                        <input type="text" {...inputProps} value={this.state.text} onBlur={this.props.onBlur} onClick={this.showPicker.bind(this)} autoComplete="off" onChange={this.changeHandler} />
+                        <input type="text"
+                         {...inputProps}
+                          value={this.state.text} 
+                          onBlur={this.props.onBlur} onClick={this.showPicker.bind(this)} autoComplete="off" onChange={this.changeHandler} />
                         <div className={"dropcontainter  picker "} style={{ display: this.state.show == true ? "block" : "none" }}   >
                             {this.renderHot()}
                             <ul className="wrap" >

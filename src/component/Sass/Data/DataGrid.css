@@ -15,7 +15,7 @@
   padding:0px;
   min-height:0px;
   margin:0px;
-  height: 20px;
+  height: 40px;
   min-width: 0px;
 }
 .wasabi-grid .wasabi-checkul
@@ -116,38 +116,17 @@
 背景颜色
 */
 
-.wasabi-grid .table > tbody > tr:nth-of-type(odd) {
-  background-color: #fafafa;
-}
-.wasabi-pivot .wasabi-grid .table > tbody > tr:nth-of-type(odd) {
-  background-color: white;
-}
-.wasabi-treegrid .wasabi-grid .table > tbody > tr:nth-of-type(odd) {
-  background-color: white;
-}
 .wasabi-grid .table > tbody > tr.selected {
-  background-color: #fbec88;
-  /* border: 1px solid #fad42e; */
+  background-color: #fafafa;
   color: #409eff;
  }
 
- .wasabi-pivot  .wasabi-grid .table > tbody > tr.selected {
-  background-color: #f5f7fa;
-  color: #409eff;
- }
- 
- .wasabi-treegrid  .wasabi-grid .table > tbody > tr.selected {
-  background-color: #f5f7fa;
-  color: #409eff;
- }
 /*
 单元格样式
 */
 .wasabi-grid .wasabi-grid-cell{
   width: 100%;
-  box-sizing:border-box;
-  white-space: pre-wrap;
-  word-break: break-all;
+  box-sizing:border-box;  
   min-height: 20px;
   cursor: pointer;
 
@@ -164,6 +143,10 @@
 }
 .wasabi-treegrid .wasabi-grid .wasabi-grid-cell{
   overflow: hidden;
+  white-space:nowrap;;
+  text-overflow: ellipsis;
+}
+.wasabi-propertygrid .wasabi-grid .wasabi-grid-cell{
   white-space:nowrap;;
   text-overflow: ellipsis;
 }

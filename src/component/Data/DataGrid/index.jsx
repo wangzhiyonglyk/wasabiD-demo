@@ -48,14 +48,14 @@ import('../../Sass/Data/DataGrid.css');
 import('../../Sass/Data/DataGridDetail.css');
 class DataGrid extends Component {
     constructor(props) {
-        super(props); 
+        super(props);
         this.containerWidth = 0;//表格的宽度 
         this.state = {
             gridcontainerid: func.uuid(),
             realTableid: func.uuid(),
             url: this.props.url,
             params: 1, //参数
-            rawParams:null,//保留旧的，用于对比
+            rawParams: null,//保留旧的，用于对比
             pageIndex: this.props.pageIndex,//页号
             pageSize: this.props.pageSize,//分页大小
             sortName: this.props.sortName,//排序名称
@@ -76,7 +76,7 @@ class DataGrid extends Component {
             checkedIndex: new Map(),//勾选的下标
             detailView: null, //详情行,
             detailIndex: null, //显示详情的行下标
-            total:0, //总记录数
+            total: 0, //总记录数
             loading: this.props.url ? true : false, //显示正在加载图示
             footer: this.props.footer, //页脚
             updateUrl: this.props.updateUrl,
@@ -105,7 +105,7 @@ class DataGrid extends Component {
             newState = {
                 reloadData: true,
                 url: props.url,
-                rawParams:func.clone(props.params),
+                rawParams: func.clone(props.params),
                 params: func.clone(props.params),
             }
         }
@@ -188,26 +188,26 @@ class DataGrid extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         //重新加数据
         if (this.state.reloadData) {
-         
+
             this.setState({
                 reloadData: false,
             })
             this.reload();
         }
         if (this.state.headerChange) {//表头发生了改变
-        
+
             this.setState({
                 headerChange: false,
-            },()=>{
+            }, () => {
                 setTimeout(() => {
-                this.computeHeaderStyleAndColumnWidth();
-                },100);
+                    this.computeHeaderStyleAndColumnWidth();
+                }, 100);
             })
         }
         //处理出现纵向滚动条而导致宽度的变化导致在计算宽度出现点横向滚动条，延迟一点，防止没有获取成功
         setTimeout(() => {
             this.containerWidth = document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
-            if (this.containerWidth > 0 && this.tableWidth - this.containerWidth <= 20 && this.tableWidth - this.containerWidth >=1) {//滚动条的原因
+            if (this.containerWidth > 0 && this.tableWidth - this.containerWidth <= 20 && this.tableWidth - this.containerWidth >= 1) {//滚动条的原因
 
                 this.computeHeaderStyleAndColumnWidth();
 
@@ -278,7 +278,7 @@ class DataGrid extends Component {
                                     }
                                     this.releaseWidth = this.releaseWidth - parseFloat(this.state.headers[i][j].width);
                                     this.releaseColumn++;
-                                  
+
                                 }
                                 catch (e) {
                                     console.error("宽度设置错误", e);
@@ -286,23 +286,23 @@ class DataGrid extends Component {
 
                             }
                             else {
-                                if(this.props.isPivot){
+                                if (this.props.isPivot) {
                                     //如果是交叉表，则自动计算宽度
-                                   let headerlabel= this.state.headers[i][j].label.split("");
-                                   let width=0;
-                                   for(let i=0;i<headerlabel.length;i++){
-                                    let  reg = new RegExp("[\\u4E00-\\u9FFF]+","g");
-                                    if(reg.test(headerlabel[i])){
-                                        width+=20;//汉字20个像素
+                                    let headerlabel = this.state.headers[i][j].label.split("");
+                                    let width = 0;
+                                    for (let i = 0; i < headerlabel.length; i++) {
+                                        let reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
+                                        if (reg.test(headerlabel[i])) {
+                                            width += 20;//汉字20个像素
+                                        }
+                                        else {
+                                            width += 10;
+                                        }
                                     }
-                                    else{
-                                        width+=10;
-                                    }
-                                   }
-                                   this.state.headers[i][j].width=width;//设置宽度
-                                   this.tableWidth += this.state.headers[i][j].width;//计算表格宽度
-                                   this.releaseWidth = this.releaseWidth -width;
-                                   this.releaseColumn++;
+                                    this.state.headers[i][j].width = width;//设置宽度
+                                    this.tableWidth += this.state.headers[i][j].width;//计算表格宽度
+                                    this.releaseWidth = this.releaseWidth - width;
+                                    this.releaseColumn++;
                                 }
                             }
                         }
@@ -337,13 +337,13 @@ class DataGrid extends Component {
 
                         }
                         else {
-                            if(this.props.isPivot){
+                            if (this.props.isPivot) {
                                 //如果是交叉表，则自动计算宽度
-                                let width= func.charWidth( this.state.headers[i].label);
-                               this.state.headers[i].width=width;//设置宽度
-                               this.tableWidth += this.state.headers[i].width;//计算表格宽度
-                               this.releaseWidth = this.releaseWidth -width;
-                               this.releaseColumn++;
+                                let width = func.charWidth(this.state.headers[i].label);
+                                this.state.headers[i].width = width;//设置宽度
+                                this.tableWidth += this.state.headers[i].width;//计算表格宽度
+                                this.releaseWidth = this.releaseWidth - width;
+                                this.releaseColumn++;
                             }
                         }
                     }
@@ -370,8 +370,8 @@ class DataGrid extends Component {
             if (this.releaseColumn) {//防止有0的情况
                 try {
                     this.perColumnWidth = parseInt((this.releaseWidth) / this.releaseColumn);//得到剩余要分配的列的平均宽度
-              
-                    this.tableWidth +=  this.perColumnWidth*this.releaseColumn;//得到表格的宽度
+
+                    this.tableWidth += this.perColumnWidth * this.releaseColumn;//得到表格的宽度
                 }
                 catch (e) {
                     console.error("计算宽度报错", e);
@@ -381,9 +381,9 @@ class DataGrid extends Component {
             if (this.fixedreleaseColumn) {//还有剩下的列
                 this.fixedTableWidth += this.fixedreleaseColumn * this.perColumnWidth;
             }
-           
-            if(this.props.isPivot&& this.tableWidth<this.containerWidth){//如果是交叉表，防止计算出列的宽度后小于容器的宽度，造成页面丑
-                this.tableWidth=this.containerWidth;
+
+            if (this.props.isPivot && this.tableWidth < this.containerWidth) {//如果是交叉表，防止计算出列的宽度后小于容器的宽度，造成页面丑
+                this.tableWidth = this.containerWidth;
             }
             this.setState({
 
@@ -434,7 +434,7 @@ DataGrid.propTypes = {
     editAble: PropTypes.bool, //是否允许编辑
     clearChecked: PropTypes.bool, //刷新数据后是否清除选择,true
     selectChecked: PropTypes.bool, //选择行的时候是否同时选中,false
-    exportAble:PropTypes.bool,//是否允许导出
+    exportAble: PropTypes.bool,//是否允许导出
 
 
     /**
@@ -468,7 +468,7 @@ DataGrid.propTypes = {
     contentType: PropTypes.string,//请求的参数传递类型
     httpHeaders: PropTypes.object,//请求的头部
     params: PropTypes.object, //查询条件
-    uploadUrl:PropTypes.string,//excel导入的时候地址
+    uploadUrl: PropTypes.string,//excel导入的时候地址
 
     /**
      * 数据源
@@ -491,7 +491,7 @@ DataGrid.propTypes = {
     /**
      * pivot 专门为交叉提供的属性
      */
-    isPivot:PropTypes.bool,//是否是交叉表，需要设置最小宽度
+    isPivot: PropTypes.bool,//是否是交叉表，需要设置最小宽度
 };
 DataGrid.defaultProps = {
     /**
@@ -508,7 +508,7 @@ DataGrid.defaultProps = {
     editAble: false,
     clearChecked: true, //是否清空选择的
     selectChecked: true,
-    exportAble:true,
+    exportAble: true,
 
     /**
     * 分页
@@ -539,7 +539,7 @@ DataGrid.defaultProps = {
     contentType: "application/x-www-form-urlencoded",
     httpHeaders: {},//http请求的头部字段
     params: null,
-    uploadUrl:null,
+    uploadUrl: null,
     /**
       * 数据源
       */
@@ -557,10 +557,10 @@ DataGrid.defaultProps = {
     updateHandler: null,
     detailHandler: null,
     pasteSuccess: null,
-     /**
-     * pivot 专门为交叉提供的属性
-     */
-    isPivot:false,
+    /**
+    * pivot 专门为交叉提供的属性
+    */
+    isPivot: false,
 };
 
 mixins(DataGrid, [ClickAway, render, SingleHeader, ComplexHeader, ColGroup, SingleBody, ComplexBody, eventHandler, editHandler, staticMethod, pasteExtend]);

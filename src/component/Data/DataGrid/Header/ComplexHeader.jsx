@@ -54,7 +54,7 @@ export default {
                             ) : null;
                         //内容
                         let content = header.headerContent;//自定义内容
-                        if (typeof content === 'string') {
+                        if (typeof content === 'string'&&content) {
                             //指定的列
                             content = this.substitute(content, rowData);
                         } else if (typeof content === 'function') {

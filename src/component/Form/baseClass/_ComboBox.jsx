@@ -4,44 +4,34 @@
  */
 
 import React, { Component } from "react";
-import FetchModel from "../../Model/FetchModel.js";
-
 import propsTran from "../../libs/propsTran"
 import func from "../../libs/func.js";
 import diff from "../../libs/diff.js";
-import Msg from "../../Info/Msg.jsx";
+
 import props from "../config/propType.js";
 import defaultProps from "../config/defaultProps.js";
 import validate from "../../Mixins/validate.js";
 import mixins from '../../Mixins/mixins';
+import _loadData from "./_loadData"
 import("../../Sass/Form/Input.css");
 import("../../Sass/Form/Check.css");
-
+import("../../Sass/Form/ComboBox.css")
 export default function (WrappedComponent) {
     class _ComboBox extends Component {
         constructor(props) {
             super(props);
-            let idOrValueField = this.props.type == "treepicker" ? this.props.idField : this.props.valueField;//如果是下拉树，则取id
-            //对传来的数据进行格式化
-            let newData = propsTran.setComboxValueAndText(this.props.type, this.props.value, this.props.data, idOrValueField, this.props.textField);
-            let realData;
-            if (this.props.type == "picker" && this.props.simpleData) {//如果是简单数据类型
-                realData = func.toTreeData(newData.data, this.props.valueField || this.props.idField || "id", this.props.parentField || "pId", this.props.textField)
-            } else {
-                //treepicker在tree组件处理了
-                realData = newData.data;
-            }
+
+
             this.state = {
                 type: this.props.type,
                 url: this.props.url,//传来的url
                 params: func.clone(this.props.params),//参数
-                oldPropsValue: this.props.value,//保存用于判断是否通过父组件强制更新值
-                rawData: this.props.data,//原始数据,用于判断是否通过父组件强制更新数据源
-                data: realData,
-                filterData: null,//筛选后的数据
-                value: this.props.value,
-                text: newData && newData.text && newData.text.join(","),
-                inputText: newData && newData.text && newData.text.join(","),//专门用于下拉框可以手动输入的情况
+                oldPropsValue: "",//保存用于判断是否通过父组件强制更新值
+                rawData: [],//原始数据,用于判断是否通过父组件强制更新数据源
+                data: [],
+                filterData: null,//筛选后的数据，下拉框里面的除外
+                value: "",
+                text: "",
                 ulShow: false,//是否显示下拉选项
                 reloadData: false,//是否更新,
                 idField: this.props.idField,
@@ -60,7 +50,6 @@ export default function (WrappedComponent) {
             this.onSelect = this.onSelect.bind(this);
             this.onBlur = this.onBlur.bind(this);
             this.clearHandler = this.clearHandler.bind(this);
-
             this.filterHandler = this.filterHandler.bind(this)
         }
         static getDerivedStateFromProps(props, state) {
@@ -131,53 +120,13 @@ export default function (WrappedComponent) {
         }
         clearHandler() {
             //清除数据
-
             this.setState({
                 value: '',
                 text: '',
-                inputText: ""
             });
             this.props.onSelect && this.props.onSelect('', '', this.props.name, null);
         }
-        loadData(url, params) {
 
-            if (url) {
-                let type = this.props.httpType ? this.props.httpType : "POST";
-                type = type.toUpperCase();
-                var fetchmodel = new FetchModel(url, this.loadSuccess, params, this.loadError);
-                fetchmodel.headers = this.props.httpHeaders;
-                if (this.props.contentType) {
-                    //如果传contentType值则采用传入的械
-                    //否则默认
-
-                    fetchmodel.contentType = this.props.contentType;
-                    fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
-                }
-                type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
-                console.log("checkbox-fetch", fetchmodel);
-            }
-        }
-        loadError(message) {//查询失败
-            console.log("checkbox-error", message);
-            Msg.error(message);
-        }
-        loadSuccess(data) {//数据加载成功
-            let realData;
-            if (this.props.dataSource == null) {
-                realData = data;
-            }
-            else {
-                realData = func.getSource(data, this.props.dataSource);
-            }
-            let valueField = this.props.type == "treepicker" ? this.props.idField : this.props.valueField
-            //对数据进行格式化
-            let newData = propsTran.setComboxValueAndText(this.props.type, this.props.value, realData, valueField, this.props.textField);
-            this.setState({
-                rawData: realData,//保存方便对比
-                data: newData.data,
-                text: newData.text.join(",")
-            })
-        }
         /**
          * 刷新
          * @param {*} params 
@@ -192,7 +141,7 @@ export default function (WrappedComponent) {
             })
             this.loadData(url, params);
         }
-        onSelect(value, text, name, row, inputText) {
+        onSelect(value, text, name, row) {
 
             if (this.props.readOnly || this.props.disabled) {
                 return;
@@ -200,15 +149,14 @@ export default function (WrappedComponent) {
             //防止异步取值
             this.state.value = value;
             this.state.text = text;
-            this.state.inputText = inputText;
+
             //更新
             this.setState({
                 value: value,
                 text: text,
-                inputText: inputText
             })
             this.validate(value);
-            //inputText不再向上传了
+
             this.props.onSelect && this.props.onSelect(value, text, name, row);
         }
         /**
@@ -246,7 +194,7 @@ export default function (WrappedComponent) {
     }
     _ComboBox.propTypes = props;
     _ComboBox.defaultProps = Object.assign({}, defaultProps);
-    mixins(_ComboBox, [validate])
+    mixins(_ComboBox, [_loadData, validate])
     return _ComboBox;
 }
 
