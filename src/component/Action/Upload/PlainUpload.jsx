@@ -244,7 +244,7 @@ class Upload extends Component {
 
             <div className={"wasabi-upload " +this.props.className+" "+(this.props.disabled?"disabled":"")} onDrop={this.onDrop.bind(this)} onDragOver={this.onDragOver.bind(this)}>
                 <div key="1" style={{display:this.state.files.length>0||this.props.value?"none":"block"}} >
-                <i className="icon-upload wasabi-upload-icon"></i>
+                <i className="icon-upload wasabi-upload-icon"  onClick={this.onClick.bind(this)}></i>
         <div className="wasabi-upload-text">将{this.props.type=="file"?"文件":"图片"}拖到此处，或<LinkButton onClick={this.onClick.bind(this)}>点击上传</LinkButton></div>
                 <input id={this.state.uploadid} type="file" name="file" ref="file"  {...props} onChange={this.onChange.bind(this)} className="wasabi-upload-input" />
                 

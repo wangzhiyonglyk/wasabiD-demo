@@ -24,6 +24,7 @@ desc:下拉框样式
     padding: 0 10px;
     cursor: pointer;
     position: relative;
+    text-align: left;
   }
   .wasabi-select ul li:hover {
     background-color: #f5f7fa;
@@ -38,7 +39,7 @@ desc:下拉框样式
     content:"\e769";
     position: absolute;
     top:0px;
-    right: 20px;
+    right: 10px;
     width: 16px;
     height: 16px;
     font-size: 16px;

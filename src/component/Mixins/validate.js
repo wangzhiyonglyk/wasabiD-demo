@@ -6,8 +6,7 @@
 import validation from "../Lang/validation.js";
 import regexp from "../Lang/regs.js";
 export default {
-    validate: function (value)  {
-      
+    validate: function (value) {
         value = value ? value : this.state.value;
         let isvalidate = true;
         let inValidateText = "";
@@ -30,30 +29,30 @@ export default {
                     }
                     else if (this.props.regexp) {  //有自定义正则表达式
                         isvalidate = this.props.regexp.test(value);
-                        inValidateText = isvalidate ? "" : this.props.invalidTip|| validation["invalidTip"]||validation["invalidTip"];
+                        inValidateText = isvalidate ? "" : this.props.invalidTip || validation["invalidTip"] || validation["invalidTip"];
                     }
                     else {//没有正则表达式，则验证默认正则
 
                         if (regexp[this.props.type]) {//系统存在这个类型
-                            if(this.props.type=="daterange"){
+                            if (this.props.type == "daterange") {
                                 //日期可以包含时间，
-                                isvalidate = regexp[this.props.type].test(value)||regexp["datetimerange"].test(value);
+                                isvalidate = regexp[this.props.type].test(value) || regexp["datetimerange"].test(value);
                             }
-                            else  if(this.props.type=="date"){
+                            else if (this.props.type == "date") {
                                 //日期可以包含时间，
-                                isvalidate = regexp[this.props.type].test(value)||regexp["datetime"].test(value);
+                                isvalidate = regexp[this.props.type].test(value) || regexp["datetime"].test(value);
                             }
-                            else{
+                            else {
                                 if (typeof regexp[this.props.type] == "function") {
                                     isvalidate = regexp[this.props.type](value);
                                 }
                                 else {
-                                  
+
                                     isvalidate = regexp[this.props.type].test(value);
                                 }
-                               
+
                             }
-                           
+
                             inValidateText = isvalidate ? "" : validation[this.props.type];
                         }
                         else {
@@ -62,7 +61,7 @@ export default {
                     }
 
                     if (isvalidate) {//有效再验证长度，大小问题
-                     
+
                         if (typeof this.props.min == "number") {
                             switch (this.props.type) {
                                 case "text":
@@ -167,25 +166,6 @@ export default {
 
             }
 
-            //设置样式
-            if (isvalidate) {
-                this.setState({
-                    validateClass: "",
-                    inValidateShow: "none",
-                    inValidateText: "",
-                })
-
-            }
-            else {
-
-                this.setState({
-                    validateClass: " wasabi-has-error",
-                    inValidateShow: "block",
-                    inValidateText: inValidateText
-                });
-
-            }
-
         }
 
 
@@ -213,4 +193,4 @@ export default {
 
 
     }
-} 
+}

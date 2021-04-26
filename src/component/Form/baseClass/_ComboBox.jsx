@@ -1,6 +1,7 @@
 /**
  * Created by zhiyongwang on 2020-11-07
  * 所有下拉框的基类
+ * todo 要优化
  */
 
 import React, { Component } from "react";
@@ -20,10 +21,8 @@ export default function (WrappedComponent) {
     class _ComboBox extends Component {
         constructor(props) {
             super(props);
-
-
             this.state = {
-                type: this.props.type,
+                type: this.props.type,//保存起来
                 url: this.props.url,//传来的url
                 params: func.clone(this.props.params),//参数
                 oldPropsValue: "",//保存用于判断是否通过父组件强制更新值
@@ -97,7 +96,7 @@ export default function (WrappedComponent) {
         componentDidUpdate() {
             if (this.state.reloadData) {
                 this.setState({
-                    realData: false
+                    reloadData: false
                 })
                 this.loadData(this.state.url, this.state.params);
             }

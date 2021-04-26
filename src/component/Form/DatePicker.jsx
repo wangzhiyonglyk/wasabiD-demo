@@ -192,6 +192,13 @@ class DatePicker extends Component {
     });
     this.unbindClickAway();//卸载全局单击事件
   }
+  /**
+   * 
+   * @param {*} value 
+   * @param {*} text 
+   * @param {*} name 
+   * @param {*} hide 是否隐藏，用于范围 todo
+   */
   onSelect(value, text, name, hide = true) {
     let isvalidate = this.validate(value);//只是验证一下，不影响回传给父组件
     //选中事件

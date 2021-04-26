@@ -55,7 +55,7 @@ class PivotPage extends React.Component {
 
     render() {
         return <div style={{ padding: 20 }}>
-            <div><Select required={true} removeAble={true} type="select" style={{ width: 300 }} checkStyle="radio" valueField="id" data={this.state.data} multiple={true} simpleData={true}></Select>
+            <div><Select  required={true} removeAble={true} type="select" style={{ width: 300 }} checkStyle="radio" valueField="id" data={this.state.data} multiple={true} simpleData={true}></Select>
             </div>
             {/* <Input type="daterange" key="1"></Input>
             <Input type="datetime" key="2"></Input> */}

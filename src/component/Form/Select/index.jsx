@@ -126,14 +126,18 @@ class Select extends Component {
                 }
 
             }
+            let data=[].concat(addItems, filterData.absFilter, filterData.dimFilter, filterData.undimFilter);
+            //单选的时候，则默认是添加的第一个，或者精确匹配的第一个
+            newValue=this.props.multiple? newValue.join(","):data[0].value;
+            newText=this.props.multiple? newText.join(","):data[0].text;
             this.setState({
-                value: newValue.join(","),
-                text: newText.join(","),
-                data: [].concat(addItems, filterData.absFilter, filterData.dimFilter, filterData.undimFilter)//先添加的荐放在最前面，模糊的次之，非模糊居后
+                value:newValue ,
+                text:newText,
+                data: data//先添加的荐放在最前面，模糊的次之，非模糊居后
             })
 
-            this.props.onSelect && this.props.onSelect(newValue.join(","), newText.join(","),
-                this.props.name, [{ text: newText.join(","), value: newValue.join(",") }]);
+            this.props.onSelect && this.props.onSelect(newValue, newText,
+                this.props.name, [{ text: newText, value: newValue }]);
 
 
         }
@@ -321,7 +325,7 @@ class Select extends Component {
             inputText: event.target.value.trim(),
             data: [].concat(filterData.absFilter, filterData.dimFilter, filterData.undimFilter),
         })
-        this.props.onChange && this.props.onChange(event.target.value.trim());
+        this.props.onChange && this.props.onChange(event.target.value.trim(),event.target.value.trim(),this.props.name);
     }
     /**
    * 全部清除
@@ -336,7 +340,8 @@ class Select extends Component {
             text: "",
             show: true,
         })
-        this.props.onChange && this.props.onChange("", event);
+        this.showPicker();
+        this.props.onChange && this.props.onChange("","",this.props.name, event);
 
     }
     /**
@@ -400,9 +405,9 @@ class Select extends Component {
                         <div className={'combobox wasabi-select'}>
                             <ArrowInput
                                 value={this.state.inputText}
+                                 /**兼容旧版本 */
+                                 addAbled={this.props.addAbled}
                                 addAble={this.props.addAble}
-                                /**兼容旧版本 */
-                                addAbled={this.props.addAbled}
                                 name={this.props.name}
                                 rotate={this.state.show}
                                 title={this.props.title}

@@ -1,6 +1,7 @@
 /**
  * Created by wangzhiyong on 2016/12/12.
  * 从rctui框架中复制过来,加以改造
+ * edit date:2021-04-26
  */
 
 'use strict';
@@ -16,7 +17,12 @@ let dom = {
     },
 
 
-    //是否为子孙节点
+    /**
+     * 是否为子孙节点
+     * @param {*} parent 
+     * @param {*} child 
+     * @returns 
+     */
     isDescendant: function (parent, child) {
         let node = child.parentNode;
 
@@ -30,6 +36,11 @@ let dom = {
         return false;
     },
 
+    /**
+     * 计算在页面中的位置
+     * @param {*} el 
+     * @returns 
+     */
     offset: function (el) {
         const rect = el.getBoundingClientRect();
         return {
@@ -38,28 +49,11 @@ let dom = {
         };
     },
 
-    forceRedraw: function (el) {
-        let originalDisplay = el.style.display;
-
-        el.style.display = 'none';
-        let oh = el.offsetHeight;
-        el.style.display = originalDisplay;
-        return oh;
-    },
-
-    withoutTransition: function (el, callback) {
-        //turn off transition
-        el.style.transition = 'none';
-
-        callback();
-
-        //force a redraw
-        this.forceRedraw(el);
-
-        //put the transition back
-        el.style.transition = '';
-    },
-
+    /**
+     * 得到元素包含外部的宽度
+     * @param {*} el 
+     * @returns 
+     */
     getOuterHeight: function (el) {
         let height = el.clientHeight
             + this.tryParseInt(el.style.borderTopWidth)
@@ -69,6 +63,10 @@ let dom = {
         return height;
     },
 
+    /**
+     * 页面上滚的高度
+     * @returns 
+     */
     getScrollTop: function () {
         const dd = document.documentElement;
         let scrollTop = 0;
@@ -80,35 +78,34 @@ let dom = {
         return scrollTop;
     },
 
+    /**
+     * 元素是不是不可见
+     * @param {*} el 元素
+     * @param {*} pad 间距
+     * @returns 
+     */
     overView: function (el, pad = 0) {
         let height = window.innerHeight || document.documentElement.clientHeight;
         let bottom = el.getBoundingClientRect().bottom + pad;
         return bottom > height;
     },
-
+    /**
+     * 
+     * @param {*} el 元素节点
+     * @param {*} attr css样式属性，非驼峰写法
+     * @returns 
+     */
     computedStyle: function (el, attr) {
-        var lineHeight;
+        let attrValue;
         if (el.currentStyle) {
-            lineHeight = el.currentStyle[attr]
+            attrValue = el.currentStyle[attr]
         } else if (window.getComputedStyle) {
-            lineHeight = window.getComputedStyle(el, null)[attr];
+            attrValue = window.getComputedStyle(el, null)[attr];
         }
-        return lineHeight;
+        return attrValue;
     },
 
-    getLineHeight: function (origin) {
-        let el = origin.cloneNode(true);
-        let lineHeight;
-        el.style.padding = 0;
-        el.rows = 1;
-        el.innerHTML = '&nbsp;'
-        el.style.minHeight = 'inherit'
-        origin.parentNode.appendChild(el);
-        lineHeight = el.clientHeight;
-        origin.parentNode.removeChild(el);
 
-        return lineHeight;
-    }
 
 };
 export default dom;
