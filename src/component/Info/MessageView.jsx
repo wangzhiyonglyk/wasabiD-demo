@@ -149,7 +149,7 @@ MessageView. propTypes={
         "error",
         "confirm",
     ]),
-    msg: PropTypes.string.isRequired,//消息
+    msg: PropTypes.any.isRequired,//消息
     timeout:PropTypes.number,//自动消失时间
     cancelHandler:PropTypes.func,//取消事件
     OKHandler:PropTypes.func,//确定事件

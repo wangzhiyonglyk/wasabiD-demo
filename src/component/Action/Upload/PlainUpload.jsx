@@ -18,20 +18,22 @@ class Upload extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            uploadid:func.uuid(),
+            uploadid: func.uuid(),
+            defaultImgid:func.uuid(),//默认图片的id
+            uploadImgid:func.uuid(),//单图片上传预览的id
             files: [], //选择的文件名集合
             uploadTitle: '正在上传',
             uploadDisabled: false,//是否禁止上传
         }
-     
+
         this.onChange = this.onChange.bind(this);
         this.importHandler = this.importHandler.bind(this);
         this.uploadSuccess = this.uploadSuccess.bind(this);
         this.uploadFailed = this.uploadFailed.bind(this);
         this.uploadProgress = this.uploadProgress.bind(this);
-   
-        this.clear=this.clear.bind(this);
-
+        this.clear = this.clear.bind(this);
+        this.imgLoad=this.imgLoad.bind(this);
+        this.setFile=this.setFile.bind(this);
     }
     /**
      * 选择文件
@@ -39,48 +41,43 @@ class Upload extends Component {
      */
     onChange(event) {
         //选择文件
-      this.setFile(event.target.files);
-      this.props.onChange&&this.props.onChange(event.target.files);
-     
+        this.setFile(event.target.files);
+        this.props.onChange && this.props.onChange(event.target.files);
+
     }
-    onDrop(event){
+    onDrop(event) {
         event.preventDefault();
         event.stopPropagation();
-        if(event.dataTransfer.files&&event.dataTransfer.files.length>0){
+        if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
             this.setFile(event.dataTransfer.files)
         }
-       
-    }
 
-    setFile(targetFiles){
-        if(!this.props.uploadurl){
+    }
+    /**
+     * 设置上传时文件参数
+     * @param {array} targetFiles 文件
+     * @returns 
+     */
+    setFile(targetFiles=[]) {
+        if (!this.props.uploadurl) {
             Msg.info('您没有设置上传的服务器地址');
             return;
         }
-        this.files =targetFiles;//保存
-        let files=[];
-        if (this.files.length > 0) {
-            //转成数组
-            for (let index = 0; index < this.files.length; index++) {             
-                files.push(this.files[index]);
-            }
+        if (targetFiles.length > 0) {
             this.setState({
-                files: files ,
-                uploadDisabled:true,                
-            },()=>{
-                if(this.props.autoUpload){
-                    this.props.multiple!=true&&this.importHandler();//
-                }
-           
+                files: targetFiles,
+                uploadDisabled: true,
+            }, () => {
+                    this.props.autoUpload&&  this.importHandler();//
             });
         }
-       
+
     }
     /**
      * 
      * @param {*} event 
      */
-    onDragOver(event){
+    onDragOver(event) {
         event.preventDefault();
     }
     //验证文件上传类型是否正确
@@ -97,7 +94,7 @@ class Upload extends Component {
     }
     //上传处理
     importHandler() {
-        if(this.props.disabled||this.props.uploadDisabled){
+        if (this.props.disabled || this.props.uploadDisabled) {
             return;
         }
         //执行导入事件
@@ -105,7 +102,7 @@ class Upload extends Component {
         let formData = new FormData();
         // 遍历文件列表，插入到表单数据中
 
-        if (this.files && this.files.length > 0) {
+        if (this.state.files && this.state.files.length > 0) {
             if (this.props.uploadurl) {
                 if (!this.validateType(this.files)) {
                     Msg.error("上传的文件类型不正确");
@@ -144,25 +141,25 @@ class Upload extends Component {
                         formData.append(s, this.props.params[s]);//其他参数
                     }
                 }
-            
-                api.ajax({
-                    url:this.props.uploadurl,
-                    type:"post",
-                     contentType:false,
-                     headers:this.props.httpHeaders,
-                     dataType:"json",
-                     data:formData,
-                     success:(result)=>{
-                         this.uploadSuccess(result);
-                     },
-                     progress:(percent)=>{
-                        this.uploadProgress(percent);
-                     },
-                     error:(message)=>{
-                       this.uploadFailed(message);
-                     }
 
-                     
+                api.ajax({
+                    url: this.props.uploadurl,
+                    type: "post",
+                    contentType: false,
+                    headers: this.props.httpHeaders||{},
+                    dataType: "json",
+                    data: formData,
+                    success: (result) => {
+                        this.uploadSuccess(result);
+                    },
+                    progress: (percent) => {
+                        this.uploadProgress(percent);
+                    },
+                    error: (message) => {
+                        this.uploadFailed(message);
+                    }
+
+
                 })
 
 
@@ -189,49 +186,66 @@ class Upload extends Component {
     //上传完成
     uploadSuccess(result) {
         this.setState({
-            uploadDisabled:false,
-            files: this.props.preview?this.state.files:[],//如果有预览
+            uploadDisabled: false,
+            files: this.props.preview ? this.state.files : [],//如果有预览
         })
         Msg.success("上传成功")
-        this.props.uploadSuccess&&this.props.uploadSuccess(result, this.state.files);
-        
+        this.props.uploadSuccess && this.props.uploadSuccess(result, this.state.files);
+
 
     }
     //上传文件失败
     uploadFailed(message) {
-       
-       this.clear();
-       Msg.error(message);
+
+        this.clear();
+        Msg.error(message);
     }
-     /**
-     * 清空文件
-     */
-    clear(){
-        let obj = document.getElementById(this.state.uploadid) ;
-        obj.value="";
+    /**
+    * 清空文件
+    */
+    clear() {
+        let obj = document.getElementById(this.state.uploadid);
+        obj.value = "";
         this.setState({
-            files:  this.props.preview?this.state.files:[],//如果有预览
-            uploadDisabled:false
+            files: this.props.preview ? this.state.files : [],//如果有预览
+            uploadDisabled: false
         })
     }
     /**
      * 选择文件
      */
     onClick() {
-        if(this.props.disabled||this.props.uploadDisabled){
+        if (this.props.disabled || this.props.uploadDisabled) {
             return;
         }
-        else{
+        else {
             this.refs.file.click();
         }
-       
+
     }
 
-     /**
-     * 给父组件调用
-     */
-      open(){
+    /**
+    * 给父组件调用
+    */
+    open() {
         this.importHandler();
+    }
+    /**
+     * 拿到图片的真实高与宽，防止显示失真
+     */
+    imgLoad(id,event) {
+        try {
+            let path=event.path?event.path:event.nativeEvent.path;//做兼容性处理
+            if(path instanceof Array &&path.length>0){
+                let parentHeight=document.getElementById(id).parentNode.getBoundingClientRect().height;
+                let height=path[0].naturalHeight&&path[0].naturalHeight<parentHeight?path[0].naturalHeight:parentHeight;
+                document.getElementById(id).style.height=height+"px";
+                
+            }
+
+        } catch (e) {
+
+        }
     }
 
     render() {
@@ -242,55 +256,60 @@ class Upload extends Component {
 
         return (
 
-            <div className={"wasabi-upload " +this.props.className+" "+(this.props.disabled?"disabled":"")} onDrop={this.onDrop.bind(this)} onDragOver={this.onDragOver.bind(this)}>
-                <div key="1" style={{display:this.state.files.length>0||this.props.value?"none":"block"}} >
-                <i className="icon-upload wasabi-upload-icon"  onClick={this.onClick.bind(this)}></i>
-        <div className="wasabi-upload-text">将{this.props.type=="file"?"文件":"图片"}拖到此处，或<LinkButton onClick={this.onClick.bind(this)}>点击上传</LinkButton></div>
-                <input id={this.state.uploadid} type="file" name="file" ref="file"  {...props} onChange={this.onChange.bind(this)} className="wasabi-upload-input" />
-                
+            <div className={"wasabi-upload " + this.props.className + " " + (this.props.disabled ? "disabled" : "")} onDrop={this.onDrop.bind(this)} onDragOver={this.onDragOver.bind(this)}>
+                <div key="1" style={{ display: this.state.files.length > 0 || this.props.value ? "none" : "block" }} >
+                    <i className="icon-upload wasabi-upload-icon" onClick={this.onClick.bind(this)}></i>
+                    <div className="wasabi-upload-text">将{this.props.type == "file" ? "文件" : "图片"}拖到此处，或<LinkButton onClick={this.onClick.bind(this)}>点击上传</LinkButton></div>
+                    <input id={this.state.uploadid} type="file" name="file" ref="file"  {...props} onChange={this.onChange.bind(this)} className="wasabi-upload-input" />
+
                 </div>
-               <div key="2" onClick={this.onClick.bind(this)}  className="wasabi-uplaod-files" style={{display:this.state.files.length>0?"block":"none"}}>
-             
+                <div key="2" onClick={this.onClick.bind(this)} className="wasabi-uplaod-files" style={{ display: this.state.files.length > 0 ? "block" : "none" }}>
+                    {/* 文件上传预览 */}
                     {
-                       
-                        this.props.type=="file"&&this.state.files&&this.state.files.length>0&&this.state.files.map((item,index)=>{
-                       return  <div key={"div"+index} style={{position:"relative",height:30,lineHeight:"30px"}}>
-                           <LinkButton iconCls="icon-file" style={{marginRight:10}} key={index}>{item.name}</LinkButton> </div> 
+
+                        this.props.type == "file" && this.state.files && this.state.files.length > 0 && this.state.files.map((item, index) => {
+                            return <div key={"div" + index} style={{ position: "relative", height: 30, lineHeight: "30px" }}>
+                                <LinkButton iconCls="icon-file" style={{ marginRight: 10 }} key={index}>{item.name}</LinkButton> </div>
                         })
                     }
+                    {/* 多图片上传预览 */}
                     {
-                      this.props.type=="image"&&this.state.files&&this.state.files.length>1&&this.state.files.map((item,index)=>{
-                        return  <div key={"div"+index} style={{position:"relative",height:82,lineHeight:"80px",borderBottom:"1px solid #dcdfe6",marginBottom:5}}>
-                           <img style={{height:80,marginRight:10}} src={window.URL.createObjectURL(item)}></img>
-                      { this.state.uploadDisabled? <i className="icon-loading wasabi-upload-icon"></i>:null}</div> 
-                         })  
+                        this.props.type == "image" && this.state.files && this.state.files.length > 1 && this.state.files.map((item, index) => {
+                            return <div key={"div" + index} style={{ position: "relative", height: 82, lineHeight: "80px", borderBottom: "1px solid #dcdfe6", marginBottom: 5 }}>
+                                <img style={{ height: 80, marginRight: 10 }} src={window.URL.createObjectURL(item)}></img>
+                                {this.state.uploadDisabled ? <i className="icon-loading wasabi-upload-icon"></i> : null}</div>
+                        })
                     }
+                    {/* 单图片上传预览 */}
                     {
-                    this.props.type=="image"&&this.state.files&&this.state.files.length==1&&this.state.files.map((item,index)=>{
-                        return <div style={{height:"100%"}} key={"k"+index}>
-                            <img style={{width:"100%", height:"100%"}} src={window.URL.createObjectURL(item)}></img> 
-                            { this.state.uploadDisabled? <i style={{left:"50%",top:"20%",color:"#ffffff",zIndex:2}} className="icon-loading wasabi-upload-icon"></i>:null}
-                        </div> 
+                        this.props.type == "image" && this.state.files && this.state.files.length == 1 && this.state.files.map((item, index) => {
+                            return <div style={{ height: "100%" }} key={"k" + index}>
+                                <img  id={this.state.uploadImgid} onLoad={this.imgLoad} style={{ width: "100%", height: "100%" }} src={window.URL.createObjectURL(item)}></img>
+                                {this.state.uploadDisabled ? <i style={{ left: "50%", top: "20%", color: "#ffffff", zIndex: 2 }} className="icon-loading wasabi-upload-icon"></i> : null}
+                            </div>
 
-                         })    
+                        })
                     }
-                  
+
                 </div>
-               <div key="3" onClick={this.onClick.bind(this)}  className="wasabi-uplaod-files" style={{display:(!this.state.files||
-                (this.state.files&&this.state.files.length==0)&&this.props.value?"block":"none")}}>
-                    <img src={this.props.value} alt="点击上传" style={{width:"100%"}}></img>
+                {/* 默认显示 */}
+                <div key="3" onClick={this.onClick.bind(this)} className="wasabi-uplaod-files" style={{
+                    display: (!this.state.files ||
+                        (this.state.files && this.state.files.length == 0) && this.props.value ? "block" : "none")
+                }}>
+                    <img  src={this.props.value} id={this.state.defaultImgid} onLoad={this.imgLoad} alt="点击上传" style={{ width: "100%" }}></img>
 
-               </div>
+                </div>
             </div>
         );
     }
 }
 
 Upload.propTypes = {
-    autoUpload:PropTypes.bool, //是否自动上传
+    autoUpload: PropTypes.bool, //是否自动上传
     className: PropTypes.string,//
     style: PropTypes.object,//
-    type:PropTypes.oneOf(["file","image"]),//上传的是文件还是纯图片
+    type: PropTypes.oneOf(["file", "image"]),//上传的是文件还是纯图片
     httpHeaders: PropTypes.object,//请求的头部信息
     params: PropTypes.object,//其他参数
     uploadurl: PropTypes.string.isRequired, //上传地址
@@ -299,25 +318,25 @@ Upload.propTypes = {
     size: PropTypes.number,//上传大小限制
     name: PropTypes.string, //名称
     uploadSuccess: PropTypes.func, //上传成功事件
-    disabled:PropTypes.bool,//是否禁止
-    preview:PropTypes.bool,//是否可以预览
-    value:PropTypes.string, //默认图片值
+    disabled: PropTypes.bool,//是否禁止
+    preview: PropTypes.bool,//是否可以预览
+    value: PropTypes.string, //默认图片值
 };
 Upload.defaultProps = {
-    autoUpload:true,//允许
-    className:"",
-    style:{},
-    type:"file",
+    autoUpload: true,//允许
+    className: "",
+    style: {},
+    type: "file",
     httpHeaders: {},
     params: null,
-    uploadurl:"",
-    accept:null,
+    uploadurl: "",
+    accept: null,
     multiple: false,
     size: null,
-    name:"",
-    uploadSuccess:null,
-    disabled:false,
-    preview:true,
-    value:"",
+    name: "",
+    uploadSuccess: null,
+    disabled: false,
+    preview: true,
+    value: "",
 };
 export default Upload;

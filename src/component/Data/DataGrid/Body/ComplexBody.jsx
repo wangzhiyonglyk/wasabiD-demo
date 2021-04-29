@@ -23,32 +23,32 @@ export default {
         }
 
         this.state.data.map((rowData, rowIndex) => {
-            if(rowData.hide){//隐藏该行
+            if (rowData.hide) {//隐藏该行
                 return;
             }
             let detailtd = null;//详情列
             let ordertd = null;
             let checkedControl = null;//本行是否有选择框
-           
+
             let tds = []; //当前的列集合
             let key = this.getKey(rowIndex); //获取这一行的关键值
             //详情列
             if (this.props.detailAble) {
                 let iconCls = 'icon-arrow-down'; //详情列的图标
-                    if (this.state.detailIndex == key) {
-                        iconCls = 'icon-arrow-up'; //详情列-展开
-                    }
-                detailtd= <td key={'bodydetail' + rowIndex.toString()} name="wasabi-detail-column" className="wasabi-detail-column">
-                <div className='wasabi-grid-cell  '>
-                    <i style={{cursor:"pointer"}} className={iconCls} title="详情" onClick={this.detailHandler.bind(this, rowData, rowIndex)}></i>
-                </div>
-            </td>
+                if (this.state.detailIndex == key) {
+                    iconCls = 'icon-arrow-up'; //详情列-展开
+                }
+                detailtd = <td key={'bodydetail' + rowIndex.toString()} name="wasabi-detail-column" className="wasabi-detail-column">
+                    <div className='wasabi-grid-cell  '>
+                        <i style={{ cursor: "pointer" }} className={iconCls} title="详情" onClick={this.detailHandler.bind(this, rowData, rowIndex)}></i>
+                    </div>
+                </td>
             }
             //序号列
             if (this.props.rowNumber) {
                 ordertd = (
                     <td key={'bodyorder' + rowIndex.toString()} name="wasabi-order-column" className="wasabi-order-column">
-                        <div className='wasabi-grid-cell  '> 
+                        <div className='wasabi-grid-cell  '>
                             {(
                                 (this.state.pageIndex - 1) * this.state.pageSize +
                                 rowIndex +
@@ -98,7 +98,7 @@ export default {
 
             //生成数据列
             let columnIndex = 0;//真正的序号列
-          
+
             this.state.headers.map((trheader, headerRowIndex) => {
                 if (trheader instanceof Array) {
 
@@ -119,26 +119,14 @@ export default {
                             }
                             if (!rowchecked) {
                                 //本行没有选择框，先要事先处理好
-                                checkedControl = <td
-                                    key={'bodycheckbox' + rowIndex.toString()}
-
-                                    className='wasabi-check-column'
-                                >
-                                    <div className='wasabi-grid-cell'>
-
-
-                                    </div>
-                                </td>
+                                checkedControl = <td key={'bodycheckbox' + rowIndex.toString()} className='wasabi-check-column'
+                                ><div className='wasabi-grid-cell'></div></td>
                             }
-
                             return;//选择列，不处理内容了
-
                         }
-
                         //内容
                         let content = header.content;
-
-                        if (typeof content === 'string'&&content) {
+                        if (typeof content === 'string' && content) {
                             //指定的列
                             content = this.substitute(content, rowData);
                         } else if (typeof content === 'function') {
@@ -171,7 +159,7 @@ export default {
                             //处理数据单元格
                             tds.push(
                                 <td
-                                    onClick={this.onClick.bind(this, rowData, rowIndex,columnIndex)}
+                                    onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
                                     onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex.columnIndex)}
                                     key={'col-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                                     export={"1"}//为了导出时处理数字化的问题
@@ -187,10 +175,10 @@ export default {
                                             name={header.name}
                                             value={currentValue}
                                             text={currentText}
-                                            onChange={this.rowEditHandler.bind(this, rowIndex,columnIndex, headerRowIndex,
-                                                 headerColumnIndex,header.editor&&header.editor.options&&header.editor.options.onChange||null )}
-                                            onSelect={this.rowEditHandler.bind(this, rowIndex,columnIndex, headerRowIndex,
-                                                 headerColumnIndex,header.editor&&header.editor.options&&header.editor.options.onSelect||null)}
+                                            onChange={this.rowEditHandler.bind(this, rowIndex, columnIndex, headerRowIndex,
+                                                headerColumnIndex, header.editor && header.editor.options && header.editor.options.onChange || null)}
+                                            onSelect={this.rowEditHandler.bind(this, rowIndex, columnIndex, headerRowIndex,
+                                                headerColumnIndex, header.editor && header.editor.options && header.editor.options.onSelect || null)}
                                             label={''}//没有描述
                                         ></Input>
                                     </div>
@@ -202,8 +190,8 @@ export default {
                                 <td
                                     export={"1"}//为了导出时处理数字化的问题
                                     className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-                                    onClick={this.onClick.bind(this, rowData, rowIndex,columnIndex)}
-                                    onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex,columnIndex)}
+                                    onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
+                                    onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex, columnIndex)}
                                     key={'col-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                                 >
                                     <div className='wasabi-grid-cell' >
