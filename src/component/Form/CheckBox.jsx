@@ -6,7 +6,7 @@
 
 import React, { Component } from "react";
 
-import Label from "../Info/Label.jsx";
+import Label from "../Info/Label";
 import _CheckBox from "./baseClass/_CheckBox.jsx";
 
 class CheckBox extends Component {

@@ -8,7 +8,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../../Layout/Modal.jsx';
-import Button from '../../Buttons/Button.jsx';
+import Button from '../../Buttons/Button';
 import Msg from '../../Info/Msg.jsx';
 import fileType from "../../libs/fileType";
 import func from "../../libs/func"

@@ -6,7 +6,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import Button from "../Buttons/Button.jsx";
+import Button from "../Buttons/Button";
 import { func } from "../index.js";
 if (React.version <= "17.0.0") {
     console.warn("请将react升级到了17+版本");

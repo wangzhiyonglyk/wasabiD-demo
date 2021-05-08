@@ -1,6 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Select from "../../component/Form/Select"
+import Calendar from "../../component/Form/Calendar"
+import DateD from "../../component/Form/DateD"
+import DateTime from "../../component/Form/DateTime"
+import DatePicker from "../../component/Form/DatePicker"
 import("./index.css")
 class PivotPage extends React.Component {
     constructor(props) {
@@ -55,7 +59,10 @@ class PivotPage extends React.Component {
 
     render() {
         return <div style={{ padding: 20 }}>
-            <div><Select  required={true} removeAble={true} type="select" style={{ width: 300 }} checkStyle="radio" valueField="id" data={this.state.data} multiple={true} simpleData={true}></Select>
+            <div>
+            <DatePicker type="datetime"></DatePicker>
+                
+                <Select  required={true} removeAble={true} type="select" style={{ width: 300 }} checkStyle="radio" valueField="id" data={this.state.data} multiple={true} simpleData={true}></Select>
             </div>
             {/* <Input type="daterange" key="1"></Input>
             <Input type="datetime" key="2"></Input> */}

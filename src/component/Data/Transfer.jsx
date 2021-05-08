@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 
 import diff from "../libs/diff";
 import propsTran from "../libs/propsTran";
-import LinkButton  from "../Buttons/LinkButton.jsx";
+import LinkButton  from "../Buttons/LinkButton";
 
 import FetchModel from "../Model/FetchModel.js";
 import ("../Sass/Data/Transfer.css");

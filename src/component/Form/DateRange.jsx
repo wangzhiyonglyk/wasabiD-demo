@@ -5,7 +5,7 @@ desc:日期范围选择控件
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import DateD from "./DateD.jsx";
+import DateD from "./DateD";
 import _DateRange from "./baseClass/_DateRange"
 class DateRange extends Component {
     constructor(props) {

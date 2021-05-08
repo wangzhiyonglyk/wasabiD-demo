@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from "react";
-import Label from "../Info/Label.jsx";
+import Label from "../Info/Label";
 import propType from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
 

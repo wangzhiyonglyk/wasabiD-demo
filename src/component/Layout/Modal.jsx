@@ -5,7 +5,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import Button from "../Buttons/Button.jsx";
+import Button from "../Buttons/Button";
 import Resize from "./Resize.jsx";
 import events from "../libs/events.js";
 import func from "../libs/func";

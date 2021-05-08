@@ -160,7 +160,7 @@
 .wasabi-tree .wasabi-drag-box{
   cursor: pointer;
 }
-.wasabi-tree .wasabi-form-control{
+.wasabi-tree .wasabi-input{
   height: 25px;
   width: 100%;
 }

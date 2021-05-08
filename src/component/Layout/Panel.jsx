@@ -6,7 +6,7 @@ desc:面板组件
 import React from "react";
 import PropTypes from "prop-types";
 
-import LinkButton from "../Buttons/LinkButton.jsx";
+import LinkButton from "../Buttons/LinkButton";
 import Toolbars from "../Buttons/Toolbar.jsx";
 import("../Sass/Layout/Panel.css");
 class Panel extends React.Component {

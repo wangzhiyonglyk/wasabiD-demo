@@ -4,7 +4,7 @@
  * 单选框集合组件
  */
 import React, { Component } from "react";
-import Label from "../Info/Label.jsx";
+import Label from "../Info/Label";
 import _ComboBox from "./baseClass/_ComboBox.jsx";
 
 class Radio extends Component {

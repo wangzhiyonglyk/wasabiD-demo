@@ -11,7 +11,7 @@ import func from "../libs/func.js";
 import _ComboBox from "./baseClass/_ComboBox.jsx";
 import FetchModel from "../Model/FetchModel.js";
 import PickerModel from "../Model/PickerModel.js";
-import Label from "../Info/Label.jsx";
+import Label from "../Info/Label";
 import ClickAway from "../libs/ClickAway.js";
 import diff from "../libs/diff.js";
 import mixins from '../Mixins/mixins';
@@ -528,7 +528,7 @@ class Picker extends Component {
             readOnly: this.props.readOnly == true ? "readOnly" : null,
             name: this.props.name,
             placeholder: (this.props.placeholder === "" || this.props.placeholder == null) ? this.props.required ? "必填项" : "" : this.props.placeholder,
-            className: "wasabi-form-control  " ,
+            className: "wasabi-input  " ,
             title: this.props.title,
 
         }//文本框的属性

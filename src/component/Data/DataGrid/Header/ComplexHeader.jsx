@@ -10,7 +10,7 @@
  *
  */
 import React, { Component } from 'react';
-import LinkButton from '../../../Buttons/LinkButton.jsx';
+import LinkButton from '../../../Buttons/LinkButton';
 import CheckBox from '../../../Form/CheckBox.jsx';
 
 export default {

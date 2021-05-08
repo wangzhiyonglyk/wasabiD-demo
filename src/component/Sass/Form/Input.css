@@ -22,7 +22,7 @@ desc:表单输入框样式
 label
 */
 
- .wasabi-form-group-label {
+ .wasabi-label {
     padding-right: 5px;
     height: 40px;
     line-height: 40px;
@@ -31,21 +31,21 @@ label
    
     color:#606266;
 }
-.wasabi-form-group-label.readOnly{
+.wasabi-label.readOnly{
   color:#c0c4cc;
 }
-.wasabi-form-group-label  label{
+.wasabi-label  label{
       vertical-align:middle;
       overflow: hidden;
     }
-    .wasabi-form-group-label  .help{
+    .wasabi-label  .help{
       margin-left: 2px;
       color: #606266;
     }
-    .wasabi-form-group-label .help:hover{
+    .wasabi-label .help:hover{
       color: #f56c6c;
     }
-    .wasabi-form-group-label .heip-text {
+    .wasabi-label .heip-text {
       display: block;
       position: absolute;
       top: 40px;
@@ -68,7 +68,7 @@ label
       font-size: 12px;
     
 }
-.wasabi-form-group .wasabi-form-group-label.required  label:before {
+.wasabi-form-group .wasabi-label.required  label:before {
   content: "*";
   color: #f56c6c;
   vertical-align: middle;
@@ -90,7 +90,7 @@ label
 /*
 普通input
 */
-.wasabi-form-control {
+.wasabi-input {
     display: block;
     width: 100%;
     height: 40px;
@@ -110,27 +110,27 @@ label
     -o-border-radius: 4px;
     transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 }
-.wasabi-form-control[disabled], .wasabi-form-control[readOnly]{
+.wasabi-input[disabled], .wasabi-input[readOnly]{
   background-color: #f5f7fa;
   border-color: #e4e7ed;
   color: #c0c4cc;
   cursor: not-allowed;
 }
-.wasabi-form-control::placeholder{color:#c0c4cc;}
-.wasabi-form-control:hover{
+.wasabi-input::placeholder{color:#c0c4cc;}
+.wasabi-input:hover{
   border-color: #c0c4cc;
 }
-.wasabi-form-control:focus {
+.wasabi-input:focus {
   border-color: #409eff;
 }
 
-.wasabi-form-control[disabled]:hover, .wasabi-form-control[readOnly]:hover{
+.wasabi-input[disabled]:hover, .wasabi-input[readOnly]:hover{
   background-color: #f5f7fa;
   border-color: #e4e7ed;
   color: #c0c4cc;
   cursor: not-allowed;
 }
-.wasabi-form-control[disabled]:focus, .wasabi-form-control[readOnly]:focus{
+.wasabi-input[disabled]:focus, .wasabi-input[readOnly]:focus{
   background-color: #f5f7fa;
   border-color: #e4e7ed;
   color: #c0c4cc;
@@ -139,7 +139,7 @@ label
 /*
 input验证失败
 */
-.wasabi-has-error .wasabi-form-control{
+.wasabi-has-error .wasabi-input{
   border-color: #f56c6c;
  
 
@@ -164,7 +164,7 @@ input验证失败
 /*
 input验证通过
 */
-.wasabi-has-success .wasabi-form-control {
+.wasabi-has-success .wasabi-input {
   border-color: #409eff;
  
   

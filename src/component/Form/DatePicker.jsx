@@ -6,7 +6,7 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import DateD from "./DateD.jsx";
+import DateD from "./DateD";
 import DateTime from "./DateTime.jsx";
 import DateRange from "./DateRange.jsx";
 import DateTimeRange from "./DateTimeRange.jsx";
@@ -18,7 +18,7 @@ import regs from "../Lang/regs.js";
 import validate from "../Mixins/validate.js";
 import ClickAway from "../libs/ClickAway.js";
 import mixins from '../Mixins/mixins';
-import Label from "../Info/Label.jsx";
+import Label from "../Info/Label";
 import func from "../libs/func"
 import props from "./config/propType.js";
 import config from "./config/dateConfig.js";
@@ -459,7 +459,7 @@ class DatePicker extends Component {
             : ""
           : this.props.placeholder,
       className:
-        "wasabi-form-control  " ,
+        "wasabi-input  " ,
       
       title: this.props.title
     }; //文本框的属性

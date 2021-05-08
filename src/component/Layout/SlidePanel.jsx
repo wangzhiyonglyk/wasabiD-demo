@@ -8,7 +8,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Toolbar from "../Buttons/Toolbar.jsx";
-import Button from "../Buttons/Button.jsx";
+import Button from "../Buttons/Button";
 import "../Sass/Layout/SlidePanel.css";
 class SlidePanel extends React.Component {
     constructor(props) {

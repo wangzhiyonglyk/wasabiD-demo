@@ -6,13 +6,13 @@
  */
 import React, { Component } from "react";
 import Tree from "../Data/Tree.jsx";
-import Label from "../Info/Label.jsx";
+import Label from "../Info/Label";
 import ClickAway from "../libs/ClickAway.js";
 import mixins from '../Mixins/mixins';
 import props from "./config/propType.js";
 import defaultProps from "./config/defaultProps.js";
 import _ComboBox from "./baseClass/_ComboBox.jsx";
-import LinkButton from "../Buttons/LinkButton.jsx";
+import LinkButton from "../Buttons/LinkButton";
 import CheckBox from "./CheckBox.jsx";
 import propsTran from "../libs/propsTran.js";
 class TreePicker extends Component {
@@ -111,7 +111,7 @@ class TreePicker extends Component {
             readOnly: this.props.readOnly == true ? "readOnly" : null,
             name: this.props.name,
             placeholder: (this.props.placeholder === "" || this.props.placeholder == null) ? this.props.required ? "必填项" : "" : this.props.placeholder,
-            className: "wasabi-form-control  ",
+            className: "wasabi-input  ",
             title: this.props.title,
 
         }//文本框的属性
@@ -136,7 +136,7 @@ class TreePicker extends Component {
                                 justifyContent: "flex-end"
                             }}
                         >
-                            <input className=" wasabi-form-control treepickerinput" 
+                            <input className=" wasabi-input treepickerinput" 
                                 value={this.state.filterText} onChange={this.filterHandler.bind(this)}  ></input>
                             {
                                 this.props.checkStyle == "checkbox" ? <CheckBox name="wasabi-tree-choseall"

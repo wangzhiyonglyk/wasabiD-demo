@@ -7,7 +7,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 let Modal = require('../Layout/Modal.jsx');
-let Button = require('../Buttons/Button.jsx');
+let Button = require('../Buttons/Button');
 let Msg = require('../Info/Msg.jsx');
 let fileType = require('../libs/fileType.js');
 import ('../Sass/Action/Import.css');

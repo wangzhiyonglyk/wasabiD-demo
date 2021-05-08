@@ -55,7 +55,18 @@ float: left;
 }
 
 
-
+.timeinput{
+  width: 120px;
+    height: 25px;
+    top: 6px;
+    position: absolute;
+    margin-left: 15px;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #dddddd;
+    right:20px;
+    padding-right: 6px;
+}
 
 
 .wasabi-datetime-body

@@ -10,8 +10,8 @@ import PropTypes from "prop-types";
 
 import Radio from "./Radio.jsx";
 import CheckBox from "./CheckBox.jsx";
-import CheckButton from "./CheckButton.jsx";
-import SwitchButton from "./SwitchButton.jsx";
+import CheckButton from "./CheckButton";
+import SwitchButton from "./SwitchButton";
 import ComboBox from "./ComboBox.jsx";
 import Text from "./Text.jsx";
 import None from "./None.jsx";

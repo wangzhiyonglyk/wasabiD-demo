@@ -6,7 +6,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import validation from "../Lang/validation.js";
 import validate from "../Mixins/validate.js";
-import Label from "../Info/Label.jsx";
+import Label from "../Info/Label";
 import Msg from "../Info/Msg.jsx";
 import FetchModel from "../Model/FetchModel.js";
 import func from "../libs/func.js";
@@ -170,7 +170,7 @@ class Text extends Component {
             id: this.props.id ? this.props.id : null,
             name: this.props.name,
             placeholder: (this.props.placeholder === "" || this.props.placeholder == null) ? this.props.required ? "必填项" : "" : this.props.placeholder,
-            className: "wasabi-form-control  ",
+            className: "wasabi-input  ",
             rows: this.props.rows,//textarea
             cols: this.props.cols,
             style: { resize: this.props.resize ? "vertical" : null },//只能向下切换

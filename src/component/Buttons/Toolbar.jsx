@@ -6,8 +6,8 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import LinkButton from './LinkButton.jsx';
-import Button from './Button.jsx';
+import LinkButton from './LinkButton';
+import Button from './Button';
 import('../Sass/Buttons/Toolbar.css');
 
 class Toolbar extends Component {

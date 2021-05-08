@@ -1,7 +1,7 @@
 
 import   React ,{Component} from "react";
 import PropTypes from "prop-types";
-import  Button from "../Buttons/Button.jsx";
+import  Button from "../Buttons/Button";
 import ("../Sass/Unit/Msg.css");
 class  MessageView extends Component{
 constructor(props)

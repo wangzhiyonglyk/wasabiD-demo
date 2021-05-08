@@ -85,20 +85,6 @@ func.IEType = function () {
     }
 }
 
-//判断是否 iPhone / iPod /iPad
-func.is_ios = function () {
-    /// <summary>
-    /// 判断是否 iPhone / iPod /iPad
-    /// </summary>
-    if ((navigator.userAgent.match(/iPhone|iPod|iPad/i))) {
-        //alert('true');
-        // 判断系统版本号是否大于 7
-        return Boolean(navigator.userAgent.match(/OS [7-9]_\d[_\d]* like Mac OS X/i));
-    } else {
-        //alert('false');
-        return false;
-    }
-}
 //将数字转为英文表达格式
 func.dealNumToEnglishFormat = function (num) {
     /// <summary>
@@ -113,27 +99,26 @@ func.dealNumToEnglishFormat = function (num) {
     return number.split('').reverse().join('').replace(/(.{3})/g, '$1,').split('').reverse().join('').replace(/^,/, "");
 }
 
-// 日期格式化为字符串
-func.dateformat = function (date = new Date(), format = 'yyyy-MM-dd HH:mm:ss') {
-    /// <summary>
-    /// 日期格式化为字符串
-    /// </summary>
-    /// <param name="date" type="date">日期</param>
-    /// <param name="format" type="string">格式化字符串，"yyyy-MM-dd HH:mm:ss","yyyy-MM-dd"</param>
-    /**
+
+/**
+ * 日期格式化为字符串
+ * @param {DAte} date 日期
+ * @param {string} format 
         * 对Date的扩展，将 Date 转化为指定格式的String
         * 月(M)、日(d)、12小时(h)、24小时(H)、分(m)、秒(s)、周(E)、季度(q) 可以用 1-2 个占位符
         * 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
         * eg:
-        * Utils.formatDate(new Date(),'yyyy-MM-dd') ==> 2014-03-02
-        * Utils.formatDate(new Date(),'yyyy-MM-dd hh:mm') ==> 2014-03-02 05:04
-        * Utils.formatDate(new Date(),'yyyy-MM-dd HH:mm') ==> 2014-03-02 17:04
-        * Utils.formatDate(new Date(),'yyyy-MM-dd hh:mm:ss.S') ==> 2006-07-02 08:09:04.423
-        * Utils.formatDate(new Date(),'yyyy-MM-dd E HH:mm:ss') ==> 2009-03-10 二 20:09:04
-        * Utils.formatDate(new Date(),'yyyy-MM-dd EE hh:mm:ss') ==> 2009-03-10 周二 08:09:04
-        * Utils.formatDate(new Date(),'yyyy-MM-dd EEE hh:mm:ss') ==> 2009-03-10 星期二 08:09:04
-        * Utils.formatDate(new Date(),'yyyy-M-d h:m:s.S') ==> 2006-7-2 8:9:4.18
-        */
+        * dateformat(new Date(),'yyyy-MM-dd') ==> 2014-03-02
+        * dateformat(new Date(),'yyyy-MM-dd hh:mm') ==> 2014-03-02 05:04
+        * dateformat(new Date(),'yyyy-MM-dd HH:mm') ==> 2014-03-02 17:04
+        * dateformat(new Date(),'yyyy-MM-dd hh:mm:ss.S') ==> 2006-07-02 08:09:04.423
+        * dateformat(new Date(),'yyyy-MM-dd E HH:mm:ss') ==> 2009-03-10 二 20:09:04
+        * dateformat(new Date(),'yyyy-MM-dd EE hh:mm:ss') ==> 2009-03-10 周二 08:09:04
+        * dateformat(new Date(),'yyyy-MM-dd EEE hh:mm:ss') ==> 2009-03-10 星期二 08:09:04
+        * dateformat(new Date(),'yyyy-M-d h:m:s.S') ==> 2006-7-2 8:9:4.18
+ * @returns 
+ */
+func.dateformat = function (date = new Date(), format = 'yyyy-MM-dd HH:mm:ss') {
     if (!date) return;
     var o = {
         "M+": date.getMonth() + 1, //月份
@@ -170,28 +155,7 @@ func.dateformat = function (date = new Date(), format = 'yyyy-MM-dd HH:mm:ss') {
     return format;
 }
 
-func.log = function (text) {
-    console.log(text);
-};
 
-//判断手机类型
-func.phoneType = function () {
-    /// <summary>
-    /// 判断手机类型
-    /// </summary>
-    let u = navigator.userAgent, app = navigator.appVersion;
-    let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
-    let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-    if (isiOS) {
-        return "iphone";
-    }
-    else if (isAndroid) {
-        return "android";
-    }
-    else {
-        return "undefined";
-    }
-}
 
 /// 字符转日期
 func.stringToDate = function (strDate) {
@@ -227,14 +191,6 @@ func.cookies = {
         if (cval != null)
             document.cookie = key + "=" + cval + ";expires=" + exp.toGMTString();
     }
-}
-/// 除去两端窗口
-func.trim = function (str) {
-    /// <summary>
-    /// 除去两端窗口
-    /// </summary>
-    /// <param name="str" type="string">str</param>
-    return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 
 //向后台请求数据
@@ -420,12 +376,7 @@ func.download = function (url, title) {
     downloadA.click();
     window.URL.revokeObjectURL(downloadA.href);//释放
 }
-//错误信息
-func.Error = {
-    HttpError: "错误代码:001,网络地址无法请求",
-    ServiceError: "错误代码:002,后台服务器响应失败",
-    HandlerError: "后台业务程序处理错误"
-}
+
 /**
  * 将二维json数据转树型结构
  * @param {Array} data 数据
@@ -454,10 +405,10 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
         if (pId.indexOf("," + data[index][parentField] + ",") > -1 || !data[index][parentField]) {
             let item = {
                 ...data[index],
-                id:data[index][idField],
+                id: data[index][idField],
                 pId: data[index][parentField],
                 text: data[index][textField],
-                children: data[index].children||[],
+                children: data[index].children || [],
             }
             item[idField] = data[index][idField];//添加key
             tree.push(item);
@@ -476,10 +427,10 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
 
                 let item = {
                     ...data[index],
-                    id:data[index][idField],
+                    id: data[index][idField],
                     pId: data[index][parentField],
                     text: data[index][textField],
-                    children: data[index].children||[],
+                    children: data[index].children || [],
                 }
                 item[idField] = data[index][idField];//添加key
                 obj.children.push(item);
@@ -494,7 +445,7 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
         }
     }
     if (data.length > 0) {
-        console.log("Data",data);
+        console.log("Data", data);
         console.error("数据格式不正确，或者是数据量过大，请使用异步请求,");
     }
     return tree;
@@ -517,11 +468,271 @@ func.uuid = function () {
     return uuid;
 }
 
+/**
+ * 判断两个对象是否完全相同
+ * @param {*} objA 
+ * @param {*} objB  
+ * @returns 
+ */
+func.diff = function (objA, objB) {//
+    if (objA === objB) {
+        return false;
+    }
+    if (objA && objB) {
+        if (typeof objA !== typeof objB) {
+            return true;
+        }
+        if (typeof objA !== "object" && typeof objA !== "function") {
+            return objA !== objB;
+        }
+        if (typeof objA === "object") {
+            //先拿所有的属性
+            let oldProps = Object.getOwnPropertyNames(objA);
+            let newProps = Object.getOwnPropertyNames(objB);
+            if (oldProps.length !== newProps.length) {
+                return true;//不相同
+            }
+            for (let i = 0; i < oldProps.length; i++) {
+                let propName = oldProps[i];//属性名
+                //值
+                let propA = objA[propName]
+                let propB = objB[propName]
+                if (func.diff(propA, propB)) {
+                    return true;
+                }
+
+            }
+        }
+    }
+    return func.diffOrder(objA, objB)
+}
+
+/**
+ * 判断两个对象是否完全相同并顺序一致
+ * @param {*} objA 
+ * @param {*} objB 
+ */
+func.diffOrder = function (objA, objB) {
+    return JSON.stringify(objA) !== JSON.stringify(objB);
+}
+
+
+/**
+ * 合并className
+ * @param {object} component 组件
+ * @param {string} className 
+ * @returns 
+ */
+func.combineclass = function (component, className = "") {
+    try {
+        if (className.indexOf(component.defaultProps.className) > -1) {
+            return className;
+        }
+        else {
+            return (component.defaultProps.className || "") + " " + className;
+        }
+
+    }
+    catch (e) {
+
+    }
+    return className;
+
+}
+
+/**
+ * component Mixins实现
+ * @param {object} component 组件
+ * @param {Array} mixinClass 
+ */
+func.componentMixins = function (component, mixinClass = []) {
+
+    try {
+        mixinClass.forEach(baseCtor => {
+            Object.getOwnPropertyNames(baseCtor).forEach(name => {
+
+                if (typeof baseCtor[name] == "function") {
+                    component.prototype[name] = baseCtor[name];
+                }
+            });
+        });
+    } catch (e) {
+
+    }
+
+    return component;
+}
+
+/**
+ * 将二维数据转树型结构
+ * @param {Array} data 数据
+ * @param {string } idField 节点key
+ * @param {string } parentField 父节点key
+ * @param {string } textField 文本key
+ */
+func.toTreeData = function (data, idField = "id", parentField = "pId", textField = "text") {
+    let pos = {};
+    let tree = [];
+    let count = 0;
+    let pId = "";//一级父节点pid值
+    let ids = "";//所有id值
+    for (let i = 0; i < data.length; i++) {
+        ids += "," + data[i][idField] + ","
+    }
+
+    for (let i = 0; i < data.length; i++) {
+        if (ids.indexOf("," + data[i][parentField] + ",") <= -1) {//属于一级节点的pid值
+            pId += "," + data[i][parentField] + ",";
+        }
+    }
+    let index = 0;
+    while (data.length !== 0 && count < 200000) {
+        count++;
+        if (pId.indexOf("," + data[index][parentField] + ",") > -1 || !data[index][parentField]) {
+            let item = {
+                ...data[index],
+                id: data[index][idField],
+                pId: data[index][parentField],
+                text: data[index][textField],
+                children: data[index].children || [],
+            }
+            item[idField] = data[index][idField];//添加key
+            tree.push(item);
+
+            pos[data[index][idField]] = [tree.length - 1];
+            data.splice(index, 1);
+            index--;
+        } else {
+            let posArr = pos[data[index][parentField]];
+            if (posArr) {
+
+                let obj = tree[posArr[0]];
+                for (let j = 1; j < posArr.length; j++) {
+                    obj = obj.children[posArr[j]];
+                }
+
+                let item = {
+                    ...data[index],
+                    id: data[index][idField],
+                    pId: data[index][parentField],
+                    text: data[index][textField],
+                    children: data[index].children || [],
+                }
+                item[idField] = data[index][idField];//添加key
+                obj.children.push(item);
+                pos[data[index][idField]] = posArr.concat([obj.children.length - 1]);
+                data.splice(index, 1);
+                index--;
+            }
+        }
+        index++;
+        if (index > data.length - 1) {
+            index = 0;
+        }
+    }
+    if (data.length > 0) {
+        console.log("Data", data);
+        console.error("数据格式不正确，或者是数据量过大，请使用异步请求,");
+    }
+    return tree;
+
+}
+
+/**
+ * 深度合并
+ * @param {*} targetObj 目标对象
+ * @param {*} sourceObj 源对象
+ * @returns 
+ */
+func.deepMerge = function (targetObj, sourceObj) {
+    for (var key in sourceObj) {
+        targetObj[key].toString() === "[object Object]" ?
+            deepMerge(targetObj[key], sourceObj[key]) : targetObj[key] = sourceObj[key];
+    }
+    return targetObj;
+}
+
+/**
+ * create by wangzhiyong
+ * date:2021-04-22
+ * 日期扩展
+ */
+let DateExtends = {
+
+    /**
+     * 两个日期，相隔多少天
+     * @param {Date} startDate 开始日期
+     * @param {Date} endDate 结束日期
+     */
+    getDatePeriod(startDate, endDate) {
+        try {
+            return (startDate * 1 - endDate * 1) / 60 / 60 / 1000 / 24;
+        }
+        catch (e) {
+            return NaN;
+        }
+
+    },
+    /**
+     * 所在月的第一天
+     * @param {Date} date 
+     * @returns 
+     */
+    getFirstDateInMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth(), 1);
+    },
+    /**
+     * 所在月的最后一天
+     * @param {Date} date 
+     * @returns 
+     */
+    getLastDateInMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    },
+    /**
+     * 求所在季度的第一天
+     * @param {Date} date 
+     */
+    getFirstDateInQuarter(date) {
+        return new Date(date.getFullYear(), ~~(date.getMonth() / 3) * 3, 1);
+    },
+    /**
+   * 求所在季度的最后一天
+   * @param {Date} date 
+   */
+    getLastDateInQuarter(date) {
+        return new Date(date.getFullYear(), ~~(date.getMonth() / 3) * 3 + 3, 0);
+    },
+    /**
+     * 判断是否为闰年
+     * @param {Date} date 
+     * @returns 
+     */
+    isLeapYear(date) {
+        return new Date(date.getFullYear(), 2, 0).getDate() === 29;
+
+    },
+    /**
+     * /**
+     * 取得当前月份的天数
+     * @param {Date} date 
+     * @returns 
+     */
+    getDaysInMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    },
+    /**
+     * 取得当前第一天是星期几
+     * @returns 
+     */
+    getFirstDayWeek(date) {
+        //
+        return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+    }
+}
 import base64 from "./base64.js";
 func.base64 = base64;
 import md5 from "./md5.js";
-
 func.md5 = md5;
-
-
+func={...func,...DateExtends};
 export default func;

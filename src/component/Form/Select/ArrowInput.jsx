@@ -27,7 +27,7 @@ class ArrowInput extends React.Component {
                 this.props.placeholder
                     ? this.props.placeholder : placeholder,
             className:
-                'wasabi-form-control  ',
+                'wasabi-input  ',
             title: this.props.title,
         }; //文本框的属性
         return <div>

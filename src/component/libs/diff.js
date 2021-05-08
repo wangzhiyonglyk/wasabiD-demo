@@ -1,6 +1,7 @@
 /**
  * Created by wangzhiyong on 16/8/5.
  * edit 2020-10-13
+ * todo 暂时保留
  */
 import React, { cloneElement } from "react";
 /**
@@ -32,7 +33,7 @@ let diff = function (objA, objB) {//
                 //值
                 let propA = objA[propName]
                 let propB = objB[propName]
-                if (diff(propA, propB)) {
+                if (func.diff(propA, propB)) {
                     return true;
                 }
 

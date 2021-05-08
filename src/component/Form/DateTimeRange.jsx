@@ -5,7 +5,7 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import DateD from "./DateD.jsx";
+import DateD from "./DateD";
 import Time from "./Time.jsx";
 import _DateRange from "./baseClass/_DateRange"
 import func from "../libs/func"
@@ -81,7 +81,7 @@ class DateTimeRange extends Component {
         return (<div>
             <div className="ok">
                 <div style={{ position: "absolute", width: 150 }}>
-                    <input className=" wasabi-form-control timeinput"
+                    <input className=" wasabi-input timeinput"
                         value={this.state.firstTime} onClick={this.firstTimeShowHandler.bind(this)} onChange={() => { }}></input>
 
                     <div style={{ display: this.state.showfirstTime ? "inline-block" : "none" }}><Time
@@ -91,7 +91,7 @@ class DateTimeRange extends Component {
                     </div>
                 </div>
                 <div style={{ position: "absolute", right: 110 }}>
-                    <input className=" wasabi-form-control timeinput"
+                    <input className=" wasabi-input timeinput"
                         value={this.state.secondTime} onClick={this.secondTimeShowHandler.bind(this)} onChange={() => { }}></input>
 
                     <div style={{ display: this.state.showsecondTime ? "inline-block" : "none" }}><Time
