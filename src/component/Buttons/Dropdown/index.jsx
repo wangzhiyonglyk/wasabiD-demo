@@ -6,8 +6,6 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ClickAway from "../../libs/ClickAway.js";
-import mixins from '../../Mixins/mixins';
 import Button from "../Button"
 import LinkButton from "../LinkButton"
 import dom from "../../libs/dom"
@@ -151,6 +149,6 @@ Dropdown.defaultProps = {
     plain: false,
 };
 
-mixins(Dropdown, [ClickAway]);
+
 
 export default Dropdown;

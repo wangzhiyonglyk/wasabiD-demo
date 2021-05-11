@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import SearchBar from '../../Form/SearchBar/index.jsx';
 import Input from "../../Form/Input";
 import Form from '../../Form/Form';
-import Toolbar from '../../Buttons/Toolbar.jsx';
+import Toolbar from '../../Buttons/Toolbar';
 import DataGrid from '../../Data/DataGrid';
 import SlidePanel from '../../Layout/SlidePanel.jsx';
 import mixins from '../../Mixins/mixins';

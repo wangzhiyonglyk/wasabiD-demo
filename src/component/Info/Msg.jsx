@@ -4,7 +4,7 @@
 //desc:模态窗口
 import  React from "react";
 import  ReactDOM from "react-dom";
-import MessageView from "./MessageView.jsx";
+import MessageView from "./MessageView";
 export default {
     loading(){//正在加载
         if (!!document.getElementById("wasabi-loading")) {

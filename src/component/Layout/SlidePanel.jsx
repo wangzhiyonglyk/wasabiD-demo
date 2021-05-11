@@ -7,7 +7,7 @@ desc:滑动面板
 import React from "react";
 import PropTypes from "prop-types";
 
-import Toolbar from "../Buttons/Toolbar.jsx";
+import Toolbar from "../Buttons/Toolbar";
 import Button from "../Buttons/Button";
 import "../Sass/Layout/SlidePanel.css";
 class SlidePanel extends React.Component {

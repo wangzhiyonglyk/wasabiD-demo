@@ -9,7 +9,6 @@ import FetchModel from "../../Model/FetchModel.js";
 import func from "../../libs/func.js";
 import propTypes from "../config/propTypes.js";
 import defaultProps from "../config/defaultProps.js";
-import "../Input/input.css";
 class Text extends Component {
     constructor(props) {
         super(props);

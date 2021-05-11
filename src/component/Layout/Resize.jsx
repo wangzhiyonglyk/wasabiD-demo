@@ -3,7 +3,6 @@
 //desc:模态窗口
 import React from "react";
 import PropTypes from "prop-types";
-import events from "../libs/events";
 import("../Sass/Layout/resize.css");
 
 class Resize extends React.Component {
@@ -27,9 +26,9 @@ class Resize extends React.Component {
         if (this.props.resize) {
             //允许改变大小
 
-            events.on(document,"mousemove",this.mouseMoveHandler);
-            events.on(document,"mouseup",this.mouseUpHandler)
-            events.on(document,"mousedown",this.mouseDownHandler)
+           document.addEventListener("mousemove",this.mouseMoveHandler);
+           document.addEventListener("mouseup",this.mouseUpHandler)
+           document.addEventListener("mousedown",this.mouseDownHandler)
           
         }
 

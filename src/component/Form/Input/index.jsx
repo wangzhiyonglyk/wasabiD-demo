@@ -19,10 +19,9 @@ import Rate from "../Rate"
 import("./input.css");
 class Input extends Component {
 
-constructor(props)
-{
-    super(props);
-}
+    constructor(props) {
+        super(props);
+    }
     validate(value) {//用于Form调用验证
         return this.refs.input.validate();
     }
@@ -35,10 +34,10 @@ constructor(props)
     renderText() {//普通文本框
         return <Text ref="input" {...this.props} >{this.props.children}</Text>
     }
-    renderRate(){
-             //评分
-            return <Rate ref="input" {...this.props} ></Rate>
-          
+    renderRate() {
+        //评分
+        return <Rate ref="input" {...this.props} ></Rate>
+
     }
     renderUnInput(type) {//非输入框组件
         let control;//组件
@@ -60,7 +59,7 @@ constructor(props)
             control = <Switch ref="input"  {...props} ></Switch>
         }
 
-        else if (type == "muti" || type == "select" || type == "datetime" || type == "time" ||type=="timerange"|| type == "date" || type == "daterange" || type == "datetimerange" || type == "picker" || type == "treepicker") {//下拉组件
+        else if (type == "muti" || type == "select" || type == "datetime" || type == "time" || type == "timerange" || type == "date" || type == "daterange" || type == "datetimerange" || type == "picker" || type == "treepicker") {//下拉组件
             control = <ComboBox ref="input" {...props} ></ComboBox>
         }
 
@@ -68,8 +67,8 @@ constructor(props)
 
         return control;
     }
-    reload(params,url){
-        this.refs.input.reload&& this.refs.input.reload(params,url);
+    reload(params, url) {
+        this.refs.input.reload && this.refs.input.reload(params, url);
     }
     render() {
 
@@ -83,7 +82,7 @@ constructor(props)
 
             return this.renderText();
         }
-        else if(this.props.type=="rate"){
+        else if (this.props.type == "rate") {
             return this.renderRate();
         }
 
@@ -98,5 +97,5 @@ constructor(props)
     }
 }
 Input.propTypes = propTypes;
-Input.defaultProps =defaultProps;
-  export default Input;
+Input.defaultProps = defaultProps;
+export default Input;

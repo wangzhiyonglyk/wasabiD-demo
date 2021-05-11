@@ -7,11 +7,9 @@ import PropTypes from "prop-types";
 
 import Button from "../Buttons/Button";
 import Resize from "./Resize.jsx";
-import events from "../libs/events.js";
 import func from "../libs/func";
 import dom from "../libs/dom";
 import("../Sass/Layout/Modal.css");
-import("../Sass/Buttons/button.css");
 class Modal extends React.Component {
     constructor(props) {
         super(props);
@@ -37,7 +35,7 @@ class Modal extends React.Component {
         this.cancelHandler = this.cancelHandler.bind(this);
     }
     componentDidMount() {
-        events.on(document, "mousedown", this.mouseDownHandler)
+       document.addEventListener( "mousedown", this.mouseDownHandler)
     }
 
     close() {//关闭事件
@@ -74,8 +72,8 @@ class Modal extends React.Component {
 
 
         if ( dom.isDescendant(this.refs.header,event.target)|| event.target.className == "wasabi-modal-header") {
-            events.on(document, "mousemove", this.mouseMoveHandler)
-            events.on(document, "mouseup", this.mouseUpHandler)
+           document.addEventListener( "mousemove", this.mouseMoveHandler)
+           document.addEventListener( "mouseup", this.mouseUpHandler)
 
             //记住原始位置
             this.oldClientX = event.clientX;
@@ -95,8 +93,8 @@ class Modal extends React.Component {
      */
     mouseUpHandler(event) {
         this.position = null;
-        events.off(document, "mouseup", this.mouseUpHandler)
-        events.off(document, "mousemove", this.mouseMoveHandler)
+       document.removeEventListener( "mouseup", this.mouseUpHandler)
+       document.removeEventListener( "mousemove", this.mouseMoveHandler)
     }
 
     OKHandler() {

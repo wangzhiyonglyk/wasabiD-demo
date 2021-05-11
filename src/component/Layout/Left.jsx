@@ -6,7 +6,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import func from "../libs/func"
-import events from "../libs/events";
 import dom from "../libs/dom"
 class Left extends React.Component {
     constructor(props) {
@@ -36,7 +35,7 @@ class Left extends React.Component {
     componentDidMount() {//设置鼠标事件
         let center = document.getElementById(this.props.centerid);
         if (center) {
-            events.on(document, "mousedown", this.mouseDownHandler)
+            document.addEventListener( "mousedown", this.mouseDownHandler)
         }
 
     }
@@ -74,8 +73,8 @@ class Left extends React.Component {
 
 
         if (dom.isDescendant(document.getElementById(this.state.separatorid), event.target) || event.target.className == "wasabi-separator-left") {
-            events.on(document, "mousemove", this.mouseMoveHandler)
-            events.on(document, "mouseup", this.mouseUpHandler)
+           document.addEventListener( "mousemove", this.mouseMoveHandler)
+           document.addEventListener( "mouseup", this.mouseUpHandler)
             //记住原始位置
             this.oldClientX = event.clientX;
             this.oldClientY = event.clientY;
@@ -108,8 +107,9 @@ class Left extends React.Component {
         this.targets = [];//清空
         let target = document.getElementById(this.state.separatorid);
         target.style.cursor = "ew-resize";
-        events.off(document, "mouseup", this.mouseUpHandler)
-        events.off(document, "mousemove", this.mouseMoveHandler)
+
+       document.removeEventListener( "mouseup", this.mouseUpHandler)
+       document.removeEventListener( "mousemove", this.mouseMoveHandler)
     }
 
 

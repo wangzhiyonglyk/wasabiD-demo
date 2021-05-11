@@ -6,8 +6,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Label from "../../Info/Label"
-import validate from "../../Mixins/validate";
-import mixins from '../../Mixins/mixins';
+import validateHoc from "../validateHoc";
 import "./rate.css"
 class Rate extends Component {
     constructor(props) {
@@ -197,5 +196,5 @@ Rate.defaultProps = {
     value: 0,
     name: ""
 }
-Rate=mixins(Rate,[validate]);
-export default Rate;
+
+export default validateHoc( Rate)

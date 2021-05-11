@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
  * 公共方法
  */
 import func from '../../libs/func.js';
-import ClickAway from "../../libs/ClickAway.js";
+
 import mixins from '../../Mixins/mixins';
 
 
@@ -564,6 +564,6 @@ DataGrid.defaultProps = {
     isPivot: false,
 };
 
-mixins(DataGrid, [ClickAway, render, SingleHeader, ComplexHeader, ColGroup, SingleBody, ComplexBody, eventHandler, editHandler, staticMethod, pasteExtend]);
+mixins(DataGrid, [ render, SingleHeader, ComplexHeader, ColGroup, SingleBody, ComplexBody, eventHandler, editHandler, staticMethod, pasteExtend]);
 
 export default DataGrid;
