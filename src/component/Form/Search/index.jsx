@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import BaseInput from "../BaseInput"
 import("./search.css");
-class SearchBox extends React.PureComponent {
+class Search extends React.PureComponent {
     constructor(props) {
         super(props);
         this.input=React.createRef();
@@ -37,7 +37,7 @@ class SearchBox extends React.PureComponent {
     }
 };
 
-SearchBox.propTypes = {
+Search.propTypes = {
     name: PropTypes.string,//表单名称，
     title: PropTypes.string,//提示信息
     placeholder: PropTypes.string,//输入框提示信息
@@ -46,7 +46,7 @@ SearchBox.propTypes = {
     onSearch: PropTypes.func,//查询事件
 
 };
-SearchBox.defaultProps = {
+Search.defaultProps = {
     name: "",
     title: null,
     className: "",
@@ -55,4 +55,4 @@ SearchBox.defaultProps = {
 
 
 };
-export default SearchBox;
+export default Search;

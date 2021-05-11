@@ -7,10 +7,9 @@
  *
  */
 import React, { Component } from 'react';
-import LinkButton from '../../../Buttons/LinkButton';
-import CheckBox from '../../../Form/CheckBox.jsx';
-import Input from '../../../Form/Input.jsx';
-import Radio from '../../../Form/Radio.jsx';
+import CheckBox from '../../../Form/CheckBox/index.jsx';
+import Input from '../../../Form/Input/index.jsx';
+import Radio from '../../../Form/Radio';
 export default {
     renderSingleBody(fixed = false) {
         //渲染表体

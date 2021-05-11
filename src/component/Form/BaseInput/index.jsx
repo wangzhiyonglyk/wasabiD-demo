@@ -64,7 +64,7 @@ class BaseInput extends React.Component {
         }
         else {
             this.setState({
-                value: event.target.value.trim()
+                value: event.target.value,//不能除去两端空格
             })
             this.props.onChange && this.props.onChange(event, this.props.name);
         }

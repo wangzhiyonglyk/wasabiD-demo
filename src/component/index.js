@@ -30,19 +30,27 @@ import Pivot from "./Data/Pivot";//交叉表
 import TreeGrid from "./Data/TreeGrid";//树型表格
 
 /*****************表单组件******************/
-import SearchBar from './Form/SearchBar.jsx';//表单查询组件
-import Form from './Form/Form.jsx';//表单提交组件
-import Input from './Form/Input.jsx';//通用表单组件
+import SearchBar from './Form/SearchBar/index.jsx';//表单查询组件
+import Form from './Form/Form';//表单提交组件
+import Input from './Form/Input/index.jsx';//通用表单组件
+
+import BaseInput from "./Form/BaseInput";//原生输入框
+import Text from "./Form/Text";//文本
+import None from "./Form/None";//空
+import Rate from "./Form/Rate";//评分
+import Select from "./Form/Select";//下拉框
+import Switch from "./Form/Switch";//开关
+import CheckBox from "./Form/CheckBox";//复选框
+import CheckButton from "./Form/CheckButton";//复选按钮
+import Radio from "./Form/Radio";//单选
+import Picker from "./Form/Picker";//三级下拉
+import TreePicker from "./Form/TreePicker";//树形下拉框
+import DatePicker from "./Form/DatePicker";//日期/时间
+import Password from "./Form/Password";//强密码
 import Search from "./Form/Search";//搜索栏组件
 
-
-/*****************日期组件******************/
-import Time from './Form/Time.jsx';//时间选择组件
-import DateD from './Form/DateD';//日期选择组件
-import DateTime from './Form/DateTime.jsx';//日期时间选择组件
-import TimeRange from './Form/TimeRange.jsx';//时间范围选择组件
-import DateRange from './Form/DateRange.jsx';//日期范围选择组件
-import DateTimeRange from './Form/DateTimeRange.jsx';//日期时间范围选择组件
+/*****************日历组件******************/
+import Calendar from './Form/DatePicker/Calendar';//日历组件
 
 /*****************布局组件******************/
 import Box from './Layout/Box.jsx';//箱子组件
@@ -101,8 +109,10 @@ import regs from "./Lang/regs";//常用的正则
 export {
     Tag, Button, LinkButton, Toolbar, Badge, Dropdown, DropdownItem,
     DataGrid, Tree, Transfer, Progress, Step, StepItem, Avatar, Pivot, TreeGrid,
-    SearchBar, Input, Form, Search,
-    Time, DateD, DateTime, DateTimeRange, TimeRange, DateRange,
+    Input,Form,SearchBar,
+    BaseInput,Text,None,Rate,Select,Switch,CheckBox,CheckButton,Radio,Picker,TreePicker,DatePicker,
+    Password,Search,
+    Calendar,
     Box, Drag, Drop, Layout, Center, Header, Footer, Left, Right, Container, Row, Col,
     Modal, Panel, Resize, SlidePanel,
     Menus, MenuPanel, MenuItem, Tabs, TabPanel, Track,

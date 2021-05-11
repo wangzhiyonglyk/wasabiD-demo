@@ -135,7 +135,7 @@ export default {
         setTimeout(() => {
             if (this.refs.fixedTableContainer) {
                 this.refs.fixedTableContainer.style.top = (0 - this.refs.realTableContainer.scrollTop) + "px";
-                this.refs.fixedHeadersContainer.style.left = (0 - this.refs.realTableContainer.scrollLeft) + "px";
+                this.fixedHeadersContainer.current.style.left = (0 - this.refs.realTableContainer.scrollLeft) + "px";
             }
           
         }, 0);

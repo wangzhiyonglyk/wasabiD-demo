@@ -5,9 +5,9 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import SearchBar from '../../Form/SearchBar.jsx';
+import SearchBar from '../../Form/SearchBar/index.jsx';
 import Input from "../../Form/Input";
-import Form from '../../Form/Form.jsx';
+import Form from '../../Form/Form';
 import Toolbar from '../../Buttons/Toolbar.jsx';
 import DataGrid from '../../Data/DataGrid';
 import SlidePanel from '../../Layout/SlidePanel.jsx';

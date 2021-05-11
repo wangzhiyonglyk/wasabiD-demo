@@ -16,6 +16,7 @@ import('./index.css');
 class Avatar extends Component {
     constructor(props) {
         super(props);
+        this.filenode=React.createRef();
         this.state = {
             icon:this.props.icon,
             oldPropsIcon:this.props.icon,
@@ -233,7 +234,7 @@ class Avatar extends Component {
             return;
         }
         else{
-            this.refs.file.click();
+          this.filenode.current.click();
         }
        
     }
@@ -244,7 +245,7 @@ class Avatar extends Component {
             <div className={"wasabi-avatar " +this.props.className+" "+(this.props.disabled?"disabled":"")}>
                     <img onClick={this.onClick.bind(this)} className="wasabi-avatar-icon" src={this.state.icon ? this.state.icon : require("./icon.jpg")}></img>
                     { this.state.uploadDisabled? <i style={{left:"50%",top:"20%",color:"#ffffff"}} className="icon-loading wasabi-upload-icon"></i>:null}
-              <input id={this.state.uploadid} type="file" name="file" ref="file"   onChange={this.onChange.bind(this)} className="wasabi-upload-input" />
+              <input id={this.state.uploadid} type="file" name="file" ref={this.filenode}   onChange={this.onChange.bind(this)} className="wasabi-upload-input" />
                 </div>
                
          

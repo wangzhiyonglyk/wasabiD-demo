@@ -11,7 +11,7 @@
  */
 import React, { Component } from 'react';
 import LinkButton from '../../../Buttons/LinkButton';
-import CheckBox from '../../../Form/CheckBox.jsx';
+import CheckBox from '../../../Form/CheckBox/index.jsx';
 
 export default {
     renderComplexHeader() {

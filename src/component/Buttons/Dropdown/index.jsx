@@ -10,12 +10,16 @@ import ClickAway from "../../libs/ClickAway.js";
 import mixins from '../../Mixins/mixins';
 import Button from "../Button"
 import LinkButton from "../LinkButton"
+import dom from "../../libs/dom"
+import func from "../../libs/func"
 import('./index.css');
 
 class Dropdown extends Component {
     constructor(props) {
         super(props)
+        this.wasabidropdown = React.createRef();
         this.state = {
+            containerid: func.uuid(),
             menuShow: false,
         }
         this.onClick = this.onClick.bind(this);
@@ -23,9 +27,7 @@ class Dropdown extends Component {
         this.showMenu = this.showMenu.bind(this);
         this.hideMenu = this.hideMenu.bind(this);
     }
-    componentDidMount() {
-        this.registerClickAway(this.hideMenu, this.refs.wasabidropdown);//注册全局单击事件
-    }
+
 
     onClick() {
         this.props.onClick && this.props.onClick(this.props.name, this.props.title);
@@ -41,19 +43,32 @@ class Dropdown extends Component {
         this.setState({
             menuShow: true
         })
-        this.bindClickAway();//绑定全局单击事件
+        document.addEventListener("click", this.hideMenu)
     }
-    hideMenu() {
-        this.setState({
-            menuShow: false
-        })
-        this.unbindClickAway();//卸载全局单击事件
+    hideMenu(event) {
+        if (!dom.isDescendant(document.getElementById(this.state.containerid), event.target)) {
+            this.setState({
+                menuShow: false
+            })
+            document.removeEventListener("click", this.hideMenu)
+        }
+
+
+    }
+    shouldComponentUpdate(nextProps, nextState) {
+        if (func.diffOrder(nextProps, this.props)) {
+            return true;
+        }
+        if (func.diff(nextState, this.state)) {
+            return true;
+        }
+        return false;
     }
     render() {
         let props = {
             className:
-                'wasabi-dropdown ' 
-               +(this.props.plain?"":" unplain ")+
+                'wasabi-dropdown '
+                + (this.props.plain ? "" : " unplain ") +
                 this.props.theme +
                 this.props.className,
             style: this.props.style ? this.props.style : {},
@@ -65,21 +80,21 @@ class Dropdown extends Component {
         if (this.props.plain) {
             buttonControl.push(<LinkButton key={1} disabled={this.props.disabled} iconCls={this.props.iconCls} name={this.props.name} onClick={this.onClick} theme={this.props.theme} size={this.props.size} title={this.props.title}>{this.props.label}</LinkButton>
             );
-            buttonControl.push(<LinkButton  key={2} disabled={this.props.disabled} iconCls={this.props.menuIconCls} className="wasabi-dropdown-arrow" onClick={this.showMenu} name={this.props.name} theme={this.props.theme} size={this.props.size} title={this.props.title}></LinkButton>
+            buttonControl.push(<LinkButton key={2} disabled={this.props.disabled} iconCls={this.props.menuIconCls} className="wasabi-dropdown-arrow" onClick={this.showMenu} name={this.props.name} theme={this.props.theme} size={this.props.size} title={this.props.title}></LinkButton>
             )
         }
         else {
-            buttonControl.push(<Button   key={1} disabled={this.props.disabled} iconCls={this.props.iconCls} name={this.props.name} onClick={this.onClick} theme={this.props.theme} size={this.props.size} title={this.props.title}>{this.props.label}</Button>
+            buttonControl.push(<Button key={1} disabled={this.props.disabled} iconCls={this.props.iconCls} name={this.props.name} onClick={this.onClick} theme={this.props.theme} size={this.props.size} title={this.props.title}>{this.props.label}</Button>
             );
-            buttonControl.push(<Button  key={2} disabled={this.props.disabled} iconCls={this.props.menuIconCls} className="wasabi-dropdown-arrow" onClick={this.showMenu} name={this.props.name} theme={this.props.theme} size={this.props.size} title={this.props.title}></Button>
+            buttonControl.push(<Button key={2} disabled={this.props.disabled} iconCls={this.props.menuIconCls} className="wasabi-dropdown-arrow" onClick={this.showMenu} name={this.props.name} theme={this.props.theme} size={this.props.size} title={this.props.title}></Button>
             )
         }
-        return <div ref="wasabidropdown"  {...props} >
+        return <div ref={this.wasabidropdown}  {...props} id={this.state.containerid} >
             {
                 buttonControl
             }
 
-            <ul className={"wasabi-dropdown-menu "  +(this.props.plain?" ":" unplain ") +this.props.size}  style={{ display: this.state.menuShow ? "block" : "none" }}>
+            <ul className={"wasabi-dropdown-menu " + (this.props.plain ? " " : " unplain ") + this.props.size} style={{ display: this.state.menuShow ? "block" : "none" }}>
                 {
                     React.Children.map(this.props.children, (child, index) => {
                         return React.cloneElement(child, { index: index, key: index, onClick: this.menuClickHandler })
@@ -112,7 +127,7 @@ Dropdown.propTypes = {
         'default',
         'small',
         "mini"
-      ]),
+    ]),
     onClick: PropTypes.func, //按钮单击事件
     menuClick: PropTypes.func, //按钮单击事件
     style: PropTypes.object, //样式
@@ -125,13 +140,13 @@ Dropdown.defaultProps = {
     title: null,
     label: "",//按钮的文字
     iconCls: "",
-    menuIconCls:"icon-arrow-down",//默认向下箭头
+    menuIconCls: "icon-arrow-down",//默认向下箭头
     theme: 'primary',
     size: 'default',
     style: {},
     className: '',
     onClick: null,
-    menuClick:null,
+    menuClick: null,
     disabled: false,
     plain: false,
 };

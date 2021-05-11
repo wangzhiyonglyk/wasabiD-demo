@@ -385,7 +385,7 @@ export default {
                         {this.renderFixedHeader()}
                     </table>: null}
             {
-                height ? <div className="table-fixedHeaders" ref="fixedHeadersContainer">
+                height ? <div className="table-fixedHeaders" ref={this.fixedHeadersContainer}>
                        
                    
                     <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} ref="fixedHeaders" >

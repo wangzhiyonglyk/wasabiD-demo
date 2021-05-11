@@ -27,12 +27,12 @@ class Label extends React.PureComponent {
     render() {
         let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
         style.display = this.props.children || this.props.title ? "block" : "none";
-        return <label id={this.state.controlid}
+        return <div id={this.state.controlid}
             title={this.props.title}
             className={"wasabi-label "+this.props.className||""}
             style={style}>
             {this.props.children || this.props.title}
-        </label>
+        </div>
 
 
     }

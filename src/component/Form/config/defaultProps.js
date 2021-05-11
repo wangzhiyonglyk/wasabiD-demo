@@ -9,7 +9,7 @@ export default {
             name:"",
             label:null,
             title:null,
-            help:"",
+         
 
             value:"",
             text:"",

@@ -517,28 +517,6 @@ func.diffOrder = function (objA, objB) {
 }
 
 
-/**
- * 合并className
- * @param {object} component 组件
- * @param {string} className 
- * @returns 
- */
-func.combineclass = function (component, className = "") {
-    try {
-        if (className.indexOf(component.defaultProps.className) > -1) {
-            return className;
-        }
-        else {
-            return (component.defaultProps.className || "") + " " + className;
-        }
-
-    }
-    catch (e) {
-
-    }
-    return className;
-
-}
 
 /**
  * component Mixins实现
@@ -734,5 +712,5 @@ import base64 from "./base64.js";
 func.base64 = base64;
 import md5 from "./md5.js";
 func.md5 = md5;
-func={...func,...DateExtends};
+func = { ...func, ...DateExtends };
 export default func;

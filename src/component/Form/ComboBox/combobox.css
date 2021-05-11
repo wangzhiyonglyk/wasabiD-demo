@@ -1,0 +1,246 @@
+/*create by wangzhiyong
+date:2016-04-26
+desc:日期选择样式
+*/
+
+.combobox {
+    width: 100%;
+    display: block;
+    position: relative;
+  }
+  
+  /*下拉图标*/
+  .combobox .comboxbox-icon{
+    font-style: normal;
+    display: block;
+    width: 22px;
+    height: 24px;
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all,transform .6s;
+    color: #e4e7ed;
+  }
+  .wasabi-form-group-body.readOnly .combobox .comboxbox-icon{
+    cursor: not-allowed;
+  }
+  
+  .combobox .comboxbox-icon:before{
+    font-size: 20px;
+  }
+  .combobox .comboxbox-icon.rotate{
+    transform: rotate(180deg) translateY(3px);
+    -webkit-transform: rotate(180deg) translateY(3px);
+  
+  }
+  
+  /*清空图标*/
+  .combobox .combobox-clear{
+    font-family: iconfont;
+    font-style: normal;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    right: 30px;
+    top: 14px;
+    color: #e4e7ed;
+    cursor: pointer;
+    font-size: 12px;
+  
+  }
+  
+  
+  /**/
+  .combobox .dropcontainter{
+    padding:0px;
+    margin: 0px;;
+    display: none;
+    position: absolute;
+    overflow: visible;
+    z-index:2;
+    top:44px;
+    border:1px solid #e4e7ed;
+    border-radius: 4px;
+    box-shadow:0 2px 12px 0 rgba(0,0,0,.1);
+    background-color: white;
+    margin: 5px 0;
+  }
+  
+  .combobox .dropcontainter::before{
+    border-color: transparent transparent #ffffff;
+   
+      z-index: 1;
+    
+      top: -16px;
+  }
+  .combobox .dropcontainter::after {
+    border-color: transparent transparent #ebeef5;
+    top: -17px;
+  }
+  .combobox .dropcontainter::before, .combobox .dropcontainter::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-width: 8px;
+    border-style: solid;
+    position: absolute;
+    left: 25px;
+  
+  }
+  
+  
+  
+  
+  /*日期*/
+  .combobox .date {
+    width: 250px;
+    height: 246px;
+  
+  }
+  .combobox .time{
+    width: 220px;
+    height: 220px;
+  }
+  .combobox .date.time {
+    width: 250px;
+    height:286px;
+  
+  }
+  
+  
+  /*日期范围*/
+  .combobox .range
+  {
+    width:502px;
+    height:250px;
+  }
+  .combobox .timerange{
+    width:502px;
+    height: 223px;
+  
+  }
+  .combobox .range.default
+  {
+    left:0px;
+  }
+  .combobox .range.left
+  {
+    left: 0px;
+  }
+  .combobox .range.right
+  {
+    left: -170px;
+  }
+  .combobox .datetimeicon .icon-time{
+    font-size: 20px;
+  }
+  .combobox .timeinput{
+    width: 120px;
+      height: 25px;
+      top: 6px;
+      position: absolute;
+      margin-left: 15px;
+      border-radius: 4px;
+      outline: none;
+      border: 1px solid #dddddd;
+      right:20px;
+      padding-right: 6px;
+  }
+  /**
+  普通下拉框
+  */
+  .combobox .select
+  {
+    width: 100%;
+    min-width:210px;
+    height:auto;
+  
+  
+  
+  }
+  
+  /*联级选择*/
+  .combobox .picker
+  {
+    width:410px;
+    height:527px;
+    
+  
+  
+  }
+  .combobox .picker.default
+  {
+    left: 0px;
+  }
+  .combobox .picker.left
+  {
+    left:0px;
+  }
+  .combobox .picker.right
+  {
+    left:-170px;
+  }
+  /*下拉列表*/
+  .combobox .gridpicker{
+    width:410px;
+    height:527px;
+   
+  }
+  .combobox .gridpicker.default
+  {
+    left: 0px;
+  }
+  .combobox .gridpicker.left
+  {
+    left:0px;
+  }
+  .combobox .gridpicker.right
+  {
+    left:-140px;
+  }
+  /*下拉列表*/
+  .combobox .treepicker{
+    width:300px;
+    height:400px;
+  overflow: auto;
+  }
+  .combobox .treepicker.default
+  {
+    left: 0px;
+  }
+  .combobox .treepicker.left
+  {
+    left:0px;
+  }
+  .combobox .treepicker.right
+  {
+    left:-60px;
+  }
+  .combobox .treepickerinput{
+    width: 100%;
+    height: 30px;
+    /* top: 6px; */
+    position: absolute;
+    margin-left: 15px;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #ddd;
+    /* right: 20px; */
+    padding-right: 6px;
+  }
+  
+  
+  .combobox .ok
+  {
+    display: block;
+   width: 100%;
+    height:40px;
+    border-bottom: none;
+    text-align: right;
+    padding-top: 5px;
+  
+  }
+  

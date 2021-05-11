@@ -6,17 +6,20 @@ desc:链接按钮
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import func from "../../libs/func";
 import('./linkbutton.css');
-class LinkButton extends React.PureComponent {
+class LinkButton extends React.Component {
     constructor(props) {
         super(props);
         this.clickHandler = this.clickHandler.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onMouseOut = this.onMouseOut.bind(this);
-        this.state = {};
+        this.state = {
+            disabled:this.props.disabled
+        };
     }
     clickHandler(event) {
-        if (this.props.disabled == true) {
+        if (this.state.disabled == true) {
             return;
         }
 
@@ -33,6 +36,25 @@ class LinkButton extends React.PureComponent {
         if (this.props.onMouseOut) {
             this.props.onMouseOut(event);
         }
+    }
+    setDisabled(){
+      this.setState({
+          disabled:true
+      })
+    }
+    setAbled(){
+        this.setState({
+            disabled:false
+        }) 
+    }
+    shouldComponentUpdate(nextProps,nextState){
+        if(func.diffOrder(nextProps,this.props)){
+            return true;
+        }
+        if(func.diff(nextState,this.state)){
+            return true;
+        }
+        return false;
     }
 
     render() {
@@ -55,7 +77,7 @@ class LinkButton extends React.PureComponent {
             onMouseOut={this.onMouseOut}
             onMouseOver={this.onMouseOver}
             className={className}
-            disabled={this.props.disabled}
+            disabled={this.state.disabled}
             name={this.props.name}
             style={style}
         >

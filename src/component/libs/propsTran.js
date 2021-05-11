@@ -7,17 +7,17 @@ import func from "./func";
 import regs from "../Lang/regs.js";
 let propsTran = {
 
-    /**
-     * 设置下拉组件的初始化数据，checkbox ,radio,select ,picker,treepicker
-     * @param {string|number} value 选择的值
-     * @param {Array} realData 数据
-     * @param {string } idOrValueField id或value对应的字段
-     * @param {string} textField  文本对应的字段
-     */
-    setComboxValueAndText(type, value, data, idOrValueField = "value", textField = "text") {
-
+    /*
+               * 获取value,text,格式化数据，checkbox ,radio,select ,picker,treepicker
+               * @param {string|number} value 选择的值
+               * @param {Array} realData 数据
+               * @param {string } idOrValueField id或value对应的字段
+               * @param {string} textField  文本对应的字段
+             * @returns 
+             */
+    processData(type, value, data = [], idOrValueField = "value", textField = "text") {
         if (!data) {
-            return [];
+            return { data: [], value: value, text: "" };
         }
         let text = [];//选中的文本值
         let realData = func.clone(data);//复制,否则影响父节点，导致重复更新
@@ -36,7 +36,7 @@ let propsTran = {
                 }
                 //如果有子节点的时候.tree,treepicker,picker
                 if (realData[i].children && realData[i].children.length > 0) {
-                    let r = propsTran.setComboxValueAndText(type, value, realData[i].children, idOrValueField, textField);
+                    let r = propsTran.processData(type, value, realData[i].children, idOrValueField, textField);
                     realData[i].children = r.data;
                     if (r.text.length > 0) {
                         //专门用于树组件，父节点
@@ -49,17 +49,17 @@ let propsTran = {
                 }
             }
         }
-
-
+        //返回text用于树中的半选状态，todo 后面这个函数要改成单一原则
         return { data: realData || [], text: text };
     },
 
+
     /**
-     * * 设置下拉组件的文本值,用于赋值的时候
-     * @param {*} value 
-     * @param {*} data 
-     */
-    setComboxText(value, data) {
+   * * 设置下拉组件的文本值,用于赋值的时候
+   * @param {*} value 
+   * @param {*} data 
+   */
+    processText(value = "", data = []) {
         let text = [];//选中的文本值 
         if (data && data instanceof Array && data.length > 0) {
             for (let i = 0; i < data.length; i++) {
@@ -67,8 +67,8 @@ let propsTran = {
                     text.push(data[i].text);
                 }
                 if (data[i].children && data[i].children.length > 0) {
-                    let r = propsTran.setComboxText(value, data[i].children);
-                    text = [].concat(r);
+                    let r = propsTran.processText(value, data[i].children);
+                    text = [].concat(r, text);
                 }
             }
         }
@@ -234,21 +234,21 @@ let propsTran = {
      * @returns 
      */
     gridShowOrHideData(data, open, children) {
-        let ids=[];
+        let ids = [];
         if (children && children instanceof Array && children.length > 0) {
-            for(let i=0;i<children.length;i++){
+            for (let i = 0; i < children.length; i++) {
                 ids.push(children[i].id);
             }
         }
-        ids=","+ids.join(",")+",";
+        ids = "," + ids.join(",") + ",";
         if (data && data instanceof Array && data.length > 0) {
 
             for (let i = 0; i < data.length; i++) {
-                if (ids.indexOf(","+data[i].id+",")>-1) {
+                if (ids.indexOf("," + data[i].id + ",") > -1) {
                     data[i].hide = !open;//隐藏该行
                 }
-                else{
-                   
+                else {
+
                 }
             }
         }

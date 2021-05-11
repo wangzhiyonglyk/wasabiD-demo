@@ -15,9 +15,9 @@ class Editor extends React.Component {
     constructor(props) {
         super(props);
 
-
+        this.editorElem=React.createRef();
+        this.upload=Reeact.createRef();
         this.state = {
-
             content: this.props.content
         }
         this.openFile=this.openFile.bind(this)
@@ -25,7 +25,7 @@ class Editor extends React.Component {
     }
     componentDidMount() {
         //创建富文本框
-        const elem = this.refs.editorElem;
+        const elem = this.editorElem.current;
         this.editor = new E(elem);
         // 使用 onchange 函数监听内容的变化，并实时更新到 state 中
         this.editor.customConfig.onchange = html => {
@@ -48,7 +48,7 @@ class Editor extends React.Component {
         obj[0].innerHTML = innerHTML;
     }
     openFile() {
-        this.refs.upload.open();
+        this.upload.current.open();
     }
     getData() {
         return this.state.content;
@@ -74,9 +74,9 @@ class Editor extends React.Component {
     render() {
         {/* 将生成编辑器 */ }
 
-        return <div> <div ref="editorElem" className={this.props.className} style={this.props.style}>
+        return <div> <div ref={this.editorElem} className={this.props.className} style={this.props.style}>
         </div>
-        <Upload ref="upload" {...this.props}></Upload>
+        <Upload ref={this.upload} {...this.props}></Upload>
         </div>
 
 

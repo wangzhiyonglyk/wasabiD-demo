@@ -17,6 +17,7 @@ import('./index.css');
 class Upload extends Component {
     constructor(props) {
         super(props);
+        this.fileinput=React.createRef();
         this.state = {
             uploadid: func.uuid(),
             defaultImgid:func.uuid(),//默认图片的id
@@ -219,7 +220,7 @@ class Upload extends Component {
             return;
         }
         else {
-            this.refs.file.click();
+            this.fileinput.current.click();
         }
 
     }
@@ -260,7 +261,7 @@ class Upload extends Component {
                 <div key="1" style={{ display: this.state.files.length > 0 || this.props.value ? "none" : "block" }} >
                     <i className="icon-upload wasabi-upload-icon" onClick={this.onClick.bind(this)}></i>
                     <div className="wasabi-upload-text">将{this.props.type == "file" ? "文件" : "图片"}拖到此处，或<LinkButton onClick={this.onClick.bind(this)}>点击上传</LinkButton></div>
-                    <input id={this.state.uploadid} type="file" name="file" ref="file"  {...props} onChange={this.onChange.bind(this)} className="wasabi-upload-input" />
+                    <input id={this.state.uploadid} type="file" name="file" ref={this.fileinput}  {...props} onChange={this.onChange.bind(this)} className="wasabi-upload-input" />
 
                 </div>
                 <div key="2" onClick={this.onClick.bind(this)} className="wasabi-uplaod-files" style={{ display: this.state.files.length > 0 ? "block" : "none" }}>

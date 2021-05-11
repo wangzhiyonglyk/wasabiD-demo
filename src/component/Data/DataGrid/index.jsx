@@ -50,6 +50,8 @@ class DataGrid extends Component {
     constructor(props) {
         super(props);
         this.containerWidth = 0;//表格的宽度 
+        this.fixedHeadersContainer=React.createRef();
+        this.
         this.state = {
             gridcontainerid: func.uuid(),
             realTableid: func.uuid(),

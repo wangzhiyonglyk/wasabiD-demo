@@ -8,23 +8,35 @@
 import React, { Component } from 'react';
 import PlainUpload from "./PlainUpload"
 import BreakUpload from "./BreakUpload"
-class Upload extends Component {
-
-constructor(props){
-  super(props)
-}
-open(){
-this.refs.upload.open();
-}
-close(){
-  this.refs.upload.close();
-}
-  render() {
+class Upload extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.pupload = React.createRef();
+    this.bupload = React.createRef();
+  }
+  open() {
     if (this.props.plain) {
-      return <PlainUpload ref="upload" {...this.props}></PlainUpload>
+      this.pupload.current.open();
     }
     else {
-      return <BreakUpload  ref="upload" {...this.props}></BreakUpload>
+      this.bupload.current.open();
+    }
+
+  }
+  close() {
+    if (this.props.plain) {
+      this.pupload.current.close();
+    }
+    else {
+      this.bupload.current.close();
+    }
+  }
+  render() {
+    if (this.props.plain) {
+      return <PlainUpload ref={this.pupload} {...this.props}></PlainUpload>
+    }
+    else {
+      return <BreakUpload ref={this.bupload} {...this.props}></BreakUpload>
     }
   }
 

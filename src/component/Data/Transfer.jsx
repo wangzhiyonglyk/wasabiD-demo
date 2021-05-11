@@ -2,6 +2,7 @@
  create by wangzhiyong
  date:2016-12-19
  edit 2020-11-06
+ edit 2021-05-10需要重构
  */
 import React from "react";
 import PropTypes from "prop-types";
@@ -16,8 +17,11 @@ class Transfer extends React.Component {
 
     constructor(props) {
         super(props);
-        let realData = propsTran.setComboxValueAndText("transfer","",this.props.data, this.props.valueField, this.props.textField);
-        let realSelectData = propsTran.setComboxValueAndText("transfer","",this.props.selectData, this.props.valueField, this.props.textField);
+        this.transfer=React.createRef();
+        this.up=React.createRef();
+        this.down=React.createRef();
+        let realData = propsTran.processData("transfer","",this.props.data, this.props.valueField, this.props.textField);
+        let realSelectData = propsTran.processData("transfer","",this.props.selectData, this.props.valueField, this.props.textField);
         this.state = {
             name: this.props.name,
             data: realData.data,
@@ -285,8 +289,8 @@ class Transfer extends React.Component {
 
         if (event.keyCode == 17 || event.keyCode == 91) {
             this.ctrl = true;
-            this.refs.up.setDisabled(true);
-            this.refs.down.setDisabled(true);
+           this.up.current.setDisabled(true);
+            this.down.current.setDisabled(true);
         }
         else {
 
@@ -299,13 +303,13 @@ class Transfer extends React.Component {
 
         }
         else {
-            this.refs.up.setDisabled(false);
-            this.refs.down.setDisabled(false);
+           this.up.current.setDisabled(false);
+            this.down.current.setDisabled(false);
         }
 
     }
     onMouseOver(event) {
-        this.refs.transfer.focus();
+        this.transfer.current.focus();
     }
     render() {
 
@@ -317,13 +321,13 @@ class Transfer extends React.Component {
         this.state.selectData.map((item, index) => {
             rightControl.push(<li className={(this.state.rightOnIndex == index || (this.state.rightOnIndex instanceof Array && this.state.rightOnIndex.indexOf(index) > -1)) ? "on" : ""} key={index} onDoubleClick={this.itemDblClickHandler.bind(this, "left", index)} onClick={this.itemClickHandler.bind(this, "right", index)}>{item.text}</li>);
         })
-        return <div className="wasabi-transfer" ref="transfer" tabIndex="0" onKeyUp={this.onKeyUp} onKeyDown={this.onKeyDown} onMouseOver={this.onMouseOver}>
+        return <div className="wasabi-transfer" ref={this.transfer} tabIndex="0" onKeyUp={this.onKeyUp} onKeyDown={this.onKeyDown} onMouseOver={this.onMouseOver}>
             <ul className="wasabi-transfer-left">
                 {leftControl}
             </ul>
             <div className="wasabi-transfer-middle">
-                <LinkButton name="up" title="向上" iconCls={"icon-up"} onClick={this.itemUpHandler} ref="up" disabled={(this.state.leftOnIndex instanceof Array || this.state.rightOnIndex instanceof Array) ? true : false} />
-                <LinkButton name="down" title="向下" iconCls={"icon-down"} onClick={this.itemDownHandler} ref="down" disabled={(this.state.leftOnIndex instanceof Array || this.state.rightOnIndex instanceof Array) ? true : false} />
+                <LinkButton name="up" title="向上" iconCls={"icon-up"} onClick={this.itemUpHandler} ref={this.up} disabled={(this.state.leftOnIndex instanceof Array || this.state.rightOnIndex instanceof Array) ? true : false} />
+                <LinkButton name="down" title="向下" iconCls={"icon-down"} onClick={this.itemDownHandler} ref={this.down} disabled={(this.state.leftOnIndex instanceof Array || this.state.rightOnIndex instanceof Array) ? true : false} />
                 <LinkButton name="right" title="向右" iconCls={"icon-right"} onClick={this.itemDblClickHandler.bind(this, "right", this.state.leftOnIndex)} />
                 <LinkButton name="left" title="向左" iconCls={"icon-left"} onClick={this.itemDblClickHandler.bind(this, "left", this.state.rightOnIndex)} />
 
