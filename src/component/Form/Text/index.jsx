@@ -6,7 +6,7 @@ import React, { Component } from "react";
 import Label from "../../Info/Label";
 import Msg from "../../Info/Msg.jsx";
 import FetchModel from "../../Model/FetchModel.js";
-import func from "../../libs/func.js";
+import api from "wasabi-api"
 import propTypes from "../config/propTypes.js";
 import defaultProps from "../config/defaultProps.js";
 class Text extends Component {
@@ -120,10 +120,9 @@ class Text extends Component {
             fetchmodel.contentType = this.props.contentType;
             fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
         }
-        type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
-
         console.log("text-validing:", fetchmodel);
-
+        let wasabi_api =window.api || api;
+        wasabi_api.ajax(fetchmodel);
     }
     validateHandlerSuccess() {//后台请求验证成功
         this.setState({

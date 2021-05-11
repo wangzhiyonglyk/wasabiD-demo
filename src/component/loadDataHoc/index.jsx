@@ -127,8 +127,8 @@ function loadDataHoc(ComboBoxWidget, type = "select") {
                     fetchmodel.contentType = this.props.contentType;
                     fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
                 }
-                window.wasabi_api = window.wasabi_api || api;
-                window.wasabi_api.ajax(fetchmodel);
+               let wasabi_api =window.api || api;
+                  wasabi_api.ajax(fetchmodel);
                 console.log("combobox-fetch", fetchmodel);
             }
         }

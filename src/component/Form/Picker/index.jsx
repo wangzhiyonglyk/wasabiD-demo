@@ -16,6 +16,7 @@ import PickerModel from "../../Model/PickerModel.js";
 import Label from "../../Info/Label";
 import propType from "../config/propTypes.js";
 import defaultProps from "../config/defaultProps.js";
+import api from "wasabi-api"
 import "./picker.css"
 class Picker extends Component {
     constructor(props) {
@@ -227,9 +228,9 @@ class Picker extends Component {
                     fetchmodel.contentType = this.props.contentType;
                     fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
                 }
-                type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
                 console.log("picker-second", fetchmodel);
-
+                let wasabi_api =window.api || api;
+                wasabi_api.ajax(fetchmodel);
             }
             else {//没有二级节点的url
                 let newData = this.state.data;
@@ -362,8 +363,10 @@ class Picker extends Component {
                     fetchmodel.contentType = this.props.contentType;
                     fetchmodel.data = fetchmodel.contentType == "application/json" ? JSON.stringify(fetchmodel.data) : fetchmodel.data;
                 }
-                type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
+               
                 console.log("picker-third", fetchmodel);
+                let wasabi_api =window.api || api;
+                wasabi_api.ajax(fetchmodel);
 
             }
             else {

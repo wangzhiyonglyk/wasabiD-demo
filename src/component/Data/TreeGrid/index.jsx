@@ -17,6 +17,7 @@ import DataGrid from "../DataGrid";
 import propsTran from "../../libs/propsTran";
 import Tree from "../Tree";
 import FetchModel from "../../Model/FetchModel";
+import api from "wasabi-api"
 import("./index.css")
 class TreeGrid extends Component {
     constructor(props) {
@@ -105,7 +106,7 @@ class TreeGrid extends Component {
         if (url) {
             let type = this.props.httpType ? this.props.httpType : "POST";
             type = type.toUpperCase();
-            var fetchmodel = new FetchModel(url, this.loadSuccess, params, this.loadError);
+            let fetchmodel = new FetchModel(url, this.loadSuccess, params, this.loadError);
             fetchmodel.headers = this.props.httpHeaders;
             if (this.props.contentType) {
                 //如果传contentType值则采用传入的械
@@ -114,8 +115,10 @@ class TreeGrid extends Component {
                 fetchmodel.contentType = this.props.contentType;
                 fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
             }
-            type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
             console.log("treegrid-fetch", fetchmodel);
+            let wasabi_api =window.api || api;
+            wasabi_api.ajax(fetchmodel);
+            
         }
 
     }

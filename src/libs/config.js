@@ -1,4 +1,7 @@
+
+import api from "./api"
 const APP_ENV = window.dev;
+
 const config = {
   dev: {
     url: 'http://localhost:7007',//开发的后台服务地址
@@ -12,7 +15,7 @@ const config = {
 
 //初始化 todo
 let init = function () {
- console.log("init")
+window.api=api;//全部设置请求方式
 }
 init();//初始化
 

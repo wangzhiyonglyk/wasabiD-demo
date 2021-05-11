@@ -7,6 +7,7 @@ import React, { Component } from "react";
 import func from "../../../libs/func.js";
 import FetchModel from "../../../Model/FetchModel.js";
 import Msg from "../../../Info/Msg.jsx";
+import api from "wasabi-api"
 export default {
 
    /**
@@ -301,8 +302,9 @@ export default {
             }
 
             console.log("datagrid-开始查询:", fetchmodel);
-
-            type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
+            let wasabi_api =window.api || api;
+            wasabi_api.ajax(fetchmodel);
+        
         }
         else {
             //没有传url,判断用户是否自定义了更新函数

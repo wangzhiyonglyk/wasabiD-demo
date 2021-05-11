@@ -10,6 +10,7 @@ import React from "react";
 import func from "../../../libs/func.js";
 import FetchModel from "../../../Model/FetchModel.js";
 import Msg from "../../../Info/Msg.jsx";
+import api from "wasabi-api"
 export default  {
   
     /**
@@ -175,7 +176,7 @@ export default  {
         if (this.state.updateUrl) {//定义url,保存上一行
             let type = this.props.httpType ? this.props.httpType : "POST";
             type = type.toUpperCase();
-            var fetchmodel = new FetchModel(this.state.updateUrl, this.remoteUpdateRowuccess.bind(this, newEditIndex), { model: this.state.data[this.state.editIndex] }, this.ajaxError, type);
+            let fetchmodel = new FetchModel(this.state.updateUrl, this.remoteUpdateRowuccess.bind(this, newEditIndex), { model: this.state.data[this.state.editIndex] }, this.ajaxError, type);
             fetchmodel.headers = this.props.httpHeaders;
             if (this.props.contentType) {
                 //如果传contentType值则采用传入的械
@@ -185,7 +186,8 @@ export default  {
                 fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data? JSON.stringify(fetchmodel.data) :"{}": fetchmodel.data;
             }
             console.log("datagrid-updateRow:", fetchmodel);
-            type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
+            let wasabi_api =window.api || api;
+            wasabi_api.ajax(fetchmodel);
         }
         else {//没有定义url
             if (this.state.addData.has(this.getKey(this.state.editIndex))) {//说明是属于新增的
