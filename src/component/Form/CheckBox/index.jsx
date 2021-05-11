@@ -5,9 +5,10 @@
  */
 import React from "react";
 import Label from "../../Info/Label";
-import loadDataHoc from "../loadDataHoc";
+import loadDataHoc from "../../loadDataHoc";
 import validateHoc from "../validateHoc";
 import func from "../../libs/func"
+import propsTran from "../../libs/propsTran"
 import "../Radio/radio.css"
 class CheckBox extends React.Component {
     constructor(props) {
@@ -25,8 +26,8 @@ class CheckBox extends React.Component {
     static getDerivedStateFromProps(props, state) {
         if (props.value != state.oldPropsValue) {//父组件强行更新了            
             return {
-                value: props.value,
-                text:func.processText(value, props.data).join(","),
+                value: props.value||"",
+                text:propsTran.processText(props.value, props.data).join(","),
                 oldPropsValue: props.value
             }
         }
@@ -35,7 +36,7 @@ class CheckBox extends React.Component {
     setValue(value) {
         this.setState({
             value: value,
-            text: func.processText(value, this.props.data).join(",")
+            text: propsTran.processText(value, this.props.data).join(",")
         })
     }
     getValue() {
@@ -52,13 +53,19 @@ class CheckBox extends React.Component {
         if (this.props.readOnly) {
             return;
         }
-        let newValue = this.state.value || ""
-        let newText = this.state.text || "";
+        let newValue = this.state.value.toString() || ""
+        let newText = this.state.text.toString() || "";
         newValue = newValue ? newValue.split(",") : [];
         newText = newText ? newText.split(",") : [];
-        if (newValue.indexOf(value) > -1) {
-            newValue.splice(newValue.indexOf(value), 1);
-            newText.splice(newText.indexOf(value), 1);
+        if (newValue.indexOf(value.toString()) > -1) {
+            newValue.splice(newValue.indexOf(value.toString()), 1);
+            try{
+                newText.splice(newValue.indexOf(value.toString()), 1);
+            }
+            catch(e){
+
+            }
+           
         }
         else {
             newValue.push(value);

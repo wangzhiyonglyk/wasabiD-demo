@@ -6,26 +6,24 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-
-import diff from "../libs/diff";
 import propsTran from "../libs/propsTran";
-import LinkButton  from "../Buttons/LinkButton";
-
+import LinkButton from "../Buttons/LinkButton";
 import FetchModel from "../Model/FetchModel.js";
-import ("../Sass/Data/Transfer.css");
+import func from "../libs/func";
+import("../Sass/Data/Transfer.css");
 class Transfer extends React.Component {
 
     constructor(props) {
         super(props);
-        this.transfer=React.createRef();
-        this.up=React.createRef();
-        this.down=React.createRef();
-        let realData = propsTran.processData("transfer","",this.props.data, this.props.valueField, this.props.textField);
-        let realSelectData = propsTran.processData("transfer","",this.props.selectData, this.props.valueField, this.props.textField);
+        this.transfer = React.createRef();
+        this.up = React.createRef();
+        this.down = React.createRef();
+        let realData = propsTran.processData("transfer", "", this.props.data, this.props.valueField, this.props.textField);
+        let realSelectData = propsTran.processData("transfer", "", this.props.selectData, this.props.valueField, this.props.textField);
         this.state = {
             name: this.props.name,
-            data: realData.data,
-            selectData: realSelectData.data,
+            data: realData,
+            selectData: realSelectData,
             leftOnIndex: null,//左边被点中的数据
             rightOnIndex: null,//右边被点中的数据
             textField: this.props.textField,
@@ -38,19 +36,19 @@ class Transfer extends React.Component {
     static getDerivedStateFromProps(props, state) {
         let newState = {};
         if (props.url && props.params &&
-            diff(props.params, state.params)) {//如果有url
+            func.diff(props.params, state.params)) {//如果有url
             newState = {
                 reloadData: true,//重新加载
                 url: props.url,
                 params: func.clone(props.params),
             }
         }
-        if (props.data && props.data instanceof Array && diff(props.data, state.data)) {
+        if (props.data && props.data instanceof Array && func.diff(props.data, state.data)) {
             //如果传了死数据
-            newState.data = propsTran.setComboxValueAndText("transfer","",props.data, state.valueField, state.textField);
-            newState.data= newState.data.data;
-            newState.selectData = propsTran.setComboxValueAndText("transfer","",props.selectData, state.valueField, state.textField);
-            newState.selectData= newState.selectData.data;
+            newState.data = propsTran.setComboxValueAndText("transfer", "", props.data, state.valueField, state.textField);
+            newState.data = newState.data.data;
+            newState.selectData = propsTran.setComboxValueAndText("transfer", "", props.selectData, state.valueField, state.textField);
+            newState.selectData = newState.selectData.data;
         }
         if (func.isEmptyObject(newState)) {
             return null;
@@ -81,7 +79,7 @@ class Transfer extends React.Component {
                 //否则默认
 
                 fetchmodel.contentType = this.props.contentType;
-                fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data? JSON.stringify(fetchmodel.data) :"{}": fetchmodel.data;
+                fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
             }
 
             type == "POST" ? unit.fetch.post(fetchmodel) : unit.fetch.get(fetchmodel);
@@ -289,7 +287,7 @@ class Transfer extends React.Component {
 
         if (event.keyCode == 17 || event.keyCode == 91) {
             this.ctrl = true;
-           this.up.current.setDisabled(true);
+            this.up.current.setDisabled(true);
             this.down.current.setDisabled(true);
         }
         else {
@@ -303,7 +301,7 @@ class Transfer extends React.Component {
 
         }
         else {
-           this.up.current.setDisabled(false);
+            this.up.current.setDisabled(false);
             this.down.current.setDisabled(false);
         }
 

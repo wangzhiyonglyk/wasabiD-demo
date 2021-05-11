@@ -29,6 +29,7 @@
 .wasabi-tree .treenode{
   display: inline-block;
   position: relative;
+  width: calc(100% - 22px);
 
 }
 
@@ -45,7 +46,7 @@
   border: 1px solid #dcdfe6;
 }
 .wasabi-tree .wasabi-checkul .checkbox:checked+label:after{
-  top:-12px;
+  top:-13px;
 }
 .wasabi-tree .checkbox-label,.wasabi-tree .checktext{
   display: none;

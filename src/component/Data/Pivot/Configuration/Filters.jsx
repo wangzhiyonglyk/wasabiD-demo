@@ -6,7 +6,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import func from "../../../libs/func";
-import diff from "../../../libs/diff";
 import Panel from "../../../Layout/Panel"
 class Filters extends Component {
     constructor(props) {
@@ -17,7 +16,7 @@ class Filters extends Component {
         }
     }
     static getDerivedStateFromProps(props, state) {
-        if (diff(props.data, state.oldData)) {
+        if (func.diff(props.data, state.oldData)) {
             return {
                 oldData: func.clone(props.data),
                 data: func.clone(props.data),

@@ -14,7 +14,6 @@ import Msg from "../../Info/Msg";
 import Simulator from "../Simulator";
 import LinkButton from "../../Buttons/LinkButton";
 import PlainUpload from "../Upload/PlainUpload";
-import diff from "../../libs/diff";
 import "./index.css"
 import Container from "../../Layout/Container";
 class Article extends React.Component {
@@ -41,7 +40,7 @@ class Article extends React.Component {
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};
-        if (diff(props.content, state.oldPropsContent)) {
+        if (func.diff(props.content, state.oldPropsContent)) {
             newState.tempContent = this.formatContent(props.content);
             newState.oldPropsContent = func.clone(props.content);
         }

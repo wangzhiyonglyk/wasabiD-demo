@@ -7,8 +7,9 @@
  */
 import React, { Component } from "react";
 import func from "../../libs/func.js";
+import propsTran from "../../libs/propsTran"
 import dom from "../../libs/dom"
-import loadDataHoc from "../loadDataHoc";
+import loadDataHoc from "../../loadDataHoc";
 import validateHoc from "../validateHoc";
 import FetchModel from "../../Model/FetchModel.js";
 import PickerModel from "../../Model/PickerModel.js";
@@ -60,9 +61,9 @@ class Picker extends Component {
             newState.data = func.clone(props.data)//复制一份
         }
         if (props.value != state.oldPropsValue) {//父组件强行更新了
-            let text = func.processText(props.value, newState.data || state.data);
+            let text = propsTran.processText(props.value, newState.data || state.data);
             newState = {
-                value: props.value,
+                value: props.value||"",
                 oldPropsValue: props.value,
                 text: text.join(","),
             }
@@ -75,7 +76,7 @@ class Picker extends Component {
     * @param {*} value 
     */
     setValue(value) {
-        let text = func.processText(value, this.state.data);
+        let text = propsTran.processText(value, this.state.data);
         this.setState({
             value: value,
             text: text,

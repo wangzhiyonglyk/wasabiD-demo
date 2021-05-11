@@ -24,7 +24,6 @@ let validateHoc = function (InputWidget) {
          * @returns 
          */
         validate(value) {
-            console.log("validate")
             value = value || this.input.current.getValue();
 
             let isvalidate = true;//默认是有效的

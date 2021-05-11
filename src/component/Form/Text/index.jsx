@@ -15,8 +15,7 @@ class Text extends Component {
         super(props);
         this.state = {
             oldPropsValue: this.props.value,//保存用于匹配
-            value: this.props.value,
-            text: this.props.text,
+            value: this.props.value||"",
 
         }
         this.onChange = this.onChange.bind(this);
@@ -36,7 +35,7 @@ class Text extends Component {
         if (props.value != state.oldPropsValue) {
             //就是说原来的初始值发生改变了，说明父组件要更新值
             return {
-                value: props.value,
+                value: props.value||"",
                 oldPropsValue: props.value
             }
         }
@@ -56,10 +55,8 @@ class Text extends Component {
             isvalidate = this.props.validate && this.props.validate(value);
         }
         this.state.value = event.target.value;
-        this.state.text = event.target.value;
         this.setState({
             value: event.target.value,
-            text: event.target.value,
         })
         this.props.onChange && this.props.onChange(value, value, this.props.name);//自定义的改变事件
 

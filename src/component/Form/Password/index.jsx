@@ -1,7 +1,7 @@
 import React from "react";
 import BaseInput from "../BaseInput"
 import Label from "../../Info/Label"
-import ValidateHoc from "../ValidateHoc";
+import validateHoc from "../validateHoc";
 import propType from "../config/propTypes.js";
 import defaultProps from "../config/defaultProps.js";
 class Password extends React.PureComponent {
@@ -83,4 +83,4 @@ class Password extends React.PureComponent {
 }
 Password.propTypes = propType;
 Password.defaultProps = Object.assign({}, defaultProps, { type: "password" });;
-export default ValidateHoc(Password);
+export default validateHoc(Password);

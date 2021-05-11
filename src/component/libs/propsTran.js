@@ -6,51 +6,43 @@
 import func from "./func";
 import regs from "../Lang/regs.js";
 let propsTran = {
-
-    /*
-               * 获取value,text,格式化数据，checkbox ,radio,select ,picker,treepicker
-               * @param {string|number} value 选择的值
-               * @param {Array} realData 数据
-               * @param {string } idOrValueField id或value对应的字段
-               * @param {string} textField  文本对应的字段
-             * @returns 
-             */
-    processData(type, value, data = [], idOrValueField = "value", textField = "text") {
+    /**  
+     * 格式化数据，checkbox ,radio,select ,picker,treepicker,tree,treegrid
+     * @param {string|number} value 选择的值
+     * @param {Array} realData 数据
+     * @param {string } idOrValueField id或value对应的字段名
+     * @param {string} textField  文本对应的字段名
+     * @param {*} parentField 父节点对应字段名
+     * @param {*} simpleData 是否是简单数据格式
+     * @returns 
+     */
+    processData(type, value, data = [], idOrValueField = "value", textField = "text", parentField = "pId", simpleData = true) {
         if (!data) {
-            return { data: [], value: value, text: "" };
+            return data;
         }
-        let text = [];//选中的文本值
         let realData = func.clone(data);//复制,否则影响父节点，导致重复更新
         if (realData && realData instanceof Array && realData.length > 0) {
             for (let i = 0; i < realData.length; i++) {
                 if (type == "tree" || type == "treepicker") {
-                    realData[i].id = realData[i] && realData[i][idOrValueField];
+                    realData[i].id = realData[i] && realData[i][idOrValueField];//追加这个属性
                 }
                 else {
-                    realData[i].value = realData[i] && realData[i][idOrValueField];
+                    realData[i].value = realData[i] && realData[i][idOrValueField];//追加这个属性
                 }
-                realData[i].text = realData[i] && realData[i][textField];
+                realData[i].text = realData[i] && realData[i][textField];//追加这个属性
                 if (("," + (value || "") + ",").indexOf("," + ((type == "tree" || type == "treepicker") ? realData[i].id : realData[i].value) + ",") > -1) {
-                    realData[i].checked = true;//专门用于树组件
-                    text.push(realData[i] && realData[i].text);
+                    realData[i].checked = true;//节点选中，专门用于树组件
                 }
                 //如果有子节点的时候.tree,treepicker,picker
                 if (realData[i].children && realData[i].children.length > 0) {
-                    let r = propsTran.processData(type, value, realData[i].children, idOrValueField, textField);
-                    realData[i].children = r.data;
-                    if (r.text.length > 0) {
-                        //专门用于树组件，父节点
-                        if (!realData[i].checked) {
-                            realData[i].checkValue = "half";//处理半选状态,todo
-                        }
-                    }
-                    text = [].concat(text, r.text);
-
+                    realData[i].children = propsTran.processData(type, value, realData[i].children, idOrValueField, textField);
                 }
             }
         }
-        //返回text用于树中的半选状态，todo 后面这个函数要改成单一原则
-        return { data: realData || [], text: text };
+        if ((type === "tree" || type === "treepicker" || type === "treegrid") && simpleData) {//格式化树型结构
+            realData = func.toTreeData(realData, idOrValueField, parentField, textField);
+        }
+        return realData;
     },
 
 
@@ -80,7 +72,7 @@ let propsTran = {
      * @param {*} value 
      * @param {*} data 
      */
-    getComboxValueAll(data) {
+    getTreePickerValueAll(data) {
         let values = [];
         let texts = [];
         if (data && data instanceof Array && data.length > 0) {
@@ -88,9 +80,9 @@ let propsTran = {
                 values.push(data[i].id);
                 texts.push(data[i].text);
                 if (data[i].children && data[i].children.length > 0) {
-                    let r = propsTran.getComboxValueAll(data[i].children);
-                    values = [].concat(r.values);
-                    texts = [].concat(r.texts)
+                    let r = propsTran.getTreePickerValueAll(data[i].children);
+                    values = [].concat(values,r.values);
+                    texts = [].concat(texts,r.texts)
                 }
             }
         }
@@ -208,22 +200,23 @@ let propsTran = {
 
         let filterResult = [];
         data && data.forEach((item, index) => {
+            let filterItem=null;
+            if (item.id.toString().indexOf(filterText)>-1|| item.text.indexOf(filterText) > -1) {
+                filterItem={ ...item,children:[] }
+            }
             if (item.children && item.children.length > 0) {
                 let result = propsTran.treeFilter(filterText, item.children);
                 if (result.length > 0) {
-                    filterResult.push({
-                        ...item,
-                        children: result
-                    })
+                    filterItem={ ...item,children:[] }
+                    filterItem.children=result;
                 }
+              
             }
-            else {
-                if (item.text.indexOf(filterText) > -1) {
-                    filterResult.push({ ...item })
-                }
+            if(filterItem){
+                filterResult.push(filterItem);
             }
-
         })
+        console.log(filterResult);
         return filterResult;
     },
     /**

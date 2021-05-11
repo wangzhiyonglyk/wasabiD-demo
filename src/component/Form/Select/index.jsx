@@ -9,9 +9,10 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 //libs
 import func from "../../libs/func.js";
+import propsTran from "../../libs/propsTran"
 import dom from "../../libs/dom"
 //hoc
-import loadDataHoc from "../loadDataHoc";
+import loadDataHoc from "../../loadDataHoc";
 import validateHoc from "../validateHoc"
 //component
 import Label from "../../Info/Label";
@@ -48,15 +49,16 @@ class Select extends Component {
         let newState = {};
         if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData)) {
             /**
-             * 如原数据发生改变才更新数据源,因为此处有添加数据的现象
+             * 因为此组件有追加数据的功能，所以要判断数据变化
+             * 其他下拉组件统一交由loadDataHoc处理了
              */
             newState.rawData = (props.data);
             newState.data = func.clone(props.data)//复制一份
         }
         if (props.value != state.oldPropsValue) {//父组件强行更新了
-            let text = func.processText(props.value, newState.data || state.data);
+            let text = propsTran.processText(props.value, newState.data || state.data);
             newState = {
-                value: props.value,
+                value: props.value||"",
                 oldPropsValue: props.value,
                 text: text.join(","),
                 inputText: text.join(",")
@@ -70,7 +72,7 @@ class Select extends Component {
      * @param {*} value 
      */
     setValue(value) {
-        let text = func.processText(value, this.state.data);
+        let text = propsTran.processText(value, this.state.data);
         this.setState({
             value: value,
             text: text,

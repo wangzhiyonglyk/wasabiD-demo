@@ -13,7 +13,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import func from "../../libs/func";
-import diff from "../../libs/diff";
 import DataGrid from "../DataGrid";
 import propsTran from "../../libs/propsTran";
 import Tree from "../Tree";
@@ -40,19 +39,19 @@ class TreeGrid extends Component {
         let newState = {};
 
         if (props.url && props.params &&
-            diff(props.params, state.params)) {//如果有url
+            func.diff(props.params, state.params)) {//如果有url
             newState = {
                 reloadData: true,
                 url: props.url,
                 params: props.params,
             }
         }
-        if (props.data && props.data instanceof Array && diff(props.data, state.rawData)) {
+        if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData)) {
             //如果传了死数据
             newState.rawData = props.data;
             //拿到text
-            let result = propsTran.setComboxValueAndText("tree", props.value, props.data, props.idField, props.textField);
-            newState.text = result.text;//根据value值拿到text
+            let result = propsTran.processData("tree", props.value, props.data, props.idField, props.textField);
+         
             if (props.simpleData) {
                 //生成树结构
                 newState.realTreeData = func.toTreeData(result.data, props.idField, props.parentField, props.textField)
@@ -130,11 +129,11 @@ class TreeGrid extends Component {
             realData = func.getSource(data, this.props.dataSource);
         }
         //根据value值拿到text
-        let result = propsTran.setComboxValueAndText("tree", this.state.value, realData, this.props.idField, this.props.textField);
+        let result = propsTran.processData("tree", this.state.value, realData, this.props.idField, this.props.textField);
 
         if (this.props.simpleData) {
             //生成树结构
-            realTreeData = func.toTreeData(result.data, this.props.idField, this.props.parentField, this.props.textField)
+            realTreeData = func.toTreeData(result, this.props.idField, this.props.parentField, this.props.textField)
 
         }
 
@@ -176,7 +175,7 @@ class TreeGrid extends Component {
      */
     dataGridClick(rowData, rowIndex) {
 
-        this.refs.tree._setClickNode(rowData[this.props.idField || "id"]);
+        this.refs.tree.setClickNode(rowData[this.props.idField || "id"]);
 
         this.props.onClick && this.props.onClick(rowData);
 

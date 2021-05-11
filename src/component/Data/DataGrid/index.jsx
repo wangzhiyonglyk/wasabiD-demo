@@ -18,7 +18,6 @@ import PropTypes from 'prop-types';
  */
 import func from '../../libs/func.js';
 import ClickAway from "../../libs/ClickAway.js";
-import diff from '../../libs/diff.js';
 import mixins from '../../Mixins/mixins';
 
 
@@ -50,9 +49,9 @@ class DataGrid extends Component {
     constructor(props) {
         super(props);
         this.containerWidth = 0;//表格的宽度 
-        this.fixedHeadersContainer=React.createRef();
+        this.fixedHeadersContainer = React.createRef();
         this.
-        this.state = {
+            this.state = {
             gridcontainerid: func.uuid(),
             realTableid: func.uuid(),
             url: this.props.url,
@@ -103,7 +102,7 @@ class DataGrid extends Component {
     static getDerivedStateFromProps(props, state) {
         let newState = {};//新的状态值
         if (props.url && props.params &&
-            diff(props.params, state.rawParams)) {//父如果参数有变
+            func.diff(props.params, state.rawParams)) {//父如果参数有变
             newState = {
                 reloadData: true,
                 url: props.url,
@@ -126,7 +125,7 @@ class DataGrid extends Component {
                 if (single != state.single) {
                     newState.single = single;
                 }
-                if (diff(props.headers, state.rawHeaders)) {
+                if (func.diff(props.headers, state.rawHeaders)) {
                     //有改变
                     newState.headerChange = true;
                     newState.rawHeaders = props.headers;
@@ -136,7 +135,7 @@ class DataGrid extends Component {
             }
             {
                 //处理固定列
-                if (diff(props.fixedHeaders, state.rawFixedHeaders)) {
+                if (func.diff(props.fixedHeaders, state.rawFixedHeaders)) {
                     //有改变
                     newState.fixedHeaders = func.clone(props.fixedHeaders);
                     newState.rawFixedHeaders = props.fixedHeaders;
@@ -162,7 +161,7 @@ class DataGrid extends Component {
             }
         }
         //todo 此处理还要仔细研究
-        if (props.data && props.data instanceof Array && diff(props.data, state.rawData)) {
+        if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData)) {
             //如果传了死数据
             newState.rawData = props.data;
             try {

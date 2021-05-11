@@ -8,28 +8,24 @@ create by wangzhiyong 创建树组件
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Msg from "../Info/Msg";
-import FetchModel from "../Model/FetchModel";
 import TreeNode from "./TreeNode.jsx";
 import func from "../libs/func.js";
-import diff from "../libs/diff.js";
 import propsTran from "../libs/propsTran";
+import loadDataHoc from "../loadDataHoc"
 require("../Sass/Data/Tree.css");
 class Tree extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            url: this.props.url,
-            name: this.props.name,
-            value: this.props.value,
+            rawData: [],
+            data: [],
+            clickId: "",//单击的id
+            value: "",//勾选的值
+            oldPropsValue: "",
             text: "",
-            data: [],//处理后数据
-            rawData: [],//原始数据，
-            params: null,
-            reloadData: false,
             idField: this.props.idField,
             textField: this.props.textField,
-            simpleData: this.props.simpleData,//保留设置
+
         }
         //单击与双击需要改变样式
         this.onClick = this.onClick.bind(this);
@@ -45,100 +41,56 @@ class Tree extends Component {
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};
-        if (props.url && props.params &&
-            diff(props.params, state.params)) {//如果有url
-            newState = {
-                reloadData: true,
-                url: props.url,
-                params: props.params,
+        if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData)) {
+            /**
+             * 因为此组件需要对数据进行增删改
+             * 其他组件统一交由loadDataHoc处理了
+             */
+
+            newState.rawData = (props.data);
+            newState.data = func.clone(props.data);
+
+        }
+        if (props.value != state.oldPropsValue) {//父组件强行更新了值            
+            return {
+                value: props.value || "",
+                text: propsTran.processText(props.value, newState.data || props.data).join(","),
+                oldPropsValue: props.value
             }
         }
-        if (props.data && props.data instanceof Array && diff(props.data, state.rawData)) {
-         
-            //如果传了死数据
-            newState.rawData = props.data;
-            //拿到text
-            let result = propsTran.setComboxValueAndText("tree", props.value, props.data, props.idField, props.textField);
-            newState.text = result.text;//根据value值拿到text
-            if (props.simpleData) {
-                //生成树结构
-                newState.data = func.toTreeData(result.data, props.idField, props.parentField, props.textField)
 
+        return newState;
+    }
+    onChecked(checked, id, text, children, row) {
+        this.props.onChecked && this.props.onChecked(checked, id, text, children, row, this.props.name);
+    }
+    /**
+   * 返回勾选的数据
+   */
+    getChecked() {
+        let data = [];
+        for (let ref in this.refs) {
+            if (ref.indexOf("treenode-") > -1) {
+                data = [].concat(data, this.refs[ref].getNodeChecked());
             }
-            else {
-                newState.data = func.clone(props.data);
-            }
-
         }
-        if (func.isEmptyObject(newState)) {
-            return null;
-        }
-        else {
-            return newState;
-        }
-
+        return data;
     }
-    componentDidUpdate() {
-        if (this.state.reloadData) {
-            this.setState({
-                reloadData: false
-            }, () => {
-                this.loadData(this.state.url, this.state.params);
-            })
-
-        }
-    }
-    componentDidMount() {
-        this.loadData(this.state.url, this.state.params);
-    }
-
-    loadData(url, params) {
-        if (url) {
-            let type = this.props.httpType ? this.props.httpType : "POST";
-            type = type.toUpperCase();
-            var fetchmodel = new FetchModel(url, this.loadSuccess, params, this.loadError);
-            fetchmodel.headers = this.props.httpHeaders;
-            if (this.props.contentType) {
-                //如果传contentType值则采用传入的械
-                //否则默认
-
-                fetchmodel.contentType = this.props.contentType;
-                fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
-            }
-            type == "POST" ? func.fetch.post(fetchmodel) : func.fetch.get(fetchmodel);
-            console.log("tree-fetch", fetchmodel);
-        }
-
-    }
-    loadSuccess(data) {//数据加载成功
-        var realData = data;
-        if (this.props.dataSource == null) {
-        }
-        else {
-            realData = func.getSource(data, this.props.dataSource);
-        }
-
-        //根据value值拿到text
-        let result = propsTran.setComboxValueAndText("tree", this.state.value, realData, this.props.idField, this.props.textField);
-
-        if (this.props.simpleData) {
-            //生成树结构
-            realData = func.toTreeData(realData, this.props.idField, this.props.parentField, this.props.textField)
-
-        }
-        else {
-
-        }
+    /**
+         * 为了给交叉表与树表格内部使用的单击事件
+         * @param {*} id 
+         */
+    setClickNode(id) {
         this.setState({
-            text: result.text,
-            data: realData,
+            clickId: id,
+
+        }, () => {
+
         })
+
+
     }
 
-    loadError(message) {//查询失败
-        console.log("treepicker-error", message);
-        Msg.error(message);
-    }
     /**
      * 单击事件
      * @param {*} id 值
@@ -149,42 +101,18 @@ class Tree extends Component {
         if (this.props.isPivot) {
             setTimeout(() => {
                 this.setState({
-                    value: id,
-                    text: text
+                    clickId: id,
                 })
             }, 20);
         } else {
             this.setState({
-                value: id,
-                text: text
+                clickId: id,
             })
         }
         this.props.onClick && this.props.onClick(id, text, children, row, this.props.name);
 
     }
-    /**
-     * 为了给交叉表与树表格内部使用的单击事件
-     * @param {*} id 
-     */
-    _setClickNode(id) {
-        let rawData = this.state.rawData;
-        let text = "";
-        for (let i = 0; i < rawData.length; i++) {
-            if (id == rawData[this.props.idField]) {
-                text = rawData[this.props.textField];
-                break;
-            }
-        }
-      
-        this.setState({
-            value: id,
-            text: text
-        },()=>{
-    
-        })
 
-
-    }
     /**
      * 单选按钮 radioType="all"
      * @param {*} id 
@@ -202,8 +130,8 @@ class Tree extends Component {
                     if (ref.indexOf("treenode-") > -1) {
                         //     
 
-                        this.refs[ref].setNodeSelfChecked(false, { id: id, text: text });//改变子节点
-                        this.refs[ref].setChildrenChecked(false, { id: id, text: text });//改变子孙节点
+                        this.refs[ref].setNodeSelfRadioChecked(false, { id: id, text: text });//改变一级子节点
+                        this.refs[ref].setChildrenRadioChecked(false, { id: id, text: text });//改变子孙节点
                     }
                 }
             }
@@ -224,9 +152,7 @@ class Tree extends Component {
     onDoubleClick(id, text, children, row) {
         this.props.onDoubleClick && this.props.onDoubleClick(id, text, children, row, this.props.name);
     }
-    onChecked(checked, id, text, children, row) {
-        this.props.onChecked && this.props.onChecked(checked, id, text, children, row, this.props.name);
-    }
+
 
     /**
      * 树展开与折叠事件
@@ -235,46 +161,8 @@ class Tree extends Component {
      * @param {*} text 文本
      * @param {*} children  子节点
      */
-    expandHandler(open,id,text,children){
-        this.props.expandHandler&&this.props.expandHandler (open,id,text,children) 
-    }
-    /**
-     * 返回树的数据
-     */
-    getData() {
-        let data = [];
-        for (let ref in this.refs) {
-            if (ref.indexOf("nodetree") > -1) {
-                data.push(this.refs[ref].getNodeData());
-            }
-        }
-        return data;
-    }
-    /**
-     * 返回原始数据
-     */
-    getRawData() {
-        return this.state.rawData;
-    }
-
-    /**
-     * 返回勾选的数据
-     */
-    getChecked() {
-        let data = [];
-        for (let ref in this.refs) {
-            if (ref.indexOf("treenode-") > -1) {
-                data = [].concat(data, this.refs[ref].getNodeChecked());
-            }
-        }
-        return data;
-    }
-    /**
-     * 
-     * @param {*} checked 
-     */
-    setChecked(checked) {
-        //todo 
+    expandHandler(open, id, text, children) {
+        this.props.expandHandler && this.props.expandHandler(open, id, text, children)
     }
 
     /**
@@ -301,9 +189,16 @@ class Tree extends Component {
         })
 
     }
-
+    shouldComponentUpdate(nextProps, nextState) {
+        if (func.diffOrder(nextProps, this.props)) {
+            return true;
+        }
+        if (func.diff(nextState, this.state)) {
+            return true;
+        }
+        return false;
+    }
     render() {
-    
         var nodeControl = [];
         if (this.state.data instanceof Array) {
             this.state.data.map((item, index) => {
@@ -311,20 +206,19 @@ class Tree extends Component {
                 if (item.isParent == true || (item.children instanceof Array && item.children.length > 0)) {//如果明确规定了，或者子节点不为空，则设置为父节点
                     isParent = true;
                 }
-                else {
-
-                }
-     
-                nodeControl.push(<TreeNode ref={"treenode-" +item[this.props.idField] + "-" + index}
+                //通过输入框的值与自身的勾选情况综合判断
+                let inputValue = this.props.inputValue.toString().split(",");
+                let checked = inputValue.indexOf(item.id.toString()) > -1 ? true : item.checked;
+                nodeControl.push(<TreeNode ref={"treenode-" + item[this.props.idField] + "-" + index}
                     key={"treenode-" + item[this.props.idField] + "-" + index}
                     {...this.props}
                     {...item}
+                    inputValue={this.props.inputValue}
+                    checked={checked}
                     id={item[this.props.idField]}
                     text={item[this.props.textField]}
-                    half={(this.props.checkType && this.props.checkType.y.indexOf("p") > -1 && ((this.state.checkValue || item.checkValue) == "half"))}
-                    checked={this.state.value ? ("," + this.state.value + ",").indexOf("," + item[this.props.idField] + ",") > -1 ? true : false : item.checked}
-                    nodeData={item}
-                    isParent={isParent} selectid={this.state.value}
+                    isParent={isParent}
+                    clickId={this.state.clickId}
                     /** 其他事件不需要绑定，因为父组件设定 */
                     onClick={this.onClick}
                     onradioChecked={this.onradioChecked}
@@ -339,7 +233,6 @@ class Tree extends Component {
         </ul>
     }
 }
-
 Tree.propTypes = {
     name: PropTypes.string,//树名称
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//选中的id值
@@ -435,4 +328,4 @@ Tree.defaultProps = {
     */
     isPivot: false,
 }
-export default Tree;
+export default loadDataHoc(Tree, "tree");

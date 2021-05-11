@@ -25,7 +25,6 @@ export default {
            
               //其他属性 text
             rows:5,//textarea
-            cols:1,
             resize:false,
             min:null,
             max:null,
@@ -58,8 +57,10 @@ export default {
             hotData:null,
             idField:"id",
             parentField:"pId",//树组件，picker
-            simpleData:false,//树组件,picker
+            simpleData:true,//树组件,picker
             attachTime:false,
             attachSecond:true,
             allMinute:false,
+
+            
         }

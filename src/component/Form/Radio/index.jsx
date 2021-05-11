@@ -5,9 +5,10 @@
  */
 import React, { Component } from "react";
 import Label from "../../Info/Label";
-import loadDataHoc from "../loadDataHoc";
+import loadDataHoc from "../../loadDataHoc";
 import validateHoc from "../validateHoc";
 import func from "../../libs/func"
+import propsTran from "../../libs/propsTran"
 import "./radio.css"
 class Radio extends Component {
     constructor(props) {
@@ -26,8 +27,8 @@ class Radio extends Component {
     static getDerivedStateFromProps(props, state) {
         if (props.value != state.oldPropsValue) {//父组件强行更新了            
             return {
-                value: props.value,
-                text:func.processText(value, props.data).join(","),
+                value: props.value||"",
+                text:propsTran.processText( props.value, props.data).join(","),
                 oldPropsValue: props.value
             }
         }
@@ -36,7 +37,7 @@ class Radio extends Component {
     setValue(value) {
         this.setState({
             value: value,
-            text: func.processText(value, this.props.data).join(",")
+            text: propsTran.processText(value, this.props.data).join(",")
         })
     }
     getValue() {

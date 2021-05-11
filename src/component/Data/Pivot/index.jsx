@@ -7,8 +7,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import func from "../../libs/func";
-import diff from "../../libs/diff";
-
 import DataGrid from "../DataGrid"
 import Tree from "../Tree";
 import Configuration from "./Configuration";
@@ -40,7 +38,7 @@ class Pivot extends Component {
     static getDerivedStateFromProps(props, state) {
         let newState = {};
         for (let key in props) {
-            if (state.hasOwnProperty(["old" + key]) && diff(state["old" + key], props[key])) {
+            if (state.hasOwnProperty(["old" + key]) &&func. diff(state["old" + key], props[key])) {
                 //更新此字段
                 newState["old" + key] = props[key];
                 newState[key] = props[key];
@@ -71,7 +69,7 @@ class Pivot extends Component {
     }
     dataGridClick(rowData, rowIndex) {
         
-        this.refs.tree._setClickNode(rowData._id);
+        this.refs.tree.setClickNode(rowData._id);
 
     }
     treeClick(_id) {
