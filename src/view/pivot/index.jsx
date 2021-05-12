@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Input from "../../component/Form/Input"
 import Form from "../../component/Form/Form"
+import { Button,DataGrid,TreeGrid } from '../../component';
 
 import("./index.css")
 class PivotPage extends React.Component {
@@ -21,7 +22,7 @@ class PivotPage extends React.Component {
             ],
             data: [
                 {
-                    id: 1, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, text: "父节点1", value: "父节点1", children: [
+                    id: 1, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, text: "父节点1",  children: [
                         { id: 11, pId: 1, text: "子节点11", },
                         { id: 12, pId: 1, text: "子节点12" ,children:[{
                             id:111,pId:11,text:"孙子节点"
@@ -31,7 +32,7 @@ class PivotPage extends React.Component {
                     ]
                 },
                 {
-                    id: 2, pId: "", name: "good1", label: "机构尖1", editor: { type: "select" }, text: "父节点2", value: "子节点11", children: [
+                    id: 2, pId: "", name: "good1", label: "机构尖1", editor: { type: "select" }, text: "父节点2",  children: [
                         { id: 21, pId: 2, text: "子节点21" },
                         { id: 22, pId: 2, text: "子节点22" }
                     ]
@@ -47,15 +48,16 @@ class PivotPage extends React.Component {
 
     }
     static getDerivedStateFromProps(props, state) {
-        console.log(props,state)
+
         return false;
     }
     componentDidMount() {
-      console.log("refs",this.refs,this.form)
+   
 
     }
     onClick() {
 
+        this.form.current.validate();
     }
     onDrop(data) {
         let dropData = this.state.dropData;
@@ -67,13 +69,13 @@ class PivotPage extends React.Component {
 
     render() {
         return <div style={{ padding: 20 }}>
-         
+         <Button onClick={this.onClick.bind(this)}>提交</Button>
             <Form ref={this.form}>
-                <Input ref={this.input} key="1"  required={true} type="picker" data={this.state.data}></Input>
-                <Input ref={this.input1}   key="2"  multiple={true} required={true} type="select" data={this.state.data}></Input>
-                <Input   key="3"  required={true} type="checkbox" data={this.state.data}></Input>
-                <Input key="4"   required={true} type="checkbutton" data={this.state.data}></Input>
-                <Input  key="5"  required={true} type="radio" data={this.state.data}></Input>
+                <Input  ref={this.input} key="1" valueField="id" required={true} type="picker" data={this.state.data}></Input>
+                <Input     key="2" valueField="id" multiple={true} required={true} type="select" data={this.state.data}></Input>
+                <Input   key="3" valueField="id" required={true} type="checkbox" data={this.state.data}></Input>
+                <Input key="4"  valueField="id" required={true} type="checkbutton" data={this.state.data}></Input>
+                <Input  key="5"valueField="id"  required={true} type="radio" data={this.state.data}></Input>
                 <Input  key="6"  required={true} type="date" data={this.state.data}></Input>
                 <Input  key="7"  required={true} type="datetime" data={this.state.data}></Input>
                 <Input  key="8"  required={true} type="daterange" data={this.state.data}></Input>
@@ -84,7 +86,8 @@ class PivotPage extends React.Component {
             {/* <Input type="daterange" key="1"></Input>
             <Input type="datetime" key="2"></Input> */}
 
-            {/* <DataGrid data={this.state.data} headers={this.state.headers}></DataGrid> */}
+            <DataGrid data={this.state.data} headers={this.state.headers}></DataGrid>
+            {/* <TreeGrid data={this.state.data} headers={this.state.headers}></TreeGrid> */}
         </div>
 
     }

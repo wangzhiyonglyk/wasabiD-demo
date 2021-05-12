@@ -21,6 +21,11 @@ class Single extends React.Component {
     y
     constructor(props) {
         super(props);
+        this.searchbar=React.createRef();
+        this.datagrid=React.createRef();
+        this.form=React.createRef();
+        this.slide=React.createRef();
+        this.toolbar=React.createRef();
         let newState={};
         newState = this.initState(props);
         newState.model = func.clone(props.model);
@@ -79,7 +84,7 @@ class Single extends React.Component {
                     }}
                 >
                     <SearchBar
-                        ref='searchbar'
+                        ref={this.searchbar}
                         model={this.state.filterModel}
                         onSubmit={this.filterHandler}
                         addAble={true}
@@ -106,13 +111,13 @@ class Single extends React.Component {
                     }}
                 >
                     <Toolbar
-                        ref='toolbar'
+                        ref={this.toolbar}
                         buttons={this.state.buttons}
                         buttonClick={this.btnHandler}
                     ></Toolbar>
                 </div>
                 <DataGrid
-                    ref='datagrid'
+                    ref={this.datagrid}
                     contentType={this.props.contentType}
                     httpHeaders={this.props.httpHeaders}
                     url={this.props.pageUrl}
@@ -122,12 +127,12 @@ class Single extends React.Component {
                     selectAble={true}
                 ></DataGrid>
                 <SlidePanel
-                    ref='slide'
+                    ref={this.slide}
                     buttons={this.state.submitButton}
                     buttonClick={this.panelSubmitHandler}
                 >
                     <Form
-                        ref='form'
+                        ref={this.form}
                         submitHide={true}
                         disabled={this.state.disabled}
                         cols={4}

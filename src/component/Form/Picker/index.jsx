@@ -165,7 +165,7 @@ class Picker extends Component {
             value: value,
             text: text,
         });
-           this.input.current.setValue(text);
+        this.input.current.setValue(text);
         if (this.props.onSelect != null) {
             this.props.onSelect(value, text, this.props.name);
         }
@@ -197,6 +197,7 @@ class Picker extends Component {
                 selectText = newData[currentProvinceIndex].text;
                 show = false;
                 this.input.current.setValue(selectText);
+             
                 if (this.props.onSelect != null) {
                     this.props.onSelect(selectValue, selectText, this.props.name, null);
                 }
@@ -378,7 +379,6 @@ class Picker extends Component {
                     fetchmodel.contentType = this.props.contentType;
                     fetchmodel.data = fetchmodel.contentType == "application/json" ? JSON.stringify(fetchmodel.data) : fetchmodel.data;
                 }
-
                 console.log("picker-third", fetchmodel);
                 let wasabi_api = window.api || api;
                 wasabi_api.ajax(fetchmodel);

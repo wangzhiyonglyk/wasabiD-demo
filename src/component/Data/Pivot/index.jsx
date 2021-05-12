@@ -16,6 +16,8 @@ import("./index.css")
 class Pivot extends Component {
     constructor(props) {
         super(props);
+        this.grid=React.createRef();
+        this.tree=React.createRef();
         let p = {
             fields: func.clone(this.props.fields),//所有的字段
             rows: func.clone(this.props.rows),//行维度
@@ -69,11 +71,11 @@ class Pivot extends Component {
     }
     dataGridClick(rowData, rowIndex) {
         
-        this.refs.tree.setClickNode(rowData._id);
+        this.tree.current.setClickNode(rowData._id);
 
     }
     treeClick(_id) {
-        this.refs.grid.setClick(_id);
+       this.grid.current.setClick(_id);
     }
     render() {
 
@@ -90,11 +92,11 @@ class Pivot extends Component {
             <div className="wasabi-pivot-left">
                 <Configuration height={treeTop}></Configuration>
                 <div className="wasabi-pivot-rowsData" >
-                    <Tree checkAble={this.props.checkAble} ref="tree" onClick={this.treeClick.bind(this)} isPivot={true} data={this.state.rowsTreeData} simpleData={true} ></Tree>
+                    <Tree checkAble={this.props.checkAble} ref={this.tree} onClick={this.treeClick.bind(this)} isPivot={true} data={this.state.rowsTreeData} simpleData={true} ></Tree>
                 </div>
             </div>
             <div className="wasabi-pivot-right">
-                <DataGrid ref="grid" pagination={this.props.pagination} rowNumber={false}
+                <DataGrid ref={this.grid} pagination={this.props.pagination} rowNumber={false}
                     headers={this.state.headers} data={this.state.realData} isPivot={true} onClick={this.dataGridClick.bind(this)}></DataGrid>
             </div>
         </div>

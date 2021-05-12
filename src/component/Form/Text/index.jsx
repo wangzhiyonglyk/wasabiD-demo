@@ -121,7 +121,7 @@ class Text extends Component {
         }//文本框的属性
         let control = null;
         if (inputType != "textarea") {//普通输入框
-            control = <input ref="input" type={inputType}   {...inputProps} onClick={this.clickHandler}
+            control = <input type={inputType}   {...inputProps} onClick={this.clickHandler}
                 onChange={this.onChange} onKeyDown={this.keyDownHandler}
                 onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
                 onBlur={this.blurHandler}
@@ -129,7 +129,7 @@ class Text extends Component {
         }
         else {
            
-            control = <textarea ref="input" style={{ resize: "none" }} {...inputProps} onClick={this.clickHandler}
+            control = <textarea  style={{ resize: "none" }} {...inputProps} onClick={this.clickHandler}
                 onChange={this.onChange} onKeyDown={this.keyDownHandler}
                 onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
                 onBlur={this.blurHandler}

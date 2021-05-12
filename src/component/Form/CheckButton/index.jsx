@@ -49,7 +49,7 @@ class CheckButton extends React.Component {
         })
         this.props.onSelect && this.props.onSelect("", "", this.props.name, {});
     }
-    onSelect(value, text, row) {//选中事件
+    onSelect(value="", text, row) {//选中事件
         if (this.props.readOnly) {
             return;
         }

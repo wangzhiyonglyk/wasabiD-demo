@@ -49,11 +49,13 @@ class DataGrid extends Component {
     constructor(props) {
         super(props);
         this.containerWidth = 0;//表格的宽度 
-        this.fixedHeadersContainer = React.createRef();
-        this.
-            this.state = {
-            gridcontainerid: func.uuid(),
-            realTableid: func.uuid(),
+        this.state = {
+            gridcontainerid: func.uuid(),//表格容器
+            fixedHeadersContainerid: func.uuid(),//固定表头容器
+            fixedTableContainerid: func.uuid(),//固定表格的容器
+            fixedTableid: func.uuid(),//固定的表格
+            realTableContainerid: func.uuid(),//真实表格容器
+            realTableid: func.uuid(),//真实表格
             url: this.props.url,
             params: 1, //参数
             rawParams: null,//保留旧的，用于对比
@@ -65,8 +67,8 @@ class DataGrid extends Component {
             /************这几个字段在 getDerivedStateFromProps 处理逻辑，这样提升性能 */
             fixedHeaders: [],//固定列的表头
             rawFixedHeaders: [],//固定列的表头,保存用于更新
-            headers: [], //表头会可能后期才传送,也会动态改变
-            rawHeaders: [],//保存起来，用于更新
+            headers: this.props.headers, //表头会可能后期才传送,也会动态改变
+            rawHeaders: this.props.headers,//保存起来，用于更新
             rawData: [],//原始数据，在自动分页时与判断是否更新有用
             data: [],
             single: false,//是否简单表头
@@ -118,7 +120,6 @@ class DataGrid extends Component {
                 for (let i = 0; i < props.headers.length; i++) {
                     if (props.headers[i] instanceof Array) {
                         single = false;//复杂表头
-
                     }
                 }
                 //是否是简单表头
@@ -130,7 +131,6 @@ class DataGrid extends Component {
                     newState.headerChange = true;
                     newState.rawHeaders = props.headers;
                     newState.headers = func.clone(props.headers);
-
                 }
             }
             {
@@ -196,7 +196,6 @@ class DataGrid extends Component {
             this.reload();
         }
         if (this.state.headerChange) {//表头发生了改变
-
             this.setState({
                 headerChange: false,
             }, () => {
@@ -209,11 +208,10 @@ class DataGrid extends Component {
         setTimeout(() => {
             this.containerWidth = document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
             if (this.containerWidth > 0 && this.tableWidth - this.containerWidth <= 20 && this.tableWidth - this.containerWidth >= 1) {//滚动条的原因
-
                 this.computeHeaderStyleAndColumnWidth();
 
             }
-        }, 100)
+        }, 150)
 
     }
 
@@ -232,8 +230,10 @@ class DataGrid extends Component {
         else {
 
         }
+
         //计算一下宽度
         this.computeHeaderStyleAndColumnWidth();
+
         //监听window.resize事件
         window.onresize = () => {
             this.computeHeaderStyleAndColumnWidth();//重新计算一下宽度
@@ -408,9 +408,7 @@ class DataGrid extends Component {
             <div
                 className={'wasabi-grid' + this.props.className}
                 id={this.state.gridcontainerid}
-                ref='grid'
                 onPaste={this.onPaste}
-
                 style={style}
             >
                 {this.containerWidth ? this.renderGrid(height) : null}
@@ -564,6 +562,6 @@ DataGrid.defaultProps = {
     isPivot: false,
 };
 
-mixins(DataGrid, [ render, SingleHeader, ComplexHeader, ColGroup, SingleBody, ComplexBody, eventHandler, editHandler, staticMethod, pasteExtend]);
+mixins(DataGrid, [render, SingleHeader, ComplexHeader, ColGroup, SingleBody, ComplexBody, eventHandler, editHandler, staticMethod, pasteExtend]);
 
 export default DataGrid;

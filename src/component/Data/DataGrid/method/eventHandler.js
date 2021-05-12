@@ -20,8 +20,10 @@ export default {
     */
     onTRMouseDown: function (index, event,self=true) {//行事件，一定要用鼠标按下事件,不保存在状态值中，
         if (this.props.focusAble) {
-            let trs = this.refs.realTable.children[2].children;
-            let fixtrs = this.refs.fixedTable && this.refs.fixedTable.children[2].children;
+            let realTable=document.getElementById(this.state.realTableid);
+            let trs = realTable.children[2].children;
+            let fixedTable=document.getElementById(this.state.fixedTableid);
+            let fixtrs = fixedTable&&fixedTable.children[2].children;
             for (let i = 0; i < trs.length; i++) {
                 trs[i].className = trs[i].className && trs[i].className.replace("selected", "");//先去掉
                 if (fixtrs) {
@@ -133,9 +135,11 @@ export default {
      */
     onRealTableScoll: function (event) {
         setTimeout(() => {
-            if (this.refs.fixedTableContainer) {
-                this.refs.fixedTableContainer.style.top = (0 - this.refs.realTableContainer.scrollTop) + "px";
-                this.fixedHeadersContainer.current.style.left = (0 - this.refs.realTableContainer.scrollLeft) + "px";
+            if (document.getElementById(this.state.fixedTableContainerid)) {
+                document.getElementById(this.state.fixedTableContainerid).style.top =
+                 (0 -   document.getElementById(this.state.realTableContainerid).scrollTop) + "px";
+                document.getElementById(this.state.fixedHeadersContainerid).style.left = 
+                (0 -   document.getElementById(this.state.realTableContainerid).scrollLeft) + "px";
             }
           
         }, 0);

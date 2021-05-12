@@ -136,12 +136,12 @@ export default {
                         {<i title="刷新" style={{ fontSize: 16, cursor: "pointer" }} className="icon-refresh" onClick={this.reload.bind(this, this.state.params, this.state.url)}></i>}
                         &nbsp;&nbsp;
                         {
-                          this.props.exportAble?  <div style={{ display: "inline-block", height: 20, position: "relative", width: 30 }}> <i title="导出" style={{ cursor: "pointer", fontSize: 20, position: "absolute", top: 5 }} className="icon-excel" onClick={this.export.bind(this, false, "grid-")}></i></div>:null
+                            this.props.exportAble ? <div style={{ display: "inline-block", height: 20, position: "relative", width: 30 }}> <i title="导出" style={{ cursor: "pointer", fontSize: 20, position: "absolute", top: 5 }} className="icon-excel" onClick={this.export.bind(this, false, "grid-")}></i></div> : null
                         }
-                       
-                         {
-                            this.props.uploadUrl? <div style={{ display: "inline-block", height: 20, position: "relative", width: 30 }}> <i title="导入" style={{ cursor: "pointer", fontSize: 20, position: "absolute", top: 5 }} className="icon-upload" onClick={this.upload.bind(this)}></i></div>:null
-                         }
+
+                        {
+                            this.props.uploadUrl ? <div style={{ display: "inline-block", height: 20, position: "relative", width: 30 }}> <i title="导入" style={{ cursor: "pointer", fontSize: 20, position: "absolute", top: 5 }} className="icon-upload" onClick={this.upload.bind(this)}></i></div> : null
+                        }
 
                     </div>
                 </div>
@@ -373,22 +373,20 @@ export default {
         let colgroup = this.renderColGruop();
         let headerControl = this.renderHeader();
         return <div className='table-container' key="table-container"   >
-             {height&&this.state.fixedHeaders && this.state.fixedHeaders.length > 0 ? 
-                    
-                   <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }} className={this.props.borderAble ? 'table-fixedHeaders-fixed-table table ' : 'table-fixedHeaders-fixed-table table table-no-bordered '}
-                    >
-                        {
-                            /**colgroup */
-                            this.renderFixedColGruop()
-                        }
-                        {/* 表头 */}
-                        {this.renderFixedHeader()}
-                    </table>: null}
+            {height && this.state.fixedHeaders && this.state.fixedHeaders.length > 0 ?
+
+                <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }} className={this.props.borderAble ? 'table-fixedHeaders-fixed-table table ' : 'table-fixedHeaders-fixed-table table table-no-bordered '}
+                >
+                    {
+                        /**colgroup */
+                        this.renderFixedColGruop()
+                    }
+                    {/* 表头 */}
+                    {this.renderFixedHeader()}
+                </table> : null}
             {
-                height ? <div className="table-fixedHeaders" ref={this.fixedHeadersContainer}>
-                       
-                   
-                    <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} ref="fixedHeaders" >
+                height ? <div className="table-fixedHeaders" id={this.state.fixedHeadersContainerid}>
+                    <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}>
                         {
                             /**colgroup */
                             colgroup
@@ -399,31 +397,35 @@ export default {
                 </div> : null
 
             }
-            {this.state.fixedHeaders && this.state.fixedHeaders.length > 0 ? <div key="table-fixed" className="table-fixed" ref="fixedTableContainer" >
-                <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}
-                    ref="fixedTable"
-                >
-                    {
-                        /**colgroup */
-                        this.renderFixedColGruop()
-                    }
-                    {/* 表头 */}
-                    {this.renderFixedHeader()}
-                    {/* 表体 */}
-                    <tbody>{this.renderFixedBody()}</tbody>
-                    {/* 表尾  todo */}
-                    {/* <tfoot>{this.renderFooter()}</tfoot> */}
-                </table>
+            {this.state.fixedHeaders && this.state.fixedHeaders.length > 0 ?
+                <div key="table-fixed" className="table-fixed"
+                    id={this.state.fixedTableContainerid} >
+                    <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}
+                        id={this.state.fixedTableid}
+                    >
+                        {
+                            /**colgroup */
+                            this.renderFixedColGruop()
+                        }
+                        {/* 表头 */}
+                        {this.renderFixedHeader()}
+                        {/* 表体 */}
+                        <tbody>{this.renderFixedBody()}</tbody>
+                        {/* 表尾  todo */}
+                        {/* <tfoot>{this.renderFooter()}</tfoot> */}
+                    </table>
 
-            </div> : null
+                </div> : null
             }
             <div key="table-realTable"
                 className={'table-realTable '}
-                ref='realTableContainer'
+                id={this.state.realTableContainerid}
                 onScroll={this.onScroll.bind(this)}
                 style={{ height: height }}
             >
-                <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} ref="realTable" >
+                <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }} 
+                className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} 
+                id={this.state.realTableid} >
                     {
                         /**colgroup */
                         colgroup
@@ -450,10 +452,10 @@ export default {
         grid.push(
             <div
                 className='wasabi-pagination '
-                ref='toppagination'
+  
                 key="toppagination"
                 style={{
-                    width:this.tableWidth,
+                    width: this.tableWidth,
                     display:
                         this.props.pagePosition == 'top' ||
                             this.props.pagePosition == 'both'
@@ -472,9 +474,9 @@ export default {
         grid.push(<div
             key="bottompagination"
             className='wasabi-pagination '
-            ref='bottompagination'
+        
             style={{
-                width:this.tableWidth,
+                width: this.tableWidth,
                 display:
                     this.props.pagePosition == 'bottom' ||
                         this.props.pagePosition == 'both'

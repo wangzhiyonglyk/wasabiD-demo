@@ -141,9 +141,9 @@ class Rate extends Component {
         }
       return   <div
             className={componentClassName + " "+this.state.validateClass}
-            ref="rate"
+           
             style={style} >
-            <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle}  required={this.props.required}>{this.props.label}</Label>
+            <Label readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle}  required={this.props.required}>{this.props.label}</Label>
             <div className={'wasabi-form-group-body' + (this.props.readOnly || this.props.disabled ? " readOnly" : "")}>
                 <div className="wasabi-rate"  onMouseOut={this.onMouseOut.bind(this)} >
                     {

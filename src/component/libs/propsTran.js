@@ -27,15 +27,19 @@ let propsTran = {
                     realData[i].id = realData[i] && realData[i][idOrValueField];//追加这个属性
                 }
                 else {
+
                     realData[i].value = realData[i] && realData[i][idOrValueField];//追加这个属性
                 }
+
                 realData[i].text = realData[i] && realData[i][textField];//追加这个属性
                 if (("," + (value || "") + ",").indexOf("," + ((type == "tree" || type == "treepicker") ? realData[i].id : realData[i].value) + ",") > -1) {
                     realData[i].checked = true;//节点选中，专门用于树组件
                 }
                 //如果有子节点的时候.tree,treepicker,picker
                 if (realData[i].children && realData[i].children.length > 0) {
-                    realData[i].children = propsTran.processData(type, value, realData[i].children, idOrValueField, textField);
+
+                    realData[i].children = propsTran.processData(type, value, realData[i].children, idOrValueField, textField, parentField, simpleData);
+
                 }
             }
         }
@@ -81,8 +85,8 @@ let propsTran = {
                 texts.push(data[i].text);
                 if (data[i].children && data[i].children.length > 0) {
                     let r = propsTran.getTreePickerValueAll(data[i].children);
-                    values = [].concat(values,r.values);
-                    texts = [].concat(texts,r.texts)
+                    values = [].concat(values, r.values);
+                    texts = [].concat(texts, r.texts)
                 }
             }
         }
@@ -200,19 +204,19 @@ let propsTran = {
 
         let filterResult = [];
         data && data.forEach((item, index) => {
-            let filterItem=null;
-            if (item.id.toString().indexOf(filterText)>-1|| item.text.indexOf(filterText) > -1) {
-                filterItem={ ...item,children:[] }
+            let filterItem = null;
+            if (item.id.toString().indexOf(filterText) > -1 || item.text.indexOf(filterText) > -1) {
+                filterItem = { ...item, children: [] }
             }
             if (item.children && item.children.length > 0) {
                 let result = propsTran.treeFilter(filterText, item.children);
                 if (result.length > 0) {
-                    filterItem={ ...item,children:[] }
-                    filterItem.children=result;
+                    filterItem = { ...item, children: [] }
+                    filterItem.children = result;
                 }
-              
+
             }
-            if(filterItem){
+            if (filterItem) {
                 filterResult.push(filterItem);
             }
         })
@@ -246,6 +250,22 @@ let propsTran = {
             }
         }
         return data;
+    },
+    /**
+     * 处理表单组件标签 统一宽度，方便对齐
+     * @param {*} labelStyle  style样式
+     * @param {*} maxWidth  最大宽度
+     * @returns 
+     */
+    handlerLabelStyle(labelStyle, maxWidth) {
+         labelStyle = func.clone(labelStyle) || {};
+        if (labelStyle.width && labelStyle.width.indexOf("%") <= -1 && parseFloat(labelStyle.width) < maxWidth) {
+            labelStyle.width = maxWidth;
+        }
+        else if (!labelStyle.width) {
+            labelStyle.width = maxWidth;
+        }
+        return labelStyle;
     }
 }
 export default propsTran;

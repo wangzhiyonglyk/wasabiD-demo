@@ -8,23 +8,24 @@ import PropTypes from "prop-types";
 import LineProgress from "./lineProgress"
 import CircleProgress from "./CircleProgress"
 import ("./index.css")
-class Progress extends React.Component{
+class Progress extends React.PureComponent{
   
     constructor(props){
-        super(props)
+        super(props);
+        this.p=React.createRef();
     }
     setValue(value){
-         this.refs.p.setValue(value);
+         this.p.current.setValue(value);
     }
     getValue(){
-        return this.refs.p.getValue();
+        return this.p.current.getValue();
     }
     render(){
         if(this.props.type=="circle"){
-            return <CircleProgress ref="p" {...this.props}></CircleProgress>
+            return <CircleProgress ref={this.p} {...this.props}></CircleProgress>
         }
         else{
-            return <LineProgress ref="p" {...this.props}></LineProgress>
+            return <LineProgress ref={this.p} {...this.props}></LineProgress>
         }
     }
 }

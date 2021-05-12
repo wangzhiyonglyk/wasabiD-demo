@@ -14,6 +14,8 @@ import "./index.css";
 class System extends React.Component {
   constructor(props) {
     super(props);
+    this.tabsref=React.createRef();
+    this.modalref=React.createRef();
 
     this.state = {
       leftWidth: 250,
@@ -53,7 +55,7 @@ class System extends React.Component {
       });
     } else {
       //如果找到了
-      this.refs.tabs.changeActive(findIndex);
+      this.tabsref.current.changeActive(findIndex);
     }
 
   }
@@ -188,8 +190,8 @@ class System extends React.Component {
           </Menus>
         </Left>
         <Center>
-          <Modal ref="model"></Modal>
-          <Tabs onClose={this.onMenuClose.bind(this)} ref="tabs" >
+          <Modal ref={this.modalref}></Modal>
+          <Tabs onClose={this.onMenuClose.bind(this)} ref={this.tabsref} >
             {this.state.tabs&&this.state.tabs.map(item => {
               return (
                 <TabPanel key={item.title} title={item.title} iconCls={item.iconCls}>

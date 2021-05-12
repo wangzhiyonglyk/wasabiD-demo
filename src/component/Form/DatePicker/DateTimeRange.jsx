@@ -87,7 +87,7 @@ class DateTimeRange extends Component {
                     <div style={{ display: this.state.showfirstTime ? "inline-block" : "none" }}><Time
                         name="begin" type="time" key="begin"
                         onSelect={this.beginTimeHandler.bind(this)} attachSecond={this.props.attachSecond} allMinute={this.props.allMinute}
-                        ref="time" type="time" key="end" value={this.state.firstTime} ></Time>
+                        type="time" key="end" value={this.state.firstTime} ></Time>
                     </div>
                 </div>
                 <div style={{ position: "absolute", right: 0 }}>
@@ -97,7 +97,7 @@ class DateTimeRange extends Component {
                     <div style={{ display: this.state.showsecondTime ? "inline-block" : "none" }}><Time
                         name="begin" type="time" key="begin"
                         onSelect={this.endTimeHandler.bind(this)} attachSecond={this.props.attachSecond} allMinute={this.props.allMinute}
-                        ref="time" type="time" key="end" value={this.state.secondTime} secondRange={true} ></Time>
+                        type="time" key="end" value={this.state.secondTime} secondRange={true} ></Time>
                     </div>
                 </div>
 

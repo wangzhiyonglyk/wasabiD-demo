@@ -117,7 +117,7 @@ class Left extends React.Component {
         return <div className={"wasabi-layout-left  layout-panel " + this.props.className} id={this.props.leftid}
             style={{ top: this.props.top, width: this.props.width, height: (this.props.reduceHeight ? "calc(100% - " + (this.props.reduceHeight).toString() + "px" : null) }}>
             {this.props.children}
-            <div ref="separator" id={this.state.separatorid} className="wasabi-separator-left" style={{ left: this.props.width - 3, top:0, height:"100%" }}>
+            <div  id={this.state.separatorid} className="wasabi-separator-left" style={{ left: this.props.width - 3, top:0, height:"100%" }}>
 
             </div>
         </div>

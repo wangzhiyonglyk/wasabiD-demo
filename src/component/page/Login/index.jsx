@@ -11,6 +11,7 @@ import("./index.css")
 class Login extends React.Component {
     constructor(props) {
         super(props);
+        this.usernameref=React.createRef();
         this.state = {
             username: "",
             password: ""
@@ -26,10 +27,7 @@ class Login extends React.Component {
             .bind(this)
     }
     componentDidMount() {
-        this
-            .refs
-            .username
-            .focus();
+        this.usernameref.current.focus();
         document.addEventListener("keydown", (event) => {
             if (event.keyCode == 13) //回车键的键值为13
                 this.onSumbit();
@@ -136,7 +134,7 @@ class Login extends React.Component {
                     <div ><img src={require("./img/yhm.png")}/></div>
                     <input
                         type="text"
-                        ref="username"
+                        ref={this.usernameref}
                         name="username"
                         placeholder="用户名"
                         value={this.state.username}

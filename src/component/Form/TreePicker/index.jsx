@@ -174,7 +174,6 @@ class TreePicker extends Component {
                         onKeyUp={this.filterHandler.bind(this)}  ></input>
                     {
                         this.props.checkStyle == "checkbox" ? <CheckBox name="wasabi-tree-choseall"
-                            ref="checkbox"
                             style={{ marginTop: -1 }}
                             data={[{ value: "1", text: "全选" }]} onSelect={this.choseAllHandler.bind(this)}></CheckBox> : null
                     } </div>

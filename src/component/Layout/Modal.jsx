@@ -13,6 +13,7 @@ import("../Sass/Layout/Modal.css");
 class Modal extends React.Component {
     constructor(props) {
         super(props);
+        this.resizeref=React.createRef();
         let style = (this.props.style && func.clone(this.props.style)) || {};
         let width = (this.props.style && this.props.style.width) ? parseInt(this.props.style.width) : 400;
         let height = (this.props.style && this.props.style.height) ? parseInt(this.props.style.height) : 400;
@@ -21,6 +22,7 @@ class Modal extends React.Component {
         style.left = style.left|| "calc(50% - " + (width / 2).toFixed(2) + "px)";
         style.top = style.top||"calc(50% - " + (height / 2).toFixed(2) + "px)";
         this.state = {
+            headerid:func.uuid(),
             title: this.props.title,
             style: style,
             visible: false,
@@ -55,7 +57,7 @@ class Modal extends React.Component {
     mouseMoveHandler(event) {
 
         if (this.position != null) {
-            let target = this.refs.resize.target();
+            let target = this.resizeref.current.target();
             if(event.clientX - this.oldClientX>5||event.clientX - this.oldClientX<-5)
             {//防止抖动
                 target.style.left = (this.position.left + event.clientX - this.oldClientX) + "px";
@@ -71,14 +73,14 @@ class Modal extends React.Component {
     mouseDownHandler(event) {
 
 
-        if ( dom.isDescendant(this.refs.header,event.target)|| event.target.className == "wasabi-modal-header") {
+        if ( dom.isDescendant(document.getElementById(this.state.headerid) ,event.target)|| event.target.className == "wasabi-modal-header") {
            document.addEventListener( "mousemove", this.mouseMoveHandler)
            document.addEventListener( "mouseup", this.mouseUpHandler)
 
             //记住原始位置
             this.oldClientX = event.clientX;
             this.oldClientY = event.clientY;
-            let target = this.refs.resize.target();
+            let target = this.resizeref.current.target();
             this.position = target.getBoundingClientRect();
 
         } else {
@@ -139,10 +141,10 @@ class Modal extends React.Component {
         //如果有destroy销毁字段，在隐藏的时候破坏子组件，这样就可以把表单的内容清空
         return this.props.destroy && this.state.visible == false ? null : <div className={activename}>
             <div className={" wasabi-overlay " + (this.props.modal == true ? "active" : "")} onClick={this.close.bind(this)}></div>
-            <Resize ref="resize"
+            <Resize ref={this.resizeref}
                 className={"wasabi-modal fadein " + this.props.className} style={this.state.style} resize={true}>
                 <a className="wasabi-modal-close" onClick={this.close.bind(this)}></a>
-                <div className="wasabi-modal-header" ref="header" style={{display:this.state.title?"block":"none"}} >
+                <div className="wasabi-modal-header" id={this.state.headerid} style={{display:this.state.title?"block":"none"}} >
                     {this.state.title}
                 </div>
                 <div className="wasabi-modal-content" >

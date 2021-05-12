@@ -35,6 +35,17 @@ import Form from './Form/Form';//表单提交组件
 import Input from './Form/Input/index.jsx';//通用表单组件
 
 import BaseInput from "./Form/BaseInput";//原生输入框
+import Text from "./Form/Text";//文本
+import None from "./Form/None";//空
+import Rate from "./Form/Rate";//评分
+import Select from "./Form/Select";//下拉框
+import Switch from "./Form/Switch";//开关
+import CheckBox from "./Form/CheckBox";//复选框
+import CheckButton from "./Form/CheckButton";//复选按钮
+import Radio from "./Form/Radio";//单选
+import Picker from "./Form/Picker";//三级下拉
+import TreePicker from "./Form/TreePicker";//树形下拉框
+import DatePicker from "./Form/DatePicker";//日期/时间
 import Password from "./Form/Password";//强密码
 import Search from "./Form/Search";//搜索栏组件
 
@@ -99,7 +110,7 @@ export {
     Tag, Button, LinkButton, Toolbar, Badge, Dropdown, DropdownItem,
     DataGrid, Tree, Transfer, Progress, Step, StepItem, Avatar, Pivot, TreeGrid,
     Input,Form,SearchBar,
-    BaseInput,
+    BaseInput,Text,None,Rate,Select,Switch,CheckBox,CheckButton,Radio,Picker,TreePicker,DatePicker,
     Password,Search,
     Calendar,
     Box, Drag, Drop, Layout, Center, Header, Footer, Left, Right, Container, Row, Col,

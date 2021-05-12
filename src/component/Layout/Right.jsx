@@ -117,7 +117,7 @@ class Right extends React.Component {
     render() {
         return <div className={"wasabi-layout-right  layout-panel "} id={this.props.rightid}
             style={{ top: this.props.top, width: this.props.width, height: (this.props.reduceHeight ? "calc(100% - " + (this.props.reduceHeight).toString() + "px" : null) }}>
-            <div ref="separator" id={this.state.separatorid} className="wasabi-separator-right" style={{ top: this.props.top, right: this.props.width, height: (this.props.reduceHeight ? "calc(100% - " + (this.props.reduceHeight).toString() + "px" : null) }}>
+            <div  id={this.state.separatorid} className="wasabi-separator-right" style={{ top: this.props.top, right: this.props.width, height: (this.props.reduceHeight ? "calc(100% - " + (this.props.reduceHeight).toString() + "px" : null) }}>
 
             </div>
             {this.props.children}

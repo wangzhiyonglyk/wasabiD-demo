@@ -24,7 +24,9 @@ let validateHoc = function (InputWidget) {
          * 验证有效性
          * @returns 
          */
-        validate(value="") {
+        validate(value) {
+            value=(value==null||value==undefined)?this.input.current.getValue():value;//如果没有传值，则取文本框值
+          
             let isvalidate = true;//默认是有效的
             let inValidateText = "";
             let valueArr = [];

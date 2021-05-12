@@ -15,9 +15,10 @@ class TreeNode extends Component {
 
     constructor(props) {
         super(props);
+        this.treeNodesRef = [];
         this.state = {
             ...this.props,
-            oldChecked:this.props.checked,
+            oldChecked: this.props.checked,
             rename: false,//是否处于重命名状态
             checkStatus: this.props.checked ? "yes" : "no",//勾选状态，不选，半选，勾选
             nodeid: Math.random().toString(36).slice(-8) + 'node' + func.dateformat(new Date(), 'yyyyMMddHHmmss'),
@@ -25,14 +26,45 @@ class TreeNode extends Component {
             children: func.clone(this.props.children),//防止产生联动
         }
         this.onClick = this.onClick.bind(this);
-        this.expandHandler = this.expandHandler.bind(this)
+        this.expandHandler = this.expandHandler.bind(this);
+        this.onDoubleClick = this.onDoubleClick.bind(this);
+        this.onNodeChecked = this.onNodeChecked.bind(this);
+        this.nodeGetBrotherCheckedNumForParent = this.nodeGetBrotherCheckedNumForParent.bind(this);
+        this.parentGetChildCheckedNum = this.parentGetChildCheckedNum.bind(this);
+        this.parentSetChecked = this.parentSetChecked.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+        this.onKeyUp = this.onKeyUp.bind(this);
+        this.onRename = this.onRename.bind(this);
+        this.beforeRename = this.beforeRename.bind(this);
+        this.beforeRemove = this.beforeRemove.bind(this);
+
+        this.parentRemoveChild = this.parentRemoveChild.bind(this);
+        this.onEdit = this.onEdit.bind(this);
+        this.onMouseOver = this.onMouseOver.bind(this);
+
+
+        this.onDragEnd = this.onDragEnd.bind(this);
+        this.onDragLeave = this.onDragLeave.bind(this);
+        this.onDragOver = this.onDragOver.bind(this);
+        this.onDragStart = this.onDragStart.bind(this);
+        this.onDrop = this.onDrop.bind(this);
+
+        this.getNodeChecked = this.getNodeChecked.bind(this);
+        this.getNodeSelfChecked = this.getNodeSelfChecked.bind(this);
+        this.setNodeChecked = this.setNodeChecked.bind(this);
+        this.setNodeSelfRadioChecked = this.setNodeSelfRadioChecked.bind(this)
+        this.setChildrenRadioChecked = this.setChildrenRadioChecked.bind(this)
+        this.getNodeSelfCheckedStatus = this.getNodeSelfCheckedStatus.bind(this)
+
+
     }
     static getDerivedStateFromProps(props, state) {
         //todo 暂时只处理checked
-        if(props.checked!=state.oldChecked){
+        if (props.checked != state.oldChecked) {
             return {
-                checked:props.checked,
-                oldChecked:props.checked
+                checked: props.checked,
+                oldChecked: props.checked
             }
         }
         return null;
@@ -201,19 +233,22 @@ class TreeNode extends Component {
             noNum: 0
         }
         if (this.state.children && this.state.children instanceof Array) {
-            for (let ref in this.refs) {
-                if (ref.indexOf("treenode-") > -1) {
+            for (let i = 0; i < this.treeNodesRef.length; i++) {
+                let cref = this.treeNodesRef[i].current;
+                if (cref) {
                     checked.length++
-                    if (this.refs[ref].getNodeSelfCheckedStatus() == "yes") {
+                    if (cref.getNodeSelfCheckedStatus() == "yes") {
                         checked.checkedNum++
                     }
-                    else if (this.refs[ref].getNodeSelfCheckedStatus() == "half") {
+                    else if (cref.getNodeSelfCheckedStatus() == "half") {
                         checked.halfNum++
                     }
                     else {
                         checked.noNum++;
                     }
                 }
+
+
             }
         }
         return checked;
@@ -511,10 +546,10 @@ class TreeNode extends Component {
             })
         }
         if (this.state.children && this.state.children instanceof Array && this.state.children.length > 0) {
-            for (let ref in this.refs) {
-                if (ref.indexOf("treenode-") > -1) {
-
-                    checkedArr = [].concat(checkedArr, this.refs[ref].getNodeChecked());
+            for (let i = 0; i < this.treeNodesRef.length; i++) {
+                let cref = this.treeNodesRef[i].current;
+                if (cref) {
+                    checkedArr = [].concat(checkedArr, cref.getNodeChecked());
 
                 }
             }
@@ -538,9 +573,10 @@ class TreeNode extends Component {
         }, () => {
             if (this.props.checkType.y.indexOf("s") > -1 || checked == false && this.props.checkType.n.indexOf("s") > -1) {
                 if (this.state.children && this.state.children instanceof Array && this.state.children.length > 0) {
-                    for (let ref in this.refs) {
-                        if (ref.indexOf("treenode-") > -1) {
-                            this.refs[ref].setNodeChecked(checked);
+                    for (let i = 0; i < this.treeNodesRef.length; i++) {
+                        let cref = this.treeNodesRef[i].current;
+                        if (cref) {
+                            cref.setNodeChecked(checked);
                         }
                     }
                 }
@@ -570,18 +606,18 @@ class TreeNode extends Component {
      * @param {*} radioNode 扣除单击节点
      */
     setChildrenRadioChecked(checked, radioNode = null) {
-            if (this.state.children && this.state.children instanceof Array && this.state.children.length > 0) {
-                for (let ref in this.refs) {
-                    if (ref.indexOf("treenode-") > -1) {
-                        //                   
-                        this.refs[ref].setNodeSelfRadioChecked(checked, radioNode);//改变
-                        if (this.props.radioType == "all") {//如果是全部则继续改变子节点
-                            this.refs[ref].setChildrenRadioChecked(checked, radioNode);//子孙节点
-                        }
+        if (this.state.children && this.state.children instanceof Array && this.state.children.length > 0) {
+            for (let i = 0; i < this.treeNodesRef.length; i++) {
+                let cref = this.treeNodesRef[i].current;
+                if (cref) {
+                    cref.setNodeSelfRadioChecked(checked, radioNode);//改变
+                    if (this.props.radioType == "all") {//如果是全部则继续改变子节点
+                        cref.setChildrenRadioChecked(checked, radioNode);//子孙节点
                     }
                 }
             }
-        
+        }
+
     }
 
     /**
@@ -591,7 +627,7 @@ class TreeNode extends Component {
         return this.state.checkStatus
     }
     render() {
-
+        this.treeNodesRef = [];//先清空
         let nodeControl = [];
         let title = this.props.title ? this.props.title : this.state.text;//提示信息
         if (this.state.children && this.state.children instanceof Array) {
@@ -606,9 +642,11 @@ class TreeNode extends Component {
 
                 }
                 let parent = { id: this.state.id, text: this.state.text, children: this.state.children };
-                 //通过输入框的值与自身的勾选情况综合判断
-             let inputValue=this.props.inputValue.toString().split(",");
-             let checked=inputValue.indexOf(item.id.toString())>-1?true:item.checked;
+                //通过输入框的值与自身的勾选情况综合判断
+                let ref = React.createRef();
+                this.treeNodesRef.push(ref);
+                let inputValue = this.props.inputValue.toString().split(",");
+                let checked = inputValue.indexOf(item.id.toString()) > -1 ? true : item.checked;
                 nodeControl.push(<TreeNode
                     {...this.props}
                     {...this.state}
@@ -621,7 +659,7 @@ class TreeNode extends Component {
                     parentSetChecked={this.parentSetChecked.bind(this)}
                     parentGetChildCheckedNum={this.parentGetChildCheckedNum.bind(this)}
                     parentSetBrotherRadioChecked={this.parentSetBrotherRadioChecked.bind(this)}
-                    ref={"treenode-" + this.state.id + "-" + item.id + "-" + index}
+                    ref={ref}
                     isParent={isParent} parent={parent}
                     clickId={this.props.clickId} />);
             });
@@ -640,7 +678,7 @@ class TreeNode extends Component {
 
         }
 
-            
+
         //节点元素
         let nodeEement = [<Input key="1" type={this.props.checkStyle || "checkbox"}
             hide={this.props.checkAble ? false : true}
@@ -654,7 +692,7 @@ class TreeNode extends Component {
         ]
         //判断是否可以拖动
 
-        return <li ref="node" style={{ display: this.state.hide ? "none" : "block" }} onDrop={this.onDrop.bind(this)} onDragOver={this.onDragOver.bind(this)} onDragLeave={this.onDragLeave.bind(this)} >
+        return <li style={{ display: this.state.hide ? "none" : "block" }} onDrop={this.onDrop.bind(this)} onDragOver={this.onDragOver.bind(this)} onDragLeave={this.onDragLeave.bind(this)} >
 
             <div id={this.state.nodeid} className={this.props.clickId == this.state.id ? "treenode-container selected" : "treenode-container"} >
                 <i className={this.state.open ? "icon-arrow-down" : "icon-arrow-right"} style={{ opacity: this.state.isParent ? 1 : 0 }} onClick={this.expandHandler.bind(this)}></i>

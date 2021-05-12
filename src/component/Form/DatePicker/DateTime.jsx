@@ -84,12 +84,12 @@ class DateTime extends Component {
     }
     render() {
         return (
-            <div className={this.props.className + " "} ref="picker" style={this.props.style}>
+            <div className={this.props.className + " "} style={this.props.style}>
                 <div style={{ position: "relative", height: 32 }}>
                     <input className=" wasabi-input timeinput"
                         value={this.state.time} onClick={this.timeHandler.bind(this)} onChange={() => { }}></input>
                     <div style={{ display: this.state.showTime ? "inline-block" : "none", zIndex: 1 }}><Time onSelect={this.timeOnChange.bind(this)}
-                        ref="time" type="time" key="end" value={this.state.time} attachSecond={this.props.attachSecond} allMinute={this.props.allMinute}></Time></div>
+                        type="time" key="end" value={this.state.time} attachSecond={this.props.attachSecond} allMinute={this.props.allMinute}></Time></div>
                 </div>
                   <Calendar year={this.state.year}
                         month={this.state.month}

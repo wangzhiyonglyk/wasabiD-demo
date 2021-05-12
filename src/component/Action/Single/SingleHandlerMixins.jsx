@@ -23,7 +23,7 @@ let SingleHandlerMixins = {
  */
   filterHandler: function (params) {
     params = { ...this.state.params, ...params };
-    this.refs.datagrid.reload(params);
+    this.datagrid.current.reload(params);
   },
   /**
    * 滑动面板的提交事件
@@ -31,14 +31,14 @@ let SingleHandlerMixins = {
   panelSubmitHandler() {
 
     if (this.state.opType == "edit") {
-      if (this.refs.form.validate()) {
-        this.updateHandler(this.refs.form.getData());
+      if (this.form.current.validate()) {
+        this.updateHandler(this.form.current.getData());
       }
 
     }
     else if (this.state.opType == "add") {
-      if (this.refs.form.validate()) {
-        this.addHandler(this.refs.form.getData());
+      if (this.form.current.validate()) {
+        this.addHandler(this.form.current.getData());
       }
     }
   },
@@ -54,9 +54,9 @@ let SingleHandlerMixins = {
   */
   addOpen: function () {
 
-    this.refs.slide.open(this.props.title + "-新增");
-    this.state.opType != "add" ? this.refs.form.clearData() : void (0);
-    this.refs.form.setDisabled(false);
+    this.slide.current.open(this.props.title + "-新增");
+    this.state.opType != "add" ? this.form.current.clearData() : void (0);
+    this.form.current.setDisabled(false);
     this.setState({
       opType: 'add',
       submitButton: [
@@ -97,9 +97,9 @@ let SingleHandlerMixins = {
    * @param {*} rowIndex 
    */
   openEdit(rowData, rowIndex) {
-    this.refs.slide.open(this.props.title + "-编辑");
-    this.refs.form.setData(rowData);
-    this.refs.form.setDisabled(false);
+    this.slide.current.open(this.props.title + "-编辑");
+    this.form.current.setData(rowData);
+    this.form.current.setDisabled(false);
     this.setState({
       opType: 'edit',
       submitButton: [
@@ -139,9 +139,9 @@ let SingleHandlerMixins = {
    */
   opSuccess: function (result) {
     if (result.statusCode == 200) {
-      this.refs.slide.close();
-      this.refs.datagrid.reload(); //刷新列表
-      this.refs.form.clearData();
+      this.slide.current.close();
+      this.datagrid.current.reload(); //刷新列表
+      this.form.current.clearData();
     }
 
   },
@@ -172,7 +172,7 @@ let SingleHandlerMixins = {
   },
   deleteSuccess: function (result) {
     //删除成功
-    this.refs.datagrid.reload(); //刷新列表
+    this.datagrid.current.reload(); //刷新列表
   },
 
   /**
@@ -181,9 +181,9 @@ let SingleHandlerMixins = {
    * @param {*} rowIndex 
    */
   openDetail(rowData, rowIndex) {
-    this.refs.slide.open(this.props.title + "-详情");
-    this.refs.form.setData(rowData);
-    this.refs.form.setDisabled(true);
+    this.slide.current.open(this.props.title + "-详情");
+    this.form.current.setData(rowData);
+    this.form.current.setDisabled(true);
     this.setState({
       opType: 'read',
       submitButton: [

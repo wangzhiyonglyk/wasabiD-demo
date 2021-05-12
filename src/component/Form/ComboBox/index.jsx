@@ -11,21 +11,22 @@
  import propTypes from "../config/propTypes.js";
  import defaultProps from "../config/defaultProps.js";
  import("./combobox.css");
- class ComboBox extends Component {
+ class ComboBox extends React.PureComponent {
      constructor(props) {
          super(props);
+         this.combobox=React.createRef();
          this.state = {
  
          }
      }
      validate() {//用于Form调用验证
-         return this.refs.combobox.validate();
+         return this.combobox.current.validate();
      }
      getValue() {//用于调用获取值
-         return this.refs.combobox.getValue();
+         return  this.combobox.current.getValue();
      }
      setValue(value) {//用于调用设置值
-         this.refs.combobox.setValue(value);
+        this.combobox.current.setValue(value);
      }
      /**
      * 重新查询数据
@@ -33,22 +34,22 @@
      * @param {*} url 
      */
      reload(params, url) {
-         this.refs.combobox.reload && this.refs.combobox.reload(params, url);
+        this.combobox.current.reload && this.combobox.current.reload(params, url);
      }
  
      changeHandler(event) {
      }
      renderSelect() {//普通下拉框        
-         return <Select ref="combobox" {...this.props}  ></Select>
+         return <Select ref={this.combobox} {...this.props}  ></Select>
      }
      renderPicker() {//下拉面板
-         return <Picker ref="combobox"{...this.props}></Picker>
+         return <Picker ref={this.combobox} {...this.props}></Picker>
      }
      renderDatePicker() {
-         return <DatePicker ref="combobox" {...this.props}></DatePicker>
+         return <DatePicker ref={this.combobox} {...this.props}></DatePicker>
      }
      renderTreePicker() {
-         return <TreePicker ref="combobox" {...this.props}></TreePicker>;
+         return <TreePicker ref={this.combobox} {...this.props}></TreePicker>;
      }
  
      render() {

@@ -3,6 +3,7 @@
  * desc 普通轮播组件
  * date:2020-07-15
  * todo 还有bug
+ * 2021-05-12 有bug
  *
  */
 
@@ -75,7 +76,7 @@ class Slider extends React.Component {
             this.banner.current.children[i].style.height = "100%";
           }
 
-          this.banner.current.style.width = ((this.props.children.length + this.offsetIndex) * this.offset) + "px";//增N个单位，为了平滑过渡
+          this.banner.current.style.width = ((React.Children.count(this.props.children) + this.offsetIndex) * this.offset) + "px";//增N个单位，为了平滑过渡
 
 
           if (this.props.direction == "left" && !this.banner.current.style.left) {//如果没有设置值，说明是初始化
@@ -122,7 +123,7 @@ class Slider extends React.Component {
             this.banner.current.children[i].style.width = "100%";
           }
 
-          this.banner.current.style.height = ((this.props.children.length + this.offsetIndex) * this.offset) + "px";//增N个单位，为了平滑过渡
+          this.banner.current.style.height = ((React.Children.count(this.props.children) + this.offsetIndex) * this.offset) + "px";//增N个单位，为了平滑过渡
 
           if (!this.banner.current.style.top) {//如果没有设置值，说明是初始化
             this.banner.current.style.top = "0px";//设置为0，否则无法滚动
@@ -163,16 +164,16 @@ class Slider extends React.Component {
       newWidthOffset = parseInt(this.banner.current.style.left ? this.banner.current.style.left : 0) + this.offset * -1;//下一张
       nextIndex = ((newWidthOffset * -1) / this.offset);//下一张下标（将要展示的一张)
 
-      preIndex = nextIndex - 1 >= 0 ? nextIndex - 1 : this.props.children.length - 1;//上一张
+      preIndex = nextIndex - 1 >= 0 ? nextIndex - 1 : React.Children.count(this.props.children) - 1;//上一张
 
     }
     else {
       newWidthOffset = parseInt(this.banner.current.style.right ? this.banner.current.style.right : 0) + this.offset * -1;//下一张
-      nextIndex = this.props.children.length + this.offsetIndex - 1 - ((newWidthOffset * -1) / this.offset);//下一张下标（将要展示的一张)
-      preIndex = nextIndex + 1 >= this.props.children.length + this.offsetIndex ? this.props.children.length + this.offsetIndex - 1 : nextIndex + 1;//上一张
+      nextIndex = React.Children.count(this.props.children) + this.offsetIndex - 1 - ((newWidthOffset * -1) / this.offset);//下一张下标（将要展示的一张)
+      preIndex = nextIndex + 1 >= React.Children.count(this.props.children) + this.offsetIndex ? React.Children.count(this.props.children) + this.offsetIndex - 1 : nextIndex + 1;//上一张
 
     }
-    // console.log("newWidthOffset",this.props.children.length+this.offsetIndex,preIndex,nextIndex)
+    // console.log("newWidthOffset",React.Children.count(this.props.children)+this.offsetIndex,preIndex,nextIndex)
     //处理子元素的动画
     for (let i = 0; i < this.banner.current.children.length; i++) {
       if (preIndex != i) {//非上一张恢复透明
@@ -188,7 +189,7 @@ class Slider extends React.Component {
 
     }
 
-    if (newWidthOffset == this.props.children.length * this.offset * -1) {
+    if (newWidthOffset == React.Children.count(this.props.children) * this.offset * -1) {
       //下一张又是(第一张（左）/最后一张（右）)，等待开始的一张的动画执行完成，恢复到banner最初的状态
       this.timeout = setTimeout(() => {
         this.banner.current.style.transitionDuration = "0ms";
@@ -220,8 +221,8 @@ class Slider extends React.Component {
     }
     let newTop = parseInt(this.banner.current.style.top ? this.banner.current.style.top : 0) + this.offset * (this.props.direction == "top" ? -1 : 1);//下一张
     let nextIndex = ((newTop * -1) / this.offset);//下一张下标（将要展示的一张)
-    nextIndex = nextIndex % this.props.children.length;//求余
-    let preIndex = nextIndex - 1 >= 0 ? nextIndex - 1 : this.props.children.length - 1;//上一张
+    nextIndex = nextIndex % React.Children.count(this.props.children);//求余
+    let preIndex = nextIndex - 1 >= 0 ? nextIndex - 1 : React.Children.count(this.props.children) - 1;//上一张
 
     //处理子元素的动画
     for (let i = 0; i < this.banner.current.children.length; i++) {
@@ -238,7 +239,7 @@ class Slider extends React.Component {
 
     }
 
-    if (newTop == this.props.children.length * this.offset * (this.props.direction == "top" ? -1 : 1)) {
+    if (newTop == React.Children.count(this.props.children) * this.offset * (this.props.direction == "top" ? -1 : 1)) {
       //下一张又是第一张，等待第一张的动画执行完成，恢复到banner最初的状态
       this.timeout = setTimeout(() => {
         this.banner.current.style.transitionDuration = "0ms";
@@ -257,7 +258,7 @@ class Slider extends React.Component {
   renderAttachChildren() {
     //更新一下，为了添加多余节点
 
-    if (this.props.children && this.banner.current.children.length < this.props.children.length + this.offsetIndex) {
+    if (this.props.children && this.banner.current.children.length < React.Children.count(this.props.children) + this.offsetIndex) {
       //
 
       let innerHTML = this.banner.current.innerHTML;

@@ -18,6 +18,7 @@ import Values from "./Values"
 class Configuration extends Component {
     constructor(props) {
         super(props);
+        this.modal=React.createRef();
         let p = {
             fields: func.clone(this.props.fields),//所有的字段
             rows: func.clone(this.props.rows),//行维度
@@ -59,19 +60,19 @@ class Configuration extends Component {
      * 打开设置面板
      */
     open() {
-        this.refs.modal.open();
+        this.modal.current.open();
     }
     /**
      * 关闭设置面板
      */
     close() {
-        this.refs.modal.close();
+        this.modal.current.close();
     }
     /**
      * 提交变更
      */
     applyHandler() {
-        this.refs.modal.close();
+        this.modal.current.close();
         this.props.applyHandler && this.props.applyHandler(this.state.rows, this.state.columns, this.state.values, this.state.filters);
 
     }
@@ -93,7 +94,7 @@ class Configuration extends Component {
               :null
              }
             </div>
-            <Modal ref="modal" style={{ width: 1000, height: 600, top: 10, left: 10 }} title={this.renderTool()} >
+            <Modal ref={this.modal} style={{ width: 1000, height: 600, top: 10, left: 10 }} title={this.renderTool()} >
                 {
                     <div className="wasabi-pivot-configuration-panel">
                         <Fields></Fields>

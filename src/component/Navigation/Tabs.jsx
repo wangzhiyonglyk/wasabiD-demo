@@ -15,7 +15,7 @@ class Tabs extends React.Component {
             navid:func.uuid(),//id
             activeIndex: this.props.activeIndex,
             oldActiveIndex: this.props.activeIndex,//保留旧的
-            childrenlength:this.props.children.length||0,//旧的子节点个数
+            childrenlength:React.Children.count(this.props.children)||0,//旧的子节点个数
         }
         this.tabClickHandler = this.tabClickHandler.bind(this);
         this.onClose = this.onClose.bind(this);
@@ -51,7 +51,7 @@ class Tabs extends React.Component {
         this.props.onClose && this.props.onClose(index, this.state.activeIndex);
     }
     changeActive(index){
-        if(this.props.children&&index>-1&&index< this.props.children.length){
+        if(this.props.children&&index>-1&&index< React.Children.count(this.props.children)){
             this.setState({
                 activeIndex:index
             })

@@ -16,6 +16,7 @@ import('../../Sass/Action/Import.css');
 class Upload extends Component {
     constructor(props) {
         super(props);
+        this.modal=React.createRef();
         this.state = {
             uploadid: func.uuid(),
             filenames: '', //选择的文件名集合
@@ -36,11 +37,11 @@ class Upload extends Component {
 
     close() {
         //关闭
-        this.refs.modal.close();
+        this.modal.current.close();
     }
     open() {
         //打开
-        this.refs.modal.open();
+        this.modal.current.open();
     }
     onChange(event) {
         //选择文件
@@ -230,7 +231,7 @@ class Upload extends Component {
         };
 
         return (
-            <Modal ref='modal' width={460} height={340} title='请选择导入文件'>
+            <Modal ref={this.modal} width={460} height={340} title='请选择导入文件'>
                 <div className='import-section'>
                     <input
                         type='text'

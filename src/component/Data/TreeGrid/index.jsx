@@ -22,6 +22,8 @@ import("./index.css")
 class TreeGrid extends Component {
     constructor(props) {
         super(props);
+        this.grid = React.createRef();
+        this.tree = React.createRef();
         this.state = {
             value: this.props.value,
             headers: this.props.headers,
@@ -52,14 +54,14 @@ class TreeGrid extends Component {
             newState.rawData = props.data;
             //拿到text
             let result = propsTran.processData("tree", props.value, props.data, props.idField, props.textField);
-         
+
             if (props.simpleData) {
                 //生成树结构
-                newState.realTreeData = func.toTreeData(result.data, props.idField, props.parentField, props.textField)
+                newState.realTreeData = func.toTreeData(result, props.idField, props.parentField, props.textField)
 
             }
             else {
-                newState.realTreeData = func.clone(props.data);
+                newState.realTreeData = func.clone(result);
             }
 
             /**
@@ -116,9 +118,9 @@ class TreeGrid extends Component {
                 fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
             }
             console.log("treegrid-fetch", fetchmodel);
-            let wasabi_api =window.api || api;
+            let wasabi_api = window.api || api;
             wasabi_api.ajax(fetchmodel);
-            
+
         }
 
     }
@@ -137,7 +139,9 @@ class TreeGrid extends Component {
         if (this.props.simpleData) {
             //生成树结构
             realTreeData = func.toTreeData(result, this.props.idField, this.props.parentField, this.props.textField)
-
+        }
+        else {
+            realTreeData = result;
         }
 
         /**
@@ -178,7 +182,7 @@ class TreeGrid extends Component {
      */
     dataGridClick(rowData, rowIndex) {
 
-        this.refs.tree.setClickNode(rowData[this.props.idField || "id"]);
+        this.tree.current.setClickNode(rowData[this.props.idField || "id"]);
 
         this.props.onClick && this.props.onClick(rowData);
 
@@ -191,7 +195,7 @@ class TreeGrid extends Component {
      * @param {*} nodeData 
      */
     treeClick(id, text, children, nodeData) {
-        this.refs.grid.setClick(id);
+        this.grid.current.setClick(id);
         this.props.onClick && this.props.onClick(nodeData);
     }
     /**
@@ -228,7 +232,7 @@ class TreeGrid extends Component {
      * @returns 
      */
     getChecked() {
-        return this.refs.tree.getChecked();
+        return this.tree.current.getChecked();
     }
     /**
      * 强制刷新
@@ -251,16 +255,17 @@ class TreeGrid extends Component {
         return <div className="wasabi-treegrid">
             <div className="wasabi-treegrid-left">
                 <div className="wasabi-treegrid-configuration" style={{ height: treeTop }}>
-                        {this.props.treeHeader}
+                    {this.props.treeHeader}
                 </div>
                 <div className="wasabi-treegrid-rowsData" >
-                    <Tree checkAble={this.props.checkAble} checkStyle={this.props.checkStyle} ref="tree" onClick={this.treeClick.bind(this)} data={this.state.realTreeData} simpleData={true}
+                    <Tree checkAble={this.props.checkAble} checkStyle={this.props.checkStyle}
+                        ref={this.tree} onClick={this.treeClick.bind(this)} data={this.state.realTreeData} simpleData={true}
                         onChecked={this.onChecked.bind(this)} isPivot={true} expandHandler={this.expandHandler.bind(this)}
                     ></Tree>
                 </div>
             </div>
             <div className="wasabi-treegrid-right">
-                <DataGrid ref="grid" pagination={false} rowNumber={false}
+                <DataGrid ref={this.gird} pagination={false} rowNumber={false}
                     headers={this.state.headers} data={this.state.realGridData}
                     isPivot={true}
                     onClick={this.dataGridClick.bind(this)}></DataGrid>

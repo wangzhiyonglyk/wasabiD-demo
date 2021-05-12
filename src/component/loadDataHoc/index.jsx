@@ -76,6 +76,7 @@ function loadDataHoc(ComboBoxWidget, type = "select") {
             else if (this.state.loadDataStatus === "data") {
                 let idOrValueField = (type == "tree" || type === "treegrid" || type === "treepicker") ? this.props.idField : this.props.valueField;
                 let tempFormatData = propsTran.processData(type, this.getValue(), this.state.rawData, idOrValueField, this.props.textField);
+          
                 this.setState({
                     data: tempFormatData,
                     loadDataStatus: null,//处理完成

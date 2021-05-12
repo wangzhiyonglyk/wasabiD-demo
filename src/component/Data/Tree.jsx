@@ -16,6 +16,7 @@ require("../Sass/Data/Tree.css");
 class Tree extends Component {
     constructor(props) {
         super(props);
+        this.treeNodesRef = [];
         this.state = {
             rawData: [],
             data: [],
@@ -32,6 +33,9 @@ class Tree extends Component {
         this.onradioChecked = this.onradioChecked.bind(this);
         this.onDoubleClick = this.onDoubleClick.bind(this);
         this.onChecked = this.onChecked.bind(this)
+        this.getChecked=this.getChecked.bind(this);
+        this.setClickNode=this.setClickNode.bind(this);
+        this.expandHandler=this.expandHandler.bind(this)
         //因为第一级节点没有父节点，在移除时需要树组件配合
         this.parentRemoveChild = this.parentRemoveChild.bind(this);
 
@@ -69,9 +73,10 @@ class Tree extends Component {
    */
     getChecked() {
         let data = [];
-        for (let ref in this.refs) {
-            if (ref.indexOf("treenode-") > -1) {
-                data = [].concat(data, this.refs[ref].getNodeChecked());
+        for (let i = 0; i < this.treeNodesRef.length; i++) {
+            let cref = this.treeNodesRef[i].current;
+            if (cref) {
+                data = [].concat(data, cref.getNodeChecked());
             }
         }
         return data;
@@ -126,12 +131,11 @@ class Tree extends Component {
         }, () => {
 
             if (this.state.data && this.state.data instanceof Array && this.state.data.length > 0) {
-                for (let ref in this.refs) {
-                    if (ref.indexOf("treenode-") > -1) {
-                        //     
-
-                        this.refs[ref].setNodeSelfRadioChecked(false, { id: id, text: text });//改变一级子节点
-                        this.refs[ref].setChildrenRadioChecked(false, { id: id, text: text });//改变子孙节点
+                for (let i = 0; i < this.treeNodesRef.length; i++) {
+                    let cref = this.treeNodesRef[i].current;
+                    if (cref) {
+                        cref.setNodeSelfRadioChecked(false, { id: id, text: text });//改变一级子节点
+                        cref.setChildrenRadioChecked(false, { id: id, text: text });//改变子孙节点
                     }
                 }
             }
@@ -199,7 +203,8 @@ class Tree extends Component {
         return false;
     }
     render() {
-        var nodeControl = [];
+        this.treeNodesRef = [];//清空
+        let nodeControl = [];
         if (this.state.data instanceof Array) {
             this.state.data.map((item, index) => {
                 let isParent = false;//是否为父节点
@@ -207,9 +212,11 @@ class Tree extends Component {
                     isParent = true;
                 }
                 //通过输入框的值与自身的勾选情况综合判断
-                let inputValue = this.props.inputValue.toString().split(",");
-                let checked = inputValue.indexOf(item.id.toString()) > -1 ? true : item.checked;
-                nodeControl.push(<TreeNode ref={"treenode-" + item[this.props.idField] + "-" + index}
+                let ref=React.createRef();
+                this.treeNodesRef.push(ref);
+                let inputValue =this.props.inputValue? this.props.inputValue.toString().split(","):[];
+                let checked = inputValue.indexOf((item.id||"").toString()) > -1 ? true : item.checked;
+                nodeControl.push(<TreeNode ref={ref}
                     key={"treenode-" + item[this.props.idField] + "-" + index}
                     {...this.props}
                     {...item}

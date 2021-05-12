@@ -97,9 +97,6 @@ input验证失败
   border-color: #f56c6c;
 }
 
-.wasabi-has-error .wasabi-radio-btn {
-  border-color: #f56c6c;
-}
 
 .wasabi-has-error .timeinput {
   border: 1px solid #dcdfe6;
