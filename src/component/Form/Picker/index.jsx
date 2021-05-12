@@ -13,7 +13,7 @@ import loadDataHoc from "../../loadDataHoc";
 import validateHoc from "../validateHoc";
 import FetchModel from "../../Model/FetchModel.js";
 import PickerModel from "../../Model/PickerModel.js";
-import Label from "../../Info/Label";
+import PickerInput from "./PickerInput";
 import propType from "../config/propTypes.js";
 import defaultProps from "../config/defaultProps.js";
 import api from "wasabi-api"
@@ -21,8 +21,8 @@ import "./picker.css"
 class Picker extends Component {
     constructor(props) {
         super(props);
+        this.input = React.createRef();
         this.state = {
-            containerid: func.uuid(),
             show: false,//是否显示下拉框
             text: "",
             value: "",
@@ -40,9 +40,9 @@ class Picker extends Component {
             thirdParamsKey: this.props.thirdParamsKey,
 
         }
-        this.setValue=this.setValue.bind(this);
-        this.getValue=this.getValue.bind(this);
-        this.onClear=this.onClear.bind(this);
+        this.setValue = this.setValue.bind(this);
+        this.getValue = this.getValue.bind(this);
+        this.onClear = this.onClear.bind(this);
         this.changeHandler = this.changeHandler.bind(this);
         this.showPicker = this.showPicker.bind(this);
         this.hidePicker = this.hidePicker.bind(this);
@@ -51,6 +51,10 @@ class Picker extends Component {
         this.flodChildren = this.flodChildren.bind(this);
         this.activeProvince = this.activeProvince.bind(this);
         this.loadCitySuccess = this.loadCitySuccess.bind(this);
+        this.renderDistinct = this.renderDistinct.bind(this);
+        this.renderHot = this.renderHot.bind(this);
+        this.renderProvince = this.renderProvince.bind(this);
+
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};
@@ -64,7 +68,7 @@ class Picker extends Component {
         if (props.value != state.oldPropsValue) {//父组件强行更新了
             let text = propsTran.processText(props.value, newState.data || state.data);
             newState = {
-                value: props.value||"",
+                value: props.value || "",
                 oldPropsValue: props.value,
                 text: text.join(","),
             }
@@ -81,7 +85,7 @@ class Picker extends Component {
         this.setState({
             value: value,
             text: text,
-       
+
         })
     }
     /**
@@ -99,6 +103,7 @@ class Picker extends Component {
             value: "",
             text: "",
         })
+        this.input.current.setValue("");
         this.props.onSelect && this.props.onSelect("", "", this.props.name, {});
     }
     changeHandler(event) {
@@ -109,20 +114,26 @@ class Picker extends Component {
      * @returns 
      */
     showPicker(event) {//显示选择
-        event.stopPropagation();//防止冒泡
-        if (this.props.readOnly) {
-            //只读不显示
-            return;
+        try {
+            event.stopPropagation();//防止冒泡
+            if (this.props.readOnly) {
+                //只读不显示
+                return;
+            }
+            else {
+                this.setState({
+                    show: !this.state.show,
+                })
+            }
+            document.addEventListener("click", this.hidePicker)
         }
-        else {
-            this.setState({
-                show: !this.state.show,
-            })
+        catch (e) {
+
         }
-        document.addEventListener("click", this.hidePicker)
+
     }
     hidePicker(event) {
-        if (!dom.isDescendant(document.getElementById(this.state.containerid), event.target)) {
+        if (!dom.isDescendant(document.getElementById(this.props.containerid), event.target)) {
             this.setState({
                 show: false
             });
@@ -130,6 +141,7 @@ class Picker extends Component {
             try {
 
                 document.removeEventListener("click", this.hidePicker);
+                this.props.validate && this.props.validate(this.state.value);
                 //在此处处理失去焦点事件
                 this.props.onBlur && this.props.onBlur(this.state.value, this.state.text, this.props.name);
             }
@@ -153,9 +165,8 @@ class Picker extends Component {
             value: value,
             text: text,
         });
-
+           this.input.current.setValue(text);
         if (this.props.onSelect != null) {
-
             this.props.onSelect(value, text, this.props.name);
         }
     }
@@ -185,6 +196,7 @@ class Picker extends Component {
                 selectValue = newData[currentProvinceIndex].value;
                 selectText = newData[currentProvinceIndex].text;
                 show = false;
+                this.input.current.setValue(selectText);
                 if (this.props.onSelect != null) {
                     this.props.onSelect(selectValue, selectText, this.props.name, null);
                 }
@@ -229,7 +241,7 @@ class Picker extends Component {
                     fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
                 }
                 console.log("picker-second", fetchmodel);
-                let wasabi_api =window.api || api;
+                let wasabi_api = window.api || api;
                 wasabi_api.ajax(fetchmodel);
             }
             else {//没有二级节点的url
@@ -246,12 +258,13 @@ class Picker extends Component {
                     selectValue = newData[currentProvinceIndex].value;
                     selectText = newData[currentProvinceIndex].text;
                     show = false;
+                    this.input.current.setValue(selectText);
                     if (this.props.onSelect != null) {
                         this.props.onSelect(selectValue, selectText, this.props.name, null);
                     }
 
                 }
-              
+
                 this.setState({
                     show: show,
                     value: selectValue,
@@ -290,11 +303,12 @@ class Picker extends Component {
         else {//没有数据,则直接执行选择事件
             selectValue = newData[currentProviceIndex].value;
             selectText = newData[currentProviceIndex].text;
+            this.input.current.setValue(selectText);
             if (this.props.onSelect != null) {
                 this.props.onSelect(selectValue, selectText, this.props.name, null);
             }
         }
-    
+
         this.setState({
             value: selectValue,
             text: selectText,
@@ -323,11 +337,12 @@ class Picker extends Component {
                 show = false;
                 selectValue = newData[this.state.provinceActiveIndex].value + "," + newData[this.state.provinceActiveIndex].children[currentCityIndex].value;
                 selectText = newData[this.state.provinceActiveIndex].text + "," + newData[this.state.provinceActiveIndex].children[currentCityIndex].text;
+                this.input.current.setValue(selectText);
                 if (this.props.onSelect != null) {
                     this.props.onSelect(selectValue, selectText, this.props.name, newData[this.state.provinceActiveIndex]);
                 }
             }
-         
+
             this.setState({
                 show: false,
                 value: selectValue,
@@ -363,9 +378,9 @@ class Picker extends Component {
                     fetchmodel.contentType = this.props.contentType;
                     fetchmodel.data = fetchmodel.contentType == "application/json" ? JSON.stringify(fetchmodel.data) : fetchmodel.data;
                 }
-               
+
                 console.log("picker-third", fetchmodel);
-                let wasabi_api =window.api || api;
+                let wasabi_api = window.api || api;
                 wasabi_api.ajax(fetchmodel);
 
             }
@@ -387,11 +402,12 @@ class Picker extends Component {
                     show = false;
                     selectValue = newData[this.state.provinceActiveIndex].value + "," + newData[this.state.provinceActiveIndex].children[currentCityIndex].value;
                     selectText = newData[this.state.provinceActiveIndex].text + "," + newData[this.state.provinceActiveIndex].children[currentCityIndex].text;
+                    this.input.current.setValue(selectText);
                     if (this.props.onSelect != null) {
                         this.props.onSelect(selectValue, selectText, this.props.name, newData[this.state.provinceActiveIndex]);
                     }
                 }
-           
+
                 this.setState({
                     show: show,
                     value: selectValue,
@@ -431,11 +447,12 @@ class Picker extends Component {
         else {
             selectValue = newData[this.state.provinceActiveIndex].value + "," + newData[this.state.provinceActiveIndex].children[currentCityIndex].value;
             selectText = newData[this.state.provinceActiveIndex].text + "," + newData[this.state.provinceActiveIndex].children[currentCityIndex].text;
+            this.input.current.setValue(selectText);
             if (this.props.onSelect != null) {
                 this.props.onSelect(selectValue, selectText, this.props.name, null);
             }
         }
-      
+
         this.setState({
             value: selectValue,
             text: selectText,
@@ -463,11 +480,11 @@ class Picker extends Component {
         selectText = newData[this.state.provinceActiveIndex].text + ","
             + newData[this.state.provinceActiveIndex].children[this.state.cityActiveIndex].text + ","
             + newData[this.state.provinceActiveIndex].children[this.state.cityActiveIndex].children[currentDistinctIndex].text;
-
+        this.input.current.setValue(selectText);
         if (this.props.onSelect != null) {
             this.props.onSelect(selectValue, selectText, this.props.name, newData[this.state.provinceActiveIndex]);
         }
-   
+
         this.setState({
             show: show,
             value: selectValue,
@@ -553,53 +570,18 @@ class Picker extends Component {
             return distinctComponents;
         } else {
             return null;
-            return null;
         }
 
     }
     render() {
-        let componentClassName = "wasabi-form-group " + (this.props.className || "");//组件的基本样式 
-        let inputProps =
-        {
-            readOnly: this.props.readOnly,
-            name: this.props.name,
-            placeholder: (this.props.placeholder === "" || this.props.placeholder == null) ? this.props.required ? "必填项" : "" : this.props.placeholder,
-            className: "wasabi-input  ",
-            title: this.props.title,
-
-        }//文本框的属性
-        let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
-        if (this.props.hide) {
-            style.display = "none";
-        } else {
-            style.display = "flex";
-        }
-        return (
-            <div className={componentClassName + " " + this.props.validateClass} id={this.state.containerid} style={style} >
-                <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>
-                <div className={"wasabi-form-group-body " + (this.props.readOnly || this.props.disabled ? " readOnly" : "")} style={{ width: !this.props.label ? "100%" : null }}>
-                    <div className="combobox"     >
-                        <i className={"combobox-clear icon-clear"} onClick={this.onClear} style={{ display: this.props.readOnly ? "none" : (this.state.value == "" || !this.state.value) ? "none" : "inline" }}></i>
-                        <i className={"comboxbox-icon icon-drop-down " + (this.state.show ? "rotate" : "")} onClick={this.showPicker.bind(this)}></i>
-                        <input type="text"
-                            {...inputProps}
-                            value={this.state.text}
-                            onBlur={this.props.onBlur} onClick={this.showPicker.bind(this)} autoComplete="off" onChange={this.changeHandler} />
-                        <div className={"dropcontainter  picker "} style={{ display: this.state.show == true ? "block" : "none" }}   >
-                            {this.renderHot()}
-                            <ul className="wrap" >
-                                <p>{this.props.placeholder}</p>
-                                {
-                                    this.renderProvince()
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                    <small className={'wasabi-help-block '} style={{ display: this.props.inValidateText ? "block" : 'none' }}>
-                        <div className='text' >{this.props.inValidateText}</div>
-                    </small>
-                </div>
+        return (<div className="combobox"     >
+            <PickerInput ref={this.input} {...this.props} value={this.state.value} onClear={this.onClear} onClick={this.showPicker}></PickerInput>
+            <div className={"dropcontainter  picker "} style={{ display: this.state.show == true ? "block" : "none" }}>
+                {this.renderHot()}
+                <ul className="wrap" ><p>{this.props.placeholder}</p> {this.renderProvince()}
+                </ul>
             </div>
+        </div>
 
 
         )

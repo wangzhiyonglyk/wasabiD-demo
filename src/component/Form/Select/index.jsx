@@ -14,16 +14,15 @@ import dom from "../../libs/dom"
 //hoc
 import loadDataHoc from "../../loadDataHoc";
 import validateHoc from "../validateHoc"
-//component
-import Label from "../../Info/Label";
+
 import ArrowInput from "./ArrowInput"
 import ComboList from "./SelectbleList"
 import("./select.css");
 class Select extends Component {
     constructor(props) {
         super(props);
+        this.input = React.createRef();
         this.state = {
-            containerid: func.uuid(),
             sortType: "",//排序方式
             rawData: [],//原数据
             data: [],//数据
@@ -50,7 +49,7 @@ class Select extends Component {
         if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData)) {
             /**
              * 因为此组件有追加数据的功能，所以要判断数据变化
-             * 其他下拉组件统一交由loadDataHoc处理了
+             *data就成为了状态值
              */
             newState.rawData = (props.data);
             newState.data = func.clone(props.data)//复制一份
@@ -58,7 +57,7 @@ class Select extends Component {
         if (props.value != state.oldPropsValue) {//父组件强行更新了
             let text = propsTran.processText(props.value, newState.data || state.data);
             newState = {
-                value: props.value||"",
+                value: props.value || "",
                 oldPropsValue: props.value,
                 text: text.join(","),
                 inputText: text.join(",")
@@ -78,6 +77,7 @@ class Select extends Component {
             text: text,
             inputText: text,
         })
+        this.input.current.setValue(text);
     }
     /**
      * 获取值
@@ -91,8 +91,9 @@ class Select extends Component {
    * @returns 
    */
     showPicker(event) {
-        event.stopPropagation();//防止冒泡
-        //显示下拉选项
+        try{
+            event.stopPropagation();//防止冒泡
+             //显示下拉选项
         if (this.props.readOnly) {
             return;
         }
@@ -100,13 +101,19 @@ class Select extends Component {
             show: true
         });
         document.addEventListener("click", this.hidePicker)
+        }
+        catch(e){
+
+        }
+      
+       
     }
     /**
      * 隐藏下拉框
      * @param {*} event 
      */
     hidePicker(event) {
-        if (!dom.isDescendant(document.getElementById(this.state.containerid), event.target)) {
+        if (event.target&&!dom.isDescendant(document.getElementById(this.props.containerid), event.target)) {
             this.setState({
                 show: false
             });
@@ -114,6 +121,7 @@ class Select extends Component {
             try {
 
                 document.removeEventListener("click", this.hidePicker);
+                this.props.validate(this.state.value);//验证
                 //在此处处理失去焦点事件
                 this.props.onBlur && this.props.onBlur(this.state.value, this.state.text, this.props.name);
             }
@@ -310,16 +318,18 @@ class Select extends Component {
                     inputText: inputText.join(","),
                     value: newValue.join(","),
                     text: newText.join(",")
-                });
-                /**
-        * 注意了，这里多了一个inputText值
-        */
+                });   /**
+                * 注意了，这里多了一个inputText值
+                */  
+  
+                 this.input.current.setValue(inputText.join(","));
                 this.props.onSelect && this.props.onSelect(newValue.join(","), newText.join(","), this.props.name, row);
 
 
             } else {
                 newValue = value;
                 newText = text;
+                inputText=text;
                 this.setState({
                     show: false,
                     value: newValue,
@@ -329,6 +339,8 @@ class Select extends Component {
                 /**
            * 注意了，这里多了一个inputText值
            */
+ 
+                 this.input.current.setValue(inputText);
                 this.props.onSelect && this.props.onSelect(newValue, newText, this.props.name, row);
             }
 
@@ -356,6 +368,7 @@ class Select extends Component {
    * 全部清除
    */
     onClear(event) {
+        event.stopPropagation();//防止冒泡
         /**
          * 此处因为要清除inputText，不可以直接调用父组件的
          */
@@ -366,6 +379,7 @@ class Select extends Component {
             show: true,
         })
         this.showPicker();
+        this.input.current.setValue("");
         this.props.onSelect && this.props.onSelect("", "", this.props.name);
 
     }
@@ -408,62 +422,34 @@ class Select extends Component {
         }
     }
     render() {
-        {
-            let componentClassName = "wasabi-form-group " + (this.props.className || "") + " ";//组件的基本样式 
-            let style = this.props.style
-                ? JSON.parse(JSON.stringify(this.props.style))
-                : {};
-            if (this.props.hide) {
-                style.display = 'none';
-            } else {
-                style.display = 'flex';
-            }
+        return (<div className={'combobox wasabi-select'}>
+            <ArrowInput
+                ref={this.input}
+                value={this.state.inputText}
+                /**兼容旧版本 */
+                addAbled={this.props.addAbled}
+                addAble={this.props.addAble}
+                name={this.props.name}
+                title={this.props.title}
+                placeholder={this.props.placeholder}
+                sortType={this.state.sortType}
+                readOnly={this.props.readOnly}
+                required={this.props.required}
+                onChange={this.onChange.bind(this)}
+                onClear={this.onClear.bind(this)}
+                onKeyUp={this.keyUpHandler.bind(this)}
+                onClick={this.onClick.bind(this)}
+                onSort={this.onSort.bind(this)}
+            ></ArrowInput>
+            <ComboList
+                show={this.state.show}
+                value={this.state.value}
+                data={this.state.data}
+                removeAble={this.props.removeAble}
+                onSelect={this.onSelect.bind(this)}
+                onRemove={this.onRemove.bind(this)}
+            ></ComboList> </div>);
 
-            return (
-                <div
-                    id={this.state.containerid}
-                    className={componentClassName + " " + this.props.validateClass}
-                    ref="select"
-                    style={style}
-                >
-                    <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>
-                    <div className={'wasabi-form-group-body' + (this.props.readOnly || this.props.disabled ? " readOnly" : "")}>
-                        <div className={'combobox wasabi-select'}>
-                            <ArrowInput
-                                value={this.state.inputText}
-                                /**兼容旧版本 */
-                                addAbled={this.props.addAbled}
-                                addAble={this.props.addAble}
-                                name={this.props.name}
-                                rotate={this.state.show}
-                                title={this.props.title}
-                                placeholder={this.props.placeholder}
-                                sortType={this.state.sortType}
-                                readOnly={this.props.readOnly}
-                                onChange={this.onChange.bind(this)}
-                                onClear={this.onClear.bind(this)}
-                                onKeyUp={this.keyUpHandler.bind(this)}
-
-                                onClick={this.onClick.bind(this)}
-                                onSort={this.onSort.bind(this)}
-                            ></ArrowInput>
-                            <ComboList
-                                show={this.state.show}
-                                value={this.state.value}
-                                data={this.state.data}
-                                removeAble={this.props.removeAble}
-                                onSelect={this.onSelect.bind(this)}
-                                onRemove={this.onRemove.bind(this)}
-                            ></ComboList>
-
-                        </div>
-                        <small className={'wasabi-help-block '} style={{ display: this.props.inValidateText ? "block" : 'none' }}>
-                            <div className='text' >{this.props.inValidateText}</div>
-                        </small>
-                    </div>
-                </div>
-            );
-        }
     }
 
 }

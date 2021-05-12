@@ -4,7 +4,6 @@
  * 复选框组件
  */
 import React from "react";
-import Label from "../../Info/Label";
 import loadDataHoc from "../../loadDataHoc";
 import validateHoc from "../validateHoc";
 import func from "../../libs/func"
@@ -38,7 +37,8 @@ class CheckBox extends React.Component {
             value: value,
             text: propsTran.processText(value, this.props.data).join(",")
         })
-    }
+        this.props.validate&&this.props.validate(value);
+        }
     getValue() {
         return this.state.value;
     }
@@ -47,6 +47,7 @@ class CheckBox extends React.Component {
             value: "",
             text: "",
         })
+        this.props.validate&&this.props.validate("");
         this.props.onSelect && this.props.onSelect("", "", this.props.name, {});
     }
     onSelect(value, text, row) {//选中事件
@@ -60,7 +61,7 @@ class CheckBox extends React.Component {
         if (newValue.indexOf(value.toString()) > -1) {
             newValue.splice(newValue.indexOf(value.toString()), 1);
             try{
-                newText.splice(newValue.indexOf(value.toString()), 1);
+                newText.splice(newText.indexOf(text.toString()), 1);
             }
             catch(e){
 
@@ -75,6 +76,7 @@ class CheckBox extends React.Component {
             value: newValue.join(","),
             text: newText.join(",")
         })
+        this.props.validate&&this.props.validate(newValue.join(","));
         this.props.onSelect && this.props.onSelect(newValue.join(","), newText.join(","), this.props.name, row);
 
     }
@@ -87,11 +89,10 @@ class CheckBox extends React.Component {
         }
         return false;
     }
-    render() {
-        let componentClassName = "wasabi-form-group " + (this.props.className || "");//组件的基本样式 
-        let control = null;
-        if (this.props.data instanceof Array) {
 
+    render() {
+        let control = null;
+        if (this.props.data&&this.props.data instanceof Array) {
             control = this.props.data.map((child, i) => {
                 let checked = false;
                 if ((this.state.value != null && this.state.value != undefined) && (("," + this.state.value.toString() + ",").indexOf("," + child[this.props.valueField ? this.props.valueField : "value"] + ",") > -1)) {
@@ -102,33 +103,14 @@ class CheckBox extends React.Component {
                     readOnly: this.props.readOnly == true ? "readOnly" : null,
                 }
                 return <li style={this.props.style} className={this.props.className} key={i} onClick={this.onSelect.bind(this, child.value, child.text, child)}  >
-                    <input type="checkbox" id={"checkbox" + this.props.name + child.value}
-                        className={!checked && this.props.half ? "checkbox halfcheck" : "checkbox"}  {...subProps} onChange={() => { }}></input>
+                    <input type="checkbox" id={"checkbox" + this.props.name + child.value} className={!checked && this.props.half ? "checkbox halfcheck" : "checkbox"}  {...subProps} onChange={() => { }}></input>
                     <label className="checkbox-label" checked={checked} readOnly={this.props.readOnly || this.props.disabled} ></label>
                     <div className={"checktext " + (checked ? " checked" : "")} >{child.text}</div>
                 </li >
             });
 
         }
-        let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
-        if (this.props.hide) {
-            style.display = "none";
-        } else {
-            style.display = "flex";
-        }
-        return (
-            <div className={componentClassName + " " + this.props.validateClass} style={style}>
-                <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>
-                <div className={"wasabi-form-group-body"} style={{ minWidth: 0, width: !this.props.label ? "100%" : null }}>
-                    <ul className="wasabi-checkul" >
-                        {
-                            control
-                        }
-                    </ul>
-
-                </div>
-            </div>
-        )
+        return <ul className="wasabi-checkul" >{control} {this.props.children} </ul>
     }
 }
 export default validateHoc(loadDataHoc(CheckBox, "checkbox"));

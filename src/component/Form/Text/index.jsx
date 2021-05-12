@@ -14,7 +14,7 @@ class Text extends Component {
         super(props);
         this.state = {
             oldPropsValue: this.props.value,//保存用于匹配
-            value: this.props.value||"",
+            value: this.props.value || "",
 
         }
         this.onChange = this.onChange.bind(this);
@@ -34,7 +34,7 @@ class Text extends Component {
         if (props.value != state.oldPropsValue) {
             //就是说原来的初始值发生改变了，说明父组件要更新值
             return {
-                value: props.value||"",
+                value: props.value || "",
                 oldPropsValue: props.value
             }
         }
@@ -105,57 +105,19 @@ class Text extends Component {
             value: value,
         })
     }
-    validateHandler(value) {//后台请求验证
-        this.setState({
-            validateState: "validing",//正在验证
-        })
-        let type = this.props.httpType ? this.props.httpType : "POST";
-        type = type.toUpperCase();
-        let fetchmodel = new FetchModel(this.props.validateUrl, this.validateHandlerSuccess, { key: value });
-        fetchmodel.headers = this.props.httpHeaders;
-        if (this.props.contentType) {
-            //如果传contentType值则采用传入的械
-            //否则默认
 
-            fetchmodel.contentType = this.props.contentType;
-            fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
-        }
-        console.log("text-validing:", fetchmodel);
-        let wasabi_api =window.api || api;
-        wasabi_api.ajax(fetchmodel);
-    }
-    validateHandlerSuccess() {//后台请求验证成功
-        this.setState({
-            validateState: "valid",//验证成功
-        })
-    }
-    validateHandlerError(message) {//后台请求验证失败
-        Msg.error(message);
-        this.setState({
-            validateState: "invalid",//验证失败
-        })
-    }  
     render() {
-        let componentClassName = "wasabi-form-group " + (this.props.className || "") + " ";//组件的基本样式
-        let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
-        if (this.props.hide) {
-            style.display = "none";
-        } else {
-            style.display = "flex";
-        }
         let inputType = this.props.type == "password" || this.props.type == "textarea" ? this.props.type : "text";//统一使用text，否则在验证失效，没有onchange事件，拿不到值，则无法执行自定义验证事件
         let inputProps =
         {
-            readOnly: this.props.readOnly == true ? "readOnly" : null,
-            id: this.props.id ? this.props.id : null,
-            name: this.props.name,
-            placeholder: (this.props.placeholder === "" || this.props.placeholder == null) ? this.props.required ? "必填项" : "" : this.props.placeholder,
-            className: "wasabi-input  ",
+            name:this.props.name,
+            title:this.props.title,
+            placeholder:this.props.placeholder,
+            readOnly:this.props.readOnly,
+            required:this.props.required,
+            className: "wasabi-input  ",//去掉className
             rows: this.props.rows,//textarea
-            cols: this.props.cols,
-            style: { resize: this.props.resize ? "vertical" : null },//只能向下切换
-            title: this.props.title,
-
+            style: { resize: this.props.resize ? "vertical" : null },//textarea 只能向下切换
         }//文本框的属性
         let control = null;
         if (inputType != "textarea") {//普通输入框
@@ -163,35 +125,17 @@ class Text extends Component {
                 onChange={this.onChange} onKeyDown={this.keyDownHandler}
                 onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
                 onBlur={this.blurHandler}
-                value={(this.state.value == null || this.state.value == undefined) ? "" : this.state.value}></input>;
+                value={ this.state.value||""}></input>;
         }
         else {
-            //textarea 不支持null值
-            let value = this.state.value;
-            if (value == null || value == undefined) {
-                value = "";
-            }
+           
             control = <textarea ref="input" style={{ resize: "none" }} {...inputProps} onClick={this.clickHandler}
                 onChange={this.onChange} onKeyDown={this.keyDownHandler}
                 onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
                 onBlur={this.blurHandler}
-                value={(this.state.value == null || this.state.value == undefined) ? "" : this.state.value}></textarea>;
+                value={ this.state.value||""}></textarea>;
         }
-        return (<div className={componentClassName + " " + this.props.validateClass} onPaste={this.onPaste} style={style}>
-            <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>
-            <div className={"wasabi-form-group-body "} >
-                {control}
-                {this.props.children}
-                <i className={this.props.validateState} style={{ display: (this.props.validateState ? "block" : "none") }} ></i>
-                <small className={"wasabi-help-block "} style={{
-                    display: (this.state.inValidateText && this.state.inValidateText != "") ?
-                        this.state.inValidateShow : "none"
-                }}>
-                    {this.state.inValidateText}
-                </small>
-            </div>
-        </div>
-        )
+        return <React.Fragment>  {control} {this.props.children} </React.Fragment>
     }
 }
 Text.propTypes = propTypes;

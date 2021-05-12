@@ -32,7 +32,7 @@
   }
   .picker .hot-item
   {
-    width: 68px;
+    width: 80px;
     height: 40px;
     text-align: center;
     line-height: 40px;
@@ -69,14 +69,14 @@
     background: #ffffff;
     position: absolute;
     top: 39px;
-    width: 380px;
+    width: 342px;
     padding: 10px;
     border-radius: 4px;
   }
   
   .picker .picker-container-name{
     display: inline-block;
-    width: 68px;
+    width: 80px;
     height: 40px;
     text-align: center;
     line-height: 40px;
@@ -86,10 +86,7 @@
     overflow: hidden;
     white-space: nowrap;
     border-radius: 4px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    -ms-border-radius: 4px;
-    -o-border-radius: 4px;
+ 
   }
   .picker .picker-container-name:hover{
     color:#409eff;
@@ -104,7 +101,7 @@
   
   
   .picker .pickeritem{
-    width: 68px;
+    width: 80px;
     height: 40px;
     text-align: center;
     line-height: 40px;
@@ -113,6 +110,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    border-radius: 4px;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
   }
   .picker .pickeritem:hover{
     color:#409eff;

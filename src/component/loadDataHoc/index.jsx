@@ -60,11 +60,11 @@ function loadDataHoc(ComboBoxWidget, type = "select") {
             }
             return newState;
         }
-        componentDidUpdate() {
-            this.handlerData();
-        }
         componentDidMount() {
-            this.handlerData();
+            this.handlerData();//处理数据
+        }
+        componentDidUpdate() {
+            this.handlerData();//处理数据
         }
         /**
          * 统一加工数据
@@ -97,6 +97,13 @@ function loadDataHoc(ComboBoxWidget, type = "select") {
          */
         getValue() {
             return this.input.current.getValue && this.input.current.getValue();
+        }
+        /**
+         * 获取勾选的值
+         * @returns 
+         */
+        getChecked(){
+            return this.input.current.getChecked && this.input.current.getChecked();
         }
         /**
          * 刷新

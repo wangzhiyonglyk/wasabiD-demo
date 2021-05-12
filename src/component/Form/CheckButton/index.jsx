@@ -15,19 +15,19 @@ class CheckButton extends React.Component {
         super(props);
         this.state = {
             text: "",
-            value:"",
-            oldPropsValue:"",//保存初始化的值
+            value: "",
+            oldPropsValue: "",//保存初始化的值
         }
-        this.setValue=this.setValue.bind(this);
-        this.getValue=this.getValue.bind(this);
-        this.onClear=this.onClear.bind(this);
+        this.setValue = this.setValue.bind(this);
+        this.getValue = this.getValue.bind(this);
+        this.onClear = this.onClear.bind(this);
         this.onSelect = this.onSelect.bind(this);
     }
     static getDerivedStateFromProps(props, state) {
         if (props.value != state.oldPropsValue) {//父组件强行更新了            
             return {
-                value: props.value||"",
-                text:propsTran.processText(props.value, props.data).join(","),
+                value: props.value || "",
+                text: propsTran.processText(props.value, props.data).join(","),
                 oldPropsValue: props.value
             }
         }
@@ -59,13 +59,13 @@ class CheckButton extends React.Component {
         newText = newText ? newText.split(",") : [];
         if (newValue.indexOf(value.toString()) > -1) {
             newValue.splice(newValue.indexOf(value.toString()), 1);
-            try{
-                newText.splice(newValue.indexOf(value.toString()), 1);
+            try {
+                newText.splice(newText.indexOf(text.toString()), 1);
             }
-            catch(e){
+            catch (e) {
 
             }
-           
+
         }
         else {
             newValue.push(value);
@@ -88,14 +88,8 @@ class CheckButton extends React.Component {
         return false;
     }
     render() {
-        if (!this.props) {
-            return null;
-        }
-        let componentClassName = "wasabi-form-group " + (this.props.className || "");//组件的基本样式 
         let control = null;
-
-        if (this.props.data instanceof Array) {
-
+        if (this.props.data && this.props.data instanceof Array) {
             control = this.props.data.map((child, i) => {
                 let checked = false;
                 if ((this.state.value != null && this.state.value != undefined) && (("," + this.state.value.toString() + ",").indexOf("," + child[this.props.valueField ? this.props.valueField : "value"] + ",") > -1)) {
@@ -105,28 +99,8 @@ class CheckButton extends React.Component {
                     onClick={this.props.readOnly ? () => { } : this.onSelect.bind(this, child.value, child.text, child)}
                 >{child.text}</Button>
             });
-
         }
-        let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
-        if (this.props.hide) {
-            style.display = "none";
-        } else {
-            style.display = "flex";
-        }
-        return (
-
-            <div className={componentClassName + " " + this.props.validateClass} style={style}>
-                <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>
-                <div className={"wasabi-form-group-body"} style={{ minWidth: 0, width: !this.props.label ? "100%" : null }}>
-                    <ul className="wasabi-checkul" style={{ marginTop: 6 }}>
-                        {
-                            control
-                        }
-                    </ul>
-                </div>
-            </div>
-
-        )
+        return <ul className="wasabi-checkul" style={{ marginTop: 6 }}>{control} {this.props.children} </ul>
     }
 }
 export default validateHoc(loadDataHoc(CheckButton, "checkbox"));

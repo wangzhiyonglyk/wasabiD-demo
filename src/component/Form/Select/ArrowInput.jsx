@@ -4,34 +4,38 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
+import BaseInput from "../BaseInput"
 class ArrowInput extends React.Component {
     constructor(props) {
         super(props);
+        this.input = React.createRef();
         this.state = {
 
         }
     }
-    onSort(event){
+    onSort(event) {
         event.stopPropagation();//防止冒泡
-        this.props.onSort&&this.props.onSort.bind(event);
+        this.props.onSort && this.props.onSort.bind(event);
+    }
+    setValue(value) {
+        this.input.current.setValue(value);
     }
     render() {
         let placeholder = "可搜索";
         if ((this.props.addAbled || this.props.addAble)) {
             placeholder += ",回车添加"
         }
-        let inputProps = {
-            readOnly: this.props.readOnly == true ? 'readOnly' : null,
+        let inputProps =
+        {
             name: this.props.name,
-            placeholder:
-                this.props.placeholder
-                    ? this.props.placeholder : placeholder,
-            className:
-                'wasabi-input  ',
             title: this.props.title,
-        }; //文本框的属性
+            placeholder: this.props.placeholder,
+            readOnly: this.props.readOnly,
+            required: this.props.required,
+            className: "wasabi-input  ",//去掉className
+        }//文本框的属性
         return <div>
-            <i title={this.props.sortType=="asc"?"顺排":this.props.sortType=="desc"?"倒排":"点击排序"} style={{position:"absolute",top:12,right:10,color:(this.props.sortType?"#409eff":"#e4e7ed")}} className={this.props.sortType=="asc"?"icon-sort-down":this.props.sortType=="desc"?"icon-sort-up":"icon-sorting"} onClick={this.props.onSort}></i>
+            <i title={this.props.sortType == "asc" ? "顺排" : this.props.sortType == "desc" ? "倒排" : "点击排序"} style={{ position: "absolute", top: 12, right: 10, color: (this.props.sortType ? "#409eff" : "#e4e7ed") }} className={this.props.sortType == "asc" ? "icon-sort-down" : this.props.sortType == "desc" ? "icon-sort-up" : "icon-sorting"} onClick={this.props.onSort}></i>
             <i
                 title="清除"
                 className={'combobox-clear icon-clear'}
@@ -44,8 +48,7 @@ class ArrowInput extends React.Component {
                             : 'inline'
                 }}
             ></i>
-            <input
-                type='text'
+            <BaseInput
                 {...inputProps}
                 value={
                     this.props.value || ""
@@ -55,13 +58,14 @@ class ArrowInput extends React.Component {
                 onKeyUp={this.props.onKeyUp}
                 onChange={this.props.onChange}
                 autoComplete="off"
+                ref={this.input}
             />
         </div>
     }
 }
 
 ArrowInput.propsTypes = {
-    sortType:PropTypes.oneOf(["","asc","desc"]),//排序方式
+    sortType: PropTypes.oneOf(["", "asc", "desc"]),//排序方式
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),//值
     readOnly: PropTypes.bool,//是否只读
     onChange: PropTypes.func,//change事件
@@ -72,7 +76,7 @@ ArrowInput.propsTypes = {
 
 }
 ArrowInput.defaultProps = {
-    sortType:"",
+    sortType: "",
     value: "",
     readOnly: false,
     onChange: null,

@@ -69,19 +69,16 @@ class PivotPage extends React.Component {
         return <div style={{ padding: 20 }}>
          
             <Form ref={this.form}>
-                {/* <Input ref={this.input} key="1"  required={true} type="picker" data={this.state.data}></Input>
-                <Input ref={this.input1}   key="2"  required={true} type="select" data={this.state.data}></Input>
+                <Input ref={this.input} key="1"  required={true} type="picker" data={this.state.data}></Input>
+                <Input ref={this.input1}   key="2"  multiple={true} required={true} type="select" data={this.state.data}></Input>
                 <Input   key="3"  required={true} type="checkbox" data={this.state.data}></Input>
                 <Input key="4"   required={true} type="checkbutton" data={this.state.data}></Input>
                 <Input  key="5"  required={true} type="radio" data={this.state.data}></Input>
                 <Input  key="6"  required={true} type="date" data={this.state.data}></Input>
                 <Input  key="7"  required={true} type="datetime" data={this.state.data}></Input>
                 <Input  key="8"  required={true} type="daterange" data={this.state.data}></Input>
-                <Input  key="9"  required={true} type="datetimerange" data={this.state.data}></Input> */}
-                <Input type="checkbox" name="wasabi-tree-choseall"
-                                    ref="checkbox"
-                                    style={{ marginTop: -1 }}
-                                    data={[{ value: "1", text: "全选" }]}></Input>
+                <Input  key="9"  required={true} type="datetimerange" data={this.state.data}></Input>
+               
                 <Input  key="10"  required={true} type="treepicker" data={this.state.data}></Input>
             </Form>
             {/* <Input type="daterange" key="1"></Input>

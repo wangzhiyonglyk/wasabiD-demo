@@ -16,7 +16,7 @@ desc:日期选择样式
     width: 22px;
     height: 24px;
     position: absolute;
-    right: 5px;
+    right: 8px;
     top: 10px;
     cursor: pointer;
     text-align: center;
@@ -224,8 +224,9 @@ desc:日期选择样式
     margin-right: 10px;
     border-radius: 4px;
     outline: none;
-    border: 1px solid #ddd;
+    border: 1px solid #ebeef5;
     padding-right: 6px;
+    border-color: #ebeef5!important;
   }
   
   

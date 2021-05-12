@@ -4,10 +4,8 @@
  * 单选框集合组件
  */
 import React, { Component } from "react";
-import Label from "../../Info/Label";
 import loadDataHoc from "../../loadDataHoc";
 import validateHoc from "../validateHoc";
-import func from "../../libs/func"
 import propsTran from "../../libs/propsTran"
 import "./radio.css"
 class Radio extends Component {
@@ -18,17 +16,17 @@ class Radio extends Component {
             value: "",
             oldPropsValue: "",//保存初始化的值
         }
-        this.setValue=this.setValue.bind(this);
-        this.getValue=this.getValue.bind(this);
-        this.onClear=this.onClear.bind(this);
+        this.setValue = this.setValue.bind(this);
+        this.getValue = this.getValue.bind(this);
+        this.onClear = this.onClear.bind(this);
         this.onSelect = this.onSelect.bind(this);
-       
+
     }
     static getDerivedStateFromProps(props, state) {
         if (props.value != state.oldPropsValue) {//父组件强行更新了            
             return {
-                value: props.value||"",
-                text:propsTran.processText( props.value, props.data).join(","),
+                value: props.value || "",
+                text: propsTran.processText(props.value, props.data).join(","),
                 oldPropsValue: props.value
             }
         }
@@ -39,6 +37,7 @@ class Radio extends Component {
             value: value,
             text: propsTran.processText(value, this.props.data).join(",")
         })
+        this.props.validate&&this.props.validate(value);
     }
     getValue() {
         return this.state.value;
@@ -48,9 +47,11 @@ class Radio extends Component {
             value: "",
             text: "",
         })
+        this.props.validate&&this.props.validate("");
         this.props.onSelect && this.props.onSelect("", "", this.props.name, {});
     }
     onSelect(value, text, name, row) {
+        console.log("value")
         if (this.props.readOnly) {
             return;
         }
@@ -63,47 +64,25 @@ class Radio extends Component {
             value: value,
             text: text,
         })
+        this.props.validate&&this.props.validate(value);
         this.props.onSelect && this.props.onSelect(value, text, name, row);
-    } 
+    }
     render() {
-        let componentClassName = "wasabi-form-group " + (this.props.className || "");//组件的基本样式 
         let control = null;
-        let className = "wasabi-radio-btn " + (this.props.readOnly ? " readOnly" : "");
-        if (this.props.data) {
+        if (this.props.data && this.props.data instanceof Array) {
+            let className = "wasabi-radio-btn " + (this.props.readOnly ? " readOnly" : "");
             control = this.props.data.map((child, i) => {
                 return (
                     <li key={i}>
                         <div className={className + ((this.state.value == child.value) ? " checkedRadio" : "")}
-                            onClick={this.onSelect.bind(this, child.value, child.text, child)}><i>
-                                {/* <input type="radio" name={this.props.name}
-                                   id={this.props.name+child.value}
-                                   value={child.value}
-                                   onChange={this.changeHandler}>
-                            </input> */}
-                            </i></div>
+                            onClick={this.onSelect.bind(this, child.value, child.text, child)}><i></i></div>
                         <div className={"radiotext " + (this.props.readOnly ? " readOnly" : "") + ((this.state.value == child.value) ? " checkedRadio" : "")} onClick={this.onSelect.bind(this, child.value, child.text, child)}>{child.text}
-
                         </div>
                     </li>
                 );
             })
         }
-        let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
-
-        return (
-            <div className={componentClassName + " " + this.props.validateClass} style={style}>
-                <Label ref="label" readOnly={this.props.readOnly} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>
-                <div className={"wasabi-form-group-body"} style={{ minWidth: 0, width: !this.props.label ? "100%" : null }}>
-                    <ul className="wasabi-checkul radio">
-                        {
-                            control
-                        }
-                    </ul>
-
-                </div>
-            </div>
-
-        )
+        return <ul className="wasabi-checkul radio"> {control} {this.props.children}</ul>
     }
 }
 

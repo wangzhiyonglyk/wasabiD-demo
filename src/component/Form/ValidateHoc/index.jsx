@@ -1,6 +1,7 @@
 import React from "react";
-import utils from "../../libs/func";
+import func from "../../libs/func";
 import validation from "../../Lang/validation";
+import Label from "../../Info/Label"
 import regexp from "../../Lang/regs"
 /**
  * 验证组件
@@ -13,19 +14,17 @@ let validateHoc = function (InputWidget) {
             super(props);
             this.input = React.createRef();
             this.state = {
+                containerid:func.uuid(),
                 validateClass: "",
                 inValidateText: "",//失败的文字
             }
             this.validate = this.validate.bind(this);
-            this.onBlur = this.onBlur.bind(this)
         }
         /**
          * 验证有效性
          * @returns 
          */
-        validate(value) {
-            value = value || this.input.current.getValue();
-
+        validate(value="") {
             let isvalidate = true;//默认是有效的
             let inValidateText = "";
             let valueArr = [];
@@ -199,13 +198,7 @@ let validateHoc = function (InputWidget) {
         getValue() {
             return this.input.current.getValue();
         }
-        /**
-         * 失去焦点事件
-         */
-        onBlur(value, text, name) {
-            this.validate(value);
-        }
-
+        
         /**
          * 刷新
          * @param {*} params 
@@ -216,19 +209,30 @@ let validateHoc = function (InputWidget) {
             this.input.current.reload && this.input.current.loadData(url, params);
         }
         shouldComponentUpdate(nextProps, nextState) {
-            if (utils.diffOrder(nextProps, this.props)) {
+            if (func.diffOrder(nextProps, this.props)) {
                 return true;
             }
-            if (utils.diff(nextState, this.state)) {
+            if (func.diff(nextState, this.state)) {
                 return true;
             }
             return false;
         }
         render() {
-            return <React.Fragment>
-                <InputWidget  {...this.props} {...this.state} ref={this.input} validate={this.validate} onBlur={this.onBlur}></InputWidget>
-            </React.Fragment>
-
+            let style = this.props.style? JSON.parse(JSON.stringify(this.props.style)) : {};
+            if (this.props.hide) {
+                style.display = 'none';
+            } else {
+                style.display = 'flex';
+            }
+            return <div id={this.state.containerid} className={"wasabi-form-group " + (this.props.className || "") + " " + this.state.validateClass} style={style}>
+                <Label readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>
+                <div className={'wasabi-form-group-body' + (this.props.readOnly || this.props.disabled ? " readOnly" : "")}>
+                    <InputWidget  {...this.props}  ref={this.input} containerid={this.state.containerid}  validate={this.validate}></InputWidget>
+                    <small className={'wasabi-help-block '} style={{ display: this.state.inValidateText ? "block" : 'none' }}>
+                        <div className='text' >{this.state.inValidateText}</div>
+                    </small>
+                </div>
+            </div>
         }
     }
     return ValidateComponent;

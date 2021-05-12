@@ -65,20 +65,9 @@ class Password extends React.PureComponent {
         event.target.selectionStart = event.target.value.length;
     }
     render() {
-        return <div className={componentClassName + " " + this.props.validateClass} onPaste={this.onPaste} style={style}>
-            <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>
-            <div className={'wasabi-form-group-body' + (this.props.readOnly || this.props.disabled ? " readOnly" : "")}>
-                <BaseInput   {...this.props} ref={this.inputControl} onBlur={this.onBlur} onPaste={this.onPaste} onChange={this.onChange}
-                    onKeyUp={this.onKeyUp} onClick={this.onClick} onFocus={this.onClick} ></BaseInput>
-                {this.props.children}
-                <small className={"wasabi-help-block "} style={{
-                    display: (this.state.inValidateText && this.state.inValidateText != "") ?
-                        this.state.inValidateShow : "none"
-                }}>
-                    {this.state.inValidateText}
-                </small>
-            </div>
-        </div>
+        return <React.Fragment> <BaseInput   {...this.props} ref={this.inputControl} onBlur={this.onBlur} onPaste={this.onPaste} onChange={this.onChange}
+            onKeyUp={this.onKeyUp} onClick={this.onClick} onFocus={this.onClick} ></BaseInput>
+            {this.props.children} </React.Fragment>
     }
 }
 Password.propTypes = propType;

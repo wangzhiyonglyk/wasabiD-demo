@@ -2,9 +2,8 @@
  * Created by zhiyongwang on 2016-04-26
  * desc:通用下拉日期,时间组件
  * date:2021-05-10 将日期组件全部合并到一个文件夹中，
- * 
+ * todo 需要继续优化
  */
-
 import React, { Component } from "react";
 import Calendar from "./Calendar";
 import DateInput from "./DateInput"
@@ -15,7 +14,6 @@ import Time from "./Time";
 import TimeRange from "./TimeRange";
 import regs from "../../Lang/regs.js";
 import validateHoc from "../validateHoc"
-import Label from "../../Info/Label";
 import func from "../../libs/func"
 import propTypes from "../config/propTypes.js";
 import defaultProps from "../config/defaultProps.js";
@@ -25,13 +23,11 @@ class DatePicker extends Component {
     super(props);
     this.input = React.createRef();
     this.state = {
-      containerid: func.uuid(),
+      pickerid: func.uuid(),
       rangeCount: "-150%", // 时间选择框的位置
-      oldPropsValue: this.props.value,//保留原来的值
-      value: this.props.value,
-      text: this.props.value,
-
-
+      oldPropsValue: "",//保留原来的值
+      value: "",
+      text: "",
     };
     this.getValue = this.getValue.bind(this);
     this.setValue = this.setValue.bind(this);
@@ -40,9 +36,14 @@ class DatePicker extends Component {
     this.showPicker = this.showPicker.bind(this);
     this.hidePicker = this.hidePicker.bind(this);
     this.onSelect = this.onSelect.bind(this);
-    this.clearHandler = this.clearHandler.bind(this);
-
-    this.onChange = this.onChange.bind(this)
+    this.onClear = this.onClear.bind(this);
+    this.onChange = this.onChange.bind(this);
+  
+    this.renderDate = this.renderDate.bind(this);
+    this.renderDateRange = this.renderDateRange.bind(this);
+    this.renderDateTime = this.renderDateTime.bind(this);
+    this.renderTime = this.renderTime.bind(this);
+    this.renderTimeRange = this.renderTimeRange.bind(this);
   }
   static getDerivedStateFromProps(props, state) {
     if (props.value != state.oldPropsValue) {
@@ -53,11 +54,9 @@ class DatePicker extends Component {
     }
     return null;
   }
-
   componentDidUpdate() {
-
-    if (this.refs.pickerc.getBoundingClientRect().right > window.screen.availWidth) {
-      this.refs.pickerc.style.right = "0px";
+    if (document.getElementById(this.state.pickerid).getBoundingClientRect().right > window.screen.availWidth) {
+      document.getElementById(this.state.pickerid).style.right = "0px";
     }
   }
   getValue() {
@@ -167,7 +166,7 @@ class DatePicker extends Component {
    * @param {*} event 
    */
   hidePicker(event) {
-    if (!dom.isDescendant(document.getElementById(this.state.containerid), event.target)) {
+    if (!dom.isDescendant(document.getElementById(this.props.containerid), event.target)) {
       this.setState({
         show: false
       });
@@ -175,6 +174,7 @@ class DatePicker extends Component {
       try {
 
         document.removeEventListener("click", this.hidePicker);
+        this.props.validate&&this.props.validate(this.state.value);
         //在此处处理失去焦点事件
         this.props.onBlur && this.props.onBlur(this.state.value, this.state.text, this.props.name);
       }
@@ -210,19 +210,21 @@ class DatePicker extends Component {
      * @param {*} value 
      */
   onChange(value) {
-
-    console.log("test", this.props.type)
     if (regs[this.props.type || "date"].test(value)) {
       this.setValue(value);
+      this.props.onSelect && this.props.onSelect(value, value, this.props.name);
     }
   }
-  clearHandler() {
-    //清除数据
+  /**
+   *清除数据
+   */
+  onClear() {
     this.setState({
       value: "",
       text: ""
     });
-    this.props.onSelect && this.props.onSelect("", "", this.props.name, null);
+    this.input.setValue("");
+    this.props.onSelect && this.props.onSelect("", "", this.props.name);
   }
 
   renderDate() {
@@ -384,35 +386,11 @@ class DatePicker extends Component {
 
     return actualLeft;
   }
-  /**
-     * 清除图标
-     * @returns 
-     */
-  renderClear() {
-    return <i className={"combobox-clear icon-clear"} onClick={this.setValue.bind(this, "")} style={{ display: this.props.readOnly ? "none" : this.state.value ? "inline" : "none" }}></i>
-  }
-  /**
-   * 日期图标
-   * @returns 
-   */
-  renderIcon() {
-    return <i className={"comboxbox-icon icon-calendar  "} onClick={this.showPicker.bind(this)}></i>
-  }
 
-  /**
-   * 提示信息
-   * @returns 
-   */
-  renderError() {
-    return <small className={"wasabi-help-block "} style={{ display: this.props.inValidateText ? this.props.inValidateShow : "none" }}>
-      <div className='text'>{this.props.inValidateText}</div>
-    </small>
-  }
   render() {
     let control = null;
     let controlDropClassName = "";
     switch (this.props.type) {
-
       case "date":
         control = this.renderDate();
         controlDropClassName = "date";
@@ -438,65 +416,31 @@ class DatePicker extends Component {
         control = this.renderDateTimeRange();
         controlDropClassName = "datetimerange";
         break;
-    }
-
-    let componentClassName = "wasabi-form-group " + (this.props.className || "") + " ";//组件的基本样式 
-
-    let style = this.props.style
-      ? JSON.parse(JSON.stringify(this.props.style))
-      : {};
-    if (this.props.hide) {
-      style.display = "none";
-    } else {
-      style.display = "flex";
-    }
-
-    let width = null;
-    switch (this.props.type) {
-      case "datetime":
-      case "daterange":
-        width = 210;
-        break;
-      case "datetimerange":
-        width = 330;
-        break;
       default:
+        control = this.renderDate();
+        controlDropClassName = "date";
         break;
 
     }
-
-    return (
-      <div
-        className={componentClassName + " " + this.state.validateClass}
-        ref='picker'
-        id={this.state.containerid}
-        style={style}
-      >
-        <Label ref="label" readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>
-        <div
-          className={"wasabi-form-group-body " + (this.props.readOnly || this.props.disabled ? " readOnly" : "")}
-          style={{ minWidth: width }}
-        >
-          <div className='combobox'>
-            {this.renderClear()}{this.renderIcon()}
-            <DateInput ref={this.input} onChange={this.onChange.bind(this)} showPicker={this.showPicker.bind(this)}> </DateInput>
-            <div
-              ref="pickerc"
-              className={"dropcontainter " + controlDropClassName + " "}
-              style={{
-                display: this.state.show == true ? "block" : "none",
-
-              }}
-            >
-              {control}
-            </div>
-          </div>
-          {this.renderError()}
-        </div>
+    return <div className='combobox' id={this.state.pickerid}>
+      <DateInput
+        {...this.props}
+        ref={this.input}
+        value={this.state.value||""}
+        onChange={this.onChange.bind(this)}
+        onClick={this.showPicker.bind(this)}
+        onClear={this.onClear.bind(this)}
+      > </DateInput>
+      <div className={"dropcontainter " + controlDropClassName + " "}
+        style={{
+          display: this.state.show == true ? "block" : "none",
+        }}>
+        {control}
       </div>
-    );
+      {this.props.children}
+    </div>
   }
 }
-DatePicker.propTypes =propTypes;
+DatePicker.propTypes = propTypes;
 DatePicker.defaultProps = Object.assign({}, defaultProps, { type: "datetime" });
 export default validateHoc(DatePicker);

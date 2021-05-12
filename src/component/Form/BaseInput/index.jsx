@@ -71,18 +71,14 @@ class BaseInput extends React.Component {
     }
 
     render() {
-        let style = {
-            ...this.props.style,
-        }
-        return <div ><input
+        return <input
             type={"text"}
-            tab={1}
             required={this.props.required || false}
             readOnly={this.props.readOnly || false}
             placeholder={this.props.placeholder || ""}
             title={this.props.title || ""}
             className={"wasabi-input " + this.props.className || ""}
-            style={style}
+            style={this.props.style||{}}
             value={this.state.value || ""}
             onBlur={this.props.onBlur}
             onClick={this.props.onClick}
@@ -94,7 +90,7 @@ class BaseInput extends React.Component {
             onMouseUp={this.props.onMouseUp}
             onSelect={this.props.onSelect}
             autoComplete="off"
-        /></div>
+        />
 
 
     }
