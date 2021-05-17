@@ -91,7 +91,7 @@ class CircleProgress extends React.Component {
                 let radius = this.width / 2;//半径
 
                 this.drawCricle(ctx, activeSAngle, activeEAngle, radius, color);//激活环
-               this.drawCricle(ctx, activeEAngle, 360-90, radius, "#ebeef5");//非激活
+               this.drawCricle(ctx, activeEAngle, 360-90, radius, "#ebebeb");//非激活
                this.drawCricle(ctx, 0, 360, radius - 6, "#ffffff");//空白环
 
             });

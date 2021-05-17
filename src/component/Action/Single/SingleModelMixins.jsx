@@ -7,13 +7,11 @@
 let React = require('react');
 import LinkButton from "../../Buttons/LinkButton"
 let PageModelMixins = {
-
   /**
    * 初始化一些状态值
    * @param {*} props 
    */
   initState(props) {
-  
     let newState = {};
     newState.headers = this.initHeaders(props);
     newState.filterModel = this.initFilterModel(props);
@@ -26,74 +24,56 @@ let PageModelMixins = {
     let filterModel = [];
     if (props.model && props.model instanceof Array) {
       for (let i = 0; i < props.model.length; i++) {
-        if(props.model[i].filterAble&&props.model[i].type=="datetime")
-        {
+        if (props.model[i].filterAble) {
           filterModel.push({
             ...props.model[i],
-            required:false,
-            readOnly: false,
-            disabled: false,
-            name:"begin_"+props.model[i]+",end_"+props.model[i],
-            type:"datetimerange"
-          })
-        }
-        else if(props.model[i].filterAble&&props.model[i].type=="date"){
-          filterModel.push({
-            ...props.model[i],
-            required:false,
-            readOnly: false,
-            disabled: false,
-            name:"begin_"+props.model[i]+",end_"+props.model[i],
-            type:"daterange"
-          })
-        }
-       else if (props.model[i].filterAble) {
-          filterModel.push({
-            ...props.model[i],
-            required:false,
+            hide: false,
+            required: false,
             readOnly: false,
             disabled: false,
           })
         }
       }
     }
+
     return filterModel;
   },
   /**
    * 初始化表头
    */
   initHeaders: function (props) {
- console.log("initHeaders",this.props)
     let headers = [];
     if (props.model && props.model instanceof Array) {
       for (let i = 0; i < props.model.length; i++) {
         if (props.model[i].headerAble) {
           headers.push({
-            name: props.model[i].name,
-            label: props.model[i].label,
-            content: props.model[i].headerContent || null,
-            sortAble: props.model[i].sortAble,
+            name: props.model[i].name || "",
+            label: props.model[i].label || "",
+            content: props.model[i].content || null,
+            editor: props.model[i].editor || null,
+            sortAble: props.model[i].sortAble || false,
           })
         }
       }
-   
-      headers.push({
-        name: "op",
-        label: "操作",
-        content: (rowData, rowIndex) => {
-          return <div>
-            <LinkButton key="1" iconCls="icon-search" title="查看" onClick={this.openDetail.bind(this, rowData, rowIndex)} >查看</LinkButton>
-            <LinkButton key="2" iconCls="icon-edit" title="编辑" onClick={this.openEdit.bind(this, rowData, rowIndex)} >编辑</LinkButton>
-            <LinkButton key="3" iconCls="icon-remove" title="删除" onClick={this.deleteHandler.bind(this, rowData, rowIndex)} >删除</LinkButton>
 
-          </div>
-        }
-      })
+      if (this.props.deleteAble || this.props.editAble || this.props.detailAble) {
+        headers.push({
+          name: "op",
+          label: "操作",
+          content: (rowData, rowIndex) => {
+            return <div>
+              {this.props.detailAble ? <LinkButton key="1" iconCls="icon-search" title="查看" onClick={this.openDetail.bind(this, rowData, rowIndex)} >查看</LinkButton> : null}
+              {this.props.editAble ? <LinkButton key="2" iconCls="icon-edit" title="编辑" onClick={this.openUpdate.bind(this, rowData, rowIndex)} >编辑</LinkButton> : null}
+              {this.props.deleteAble ? <LinkButton key="3" iconCls="icon-remove" title="删除" onClick={this.deleteHandler.bind(this, rowData, rowIndex)} >删除</LinkButton> : null}  
+            </div>
+          }
+        })
+      }
+
     }
     return headers;
 
   },
-
 
 };
 export default PageModelMixins;

@@ -3,6 +3,9 @@
     vertical-align: middle;
     display: inline-block;
     margin-left: 15px;
+    font-size: 14px;
+    color: #676a6c;
+    cursor: pointer;
 }
 
 .wasabi-badge-content.is-fixed {

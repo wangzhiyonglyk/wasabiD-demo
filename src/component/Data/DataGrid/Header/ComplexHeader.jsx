@@ -82,7 +82,7 @@ export default {
                                 colSpan={header.colSpan}
                             >
                                 <div
-                                    className='wasabi-grid-cell'
+                                    className=' wasabi-grid-cell nowrap'
                                     name={header.label}
 
                                 >
@@ -112,7 +112,7 @@ export default {
 
                 headerControl[0].unshift(
                     <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column' rowSpan={headerControl.length}>
-                        <div className='wasabi-grid-cell'  >
+                        <div className=' wasabi-grid-cell nowrap'  >
                             {this.props.singleSelect ? null : (
                                 <CheckBox forceChange={true} {...thCheckProps}></CheckBox>
                             )}
@@ -126,7 +126,7 @@ export default {
             //处理序号
             if (this.props.rowNumber) {
                 headerControl[0].unshift(<th key='headerorder' rowSpan={headerControl.length} name='wasabi-order-column' className="wasabi-order-column">
-                    <div className='wasabi-grid-cell ' >
+                    <div className=' wasabi-grid-cell nowrap ' >
                         序号
 </div>
                 </th>)
@@ -134,7 +134,7 @@ export default {
             //处理详情列
             if (this.props.detailAble) {
                 headerControl[0].unshift(<th key='headerdetail' rowSpan={headerControl.length} name='wasabi-detail-column' className="wasabi-detail-column">
-                    <div className='wasabi-grid-cell ' >
+                    <div className=' wasabi-grid-cell nowrap ' >
                     </div>
                 </th>)
             }

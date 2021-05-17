@@ -8,18 +8,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import func from "../../libs/func";
 import('./linkbutton.css');
-class LinkButton extends React.Component {
+class LinkButton extends React.PureComponent {
     constructor(props) {
         super(props);
         this.clickHandler = this.clickHandler.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onMouseOut = this.onMouseOut.bind(this);
-        this.state = {
-            disabled:this.props.disabled
-        };
     }
     clickHandler(event) {
-        if (this.state.disabled == true) {
+        if (this.props.disabled == true) {
             return;
         }
 
@@ -37,25 +34,7 @@ class LinkButton extends React.Component {
             this.props.onMouseOut(event);
         }
     }
-    setDisabled(){
-      this.setState({
-          disabled:true
-      })
-    }
-    setAbled(){
-        this.setState({
-            disabled:false
-        }) 
-    }
-    shouldComponentUpdate(nextProps,nextState){
-        if(func.diffOrder(nextProps,this.props)){
-            return true;
-        }
-        if(func.diff(nextState,this.state)){
-            return true;
-        }
-        return false;
-    }
+  
 
     render() {
         let className = "wasabi-linkbutton "+ (this.props.className || "") + " " + (this.props.theme || "default"); //按钮样式
@@ -77,12 +56,12 @@ class LinkButton extends React.Component {
             onMouseOut={this.onMouseOut}
             onMouseOver={this.onMouseOver}
             className={className}
-            disabled={this.state.disabled}
+            disabled={this.props.disabled}
             name={this.props.name}
             style={style}
         >
             {this.props.iconAlign === "left" ? icon : null}
-            {this.props.children}
+            {this.props.children||this.props.title}
             {this.props.iconAlign !== "left" ? icon : null}
         </a>
 

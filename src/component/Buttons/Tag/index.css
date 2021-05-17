@@ -6,6 +6,8 @@
     border-radius: 4px;
     box-sizing: border-box;
     white-space: nowrap;
+    font-size: 14px;
+    color: #676a6c;
   
 }
 .wasabi-tag [class*="icon-"]{

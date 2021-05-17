@@ -13,16 +13,16 @@ import("../Sass/Layout/Modal.css");
 class Modal extends React.Component {
     constructor(props) {
         super(props);
-        this.resizeref=React.createRef();
+        this.resizeref = React.createRef();
         let style = (this.props.style && func.clone(this.props.style)) || {};
         let width = (this.props.style && this.props.style.width) ? parseInt(this.props.style.width) : 400;
         let height = (this.props.style && this.props.style.height) ? parseInt(this.props.style.height) : 400;
         style.width = width;
         style.height = height;
-        style.left = style.left|| "calc(50% - " + (width / 2).toFixed(2) + "px)";
-        style.top = style.top||"calc(50% - " + (height / 2).toFixed(2) + "px)";
+        style.left = style.left || "calc(50% - " + (width / 2).toFixed(2) + "px)";
+        style.top = style.top || "calc(50% - " + (height / 2).toFixed(2) + "px)";
         this.state = {
-            headerid:func.uuid(),
+            headerid: func.uuid(),
             title: this.props.title,
             style: style,
             visible: false,
@@ -37,10 +37,12 @@ class Modal extends React.Component {
         this.cancelHandler = this.cancelHandler.bind(this);
     }
     componentDidMount() {
-       document.addEventListener( "mousedown", this.mouseDownHandler)
+        document.addEventListener("mousedown", this.mouseDownHandler)
     }
 
     close() {//关闭事件
+        window.modalZindex = window.modalZindex || 10;
+        window.modalZinde -= 1;
         this.setState({ visible: false });
         if (this.props.closedHandler != null) {
             this.props.closedHandler();
@@ -48,6 +50,8 @@ class Modal extends React.Component {
     }
 
     open(title) {//打开事件
+        window.modalZindex = window.modalZindex || 8;
+        window.modalZindex += 1;
         this.setState({ visible: true, title: title ? title : this.state.title });
     }
     /**
@@ -58,12 +62,11 @@ class Modal extends React.Component {
 
         if (this.position != null) {
             let target = this.resizeref.current.target();
-            if(event.clientX - this.oldClientX>5||event.clientX - this.oldClientX<-5)
-            {//防止抖动
+            if (event.clientX - this.oldClientX > 5 || event.clientX - this.oldClientX < -5) {//防止抖动
                 target.style.left = (this.position.left + event.clientX - this.oldClientX) + "px";
                 target.style.top = (this.position.top + event.clientY - this.oldClientY) + "px";
             }
-            
+
         }
     }
     /**
@@ -73,9 +76,9 @@ class Modal extends React.Component {
     mouseDownHandler(event) {
 
 
-        if ( dom.isDescendant(document.getElementById(this.state.headerid) ,event.target)|| event.target.className == "wasabi-modal-header") {
-           document.addEventListener( "mousemove", this.mouseMoveHandler)
-           document.addEventListener( "mouseup", this.mouseUpHandler)
+        if (dom.isDescendant(document.getElementById(this.state.headerid), event.target) || event.target.className == "wasabi-modal-header") {
+            document.addEventListener("mousemove", this.mouseMoveHandler)
+            document.addEventListener("mouseup", this.mouseUpHandler)
 
             //记住原始位置
             this.oldClientX = event.clientX;
@@ -95,25 +98,28 @@ class Modal extends React.Component {
      */
     mouseUpHandler(event) {
         this.position = null;
-       document.removeEventListener( "mouseup", this.mouseUpHandler)
-       document.removeEventListener( "mousemove", this.mouseMoveHandler)
+        document.removeEventListener("mouseup", this.mouseUpHandler)
+        document.removeEventListener("mousemove", this.mouseMoveHandler)
     }
 
     OKHandler() {
+     
         if (this.props.OKHandler != null) {
             this.props.OKHandler();
         }
-
     }
 
     cancelHandler() {
+        this.close();//关闭
         if (this.props.cancelHandler != null) {
             this.props.cancelHandler();
         }
-        this.close();//关闭
+
     }
 
     render() {
+        let style = func.clone(this.state.style) || {};
+        style.zIndex = (window.modalZindex + 1) || 10;
         //因为要提前调用children内容，所以不能在visible=false时，返回null
         let activename = "wasabi-modal-container ";
         if (this.state.visible == true) {
@@ -124,12 +130,13 @@ class Modal extends React.Component {
         if (this.props.OKHandler) {
             buttons.push(
                 <Button title="确定" key="ok" theme="primary" onClick={this.OKHandler}
-                    style={{ width: 60, height: 30 }}></Button>
+                    size="small"></Button>
             )
             if (this.props.OKHandler) {
                 buttons.push(
                     <Button title="取消" key="cancel" theme="cancel" onClick={this.cancelHandler}
-                        style={{ width: 60, height: 30 }}></Button>
+                        size="small"
+                    ></Button>
                 )
             }
             footer = <div className="wasabi-modal-footer">
@@ -142,9 +149,9 @@ class Modal extends React.Component {
         return this.props.destroy && this.state.visible == false ? null : <div className={activename}>
             <div className={" wasabi-overlay " + (this.props.modal == true ? "active" : "")} onClick={this.close.bind(this)}></div>
             <Resize ref={this.resizeref}
-                className={"wasabi-modal fadein " + this.props.className} style={this.state.style} resize={true}>
+                className={"wasabi-modal fadein " + this.props.className} style={style} resize={true}>
                 <a className="wasabi-modal-close" onClick={this.close.bind(this)}></a>
-                <div className="wasabi-modal-header" id={this.state.headerid} style={{display:this.state.title?"block":"none"}} >
+                <div className="wasabi-modal-header" id={this.state.headerid} style={{ display: this.state.title ? "block" : "none" }} >
                     {this.state.title}
                 </div>
                 <div className="wasabi-modal-content" >
@@ -176,7 +183,7 @@ Modal.defaultProps = {
     style: {},
     resize: false,//是否可以改变大小
     modal: true,//默认有遮罩层
-    destroy:false,
+    destroy: false,
     closedHandler: null,
     OKHandler: null,//确定按钮的事件,
     cancelHandler: null,

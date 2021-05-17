@@ -12,9 +12,19 @@ class BaseInput extends React.Component {
         super(props);
         this.state = {
             value: "",
+            oldPropsValue:"",
             color: "default"
         }
         this.onChange = this.onChange.bind(this)
+    }
+    static  getDerivedStateFromProps(props, state) { 
+        if (props.value != state.oldPropsValue) {//父组件强行更新了
+          return  {
+                value: props.value || "",
+                oldPropsValue: props.value,
+            }
+        }
+        return null;
     }
     componentDidMount() {
         this.setState({

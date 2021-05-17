@@ -4,11 +4,11 @@
  desc:下拉菜单选项
  */
 
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import('./index.css');
 
-class DropdownItem extends Component {
+class DropdownItem extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -20,10 +20,13 @@ class DropdownItem extends Component {
      * 单击事件
      */
     onClick() {
+        if(this.props.disabled){
+            return;
+        }
         this.props.onClick && this.props.onClick(this.props.index,this.props.name);
     }
     render() {
-        return <li onClick={this.onClick} className="wasabi-dropdown-item">{this.props.children}</li>
+        return <li onClick={this.onClick} style={this.props.style||{}} className="wasabi-dropdown-item">{this.props.children}</li>
     }
 }
 DropdownItem.propTypes = {

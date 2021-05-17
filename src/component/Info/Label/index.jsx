@@ -31,7 +31,7 @@ class Label extends React.PureComponent {
             title={this.props.title}
             className={"wasabi-label "+this.props.className||""}
             style={style}>
-            {this.props.children || this.props.title}
+            {this.props.required?<span style={{color:"red"}}>*</span>:null} {this.props.children || this.props.title}
         </div>
 
 

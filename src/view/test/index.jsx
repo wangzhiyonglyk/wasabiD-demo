@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Input from "../../component/Form/Input"
 import Form from "../../component/Form/Form"
-import { Button,DataGrid,TreeGrid } from '../../component';
+import { Button,DataGrid,TreeGrid ,Tree} from '../../component';
 
 import("./index.css")
 class PivotPage extends React.Component {
@@ -13,12 +13,46 @@ class PivotPage extends React.Component {
         this.form=React.createRef();
         this.state = {
             dropData: [],
-            headers: [
+            fixedHeaders: [
                 {
-                    name: "text",
-                    label: "省",
+                    name: "id",
+                    label: "id",
+                    width:200
                 },
 
+            ],
+            headers: [
+               
+                {
+                    name: "text",
+                    label: "省1",
+                    width:200
+                },
+                {
+                    name: "text",
+                    label: "省2",
+                  
+                },
+                {
+                    name: "text",
+                    label: "省3",
+                    width:200
+                },
+                {
+                    name: "text",
+                    label: "省4",
+                    width:200
+                },
+                {
+                    name: "text",
+                    label: "省5",
+                    width:200
+                },
+                {
+                    name: "text",
+                    label: "省6",
+                    width:200
+                },
             ],
             data: [
                 {
@@ -36,7 +70,15 @@ class PivotPage extends React.Component {
                         { id: 21, pId: 2, text: "子节点21" },
                         { id: 22, pId: 2, text: "子节点22" }
                     ]
-                }
+                },
+                {     id: 3, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, text: "父节点1"},
+                {     id: 4, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, text: "父节点1"},
+                {     id: 5, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, text: "父节点1"},
+                {     id: 6, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, text: "父节点1"},
+                {     id: 7, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, text: "父节点1"},
+                {     id: 8, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, text: "父节点1"},
+                {     id: 9, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, text: "父节点1"},
+                {     id: 10, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, text: "父节点1"},
             ],
             tabs: [{
                 title: "你好"
@@ -52,12 +94,11 @@ class PivotPage extends React.Component {
         return false;
     }
     componentDidMount() {
-   
+ 
 
     }
     onClick() {
 
-        this.form.current.validate();
     }
     onDrop(data) {
         let dropData = this.state.dropData;
@@ -70,7 +111,7 @@ class PivotPage extends React.Component {
     render() {
         return <div style={{ padding: 20 }}>
          <Button onClick={this.onClick.bind(this)}>提交</Button>
-            <Form ref={this.form}>
+            {/* <Form ref={this.form}>
                 <Input  ref={this.input} key="1" valueField="id" required={true} type="picker" data={this.state.data}></Input>
                 <Input     key="2" valueField="id" multiple={true} required={true} type="select" data={this.state.data}></Input>
                 <Input   key="3" valueField="id" required={true} type="checkbox" data={this.state.data}></Input>
@@ -82,12 +123,12 @@ class PivotPage extends React.Component {
                 <Input  key="9"  required={true} type="datetimerange" data={this.state.data}></Input>
                
                 <Input  key="10"  required={true} type="treepicker" data={this.state.data}></Input>
-            </Form>
+            </Form> */}
             {/* <Input type="daterange" key="1"></Input>
             <Input type="datetime" key="2"></Input> */}
 
-            <DataGrid data={this.state.data} headers={this.state.headers}></DataGrid>
-            {/* <TreeGrid data={this.state.data} headers={this.state.headers}></TreeGrid> */}
+            <DataGrid data={this.state.data}  fixedHeaders={this.state.fixedHeaders}   headers={this.state.headers}></DataGrid>
+            <TreeGrid ref={"reff"} data={this.state.data}  headers={this.state.headers}></TreeGrid>
         </div>
 
     }

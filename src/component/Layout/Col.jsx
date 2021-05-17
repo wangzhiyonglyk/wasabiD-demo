@@ -134,17 +134,21 @@ class Col extends React.PureComponent {
         this.inputs = [];//先清空
         return <div className={"col-xs-" + (this.props.cols || "3") + " wasabi-cols " + (this.props.className || "")} style={this.props.style}>{
             React.Children.map(this.props.children, (child, index) => {
-                if (typeof child.type !== "function") {//非react组件
-                    return child;
-                } else {
-                    let ref = child.ref ? child.ref : React.createRef();
-                    typeof ref === "object" ? this.inputs.push(ref) : void (0);//如果对象型添加，字符型（旧语法）事后通过refs来获取
-                    return React.cloneElement(child,
-                        {
-                            readOnly: this.state.disabled ? this.state.disabled : child.props.readOnly,
-                            key: index, ref: ref
-                        })
+                if(child){
+                    if (typeof child.type !== "function") {//非react组件
+                        return child;
+                    } else {
+                        let ref = child.ref ? child.ref : React.createRef();
+                        typeof ref === "object" ? this.inputs.push(ref) : void (0);//如果对象型添加，字符型（旧语法）事后通过refs来获取
+                        return React.cloneElement(child,
+                            {
+                                disabled:this.props.disabled,
+                                readOnly: this.props.disabled ? this.props.disabled : child.props.readOnly,
+                                key: index, ref: ref
+                            })
+                    }
                 }
+               
             })}</div>;
     }
 }

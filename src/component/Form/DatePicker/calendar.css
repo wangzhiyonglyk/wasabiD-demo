@@ -101,7 +101,7 @@
 }
 
 .wasabi-datetime-year input {
-  border: 1px solid #dcdfe6;
+  border: 1px solid #ebebeb;
   outline: none;
 }
 
@@ -221,7 +221,7 @@
   width: 240px;
   background: #ffffff;
   padding: 10px;
-  border: 1px solid #e4e7ed;
+  border: 1px solid #ebebeb;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -280,7 +280,7 @@
 
 .wasabi-time-container .second-container {
   display: none;
-  border: 1px solid #e4e7ed;
+  border: 1px solid #ebebeb;
   background: #ffffff;
   position: absolute;
   top: 40px;
@@ -312,7 +312,7 @@
 }
 
 .wasabi-time-container .second-container::after {
-  border-color: transparent transparent #dcdfe6;
+  border-color: transparent transparent #ebebeb;
   top: -20px;
 }
 

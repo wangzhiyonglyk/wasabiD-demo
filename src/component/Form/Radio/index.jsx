@@ -51,7 +51,6 @@ class Radio extends Component {
         this.props.onSelect && this.props.onSelect("", "", this.props.name, {});
     }
     onSelect(value, text, name, row) {
-        console.log("value")
         if (this.props.readOnly) {
             return;
         }

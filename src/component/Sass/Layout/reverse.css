@@ -7,6 +7,8 @@ desc：div翻转样式
 .reverse
 {
   display: inline;
+  font-size: 14px;
+  color: #676a6c;
 }
 .in {
   -webkit-animation-timing-function: ease-out;

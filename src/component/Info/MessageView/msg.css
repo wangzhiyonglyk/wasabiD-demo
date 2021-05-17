@@ -2,9 +2,7 @@
 .wasabi-message
 {
   display: inline-block;
-  width: auto;
-  max-width:500px;
-  min-width: 80px;
+  width: 300px;
   min-height: 30px;
   line-height: 30px;
  padding-top: 10px;
@@ -14,9 +12,9 @@
   padding-left: 60px;
   padding-right: 20px;
   position: fixed;
-  top: 20%;
-  left: 35%;
-  z-index: 10;
+  top: 10%;
+  left: calc(50% - 150px);
+  z-index: 99999;
   white-space: pre-wrap;
   -webkit-transition: opacity 2s;
   transition:opacity 2s;
@@ -79,8 +77,8 @@
   box-shadow:  0px 3px 40px 0px rgba(0,0,0,0.4);
   background-color: #FCFCFC;
   position: fixed;
-  top: 20%;
-  left: 35%;
+  top: 10%;
+  left: 38%;
   z-index: 999999;
 
 }
@@ -93,7 +91,7 @@
   display: inline-block;
   position: absolute;
   font-size: 18px;
-  color: #606266;
+  color: #676a6c;
   text-align: center;
   font-weight: normal;
 }

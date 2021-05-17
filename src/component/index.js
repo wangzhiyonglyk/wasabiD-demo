@@ -28,6 +28,7 @@ import StepItem from './Data/Step/StepItem';//进度条
 import Avatar from "./Data/Avatar";//头像上传组件
 import Pivot from "./Data/Pivot";//交叉表
 import TreeGrid from "./Data/TreeGrid";//树型表格
+import Pagination from "./Data/Pagination";//分页控件
 
 /*****************表单组件******************/
 import SearchBar from './Form/SearchBar/index.jsx';//表单查询组件
@@ -108,10 +109,10 @@ import mixins from './Mixins/mixins';//mixins
 import regs from "./Lang/regs";//常用的正则
 export {
     Tag, Button, LinkButton, Toolbar, Badge, Dropdown, DropdownItem,
-    DataGrid, Tree, Transfer, Progress, Step, StepItem, Avatar, Pivot, TreeGrid,
-    Input,Form,SearchBar,
-    BaseInput,Text,None,Rate,Select,Switch,CheckBox,CheckButton,Radio,Picker,TreePicker,DatePicker,
-    Password,Search,
+    DataGrid, Tree, Transfer, Progress, Step, StepItem, Avatar, Pivot, TreeGrid, Pagination,
+    Input, Form, SearchBar,
+    BaseInput, Text, None, Rate, Select, Switch, CheckBox, CheckButton, Radio, Picker, TreePicker, DatePicker,
+    Password, Search,
     Calendar,
     Box, Drag, Drop, Layout, Center, Header, Footer, Left, Right, Container, Row, Col,
     Modal, Panel, Resize, SlidePanel,

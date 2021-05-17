@@ -2,12 +2,14 @@
 	width: 100%;
 	overflow: hidden;
 	height: 100%;
+	font-size: 14px;
+	color: #676a6c;
 }
 .wasabi-tabs .wasabi-tab-nav{
-	border: 1px solid #e4e7ed;
+	border: 1px solid #ebebeb;
     border-radius: 4px 4px 0 0;
 	box-sizing: border-box;
-	border-bottom: 1px solid #e4e7ed;
+	border-bottom: 1px solid #ebebeb;
 	border-left:none;
 	padding: 0;
     position: relative;
@@ -23,7 +25,7 @@
 	list-style: none;
 	font-size: 14px;
 	font-weight: 500;
-	color: #606266;
+	color: #676a6c;
 	position: relative;
 	overflow: hidden;
 	transition: all .3s ease-out 0s;
@@ -33,13 +35,13 @@
 	-ms-transition: all .3s ease-out 0s;
 	-o-transition: all .3s ease-out 0s;
 	border-bottom: 1px solid transparent;
-    border-left: 1px solid #e4e7ed;
+    border-left: 1px solid #ebebeb;
 }
 .wasabi-tab:last-child{
-	border-right: 1px solid #e4e7ed;
+	border-right: 1px solid #ebebeb;
 }
 .wasabi-tab .tab-icon {
-	color: #606266;
+	color: #676a6c;
 	font-size: 12px;
 	margin-left: 5px;
 	top: 1px;

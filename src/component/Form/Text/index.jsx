@@ -3,17 +3,16 @@
 //edit by wangzhiyong 2020-10-18 todo blur事件要改
 //desc 将输入框从Input中独立出来
 import React, { Component } from "react";
-import Label from "../../Info/Label";
-import Msg from "../../Info/Msg.jsx";
-import FetchModel from "../../Model/FetchModel.js";
-import api from "wasabi-api"
-import propTypes from "../config/propTypes.js";
-import defaultProps from "../config/defaultProps.js";
+import propTypes from "../../propsConfig/propTypes.js";
+import defaultProps from "../../propsConfig/defaultProps.js";
+//hoc
+import loadDataHoc from "../../loadDataHoc";
+import validateHoc from "../validateHoc"
 class Text extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            oldPropsValue: this.props.value,//保存用于匹配
+            oldPropsValue: "",//保存用于匹配
             value: this.props.value || "",
 
         }
@@ -25,9 +24,7 @@ class Text extends Component {
         this.clickHandler = this.clickHandler.bind(this);
         this.getValue = this.getValue.bind(this);
         this.setValue = this.setValue.bind(this);
-        this.validateHandler = this.validateHandler.bind(this);
-        this.validateHandlerSuccess = this.validateHandlerSuccess.bind(this);;
-        this.validateHandlerError = this.validateHandlerError.bind(this)
+       
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -68,12 +65,6 @@ class Text extends Component {
 
     }
     keyUpHandler(event) {
-        if (event.keyCode == 13) {
-            if (this.props.validateUrl) {
-                this.validateHandler(event.target.value);
-            }
-        }
-
         if (this.props.onKeyUp) {
             this.props.onKeyUp(event);
         }
@@ -84,17 +75,11 @@ class Text extends Component {
         }
     }
     blurHandler(event) {
-        let isvalidate = false;
-        if (this.props.validateUrl) {//后台验证
-            isvalidate = this.validateHandler(event.target.value);
-        }
-        else {//普通验证
-            isvalidate = this.validate(this.state.value);
-        }
+        this.props.validate&&this.props.validate(this.state.value);
         this.props.onBlur && this.props.onBlur(event.target.value, event.target.value, event);
     }
     clickHandler(event) {//单击事件
-        this.props.onClick && this.props.onClick(value, text, this.props.name, event);
+        this.props.onClick && this.props.onClick(event.target.value, event.target.value, event);
     }
 
     getValue() {//获取值
@@ -104,6 +89,7 @@ class Text extends Component {
         this.setState({
             value: value,
         })
+        this.props.validate&&this.props.validate(value);
     }
 
     render() {
@@ -115,9 +101,10 @@ class Text extends Component {
             placeholder:this.props.placeholder,
             readOnly:this.props.readOnly,
             required:this.props.required,
+           
             className: "wasabi-input  ",//去掉className
             rows: this.props.rows,//textarea
-            style: { resize: this.props.resize ? "vertical" : null },//textarea 只能向下切换
+            style: { resize: this.props.resize ? "vertical" : "none",height:"100%" },//textarea 只能向下切换
         }//文本框的属性
         let control = null;
         if (inputType != "textarea") {//普通输入框
@@ -125,15 +112,15 @@ class Text extends Component {
                 onChange={this.onChange} onKeyDown={this.keyDownHandler}
                 onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
                 onBlur={this.blurHandler}
-                value={ this.state.value||""}></input>;
+                value={ this.state.value||""}  autoComplete="off"></input>;
         }
         else {
            
-            control = <textarea  style={{ resize: "none" }} {...inputProps} onClick={this.clickHandler}
+            control = <textarea  {...inputProps} onClick={this.clickHandler}
                 onChange={this.onChange} onKeyDown={this.keyDownHandler}
                 onKeyUp={this.keyUpHandler} onFocus={this.focusHandler}
                 onBlur={this.blurHandler}
-                value={ this.state.value||""}></textarea>;
+                value={ this.state.value||""}  autoComplete="off"></textarea>;
         }
         return <React.Fragment>  {control} {this.props.children} </React.Fragment>
     }
@@ -142,4 +129,4 @@ Text.propTypes = propTypes;
 
 Text.defaultProps = Object.assign({}, defaultProps, { type: "password" });;
 
-export default Text;
+export default   validateHoc(loadDataHoc( Text,"text"));

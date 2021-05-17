@@ -50,7 +50,6 @@ class Tree extends Component {
              * 因为此组件需要对数据进行增删改
              * 其他组件统一交由loadDataHoc处理了
              */
-
             newState.rawData = (props.data);
             newState.data = func.clone(props.data);
 
@@ -220,7 +219,7 @@ class Tree extends Component {
                     key={"treenode-" + item[this.props.idField] + "-" + index}
                     {...this.props}
                     {...item}
-                    inputValue={this.props.inputValue}
+                    inputValue={this.props.inputValue||""}
                     checked={checked}
                     id={item[this.props.idField]}
                     text={item[this.props.textField]}

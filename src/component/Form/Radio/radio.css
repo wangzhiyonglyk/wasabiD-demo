@@ -47,7 +47,7 @@ desc:checkbox
   font-family: 'iconfont'!important;
   width:16px;
   height:16px;
-  border: 1px solid #dcdfe6;
+  border: 1px solid #ebebeb;
   display: inline-block;
   margin-right: 3px;
   position: absolute;
@@ -58,7 +58,7 @@ desc:checkbox
 }
 
 .wasabi-checkul .checkbox + label[readOnly],.wasabi-checkul .checkbox + label[disabled] {
-  background-color: #f5f7fa;
+  background-color: #fafafa;
   cursor: not-allowed;
 }
 .wasabi-checkul .checkbox + label:hover {
@@ -120,9 +120,9 @@ desc:checkbox
 
 }
 .wasabi-radio-btn.readOnly{
-  background-color: #f5f7fa;
+  background-color: #fafafa;
   cursor: not-allowed;
-  border-color: #e4e7ed;
+  border-color: #ebebeb;
   color: #c0c4cc;
 }
 .wasabi-radio-btn input[type="radio"]{

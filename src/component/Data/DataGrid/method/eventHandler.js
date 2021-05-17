@@ -127,20 +127,32 @@ export default {
                 
             }
         }
-        this.props.onDoubleClick(rowData, rowIndex,columnIndex);
+        this.props.onDoubleClick&&this.props.onDoubleClick(rowData, rowIndex,columnIndex);
     },
 
     /**
-     * 真实表格的鼠标滚动事件
+     * 真实表格的鼠标滚动事件，用于固定列左右移动的时候
      */
     onRealTableScoll: function (event) {
         setTimeout(() => {
-            if (document.getElementById(this.state.fixedTableContainerid)) {
-                document.getElementById(this.state.fixedTableContainerid).style.top =
-                 (0 -   document.getElementById(this.state.realTableContainerid).scrollTop) + "px";
-                document.getElementById(this.state.fixedHeadersContainerid).style.left = 
-                (0 -   document.getElementById(this.state.realTableContainerid).scrollLeft) + "px";
+            try{
+                //固定列的表格 纵向
+                if (document.getElementById(this.state.fixedTableContainerid)) {
+                    document.getElementById(this.state.fixedTableContainerid).style.top =
+                     (0 -   document.getElementById(this.state.realTableContainerid).scrollTop) + "px";
+
+                }
+              
+                //固定表头 横向
+                if( document.getElementById(this.state.fixedthcontainerid)){
+                    document.getElementById(this.state.fixedthcontainerid).style.left = 
+                    (0 -   document.getElementById(this.state.realTableContainerid).scrollLeft) + "px";
+                }
             }
+            catch(e){
+
+            }
+         
           
         }, 0);
 
@@ -433,8 +445,6 @@ export default {
                 checkedData: this.props.clearChecked == true ? new Map() : checkedData,
                 detailIndex: null,//重新查询要清空详情
                 detailView: null,
-
-
             })
 
         }

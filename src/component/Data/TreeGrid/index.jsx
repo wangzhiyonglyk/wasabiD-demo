@@ -102,7 +102,11 @@ class TreeGrid extends Component {
         }
     }
     componentDidMount() {
-        this.loadData(this.state.url, this.state.params);
+       setTimeout(() => {
+           //渲染后拿真正的宽度
+          this.grid.current&&this.grid.current.computeHeaderStyleAndColumnWidth()
+       }, 100);
+    
     }
     loadData(url, params) {
         if (url) {
@@ -182,8 +186,13 @@ class TreeGrid extends Component {
      */
     dataGridClick(rowData, rowIndex) {
 
-        this.tree.current.setClickNode(rowData[this.props.idField || "id"]);
+        try{
+            this.tree.current.input.current.setClickNode(rowData[this.props.idField || "id"]);
 
+        }catch(e){
+
+        }
+      
         this.props.onClick && this.props.onClick(rowData);
 
     }
@@ -232,7 +241,14 @@ class TreeGrid extends Component {
      * @returns 
      */
     getChecked() {
-        return this.tree.current.getChecked();
+        try{
+            return this.tree.current.input.current.getChecked();
+        }
+        catch(e){
+
+        }
+        return [];
+       
     }
     /**
      * 强制刷新
@@ -252,8 +268,8 @@ class TreeGrid extends Component {
             }
         }
 
-        return <div className="wasabi-treegrid">
-            <div className="wasabi-treegrid-left">
+        return <div className={"wasabi-treegrid "+(this.props.className||"")} style={this.props.style}>
+            <div className="wasabi-treegrid-left" style={{width:300}}>
                 <div className="wasabi-treegrid-configuration" style={{ height: treeTop }}>
                     {this.props.treeHeader}
                 </div>
@@ -265,7 +281,7 @@ class TreeGrid extends Component {
                 </div>
             </div>
             <div className="wasabi-treegrid-right">
-                <DataGrid ref={this.gird} pagination={false} rowNumber={false}
+                <DataGrid ref={this.grid} pagination={false} rowNumber={false}
                     headers={this.state.headers} data={this.state.realGridData}
                     isPivot={true}
                     onClick={this.dataGridClick.bind(this)}></DataGrid>
@@ -322,7 +338,7 @@ TreeGrid.defaultProps = {
     textField: "text",
     simpleData: true,//默认为真
     checkAble: true,
-    checkStyle: "radio",
+    checkStyle: "checkbox",
     checkType: { "y": "ps", "n": "ps" },//默认勾选/取消勾选都影响父子节点，todo 暂时还没完成
     radioType: "all",//todo 
 

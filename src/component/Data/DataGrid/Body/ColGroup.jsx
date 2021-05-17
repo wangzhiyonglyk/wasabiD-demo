@@ -14,6 +14,7 @@ import React from 'react';
             }
             else{
                 let width=header.width?header.width:this.perColumnWidth||null;
+             
                 colgroup.push(<col  
                      key={headerColumnIndex}
                      name={header.label}//以label为准，是因为name可能没有设置

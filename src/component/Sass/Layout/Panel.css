@@ -11,8 +11,8 @@ desc:面板组件样式
   border-radius: 4px;
   -webkit-transition: height 1s;
   transition:height 1s;
-  box-shadow:0 2px 12px 0 rgba(0,0,0,.1);
-  border: 1px solid #ebeef5;
+  font-size: 14px;
+  color: #676a6c;
 }
 
 .wasabi-panel .panel-header
@@ -22,7 +22,7 @@ desc:面板组件样式
   line-height: 40px;
   padding-left: 10px;
   padding-right: 10px;
-  border-bottom: 1px solid #ebeef5;
+  border-bottom: 1px solid #ebebeb;
   
 }
 .wasabi-panel .panel-header [class^="icon-"],.wasabi-panel .panel-header [class*=" icon-"]{
@@ -30,8 +30,8 @@ desc:面板组件样式
 }
 .panel-default>.panel-header {
   background: #fff;
-  border-bottom: 1px solid #dcdfe6;
-  color: #606266;
+  border-bottom: 1px solid #ebebeb;
+  color: #676a6c;
 }
 .panel-primary>.panel-header {
   color: #fff;
@@ -76,10 +76,10 @@ desc:面板组件样式
   width:40px;
   height:20px;
 text-align: right;
-  color: #606266;
+  color: #676a6c;
 }
 .panel-icon i{
-  color: #606266;
+  color: #676a6c;
 }
 .panel-icon i:hover
 {

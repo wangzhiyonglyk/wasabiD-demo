@@ -20,6 +20,7 @@ class Panel extends React.Component {
 
         }
         this.expandHandler = this.expandHandler.bind(this);
+        this.buttonClick=this.buttonClick.bind(this)
     }
     expandHandler() {
         let expand = !this.state.expand;
@@ -52,7 +53,7 @@ class Panel extends React.Component {
         return (
             <div className={"wasabi-panel panel-" + this.props.theme + " " + this.props.className} style={style}  >
                 <div className="panel-header"  style={this.props.headerStyle}><i className={this.props.iconCls}></i><span >{this.props.title}</span>
-                    <div className="panel-buttons"><Toolbars buttons={this.props.buttons} onClick={this.buttonClick}></Toolbars></div>
+                    <div className="panel-buttons"><Toolbars type="link" buttons={this.props.buttons} onClick={this.buttonClick}></Toolbars></div>
                     <div className="panel-icon" style={{ display: (this.props.expandAble) ? "block" : "none" }}>
                         <i title={this.state.iconTip} className={this.state.iconCls} onClick={this.expandHandler.bind(this)}></i>
                         <i className="icon-close" style={{ marginLeft: 10, display: this.props.closeAble ? "inline" : "none" }} title="关闭" onClick={this.onClose.bind(this)}></i>

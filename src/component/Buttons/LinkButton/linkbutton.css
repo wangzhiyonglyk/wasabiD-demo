@@ -14,6 +14,8 @@ desc:小图标按钮样式
     outline: none;
     cursor: pointer;
     padding: 0px;
+    font-size: 14px;
+    color: #676a6c;
 }
 
 .wasabi-linkbutton+.wasabi-linkbutton {
@@ -24,7 +26,7 @@ desc:小图标按钮样式
 }
 
 .wasabi-linkbutton.default, .wasabi-linkbutton.cancel {
-    color: #606266;
+    color: #676a6c;
 }
 
 .wasabi-linkbutton.default:focus, .wasabi-linkbutton.default:hover, .wasabi-linkbutton.cancel:focus, .wasabi-linkbutton.cancel:hover {

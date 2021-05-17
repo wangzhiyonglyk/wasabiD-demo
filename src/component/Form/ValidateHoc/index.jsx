@@ -226,7 +226,9 @@ let validateHoc = function (InputWidget) {
             } else {
                 style.display = 'flex';
             }
-            return <div id={this.state.containerid} className={"wasabi-form-group " + (this.props.className || "") + " " + this.state.validateClass} style={style}>
+            return <div id={this.state.containerid}
+             className={"wasabi-form-group " + (this.props.className || "") + " " + this.state.validateClass}
+              style={style}>
                 <Label readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>
                 <div className={'wasabi-form-group-body' + (this.props.readOnly || this.props.disabled ? " readOnly" : "")}>
                     <InputWidget  {...this.props}  ref={this.input} containerid={this.state.containerid}  validate={this.validate}></InputWidget>

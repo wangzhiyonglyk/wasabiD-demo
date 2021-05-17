@@ -4,10 +4,8 @@ date:2016-10-30
 desc:单页面应用的事件处理模型
  * edit 2021-01-15
  */
-
+import React from "react"
 import Msg from "../../Info/Msg.jsx";
-import unit from "../../libs/func.js"
-import FetchModel from '../../Model/FetchModel.js';
 let SingleHandlerMixins = {
   /**
    * 自定义按钮组事件
@@ -23,23 +21,21 @@ let SingleHandlerMixins = {
  */
   filterHandler: function (params) {
     params = { ...this.state.params, ...params };
-    this.datagrid.current.reload(params);
+
+    if (this.props.pageHandler)
+      this.datagrid.current.reload(params);
   },
   /**
-   * 滑动面板的提交事件
+   * 弹出面板提交事件
    */
-  panelSubmitHandler() {
-
+  modalOKHandler() {
     if (this.state.opType == "edit") {
-      if (this.form.current.validate()) {
-        this.updateHandler(this.form.current.getData());
-      }
-
+      this.updateHandler();
     }
     else if (this.state.opType == "add") {
-      if (this.form.current.validate()) {
-        this.addHandler(this.form.current.getData());
-      }
+      this.addHandler();
+    } else {
+      this.modal.current.close();
     }
   },
 
@@ -53,36 +49,36 @@ let SingleHandlerMixins = {
   * 打开新增面板
   */
   addOpen: function () {
+    try {
+      setTimeout(() => {
+        this.form.current && this.form.current.clearData();
+        this.modal.current && this.modal.current.open(<span style={{ fontSize: 18, fontWeight: "bold" }}>{this.props.title}</span>);
+      }, 50);
 
-    this.slide.current.open(this.props.title + "-新增");
-    this.state.opType != "add" ? this.form.current.clearData() : void (0);
-    this.form.current.setDisabled(false);
+    }
+    catch (e) {
+    }
     this.setState({
       opType: 'add',
-      submitButton: [
-        {
-            name: "wasabi-save",
-            title: "提交",
-            size:"small",
-            iconCls: "icon-save"
-        }
-    ],
     });
+    this.props.openAddHandler && this.props.openAddHandler();
   },
   /**
    * 新增事件
    * @param {*} model 
    */
-  addHandler: function (model) {
-    //新增事件
-    if (this.props.addUrl) {
-      let fetchModel = new FetchModel(
-        this.props.addUrl,
-        this.opSuccess,
-        model,
-        this.fetchErrorHandler
-      );
-      unit.fetch.post(fetchModel);
+  addHandler: function () {
+    if (typeof this.props.addHandler === "function") {
+      let data = {};
+      if (this.props.autoOp) {
+        if (this.form.current && this.form.current.validate()) {
+          data = this.form.current.getData();
+        }
+        else {
+          return;
+        }
+      }
+      this.props.addHandler && this.props.addHandler(data);
     }
     else {
       Msg.error("您没有设置新增接口");
@@ -96,54 +92,46 @@ let SingleHandlerMixins = {
    * @param {*} rowData 
    * @param {*} rowIndex 
    */
-  openEdit(rowData, rowIndex) {
-    this.slide.current.open(this.props.title + "-编辑");
-    this.form.current.setData(rowData);
-    this.form.current.setDisabled(false);
-    this.setState({
-      opType: 'edit',
-      submitButton: [
-        {
-            name: "wasabi-save",
-            title: "提交",
-            size:"small",
-            iconCls: "icon-save"
-        }
-    ],
-    });
+  openUpdate(rowData) {
+    try {
+      this.setState({
+        opType: 'edit',
+      });
+      setTimeout(() => {
+        this.form.current && this.form.current.setData(rowData);
+        this.modal.current && this.modal.current.open(<span style={{ fontSize: 18, fontWeight: "bold" }}>{this.props.title}</span>);
+      }, 50);
+    }
+    catch (e) {
+    }
+    if (typeof this.props.openUpdateHandler === "function") {
+      this.props.openUpdateHandler(rowData);
+    }
+
+
+
   },
 
   /**
    * 更新处理
    * @param {*} model 
    */
-  updateHandler(model) {
-
-    if (this.props.updateUrl) {
-      let fetchModel = new FetchModel(
-        this.props.updateUrl,
-        this.opSuccess,
-        model,
-        this.fetchErrorHandler
-      );
-      unit.fetch.post(fetchModel);
+  updateHandler() {
+    if (typeof this.props.updateHandler === "function") {
+      let data = {};
+      if (this.props.autoOp) {
+        if (this.form.current && this.form.current.validate()) {
+          data = this.form.current.getData();
+        }
+        else {
+          return;
+        }
+      }
+      this.props.updateHandler && this.props.updateHandler(data);
     }
     else {
       Msg.error("您没有设置更新接口");
     }
-  },
-
-  /**
-   * 操作成功
-   * @param {*} result 
-   */
-  opSuccess: function (result) {
-    if (result.statusCode == 200) {
-      this.slide.current.close();
-      this.datagrid.current.reload(); //刷新列表
-      this.form.current.clearData();
-    }
-
   },
   /**
     * 删除事件
@@ -153,26 +141,14 @@ let SingleHandlerMixins = {
   deleteHandler: function (rowData, rowIndex) {
     //删除事件
     Msg.confirm('确定删除这条记录吗?', () => {
-      if (this.props.deleteUrl) {
-        let params={};
-        params[this.props.key]=rowData[this.props.key];
-        let fetchModel = new FetchModel(
-          this.props.deleteUrl,
-          this.opSuccess,
-          params,
-          this.fetchErrorHandler
-        );
-        unit.fetch.get(fetchModel);
+      if (typeof this.props.deleteHandler === "function") {
+        this.props.deleteHandler && this.props.deleteHandler(rowData);
       }
-      else{
+      else {
         Msg.error("您没有设置删除接口");
       }
 
     });
-  },
-  deleteSuccess: function (result) {
-    //删除成功
-    this.datagrid.current.reload(); //刷新列表
   },
 
   /**
@@ -181,23 +157,25 @@ let SingleHandlerMixins = {
    * @param {*} rowIndex 
    */
   openDetail(rowData, rowIndex) {
-    this.slide.current.open(this.props.title + "-详情");
-    this.form.current.setData(rowData);
-    this.form.current.setDisabled(true);
-    this.setState({
-      opType: 'read',
-      submitButton: [
-        
-    ],
-    });
-  },
+    try {
+      this.setState({
+        opType: 'search',
+      });
+      setTimeout(() => {
+        this.form.current && this.form.current.setData(rowData);
+        this.modal.current && this.modal.current.open(<span style={{ fontSize: 18, fontWeight: "bold" }}>{this.props.title}</span>);
 
+      }, 50);
+    }
+    catch (e) {
+    }
 
+    if (typeof this.props.detailHandler === "function") {
+      this.props.detailHandler && this.props.detailHandler(rowData);
+    }
+    else {
 
-  fetchErrorHandler: function (errorCode, errorMssage) {
-    //统一错误处理
-    console.log(errorCode, errorMssage);
-    Msg.error('操作失败，原因' + errorMssage);
+    }
   }
 };
 

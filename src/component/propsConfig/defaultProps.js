@@ -44,8 +44,7 @@ export default {
             data:null,
             // extraData:null,
             onSelect:null,
-            addAbled:true,//旧版本
-            addAble:true,
+            attachAble:false,
            //其他属性 picker
             secondUrl:null,
             secondParams:null,

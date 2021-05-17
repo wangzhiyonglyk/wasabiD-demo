@@ -7,8 +7,8 @@
 import React, { Component } from "react";
 import Tree from "../../Data/Tree.jsx";
 import Label from "../../Info/Label";
-import props from "../config/propTypes.js";
-import defaultProps from "../config/defaultProps.js";
+import props from "../../propsConfig/propTypes.js";
+import defaultProps from "../../propsConfig/defaultProps.js";
 import CheckBox from "../CheckBox/index.jsx";
 import propsTran from "../../libs/propsTran.js";
 import validateHoc from "../validateHoc";
@@ -105,7 +105,14 @@ class TreePicker extends Component {
         }
     }
     onSelect(checked, nodeid, nodeText, children, row, name) {
-        let data = this.tree.current.getChecked();
+        let data = [];
+        try
+        {
+            data= this.tree.current.input.current.getChecked();
+        }
+        catch(e){
+
+        }
         let value = []; let text = [];
         for (let i = 0; i < data.length; i++) {
             value.push(data[i].id);

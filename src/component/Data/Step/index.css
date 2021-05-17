@@ -8,7 +8,7 @@
     flex: 1;
     margin-right: 0px;
     display: inline-block;
-    color: #606266;
+    color: #676a6c;
 
 }
 .wasabi-step-item.default {
@@ -44,7 +44,7 @@
     right: -50%;
     position: absolute;
     border-color: inherit;
-    background-color: #dcdfe6;
+    background-color: #ebebeb;
 }
 .wasabi-step-item.default  .wasabi-step-line{
     background-color: #409eff;

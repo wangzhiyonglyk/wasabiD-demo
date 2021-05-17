@@ -3,8 +3,8 @@
 //desc 表单中空的占位组件,方便排版
 //属性与状态值保留,可能以后有用
 import React, { Component } from "react";
-import propType from "./config/propTypes.js";
-import defaultProps from "./config/defaultProps.js";
+import propType from "../propsConfig/propTypes.js";
+import defaultProps from "../propsConfig/defaultProps.js";
 class None extends Component {
     constructor(props) {
         super(props);

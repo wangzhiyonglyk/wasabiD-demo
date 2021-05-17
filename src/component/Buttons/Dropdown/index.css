@@ -7,14 +7,16 @@
     -moz-border-radius: 4px;
     -ms-border-radius: 4px;
     -o-border-radius: 4px;
+    font-size: 14px;
+    color: #676a6c;
 }
 .wasabi-dropdown .wasabi-button{
     margin-left: 0px;
 }
 .wasabi-dropdown.unplain.default,.wasabi-dropdown.unplain.cancel{
     background: #fff;
-      border: 1px solid #dcdfe6;
-      color: #606266;
+      border: 1px solid #ebebeb;
+      color: #676a6c;
   }
  
   .wasabi-dropdown.unplain.default.active, .wasabi-dropdown.unplain.default:active,.wasabi-dropdown.unplain.cancel.active, .wasabi-dropdown.unplain.cancel:active{
@@ -119,15 +121,13 @@
 
 .wasabi-dropdown-menu{
     position: absolute;
-    width: 100%;
     overflow: visible;
-    right: -60px;
     top: 20px;
     z-index: 10;
     padding: 10px 0;
     margin: 5px 0;
     background-color: #fff;
-    border: 1px solid #ebeef5;
+    border: 1px solid #ebebeb;
     border-radius: 4px;
     box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
     display: none;
@@ -162,7 +162,7 @@
     top: -16px;
 }
 .wasabi-dropdown-menu:after {
-    border-color: transparent transparent #ebeef5;
+    border-color: transparent transparent #ebebeb;
     top: -17px;
 }
 .wasabi-dropdown-item{
@@ -171,7 +171,7 @@
     padding: 0 20px;
     margin: 0;
     font-size: 14px;
-    color: #606266;
+    color: #676a6c;
     cursor: pointer;
     outline: none;
     width: 100%;

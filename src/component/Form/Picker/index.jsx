@@ -14,8 +14,8 @@ import validateHoc from "../validateHoc";
 import FetchModel from "../../Model/FetchModel.js";
 import PickerModel from "../../Model/PickerModel.js";
 import PickerInput from "./PickerInput";
-import propType from "../config/propTypes.js";
-import defaultProps from "../config/defaultProps.js";
+import propType from "../../propsConfig/propTypes.js";
+import defaultProps from "../../propsConfig/defaultProps.js";
 import api from "wasabi-api"
 import "./picker.css"
 class Picker extends Component {

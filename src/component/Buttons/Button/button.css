@@ -9,8 +9,9 @@
   white-space: nowrap;
   cursor: pointer;
   background: #fff;
-  border: 1px solid #dcdfe6;
-  color: #606266;
+  border: 1px solid #ebebeb;
+  font-size: 14px;
+  color: #676a6c;
   -webkit-appearance: none;
   text-align: center;
   box-sizing: border-box;
@@ -29,8 +30,11 @@
   margin-left: 10px;
 }
 
-.wasabi-button .wasabi-button-icon {
-  display: inline-block;
+.wasabi-button.size-large .wasabi-button-icon {
+ 
+  transform: translateY(2px);
+}.wasabi-button.size-default .wasabi-button-icon {
+ 
   transform: translateY(2px);
 }
 
@@ -63,8 +67,8 @@
 
 .wasabi-button.default, .wasabi-button.cancel {
   background: #fff;
-  border: 1px solid #dcdfe6;
-  color: #606266;
+  border: 1px solid #ebebeb;
+  color: #676a6c;
 }
 
 .wasabi-button.default:focus, .wasabi-button.default:hover, .wasabi-button.cancel:focus, .wasabi-button.cancel:hover {

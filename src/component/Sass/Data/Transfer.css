@@ -2,12 +2,14 @@
 .wasabi-transfer{
   width: 410px;
   margin: auto;
+  font-size: 14px;
+  color: #676a6c;
 }
 .wasabi-transfer:focus {
   outline: none;
 }
-.wasabi-transfer-left,.wasabi-transfer-right{width:160px;height:200px;border:1px solid #e4e7ed;overflow: auto;}
-.wasabi-transfer-left  li,.wasabi-transfer-right li{line-height:35px;font-size:14px;padding-left:10px;border-bottom:1px solid #e4e7ed;cursor:pointer;}
+.wasabi-transfer-left,.wasabi-transfer-right{width:160px;height:200px;border:1px solid #ebebeb;overflow: auto;}
+.wasabi-transfer-left  li,.wasabi-transfer-right li{line-height:35px;font-size:14px;padding-left:10px;border-bottom:1px solid #ebebeb;cursor:pointer;}
 .wasabi-transfer-left li:hover,.wasabi-transfer-right li:hover{background:#dedede;}
 .wasabi-transfer-left li.on,.wasabi-transfer-right li.on{background:#dcf9f8;}
 

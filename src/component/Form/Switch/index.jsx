@@ -8,8 +8,8 @@
 
 import React, { Component } from "react";
 import Label from "../../Info/Label";
-import propType from "../config/propTypes.js";
-import defaultProps from "../config/defaultProps.js";
+import propType from "../../propsConfig/propTypes.js";
+import defaultProps from "../../propsConfig/defaultProps.js";
 import "./switch.css"
 class Switch extends Component {
     constructor(props) {

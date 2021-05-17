@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
-import func from '../../libs/func.js';
 export default {
-
     onScroll(event) {
         this.onRealTableScoll(event);
     },
@@ -369,24 +365,14 @@ export default {
      * 真实的表格
      */
     renderRealTable(height) {
-
         let colgroup = this.renderColGruop();
         let headerControl = this.renderHeader();
         return <div className='table-container' key="table-container"   >
-            {height && this.state.fixedHeaders && this.state.fixedHeaders.length > 0 ?
-
-                <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }} className={this.props.borderAble ? 'table-fixedHeaders-fixed-table table ' : 'table-fixedHeaders-fixed-table table table-no-bordered '}
-                >
-                    {
-                        /**colgroup */
-                        this.renderFixedColGruop()
-                    }
-                    {/* 表头 */}
-                    {this.renderFixedHeader()}
-                </table> : null}
             {
-                height ? <div className="table-fixedHeaders" id={this.state.fixedHeadersContainerid}>
-                    <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}>
+                //有高度的时候，才会出现固定表头
+                height ? <div className="table-fixedth" id={this.state.fixedthcontainerid}>
+                    <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }}
+                        className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}>
                         {
                             /**colgroup */
                             colgroup
@@ -397,10 +383,25 @@ export default {
                 </div> : null
 
             }
+            {/* /** 有固定列，并有高度，要将固定列的表头也固定下来*/}
+            {height && this.state.fixedHeaders && this.state.fixedHeaders.length > 0 ?
+                <div key="table-fixed-fixedth" className="table-fixed-fixedth" >
+                    <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}>
+                        {
+                            /**colgroup */
+                            this.renderFixedColGruop()
+                        }
+                        {/* 表头 */}
+                        {this.renderFixedHeader()}
+                    </table>
+                </div>
+                : null}
+            {/* 有固定列表 */}
             {this.state.fixedHeaders && this.state.fixedHeaders.length > 0 ?
                 <div key="table-fixed" className="table-fixed"
                     id={this.state.fixedTableContainerid} >
-                    <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}
+                    <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }}
+                        className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}
                         id={this.state.fixedTableid}
                     >
                         {
@@ -417,15 +418,16 @@ export default {
 
                 </div> : null
             }
+            {/* 真实的表格  */}
             <div key="table-realTable"
                 className={'table-realTable '}
                 id={this.state.realTableContainerid}
                 onScroll={this.onScroll.bind(this)}
                 style={{ height: height }}
             >
-                <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }} 
-                className={this.props.borderAble ? ' table ' : ' table table-no-bordered '} 
-                id={this.state.realTableid} >
+                <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }}
+                    className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}
+                    id={this.state.realTableid} >
                     {
                         /**colgroup */
                         colgroup
@@ -452,7 +454,7 @@ export default {
         grid.push(
             <div
                 className='wasabi-pagination '
-  
+
                 key="toppagination"
                 style={{
                     width: this.tableWidth,
@@ -474,7 +476,7 @@ export default {
         grid.push(<div
             key="bottompagination"
             className='wasabi-pagination '
-        
+
             style={{
                 width: this.tableWidth,
                 display:

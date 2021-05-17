@@ -37,9 +37,10 @@ desc:表单输入框样式
   height: 40px;
   padding: 0px 6px;
   font-size: 14px;
+  color: #676a6c;
   background-color: #fff;
   background-image: none;
-  border: 1px solid #ebeef5;
+  border: 1px solid #ebebeb;
   border-radius: 4px;
   color: inherit;
   display: block;
@@ -53,8 +54,8 @@ desc:表单输入框样式
 }
 
 .wasabi-input[disabled], .wasabi-input[readOnly] {
-  background-color: #f5f7fa;
-  border-color: #e4e7ed;
+  background-color: #fafafa;
+  border-color: #ebebeb;
   color: #c0c4cc;
   cursor: not-allowed;
 }
@@ -72,15 +73,15 @@ desc:表单输入框样式
 }
 
 .wasabi-input[disabled]:hover, .wasabi-input[readOnly]:hover {
-  background-color: #f5f7fa;
-  border-color: #e4e7ed;
+  background-color: #fafafa;
+  border-color: #ebebeb;
   color: #c0c4cc;
   cursor: not-allowed;
 }
 
 .wasabi-input[disabled]:focus, .wasabi-input[readOnly]:focus {
-  background-color: #f5f7fa;
-  border-color: #e4e7ed;
+  background-color: #fafafa;
+  border-color: #ebebeb;
   color: #c0c4cc;
   cursor: not-allowed;
 }
@@ -99,7 +100,7 @@ input验证失败
 
 
 .wasabi-has-error .timeinput {
-  border: 1px solid #dcdfe6;
+  border: 1px solid #ebebeb;
 }
 
 /*

@@ -5,7 +5,9 @@
  * desc 对应bootstrap中风格布局中的容器
  */
 import React from 'react';
-import propsTran from "../libs/propsTran"
+import propsTran from "../libs/propsTran";
+import func from "../libs/func"
+
 import("../Sass/Layout/Layout.css");
 class Container extends React.PureComponent {
     constructor(props) {

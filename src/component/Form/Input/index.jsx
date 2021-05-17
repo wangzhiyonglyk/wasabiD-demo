@@ -13,8 +13,8 @@ import Switch from "../Switch";
 import ComboBox from "../ComboBox";
 import Text from "../Text";
 import None from "../None.jsx";
-import propTypes from "../config/propTypes.js";
-import defaultProps from "../config/defaultProps.js";
+import propTypes from "../../propsConfig/propTypes.js";
+import defaultProps from "../../propsConfig/defaultProps.js";
 import Rate from "../Rate"
 import("./input.css");
 class Input extends Component {

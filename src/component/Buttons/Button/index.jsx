@@ -29,7 +29,6 @@
          this.props.onDoubleClick && this.props.onDoubleClick(this.props.name, this.props.title, event);
      }
      render() {
- 
          let props = {
              className:" wasabi-button "+ (this.props.theme || "default") + ' size-' + (this.props.size || "default") + ' ' + this.props.className,
              style: this.props.style ? this.props.style : {},
@@ -38,9 +37,9 @@
              title: this.props.title
          };
          return (this.props.children || this.props.title || this.props.iconCls) ? <button {...props} onDoubleClick={this.onDoubleClick} onClick={this.onClick} type='button' >
-             {this.props.iconCls && this.props.iconAlign === "left" ? <div className={"wasabi-button-icon "+ this.props.iconCls}></div> : null}
-             {this.props.children? <span style={{marginLeft:this.props.iconAlign === "left"?5:0,marginRight:this.props.iconAlign === "right"?5:0}}>{this.props.children ? this.props.children : this.props.title}</span>:null}
-             {this.props.iconCls && this.props.iconAlign === "right" ? <div className={ "wasabi-button-icon "+ this.props.iconCls}></div> : null}
+             {this.props.iconCls && this.props.iconAlign === "left" ? <i className={"wasabi-button-icon "+ this.props.iconCls}></i> : null}
+             {this.props.children||this.props.title? <span style={{marginLeft:this.props.iconAlign === "left"?5:0,marginRight:this.props.iconAlign === "right"?5:0}}>{this.props.children ? this.props.children : this.props.title}</span>:null}
+             {this.props.iconCls && this.props.iconAlign === "right" ? <i className={ "wasabi-button-icon "+ this.props.iconCls}></i> : null}
          </button> : null
      }
  }

@@ -10,7 +10,10 @@ class DateInput extends React.PureComponent {
     constructor(props) {
         super(props);
         this.input = React.createRef();
-        this.onChange = this.onChange.bind(this)
+        this.onChange = this.onChange.bind(this);
+        this.state={
+
+        }
     }
     onChange(event) {
         this.props.onChange && this.props.onChange(event.target.value, event.target.value, this.props.name);
@@ -39,6 +42,7 @@ class DateInput extends React.PureComponent {
             <BaseInput
                 ref={this.input}
                 {...inputProps}
+                value={this.props.value||""}
                 onClick={this.props.onClick}
                 onChange={this.onChange}
             />

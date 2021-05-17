@@ -2,8 +2,8 @@ import React from "react";
 import BaseInput from "../BaseInput"
 import Label from "../../Info/Label"
 import validateHoc from "../validateHoc";
-import propType from "../config/propTypes.js";
-import defaultProps from "../config/defaultProps.js";
+import propType from "../../propsConfig/propTypes.js";
+import defaultProps from "../../propsConfig/defaultProps.js";
 class Password extends React.PureComponent {
     constructor(props) {
         super(props);

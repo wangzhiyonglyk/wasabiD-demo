@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 
 import Button from "../../Buttons/Button";
 import propsTran from "../../libs/propsTran"
+import func from "../../libs/func"
 if (React.version <= "17.0.0") {
     console.warn("请将react升级到了17+版本");
 }
@@ -223,7 +224,8 @@ class Form extends Component {
                 } else {
                     let width = func.charWidth(child.props.label);
                     maxWidth = maxWidth < width ? width : maxWidth;
-                    maxWidth = maxWidth > 160 ? 160 : maxWidth;//超过160就不管了，否则很难看
+                    maxWidth = maxWidth > 160 ? 165 : maxWidth;//超过160就不管了，否则很难看
+                    maxWidth=maxWidth<=40?60:maxWidth;
                 }
 
             }
@@ -254,6 +256,7 @@ class Form extends Component {
                                         {
                                             data: data,
                                             labelStyle: labelStyle,
+                                            disabled:this.props.disabled,
                                             readOnly: this.state.disabled ? this.state.disabled : child.props.readOnly,
                                             key: index, ref: ref
                                         })

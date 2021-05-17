@@ -13,7 +13,8 @@ label
     line-height: 40px;
     text-align: right;
     white-space: normal;
-    color: #606266;
+    color: #676a6c;
+    font-size: 14px;
   }
   
   .wasabi-label.readOnly {

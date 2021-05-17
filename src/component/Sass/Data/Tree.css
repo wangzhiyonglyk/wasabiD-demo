@@ -1,14 +1,16 @@
 
 .wasabi-tree {
  position: relative;
+ font-size: 14px;
+ color: #676a6c;
 }
 .wasabi-pivot .wasabi-tree{
-  border-top:1px solid #ebeef5 ;
+  border-top:1px solid #ebebeb ;
  
   
 }
 .wasabi-treegrid .wasabi-tree{
-  border-top:1px solid #ebeef5 ;
+  border-top:1px solid #ebebeb ;
 }
 .wasabi-tree .treenode-container{
  line-height: 41px;
@@ -17,12 +19,12 @@
 
 }
 .wasabi-pivot .wasabi-tree .treenode-container{
-  border-bottom:1px solid #ebeef5 ;
+  border-bottom:1px solid #ebebeb ;
 
  
 }
 .wasabi-treegrid  .wasabi-tree .treenode-container{
-  border-bottom:1px solid #ebeef5 ;
+  border-bottom:1px solid #ebebeb ;
 
  
 }
@@ -43,7 +45,7 @@
 
 }
 .wasabi-tree .wasabi-has-error .checkbox-label{
-  border: 1px solid #dcdfe6;
+  border: 1px solid #ebebeb;
 }
 .wasabi-tree .wasabi-checkul .checkbox:checked+label:after{
   top:-13px;
@@ -68,29 +70,29 @@
   
 }
 .wasabi-tree li>div:hover{
-  background-color:#f5f7fa;
+  background-color:#fafafa;
   color: #409eff;
 }
 .wasabi-pivot .wasabi-tree li>div:hover{
   background-color:white;
-  color: #606266;
+  color: #676a6c;
 }
 .wasabi-treegrid .wasabi-tree li>div:hover{
   background-color:white;
-  color: #606266;
+  color: #676a6c;
 }
 
 .wasabi-tree li>div.selected{
-  background-color:#f5f7fa;
+  background-color:#fafafa;
   color: #409eff;
 }
 .wasabi-pivot .wasabi-tree li>div.selected{
-  background-color:#f5f7fa;
+  background-color:#fafafa;
   color: #409eff;
 }
 
 .wasabi-treegrid .wasabi-tree li>div.selected{
-  background-color:#f5f7fa;
+  background-color:#fafafa;
   color: #409eff;
 }
 .wasabi-tree [class*=" icon-"],.wasabi-tree [class^=icon-] {
@@ -98,7 +100,7 @@
 }
 .wasabi-tree a{
   position: relative;
-  color:#606266;
+  color:#676a6c;
   display: inline-block;
 }
 .wasabi-tree a:focus,.wasabi-tree a:hover{
@@ -106,10 +108,10 @@
 }
 
 .wasabi-pivot .wasabi-tree a:focus,.wasabi-pivot .wasabi-tree a:hover{
-  color:#606266;
+  color:#676a6c;
 }
 .wasabi-treegrid .wasabi-tree a:focus,.wasabi-treegrid .wasabi-tree a:hover{
-  color:#606266;
+  color:#676a6c;
 }
 .wasabi-tree .wasabi-tree-txt{
   margin-left: 3px;

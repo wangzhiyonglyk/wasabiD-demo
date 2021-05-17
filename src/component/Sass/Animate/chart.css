@@ -1,5 +1,7 @@
 .rotateChart{
     position: relative;
+    font-size: 14px;
+    color: #676a6c;
 }
 .rotateChart .chart{
     width: 100%;

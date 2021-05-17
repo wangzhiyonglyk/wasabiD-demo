@@ -27,7 +27,6 @@
 }
 
 [class^="icon-"], [class*=" icon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'iconfont' !important;
   font-style: normal;
   font-weight: normal;
@@ -37,7 +36,10 @@
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size:14px;
+}
+
+[class^="icon-"]:hover, [class*=" icon-"]:hover{
+  color:#409eff;
 }
 /*
 自定义水波纹点按效果

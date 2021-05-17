@@ -4,8 +4,6 @@
  *2020-11-06，重新规划
  */
 
-import api from "../../libs/api"//todo 
-
 let func = {};
 
 /// 获取地址栏参数的值
@@ -193,22 +191,7 @@ func.cookies = {
     }
 }
 
-//向后台请求数据
-func.fetch = {
-    /// <summary>
-    /// 向后台请求数据,todo 后期要全部干掉
-    /// </summary>
-    get: function (fetchmodel) {
 
-        api.ajax(fetchmodel);
-
-    },
-    post: function (fetchmodel) {
-
-        api.ajax(fetchmodel);
-    }
-
-}
 /**
  * 根据字符计算宽度
  * @param {*} str 字符
@@ -513,7 +496,15 @@ func.diff = function (objA, objB) {//
  * @param {*} objB 
  */
 func.diffOrder = function (objA, objB) {
-    return JSON.stringify(objA) !== JSON.stringify(objB);
+
+    try{
+        return JSON.stringify(objA) !== JSON.stringify(objB);
+    }
+    catch(e){
+ 
+    }
+    return true;
+    
 }
 
 

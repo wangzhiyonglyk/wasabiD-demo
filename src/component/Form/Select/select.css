@@ -25,9 +25,10 @@ desc:下拉框样式
     cursor: pointer;
     position: relative;
     text-align: left;
+    font-size: 14px;
   }
   .wasabi-select ul li:hover {
-    background-color: #f5f7fa;
+    background-color: #fafafa;
   }
   
   .wasabi-select ul li.active {

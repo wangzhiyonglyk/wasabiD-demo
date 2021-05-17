@@ -9,6 +9,8 @@ import React from "react"
 import func from "../libs/func";
 import api from "wasabi-api";
 import propsTran from "../libs/propsTran";
+import defaultProps from "../propsConfig/defaultProps";
+import propTypes from "../propsConfig/propTypes";
 /**
  * 预处理各类数据
  * @param {*} ComboBoxWidget 组件
@@ -76,7 +78,7 @@ function loadDataHoc(ComboBoxWidget, type = "select") {
             else if (this.state.loadDataStatus === "data") {
                 let idOrValueField = (type == "tree" || type === "treegrid" || type === "treepicker") ? this.props.idField : this.props.valueField;
                 let tempFormatData = propsTran.processData(type, this.getValue(), this.state.rawData, idOrValueField, this.props.textField);
-          
+
                 this.setState({
                     data: tempFormatData,
                     loadDataStatus: null,//处理完成
@@ -99,13 +101,7 @@ function loadDataHoc(ComboBoxWidget, type = "select") {
         getValue() {
             return this.input.current.getValue && this.input.current.getValue();
         }
-        /**
-         * 获取勾选的值
-         * @returns 
-         */
-        getChecked(){
-            return this.input.current.getChecked && this.input.current.getChecked();
-        }
+
         /**
          * 刷新
          * @param {*} params 
@@ -135,8 +131,8 @@ function loadDataHoc(ComboBoxWidget, type = "select") {
                     fetchmodel.contentType = this.props.contentType;
                     fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
                 }
-               let wasabi_api =window.api || api;
-                  wasabi_api.ajax(fetchmodel);
+                let wasabi_api = window.api || api;
+                wasabi_api.ajax(fetchmodel);
                 console.log("combobox-fetch", fetchmodel);
             }
         }
@@ -185,14 +181,17 @@ function loadDataHoc(ComboBoxWidget, type = "select") {
             return false;
         }
         render() {
-            return <ComboBoxWidget {...this.props}
+            return <ComboBoxWidget
                 type={type}
+                {...this.props}
                 ref={this.input}
                 filterHandler={this.filterHandler.bind(this)}
                 data={this.state.filterText ? this.state.filterData : this.state.data}
             ></ComboBoxWidget>
         }
     }
+    loadDataHocCompnent.defaultProps = defaultProps;
+    loadDataHocCompnent.propTypes = propTypes;
     return loadDataHocCompnent;
 }
 export default loadDataHoc;

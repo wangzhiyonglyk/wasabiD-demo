@@ -8,8 +8,8 @@
  import Picker from "../Picker";
  import Select from "../Select";
  import TreePicker from "../TreePicker";
- import propTypes from "../config/propTypes.js";
- import defaultProps from "../config/defaultProps.js";
+ import propTypes from "../../propsConfig/propTypes.js";
+ import defaultProps from "../../propsConfig/defaultProps.js";
  import("./combobox.css");
  class ComboBox extends React.PureComponent {
      constructor(props) {
@@ -46,6 +46,7 @@
          return <Picker ref={this.combobox} {...this.props}></Picker>
      }
      renderDatePicker() {
+         console.log("time",this.props.value)
          return <DatePicker ref={this.combobox} {...this.props}></DatePicker>
      }
      renderTreePicker() {

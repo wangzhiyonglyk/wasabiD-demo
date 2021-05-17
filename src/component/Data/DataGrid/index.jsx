@@ -49,9 +49,8 @@ class DataGrid extends Component {
     constructor(props) {
         super(props);
         this.containerWidth = 0;//表格的宽度 
-        this.state = {
-            gridcontainerid: func.uuid(),//表格容器
-            fixedHeadersContainerid: func.uuid(),//固定表头容器
+        this.state = {      
+            fixedthcontainerid: func.uuid(),//固定表头容器
             fixedTableContainerid: func.uuid(),//固定表格的容器
             fixedTableid: func.uuid(),//固定的表格
             realTableContainerid: func.uuid(),//真实表格容器
@@ -67,8 +66,8 @@ class DataGrid extends Component {
             /************这几个字段在 getDerivedStateFromProps 处理逻辑，这样提升性能 */
             fixedHeaders: [],//固定列的表头
             rawFixedHeaders: [],//固定列的表头,保存用于更新
-            headers: this.props.headers, //表头会可能后期才传送,也会动态改变
-            rawHeaders: this.props.headers,//保存起来，用于更新
+            headers: [], //表头会可能后期才传送,也会动态改变
+            rawHeaders: [],//保存起来，用于更新
             rawData: [],//原始数据，在自动分页时与判断是否更新有用
             data: [],
             single: false,//是否简单表头
@@ -89,6 +88,7 @@ class DataGrid extends Component {
             updatedData: new Map(), //被修改过的数据，因为要判断曾经是否修改
             deleteData: [], //删除的数据
             reloadData: false,//是否重新加载数据,用于强制刷新
+            adjustHeight: false,//是否调整宽度
         };
         //绑定事件
         let baseCtors = [eventHandler, editHandler, staticMethod, pasteExtend];
@@ -112,7 +112,7 @@ class DataGrid extends Component {
                 params: func.clone(props.params),
             }
         }
-        //处理Headers
+        //处理Headers,因为交叉表的表头是后期传入的
         {
             //处理非固定列
             {
@@ -128,7 +128,6 @@ class DataGrid extends Component {
                 }
                 if (func.diff(props.headers, state.rawHeaders)) {
                     //有改变
-                    newState.headerChange = true;
                     newState.rawHeaders = props.headers;
                     newState.headers = func.clone(props.headers);
                 }
@@ -141,7 +140,7 @@ class DataGrid extends Component {
                     newState.rawFixedHeaders = props.fixedHeaders;
                     if (props.fixedHeaders && props.fixedHeaders instanceof Array && props.fixedHeaders.length > 0) {//
                         //有固定表头
-                        if (fixedHeaders[0] instanceof Array || (props.headers && props.headers instanceof Array && props.headers[0] instanceof Array)) {
+                        if (props.fixedHeaders[0] instanceof Array || (props.headers && props.headers instanceof Array && props.headers[0] instanceof Array)) {
                             //二维数组不支持
                             Msg.error("有固定列目前只支持一维数组格式的表头");
                             newState.fixedHeaders = [];//清除
@@ -154,10 +153,14 @@ class DataGrid extends Component {
                 }
                 else {//没有改变
                     if (props.fixedHeaders && props.fixedHeaders instanceof Array && props.fixedHeaders.length > 0) {//没有改变，但是有固定列
-                        newState.headerChange = true;
+
                         newState.headers = [].concat(props.fixedHeaders, props.headers);//合并列
                     }
                 }
+            }
+            if (newState.headers&&func.diffOrder(newState.headers, state.headers)) {
+              
+                newState.adjustHeight = true;//表头有变化，调整宽度
             }
         }
         //todo 此处理还要仔细研究
@@ -189,32 +192,16 @@ class DataGrid extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         //重新加数据
         if (this.state.reloadData) {
-
             this.setState({
                 reloadData: false,
             })
             this.reload();
         }
-        if (this.state.headerChange) {//表头发生了改变
-            this.setState({
-                headerChange: false,
-            }, () => {
-                setTimeout(() => {
-                    this.computeHeaderStyleAndColumnWidth();
-                }, 100);
-            })
+        if (this.state.adjustHeight) {
+            this.computeHeaderStyleAndColumnWidth();//需要调整宽度
         }
-        //处理出现纵向滚动条而导致宽度的变化导致在计算宽度出现点横向滚动条，延迟一点，防止没有获取成功
-        setTimeout(() => {
-            this.containerWidth = document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
-            if (this.containerWidth > 0 && this.tableWidth - this.containerWidth <= 20 && this.tableWidth - this.containerWidth >= 1) {//滚动条的原因
-                this.computeHeaderStyleAndColumnWidth();
-
-            }
-        }, 150)
 
     }
-
     componentDidMount() {
         if (this.state.url) {
             //如果存在url,
@@ -224,29 +211,29 @@ class DataGrid extends Component {
                 this.state.pageIndex,
                 this.state.sortName,
                 this.state.sortOrder,
-                this.state.params
+                this.state.params,
             );
         }
         else {
 
         }
 
-        //计算一下宽度
         this.computeHeaderStyleAndColumnWidth();
-
         //监听window.resize事件
         window.onresize = () => {
             this.computeHeaderStyleAndColumnWidth();//重新计算一下宽度
         }
     }
 
-
     /**
-     * 计算出是表头是简单表头，还是复杂表头
+     * 计算出列的宽度
+     *因为有固定表头，固定列，还有拖动列等，必须设置好列的宽度，否则对不齐
      */
     computeHeaderStyleAndColumnWidth() {
         //数据网格的宽度
-        this.containerWidth = document.getElementById(this.state.gridcontainerid).getBoundingClientRect().width || document.getElementById(this.state.gridcontainerid).clientWidth;
+        this.containerWidth = document.getElementById(this.state.realTableContainerid).getBoundingClientRect().width;
+
+        this.containerWidth -= 2;//减去两个像素防止横向滚动条
         this.columnSum = 0;//总列数
         this.fixedcolumnSum = 0;//固定列的总列数
         this.releaseWidth = this.containerWidth;//剩余可分配宽度
@@ -287,24 +274,7 @@ class DataGrid extends Component {
 
                             }
                             else {
-                                if (this.props.isPivot) {
-                                    //如果是交叉表，则自动计算宽度
-                                    let headerlabel = this.state.headers[i][j].label.split("");
-                                    let width = 0;
-                                    for (let i = 0; i < headerlabel.length; i++) {
-                                        let reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
-                                        if (reg.test(headerlabel[i])) {
-                                            width += 20;//汉字20个像素
-                                        }
-                                        else {
-                                            width += 10;
-                                        }
-                                    }
-                                    this.state.headers[i][j].width = width;//设置宽度
-                                    this.tableWidth += this.state.headers[i][j].width;//计算表格宽度
-                                    this.releaseWidth = this.releaseWidth - width;
-                                    this.releaseColumn++;
-                                }
+
                             }
                         }
                     }
@@ -323,14 +293,13 @@ class DataGrid extends Component {
                         if (this.state.headers[i].width) {
                             //设置了宽度
                             try {
-
                                 this.tableWidth += this.state.headers[i].width;//计算表格宽度
                                 if (i < this.state.fixedHeaders.length) {//固定列
                                     this.fixedTableWidth += this.state.headers[i].width;
-                                    this.fixedreleaseColumn++;
+                                    this.fixedreleaseColumn++;//加上，后面做减法
                                 }
                                 this.releaseWidth = this.releaseWidth - parseFloat(this.state.headers[i].width);
-                                this.releaseColumn++;
+                                this.releaseColumn++;//加上，后面做减法
                             }
                             catch (e) {
                                 console.error("宽度设置错误", e);
@@ -338,14 +307,7 @@ class DataGrid extends Component {
 
                         }
                         else {
-                            if (this.props.isPivot) {
-                                //如果是交叉表，则自动计算宽度
-                                let width = func.charWidth(this.state.headers[i].label);
-                                this.state.headers[i].width = width;//设置宽度
-                                this.tableWidth += this.state.headers[i].width;//计算表格宽度
-                                this.releaseWidth = this.releaseWidth - width;
-                                this.releaseColumn++;
-                            }
+
                         }
                     }
                 }
@@ -382,18 +344,14 @@ class DataGrid extends Component {
             if (this.fixedreleaseColumn) {//还有剩下的列
                 this.fixedTableWidth += this.fixedreleaseColumn * this.perColumnWidth;
             }
-
-            if (this.props.isPivot && this.tableWidth < this.containerWidth) {//如果是交叉表，防止计算出列的宽度后小于容器的宽度，造成页面丑
-                this.tableWidth = this.containerWidth;
-            }
-            this.setState({
-
-            })
         }
         else if (this.containerWidth <= 0) {
             //防止父组件被隐藏了，datagrid无法得到真实的宽度
             this.timeout = setTimeout(this.computeHeaderStyleAndColumnWidth, 1000)
         }
+        this.setState({
+            adjustHeight: false,//调整完成
+        })
 
     }
     componentWillUnmount() {
@@ -401,17 +359,17 @@ class DataGrid extends Component {
     }
     render() {
         let style = func.clone(this.props.style) || {};
-        let height = style.height;
+        let height = style.height;//通过高度来判断是否渲染固定的表头
         style.height = null;
         return (
             /* excel粘贴事件 注册鼠标按下事件，从而隐藏菜单*/
             <div
-                className={'wasabi-grid' + this.props.className}
-                id={this.state.gridcontainerid}
+                className={'wasabi-grid' + (this.props.className || "") + (this.state.fixedHeaders.length > 0 ? " fixedHeader" : "")}
+            
                 onPaste={this.onPaste}
                 style={style}
             >
-                {this.containerWidth ? this.renderGrid(height) : null}
+                 { this.renderGrid(height)}  
             </div>
         );
     }

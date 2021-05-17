@@ -53,6 +53,8 @@ class Select extends Component {
              */
             newState.rawData = (props.data);
             newState.data = func.clone(props.data)//复制一份
+            newState.text = propsTran.processText(state.value, newState.data).join(",")||state.text;
+            newState.inputText=newState.text||state.inputText;
         }
         if (props.value != state.oldPropsValue) {//父组件强行更新了
             let text = propsTran.processText(props.value, newState.data || state.data);
@@ -135,7 +137,7 @@ class Select extends Component {
      * @param {*} event 
      */
     keyUpHandler(event) {
-        if (this.props && (this.props.addAbled || this.props.addAble) && event.keyCode == 13) {
+        if (this.props && (this.props.attachAble ) && event.keyCode == 13) {
             ////为了兼容旧属性
             this.addHandler(event);
 
@@ -151,7 +153,7 @@ class Select extends Component {
         let newValue = this.state.value ? this.state.value.toString().split(",") : [];
         let newText = this.state.text ? this.state.text.toString().split(",") : [];
         ////如果允许添加，则把未匹配的，添加到数据源中
-        if (this.props && (this.props.addAbled || this.props.addAble) && formatValue.length > 0) {
+        if (this.props && (this.props.attachAble) && formatValue.length > 0) {
             //允许添加，并且输入有值
             let filterData = this.filter(event);//筛选数据
             /**
@@ -425,10 +427,9 @@ class Select extends Component {
         return (<div className={'combobox wasabi-select'}>
             <ArrowInput
                 ref={this.input}
+                show={this.state.show}
                 value={this.state.inputText}
-                /**兼容旧版本 */
-                addAbled={this.props.addAbled}
-                addAble={this.props.addAble}
+                attachAble={this.props.attachAble}
                 name={this.props.name}
                 title={this.props.title}
                 placeholder={this.props.placeholder}
@@ -491,8 +492,7 @@ Select.propTypes = {
     data: PropTypes.array,//自定义数据源
     sortAble: PropTypes.bool,//是否允许排序
     onSelect: PropTypes.func,//选中后的事件，回传，value,与text,data
-    addAbled: PropTypes.bool,//select是否可以添加数据.todo 旧版本
-    addAble: PropTypes.bool,//select是否可以添加数据
+    attachAble: PropTypes.bool,//select是否可以添加数据
     removeAble: PropTypes.bool,//select 是否可以删除
 
 };
@@ -535,8 +535,7 @@ Select.defaultProps = {
     data: null,
     sortAble: true,
     onSelect: null,
-    addAbled: true,//旧版本
-    addAble: true,
+    attachAble: false,
 
 }
 export default validateHoc(loadDataHoc(Select, "select"));

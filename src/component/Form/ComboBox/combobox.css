@@ -7,6 +7,8 @@ desc:日期选择样式
     width: 100%;
     display: block;
     position: relative;
+    font-size: 14px;
+    color:#676a6c;
   }
   
   /*下拉图标*/
@@ -21,7 +23,7 @@ desc:日期选择样式
     cursor: pointer;
     text-align: center;
     transition: all,transform .6s;
-    color: #e4e7ed;
+    color: #ebebeb;
   }
   .wasabi-form-group-body.readOnly .combobox .comboxbox-icon{
     cursor: not-allowed;
@@ -45,7 +47,7 @@ desc:日期选择样式
     position: absolute;
     right: 30px;
     top: 14px;
-    color: #e4e7ed;
+    color: #ebebeb;
     cursor: pointer;
     font-size: 12px;
   
@@ -61,7 +63,7 @@ desc:日期选择样式
     overflow: visible;
     z-index:2;
     top:44px;
-    border:1px solid #e4e7ed;
+    border:1px solid #ebebeb;
     border-radius: 4px;
     box-shadow:0 2px 12px 0 rgba(0,0,0,.1);
     background-color: white;
@@ -76,7 +78,7 @@ desc:日期选择样式
       top: -16px;
   }
   .combobox .dropcontainter::after {
-    border-color: transparent transparent #ebeef5;
+    border-color: transparent transparent #ebebeb;
     top: -17px;
   }
   .combobox .dropcontainter::before, .combobox .dropcontainter::after {
@@ -224,9 +226,9 @@ desc:日期选择样式
     margin-right: 10px;
     border-radius: 4px;
     outline: none;
-    border: 1px solid #ebeef5;
+    border: 1px solid #ebebeb;
     padding-right: 6px;
-    border-color: #ebeef5!important;
+    border-color: #ebebeb!important;
   }
   
   

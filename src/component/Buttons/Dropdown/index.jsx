@@ -20,24 +20,22 @@ class Dropdown extends Component {
             containerid: func.uuid(),
             menuShow: false,
         }
-        this.onClick = this.onClick.bind(this);
+    
         this.menuClickHandler = this.menuClickHandler.bind(this)
         this.showMenu = this.showMenu.bind(this);
         this.hideMenu = this.hideMenu.bind(this);
     }
 
-
-    onClick() {
-        this.props.onClick && this.props.onClick(this.props.name, this.props.title);
-
-    }
     menuClickHandler(index, menuName) {
         this.setState({
             menuShow: false
         })
-        this.props.menuClick && this.props.menuClick(index, menuName);
+        this.props.onClick && this.props.onClick(index, menuName);
     }
     showMenu() {
+        if(this.props.disabled){
+            return ;
+        }
         this.setState({
             menuShow: true
         })
@@ -76,16 +74,13 @@ class Dropdown extends Component {
         };
         let buttonControl = [];
         if (this.props.plain) {
-            buttonControl.push(<LinkButton key={1} disabled={this.props.disabled} iconCls={this.props.iconCls} name={this.props.name} onClick={this.onClick} theme={this.props.theme} size={this.props.size} title={this.props.title}>{this.props.label}</LinkButton>
+            buttonControl.push(<LinkButton disabled={this.props.disabled} key={1} disabled={this.props.disabled} iconCls={this.props.iconCls} name={this.props.name} onClick={this.showMenu} theme={this.props.theme} size={this.props.size} title={this.props.title}>{this.props.label}</LinkButton>
             );
-            buttonControl.push(<LinkButton key={2} disabled={this.props.disabled} iconCls={this.props.menuIconCls} className="wasabi-dropdown-arrow" onClick={this.showMenu} name={this.props.name} theme={this.props.theme} size={this.props.size} title={this.props.title}></LinkButton>
-            )
         }
         else {
-            buttonControl.push(<Button key={1} disabled={this.props.disabled} iconCls={this.props.iconCls} name={this.props.name} onClick={this.onClick} theme={this.props.theme} size={this.props.size} title={this.props.title}>{this.props.label}</Button>
+            buttonControl.push(<Button disabled={this.props.disabled} key={1} disabled={this.props.disabled} iconCls={this.props.iconCls} name={this.props.name} onClick={this.showMenu} theme={this.props.theme} size={this.props.size} title={this.props.title}>{this.props.label}</Button>
             );
-            buttonControl.push(<Button key={2} disabled={this.props.disabled} iconCls={this.props.menuIconCls} className="wasabi-dropdown-arrow" onClick={this.showMenu} name={this.props.name} theme={this.props.theme} size={this.props.size} title={this.props.title}></Button>
-            )
+          
         }
         return <div ref={this.wasabidropdown}  {...props} id={this.state.containerid} >
             {

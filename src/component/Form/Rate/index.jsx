@@ -42,7 +42,7 @@ class Rate extends Component {
             value: value,
             hoverValue: 0,
         })
-        this.validate(value);
+        this.props.validate&&this.props.validate(value);
         this.props.onSelect&&this.props.onSelect(value,value,this.props.name);
     }
     getValue(){
@@ -129,30 +129,13 @@ class Rate extends Component {
         
     }
     render() {
-
-        let componentClassName = "wasabi-form-group " + (this.props.className || "") + " ";//组件的基本样式 
-        let style = this.props.style
-            ? JSON.parse(JSON.stringify(this.props.style))
-            : {};
-        if (this.props.hide) {
-            style.display = 'none';
-        } else {
-            style.display = 'flex';
-        }
-      return   <div
-            className={componentClassName + " "+this.state.validateClass}
-           
-            style={style} >
-            <Label readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle}  required={this.props.required}>{this.props.label}</Label>
-            <div className={'wasabi-form-group-body' + (this.props.readOnly || this.props.disabled ? " readOnly" : "")}>
-                <div className="wasabi-rate"  onMouseOut={this.onMouseOut.bind(this)} >
+      return   <div className="wasabi-rate"  onMouseOut={this.onMouseOut.bind(this)} >
                     {
                         this.renderStar()
                     }
                     <a className="wasabi-rate-text" style={{color:this.props.textColor}}>{(this.props.readOnly || this.props.disabled||this.props.showValue)?this.state.value: this.renderText()}</a>
                 </div>
-            </div>
-        </div>
+         
     }
 }
 
@@ -192,7 +175,7 @@ Rate.defaultProps = {
     readOnly: false,
     hide: false,
     texts: ['极差', '失望', '一般', '满意', '惊喜'],
-    textColor: "#606266",
+    textColor: "#676a6c",
     value: 0,
     name: ""
 }

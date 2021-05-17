@@ -82,7 +82,7 @@ let SingleHeader = {
                         colSpan={header.colSpan}
                     >
                         <div
-                            className='wasabi-grid-cell'
+                            className='wasabi-grid-cell nowrap'
                             name={header.label}
                         >
                             {content}
@@ -104,7 +104,7 @@ let SingleHeader = {
                         colSpan={header.colSpan}
                     >
                         <div
-                            className='wasabi-grid-cell'
+                            className='wasabi-grid-cell nowrap'
                             name={header.label}
 
                         >
@@ -129,7 +129,7 @@ let SingleHeader = {
                 if (headers1.length > 0) {
                     headers1.unshift(
                         <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column'>
-                            <div className='wasabi-grid-cell' rowSpan={2}  >
+                            <div className='wasabi-grid-cell nowrap' rowSpan={2}  >
                                 {this.props.singleSelect ? null : (
                                     <CheckBox {...thCheckProps}></CheckBox>
                                 )}
@@ -139,7 +139,7 @@ let SingleHeader = {
                 } else {
                     headers2.unshift(
                         <th key='headercheckbox' name='wasabi-check-column' className='wasabi-check-column'>
-                            <div className='wasabi-grid-cell'  >
+                            <div className='wasabi-grid-cell nowrap'  >
                                 {this.props.singleSelect ? null : (
                                     <CheckBox  {...thCheckProps}></CheckBox>
                                 )}
@@ -160,7 +160,7 @@ let SingleHeader = {
                 else {
                     headers2.unshift(
                         <th key='headerorder' name='wasabi-order-column' className="wasabi-order-column" >
-                            <div className='wasabi-grid-cell ' >
+                            <div className='wasabi-grid-cell nowrap ' >
                                 {"序号"}
                             </div>
                         </th>
@@ -171,7 +171,7 @@ let SingleHeader = {
             if (this.props.detailAble) {
                 if (headers1.length > 0) {
                     headers1.unshift(<th key='headerdetail' rowSpan={2} name='wasabi-detail-column' className="wasabi-detail-column">
-                        <div className='wasabi-grid-cell '>
+                        <div className='wasabi-grid-cell  nowrap'>
 
                         </div>
                     </th>)
@@ -179,7 +179,7 @@ let SingleHeader = {
                 else {
                     headers2.unshift(
                         <th key='headerdetail' name='wasabi-detail-column' className="wasabi-detail-column" >
-                            <div className='wasabi-grid-cell ' >
+                            <div className='wasabi-grid-cell nowrap ' >
 
                             </div>
                         </th>

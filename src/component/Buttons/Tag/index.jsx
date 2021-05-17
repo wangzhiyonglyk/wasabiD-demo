@@ -10,10 +10,10 @@ import('./index.css');
 class Tag extends Component {
   constructor(props) {
     super(props);
-  
+
     this.state = {};
     this.onClick = this.onClick.bind(this);
-    this.onRemove=this.onRemove.bind(this)
+    this.onRemove = this.onRemove.bind(this)
   }
 
   onClick(event) {
@@ -23,7 +23,7 @@ class Tag extends Component {
     }
     this.props.onClick && this.props.onClick(this.props.name, this.props.title, event);
   }
-  onRemove(event){
+  onRemove(event) {
     event.preventDefault();
     if (this.props.disabled == true) {
       return;
@@ -32,10 +32,10 @@ class Tag extends Component {
   }
   render() {
 
-    return <span title={this.props.title} className={"wasabi-tag "+this.props.theme+" "+this.props.className +(this.props.disabled?" disabled":"")} style={this.props.style}>{this.props.children}
-    {
-        this.props.removeAble?<i className="icon-close"  onClick={this.onRemove}></i>:null
-  }</span>
+    return <span title={this.props.title} className={"wasabi-tag " + this.props.theme + " " + this.props.className + (this.props.disabled ? " disabled" : "")} style={this.props.style}>{this.props.children}
+      {
+        this.props.removeAble ? <i className="icon-close" onClick={this.onRemove}></i> : null
+      }</span>
   }
 }
 Tag.propTypes = {
@@ -53,7 +53,7 @@ Tag.propTypes = {
   style: PropTypes.object, //样式
   className: PropTypes.string, //自定义样式
   onClick: PropTypes.func, //标签单击事件
-  onRemove:PropTypes.func, //标签关闭事件
+  onRemove: PropTypes.func, //标签关闭事件
   disabled: PropTypes.bool //标签是否无效
 };
 Tag.defaultProps = {
@@ -63,7 +63,7 @@ Tag.defaultProps = {
   style: {},
   className: '',
   onClick: null,
-  onRemove:null,
+  onRemove: null,
   disabled: false
 };
 export default Tag;

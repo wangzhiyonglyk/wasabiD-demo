@@ -17,11 +17,11 @@ import('./index.css');
 class Upload extends Component {
     constructor(props) {
         super(props);
-        this.fileinput=React.createRef();
+        this.fileinput = React.createRef();
         this.state = {
             uploadid: func.uuid(),
-            defaultImgid:func.uuid(),//默认图片的id
-            uploadImgid:func.uuid(),//单图片上传预览的id
+            defaultImgid: func.uuid(),//默认图片的id
+            uploadImgid: func.uuid(),//单图片上传预览的id
             files: [], //选择的文件名集合
             uploadTitle: '正在上传',
             uploadDisabled: false,//是否禁止上传
@@ -33,8 +33,8 @@ class Upload extends Component {
         this.uploadFailed = this.uploadFailed.bind(this);
         this.uploadProgress = this.uploadProgress.bind(this);
         this.clear = this.clear.bind(this);
-        this.imgLoad=this.imgLoad.bind(this);
-        this.setFile=this.setFile.bind(this);
+        this.imgLoad = this.imgLoad.bind(this);
+        this.setFile = this.setFile.bind(this);
     }
     /**
      * 选择文件
@@ -59,19 +59,25 @@ class Upload extends Component {
      * @param {array} targetFiles 文件
      * @returns 
      */
-    setFile(targetFiles=[]) {
+    setFile(targetFiles = []) {
         if (!this.props.uploadurl) {
             Msg.info('您没有设置上传的服务器地址');
             return;
         }
-        if (targetFiles.length > 0) {
+        if (targetFiles.length > 0 && this.validateType(targetFiles)) {
             this.setState({
                 files: targetFiles,
                 uploadDisabled: true,
             }, () => {
-                    this.props.autoUpload&&  this.importHandler();//
+                this.props.autoUpload && this.importHandler();//
             });
+
         }
+        else {
+            Msg.error("上传的文件类型不正确");
+            return;
+        }
+
 
     }
     /**
@@ -147,7 +153,7 @@ class Upload extends Component {
                     url: this.props.uploadurl,
                     type: "post",
                     contentType: false,
-                    headers: this.props.httpHeaders||{},
+                    headers: this.props.httpHeaders || {},
                     dataType: "json",
                     data: formData,
                     success: (result) => {
@@ -234,14 +240,14 @@ class Upload extends Component {
     /**
      * 拿到图片的真实高与宽，防止显示失真
      */
-    imgLoad(id,event) {
+    imgLoad(id, event) {
         try {
-            let path=event.path?event.path:event.nativeEvent.path;//做兼容性处理
-            if(path instanceof Array &&path.length>0){
-                let parentHeight=document.getElementById(id).parentNode.getBoundingClientRect().height;
-                let height=path[0].naturalHeight&&path[0].naturalHeight<parentHeight?path[0].naturalHeight:parentHeight;
-                document.getElementById(id).style.height=height+"px";
-                
+            let path = event.path ? event.path : event.nativeEvent.path;//做兼容性处理
+            if (path instanceof Array && path.length > 0) {
+                let parentHeight = document.getElementById(id).parentNode.getBoundingClientRect().height;
+                let height = path[0].naturalHeight && path[0].naturalHeight < parentHeight ? path[0].naturalHeight : parentHeight;
+                document.getElementById(id).style.height = height + "px";
+
             }
 
         } catch (e) {
@@ -276,7 +282,7 @@ class Upload extends Component {
                     {/* 多图片上传预览 */}
                     {
                         this.props.type == "image" && this.state.files && this.state.files.length > 1 && this.state.files.map((item, index) => {
-                            return <div key={"div" + index} style={{ position: "relative", height: 82, lineHeight: "80px", borderBottom: "1px solid #dcdfe6", marginBottom: 5 }}>
+                            return <div key={"div" + index} style={{ position: "relative", height: 82, lineHeight: "80px", borderBottom: "1px solid #ebebeb", marginBottom: 5 }}>
                                 <img style={{ height: 80, marginRight: 10 }} src={window.URL.createObjectURL(item)}></img>
                                 {this.state.uploadDisabled ? <i className="icon-loading wasabi-upload-icon"></i> : null}</div>
                         })
@@ -285,7 +291,7 @@ class Upload extends Component {
                     {
                         this.props.type == "image" && this.state.files && this.state.files.length == 1 && this.state.files.map((item, index) => {
                             return <div style={{ height: "100%" }} key={"k" + index}>
-                                <img  id={this.state.uploadImgid} onLoad={this.imgLoad} style={{ width: "100%", height: "100%" }} src={window.URL.createObjectURL(item)}></img>
+                                <img id={this.state.uploadImgid} onLoad={this.imgLoad} style={{ width: "100%", height: "100%" }} src={window.URL.createObjectURL(item)}></img>
                                 {this.state.uploadDisabled ? <i style={{ left: "50%", top: "20%", color: "#ffffff", zIndex: 2 }} className="icon-loading wasabi-upload-icon"></i> : null}
                             </div>
 
@@ -298,7 +304,7 @@ class Upload extends Component {
                     display: (!this.state.files ||
                         (this.state.files && this.state.files.length == 0) && this.props.value ? "block" : "none")
                 }}>
-                    <img  src={this.props.value} id={this.state.defaultImgid} onLoad={this.imgLoad} alt="点击上传" style={{ width: "100%" }}></img>
+                    <img src={this.props.value} id={this.state.defaultImgid} onLoad={this.imgLoad} alt="点击上传" style={{ width: "100%" }}></img>
 
                 </div>
             </div>

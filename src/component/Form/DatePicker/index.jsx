@@ -15,8 +15,8 @@ import TimeRange from "./TimeRange";
 import regs from "../../Lang/regs.js";
 import validateHoc from "../validateHoc"
 import func from "../../libs/func"
-import propTypes from "../config/propTypes.js";
-import defaultProps from "../config/defaultProps.js";
+import propTypes from "../../propsConfig/propTypes.js";
+import defaultProps from "../../propsConfig/defaultProps.js";
 import dom from "../../libs/dom"
 class DatePicker extends Component {
   constructor(props) {
@@ -194,15 +194,19 @@ class DatePicker extends Component {
     //选中事件
     //防止异步取值
     this.state.value = value;
-    this.state.text = text;
-
     this.setState({
       show: !hide,
       value: value,
-      text: text
+      text: value
     });
     this.input.current.setValue(value);
-    this.props.onSelect && this.props.onSelect(value, text, this.props.name, null);
+    if (this.props.type == "daterange" && value && this.props.attachTime) {
+      value = value.split(",");
+      value[0] = value[0] + " 00:00:00";
+      value[1] = value[1] + " 23:59:59";
+      value = value.join(",");
+    }
+    this.props.onSelect && this.props.onSelect(value, value, this.props.name, null);
   }
 
   /**
@@ -223,7 +227,7 @@ class DatePicker extends Component {
       value: "",
       text: ""
     });
-    this.input.setValue("");
+    this.input.current.setValue("");
     this.props.onSelect && this.props.onSelect("", "", this.props.name);
   }
 
@@ -295,7 +299,6 @@ class DatePicker extends Component {
         }
       }
     }
-
     return (
       <DateTimeRange
         ref='combobox'

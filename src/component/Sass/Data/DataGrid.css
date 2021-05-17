@@ -5,6 +5,8 @@
 .wasabi-grid {
   width: 100%;
   position: relative;
+  font-size: 14px;
+  color: #676a6c;
   /* overflow: hidden; */
 }
 /*
@@ -15,7 +17,7 @@
   padding:0px;
   min-height:0px;
   margin:0px;
-  height: 40px;
+  height: 20px;
   min-width: 0px;
 }
 .wasabi-grid .wasabi-checkul
@@ -39,14 +41,15 @@
  }
 
  /* 固定表头容器 */
- .wasabi-grid .table-fixedHeaders{
+ .wasabi-grid .table-fixedth{
   position: absolute;
   top: 0px;
   left: 0px;
   z-index: 1;
   background-color: white;
  }
- .wasabi-grid  .table-fixedHeaders-fixed-table{
+  /* 固定列中的 固定表头容器 */
+ .wasabi-grid  .table-fixed-fixedth{
    position: absolute;
    top: 0px;
    left: 0px;
@@ -83,8 +86,8 @@
 .wasabi-grid .table {
     clear: both;
     max-width: none;
-    border-top: 1px solid #ebeef5;
-    border-left: 1px solid #ebeef5;
+    border-top: 1px solid #ebebeb;
+    border-left: 1px solid #ebebeb;
     width: 100%;
     border-spacing: 0;
     border-collapse: collapse;
@@ -92,8 +95,8 @@
     table-layout: fixed;
 }
 .table td,.table th
-{    border-bottom: 1px solid #ebeef5;
-  border-right: 1px solid #ebeef5;
+{    border-bottom: 1px solid #ebebeb;
+  border-right: 1px solid #ebebeb;
    padding: 10px 5px;
     vertical-align: middle;
     box-sizing: border-box;
@@ -109,7 +112,7 @@
 }
  .table.table-no-bordered th {
    border: none;
-   border-bottom: 1px solid #ebeef5;
+   border-bottom: 1px solid #ebebeb;
 }
 
 /*
@@ -125,6 +128,13 @@
 单元格样式
 */
 .wasabi-grid .wasabi-grid-cell{
+  width: 100%;
+  box-sizing:border-box;  
+  min-height: 20px;
+  cursor: pointer;
+
+}
+.wasabi-grid.fixedHeader .wasabi-grid-cell{
   width: 100%;
   box-sizing:border-box;  
   min-height: 20px;
@@ -224,7 +234,7 @@
 }
   .pagination>li>a, .pagination>li>span {
     background-color: #FFF;
-    border: 1px solid #ebeef5;
+    border: 1px solid #ebebeb;
     color: inherit;
     float: left;
     line-height: 1.42857;
@@ -236,12 +246,12 @@
 
 .pagination>li.active>a{
     background-color: #fafafa;
-    border-color: #ebeef5;
+    border-color: #ebebeb;
     color: #409eff;
     cursor: default;
 }
 .pagination>li>a:focus, .pagination>li>a:hover{
-  background-color: #f5f7fa;
+  background-color: #fafafa;
 }
 /*
 正在加载
@@ -323,7 +333,7 @@
     clear: both;
     font-weight: normal;
     line-height: 1.42857143;
-    color: #606266;
+    color: #676a6c;
     white-space: nowrap;
     text-decoration: none;
   }
@@ -340,7 +350,7 @@
   left: 35px;
   background: #ffffff;
   height: 0px;
-  border: 1px solid #e4e7ed;
+  border: 1px solid #ebebeb;
   border-top: none;
   box-shadow: 0px 3px 40px 0px rgba(0, 0, 0, 0.4);
   transition: height 0.5s;
