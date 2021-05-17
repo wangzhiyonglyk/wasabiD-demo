@@ -24,9 +24,14 @@ let entry = [
     src: './view/login/index.jsx' //脚本路径
   },
   {
-    filename: 'pivot', //文件名，
+    filename: 'test', //文件名，
     title: '登录', // 标题
-    src: './view/pivot/index.jsx' //脚本路径
+    src: './view/test/index.jsx' //脚本路径
+  },
+  {
+    filename: 'rule', //文件名，
+    title: '规则管理', // 标题
+    src: './view/RulePage/index.jsx' //脚本路径
   },
 ];
 
