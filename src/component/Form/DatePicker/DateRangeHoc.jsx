@@ -1,11 +1,12 @@
 /*
 create by wangzhiyong
 date:2016-05-20
-desc:日期范围选择控件
+desc:日期范围选择控件 todo 这里要改
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import propsTran from "../../libs/propsTran";
+import func from "../../libs/func";
 export default function (WrappedComponent) {
     class DateRangeHoc extends Component {
 
@@ -31,20 +32,40 @@ export default function (WrappedComponent) {
 
         }
         firstMonthHandler(year, month) {
-           
+            let newDate=new Date(year,month,1);
+            let oldDate=new Date(this.state.second_year,this.state.second_month-1,1);
+            if(oldDate>newDate){
+                newDate=oldDate;
+            }
             this.setState({
                 first_year: year,
                 first_month: month,
+                second_year:newDate.getFullYear(),
+                second_month:newDate.getMonth()+1,
                 first_day: null,
+                second_day:null,
                 first_rangeBegin:null,
-                first_rangeEnd: null
+                first_rangeEnd: null,
+                second_rangeBegin:null,
+                second_rangeEnd:null,
             })
         }
         secondMonthHandler(year, month) {
+            let newDate=new Date(year,month-2,1);
+            let oldDate=new Date(this.state.first_year,this.state.first_month-1,1)
+             if(oldDate<newDate){
+                 newDate=oldDate;
+             }
+        
             this.setState({
+                first_year:newDate.getFullYear(),
+                first_month:newDate.getMonth()+1,
                 second_year: year,
                 second_month: month,
+                first_day: null,
                 second_day: null,
+                first_rangeBegin:null,
+                first_rangeEnd: null,
                 second_rangeBegin: null,
                 second_rangeEnd: null,
             })
@@ -215,6 +236,7 @@ export default function (WrappedComponent) {
                 secondMonthHandler={this.secondMonthHandler}
                 beginTimeHandler={this.beginTimeHandler}
                 endTimeHandler={this.endTimeHandler}
+                onSelect={this.props.onSelect}
             ></WrappedComponent>
         }
     }
@@ -225,7 +247,6 @@ export default function (WrappedComponent) {
         firstTime: PropTypes.string,//第一个时间
         secondTime: PropTypes.string,//第二个时间
         attachSecond: PropTypes.bool,//是否带上秒
-        allMinute: PropTypes.bool,//是否显示全部分钟
         onSelect: PropTypes.func,//确定事件
     };
     DateRangeHoc.defaultProps = {
@@ -235,7 +256,6 @@ export default function (WrappedComponent) {
         firstTime: "",
         secondTime: "",
         attachSecond:true,
-        allMinute:false,
         onSelect: null,//
 
     };

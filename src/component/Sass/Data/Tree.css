@@ -2,15 +2,15 @@
 .wasabi-tree {
  position: relative;
  font-size: 14px;
- color: #676a6c;
+ color: var(--color);
 }
 .wasabi-pivot .wasabi-tree{
-  border-top:1px solid #ebebeb ;
+  border-top:1px solid var(--border-color) ;
  
   
 }
 .wasabi-treegrid .wasabi-tree{
-  border-top:1px solid #ebebeb ;
+  border-top:1px solid var(--border-color) ;
 }
 .wasabi-tree .treenode-container{
  line-height: 41px;
@@ -19,12 +19,12 @@
 
 }
 .wasabi-pivot .wasabi-tree .treenode-container{
-  border-bottom:1px solid #ebebeb ;
+  border-bottom:1px solid var(--border-color) ;
 
  
 }
 .wasabi-treegrid  .wasabi-tree .treenode-container{
-  border-bottom:1px solid #ebebeb ;
+  border-bottom:1px solid var(--border-color) ;
 
  
 }
@@ -45,7 +45,7 @@
 
 }
 .wasabi-tree .wasabi-has-error .checkbox-label{
-  border: 1px solid #ebebeb;
+  border: 1px solid var(--border-color);
 }
 .wasabi-tree .wasabi-checkul .checkbox:checked+label:after{
   top:-13px;
@@ -70,48 +70,48 @@
   
 }
 .wasabi-tree li>div:hover{
-  background-color:#fafafa;
-  color: #409eff;
+  background-color:var(--background-color);
+  color: var(--primary-color);
 }
 .wasabi-pivot .wasabi-tree li>div:hover{
   background-color:white;
-  color: #676a6c;
+  color: var(--color);
 }
 .wasabi-treegrid .wasabi-tree li>div:hover{
   background-color:white;
-  color: #676a6c;
+  color: var(--color);
 }
 
 .wasabi-tree li>div.selected{
-  background-color:#fafafa;
-  color: #409eff;
+  background-color:var(--background-color);
+  color: var(--primary-color);
 }
 .wasabi-pivot .wasabi-tree li>div.selected{
-  background-color:#fafafa;
-  color: #409eff;
+  background-color:var(--background-color);
+  color: var(--primary-color);
 }
 
 .wasabi-treegrid .wasabi-tree li>div.selected{
-  background-color:#fafafa;
-  color: #409eff;
+  background-color:var(--background-color);
+  color: var(--primary-color);
 }
 .wasabi-tree [class*=" icon-"],.wasabi-tree [class^=icon-] {
   color:#c0c4cc;
 }
 .wasabi-tree a{
   position: relative;
-  color:#676a6c;
+  color:var(--color);
   display: inline-block;
 }
 .wasabi-tree a:focus,.wasabi-tree a:hover{
-  color:#409eff;
+  color:var(--primary-color);
 }
 
 .wasabi-pivot .wasabi-tree a:focus,.wasabi-pivot .wasabi-tree a:hover{
-  color:#676a6c;
+  color:var(--color);
 }
 .wasabi-treegrid .wasabi-tree a:focus,.wasabi-treegrid .wasabi-tree a:hover{
-  color:#676a6c;
+  color:var(--color);
 }
 .wasabi-tree .wasabi-tree-txt{
   margin-left: 3px;
@@ -122,10 +122,10 @@
   -o-transform: translateY(1px);
 }
 .wasabi-tree li>div.selected .wasabi-tree-txt{
-  color:#409eff;
+  color:var(--primary-color);
 }
 .wasabi-tree li>div.selected [class*="icon-"]{
-  color:#409eff;
+  color:var(--primary-color);
 }
 .wasabi-tree i{
   padding-left: 3px;

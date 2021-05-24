@@ -13,13 +13,11 @@ class Search extends React.PureComponent {
         this.onSearch = this.onSearch.bind(this);
     }
     onSearch(event) {//开始查询
-        if (this.props.onSearch != null) {
-            this.props.onSearch(this.input.current.getValue(), this.props.name,event);
-        }
+            this.props.onSearch && this.props.onSearch(this.input.current.getValue(), this.props.name,event);
     }
     onKeyUp(event){
         if(event.keyCode===13){
-            this.props.onEnter&&this.props.onEnter(this.input.current.getValue(), this.props.name,event);
+            this.props.onSearch&&this.props.onSearch(this.input.current.getValue(), this.props.name,event);
         }
     }
     setValue(value){

@@ -29,7 +29,7 @@ class Toolbar extends Component {
       this.props.buttons.map((child, index) => {
         if (this.props.type == 'button') {
           buttonlist.push(
-            <Button key={index} {...child} onClick={this.onClick}></Button>
+            <Button key={index} {...child} onClick={this.onClick}>{this.props.title}</Button>
           );
         } else {
           buttonlist.push(
@@ -37,7 +37,7 @@ class Toolbar extends Component {
               key={index}
               {...child}
               onClick={this.onClick}
-            ></LinkButton>
+            >{this.props.title}</LinkButton>
           );
         }
       });

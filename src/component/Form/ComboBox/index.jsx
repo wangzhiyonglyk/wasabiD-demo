@@ -46,7 +46,6 @@
          return <Picker ref={this.combobox} {...this.props}></Picker>
      }
      renderDatePicker() {
-         console.log("time",this.props.value)
          return <DatePicker ref={this.combobox} {...this.props}></DatePicker>
      }
      renderTreePicker() {

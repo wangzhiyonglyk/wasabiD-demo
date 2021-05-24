@@ -226,6 +226,7 @@ export default {
      * @param {*} url 
      */
     reload: function (params=null, url = "") {//重新查询数据,
+        console.log("reload",params)
         url = url || this.state.url;//得到旧的url
         params=params||this.state.params;//如果不传则用旧的
         if (!url) {//没有url,不自行加载，则调用更新事件
@@ -356,7 +357,7 @@ export default {
     loadSuccess(url, pageSize, pageIndex, sortName, sortOrder, params, result) {//数据加载成功
 
 
-        if (this.props.loadSuccess) {
+        if(typeof this.props.loadSuccess==="function"){ 
             //如果父组件指定了数据加载后的方法，先执行，然后再处理数据
             result = this.props.loadSuccess(result);
             if (!result) {

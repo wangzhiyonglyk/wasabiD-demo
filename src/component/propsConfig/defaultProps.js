@@ -30,6 +30,7 @@ export default {
             max:null,
             onClick:null,
             onChange:null,
+            onSearch:null,
 
 
             //其他属性 combobox

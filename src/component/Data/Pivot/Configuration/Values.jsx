@@ -30,7 +30,7 @@ class Values extends Component {
     }
     render() {
         return <div className="wasabi-pivot-set-item">
-        <Panel title="统计" iconCls="icon-tongji"  headerStyle={{backgroundColor:"#fafafa"}} expandAble={false} style={{height:"calc(100% - 10px)"}}></Panel>
+        <Panel title="统计" iconCls="icon-tongji"  headerStyle={{backgroundColor:"var(--background-color)"}} expandAble={false} style={{height:"calc(100% - 10px)"}}></Panel>
    </div>
     }
 }

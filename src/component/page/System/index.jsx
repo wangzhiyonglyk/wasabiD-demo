@@ -10,12 +10,13 @@ import Header from "../../Layout/Header";
 import Tabs from "../../Navigation/Tabs";
 import Modal from "../../Layout/Modal";
 import TabPanel from "../../Navigation/TabPanel";
+import func from "../../libs/func"
 import "./index.css";
 class System extends React.Component {
   constructor(props) {
     super(props);
-    this.tabsref=React.createRef();
-    this.modalref=React.createRef();
+    this.tabsref = React.createRef();
+    this.modalref = React.createRef();
 
     this.state = {
       leftWidth: 250,
@@ -29,12 +30,24 @@ class System extends React.Component {
   componentDidMount() {
 
 
+    let receiveMessage=(event) =>{
+      console.log("event", event)
+      if(event.data){
+        let data=JSON.parse(event.data);
+        if(data.type=="openTab"){
+          
+          this.openMenu(data)
+        }
+      }
+    }
+    window.addEventListener("message", receiveMessage, false);
   }
   /**
    * 打开菜单
    * @param {*} item 
    */
   openMenu(item) {
+
     this.setState({
       activeMenu: item.title
     })
@@ -56,6 +69,8 @@ class System extends React.Component {
     } else {
       //如果找到了
       this.tabsref.current.changeActive(findIndex);
+      //刷新
+      document.getElementById(item.title).contentWindow.location.href = item.url;
     }
 
   }
@@ -65,12 +80,12 @@ class System extends React.Component {
    * @param {*} name 
    * @param {*} title 
    */
-  activeShortHandler(index, name, title,url) {
+  activeShortHandler(index, name, title, url) {
     this.setState({
       activeShortCuts: index,
     })
-    if(url){//如果有url则会打开菜单
-      this.openMenu({name:name,title:title,url:url});
+    if (url) {//如果有url则会打开菜单
+      this.openMenu({ name: name, title: title, url: url });
     }
     this.props.shortcutsclick && this.this.shortcutsclick(name, babel);
   }
@@ -82,11 +97,11 @@ class System extends React.Component {
       adminExpand: !this.state.adminExpand
     });
   }
- 
-/**
- * 菜单关闭
- * @param {*} index 
- */
+
+  /**
+   * 菜单关闭
+   * @param {*} index 
+   */
   onMenuClose(index) {
     let tabs = this.state.tabs;
     tabs.splice(index, 1)
@@ -103,115 +118,118 @@ class System extends React.Component {
     window.location.href = "./login.html"
   }
   render() {
-    return    <Layout className={"wasabi-system "+this.props.theme }>
-        <Header height={60}>
-          <div className='header'>
-            <div className='system'>
-              {" "}
-              <img className='logo' src={this.props.logo||require("./img/logo.png")}></img>
-              <span className='title'>{this.props.title}</span>
+    return <Layout className={"wasabi-system " + this.props.theme}>
+      <Header height={60}>
+        <div className='header'>
+          <div className='system'>
+            {" "}
+            <img className='logo' src={this.props.logo || require("./img/logo.png")}></img>
+            <span className='title'>{this.props.title}</span>
 
-            </div>
-            <div className='user' onClick={this.expandHandler.bind(this)}>
-
-              <i
-                style={{
-
-                  height: 44,
-                  lineHeight: "44px",
-                  color: "#fff",
-                  marginLeft: 5
-                }}
-                className={"icon-user"}
-
-              ></i>
-
-              <span className='title'>{this.props.nick}</span>
-              <dl
-                className={
-                  this.state.adminExpand ? "user-menus show" : "user-menus hide"
-                }
-              >
-                <dd className='user-menu'>
-                  <i className=' icon-user' style={{ marginRight: 10 }}></i>
-                  <cite>个人资料</cite>
-                </dd>
-                <dd className='user-menu'>
-                  <i className=' icon-edit' style={{ marginRight: 10 }}></i>
-                  <cite>修改密码</cite>
-                </dd>
-                <dd className='user-menu' onClick={this.logout}>
-                  <i className=' icon-switch' style={{ marginRight: 10 }}></i>
-                  <cite>退出</cite>
-                </dd>
-              </dl>
-            </div>
-            <div className='nav'>
-              {" "}
-              <ul>
-                {this.props.shortcuts&&this.props.shortcuts.map((item, index) => {
-                  return (
-                    <li
-                      key={index}
-                      onClick={this.activeShortHandler.bind(this, index, item.name, item.title)}
-                      className={
-                        this.state.activeShortCuts == index ? "active" : ""
-                      }
-                    >
-                      {" "}
-                      <i className={item.iconCls}></i> {item.title}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
           </div>
-        </Header>
-        <Left width={this.state.leftWidth}>
-          <Menus theme={this.props.theme||"default"}>
-            {
-              this.props.menus && this.props.menus.map((item, index) => {
-                return <MenuPanel key={index} expand={item.expand!=null&&item.expand!=undefined?item.expand:true} name={item.name} title={item.title}>
-                  {
-                    item.children && item.children.map((route, index) => {
-                      if (route.hide) {
-                        return null;
-                      }
-                      return <MenuItem iconCls={route.iconCls} key={index} active={route.title == this.state.activeMenu} onClick={this.openMenu.bind(this, route)} name={route.name}>{route.title}</MenuItem>
-                    })
+          <div className='user' onClick={this.expandHandler.bind(this)}>
 
-                  }
-                </MenuPanel>
-              })
-            }
+            <i
+              style={{
+
+                height: 44,
+                lineHeight: "44px",
+                color: "#fff",
+                marginLeft: 5
+              }}
+              className={"icon-user"}
+
+            ></i>
+
+            <span className='title'>{this.props.nick}</span>
+            <dl
+              className={
+                this.state.adminExpand ? "user-menus show" : "user-menus hide"
+              }
+            >
+              <dd className='user-menu'>
+                <i className=' icon-user' style={{ marginRight: 10 }}></i>
+                <cite>个人资料</cite>
+              </dd>
+              <dd className='user-menu'>
+                <i className=' icon-edit' style={{ marginRight: 10 }}></i>
+                <cite>修改密码</cite>
+              </dd>
+              <dd className='user-menu' onClick={this.logout}>
+                <i className=' icon-switch' style={{ marginRight: 10 }}></i>
+                <cite>退出</cite>
+              </dd>
+            </dl>
+          </div>
+          <div className='nav'>
+            {" "}
+            <ul>
+              {this.props.shortcuts && this.props.shortcuts.map((item, index) => {
+                return (
+                  <li
+                    key={index}
+                    onClick={this.activeShortHandler.bind(this, index, item.name, item.title, item.url)}
+                    className={
+                      this.state.activeShortCuts == index ? "active" : ""
+                    }
+                  >
+                    {" "}
+                    <i className={item.iconCls}></i> {item.title}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+      </Header>
+      <Left width={this.state.leftWidth}>
+        <Menus theme={this.props.theme || "default"}>
+          {
+            this.props.menus && this.props.menus.map((item, index) => {
+              return <MenuPanel key={index} expand={item.expand != null && item.expand != undefined ? item.expand : true} name={item.name} title={item.title}>
+                {
+                  item.children && item.children.map((route, index) => {
+                    if (route.hide) {
+                      return null;
+                    }
+                    return <MenuItem iconCls={route.iconCls} key={index} active={route.title == this.state.activeMenu} onClick={this.openMenu.bind(this, route)} name={route.name}>{route.title}</MenuItem>
+                  })
+
+                }
+              </MenuPanel>
+            })
+          }
 
 
 
-          </Menus>
-        </Left>
-        <Center>
-          <Modal ref={this.modalref}></Modal>
-          <Tabs onClose={this.onMenuClose.bind(this)} ref={this.tabsref} >
-            {this.state.tabs&&this.state.tabs.map(item => {
-              return (
-                <TabPanel key={item.title} title={item.title} iconCls={item.iconCls}>
-                  <iframe
-                    src={item.url}
-                    style={{ width: "100%", height: "100%", border: "none" }}
-                  ></iframe>
-                </TabPanel>
-              );
-            })}
-          </Tabs>
-        </Center>
-      </Layout>
+        </Menus>
+      </Left>
+      <Center>
+        <Modal ref={this.modalref}></Modal>
+        <Tabs onClose={this.onMenuClose.bind(this)} ref={this.tabsref} >
+          {this.state.tabs && this.state.tabs.map(item => {
+            return (
+              <TabPanel key={item.title} title={item.title} iconCls={item.iconCls}>
+                <iframe
+                  id={item.title}
+                  src={item.url}
+                  style={{ width: "100%", height: "calc(100% - 10px)", border: "none" }}
+                >
+                  
+                </iframe>
+              </TabPanel>
+            );
+          })}
+        </Tabs>
+      </Center>
+    </Layout>
   }
 }
 
 System.propTypes = {
   title: PropTypes.string,//标题
   logo: PropTypes.string,//图标
-  theme:PropTypes.string,//主题
+  theme: PropTypes.string,//主题
   // [
   //   { name:"index", title: "首页",iconCls:"", href: "" },
   //   { name:"user", title: "个人设置",iconCls:"", href: "" },
@@ -226,10 +244,10 @@ System.propTypes = {
 
   // ]
   menus: PropTypes.array,//菜单
-  nick:PropTypes.string,//登陆用户昵称
+  nick: PropTypes.string,//登陆用户昵称
 }
-System.defaultProps={
-  theme:"default",
+System.defaultProps = {
+  theme: "default",
 }
 
 export default System;

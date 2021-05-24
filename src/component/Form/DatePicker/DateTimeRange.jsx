@@ -19,6 +19,13 @@ class DateTimeRange extends Component {
             showfirstTime: false,
             showsecondTime: false,
         }
+        this.onSelectHandler=this.onSelectHandler.bind(this);
+        this.beginTimeHandler=this.beginTimeHandler.bind(this);
+        this.endTimeHandler=this.endTimeHandler.bind(this);
+        this.firstTimeShowHandler=this.firstTimeShowHandler.bind(this);
+        this.secondTimeShowHandler=this.secondTimeShowHandler.bind(this);
+        this.onClick=this.onClick.bind(this)
+
     }
     static getDerivedStateFromProps(props, state) {
         if (((props.firstTime || "") + (props.secondTime || "")) != state.oldPropsValue) {
@@ -76,11 +83,44 @@ class DateTimeRange extends Component {
             showsecondTime: true,
         })
     }
+    onClick(type) {
+        let secondDate = new Date();
+        let firstDate;
+        switch (type) {
+            case 1:
+                firstDate = func.getNextDay(secondDate, -1);
+                break;
+            case 2:
+                firstDate = func.getNextDay(secondDate, -7);
+                break;
+            case 3:
+                firstDate = func.getNextMonth(secondDate, -1);
+                break;
+            case 4:
+                firstDate = func.getNextMonth(secondDate, -3);
+                break;
+            case 5:
+                firstDate = func.getNextYear(secondDate, -1);
+                break;
+            default:
+                break;
+        }
+    
+        this.props.onSelect&&this.props.onSelect(func.dateformat(firstDate,"yyyy-MM-dd")+" "+this.state.firstTime+","+func.dateformat(secondDate,"yyyy-MM-dd")+" "+this.state.secondTime)
+    }
     render() {
 
-        return (<div>
+        return (<React.Fragment>
+             <div className="wasabi-date-qick">
+                <a key="1" onClick={this.onClick.bind(this, 1)}>最近一天</a>
+                <a key="2" onClick={this.onClick.bind(this, 2)}>最近一周</a>
+                <a key="3" onClick={this.onClick.bind(this, 3)}>最近一月</a>
+                <a key="4" onClick={this.onClick.bind(this, 4)}>最近三个月</a>
+                <a key="5" onClick={this.onClick.bind(this, 5)}> 最近一年</a>
+            </div>
+            <div>
             <div className="ok">
-                <div style={{ position: "absolute", width: 250 }}>
+                <div style={{ position: "absolute", width: 250,zIndex:3}}>
                     <input className=" wasabi-input timeinput"
                         value={this.state.firstTime} onClick={this.firstTimeShowHandler.bind(this)} onChange={() => { }}></input>
 
@@ -90,7 +130,7 @@ class DateTimeRange extends Component {
                         type="time" key="end" value={this.state.firstTime} ></Time>
                     </div>
                 </div>
-                <div style={{ position: "absolute", right: 0 }}>
+                <div style={{ position: "absolute", right: 0 ,zIndex:3}}>
                     <input className=" wasabi-input timeinput"
                         value={this.state.secondTime} onClick={this.secondTimeShowHandler.bind(this)} onChange={() => { }}></input>
 
@@ -107,12 +147,15 @@ class DateTimeRange extends Component {
                 onSelect={this.props.firstHandler}
                 updateYearAndMonth={this.props.firstMonthHandler}
             ></Calendar>
+          
             <Calendar isRange={true} year={this.props.second_year} month={this.props.second_month} day={this.props.second_day}
                 rangeBegin={this.props.second_rangeBegin} rangeEnd={this.props.second_rangeEnd}
                 onSelect={this.props.secondHandler}
                 updateYearAndMonth={this.props.secondMonthHandler}
             ></Calendar>
-        </div>)
+            </div>
+          
+        </React.Fragment>)
     }
 }
 DateTimeRange.propTypes = {

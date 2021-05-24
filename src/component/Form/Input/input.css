@@ -37,10 +37,10 @@ desc:表单输入框样式
   height: 40px;
   padding: 0px 6px;
   font-size: 14px;
-  color: #676a6c;
+  color: var(--color);
   background-color: #fff;
   background-image: none;
-  border: 1px solid #ebebeb;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   color: inherit;
   display: block;
@@ -54,8 +54,8 @@ desc:表单输入框样式
 }
 
 .wasabi-input[disabled], .wasabi-input[readOnly] {
-  background-color: #fafafa;
-  border-color: #ebebeb;
+  background-color: var(--background-color);
+  border-color: var(--border-color);
   color: #c0c4cc;
   cursor: not-allowed;
 }
@@ -69,19 +69,19 @@ desc:表单输入框样式
 }
 
 .wasabi-input:focus {
-  border-color: #409eff;
+  border-color: var(--primary-color);
 }
 
 .wasabi-input[disabled]:hover, .wasabi-input[readOnly]:hover {
-  background-color: #fafafa;
-  border-color: #ebebeb;
+  background-color: var(--background-color);
+  border-color: var(--border-color);
   color: #c0c4cc;
   cursor: not-allowed;
 }
 
 .wasabi-input[disabled]:focus, .wasabi-input[readOnly]:focus {
-  background-color: #fafafa;
-  border-color: #ebebeb;
+  background-color: var(--background-color);
+  border-color: var(--border-color);
   color: #c0c4cc;
   cursor: not-allowed;
 }
@@ -91,16 +91,16 @@ input验证失败
 */
 
 .wasabi-has-error .wasabi-input {
-  border-color: #f56c6c;
+  border-color: var(--danger-color);
 }
 
 .wasabi-has-error .checkbox-label {
-  border-color: #f56c6c;
+  border-color: var(--danger-color);
 }
 
 
 .wasabi-has-error .timeinput {
-  border: 1px solid #ebebeb;
+  border: 1px solid var(--border-color);
 }
 
 /*
@@ -108,15 +108,15 @@ input验证通过
 */
 
 .wasabi-has-success .wasabi-input {
-  border-color: #409eff;
+  border-color: var(--primary-color);
 }
 
 .wasabi-has-success input[type="checkbox"] {
-  border-color: #409eff;
+  border-color: var(--primary-color);
 }
 
 .wasabi-has-success input[type="radio"] {
-  border-color: #409eff;
+  border-color: var(--primary-color);
 }
 
 /*
@@ -124,7 +124,7 @@ input验证通过
 */
 
 .wasabi-help-block {
-  color: #f56c6c;
+  color: var(--danger-color);
   display: none;
   white-space: pre-wrap;
   overflow: visible;
@@ -167,7 +167,7 @@ input验证通过
 .wasabi-form-group-body .invalid:before {
   font-size: 16px;
   content: "\e918";
-  color: #f56c6c;
+  color: var(--danger-color);
 }
 
 .wasabi-form-group-body .validing {

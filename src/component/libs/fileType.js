@@ -44,8 +44,7 @@ fileType.html.set("application/json", ".json");
 fileType.html.set("text/css", ".css");
 
 /*
-html
-
+json
  */
 fileType.json = new Map();
 fileType.json.set("application/json", ".json");
@@ -131,22 +130,25 @@ fileType.getTypeMap = function (value) {
 
 //文件筛选
 fileType.filter = function (accept, files) {
-   
     let result = true;
     if (accept && files) {
         accept = accept ? accept.split(",") : [];
         let fileTypestr = "";//得到所有的文件类型
         for (let i = 0; i < accept.length; i++) {
             let mymap = fileType.getTypeMap(accept[i]);
-            for (let key of mymap.keys()) {
-                fileTypestr += key + ",";
+            if (mymap) {
+                for (let key of mymap.keys()) {
+                    fileTypestr += key + ",";
+                }
             }
-
         }
         for (let i = 0; i < files.length; i++) {
-            if (fileTypestr.indexOf(files[i].type) <= -1) {
+            if (files[i].type&&fileTypestr.indexOf(files[i].type) <= -1) {
                 result = false;
                 break;
+            }
+            else{
+                
             }
         }
     }

@@ -175,7 +175,7 @@ Rate.defaultProps = {
     readOnly: false,
     hide: false,
     texts: ['极差', '失望', '一般', '满意', '惊喜'],
-    textColor: "#676a6c",
+    textColor: "var(--color)",
     value: 0,
     name: ""
 }

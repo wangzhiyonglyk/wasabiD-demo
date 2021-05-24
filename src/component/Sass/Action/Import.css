@@ -12,12 +12,12 @@ desc:导入功能组件样式
   margin-top: 20px;
   padding-left: 15px;
   font-size: 14px;
-  color: #676a6c;
+  color: var(--color);
 }
 
 .import-text
 {
-  width:228px;
+  width:600px;
   padding-top:6px;
   padding-bottom: 6px;
   padding-left: 2px;
@@ -27,11 +27,12 @@ desc:导入功能组件样式
   height: 34px;
   background-color: #fff;
   background-image: none;
-  border: 1px solid #ebebeb;
+  border: 1px solid var(--border-color);
   box-shadow: none!important;
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   outline: none;
+  margin-right: 10px;
 }
 .import-file
 {
@@ -73,9 +74,9 @@ desc:导入功能组件样式
   height: 60px;
   bottom: 0px;
   padding-top: 12px;
-  background-color: #fafafa;
+  background-color: var(--background-color);
   width: 100%;
-  border-top: 1px solid #ebebeb;
+  border-top: 1px solid var(--border-color);
   padding-right: 15px;
 }
 .import-upload-info
@@ -104,6 +105,6 @@ desc:导入功能组件样式
 }
 .import-upload-info .info
 {
-  color: #676a6c;
+  color: var(--color);
   font-size: 14px;
 }

@@ -11,7 +11,7 @@ position: fixed;
   top:0px;
   z-index: 2;
   font-size: 14px;
-  color: #676a6c;
+  color: var(--color);
 }
 .wasabi-slidepanel .slide-overlay
 {

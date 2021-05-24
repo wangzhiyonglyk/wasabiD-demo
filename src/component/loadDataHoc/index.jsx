@@ -13,17 +13,18 @@ import defaultProps from "../propsConfig/defaultProps";
 import propTypes from "../propsConfig/propTypes";
 /**
  * 预处理各类数据
- * @param {*} ComboBoxWidget 组件
+ * @param {*} Widget 组件
  * @param {*} type 类型
  */
-function loadDataHoc(ComboBoxWidget, type = "select") {
+function loadDataHoc(Widget, type = "select") {
     class loadDataHocCompnent extends React.Component {
         constructor(props) {
             super(props);
             this.input = React.createRef();
             this.state = {
-                url: "",
-                params: null,//参数  
+                url: null,
+                params: null,//参数 
+                rawParams:null, 
                 rawData: [],//原始数据,用于判断是否通过父组件强制更新数据源         
                 data: [],//处理后的数据
                 filterText: "",//筛选文本
@@ -43,13 +44,14 @@ function loadDataHoc(ComboBoxWidget, type = "select") {
         }
         static getDerivedStateFromProps(props, state) {
             let newState = {
-                loadDataStatus: null,
+               
             };
-            if (props.url && func.diff(props.params, state.params)) {
+            if (props.url!=state.url||func.diff(props.params, state.rawParams)) {
                 //传的请求参数发生改变
                 newState = {
-                    reloaloadDataStatusdData: "url",//通过url加载数据
+                    loadDataStatus: "url",//通过url加载数据
                     url: props.url,
+                    rawParams:func.clone(props.params),
                     params: func.clone(props.params),
                 }
             }
@@ -108,12 +110,20 @@ function loadDataHoc(ComboBoxWidget, type = "select") {
         * @param {*} url 
          */
         reload(params, url) {
+          
             url = url || this.props.url;
             params = params || this.state.params;
             this.setState({
-                reloadData: "url",
+                loadDataStatus: "url",
                 params: params
             })
+        }
+        /**
+         * 获取所有勾选的值
+         * @returns 
+         */
+        getChecked(){
+            return this.input.current.getChecked && this.input.current.getChecked();
         }
 
         /**
@@ -149,14 +159,18 @@ function loadDataHoc(ComboBoxWidget, type = "select") {
          * @param {*} data 
          */
         loadSuccess(res) {//数据加载成功
+            if(typeof this.props.loadSuccess==="function"){
+                res = this.props.loadSuccess(res);
+            }
+          
             let realData = func.getSource(res, this.props.dataSource || "data");
             let idOrValueField = (type == "tree" || type === "treegrid" || type === "treepicker") ? this.props.idField : this.props.valueField;
-            tempFormatData = propsTran.processData(type, this.getValue(), realData, idOrValueField, this.props.textField);
+          let tempFormatData = propsTran.processData(type, this.getValue(), realData, idOrValueField, this.props.textField);
 
             this.setState({
-                reloadData: false,
+                loadDataStatus: null,
                 rawData: realData,//保存方便对比
-                data: realData,
+                data: tempFormatData,
             })
         }
         /**
@@ -181,13 +195,14 @@ function loadDataHoc(ComboBoxWidget, type = "select") {
             return false;
         }
         render() {
-            return <ComboBoxWidget
+            return <Widget
                 type={type}
                 {...this.props}
                 ref={this.input}
                 filterHandler={this.filterHandler.bind(this)}
+                reload={this.reload}
                 data={this.state.filterText ? this.state.filterData : this.state.data}
-            ></ComboBoxWidget>
+            ></Widget>
         }
     }
     loadDataHocCompnent.defaultProps = defaultProps;

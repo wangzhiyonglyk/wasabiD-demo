@@ -28,7 +28,7 @@
     margin: 0 auto;
     margin-top: 8px;
     margin-bottom: 4px;
-    border-bottom: 1px solid #ebebeb;
+    border-bottom: 1px solid var(--border-color);
   }
   .picker .hot-item
   {
@@ -40,10 +40,10 @@
   }
   
   .picker .hot-item:hover{
-    color:#409eff;
+    color:var(--primary-color);
   }
   .picker .hot-chose.expand{
-    color:#409eff;
+    color:var(--primary-color);
   }
   
   /*外层容器 */
@@ -65,7 +65,7 @@
   
   .picker .picker-container-wrap{
     display: none;
-    border: 1px solid #ebebeb;
+    border: 1px solid var(--border-color);
     background: #ffffff;
     position: absolute;
     top: 39px;
@@ -81,7 +81,7 @@
     text-align: center;
     line-height: 40px;
     position: relative;
-    background-color: #fafafa;
+    background-color: var(--background-color);
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -89,13 +89,13 @@
  
   }
   .picker .picker-container-name:hover{
-    color:#409eff;
+    color:var(--primary-color);
   }
   
   .picker .picker-container-name.expand{
-    border: 1px solid #ebebeb;
+    border: 1px solid var(--border-color);
     border-bottom-color: #ffffff;
-    color:#409eff;
+    color:var(--primary-color);
     background-color: #ffffff;
   }
   
@@ -105,8 +105,8 @@
     height: 40px;
     text-align: center;
     line-height: 40px;
-    color: #676a6c;
-    background-color: #fafafa;
+    color: var(--color);
+    background-color: var(--background-color);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -114,8 +114,8 @@
     box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
   }
   .picker .pickeritem:hover{
-    color:#409eff;
+    color:var(--primary-color);
   }
   .picker .pickeritem.expand{
-    color:#409eff;
+    color:var(--primary-color);
   }

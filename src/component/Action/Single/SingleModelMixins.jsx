@@ -52,6 +52,7 @@ let PageModelMixins = {
             content: props.model[i].content || null,
             editor: props.model[i].editor || null,
             sortAble: props.model[i].sortAble || false,
+            width:props.model[i].width||null,
           })
         }
       }

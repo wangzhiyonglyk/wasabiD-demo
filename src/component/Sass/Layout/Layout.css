@@ -33,7 +33,7 @@ desc:圣杯布局样式
 	height:55px;
 	width: 100%;
 	top: 0;
-	border-bottom: 1px solid #ebebeb;
+	border-bottom: 1px solid var(--border-color);
 
 }
 
@@ -42,7 +42,7 @@ desc:圣杯布局样式
 	width: 100%;
 	bottom: 0;
 
-	border-top: 1px solid #ebebeb;
+	border-top: 1px solid var(--border-color);
 }
 
 .wasabi-layout .wasabi-layout-left {
@@ -72,7 +72,7 @@ desc:圣杯布局样式
 	cursor:ew-resize;
 	width: 3px;
 	text-align: center;
-	border-right:1px solid #ebebeb;
+	border-right:1px solid var(--border-color);
 
 }
 
@@ -83,6 +83,6 @@ desc:圣杯布局样式
 	cursor:ew-resize;
 	width: 3px;
 	text-align: center;
-	border-left:1px solid #ebebeb;
+	border-left:1px solid var(--border-color);
 
 }

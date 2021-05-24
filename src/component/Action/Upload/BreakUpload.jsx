@@ -8,15 +8,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../../Layout/Modal.jsx';
-import Button from '../../Buttons/Button';
+import LinkButton from '../../Buttons/LinkButton';
 import Msg from '../../Info/Msg.jsx';
 import fileType from "../../libs/fileType";
 import func from "../../libs/func"
+import api from "wasabi-api"
 import('../../Sass/Action/Import.css');
 class Upload extends Component {
     constructor(props) {
         super(props);
-        this.modal=React.createRef();
+        this.modal = React.createRef();
+        this.fileinput = React.createRef();
         this.state = {
             uploadid: func.uuid(),
             filenames: '', //选择的文件名集合
@@ -25,16 +27,28 @@ class Upload extends Component {
         }
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
+        this.onClick = this.onClick.bind(this);
         this.onChange = this.onChange.bind(this);
         this.importHandler = this.importHandler.bind(this);
         this.uploadCanceled = this.uploadCanceled.bind(this);
-        this.uploadComplete = this.uploadComplete.bind(this);
+        this.uploadSuccess = this.uploadSuccess.bind(this);
         this.uploadFailed = this.uploadFailed.bind(this);
         this.uploadProgress = this.uploadProgress.bind(this);
-    
+
 
     }
+    /**
+     * 选择文件
+     */
+    onClick() {
+        if (this.props.disabled || this.state.uploadDisabled) {
+            return;
+        }
+        else {
+            this.fileinput.current.click();
+        }
 
+    }
     close() {
         //关闭
         this.modal.current.close();
@@ -45,11 +59,11 @@ class Upload extends Component {
     }
     onChange(event) {
         //选择文件
-        if (this.state.uploadDisabled) {
+        if (this.props.disabled || this.state.uploadDisabled) {
             return;
         }
         this.files = event.target.files;//拿到文件
-        this.props.onChange&&this.props.onChange(this.files);
+        this.props.onChange && this.props.onChange(this.files);
         let filenames = '';
         if (this.files.length > 0) {
             for (let index = 0; index < this.files.length; index++) {
@@ -78,6 +92,9 @@ class Upload extends Component {
     }
     //上传处理
     importHandler() {
+        if (this.props.disabled || this.state.uploadDisabled) {
+            return ;
+        }
         //执行导入事件
         // 实例化一个表单数据对象
         let formData = new FormData();
@@ -123,34 +140,27 @@ class Upload extends Component {
                     }
                 }
 
-                // 实例化一个AJAX对象
-                let xhr = new XMLHttpRequest();
+                let wasabi_api = window.api || api;
 
-                if (this.props.progress) {
-                    xhr.upload.addEventListener('progress', this.uploadProgress.bind(this), false);
-                }
-                xhr.addEventListener('load', this.uploadComplete.bind(this), false);
-                xhr.addEventListener('error', this.uploadFailed.bind(this), false);
-                xhr.addEventListener('abort', this.uploadCanceled.bind(this), false);
-             
-                xhr.open('POST', this.props.uploadurl, true);
-                //添加headers
-                if (this.props.httpHeaders && this.props.httpHeaders instanceof Object) {
-                    try {
-                        for (let prop in this.props.httpHeaders) {
-                            xhr.setRequestHeader(prop, this.props.httpHeaders[prop]);
-                        }
+                wasabi_api.ajax({
+                    url: this.props.uploadurl,
+                    type: "post",
+                    contentType: false,
+                    headers: this.props.httpHeaders || {},
+                    dataType: "json",
+                    data: formData,
+                    success: (result) => {
+                        this.uploadSuccess(result);
+                    },
+                    progress: (percent) => {
+                        this.uploadProgress(percent);
+                    },
+                    error: (message) => {
+                        this.uploadFailed(message);
                     }
-                    catch (e) {
-                        console.error("error", e.message);
-                    }
-                }
-                // 发送表单数据
-                xhr.send(formData);
-                this.setState({
-                    uploadTitle: '上传0%',
-                    uploadDisabled: true
-                });
+
+
+                })
             } else {
                 this.clear();
                 Msg.alert('您没有设置上传路径');
@@ -160,9 +170,7 @@ class Upload extends Component {
         }
     }
     //上传进度
-    uploadProgress(event) {
-        if (event.lengthComputable) {
-            let percentComplete = Math.round((event.loaded * 100) / event.total);
+    uploadProgress(percentComplete) {
             if (percentComplete < 100) {
                 this.setState({
                     uploadTitle: '上传' + percentComplete + '%'
@@ -172,39 +180,15 @@ class Upload extends Component {
                     uploadTitle: '处理中...'
                 });
             }
-        } else {
-            this.uploadFailed();
-        }
+        
     }
     //上传完成
-    uploadComplete(event) {
-        let xhr = event.target;
-        this.clear();//先清空
-        if (xhr.readyState == 4 && ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304)) {
-            let result = JSON.parse(xhr.responseText);
-
-            if (result) {
-                if (this.props.uploadSuccess != null) {
-
-                    this.props.uploadSuccess(result, this.state.filenames);
-                }
-            }
-            else {//非json格式
-
-                if (this.props.uploadSuccess != null) {
-                    this.props.uploadSuccess(xhr.responseText, this.state.filenames);
-                }
-            }
-
-        }
-        else {
-           
-            Msg.error(xhr.statusText);//弹出错误;
-        }
-
-
+    uploadSuccess(result) {
+        this.clear();
+        Msg.success("上传成功")
+        this.props.uploadSuccess && this.props.uploadSuccess(result, this.files);
     }
- 
+
     //上传文件失败
     uploadFailed(event) {
         this.clear();
@@ -216,14 +200,15 @@ class Upload extends Component {
     clear() {
         let obj = document.getElementById(this.state.uploadid);
         obj.value = "";
-
+        this.files = [];
         this.setState({
-            
-            uploadDisabled:false
+            filenames: "",
+            uploadDisabled: false
         })
 
     }
-   
+
+
     render() {
         let props = {
             accept: this.props.accept,
@@ -231,7 +216,9 @@ class Upload extends Component {
         };
 
         return (
-            <Modal ref={this.modal} width={460} height={340} title='请选择导入文件'>
+            <Modal ref={this.modal} style={{ width: 900, height: 500 }} title='请选择导入文件'
+                OKHandler={this.state.uploadDisabled == false ? this.importHandler : null}
+            >
                 <div className='import-section'>
                     <input
                         type='text'
@@ -243,27 +230,20 @@ class Upload extends Component {
                     <input
                         id={this.state.uploadid}
                         type='file'
-                        ref='import'
+                        ref={this.fileinput}
                         className='import-file'
                         onChange={this.onChange.bind(this)}
                         {...props}
                         style={{ display: this.state.uploadDisabled ? 'none' : 'inline' }}
                     ></input>
-                    <Button
-                        type='button'
+                    <LinkButton
                         disabled={this.state.uploadDisabled}
-                        className='import-chose'
+                        className='icon-search'
                         title='选择文件'
-                    ></Button>
+                        onClick={this.onClick}
+                    ></LinkButton>
                 </div>
-                <div className='import-submit'>
-                    <Button
-                        title={this.state.uploadTitle}
-                        disabled={this.state.uploadDisabled}
-                        onClick={this.importHandler}
-                    ></Button>
-                    <Button title='取消' onClick={this.close} theme='cancel'></Button>
-                </div>
+
             </Modal>
         );
     }
@@ -278,10 +258,9 @@ Upload.propTypes = {
     size: PropTypes.number,//上传大小限制
     name: PropTypes.string, //名称
     uploadSuccess: PropTypes.func, //上传成功事件
-    onChange:PropTypes.func //选择文件事件
+    onChange: PropTypes.func //选择文件事件
 };
 Upload.defaultProps = {
-    autoUpload:true,//
     httpHeaders: {},
     params: null,
     name: null,
@@ -289,7 +268,7 @@ Upload.defaultProps = {
     size: null,
     accept: null,
     uploadurl: null,
-    uploadSuccess:null,
-    onChange:null,
+    uploadSuccess: null,
+    onChange: null,
 };
 export default Upload;

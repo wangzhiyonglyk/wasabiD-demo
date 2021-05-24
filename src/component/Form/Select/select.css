@@ -28,11 +28,11 @@ desc:下拉框样式
     font-size: 14px;
   }
   .wasabi-select ul li:hover {
-    background-color: #fafafa;
+    background-color: var(--background-color);
   }
   
   .wasabi-select ul li.active {
-  color: #409eff;
+  color: var(--primary-color);
   }
   .wasabi-select ul li.active:after
   {
@@ -44,7 +44,7 @@ desc:下拉框样式
     width: 16px;
     height: 16px;
     font-size: 16px;
-    color:#409eff;
+    color:var(--primary-color);
   }
   
   

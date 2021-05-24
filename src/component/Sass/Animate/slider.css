@@ -10,7 +10,7 @@ desc:所以轮播组件的样式
     height: 400px;
     overflow: hidden;
     font-size: 14px;
-    color: #676a6c;
+    color: var(--color);
 }
 
 

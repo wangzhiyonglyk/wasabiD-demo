@@ -15,7 +15,7 @@ desc:小图标按钮样式
     cursor: pointer;
     padding: 0px;
     font-size: 14px;
-    color: #676a6c;
+    color: var(--color);
 }
 
 .wasabi-linkbutton+.wasabi-linkbutton {
@@ -26,64 +26,64 @@ desc:小图标按钮样式
 }
 
 .wasabi-linkbutton.default, .wasabi-linkbutton.cancel {
-    color: #676a6c;
+    color: var(--color);
 }
 
 .wasabi-linkbutton.default:focus, .wasabi-linkbutton.default:hover, .wasabi-linkbutton.cancel:focus, .wasabi-linkbutton.cancel:hover {
-    color: #409eff;
+    color: var(--primary-color);
 }
 
 .wasabi-linkbutton.primary {
-    color: #409eff;
+    color: var(--primary-color);
 }
 
 .wasabi-linkbutton.primary:focus, .wasabi-linkbutton.primary:hover {
-    color: #66b1ff;
+    color: var(--primary-hover-color);
 }
 
 .wasabi-linkbutton.success {
-    color: #67c23a;
+    color: var( --success-color);
 }
 
 .wasabi-linkbutton.success:focus, .wasabi-linkbutton.success:hover {
-    color: #85ce61;
+    color: var( --success-hover-color);
 }
 
 .wasabi-linkbutton.info {
-    color: #909399;
+    color: var(--info-color);
 }
 
 .wasabi-linkbutton.info:focus, .wasabi-linkbutton.info:hover {
-    color: #a6a9ad;
+    color: var(--info-hover-color);
 }
 
 .wasabi-linkbutton.warning {
-    color: #e6a23c;
+    color: var(--warning-color);
 }
 
 .wasabi-linkbutton.warning:focus, .wasabi-linkbutton.warning:hover {
-    color: #ebb563;
+    color: var(--warning-hover-color);
 }
 
 .wasabi-linkbutton.danger {
-    color: #f56c6c;
+    color: var(--danger-color);
 }
 
 .wasabi-linkbutton.danger:focus, .wasabi-linkbutton.danger:hover {
-    color: #f78989;
+    color: var(--danger-hover-color);
 }
-.wasabi-linkbutton div.left {
+.wasabi-linkbutton i.left {
     display: inline-block;
     margin-right: 3px;
     transform: translateY(1px);
   
 }
-.wasabi-linkbutton div.right {
+.wasabi-linkbutton i.right {
     display: inline-block;
     margin-left: 3px;
     transform: translateY(1px);
 }
-.wasabi-linkbutton div.rightTop {
+.wasabi-linkbutton i.rightTop {
     display: inline-block;
     position: absolute;
     margin-top: -12px;

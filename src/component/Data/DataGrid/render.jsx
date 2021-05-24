@@ -110,7 +110,7 @@ export default {
                 }
             }
             return (
-                <div key='pagination-info' className=' pagination-info col-sm-6'>
+                <div key='pagination-info' className=' pagination-info'>
                     显示&nbsp;{beginOrderNumber} &nbsp;至&nbsp; {endOrderNumber}&nbsp;项&nbsp;共&nbsp; {total} &nbsp;项记录
                     <div
                         style={{ display: this.props.pagination ? 'inline-block' : 'none' }}
@@ -214,7 +214,7 @@ export default {
                 pageComponent.push(lastdisabledli);
 
                 paginationComponent = (
-                    <div key="pagination-number" className='pagination-number col-sm-6'>
+                    <div key="pagination-number" className='pagination-number'>
                         <ul className='pagination'>
                             <li key={'lipre'} className='paginate_button '>
                                 <a onClick={this.prePaginationHandler}>上一页</a>
@@ -267,7 +267,7 @@ export default {
                     pagearr.push(control);
                 }
                 paginationComponent = (
-                    <div key="pagination-number" className='pagination-number col-sm-6'>
+                    <div key="pagination-number" className='pagination-number'>
                         <ul className='pagination'>
                             <li key={'lipre'} className='paginate_button previous'>
                                 <a onClick={this.prePaginationHandler}>上一页</a>
@@ -457,7 +457,6 @@ export default {
 
                 key="toppagination"
                 style={{
-                    width: this.tableWidth,
                     display:
                         this.props.pagePosition == 'top' ||
                             this.props.pagePosition == 'both'
@@ -478,7 +477,6 @@ export default {
             className='wasabi-pagination '
 
             style={{
-                width: this.tableWidth,
                 display:
                     this.props.pagePosition == 'bottom' ||
                         this.props.pagePosition == 'both'

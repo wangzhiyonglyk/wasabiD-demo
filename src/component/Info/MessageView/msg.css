@@ -1,51 +1,48 @@
-
-.wasabi-message
-{
-  display: inline-block;
-  width: 300px;
-  min-height: 30px;
-  line-height: 30px;
- padding-top: 10px;
-  padding-bottom: 10px;
-  border-radius: 10px;
+.wasabi-message {
+  display: none;
+  width: auto;
+  max-width: 300px;
+  border-radius: 5px;
   overflow: visible;
-  padding-left: 60px;
-  padding-right: 20px;
+  padding: 10px 20px 10px 20px;
   position: fixed;
   top: 10%;
   left: calc(50% - 150px);
-  z-index: 99999;
+  z-index: 9999;
   white-space: pre-wrap;
-  -webkit-transition: opacity 2s;
-  transition:opacity 2s;
-}
-.wasabi-message.success
-{
-  background-color: #25d7b9;
-}
-.wasabi-message.error
-{
-  -webkit-animation: shake 0.5s;
-          animation: shake 0.5s;
-  background-color: #ff404c;
-}
-.wasabi-message.info
-{
-  background-color: #f58030;
+  transition: opacity 2s;
+  box-sizing: border-box;
 }
 
+.wasabi-message.success {
+  background-color: #f0f9eb;
+  border-color: #e1f3d8;
+  color: var( --success-color);
+}
 
-.wasabi-message .notice
-{
-  font-size: 18px;
-  color: #ffffff;
+.wasabi-message.error {
+  background-color: #fef0f0;
+  border-color: #fde2e2;
+  color: var(--danger-color);
+}
+
+.wasabi-message.info {
+  background-color: #fdf6ec;
+  border-color: #faecd8;
+  color: var(--warning-color);
+}
+
+.wasabi-message .notice {
+  font-size: 16px;
   font-weight: normal;
   position: relative;
-  bottom: 1px;
-
+  transform: translateY(10px);
+  animation: wasabi-confirm-text 0.5s ease forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
 }
-.wasabi-message .notice:before
-{
+
+.wasabi-message .notice:before {
   content: "111111";
   color: transparent;
   width: 32px;
@@ -56,68 +53,90 @@
   position: absolute;
   top: 0px;
   left: -40px;
+}
 
-}
-.wasabi-message.success .notice:before
-{
-  background-image: url("../../img/icons/message_success.png");
-}
-.wasabi-message.error .notice:before
-{
-  background-image: url("../../img/icons/message_error.png");
-}
-.wasabi-message.info .notice:before
-{
-  background-image: url("../../img/icons/message_info.png");
-}
 
 .wasabi-confirm {
-  width: 422px;
-  height: 140px;
-  box-shadow:  0px 3px 40px 0px rgba(0,0,0,0.4);
-  background-color: #FCFCFC;
-  position: fixed;
+  width: 250px;
+  height: 135px;
+  position: absolute;
+  z-index: 9999;
+  display: none;
+  left: 0;
+  right: 0;
+  margin: auto;
   top: 10%;
-  left: 38%;
-  z-index: 999999;
+  transform-origin: center;
+  max-width: 80%;
+  max-height: 80%;
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0px 3px 40px 0px rgba(0, 0, 0, 0.4);
+}
 
-}
-.wasabi-confirm .message {
-  height: 50px;
-  padding-left: 110px;
-  padding-top: 10px;
-  padding-right: 10px;
-  margin-top: 20px;
-  display: inline-block;
-  position: absolute;
-  font-size: 18px;
-  color: #676a6c;
+.wasabi-confirm .wasabi-confirm-title {
+  padding: 15px 0;
+  opacity: 0;
+  color: #333;
+  transform: translateY(10px);
+  animation: wasabi-confirm-text 0.5s ease forwards;
+  animation-delay: 0.3s;
+  font-weight: bold;
+  font-size: 15px;
   text-align: center;
-  font-weight: normal;
 }
-.wasabi-confirm .message:before
-{
-  content: "111111";
-  color: transparent;
-  width: 54px;
-  display: inline-block;
-  height: 48px;
-  background-size: 54px 48px;
-  background-repeat: no-repeat;
-  position: absolute;
-  top: 0px;
-  left: 30px;
-  background-image: url("../../img/icons/message_confirm.png");
+
+.wasabi-confirm .wasabi-confirm-message {
+  font-size: 14px;
+  text-align: center;
+  color: #333;
+  line-height: 23px;
+  padding: 0 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: wasabi-confirm-text 0.5s ease forwards;
+  animation-delay: 0.4s;
 }
-.wasabi-confirm .buttons
-{
-  height: 28px;
-  display: block;
-  bottom: 20px;
-  position: absolute;
-  width: 100%;
-  text-align: right;
-  padding-right: 10px;
+
+.wasabi-confirm .buttons {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #f1f1f1;
+  justify-content: center;
+  margin-top: 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: wasabi-confirm-text 0.5s ease forwards;
+  animation-delay: 0.5s;
+}
+
+.wasabi-confirm .buttons button {
+  flex: 1;
+  color: #999;
+  cursor: pointer;
+  border: 0;
+  background: none;
+  padding: 12px;
+}
+
+.wasabi-confirm .buttons button.cancel {
+  border-right: 1px solid #f1f1f1;
+}
+
+.wasabi-confirm .buttons button.ok {
+  color: var(--primary-color);
+}
+
+@keyframes wasabi-confirm-text {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
 }
 
 .wasabi-loading {
@@ -130,20 +149,16 @@
   background-color: #000000;
   opacity: 0.1;
   z-index: 99;
-
 }
 
-
-.wasabi-load-icon
-{
-
+.wasabi-load-icon {
   position: absolute;
   left: 50%;
-  top:20%;
+  top: 20%;
   background-image: url("../../img/loading.gif");
   background-size: 16px 16px;
   background-repeat: no-repeat;
-  width:16px;
+  width: 16px;
   height: 16px;
-  z-index: 99;
+  z-index: 999;
 }

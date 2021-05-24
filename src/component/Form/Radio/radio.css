@@ -47,7 +47,7 @@ desc:checkbox
   font-family: 'iconfont'!important;
   width:16px;
   height:16px;
-  border: 1px solid #ebebeb;
+  border: 1px solid var(--border-color);
   display: inline-block;
   margin-right: 3px;
   position: absolute;
@@ -58,20 +58,20 @@ desc:checkbox
 }
 
 .wasabi-checkul .checkbox + label[readOnly],.wasabi-checkul .checkbox + label[disabled] {
-  background-color: #fafafa;
+  background-color: var(--background-color);
   cursor: not-allowed;
 }
 .wasabi-checkul .checkbox + label:hover {
-  border: 1px solid #409eff;
+  border: 1px solid var(--primary-color);
 }
 
 .wasabi-checkul .checktext.checked{
-  color:#409eff;
+  color:var(--primary-color);
 }
 
 .wasabi-checkul .checkbox:checked + label {
   border: 1px solid transparent;
-  background-color:#409eff;
+  background-color:var(--primary-color);
 }
 .wasabi-checkul .checkbox:checked+label:after {
   content: "\e769";
@@ -86,7 +86,7 @@ desc:checkbox
 }
 .wasabi-checkul .checkbox.halfcheck + label {
   border: 1px solid transparent;
-  background-color:#409eff;
+  background-color:var(--primary-color);
 }
 .wasabi-checkul .checkbox.halfcheck + label:after {
   content: "";
@@ -120,9 +120,9 @@ desc:checkbox
 
 }
 .wasabi-radio-btn.readOnly{
-  background-color: #fafafa;
+  background-color: var(--background-color);
   cursor: not-allowed;
-  border-color: #ebebeb;
+  border-color: var(--border-color);
   color: #c0c4cc;
 }
 .wasabi-radio-btn input[type="radio"]{
@@ -150,10 +150,10 @@ desc:checkbox
   top: 1px!important;
 }
 .wasabi-radio-btn.checkedRadio{
- border-color: #409eff;
+ border-color: var(--primary-color);
 }
 .checkedRadio i {
-  background-color: #409eff;
+  background-color: var(--primary-color);
 }
 .wasabi-checkul .radiotext
 {
@@ -167,5 +167,5 @@ desc:checkbox
   color: #c0c4cc;
 }
 .wasabi-checkul .radiotext.checkedRadio{
-  color: #409eff;
+  color: var(--primary-color);
 }

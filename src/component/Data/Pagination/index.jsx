@@ -109,7 +109,7 @@ class Pagination extends React.Component {
             endOrderNumber = this.state.pageTotal;
         }
         return (
-            <div key='pagination-info' className=' pagination-info col-sm-6'>
+            <div key='pagination-info' className='pagination-info'>
                 显示&nbsp;{beginOrderNumber} &nbsp;至&nbsp; {endOrderNumber}&nbsp;项&nbsp;共&nbsp; {total} &nbsp;项记录
                 <div
                     style={{ display: this.props.pagination ? 'inline-block' : 'none' }}
@@ -203,7 +203,7 @@ class Pagination extends React.Component {
                 pageComponent.push(lastdisabledli);
 
                 paginationComponent = (
-                    <div key="pagination-number" className='pagination-number col-sm-6'>
+                    <div key="pagination-number" className='pagination-number'>
                         <ul className='pagination'>
                             <li key={'lipre'} className='paginate_button '>
                                 <a onClick={this.prePaginationHandler}>上一页</a>
@@ -256,7 +256,7 @@ class Pagination extends React.Component {
                     pagearr.push(control);
                 }
                 paginationComponent = (
-                    <div key="pagination-number" className='pagination-number col-sm-6'>
+                    <div key="pagination-number" className='pagination-number'>
                         <ul className='pagination'>
                             <li key={'lipre'} className='paginate_button previous'>
                                 <a onClick={this.prePaginationHandler}>上一页</a>
@@ -284,6 +284,7 @@ Pagination.propTypes = {
     pageSize: PropTypes.number,//页大小
     pageTotal: PropTypes.number,//当前数据量
     total: PropTypes.number,//总记录数
+    onChange:PropTypes.func,//回调函数
 }
 Pagination.defaultProps = {
     pagination: true,
@@ -291,6 +292,7 @@ Pagination.defaultProps = {
     pageSize: 20,
     pageTotal: 0,
     total: 0,
+    onChange:null
 }
 
 export default Pagination;

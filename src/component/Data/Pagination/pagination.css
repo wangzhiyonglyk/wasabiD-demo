@@ -4,28 +4,28 @@
 
 .wasabi-pagination
 {
-  line-height: 38px;
-  height: 38px;
   font-size: 14px;
-  color: #676a6c;
+  color: var(--color);
+  position: relative;
+  margin-top:5px;
+  padding-left: 4px;
+  padding-right: 24px;
 }
 
 
   .pagination-info{
     float: left;
+    padding-top: 5px;
   }
   .pagination-number{
     float: right;
-    padding-right:20px;
     text-align: right;
   }
   .wasabi-pagination .pagination
   {
-        margin: 4px 0;
     white-space: nowrap;
-        display: inline-block;
-    padding-left: 0;
-    border-radius: 4px;
+    display: inline-block;
+  
   }
   .wasabi-pagination .pagination>li {
     display: inline;
@@ -43,24 +43,25 @@
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
-  .pagination>li>a, .pagination>li>span {
+  .pagination>li>a { 
     background-color: #FFF;
-    border: 1px solid #ebebeb;
+    border: 1px solid var(--border-color);
     color: inherit;
     float: left;
-    line-height: 1.42857;
     margin-left: -1px;
-    padding: 4px 10px;
+    padding: 0px 15px;
+    height: 40px;
+    line-height: 40px;
     position: relative;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .pagination>li.active>a{
-    background-color: #fafafa;
-    border-color: #ebebeb;
-    color: #409eff;
-    cursor: default;
+    color: var(--primary-color);
+
 }
 .pagination>li>a:focus, .pagination>li>a:hover{
-  background-color: #fafafa;
+  background-color: var(--background-color);
+  color: var(--primary-color);
 }

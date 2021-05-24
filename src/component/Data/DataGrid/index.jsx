@@ -43,8 +43,8 @@ import ComplexBody from "./Body/ComplexBody";
 /**
  * 样式
  */
-import('../../Sass/Data/DataGrid.css');
-import('../../Sass/Data/DataGridDetail.css');
+import('./datagrid.css');
+import('./datagridetail.css');
 class DataGrid extends Component {
     constructor(props) {
         super(props);
@@ -56,7 +56,7 @@ class DataGrid extends Component {
             realTableContainerid: func.uuid(),//真实表格容器
             realTableid: func.uuid(),//真实表格
             url: this.props.url,
-            params: 1, //参数
+            params:null, //参数
             rawParams: null,//保留旧的，用于对比
             pageIndex: this.props.pageIndex,//页号
             pageSize: this.props.pageSize,//分页大小
@@ -103,8 +103,8 @@ class DataGrid extends Component {
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};//新的状态值
-        if (props.url && props.params &&
-            func.diff(props.params, state.rawParams)) {//父如果参数有变
+        if ((props.url!=state.url) ||(props.params &&
+            func.diff(props.params, state.rawParams))) {//父如果参数有变
             newState = {
                 reloadData: true,
                 url: props.url,
@@ -464,7 +464,7 @@ DataGrid.defaultProps = {
     borderAble: true,
     editAble: false,
     clearChecked: true, //是否清空选择的
-    selectChecked: true,
+    selectChecked: false,
     exportAble: true,
 
     /**

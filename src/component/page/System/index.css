@@ -5,7 +5,7 @@
    
 }
 .wasabi-system.default .header{
-   background-color: #0072C6;
+   background-color: #206da5;
 }
 .wasabi-system.black .header{
    background-color: #2f353c;
@@ -54,7 +54,7 @@ height: 100%;
    background-color: rgba(255,255,255,0.2)
 }
 .wasabi-system .header .nav li.active{
-   background-color: #66b1ff;
+   background-color: var(--primary-hover-color);
 }
 
 .wasabi-system .header .user{
@@ -99,7 +99,7 @@ height: 100%;
    display: none;
 }
 .wasabi-system .user .user-menu:hover{
-   background-color: #409eff;
+   background-color: var(--primary-color);
    color: #fff;
 }
 .wasabi-system .user .user-menu{

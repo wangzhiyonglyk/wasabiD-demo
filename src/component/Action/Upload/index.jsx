@@ -43,4 +43,7 @@ class Upload extends React.PureComponent {
 
 
 }
+Upload.defaultProps={
+  plain:true
+}
 export default Upload;

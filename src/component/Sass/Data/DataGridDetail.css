@@ -3,7 +3,7 @@
 {
     overflow: visible;
     font-size: 14px;
-    color: #676a6c;
+    color: var(--color);
 }
 
 .wasabi-detail .wasabi-table

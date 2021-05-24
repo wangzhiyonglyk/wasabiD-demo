@@ -16,7 +16,7 @@ import loadDataHoc from "../../loadDataHoc";
 import validateHoc from "../validateHoc"
 
 import ArrowInput from "./ArrowInput"
-import ComboList from "./SelectbleList"
+import SelectbleList from "./SelectbleList"
 import("./select.css");
 class Select extends Component {
     constructor(props) {
@@ -442,14 +442,14 @@ class Select extends Component {
                 onClick={this.onClick.bind(this)}
                 onSort={this.onSort.bind(this)}
             ></ArrowInput>
-            <ComboList
+            <SelectbleList
                 show={this.state.show}
                 value={this.state.value}
                 data={this.state.data}
                 removeAble={this.props.removeAble}
                 onSelect={this.onSelect.bind(this)}
                 onRemove={this.onRemove.bind(this)}
-            ></ComboList> </div>);
+            ></SelectbleList> </div>);
 
     }
 

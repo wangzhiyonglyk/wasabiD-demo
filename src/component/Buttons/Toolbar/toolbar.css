@@ -8,5 +8,5 @@ desc:大图标按钮样式
   padding-bottom: 8px;
   padding-left: 10px;
   font-size: 14px;
-  color: #676a6c;
+  color: var(--color);
 }

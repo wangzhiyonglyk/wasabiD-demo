@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "8652820",
+      "name": "停止",
+      "font_class": "tingzhi",
+      "unicode": "e649",
+      "unicode_decimal": 58953
+    },
+    {
       "icon_id": "448643",
       "name": "save",
       "font_class": "save",
@@ -683,13 +690,6 @@
       "font_class": "sorting",
       "unicode": "e76a",
       "unicode_decimal": 59242
-    },
-    {
-      "icon_id": "11488142",
-      "name": "switch",
-      "font_class": "switch",
-      "unicode": "e76b",
-      "unicode_decimal": 59243
     },
     {
       "icon_id": "11488163",

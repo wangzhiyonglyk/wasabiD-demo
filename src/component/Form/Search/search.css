@@ -15,7 +15,7 @@
 }
 .wasabi-searchbox input {
   width: 100%;
-  border: 1px solid #ebebeb;
+  border: 1px solid var(--border-color);
   box-shadow: none !important;
   outline: none;
   height: 30px;
@@ -31,5 +31,5 @@
   width: 14px;
   height: 14px;
   font-size: 14px;
-  color: #ebebeb;
+  color: var(--border-color);
 }

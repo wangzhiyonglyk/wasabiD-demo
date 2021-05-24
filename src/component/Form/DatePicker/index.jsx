@@ -38,7 +38,7 @@ class DatePicker extends Component {
     this.onSelect = this.onSelect.bind(this);
     this.onClear = this.onClear.bind(this);
     this.onChange = this.onChange.bind(this);
-  
+
     this.renderDate = this.renderDate.bind(this);
     this.renderDateRange = this.renderDateRange.bind(this);
     this.renderDateTime = this.renderDateTime.bind(this);
@@ -54,11 +54,11 @@ class DatePicker extends Component {
     }
     return null;
   }
-  componentDidUpdate() {
-    if (document.getElementById(this.state.pickerid).getBoundingClientRect().right > window.screen.availWidth) {
-      document.getElementById(this.state.pickerid).style.right = "0px";
-    }
-  }
+
+  /**
+   * 获取值
+   * @returns 
+   */
   getValue() {
     let value = this.state.value ? this.state.value : "";
     if (this.props.type == "date" && value && this.props.attachTime) {
@@ -72,16 +72,12 @@ class DatePicker extends Component {
     }
     return value;
   }
+  /**
+   * 设置值
+   * @param {*} value 
+   */
   setValue(value) {
     if (value && this.props.validate && this.props.validate(value)) {
-      if (this.props.type == "daterange" && value.indexOf(" ") > -1) {
-        //包含了时间
-
-        value = value.split(",");
-        value[0] = value[0].split(" ")[0];
-        value[1] = value[1].split(" ")[0];
-        value = value.join(",");
-      }
       this.setState({
         value: value,
         text: value
@@ -94,59 +90,91 @@ class DatePicker extends Component {
     }
   }
 
-  splitDate(datestr) {
-    //拆分日期格式
+  /**
+  * 
+  * @param {*} value 
+  * @param {*} text 
+  * @param {*} name 
+  * @param {*} hide 是否隐藏，用于范围 todo
+  */
+  onSelect(value, text, name, hide = true) {
+    //选中事件
+    //防止异步取值
+    this.state.value = value;
+    this.setState({
+      show: !hide,
+      value: value,
+      text: value
+    });
+    this.input.current.setValue(value);
+    this.props.onSelect && this.props.onSelect(value, value, this.props.name, null);
+  }
 
-    if (
-      datestr &&
-      datestr.indexOf(" ") > -1 &&
-      regs.datetime.test(datestr)
-    ) {
-      //有时间
-
-      datestr = datestr.split(" ")[0];
-      var returnvalue = {
-        year: datestr.split("-")[0] * 1,
-        month: datestr.split("-")[1] * 1,
-        day: datestr.split("-")[2] * 1
-      };
-      return returnvalue;
-    } else if (regs.date.test(datestr)) {
-      var returnvalue = {
-        year: datestr.split("-")[0] * 1,
-        month: datestr.split("-")[1] * 1,
-        day: datestr.split("-")[2] * 1
-      };
-      return returnvalue;
-    } else {
-      return "";
+  /**
+     * 输入框
+     * @param {*} value 
+     */
+  onChange(value) {
+    if (this.props.validate && this.props.validate(value)) {
+      this.setValue(value);
+      this.props.onSelect && this.props.onSelect(value, value, this.props.name, null);
     }
   }
-  splitDateTime(datetime) {
-    //
+  /**
+   *清除数据
+   */
+  onClear() {
+    this.setState({
+      value: "",
+      text: ""
+    });
+    this.input.current.setValue("");
+    this.props.onSelect && this.props.onSelect("", "", this.props.name);
+  }
 
-    if (
-      datetime &&
-      regs.datetime.test(datetime) &&
-      datetime.indexOf(" ") > -1
-    ) {
+  splitDate(datestr) {
+    //拆分日期格式
+    let returnvalue = {};
+    if (regs.datetime.test(datestr)) {
+      //有时间
+      datestr = datestr.split(" ")[0];
+      returnvalue = {
+        year: datestr.split("-")[0] * 1,
+        month: datestr.split("-")[1] * 1,
+        day: datestr.split("-")[2] * 1
+      };
+
+    } else if (regs.date.test(datestr)) {//只有日期
+      returnvalue = {
+        year: datestr.split("-")[0] * 1,
+        month: datestr.split("-")[1] * 1,
+        day: datestr.split("-")[2] * 1
+      };
+
+    }
+    return returnvalue
+  }
+  /**
+   * 将日期拆分为年，月，日，时间
+   * @param {*} datetime 
+   * @returns 
+   */
+  splitDateTime(datetime) {
+    let returnvalue = {};
+    if (regs.datetime.test(datetime)) {
       //如果不为空
       var splitdate = datetime.split(" ")[0];
       if (splitdate && splitdate != "") {
-        var returnvalue = {
+         returnvalue = {
           year: splitdate.split("-")[0] * 1,
           month: splitdate.split("-")[1] * 1,
           day: splitdate.split("-")[2] * 1,
           time: datetime.split(" ")[1]
         };
-        return returnvalue;
-      } else {
-        return "";
+       
       }
-    } else {
-      return "";
     }
-
+    return returnvalue;
   }
   showPicker(e) {
 
@@ -174,7 +202,7 @@ class DatePicker extends Component {
       try {
 
         document.removeEventListener("click", this.hidePicker);
-        this.props.validate&&this.props.validate(this.state.value);
+        this.props.validate && this.props.validate(this.state.value);
         //在此处处理失去焦点事件
         this.props.onBlur && this.props.onBlur(this.state.value, this.state.text, this.props.name);
       }
@@ -183,82 +211,48 @@ class DatePicker extends Component {
       }
     }
   }
-  /**
-   * 
-   * @param {*} value 
-   * @param {*} text 
-   * @param {*} name 
-   * @param {*} hide 是否隐藏，用于范围 todo
-   */
-  onSelect(value, text, name, hide = true) {
-    //选中事件
-    //防止异步取值
-    this.state.value = value;
-    this.setState({
-      show: !hide,
-      value: value,
-      text: value
-    });
-    this.input.current.setValue(value);
-    if (this.props.type == "daterange" && value && this.props.attachTime) {
-      value = value.split(",");
-      value[0] = value[0] + " 00:00:00";
-      value[1] = value[1] + " 23:59:59";
-      value = value.join(",");
-    }
-    this.props.onSelect && this.props.onSelect(value, value, this.props.name, null);
-  }
 
   /**
-     * 输入框
-     * @param {*} value 
-     */
-  onChange(value) {
-    if (regs[this.props.type || "date"].test(value)) {
-      this.setValue(value);
-      this.props.onSelect && this.props.onSelect(value, value, this.props.name);
-    }
-  }
-  /**
-   *清除数据
+   * 渲染日期
+   * @returns 
    */
-  onClear() {
-    this.setState({
-      value: "",
-      text: ""
-    });
-    this.input.current.setValue("");
-    this.props.onSelect && this.props.onSelect("", "", this.props.name);
-  }
-
   renderDate() {
-    var dateobj = this.splitDate(this.state.value);
-    if (this.state.value && this.state.value.indexOf(" ") > -1) {
-      //说明有时间
-      dateobj = this.splitDateTime(this.state.value);
-    }
+    let dateobj = this.splitDate(this.state.value);
     return (
       <Calendar
         ref='combobox'
         name={this.props.name}
-        showTime={false}
         {...dateobj}
         onSelect={this.onSelect}
       ></Calendar>
     );
   }
+  /**
+   * 渲染时间
+   * @returns 
+   */
   renderTime() {
+    let hour; let minute;
+    if (regs.time.test(this.state.value)) {
+      hour = this.state.value.split(":")[0] * 1;
+      minute = this.state.value.split(":")[1] * 1;
+    }
     return (
       <Time
         ref='combobox'
         name={this.props.name}
-        value={this.state.value}
+        hour={hour}
+        minute={minute}
         onSelect={this.onSelect}
-        allMinute={this.props.allMinute}
         attachSecond={this.props.attachSecond}
       ></Time>
     );
   }
+
+  /**
+   * 渲染日期时间
+   * @returns 
+   */
   renderDateTime() {
     let dateobj = this.splitDateTime(this.state.value);
     dateobj = dateobj || {};
@@ -267,17 +261,65 @@ class DatePicker extends Component {
         ref='combobox'
         {...dateobj}
         name={this.props.name}
-        showTime={true}
         onSelect={this.onSelect}
       ></DateTime>
     );
   }
+  /**
+   * 时间范围
+   * @returns 
+   */
+  renderTimeRange() {
+    return (
+      <TimeRange
+        ref='combobox'
+        type={this.props.type}
+        name={this.props.name}
+        value={this.state.value}
+        onSelect={this.onSelect}
+        attachSecond={this.props.attachSecond}
+      ></TimeRange>
+    );
+  }
+
+  /**
+   * 渲染日期范围
+   * @returns 
+   */
+  renderDateRange() {
+    var firstDate = null;
+    var secondDate = null;
+    if (regs.daterange.test(this.state.value)) {
+      //传入一到两个值
+      var dateArray = this.state.value.split(",");
+      if (dateArray.length > 0) {
+        firstDate = dateArray[0];
+      }
+      if (dateArray.length >= 2) {
+        secondDate = dateArray[1];
+      }
+    }
+    return (
+      <DateRange
+        ref='combobox'
+        type={this.props.type}
+        name={this.props.name}
+        firstDate={firstDate}
+        secondDate={secondDate}
+        onSelect={this.onSelect}
+      ></DateRange>
+    );
+  }
+  /**
+   * 渲染日期时间范围
+   * @returns 
+   */
   renderDateTimeRange() {
     var firstDate = null;
     var secondDate = null;
     var firstTime = null;
     var secondTime = null;
-    if (this.state.value != null && this.state.value != "") {
+    if (regs.datetimerange.test(this.state.value)) {
       //传入一到两个值
       var dateArray = this.state.value.split(",");
       if (dateArray.length > 0) {
@@ -312,87 +354,11 @@ class DatePicker extends Component {
       ></DateTimeRange>
     );
   }
-  renderDateRange() {
-    var firstDate = null;
-    var secondDate = null;
-    if (this.state.value != null && this.state.value != "") {
-      //传入一到两个值
-      var dateArray = this.state.value.split(",");
-      if (dateArray.length > 0) {
-        firstDate = dateArray[0];
-      }
-      if (dateArray.length >= 2) {
-        secondDate = dateArray[1];
-      }
-    }
-    return (
-      <DateRange
-        ref='combobox'
-        type={this.props.type}
-        name={this.props.name}
-        firstDate={firstDate}
-        secondDate={secondDate}
-        onSelect={this.onSelect}
-      ></DateRange>
-    );
-  }
-  renderTimeRange() {
-    return (
-      <TimeRange
-        ref='combobox'
-        type={this.props.type}
-        name={this.props.name}
-        value={this.state.value}
-        onSelect={this.onSelect}
-        allMinute={this.props.allMinute}
-        attachSecond={this.props.attachSecond}
-      ></TimeRange>
-    );
-  }
-
-  /** focus */
-  onFocus(e) {
-
-    const rangeX = document.getElementsByClassName("dropcontainter range ");
-    if (rangeX && rangeX.length > 0) {
-      setTimeout(() => {
-        if (this.getElementLeft(rangeX[0]) < 0) {
-          this.setState({
-            rangeCount: 0
-          });
-        }
-        if (
-          this.getElementLeft(rangeX[0]) > 10 &&
-          this.getElementLeft(rangeX[0]) < 100
-        ) {
-          this.setState({
-            rangeCount: "-30%"
-          });
-        }
-        if (this.getElementLeft(rangeX[0]) > 300) {
-          this.setState({
-            rangeCount: "-85%"
-          });
-        }
-      }, 150);
-    }
-  }
-
-  getElementLeft(element) {
-    var actualLeft = element.offsetLeft;
-    var current = element.offsetParent;
-
-    while (current !== null) {
-      actualLeft += current.offsetLeft;
-      current = current.offsetParent;
-    }
-
-    return actualLeft;
-  }
 
   render() {
     let control = null;
     let controlDropClassName = "";
+    let value=this.state.value;
     switch (this.props.type) {
       case "date":
         control = this.renderDate();
@@ -414,6 +380,7 @@ class DatePicker extends Component {
       case "daterange":
         control = this.renderDateRange();
         controlDropClassName = "daterange";
+        value
         break;
       case "datetimerange":
         control = this.renderDateTimeRange();
@@ -429,14 +396,15 @@ class DatePicker extends Component {
       <DateInput
         {...this.props}
         ref={this.input}
-        value={this.state.value||""}
+        value={this.state.value || ""}
         onChange={this.onChange.bind(this)}
         onClick={this.showPicker.bind(this)}
         onClear={this.onClear.bind(this)}
       > </DateInput>
       <div className={"dropcontainter " + controlDropClassName + " "}
         style={{
-          display: this.state.show == true ? "block" : "none",
+          display: this.state.show == true ? "flex" : "none",
+          flexWrap: "wrap"
         }}>
         {control}
       </div>

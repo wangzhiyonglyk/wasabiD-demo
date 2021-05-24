@@ -35,12 +35,12 @@ class ArrowInput extends React.PureComponent {
             className: "wasabi-input  ",//去掉className
         }//文本框的属性
         return <div>
-            
-            {this.props.attachAble?<i title={this.props.sortType == "asc" ? "顺排" : this.props.sortType == "desc" ? "倒排" : "点击排序"}
-            style={{ position: "absolute", top: 12, right: 10, color: (this.props.sortType ? "#409eff" : "#ebebeb") }}
-             className={this.props.sortType == "asc" ? "icon-sort-down" : this.props.sortType == "desc" ? 
-             "icon-sort-up" : "icon-sorting"} onClick={this.props.onSort}></i>: 
-              <i className={"comboxbox-icon icon-drop-down " + (this.props.show ? "rotate" : "")} onClick={this.props.onClick}></i>}
+
+            {this.props.attachAble ? <i title={this.props.sortType == "asc" ? "顺排" : this.props.sortType == "desc" ? "倒排" : "点击排序"}
+                style={{ position: "absolute", top: 12, right: 10, color: (this.props.sortType ? "var(--primary-color)" : "var(--border-color)") }}
+                className={this.props.sortType == "asc" ? "icon-sort-down" : this.props.sortType == "desc" ?
+                    "icon-sort-up" : "icon-sorting"} onClick={this.props.onSort}></i> :
+                <i className={"comboxbox-icon icon-drop-down " + (this.props.show ? "rotate" : "")} onClick={this.props.onClick}></i>}
             <i
                 title="清除"
                 className={'combobox-clear icon-clear'}

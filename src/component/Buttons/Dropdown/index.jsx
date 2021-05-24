@@ -90,7 +90,11 @@ class Dropdown extends Component {
             <ul className={"wasabi-dropdown-menu " + (this.props.plain ? " " : " unplain ") + this.props.size} style={{ display: this.state.menuShow ? "block" : "none" }}>
                 {
                     React.Children.map(this.props.children, (child, index) => {
-                        return React.cloneElement(child, { index: index, key: index, onClick: this.menuClickHandler })
+                        if(child){
+                            return React.cloneElement(child, { index: index, key: index, onClick: this.menuClickHandler })
+                        }
+                        return null;
+                       
                     })
                 }
 

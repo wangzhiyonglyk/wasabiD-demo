@@ -7,15 +7,25 @@
   padding-left: 3px;
   padding-right: 3px;
 }
-
-.range .wasabi-datetime {
-  float: left;
+.wasabi-date-qick{
+  width: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-left:10px;
+  padding-top:10px;
+  border-right: 1px solid var(--border-color);
 }
-
-.range .wasabi-datetime:first-child {
-  padding-left: 6px;
+.wasabi-date-qick>a{
+ color:var(--color);
+  cursor: pointer;
+  height: 30px;
+  text-align: left;
 }
-
+.wasabi-date-qick>a:hover{
+color:var(--primary-color);
+}
 .wasabi-datetime-header {
   width: 248px;
   height: 30px;
@@ -101,7 +111,7 @@
 }
 
 .wasabi-datetime-year input {
-  border: 1px solid #ebebeb;
+  border: 1px solid var(--border-color);
   outline: none;
 }
 
@@ -221,7 +231,7 @@
   width: 240px;
   background: #ffffff;
   padding: 10px;
-  border: 1px solid #ebebeb;
+  border: 1px solid var(--border-color);
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -260,7 +270,7 @@
   width: 34px;
 }
 
-.wasabi-time-container .hour {
+.wasabi-time-container .recthour {
   display: inline-block;
   width: 24px;
   height: 24px;
@@ -273,14 +283,14 @@
   -o-border-radius: 50%;
 }
 
-.wasabi-time-container .hour:hover, .wasabi-time-container .hour.active {
+.wasabi-time-container .recthour:hover, .wasabi-time-container .recthour.active {
   background-color: #409eff;
   color: #fff;
 }
 
 .wasabi-time-container .second-container {
   display: none;
-  border: 1px solid #ebebeb;
+  border: 1px solid var(--border-color);
   background: #ffffff;
   position: absolute;
   top: 40px;
@@ -312,7 +322,7 @@
 }
 
 .wasabi-time-container .second-container::after {
-  border-color: transparent transparent #ebebeb;
+  border-color: transparent transparent var(--border-color);
   top: -20px;
 }
 
@@ -325,4 +335,231 @@
   border-style: solid;
   position: absolute;
   left: 20px;
+}
+
+/*
+新版本
+*/
+
+.wasabi-time {
+  position: relative;
+  width: 254px;
+  height: 298px;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: var(--button-shadow);
+  text-align: left;
+  z-index: 1;
+}
+
+.wasabi-time .wasabi-time-circle {
+  width: 220px;
+  height: 220px;
+  position: relative;
+  background: var(--background-color);
+  border-radius: 120px;
+  margin: 17px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.wasabi-time-circle-hour {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -15px;
+  margin-top: -15px;
+}
+
+.wasabi-time-circle-hour::after {
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: var(--primary-color);
+  border-radius: 4px;
+  position: absolute;
+  top: 11px;
+  left: 11px;
+}
+
+.wasabi-time-circle-hour .hour {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  transform-origin: center center;
+  color: var(--deepColor);
+  cursor: pointer;
+  font-size: var(--font-size);
+}
+
+.wasabi-time-circle-hour .hour:nth-child(n+13) {
+  color: var(--color);
+  font-size: 12px;
+}
+
+.wasabi-time-circle-hour .hour:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.wasabi-time-circle-hour .hour.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.wasabi-time-circle-hour .hour>span {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  position: absolute;
+  transform-origin: center center;
+}
+
+.wasabi-time-circle-hour .a-line {
+  position: absolute;
+  height: 1px;
+  transform-origin: left top;
+  background: var(--primary-color);
+  top: 15px;
+  left: 15px;
+}
+
+.wasabi-time-circle-minute {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -5px;
+  margin-left: -14px;
+}
+
+.wasabi-time-circle-minute::after {
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: var(--select-color);
+  border-radius: 4px;
+  position: absolute;
+  left: 10px;
+  top: 1px;
+}
+
+.wasabi-time-circle-minute .minute {
+  position: absolute;
+  border-radius: 15px;
+  transform-origin: center center;
+  height: 10px;
+  width: 28px;
+  line-height: 10px;
+  font-size: 0;
+  color: var(--color);
+}
+
+.wasabi-time-circle-hour .minute:hover {
+  color: var(--primary-color);
+}
+
+.wasabi-time-circle-hour .minute.active {
+  color: var(--primary-color);
+}
+
+.wasabi-time-circle-minute .minute:nth-child(5n) {
+  font-size: 14px;
+}
+
+.wasabi-time-circle-minute .minute::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
+  top: 3px;
+  left: 12px;
+  pointer-events: none;
+  background: #ddd;
+  z-index: 3;
+}
+
+.wasabi-time-circle-minute .minute:nth-child(5n)::before {
+  width: 8px;
+}
+
+.wasabi-time-circle-minute .minute:hover::before, .wasabi-time-circle-minute .minute.active::before {
+  background: var(--primary-color);
+}
+
+.wasabi-time-circle-minute .minute::after {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  top: -9px;
+  left: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.wasabi-time-circle-minute .minute:hover::after {
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.wasabi-time-circle-minute .minute>span {
+  position: absolute;
+  transform-origin: center center;
+  text-align: center;
+  height: 10px;
+  width: 28px;
+  line-height: 10px;
+  pointer-events: none;
+  z-index: 19;
+  margin-left: 14px;
+}
+
+.wasabi-time-circle-minute .a-line {
+  position: absolute;
+  height: 1px;
+  transform-origin: left top;
+  background: var(--primary-color);
+  width: 82px;
+  top: 5px;
+  left: 14px;
+}
+
+.wasabi-time .wasabi-time-ok {
+  height: 41px;
+  border-top: 1px solid var(--border-color);
+  line-height: 40px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.wasabi-time-ok span {
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10px;
+  font-size: var(--font-size);
+  color: var(--color);
+  cursor: pointer;
+}
+
+.wasabi-time-ok span>a {
+  height: 25px;
+  line-height: 24px;
+  margin-left: 8px;
+  padding: 0 6px;
+  border-bottom: solid 1px var(--primary-color);
+  color: var(--primary-color);
+}
+
+.wasabi-time-ok>a {
+  width: 52px;
+  color: var(--primary-color);
+  text-align: center;
+  cursor: pointer;
+  font-size: var(--font-size);
 }

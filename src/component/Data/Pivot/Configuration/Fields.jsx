@@ -29,7 +29,7 @@ class Fields extends Component {
     }
     render() {
 return <div className="wasabi-pivot-configuration-fields" >
-    <Panel title="字段" iconCls="icon-form"  headerStyle={{backgroundColor:"#fafafa"}} expandAble={false} style={{height:"calc(100% - 10px)"}}></Panel>
+    <Panel title="字段" iconCls="icon-form"  headerStyle={{backgroundColor:"var(--background-color)"}} expandAble={false} style={{height:"calc(100% - 10px)"}}></Panel>
 </div>;
     }
 }

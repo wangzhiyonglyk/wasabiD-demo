@@ -269,30 +269,34 @@ func.showError = function (msg) {
     }
 
 }
-/// 把对象复制,返回
+/**
+ * 对象的复制
+ * @param {*} obj 源对象
+ * @returns 
+ */
 func.clone = function (obj) {
-    /// <summary>
-    /// 把对象复制,返回
-    /// </summary>
-    /// <param name="obj" type="object">源对象</param>
     let o;
     switch (typeof obj) {
         case 'undefined': break;
         case 'string': o = obj + ''; break;
         case 'number': o = obj - 0; break;
         case 'boolean': o = obj; break;
+        case "function": o = obj; break;//todo 
         case 'object':
             if (obj === null) {
                 o = null;
             } else {
                 if (obj instanceof Array) {
-
                     o = [];
                     //o= obj.slice(0)， 注意了这里不能直接使用这个复制，如果数组中的元素为对象，复制是不成功的
                     for (let i = 0; i < obj.length; i++) {
                         o.push(func.clone(obj[i]));
                     }
-                } else {
+                } else if (obj instanceof Date) {//对日期的复制
+                    o = new Date(obj.valueOf())
+                }
+
+                else {//其他对象
                     o = {};
                     for (let k in obj) {
                         o[k] = func.clone(obj[k]);
@@ -497,14 +501,14 @@ func.diff = function (objA, objB) {//
  */
 func.diffOrder = function (objA, objB) {
 
-    try{
+    try {
         return JSON.stringify(objA) !== JSON.stringify(objB);
     }
-    catch(e){
- 
+    catch (e) {
+
     }
     return true;
-    
+
 }
 
 
@@ -620,6 +624,25 @@ func.deepMerge = function (targetObj, sourceObj) {
     }
     return targetObj;
 }
+/**
+ * 数组对象去重合并
+ * @param {*} arr1 数组1
+ * @param {*} arr2 数组2
+ * @param {*} key key值
+ * @returns 
+ */
+func.arrayObjectMerge = function (arr1 = [], arr2 = [], key = "id") {
+    let arr = [].concat(arr1, arr2);
+    let result = [];
+    let obj = {};
+    for (var i = 0; i < arr.length; i++) {
+        if (!obj[arr[i][key]]) {
+            result.push(arr[i]);
+            obj[arr[i][key]] = true;
+        }
+    }
+    return result;
+}
 
 /**
  * create by wangzhiyong
@@ -697,6 +720,38 @@ let DateExtends = {
     getFirstDayWeek(date) {
         //
         return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+    },
+    /**
+    * 取得几个月后的日期
+    * @param {*} date 日期
+    * @param {*} n 月数量
+    * @returns 
+    */
+    getNextYear(date, n = 1) {
+        let newDate = func.clone(date);
+        newDate.setYear(newDate.getFullYear() + n);
+        return newDate;
+    },
+    /**
+     * 取得几个月后的日期
+     * @param {*} date 日期
+     * @param {*} n 月数量
+     * @returns 
+     */
+    getNextMonth(date, n = 1) {
+        let newDate = func.clone(date);
+        newDate.setMonth(newDate.getMonth() + n);
+        return newDate;
+    },
+    /**
+     * 取得几月后的日期
+     * @param {*} date 
+     * @param {*} n 
+     */
+    getNextDay(date, n = 1) {
+        let newDate = func.clone(date);
+        newDate.setDate(newDate.getDate() + n);
+        return newDate;
     }
 }
 import base64 from "./base64.js";

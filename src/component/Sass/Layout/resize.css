@@ -2,14 +2,14 @@
 .resize {
 
   z-index: 2;
-  border: 1px solid #ebebeb;
+  border: 1px solid var(--border-color);
   margin: 5px; 
   padding: 2px;
  width: 400px;
  height: 400px;
   border-radius: 4px;
   font-size: 14px;
-  color: #676a6c;
+  color: var(--color);
 }
 
 

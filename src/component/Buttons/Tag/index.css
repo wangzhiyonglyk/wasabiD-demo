@@ -7,8 +7,8 @@
     box-sizing: border-box;
     white-space: nowrap;
     font-size: 14px;
-    color: #676a6c;
-  
+    color: var(--color);
+    border: 1px solid;  
 }
 .wasabi-tag [class*="icon-"]{
     margin-left: 5px;
@@ -19,27 +19,27 @@
 }
 .wasabi-tag.primary{
     background-color: #ecf5ff;
-    color: #409eff;
+    color: var(--primary-color);
     border: 1px solid #d9ecff;
 }
 .wasabi-tag.success{
     background-color: #f0f9eb;
     border-color: #e1f3d8;
-    color: #67c23a;
+    color: var( --success-color);
 }
 .wasabi-tag.info {
     background-color: #f4f4f5;
     border-color: #e9e9eb;
-    color: #909399;
+    color: var(--info-color);
 }
 .wasabi-tag.warning {
     background-color: #fdf6ec;
     border-color: #faecd8;
-    color: #e6a23c;
+    color: var(--warning-color);
 }
 
 .wasabi-tag.danger {
     background-color: #fef0f0;
     border-color: #fde2e2;
-    color: #f56c6c;
+    color: var(--danger-color);
 }

@@ -13,13 +13,13 @@
   }
   
   .checktrue {
-    background-color: #409eff;
-    border: 1px solid #409eff;
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
   }
   
   .checkfalse {
-    background-color: #ebebeb;
-    border: 1px solid #ebebeb;
+    background-color: var(--border-color);
+    border: 1px solid var(--border-color);
   }
   .checktrue.disabled,.checkfalse.disabled
   {

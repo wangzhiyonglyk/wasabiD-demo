@@ -43,13 +43,13 @@ class LinkButton extends React.PureComponent {
             className += ' ' + 'onlytext'; //只有文字
         }
         let style = this.props.style ? this.props.style : {}; //设置按钮样式
-        let icon = <div
+        let icon = <i
             className={this.props.iconCls + " " + this.props.iconAlign}
             style={{
                 color: this.props.iconColor,
                 display: this.props.iconCls == '' ? 'none' : 'inline-block'
             }}
-        ></div>;
+        ></i>;
         return <a title={this.props.title}
             href={this.props.href}
             onClick={this.clickHandler}
@@ -61,7 +61,7 @@ class LinkButton extends React.PureComponent {
             style={style}
         >
             {this.props.iconAlign === "left" ? icon : null}
-            {this.props.children||this.props.title}
+            {this.props.children}
             {this.props.iconAlign !== "left" ? icon : null}
         </a>
 

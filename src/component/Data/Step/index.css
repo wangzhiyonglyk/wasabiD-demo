@@ -8,26 +8,26 @@
     flex: 1;
     margin-right: 0px;
     display: inline-block;
-    color: #676a6c;
+    color: var(--color);
 
 }
 .wasabi-step-item.default {
-    color: #409eff;
+    color: var(--primary-color);
 }
 .wasabi-step-item.primary {
-    color: #409eff;
+    color: var(--primary-color);
 }
 .wasabi-step-item.info{
-    color: #909399;
+    color: var(--info-color);
 }
 .wasabi-step-item.success{
-    color: #67c23a;
+    color: var( --success-color);
 }
 .wasabi-step-item.warning{
-    color: #e6a23c;
+    color: var(--warning-color);
 }
 .wasabi-step-item.danger{
-    color: #f56c6c;
+    color: var(--danger-color);
 }
 
 
@@ -44,25 +44,25 @@
     right: -50%;
     position: absolute;
     border-color: inherit;
-    background-color: #ebebeb;
+    background-color: var(--border-color);
 }
 .wasabi-step-item.default  .wasabi-step-line{
-    background-color: #409eff;
+    background-color: var(--primary-color);
 }
 .wasabi-step-item.primary   .wasabi-step-line{
-    background-color: #409eff;
+    background-color: var(--primary-color);
 }
 .wasabi-step-item.info  .wasabi-step-line{
-    background-color: #909399;
+    background-color: var(--info-color);
 }
 .wasabi-step-item.success  .wasabi-step-line{
-    background-color: #67c23a;
+    background-color: var( --success-color);
 }
 .wasabi-step-item.warning  .wasabi-step-line{
-    background-color: #e6a23c;
+    background-color: var(--warning-color);
 }
 .wasabi-step-item.danger .wasabi-step-line{
-    background-color: #f56c6c;
+    background-color: var(--danger-color);
 }
 
 

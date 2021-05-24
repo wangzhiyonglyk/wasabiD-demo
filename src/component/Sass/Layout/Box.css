@@ -11,7 +11,7 @@
      -moz-border-right-colors: none;
      -moz-border-top-colors: none;
      background-color: #ffffff;
-     border-color: #ebebeb;
+     border-color: var(--border-color);
      -webkit-border-image: none;
      -o-border-image: none;
      border-image: none;
@@ -43,7 +43,7 @@
     color: #FFFFFF;
  }
  .box-title .label.label-success{
-    background-color: #409eff;
+    background-color: var(--primary-color);
     color: #FFFFFF;
  }
  .box-title .label.label-primary{
@@ -51,14 +51,14 @@
     color: #FFFFFF;
  }
  .box-title .label.label-danger{
-    background-color: #f56c6c;
+    background-color: var(--danger-color);
     color: #FFFFFF;
  }
  .box-content {
     background-color: #ffffff;
     color: inherit;
     padding: 15px 20px 20px 20px;
-    border-color: #ebebeb;
+    border-color: var(--border-color);
     -webkit-border-image: none;
     -o-border-image: none;
     border-image: none;
@@ -78,11 +78,11 @@
     color: #23c6c8;
  }
  .text-success{
-    color:#409eff;
+    color:var(--primary-color);
  }
  .text-primary {
     color: #1ab394;
  }
  .text-danger{
-    color: #f56c6c;
+    color: var(--danger-color);
  }

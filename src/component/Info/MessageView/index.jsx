@@ -2,32 +2,43 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "../../Buttons/Button";
+import func from "../../libs/func"
 import "./msg.css"
 class MessageView extends Component {
     constructor(props) {
         super(props);
+        this.messageid = func.uuid();
         this.state = {
             loading: true,//正在加载
             opacity: 1,//透明度
             visible: true,//可见性
 
         }
+        this.close = this.close.bind(this)
         this.OKHandler = this.OKHandler.bind(this);
         this.cancelHandler = this.cancelHandler.bind(this);
-        this.onMouseOver = this.onMouseOver.bind(this);
-        this.onMouseOut = this.onMouseOut.bind(this);
         this.timeOutHandler = this.timeOutHandler.bind(this);
     }
 
     componentDidMount() {
-        this.onmouse = false;////初始化
-        if (this.props.type == "confirm" || this.props.type == "alert") {
+        if (this.props.type == "confirm") {
 
         }
         else {
             this.timeOutHandler();//设置定时器
         }
 
+    }
+    componentWillUnmount() {
+        try {
+            if (this.timeoutArray.length > 0) {
+                for (let i = 0; i < this.timeoutArray.length; i++) {
+                    clearTimeout(this.timeoutArray[i])
+                }
+            }
+        } catch (e) {
+
+        }
     }
     OKHandler() {
         this.setState({
@@ -45,32 +56,18 @@ class MessageView extends Component {
             this.props.cancelHandler();
         }
     }
-    onMouseOver() {
-
-        //先清空所有定时器
-        this.onmouse = true;//标记属性在上面
-        for (var index = 0; index < this.timeoutArray.length; index++) {
-            clearTimeout(this.timeoutArray[index]);//清除定时器
-        }
-
+    close() {
         this.setState({
-            opacity: 1,
+            visible: false
         })
     }
-    onMouseOut() {
-        this.onmouse = false;//标记属性在上面
 
-        this.timeOutHandler();//设置定时器
-    }
     timeOutHandler() {
-
         this.timeoutArray = [];
         this.timeoutArray.push(setTimeout(() => {
-            if (this.onmouse == false) {
-                this.setState({
-                    visible: false,
-                })
-            }
+            this.setState({
+                visible: false,
+            })
         }, this.props.timeout));
 
 
@@ -79,7 +76,7 @@ class MessageView extends Component {
         return <div>
             <div
                 className='wasabi-loading'
-                style={{ zIndex: 999, position: "fixed", display: this.state.loading == true ? 'block' : 'none' }}
+                style={{ zIndex: 9999, position: "fixed", display: this.state.loading == true ? 'block' : 'none' }}
             ></div>
             <div
                 className='wasabi-load-icon'
@@ -88,30 +85,33 @@ class MessageView extends Component {
         </div>
     }
     renderInfo() {
-        return <div onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} className={"wasabi-message " + this.props.type}
-            style={{ display: this.state.visible ? "inline-block" : "none", opacity: this.state.opacity, transition: ("opacity " + (this.props.timeout / 1000).toString() + "s") }} >
-            <div className="notice">{this.props.msg}</div>
-        </div>
-    }
-
-    renderAlert() {
-        return <div className="wasabi-confirm" style={{ display: this.state.visible ? "inline-block" : "none" }}>
-            <div className="message">
-                {(this.props.msg == null || this.props.msg == "") ? "友情提示?" : this.props.msg}
-            </div>
-            <div className="buttons">
-                <Button name="ok" title="确定" onClick={this.cancelHandler}></Button>
-            </div>
+        let iconCls = "icon-";
+        switch (this.props.type) {
+            case "success":
+                iconCls += "yes";
+                break;
+            case "error":
+                iconCls += "error";
+                break;
+            default:
+                iconCls += "info"
+        }
+        return <div className={"wasabi-message " + this.props.type}
+            style={{ display: this.state.visible ? "block" : "none" }}  >
+            <div className="notice"><i className={iconCls} style={{ marginRight: 10, fontSize: 16 }}></i>{this.props.msg}</div>
         </div>
     }
     renderConfirm() {
-        return <div className="wasabi-confirm" style={{ display: this.state.visible ? "inline-block" : "none" }}>
-            <div className="message">
-                {(this.props.msg == null || this.props.msg == "") ? "确定删除这条信息吗?" : this.props.msg}
-            </div>
-            <div className="buttons">
-                <Button name="ok" title="确定" onClick={this.OKHandler}></Button>
-                <Button theme="cancel" name="cancel" title="取消" onClick={this.cancelHandler}></Button>
+        return <div className={" wasabi-overlay " + (this.state.visible == true ? "active " : "")} >
+            <div className={"wasabi-confirm " + (this.state.visible ? " wasabi-scale-in" : " wasabi-scale-out")} style={{ display: this.state.visible ? "block" : "none" }} >
+                <div className="wasabi-confirm-title"><i className="icon-info" style={{ marginRight: 5 }}></i>提示</div>
+                <div className="wasabi-confirm-message">
+                    {(this.props.msg == null || this.props.msg == "") ? "确定删除这条信息吗?" : this.props.msg}
+                </div>
+                {this.state.visible ? <div className="buttons" >
+                    <button type="button" className="cancel" onClick={this.cancelHandler}>取消</button>
+                    <button type="button" className="ok" onClick={this.OKHandler}>确定</button>
+                </div> : null}
             </div>
         </div>
     }
@@ -120,13 +120,13 @@ class MessageView extends Component {
             case "loading":
                 return this.renderLoading();
             case "info":
+            case "alert":
                 return this.renderInfo();
             case "success":
                 return this.renderInfo();
             case "error":
                 return this.renderInfo();
-            case "alert":
-                return this.renderAlert();
+
             case "confirm":
                 return this.renderConfirm();
         }

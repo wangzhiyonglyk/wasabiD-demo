@@ -59,6 +59,7 @@ export default {
         max: PropTypes.number,//最大值,最大长度,最多选项
         onClick: PropTypes.func,//单击事件
         onChange: PropTypes.func,//值改变事件
+        onSearch:PropTypes.func,//查询事件
 
         //其他属性 combobox
         contentType: PropTypes.string,//http请求的request类型

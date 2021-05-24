@@ -29,6 +29,7 @@ class TreeGrid extends Component {
             headers: this.props.headers,
             url: this.props.url,
             params: null,
+            rawParams:null,
             rawData: [],
             rowsTreeData: [],
             realGridData: [],
@@ -42,11 +43,12 @@ class TreeGrid extends Component {
         let newState = {};
 
         if (props.url && props.params &&
-            func.diff(props.params, state.params)) {//如果有url
+            func.diff(props.params, state.rawParams)) {//如果有url
             newState = {
                 reloadData: true,
                 url: props.url,
-                params: props.params,
+                rawParams:func.clone( props.params),
+                params: func.clone( props.params),
             }
         }
         if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData)) {

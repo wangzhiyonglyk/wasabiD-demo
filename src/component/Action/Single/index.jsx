@@ -60,9 +60,9 @@ class Single extends React.Component {
      * 刷新
      */
     reload() {
-        this.modal.current.close();
-        this.datagrid.current.reload(); //刷新列表
-        this.form.current.clearData();
+        this.modal.current&&this.modal.current.close();
+        this.datagrid.current&&this.datagrid.current.reload(); //刷新列表
+        this.form.current&&this.form.current.clearData();
     }
     render() {
         let modalStyle = this.props.modalStyle || { width: 1600, height: 800, top: 20 };
@@ -193,6 +193,7 @@ Single.defaultProps = {
     attachParams: null, //默认条件为空
     autoOp: false,
     addAble: true,
+    deleteAble:true,
     editAble: true,
     detailAble: true,
     openAddHandler: null,

@@ -12,7 +12,7 @@ desc:面板组件样式
   -webkit-transition: height 1s;
   transition:height 1s;
   font-size: 14px;
-  color: #676a6c;
+  color: var(--color);
 }
 
 .wasabi-panel .panel-header
@@ -22,7 +22,7 @@ desc:面板组件样式
   line-height: 40px;
   padding-left: 10px;
   padding-right: 10px;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid var(--border-color);
   
 }
 .wasabi-panel .panel-header [class^="icon-"],.wasabi-panel .panel-header [class*=" icon-"]{
@@ -30,35 +30,35 @@ desc:面板组件样式
 }
 .panel-default>.panel-header {
   background: #fff;
-  border-bottom: 1px solid #ebebeb;
-  color: #676a6c;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--color);
 }
 .panel-primary>.panel-header {
   color: #fff;
-  background-color: #409eff;
-  border-color: #409eff;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .panel-success>.panel-header {
   color: #fff;
-    background-color: #67c23a;
-    border-color: #67c23a;
+    background-color: var( --success-color);
+    border-color: var( --success-color);
 }
 .panel-info>.panel-header {
   color: #fff;
-  background-color: #909399;
-  border-color: #909399;
+  background-color: var(--info-color);
+  border-color: var(--info-color);
 }
 .panel-warning>.panel-header{
   color: #fff;
-  background-color: #e6a23c;
-  border-color: #e6a23c;
+  background-color: var(--warning-color);
+  border-color: var(--warning-color);
 }
 
 .panel-danger>.panel-header{
   color: #fff;
-  background-color: #f56c6c;
-  border-color: #f56c6c;
+  background-color: var(--danger-color);
+  border-color: var(--danger-color);
 }
 
 .wasabi-panel .panel-buttons
@@ -76,10 +76,10 @@ desc:面板组件样式
   width:40px;
   height:20px;
 text-align: right;
-  color: #676a6c;
+  color: var(--color);
 }
 .panel-icon i{
-  color: #676a6c;
+  color: var(--color);
 }
 .panel-icon i:hover
 {

@@ -76,7 +76,6 @@ class Calendar extends Component {
             showChangeYear: !this.state.showChangeYear,
             showChangeMonth: false,
         })
-
     }
     yearClick(event) {
         event.target.select();
@@ -115,15 +114,10 @@ class Calendar extends Component {
         this.setState({
             showChangeYear: false,
             year: value,
-            day: 1,//日归一
+            day: null,//清空，防止没有
         }, () => {
-            if (this.props.onSelect) {
-                let value = this.state.year + "-" + (this.state.month.toString().length === 1 ? "0" + this.state.month.toString() : this.state.month)
-                    + "-" + (this.state.day < 10 ? "0" + this.state.day.toString() : this.state.day);
-
-                this.props.onSelect(value, value, this.props.name);
-            }
-
+            
+            this.props.updateYearAndMonth&&this.props.updateYearAndMonth(value,this.state.month);
         })
 
     }
@@ -149,12 +143,7 @@ class Calendar extends Component {
             day: 1,//日归一
 
         }, () => {
-            if (this.props.onSelect) {
-                let value = this.state.year + "-" + (this.state.month.toString().length === 1 ? "0" + this.state.month.toString() : this.state.month)
-                    + "-" + (this.state.day < 10 ? "0" + this.state.day.toString() : this.state.day);
-
-                this.props.onSelect(value, value, this.props.name);
-            }
+            this.props.updateYearAndMonth&&this.props.updateYearAndMonth(this.state.year,value);
         })
 
 

@@ -10,7 +10,7 @@
   transition: all 0.5s;
   border-radius: 3px;
   font-size: 14px;
-  color: #676a6c;
+  color: var(--color);
 }
 
 .node:hover {

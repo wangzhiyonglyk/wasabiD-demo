@@ -13,7 +13,7 @@ desc:表单样式
     width:100%;
     display: block;
     font-size: 14px;
-    color: #676a6c;
+    color: var(--color);
 }
 .wasabi-form .form-body{
     width:100%;

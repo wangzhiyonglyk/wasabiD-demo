@@ -15,12 +15,13 @@ class Modal extends React.Component {
         super(props);
         this.resizeref = React.createRef();
         let style = (this.props.style && func.clone(this.props.style)) || {};
-        let width = (this.props.style && this.props.style.width) ? parseInt(this.props.style.width) : 400;
+        let width = (this.props.style && this.props.style.width) ? parseInt(this.props.style.width) : 800;
         let height = (this.props.style && this.props.style.height) ? parseInt(this.props.style.height) : 400;
         style.width = width;
         style.height = height;
         style.left = style.left || "calc(50% - " + (width / 2).toFixed(2) + "px)";
-        style.top = style.top || "calc(50% - " + (height / 2).toFixed(2) + "px)";
+        style.top = height > 600 ? "20px" : "100px";
+        style.animationDuration = height > 600 ? "0.5s" : "0.3s";
         this.state = {
             headerid: func.uuid(),
             title: this.props.title,
@@ -44,8 +45,8 @@ class Modal extends React.Component {
         window.modalZindex = window.modalZindex || 10;
         window.modalZinde -= 1;
         this.setState({ visible: false });
-        if (this.props.closedHandler != null) {
-            this.props.closedHandler();
+        if (this.props.close != null) {
+            this.props.close();
         }
     }
 
@@ -103,20 +104,16 @@ class Modal extends React.Component {
     }
 
     OKHandler() {
-     
         if (this.props.OKHandler != null) {
             this.props.OKHandler();
         }
     }
-
     cancelHandler() {
         this.close();//关闭
         if (this.props.cancelHandler != null) {
             this.props.cancelHandler();
         }
-
     }
-
     render() {
         let style = func.clone(this.state.style) || {};
         style.zIndex = (window.modalZindex + 1) || 10;
@@ -127,43 +124,45 @@ class Modal extends React.Component {
         }
         let footer = null;
         let buttons = [];
-        if (this.props.OKHandler) {
-            buttons.push(
-                <Button title="确定" key="ok" theme="primary" onClick={this.OKHandler}
-                    size="small"></Button>
-            )
-            if (this.props.OKHandler) {
-                buttons.push(
-                    <Button title="取消" key="cancel" theme="cancel" onClick={this.cancelHandler}
-                        size="small"
-                    ></Button>
-                )
+
+        buttons.push(
+            <Button title="确定" key="ok" theme="primary" onClick={this.OKHandler}
+                size="small"></Button>
+        )
+
+        buttons.push(
+            <Button title="取消" key="cancel" theme="cancel" onClick={this.cancelHandler}
+                size="small"
+            ></Button>
+        )
+
+        footer = <div className="wasabi-modal-footer">
+            {
+                buttons
             }
-            footer = <div className="wasabi-modal-footer">
-                {
-                    buttons
-                }
-            </div>;
-        }
-        //如果有destroy销毁字段，在隐藏的时候破坏子组件，这样就可以把表单的内容清空
-        return this.props.destroy && this.state.visible == false ? null : <div className={activename}>
-            <div className={" wasabi-overlay " + (this.props.modal == true ? "active" : "")} onClick={this.close.bind(this)}></div>
-            <Resize ref={this.resizeref}
-                className={"wasabi-modal fadein " + this.props.className} style={style} resize={true}>
-                <a className="wasabi-modal-close" onClick={this.close.bind(this)}></a>
-                <div className="wasabi-modal-header" id={this.state.headerid} style={{ display: this.state.title ? "block" : "none" }} >
-                    {this.state.title}
-                </div>
-                <div className="wasabi-modal-content" >
-                    {
-                        this.props.children
-                    }
-                </div>
-                {
-                    footer
-                }
-            </Resize>
+        </div>;
+    
+    //如果有destroy销毁字段，在隐藏的时候破坏子组件，这样就可以把表单的内容清空
+    return <div className = { activename }>
+    <div className={" wasabi-overlay " + (this.state.visible ? "active" : "")}
+></div>
+    <Resize ref={this.resizeref}
+        className={"wasabi-modal " + (this.state.visible ? " wasabi-fade-in" : "wasabi-fade-out")
+            + this.props.className} style={style} resize={true}>
+        <i className="icon-close wasabi-modal-close" onClick={this.close.bind(this)}></i>
+        <div className="wasabi-modal-header" id={this.state.headerid} >
+            {this.state.title}
         </div>
+        <div className="wasabi-modal-content" >
+            {
+                this.props.destroy && this.state.visible == false ? null : this.props.children
+            }
+        </div>
+        {
+            footer
+        }
+    </Resize>
+</div >
     }
 }
 
@@ -171,9 +170,8 @@ Modal.propTypes = {
     className: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     style: PropTypes.object,
     resize: PropTypes.bool,//是否可以改变大小
-    modal: PropTypes.bool,//是否有遮罩层
     destroy: PropTypes.bool,//是否销毁
-    closedHandler: PropTypes.func,//关闭事件
+    close: PropTypes.func,//关闭事件
     OKHandler: PropTypes.func,//确定事件
     cancelHandler: PropTypes.func,
 }
@@ -182,9 +180,8 @@ Modal.defaultProps = {
     className: "",
     style: {},
     resize: false,//是否可以改变大小
-    modal: true,//默认有遮罩层
     destroy: false,
-    closedHandler: null,
+    close: null,
     OKHandler: null,//确定按钮的事件,
     cancelHandler: null,
 }

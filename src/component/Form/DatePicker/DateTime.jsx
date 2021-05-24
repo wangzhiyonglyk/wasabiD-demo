@@ -15,15 +15,15 @@ class DateTime extends Component {
         let year = newDate.getFullYear();
         let month = newDate.getMonth() + 1;
         this.state = {
-            oldPropsValue:"",
+            oldPropsValue: "",
             year: this.props.year ? this.props.year : year * 1,
             month: this.props.month ? this.props.month : month * 1,
             day: this.props.day ? this.props.day : newDate.getDate(),
             time: this.props.time ? this.props.time : this.props.attachSecond ? func.dateformat(newDate, 'HH:mm:') + "00" : func.dateformat(newDate, 'HH:mm'),
-
+            showTime: false,
         }
 
-        this.dateChange=this.dateChange.bind(this)
+        this.dateChange = this.dateChange.bind(this)
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};
@@ -43,7 +43,7 @@ class DateTime extends Component {
             year: value[0] * 1,
             month: value[1] * 1,
             day: value[2] * 1
-        },()=>{
+        }, () => {
             this.onSelect(false);
         })
     }
@@ -88,13 +88,17 @@ class DateTime extends Component {
                 <div style={{ position: "relative", height: 32 }}>
                     <input className=" wasabi-input timeinput"
                         value={this.state.time} onClick={this.timeHandler.bind(this)} onChange={() => { }}></input>
-                    <div style={{ display: this.state.showTime ? "inline-block" : "none", zIndex: 1 }}><Time onSelect={this.timeOnChange.bind(this)}
-                        type="time" key="end" value={this.state.time} attachSecond={this.props.attachSecond} allMinute={this.props.allMinute}></Time></div>
+                    <div style={{ display: this.state.showTime ? "inline-block" : "none", zIndex: 1 }}>
+                        <Time
+                            onSelect={this.timeOnChange.bind(this)}
+                            key="end"
+                            value={this.state.time} attachSecond={this.props.attachSecond}
+                        ></Time></div>
                 </div>
-                  <Calendar year={this.state.year}
-                        month={this.state.month}
-                        day={this.state.day} onSelect={this.dateChange} ></Calendar>
-              
+                <Calendar year={this.state.year}
+                    month={this.state.month}
+                    day={this.state.day} onSelect={this.dateChange} ></Calendar>
+
             </div>
         )
     }
@@ -123,4 +127,4 @@ DateTime.defaultProps =
     onSelect: null
 };
 
-export default  (DateTime);
+export default DateTime

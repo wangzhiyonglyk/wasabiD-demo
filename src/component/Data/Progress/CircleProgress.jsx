@@ -68,30 +68,30 @@ class CircleProgress extends React.Component {
                 ctx.fillRect(0, 0, this.width, this.height)//先清除
 
                 let activeSAngle = -90; let activeEAngle =-90+ (this.state.value / 100) * 360;
-                let color = "#409eff";//颜色
+                let color = "var(--primary-color)";//颜色
                 switch (this.props.theme) {
                     case "primary":
                     case "default":
-                        color = "#409eff";
+                        color = "var(--primary-color)";
                         break;
                     case "success":
-                        color = "#67c23a";
+                        color = "var( --success-color)";
                         break;
                     case "info":
-                        color = "#909399";
+                        color = "var(--info-color)";
                         break;
                     case "warning":
-                        color = "#e6a23c";
+                        color = "var(--warning-color)";
                         break;
                     case "danger":
-                        color = "#f56c6c";
+                        color = "var(--danger-color)";
                         break;
 
                 }
                 let radius = this.width / 2;//半径
 
                 this.drawCricle(ctx, activeSAngle, activeEAngle, radius, color);//激活环
-               this.drawCricle(ctx, activeEAngle, 360-90, radius, "#ebebeb");//非激活
+               this.drawCricle(ctx, activeEAngle, 360-90, radius, "var(--border-color)");//非激活
                this.drawCricle(ctx, 0, 360, radius - 6, "#ffffff");//空白环
 
             });

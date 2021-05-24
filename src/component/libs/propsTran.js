@@ -104,7 +104,7 @@ let propsTran = {
         //先设置默认值的，再判断用户是否有输入值
         let newDate = new Date();
         //设置第一日期的值
-        let firstDate = props.firstDate;//给的第一个值
+        let firstDate = regs.date.test( props.firstDate)?props.firstDate:regs.datetime.test(props.firstDate)?props.firstDate.split(" ")[0]:"";//给的第一个值
         let firstTime = props.type == "daterange" ? "" : props.firstTime || func.dateformat(newDate, "HH:mm:") + "00";
         //先设置默认值
         let first_year = newDate.getFullYear();
@@ -178,7 +178,7 @@ let propsTran = {
         else {//第二日期没有值
             first_rangeBegin = first_rangeEnd = first_day;
         }
-        return {
+        let result= {
             oldPropsValue: (props.firstDate || "") + (props.firstTime || "") + (props.secondDate || "") + (props.secondTime || ""),//保存旧值，用于更新
             first_year: first_year,
             first_month: first_month,
@@ -193,6 +193,8 @@ let propsTran = {
             second_rangeEnd: second_rangeEnd,
             secondTime: secondTime,
         }
+        console.log("result",result);
+        return result;
     },
 
     /**
