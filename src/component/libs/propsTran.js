@@ -193,7 +193,6 @@ let propsTran = {
             second_rangeEnd: second_rangeEnd,
             secondTime: secondTime,
         }
-        console.log("result",result);
         return result;
     },
 

@@ -30,7 +30,7 @@ class Rows extends Component {
     }
     render() {
         return <div className="wasabi-pivot-set-item">
-        <Panel title="行维度" iconCls="icon-main"  headerStyle={{backgroundColor:"var(--background-color)"}} expandAble={false} style={{height:"calc(100% - 10px)"}}></Panel>
+        <Panel title="行维度" iconCls="icon-large"  headerStyle={{backgroundColor:"var(--background-color)"}} expandAble={false} style={{height:"calc(100% - 10px)"}}></Panel>
    </div>
     }
 }
