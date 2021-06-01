@@ -10,41 +10,21 @@ class DateInput extends React.PureComponent {
     constructor(props) {
         super(props);
         this.input = React.createRef();
-        this.onChange = this.onChange.bind(this);
-        this.state={
-
-        }
     }
-    onChange(event) {
-        this.props.onChange && this.props.onChange(event.target.value, event.target.value, this.props.name);
-    }
-    /**
-     * 
-     * @param {*} value 
-     */
-    setValue(value) {
-        this.input.current.setValue(value);
-    }
-
-    render() {
-        let inputProps =
-        {
-            name: this.props.name,
-            title: this.props.title,
-            placeholder: this.props.placeholder,
-            readOnly: this.props.readOnly,
-            required: this.props.required,
-            className: "wasabi-input  ",//去掉className
-        }//文本框的属性
+    render() {   
         return <div>
             <i className={"combobox-clear icon-clear"} onClick={this.props.onClear} style={{ display: this.props.readOnly ? "none" : this.props.value ? "inline" : "none" }}></i>
             <i className={"comboxbox-icon icon-calendar  "} onClick={this.props.onClick} ></i>
             <BaseInput
                 ref={this.input}
-                {...inputProps}
+                name={ this.props.name}
+                title={this.props.title}
+                placeholder={ this.props.placeholder}
+                readOnly={this.props.readOnly}
+                required={ this.props.required}
                 value={this.props.value||""}
                 onClick={this.props.onClick}
-                onChange={this.onChange}
+                onChange={this.props.onChange}
             />
         </div>
 
@@ -53,10 +33,12 @@ class DateInput extends React.PureComponent {
 DateInput.propTypes = {
     onClear: PropTypes.func,
     onClick: PropTypes.func,
+    onChange:PropTypes.func,
 }
 
 DateInput.defaultProps = {
     onClear: null,
-    onClick: null
+    onClick: null,
+    onChange:null
 }
 export default DateInput;

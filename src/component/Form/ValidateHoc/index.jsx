@@ -210,6 +210,7 @@ let validateHoc = function (InputWidget) {
 
             this.input.current.reload && this.input.current.loadData(url, params);
         }
+   
         shouldComponentUpdate(nextProps, nextState) {
             if (func.diffOrder(nextProps, this.props)) {
                 return true;
@@ -218,8 +219,7 @@ let validateHoc = function (InputWidget) {
                 return true;
             }
             return false;
-        }
-        render() {
+        }        render() {
             let style = this.props.style? JSON.parse(JSON.stringify(this.props.style)) : {};
             if (this.props.hide) {
                 style.display = 'none';

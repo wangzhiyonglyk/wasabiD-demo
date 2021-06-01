@@ -35,6 +35,9 @@ desc:checkbox
   height: 20px;
   line-height: 20px;
 }
+.wasabi-checkul .checktext[readOnly]{
+  cursor:not-allowed;
+}
 
 .wasabi-checkul .checkbox{
   display: block;
@@ -73,8 +76,8 @@ desc:checkbox
   border: 1px solid transparent;
   background-color:var(--primary-color);
 }
-.wasabi-checkul .checkbox:checked+label:after {
-  content: "\e769";
+.wasabi-checkul .checkbox:checked+label::after {
+  content: "\ea38";
   height: 12px;
   width: 12px;
   position: absolute;
@@ -88,7 +91,7 @@ desc:checkbox
   border: 1px solid transparent;
   background-color:var(--primary-color);
 }
-.wasabi-checkul .checkbox.halfcheck + label:after {
+.wasabi-checkul .checkbox.halfcheck + label::after {
   content: "";
   height: 8px;
   width: 8px;

@@ -6,12 +6,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import BaseInput from "../BaseInput";
-class PickerInput extends React.PureComponent {
+class PickerInput extends React.Component {
     constructor(props) {
         super(props);
         this.input = React.createRef();
         this.state = {
+            value:this.props.value
         }
+        
 
     }
 
@@ -20,15 +22,14 @@ class PickerInput extends React.PureComponent {
      * @param {*} value 
      */
     setValue(value) {
-        this.input.current.setValue(value);
+      this.setState({
+          value:value
+      })
     }
-    /**
-* 清除图标
-* @returns 
-*/
-    renderClear() {
-        return
+    getValue(){
+        return this.state.value;
     }
+
     render() {
         let inputProps =
         {
@@ -41,8 +42,8 @@ class PickerInput extends React.PureComponent {
         }//文本框的属性
         return <React.Fragment>
             <i className={"combobox-clear icon-clear"} onClick={this.props.onClear} style={{ display: this.props.readOnly ? "none" : !this.props.value ? "none" : "inline" }}></i>
-            <i className={"comboxbox-icon icon-drop-down " + (this.props.show ? "rotate" : "")} onClick={this.props.onClick}></i>
-            <BaseInput ref={this.input} {...inputProps} onClick={this.props.onClick} />
+            <i className={"comboxbox-icon icon-caret-down " + (this.props.show ? "rotate" : "")} onClick={this.props.onClick}></i>
+            <BaseInput ref={this.input} {...inputProps} value={this.state.value||""} onClick={this.props.onClick} />
         </React.Fragment>
 
     }

@@ -295,6 +295,9 @@ func.clone = function (obj) {
                 } else if (obj instanceof Date) {//对日期的复制
                     o = new Date(obj.valueOf())
                 }
+                else if(obj instanceof Map){
+                    o=new Map(obj);
+                }
 
                 else {//其他对象
                     o = {};
@@ -656,7 +659,7 @@ let DateExtends = {
      * @param {Date} startDate 开始日期
      * @param {Date} endDate 结束日期
      */
-    getDatePeriod(startDate, endDate) {
+    getDateDiffDay(startDate, endDate) {
         try {
             return (startDate * 1 - endDate * 1) / 60 / 60 / 1000 / 24;
         }
@@ -722,9 +725,9 @@ let DateExtends = {
         return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
     },
     /**
-    * 取得几个月后的日期
+    * 取得几个年后的日期
     * @param {*} date 日期
-    * @param {*} n 月数量
+    * @param {*} n 年数量
     * @returns 
     */
     getNextYear(date, n = 1) {
@@ -744,13 +747,23 @@ let DateExtends = {
         return newDate;
     },
     /**
-     * 取得几月后的日期
-     * @param {*} date 
-     * @param {*} n 
+     * 取得几天后的日期
+     * @param {*} date 日期
+     * @param {*} n 天数量
      */
     getNextDay(date, n = 1) {
         let newDate = func.clone(date);
         newDate.setDate(newDate.getDate() + n);
+        return newDate;
+    },
+     /**
+     * 取得几小时后的日期
+     * @param {*} date 日期
+     * @param {*} n 小时量
+     */
+      getNextHour(date, n = 1) {
+        let newDate = func.clone(date);
+        newDate.setHours(newDate.getHours() + n);
         return newDate;
     }
 }

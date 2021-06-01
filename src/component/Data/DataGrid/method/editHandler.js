@@ -18,9 +18,8 @@ export default  {
      * @param {*} rowData 
      * @param {*} rowIndex 
      */
-    detailHandler: function (rowData,rowIndex,event) {//执行显示详情功能
-        event.preventDefault();
-        event.stopPropagation();
+    detailHandler: function (rowData,rowIndex) {//执行显示详情功能
+       
         var key = this.getKey(rowIndex);//获取关键值
         if (key == this.state.detailIndex) {
             this.setState({
@@ -65,7 +64,7 @@ export default  {
         let newData = this.state.data;
         newData.unshift(rowData);
         this.state.addData.set(this.getKey(0), rowData);//添加到脏数据里
-        this.focusIndex = 0;
+      
         this.setState({
             detailIndex: null,
             detailView: null,
@@ -117,7 +116,7 @@ export default  {
     * @param {*} text 文本值
     * @param {*} name 对字段名
     */
-    rowEditHandler: function (rowIndex, columnIndex,headerRowIndex,headerColumnIndex, callBack, value, text, name) {  //编辑时单元格内的表单onchange的监听事件
+    tableCellEditHandler: function (rowIndex, columnIndex,headerRowIndex,headerColumnIndex, callBack, value, text, name) {  //编辑时单元格内的表单onchange的监听事件
        let  currentHeader=headerRowIndex?this.state.headers[headerRowIndex][headerColumnIndex]:this.state.headers[headerColumnIndex];
         if (currentHeader&&currentHeader.editor && typeof currentHeader.editor.edited === "function") {
             //得到新的一行数据

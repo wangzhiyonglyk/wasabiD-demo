@@ -10,59 +10,7 @@ import Msg from "../../../Info/Msg.jsx";
 import api from "wasabi-api"
 export default {
 
-   /**
-    * 
-    /**
-     * 鼠标按下事件
-    * @param {*} index 
-    * @param {*} event 
-    * @param {*} self 是否是自身的点击
-    */
-    onTRMouseDown: function (index, event,self=true) {//行事件，一定要用鼠标按下事件,不保存在状态值中，
-        if (this.props.focusAble) {
-            let realTable=document.getElementById(this.state.realTableid);
-            let trs = realTable.children[2].children;
-            let fixedTable=document.getElementById(this.state.fixedTableid);
-            let fixtrs = fixedTable&&fixedTable.children[2].children;
-            for (let i = 0; i < trs.length; i++) {
-                trs[i].className = trs[i].className && trs[i].className.replace("selected", "");//先去掉
-                if (fixtrs) {
-                    fixtrs[i].className = fixtrs[i].className && fixtrs[i].className.replace("selected", "");//先去掉
-                }
-            }
-            let node = trs[index];
-            let fixedNode = fixtrs && fixtrs[index];
-            if (node.className.indexOf("selected") > -1) {
-
-            }
-            else {
-                if(this.props.isPivot&&self){//是交叉表，但是不是自身单击
-                    setTimeout(() => {
-                        node.className = "selected" + (node.className ? " " + node.className : "");
-                    }, 100);
-                }
-                else{
-                    node.className = "selected" + (node.className ? " " + node.className : "");
-                }
-               
-            }
-            if (fixedNode && fixedNode.className.indexOf("selected") > -1) {
-
-            }
-            else if (fixedNode) {
-                if(this.props.isPivot&&self){//是交叉表，但是不是自身单击
-                    setTimeout(() => {
-                        fixedNode.className = "selected" + (fixedNode.className ? " " + fixedNode.className : "");
-                    }, 100);
-                }
-                else{
-                fixedNode.className = "selected" + (fixedNode.className ? " " + fixedNode.className : "");
-                }
-            }
-        }
-        this.focusIndex = index;//不更新状态值，否则导致频繁的更新
-
-    },
+  
   /**
    * 单击事件
    * @param {*} rowData 行数据
@@ -71,8 +19,9 @@ export default {
    * @param {*} event 
    */
     onClick: function (rowData, rowIndex,columnIndex, event) {
-        event.preventDefault();
-        event.stopPropagation();
+        this.setState({
+            focusIndex:rowIndex
+        })
         if (this.props.selectChecked == true) {
 
             let key = this.getKey(rowIndex);//获取关键字
@@ -93,7 +42,9 @@ export default {
     setClick(id) {   
         for (let i = 0; i < this.state.data.length; i++) {
             if (this.state.data[i]["id"] == id) {
-                this.onTRMouseDown(i,null,false);//由交叉表引来的单击
+                this.setState({
+                    focusIndex:i
+                })
                 break;
             }
         }
@@ -129,7 +80,6 @@ export default {
         }
         this.props.onDoubleClick&&this.props.onDoubleClick(rowData, rowIndex,columnIndex);
     },
-
     /**
      * 真实表格的鼠标滚动事件，用于固定列左右移动的时候
      */
@@ -226,7 +176,6 @@ export default {
      * @param {*} url 
      */
     reload: function (params=null, url = "") {//重新查询数据,
-        console.log("reload",params)
         url = url || this.state.url;//得到旧的url
         params=params||this.state.params;//如果不传则用旧的
         if (!url) {//没有url,不自行加载，则调用更新事件
@@ -423,17 +372,10 @@ export default {
             if (dataResult && dataResult instanceof Array) {//是数组,
                 dataResult = (this.props.pagination == true ? dataResult.slice(0, pageSize) : dataResult);
             }
-            var checkedData = this.state.checkedData;//之前被选择的数据
-            if (this.props.clearChecked == false) {//不清除之前的选择
-                for (let dataIndex = 0; dataIndex < dataResult; dataIndex++) {
-                    let currentKey = this.getKey(dataIndex, pageIndex);//得到当前的key
-                    if (checkedData.has(currentKey)) {//如果被选择则修改数据源
-                        checkedData.set(currentKey, dataResult[dataIndex]);
-                    }
-                }
-            }
+           
          
             this.setState({
+                url:url,
                 pageSize: pageSize,
                 params: func.clone(params),//这里一定要复制,只有复制才可以比较两次参数是否发生改变没有,防止父组件状态任何改变而导致不停的查询
                 pageIndex: pageIndex,
@@ -443,7 +385,6 @@ export default {
                 total: totalResult,
                 footer: footerResult,
                 loading: false,
-                checkedData: this.props.clearChecked == true ? new Map() : checkedData,
                 detailIndex: null,//重新查询要清空详情
                 detailView: null,
             })
@@ -465,20 +406,26 @@ export default {
     },
     /**
      * 获取当行的key
-     * @param {*} index 
+     * @param {*} rowIndex 
      * @param {*} pageIndex 
      */
-    getKey: function (index, pageIndex) {//todo 暂时以下标
+    getKey: function (rowIndex, pageIndex) {//todo 暂时以下标
         let key = "";
         if (!pageIndex) {
 
             pageIndex = this.state.pageIndex;
         }
-        if (index == null && index == undefined) {
+        if (rowIndex == null && rowIndex == undefined) {
             console.log(new Error("index 值传错"));
         }
         else {
-            key = pageIndex.toString() + "-" + index.toString();//默认用序号作为关键字
+            if(this.props.priKey){
+                    key= this.state.data[rowIndex][this.props.priKey];
+            }
+            else{
+                key = pageIndex.toString() + "-" + rowIndex.toString();//默认用序号作为关键字
+            }
+           
         }
         return key;
     },
@@ -489,6 +436,7 @@ export default {
      * @param {*} value 
      */
     onChecked: function (index, value) {//选中事件
+     
         let checkedData = (this.state.checkedData);//已经选中的行
         let checkedIndex = (this.state.checkedIndex);//已经选中的行的序号，用于导出
         if (this.props.singleSelect == true) {//单选则清空

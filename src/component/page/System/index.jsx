@@ -28,13 +28,10 @@ class System extends React.Component {
   }
 
   componentDidMount() {
-
-
     let receiveMessage=(event) =>{
-      console.log("event", event)
       if(event.data){
-        let data=JSON.parse(event.data);
-        if(data.type=="openTab"){
+        let data=(event.data);
+        if(data&&data.type=="openTab"){
           
           this.openMenu(data)
         }

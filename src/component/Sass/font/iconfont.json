@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "18592618",
+      "name": "stop",
+      "font_class": "stop",
+      "unicode": "e6ae",
+      "unicode_decimal": 59054
+    },
+    {
       "icon_id": "7409516",
       "name": "Refresh",
       "font_class": "refresh",

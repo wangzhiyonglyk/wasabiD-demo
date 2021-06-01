@@ -15,10 +15,9 @@ class Text extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        
-            oldPropsValue: "",//保存用于匹配
+            oldPropsValue:null,//保存用于匹配
             value: this.props.value || "",
-            show:false,
+            show: false,
         }
         this.onChange = this.onChange.bind(this);
         this.keyDownHandler = this.keyDownHandler.bind(this);
@@ -29,8 +28,8 @@ class Text extends Component {
         this.getValue = this.getValue.bind(this);
         this.setValue = this.setValue.bind(this);
         this.onSelect = this.onSelect.bind(this);
-        this.search = this.search.bind(this);
-        this.hidePicker=this.hidePicker.bind(this)
+        this.onSearch = this.onSearch.bind(this);
+        this.hidePicker = this.hidePicker.bind(this)
 
     }
 
@@ -44,22 +43,21 @@ class Text extends Component {
         }
         return null;
     }
-    
-      /**
-     * 隐藏下拉框
-     * @param {*} event 
-     */
-       hidePicker(event) {
-           console.log("even")
-        if (event.target&&!dom.isDescendant(document.getElementById(this.props.containerid), event.target)) {
+
+    /**
+   * 隐藏下拉框
+   * @param {*} event 
+   */
+    hidePicker(event) {
+        if (event.target && !dom.isDescendant(document.getElementById(this.props.containerid), event.target)) {
             this.setState({
                 show: false
             });
 
             try {
 
-                document.removeEventListener("click", this.hidePicker,fal);
-             
+                document.removeEventListener("click", this.hidePicker, fal);
+
             }
             catch (e) {
 
@@ -67,7 +65,7 @@ class Text extends Component {
         }
     }
     onChange(event) {
-        let value = event.target.value.toString();//除去空格
+        let value = event.target.value.toString();
         let isvalidate = true;
         if (this.props.type == "number" || this.props.type == "integer") {
             /**
@@ -108,24 +106,26 @@ class Text extends Component {
 
     }
     keyUpHandler(event) {
-        if (event.keyCode === 13) {
-            this.search();
-        }
+        setTimeout(() => {
+            if(this.state.value.trim()==event.target.value.trim()){
+                this.onSearch();
+            }
+        }, 300);
         if (this.props.onKeyUp) {
             this.props.onKeyUp(event);
         }
     }
-    search() {
+    onSearch() {
         if (this.props.url) {
             let params = {};
             params[this.props.priKey || this.props.name] = this.state.value;
             this.props.reload && this.props.reload(params)
             this.setState({
-                show:true
+                show: true
             })
         }
-        else{
-            this.props.onSearch&&this.props.onSearch(this.state.value);
+        else {
+            this.props.onSearch && this.props.onSearch(this.state.value);
         }
 
     }
@@ -148,9 +148,8 @@ class Text extends Component {
     setValue(value) {//设置值
         this.setState({
             value: value,
-            show:false,
+            show: false,
         })
-        this.props.validate && this.props.validate(value);
     }
     onSelect(value, text) {
         this.setValue(value)
@@ -187,12 +186,15 @@ class Text extends Component {
                 value={this.state.value || ""} autoComplete="off"></textarea>;
         }
         return <React.Fragment>  {control}
-            {this.props.url ||this.props.onSearch? <i className=" icon-search" onClick={this.search} style={{ cursor:"pointer", position: "absolute", right: 10, top: 15, color: "var(--primary-color" }} onClick={this.onSearch}></i> : null}
+            {(this.props.url || this.props.onSearch) ? 
+            <i disabled={this.props.disabled} className=" icon-search" 
+             style={{ cursor: "pointer", position: "absolute", right: 10, top: 15, color: "var(--primary-color)" }}
+              onClick={this.onSearch}></i> : null}
             {this.props.children}
             <div className="wasabi-select">  <SelectbleList
                 show={this.state.show}
-                value={this.state.value}
-                data={this.props.data}
+                value={this.state.value||""}
+                data={this.props.data||[]}
                 onSelect={this.onSelect.bind(this)}
 
             ></SelectbleList> </div>

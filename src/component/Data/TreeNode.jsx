@@ -103,6 +103,20 @@ class TreeNode extends Component {
         }
         this.props.onDoubleClick && this.props.onDoubleClick(id, text, children, row)
     }
+    /**
+     * 清除勾选
+     */
+     clearChecked(){
+        for(let i=0;i<this.treeNodesRef.length;i++){
+            let cref=this.treeNodesRef[i].current;
+            if(cref){
+                cref.clearChecked();
+            }
+        }
+        this.setState({
+            checked:false
+        })
+    }
 
     /**
      * 自身的勾选动作(为了区分tree传来的onchecked)
@@ -678,7 +692,9 @@ class TreeNode extends Component {
 
         }
 
-
+        if(this.state.id=="66"){
+            console.log("66")
+        }
         //节点元素
         let nodeEement = [<Input key="1" type={this.props.checkStyle || "checkbox"}
             hide={this.props.checkAble ? false : true}

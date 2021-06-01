@@ -12,57 +12,55 @@ class Tabs extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            navid:func.uuid(),//id
+            navid: func.uuid(),//id
             activeIndex: this.props.activeIndex,
             oldActiveIndex: this.props.activeIndex,//保留旧的
-            childrenlength:React.Children.count(this.props.children)||0,//旧的子节点个数
+            childrenlength: React.Children.count(this.props.children) || 0,//旧的子节点个数
         }
         this.tabClickHandler = this.tabClickHandler.bind(this);
         this.onClose = this.onClose.bind(this);
     }
 
-    static getDerivedStateFromProps(props, state)
-    {  
-        let activeIndex=state.activeIndex;
-        if (props.children.length >state.childrenlength) {
-            activeIndex = props.children.length - 1
-        }
-        else  if (props.activeIndex!=state.oldActiveIndex) {
-            activeIndex=props.activeIndex;//强行刷新
-        }
+    static getDerivedStateFromProps(props, state) {
+        let newState = {};
+        if (React.Children.count(props.children) > state.childrenlength) {
+            newState.activeIndex = props.children.length - 1
 
-      return {
-            activeIndex: activeIndex,
-            childrenlength:props.children.length||0
         }
+        else if (props.activeIndex != state.oldActiveIndex) {
+            newState.activeIndex = props.activeIndex;//强行刷新
+        }
+        newState.childrenlength = React.Children.count(props.children) || 0
+        return newState;
     }
-    componentDidMount(){
 
-    }
     tabClickHandler(index, event) {
-
         //页签单击事件
         this.setState({
             activeIndex: index
         })
-        this.props.tabClick&&this.props.tabClick(index)
+        this.props.tabClick && this.props.tabClick(index)
     }
-    onClose(index) {
+    onClose(index,event) {
+        event.stopPropagation();//阻止事件，
+        this.setState({
+            activeIndex: index - 1
+        })
         this.props.onClose && this.props.onClose(index, this.state.activeIndex);
     }
-    changeActive(index){
-        if(this.props.children&&index>-1&&index< React.Children.count(this.props.children)){
+    changeActive(index) {
+        if (this.props.children && index > -1 && index < React.Children.count(this.props.children)) {
             this.setState({
-                activeIndex:index
+                activeIndex: index
             })
-            this.props.tabClick&&this.props.tabClick(index)
+            this.props.tabClick && this.props.tabClick(index)
         }
-     
+
     }
     render() {
-        return (    
-            <div className={"wasabi-tabs "+this.props.className} style={this.props.style} >
-                <div  className={"wasabi-tab-nav "} id={this.state.navid} >
+        return (
+            <div className={"wasabi-tabs " + this.props.className} style={this.props.style} >
+                <div className={"wasabi-tab-nav "} id={this.state.navid} >
                     {
 
                         React.Children.map(this.props.children, (child, index) => {
@@ -72,7 +70,7 @@ class Tabs extends React.Component {
                                 return <div key={index} onClick={this.tabClickHandler.bind(this, index)} className={"wasabi-tab " + this.props.theme + " " + (this.state.activeIndex == index ? "active " : "")} >
                                     <i className={"" + iconCls} style={{ marginRight: 5 }}></i>
                                     {child.props.title}
-                                    <i className="tab-icon icon-close" style={{display:child.props.closeAble?"inline":"none"}} onClick={this.onClose.bind(this, index)}></i>
+                                    <i className="tab-icon icon-close" style={{ display: child.props.closeAble ? "inline" : "none" }} onClick={this.onClose.bind(this, index)}></i>
                                 </div>
                             }
                             return null;
@@ -95,8 +93,8 @@ class Tabs extends React.Component {
 }
 
 Tabs.propTypes = {
-    className:PropTypes.string,
-    style:PropTypes.object,
+    className: PropTypes.string,
+    style: PropTypes.object,
     theme: PropTypes.oneOf([//主题
         "primary",
         "default",
@@ -110,12 +108,12 @@ Tabs.propTypes = {
     tabClick: PropTypes.func,//单击事件
 };
 Tabs.defaultProps = {
-    className:"",
-    style:{},
+    className: "",
+    style: {},
     theme: "primary",
     activeIndex: 0,
     onClose: null,
-    tabClick:null
+    tabClick: null
 
 };
 export default Tabs;

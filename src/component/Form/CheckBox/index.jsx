@@ -14,19 +14,20 @@ class CheckBox extends React.Component {
         super(props);
         this.state = {
             text: "",
-            value:"",
-            oldPropsValue:"",//保存初始化的值
+            value: "",
+            oldPropsValue: null,//保存初始化的值
         }
-        this.setValue=this.setValue.bind(this);
-        this.getValue=this.getValue.bind(this);
-        this.onClear=this.onClear.bind(this);
+        this.setValue = this.setValue.bind(this);
+        this.getValue = this.getValue.bind(this);
+        this.onClear = this.onClear.bind(this);
         this.onSelect = this.onSelect.bind(this);
+        this.isChecked = this.isChecked.bind(this);
     }
     static getDerivedStateFromProps(props, state) {
         if (props.value != state.oldPropsValue) {//父组件强行更新了            
             return {
-                value: props.value||"",
-                text:propsTran.processText(props.value, props.data).join(","),
+                value: props.value || "",
+                text: propsTran.processText(props.value, props.data).join(","),
                 oldPropsValue: props.value
             }
         }
@@ -37,20 +38,30 @@ class CheckBox extends React.Component {
             value: value,
             text: propsTran.processText(value, this.props.data).join(",")
         })
-        this.props.validate&&this.props.validate(value);
-        }
+        this.props.validate && this.props.validate(value);
+    }
     getValue() {
         return this.state.value;
     }
+    /**
+     * 清除事件
+     */
     onClear() {
         this.setState({
             value: "",
             text: "",
         })
-        this.props.validate&&this.props.validate("");
+        this.props.validate && this.props.validate("");
         this.props.onSelect && this.props.onSelect("", "", this.props.name, {});
     }
-    onSelect(value="", text, row) {//选中事件
+    /**
+     * 选择事件
+     * @param {*} value 
+     * @param {*} text 
+     * @param {*} row 
+     * @returns 
+     */
+    onSelect(value = "", text, row) {//选中事件
         if (this.props.readOnly) {
             return;
         }
@@ -60,13 +71,13 @@ class CheckBox extends React.Component {
         newText = newText ? newText.split(",") : [];
         if (newValue.indexOf(value.toString()) > -1) {
             newValue.splice(newValue.indexOf(value.toString()), 1);
-            try{
+            try {
                 newText.splice(newText.indexOf(text.toString()), 1);
             }
-            catch(e){
+            catch (e) {
 
             }
-           
+
         }
         else {
             newValue.push(value);
@@ -76,7 +87,7 @@ class CheckBox extends React.Component {
             value: newValue.join(","),
             text: newText.join(",")
         })
-        this.props.validate&&this.props.validate(newValue.join(","));
+        this.props.validate && this.props.validate(newValue.join(","));
         this.props.onSelect && this.props.onSelect(newValue.join(","), newText.join(","), this.props.name, row);
 
     }
@@ -89,23 +100,22 @@ class CheckBox extends React.Component {
         }
         return false;
     }
-
+    isChecked(child) {
+        let checked = false;
+        if ((this.state.value != null && this.state.value != undefined) && (("," + this.state.value.toString() + ",").indexOf("," + child[this.props.valueField ? this.props.valueField : "value"] + ",") > -1)) {
+            checked = true;
+        }
+        return checked;
+    }
     render() {
         let control = null;
-        if (this.props.data&&this.props.data instanceof Array) {
+        if (this.props.data && this.props.data instanceof Array) {
             control = this.props.data.map((child, i) => {
-                let checked = false;
-                if ((this.state.value != null && this.state.value != undefined) && (("," + this.state.value.toString() + ",").indexOf("," + child[this.props.valueField ? this.props.valueField : "value"] + ",") > -1)) {
-                    checked = true;
-                }
-                let subProps = {
-                    checked: checked,//是否为选中状态
-                    readOnly: this.props.readOnly == true ? "readOnly" : null,
-                }
-                return <li style={this.props.style} className={this.props.className} key={i} onClick={this.onSelect.bind(this, child.value, child.text, child)}  >
-                    <input type="checkbox" id={"checkbox" + this.props.name + child.value} className={!checked && this.props.half ? "checkbox halfcheck" : "checkbox"}  {...subProps} onChange={() => { }}></input>
-                    <label className="checkbox-label" checked={checked} readOnly={this.props.readOnly || this.props.disabled} ></label>
-                    <div className={"checktext " + (checked ? " checked" : "")} >{child.text}</div>
+                let checked = this.isChecked(child);
+                return <li key={i} onClick={this.onSelect.bind(this, child.value, child.text, child)}  >
+                    <input type="checkbox" className={!checked && this.props.half ? "checkbox halfcheck" : "checkbox"} checked={checked} onChange={() => { }}></input>
+                    <label className="checkbox-label" readOnly={this.props.readOnly} ></label>
+                    <div className={"checktext " + (checked ? " checked" : "")} readOnly={this.props.readOnly} >{child.text}</div>
                 </li >
             });
 

@@ -8,6 +8,7 @@
  *2020-11月 统一修改bug
  2020-12-19开始 重新扩展表格功能，扩展表头，表尾 固定表头，拖动列，固定列，高度，宽表的适应，编辑，粘贴，导入excel等功能 将表格拆分更细
  desc 简单表头，与复杂表头是为了处理兼容性问题
+ 2021-05-28 创建table组件， 重新改造datagrid，将view,event,data分离，组件单一责任原则
  */
 
 import React, { Component } from 'react';
@@ -34,12 +35,7 @@ import pasteExtend from './method/pasteExtend.js';
  * ui处理
  */
 import render from "./render"
-import SingleHeader from "./Header/SingleHeader"
-import ComplexHeader from "./Header/ComplexHeader"
-import ColGroup from "./Body/ColGroup"
-import SingleBody from "./Body/SingleBody";
-import ComplexBody from "./Body/ComplexBody";
-
+import Msg from "../../Info/Msg"
 /**
  * 样式
  */
@@ -49,14 +45,15 @@ class DataGrid extends Component {
     constructor(props) {
         super(props);
         this.containerWidth = 0;//表格的宽度 
-        this.state = {      
+        this.state = {
             fixedthcontainerid: func.uuid(),//固定表头容器
             fixedTableContainerid: func.uuid(),//固定表格的容器
             fixedTableid: func.uuid(),//固定的表格
             realTableContainerid: func.uuid(),//真实表格容器
             realTableid: func.uuid(),//真实表格
-            url: this.props.url,
-            params:null, //参数
+            url:null,
+            rawUrl:null,
+            params: null, //参数
             rawParams: null,//保留旧的，用于对比
             pageIndex: this.props.pageIndex,//页号
             pageSize: this.props.pageSize,//分页大小
@@ -103,11 +100,12 @@ class DataGrid extends Component {
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};//新的状态值
-        if ((props.url!=state.url) ||(props.params &&
+        if ((props.url != state.rawUrl) || (props.params &&
             func.diff(props.params, state.rawParams))) {//父如果参数有变
             newState = {
                 reloadData: true,
                 url: props.url,
+                rawUrl:props.url,
                 rawParams: func.clone(props.params),
                 params: func.clone(props.params),
             }
@@ -142,7 +140,7 @@ class DataGrid extends Component {
                         //有固定表头
                         if (props.fixedHeaders[0] instanceof Array || (props.headers && props.headers instanceof Array && props.headers[0] instanceof Array)) {
                             //二维数组不支持
-                            Msg.error("有固定列目前只支持一维数组格式的表头");
+                            Msg.error("fixedHeaders目前只支持一维数组格式的headers");
                             newState.fixedHeaders = [];//清除
                         }
                         else {
@@ -158,8 +156,8 @@ class DataGrid extends Component {
                     }
                 }
             }
-            if (newState.headers&&func.diffOrder(newState.headers, state.headers)) {
-              
+            if (newState.headers && func.diffOrder(newState.headers, state.headers)) {
+
                 newState.adjustHeight = true;//表头有变化，调整宽度
             }
         }
@@ -200,29 +198,31 @@ class DataGrid extends Component {
         if (this.state.adjustHeight) {
             this.computeHeaderStyleAndColumnWidth();//需要调整宽度
         }
-
     }
     componentDidMount() {
-        if (this.state.url) {
-            //如果存在url,
-            this.updateHandler(
-                this.state.url,
-                this.state.pageSize,
-                this.state.pageIndex,
-                this.state.sortName,
-                this.state.sortOrder,
-                this.state.params,
-            );
+        if (this.state.reloadData) {
+       
+            this.setState({
+                reloadData: false,
+            })
+            this.reload();
         }
         else {
 
         }
 
-        this.computeHeaderStyleAndColumnWidth();
+
         //监听window.resize事件
         window.onresize = () => {
             this.computeHeaderStyleAndColumnWidth();//重新计算一下宽度
         }
+        setTimeout(() => {
+            let containerWidth = document.getElementById(this.state.realTableContainerid).getBoundingClientRect().width;
+            if (containerWidth > this.containerWidth) {
+                this.computeHeaderStyleAndColumnWidth();
+            }
+
+        }, 300);
     }
 
     /**
@@ -232,7 +232,6 @@ class DataGrid extends Component {
     computeHeaderStyleAndColumnWidth() {
         //数据网格的宽度
         this.containerWidth = document.getElementById(this.state.realTableContainerid).getBoundingClientRect().width;
-
         this.containerWidth -= 2;//减去两个像素防止横向滚动条
         this.columnSum = 0;//总列数
         this.fixedcolumnSum = 0;//固定列的总列数
@@ -349,6 +348,7 @@ class DataGrid extends Component {
             //防止父组件被隐藏了，datagrid无法得到真实的宽度
             this.timeout = setTimeout(this.computeHeaderStyleAndColumnWidth, 1000)
         }
+        console.log()
         this.setState({
             adjustHeight: false,//调整完成
         })
@@ -362,14 +362,12 @@ class DataGrid extends Component {
         let height = style.height;//通过高度来判断是否渲染固定的表头
         style.height = null;
         return (
-            /* excel粘贴事件 注册鼠标按下事件，从而隐藏菜单*/
             <div
                 className={'wasabi-grid' + (this.props.className || "") + (this.state.fixedHeaders.length > 0 ? " fixedHeader" : "")}
-            
                 onPaste={this.onPaste}
                 style={style}
             >
-                 { this.renderGrid(height)}  
+                { this.renderGrid(height)}
             </div>
         );
     }
@@ -419,6 +417,7 @@ DataGrid.propTypes = {
     /**
      * ajax请求参数
      */
+    priKey:PropTypes.string,//主键key
     url: PropTypes.string, //ajax地址
     updateUrl: PropTypes.string, //列更新的地址
     httpType: PropTypes.string,//请求类型
@@ -426,7 +425,7 @@ DataGrid.propTypes = {
     httpHeaders: PropTypes.object,//请求的头部
     params: PropTypes.object, //查询条件
     uploadUrl: PropTypes.string,//excel导入的时候地址
-
+    
     /**
      * 数据源
      */
@@ -463,7 +462,6 @@ DataGrid.defaultProps = {
     focusAble: true,
     borderAble: true,
     editAble: false,
-    clearChecked: true, //是否清空选择的
     selectChecked: false,
     exportAble: true,
 
@@ -520,6 +518,7 @@ DataGrid.defaultProps = {
     isPivot: false,
 };
 
-mixins(DataGrid, [render, SingleHeader, ComplexHeader, ColGroup, SingleBody, ComplexBody, eventHandler, editHandler, staticMethod, pasteExtend]);
+mixins(DataGrid, [render, eventHandler,
+    editHandler, staticMethod, pasteExtend]);
 
 export default DataGrid;

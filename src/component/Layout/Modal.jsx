@@ -15,13 +15,22 @@ class Modal extends React.Component {
         super(props);
         this.resizeref = React.createRef();
         let style = (this.props.style && func.clone(this.props.style)) || {};
-        let width = (this.props.style && this.props.style.width) ? parseInt(this.props.style.width) : 800;
-        let height = (this.props.style && this.props.style.height) ? parseInt(this.props.style.height) : 400;
+        let width = (this.props.style && this.props.style.width) ? (this.props.style.width) : 800;
+        let height = (this.props.style && this.props.style.height) ? (this.props.style.height) : 400;
         style.width = width;
         style.height = height;
-        style.left = style.left || "calc(50% - " + (width / 2).toFixed(2) + "px)";
-        style.top = height > 600 ? "20px" : "100px";
-        style.animationDuration = height > 600 ? "0.5s" : "0.3s";
+        style.left = style.left || "calc(50% - " + (parseInt(width) / 2).toFixed(2) +(typeof width==="string"&&width.indexOf("%")>-1?"%)": "px)");
+        if(typeof height==="number"&& height<600){
+            style.top="100px";
+        }
+      
+        else if( typeof height==="string"&& height=="100%")
+        {
+            style.top="0px";
+        }
+        else {
+            style.top="40px";
+        }
         this.state = {
             headerid: func.uuid(),
             title: this.props.title,
@@ -38,7 +47,8 @@ class Modal extends React.Component {
         this.cancelHandler = this.cancelHandler.bind(this);
     }
     componentDidMount() {
-        document.addEventListener("mousedown", this.mouseDownHandler)
+      let headercontrol=  document.getElementById(this.state.headerid);
+      headercontrol.addEventListener("mousedown", this.mouseDownHandler)
     }
 
     close() {//关闭事件
@@ -75,10 +85,7 @@ class Modal extends React.Component {
      * @param {*} event 
      */
     mouseDownHandler(event) {
-
-
-        if (dom.isDescendant(document.getElementById(this.state.headerid), event.target) || event.target.className == "wasabi-modal-header") {
-            document.addEventListener("mousemove", this.mouseMoveHandler)
+           document.addEventListener("mousemove", this.mouseMoveHandler)
             document.addEventListener("mouseup", this.mouseUpHandler)
 
             //记住原始位置
@@ -87,9 +94,7 @@ class Modal extends React.Component {
             let target = this.resizeref.current.target();
             this.position = target.getBoundingClientRect();
 
-        } else {
-            this.position = null;
-        }
+        
 
     }
 

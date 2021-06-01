@@ -9,17 +9,19 @@
   position: relative;
   margin-top:5px;
   padding-left: 4px;
-  padding-right: 24px;
+  padding-right: 10px;
+  height: 40px;
+  line-height: 40px;
 }
 
 
   .pagination-info{
     float: left;
-    padding-top: 5px;
   }
   .pagination-number{
     float: right;
     text-align: right;
+    height: 40px;
   }
   .wasabi-pagination .pagination
   {

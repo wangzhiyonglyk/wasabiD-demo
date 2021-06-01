@@ -125,7 +125,13 @@ function loadDataHoc(Widget, type = "select") {
         getChecked(){
             return this.input.current.getChecked && this.input.current.getChecked();
         }
-
+        /**
+         * 清除勾选
+         * @returns 
+         */
+        clearChecked(){
+            return this.input.current.clearChecked && this.input.current.clearChecked();
+        }
         /**
      * 加载数据
      * @param {*} url 

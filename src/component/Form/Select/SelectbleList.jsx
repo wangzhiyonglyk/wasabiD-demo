@@ -1,16 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
+import func from "../../libs/func.js";
+import dom from "../../libs/dom"
 class SelectbleList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            pickerid:func.uuid(),
         }
     }
     onRemove(index,event){
         event.stopPropagation();
         this.props.onRemove&&this.props.onRemove(index);
     }
+    componentDidUpdate() {
+        dom.scrollVisible(document.getElementById( this.state.pickerid));//20是加上多余被挡的
+      }
     render() {
         let control = null;
         if (this.props.data && this.props.data.length > 0) {
@@ -54,7 +59,7 @@ class SelectbleList extends React.Component {
                 </ul>
             );
         }
-      return   <div className={"dropcontainter  select"} style={{ display: this.props.show == true ? "block" : "none" }}   >
+      return   <div id={this.state.pickerid} className={"dropcontainter  select"} style={{ display: this.props.show == true ? "block" : "none" }}   >
             {control}</div>
     }
 

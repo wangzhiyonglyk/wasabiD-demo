@@ -31,7 +31,7 @@ class Select extends Component {
             text: "",
             //在可以自由添加的时候，清除输入，不会清除选择项
             inputText: "",//输入框的值默认传下来的文本值
-            oldPropsValue: "",//保存初始化的值
+            oldPropsValue: null,//保存初始化的值
         };
         this.showPicker = this.showPicker.bind(this);
         this.hidePicker = this.hidePicker.bind(this);
@@ -79,7 +79,7 @@ class Select extends Component {
             text: text,
             inputText: text,
         })
-        this.input.current.setValue(text);
+      
     }
     /**
      * 获取值
@@ -119,7 +119,6 @@ class Select extends Component {
             this.setState({
                 show: false
             });
-
             try {
 
                 document.removeEventListener("click", this.hidePicker);
@@ -275,10 +274,8 @@ class Select extends Component {
         });
         return formatValue;
     }
-
-
     /***
-     * 
+     * 输入框的单击事件
      */
     onClick(event) {
         this.showPicker(event);
@@ -324,7 +321,6 @@ class Select extends Component {
                 * 注意了，这里多了一个inputText值
                 */  
   
-                 this.input.current.setValue(inputText.join(","));
                 this.props.onSelect && this.props.onSelect(newValue.join(","), newText.join(","), this.props.name, row);
 
 
@@ -338,11 +334,6 @@ class Select extends Component {
                     text: newText,
                     inputText: newText
                 });
-                /**
-           * 注意了，这里多了一个inputText值
-           */
- 
-                 this.input.current.setValue(inputText);
                 this.props.onSelect && this.props.onSelect(newValue, newText, this.props.name, row);
             }
 
@@ -381,7 +372,6 @@ class Select extends Component {
             show: true,
         })
         this.showPicker();
-        this.input.current.setValue("");
         this.props.onSelect && this.props.onSelect("", "", this.props.name);
 
     }
@@ -435,7 +425,6 @@ class Select extends Component {
                 placeholder={this.props.placeholder}
                 sortType={this.state.sortType}
                 readOnly={this.props.readOnly}
-                required={this.props.required}
                 onChange={this.onChange.bind(this)}
                 onClear={this.onClear.bind(this)}
                 onKeyUp={this.keyUpHandler.bind(this)}

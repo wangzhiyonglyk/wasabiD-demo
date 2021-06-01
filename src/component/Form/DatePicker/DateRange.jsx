@@ -12,8 +12,6 @@ class DateRange extends React.PureComponent {
     constructor(props) {
         super(props)
     }
-
-
     onClick(type) {
         let secondDate = new Date();
         let firstDate;

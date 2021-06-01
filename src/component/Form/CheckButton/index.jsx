@@ -22,6 +22,7 @@ class CheckButton extends React.Component {
         this.getValue = this.getValue.bind(this);
         this.onClear = this.onClear.bind(this);
         this.onSelect = this.onSelect.bind(this);
+        this.isChecked = this.isChecked.bind(this);
     }
     static getDerivedStateFromProps(props, state) {
         if (props.value != state.oldPropsValue) {//父组件强行更新了            
@@ -49,7 +50,7 @@ class CheckButton extends React.Component {
         })
         this.props.onSelect && this.props.onSelect("", "", this.props.name, {});
     }
-    onSelect(value="", text, row) {//选中事件
+    onSelect(value = "", text, row) {//选中事件
         if (this.props.readOnly) {
             return;
         }
@@ -87,14 +88,19 @@ class CheckButton extends React.Component {
         }
         return false;
     }
+    isChecked(child) {
+        let checked = false;
+        if ((this.state.value != null && this.state.value != undefined) && (("," + this.state.value.toString() + ",").indexOf("," + child[this.props.valueField ? this.props.valueField : "value"] + ",") > -1)) {
+            checked = true;
+        }
+        return checked;
+    }
+
     render() {
         let control = null;
         if (this.props.data && this.props.data instanceof Array) {
             control = this.props.data.map((child, i) => {
-                let checked = false;
-                if ((this.state.value != null && this.state.value != undefined) && (("," + this.state.value.toString() + ",").indexOf("," + child[this.props.valueField ? this.props.valueField : "value"] + ",") > -1)) {
-                    checked = true;
-                }
+                let checked = this.isChecked(child);
                 return <Button className={child.className} style={child.style} theme={checked ? this.props.theme || "primary" : "default"} key={i}
                     onClick={this.props.readOnly ? () => { } : this.onSelect.bind(this, child.value, child.text, child)}
                 >{child.text}</Button>

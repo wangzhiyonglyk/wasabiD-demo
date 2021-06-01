@@ -6,71 +6,82 @@ desc:日期范围选择控件 todo 这里要改
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import propsTran from "../../libs/propsTran";
-import func from "../../libs/func";
 export default function (WrappedComponent) {
     class DateRangeHoc extends Component {
-
         constructor(props) {
             super(props)
-            this.state = propsTran.setDateRangeDefaultState(props);
+            this.state = propsTran.setDateRangeDefaultState(props);//初始化状态值
             this.firstMonthHandler = this.firstMonthHandler.bind(this);
             this.secondMonthHandler = this.secondMonthHandler.bind(this);
             this.firstHandler = this.firstHandler.bind(this);
             this.secondHandler = this.secondHandler.bind(this);
-            this.beginTimeHandler=this.beginTimeHandler.bind(this);
-            this.endTimeHandler=this.endTimeHandler.bind(this);
-            this.onSelectHandler = this.onSelectHandler.bind(this);
-            this.cancelHandler = this.cancelHandler.bind(this);
+            this.beginTimeHandler = this.beginTimeHandler.bind(this);
+            this.endTimeHandler = this.endTimeHandler.bind(this);
+            this.onSelect = this.onSelect.bind(this);
         }
 
         static getDerivedStateFromProps(props, state) {
-           
-            if ((props.firstDate || "") +(props.firstTime||"")+ (props.secondDate || "")+(props.secondTime||"") != state.oldPropsValue) {
+
+            if ((props.firstDate || "") + (props.firstTime || "") + (props.secondDate || "") + (props.secondTime || "") != state.oldPropsValue) {
                 return propsTran.setDateRangeDefaultState(props);
             }
             return null;
 
         }
+        /**
+         * 第一个日期的年与月选择事件
+         * @param {*} year 
+         * @param {*} month 
+         */
         firstMonthHandler(year, month) {
-            let newDate=new Date(year,month,1);
-            let oldDate=new Date(this.state.second_year,this.state.second_month-1,1);
-            if(oldDate>newDate){
-                newDate=oldDate;
+            let newDate = new Date(year, month, 1);
+            let oldDate = new Date(this.state.second_year, this.state.second_month - 1, 1);
+            if (oldDate > newDate) {
+                newDate = oldDate;
             }
             this.setState({
                 first_year: year,
                 first_month: month,
-                second_year:newDate.getFullYear(),
-                second_month:newDate.getMonth()+1,
-                first_day: null,
-                second_day:null,
-                first_rangeBegin:null,
-                first_rangeEnd: null,
-                second_rangeBegin:null,
-                second_rangeEnd:null,
-            })
-        }
-        secondMonthHandler(year, month) {
-            let newDate=new Date(year,month-2,1);
-            let oldDate=new Date(this.state.first_year,this.state.first_month-1,1)
-             if(oldDate<newDate){
-                 newDate=oldDate;
-             }
-        
-            this.setState({
-                first_year:newDate.getFullYear(),
-                first_month:newDate.getMonth()+1,
-                second_year: year,
-                second_month: month,
+                second_year: newDate.getFullYear(),
+                second_month: newDate.getMonth() + 1,
                 first_day: null,
                 second_day: null,
-                first_rangeBegin:null,
+                first_rangeBegin: null,
                 first_rangeEnd: null,
                 second_rangeBegin: null,
                 second_rangeEnd: null,
             })
         }
-        firstHandler(value) {//第一个日期选择事件
+        /**
+         * 第二个日期的年与月选择事件
+         * @param {*} year 
+         * @param {*} month 
+         */
+        secondMonthHandler(year, month) {
+            let newDate = new Date(year, month - 2, 1);
+            let oldDate = new Date(this.state.first_year, this.state.first_month - 1, 1)
+            if (oldDate < newDate) {
+                newDate = oldDate;
+            }
+
+            this.setState({
+                first_year: newDate.getFullYear(),
+                first_month: newDate.getMonth() + 1,
+                second_year: year,
+                second_month: month,
+                first_day: null,
+                second_day: null,
+                first_rangeBegin: null,
+                first_rangeEnd: null,
+                second_rangeBegin: null,
+                second_rangeEnd: null,
+            })
+        }
+        /**
+         * 第一个日期选择事件
+         * @param {*} value 值
+         */
+        firstHandler(value) {//
             if (value && value.indexOf(" ") > -1) {//有时间
                 value = value.split(" ")[0];
             }
@@ -122,10 +133,14 @@ export default function (WrappedComponent) {
 
             /*判断与后面一个的复合情况*/
             this.setState(newState, () => {
-                this.onSelectHandler(this.props.type=="daterange"?true:false);
+                this.onSelect(this.props.type == "daterange" ? true : false);
             });
         }
-        secondHandler(value) {//第二个日期的选择事件
+        /**
+         * 第二个日期的选择事件
+         * @param {*} value 
+         */
+        secondHandler(value) {//
             if (value && value.indexOf(" ") > -1) {//有时间
                 value = value.split(" ")[0];
             }
@@ -173,30 +188,42 @@ export default function (WrappedComponent) {
                 }
             }
             /*判断与后面一个的复合情况*/
-            this.setState(newState,()=>{
-                this.onSelectHandler(this.props.type=="daterange"?true:false);
-            });        
+            this.setState(newState, () => {
+                this.onSelect(this.props.type == "daterange" ? true : false);
+            });
         }
-        beginTimeHandler(time){//第一个时间选择  
+        /**
+         * 第一个时间选择
+         * @param {*} time 
+         */
+        beginTimeHandler(time) {//  
             this.setState({
                 firstTime: time,
-             
-            },()=>{
-                this.onSelectHandler(false);
+
+            }, () => {
+                this.onSelect(false);
             })
-          
+
         }
-        endTimeHandler(time) {//第二时间选择
-            this.state.secondTime=time;
+        /**
+         * 第二个时间选择
+         * @param {*} time 
+         */
+        endTimeHandler(time) {//
+            this.state.secondTime = time;
             this.setState({
                 secondTime: time,
-            
-            },()=>{
-                this.onSelectHandler(true);
+
+            }, () => {
+                this.onSelect(true);
             })
-           
+
         }
-        onSelectHandler(hide) {
+        /**
+         * 值确认事件
+         * @param {*} hide 
+         */
+        onSelect(hide) {
             let firstDate, secondDate;
             if (this.state.first_rangeBegin) {
                 firstDate = this.state.first_year + "-" + (this.state.first_month.toString().length == 1 ? "0" + this.state.first_month : this.state.first_month) + "-" + (this.state.first_rangeBegin.toString().length == 1 ? "0" + this.state.first_rangeBegin : this.state.first_rangeBegin);
@@ -212,21 +239,13 @@ export default function (WrappedComponent) {
             }
             if (this.props.onSelect) {
                 if (firstDate && secondDate) {
-                    firstDate=firstDate +(this.state.firstTime?" "+this.state.firstTime:"");
-                    secondDate=secondDate +(this.state.secondTime?" "+this.state.secondTime:"");
-                    this.props.onSelect(firstDate+","+secondDate, firstDate + "," + secondDate, this.props.name, hide);
+                    firstDate = firstDate + (this.state.firstTime ? " " + this.state.firstTime : "");
+                    secondDate = secondDate + (this.state.secondTime ? " " + this.state.secondTime : "");
+                    this.props.onSelect(firstDate + "," + secondDate, firstDate + "," + secondDate, this.props.name, hide);
                 }
             }
         }
-        cancelHandler() {
-            this.setState({
-                firstDate: "",
-                secondDate: "",
-                firstTime:"",
-                secondTime:""
-            })
-            this.props.onSelect && this.props.onSelect("", "", this.props.name, null);
-        }
+
         render() {
 
             return <WrappedComponent {...this.props} {...this.state}
@@ -236,7 +255,8 @@ export default function (WrappedComponent) {
                 secondMonthHandler={this.secondMonthHandler}
                 beginTimeHandler={this.beginTimeHandler}
                 endTimeHandler={this.endTimeHandler}
-                onSelect={this.props.onSelect}
+
+                // onSelect={this.props.onSelect}
             ></WrappedComponent>
         }
     }
@@ -255,7 +275,7 @@ export default function (WrappedComponent) {
         secondDate: "",
         firstTime: "",
         secondTime: "",
-        attachSecond:true,
+        attachSecond: true,
         onSelect: null,//
 
     };

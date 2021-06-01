@@ -9,6 +9,9 @@ class Search extends React.PureComponent {
     constructor(props) {
         super(props);
         this.input=React.createRef();
+        this.state={
+            value:this.props.value
+        }
         this.onKeyUp = this.onKeyUp.bind(this);
         this.onSearch = this.onSearch.bind(this);
     }
@@ -21,15 +24,20 @@ class Search extends React.PureComponent {
         }
     }
     setValue(value){
-        this.input.current.setValue(value);
+        this.setState({
+            value:value
+        })
     }
     getValue(){
-        return this.input.current.getValue();
+        return this.state.value
     }
     
     render() {
         return <div className={"wasabi-searchbox " + this.props.className} style={this.props.style}>
-           <BaseInput   {...this.props} ref={this.input}  onKeyUp={this.onKeyUp}></BaseInput>
+           <BaseInput   {...this.props}
+            ref={this.input} 
+            value={this.state.value||""}
+           onKeyUp={this.onKeyUp}></BaseInput>
             <i className=" icon-search" onClick={this.onSearch}></i>
         </div>
     }

@@ -19,25 +19,23 @@ desc:日期选择样式
   width: 22px;
   height: 24px;
   position: absolute;
-  right: 8px;
-  top: 10px;
+  right: 4px;
+  top: 14px;
   cursor: pointer;
   text-align: center;
   transition: all, transform .6s;
-  color: var(--border-color);
+  color: var(--icon-color);
 }
-
+.combobox .comboxbox-icon:hover{
+  color:var(--icon-hover-color);
+}
 .wasabi-form-group-body.readOnly .combobox .comboxbox-icon {
   cursor: not-allowed;
 }
 
-.combobox .comboxbox-icon:before {
-  font-size: 20px;
-}
 
 .combobox .comboxbox-icon.rotate {
-  transform: rotate(180deg) translateY(3px);
-  -webkit-transform: rotate(180deg) translateY(3px);
+  transform: rotate(180deg) translateY(10px);
 }
 
 /*清空图标*/
@@ -48,19 +46,23 @@ desc:日期选择样式
   width: 12px;
   height: 12px;
   position: absolute;
-  right: 30px;
+  right: 23px;
   top: 14px;
-  color: var(--border-color);
+  color: var(--icon-color);
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
+}
+
+.combobox .combobox-clear:hover{
+  color:var(--icon-hover-color);
 }
 
 /**/
 
- .dropcontainter {
+.dropcontainter {
   padding: 0px;
   margin: 0px;
-  ;
+  min-height: 250px;
   display: none;
   position: absolute;
   overflow: visible;
@@ -68,7 +70,7 @@ desc:日期选择样式
   top: 44px;
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+  box-shadow: var(--box-shadow);
   background-color: white;
   margin: 5px 0;
   width: 250px;
@@ -78,11 +80,11 @@ desc:日期选择样式
   width: 250px;
 }
 
- .dropcontainter.daterange {
+.dropcontainter.daterange {
   width: 600px;
 }
 
- .dropcontainter.datetimerange {
+.dropcontainter.datetimerange {
   width: 600px;
 }
 
@@ -97,7 +99,7 @@ desc:日期选择样式
   top: -17px;
 }
 
- .dropcontainter::before,  .dropcontainter::after {
+.dropcontainter::before, .dropcontainter::after {
   content: '';
   display: block;
   width: 0;

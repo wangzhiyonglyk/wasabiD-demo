@@ -33,9 +33,9 @@ class Tree extends Component {
         this.onradioChecked = this.onradioChecked.bind(this);
         this.onDoubleClick = this.onDoubleClick.bind(this);
         this.onChecked = this.onChecked.bind(this)
-        this.getChecked=this.getChecked.bind(this);
-        this.setClickNode=this.setClickNode.bind(this);
-        this.expandHandler=this.expandHandler.bind(this)
+        this.getChecked = this.getChecked.bind(this);
+        this.setClickNode = this.setClickNode.bind(this);
+        this.expandHandler = this.expandHandler.bind(this)
         //因为第一级节点没有父节点，在移除时需要树组件配合
         this.parentRemoveChild = this.parentRemoveChild.bind(this);
 
@@ -80,6 +80,23 @@ class Tree extends Component {
         }
         return data;
     }
+
+    /**
+   * 清除勾选
+   */
+    clearChecked() {
+        for (let i = 0; i < this.treeNodesRef.length; i++) {
+            let cref = this.treeNodesRef[i].current;
+            if (cref) {
+                cref.clearChecked();
+            }
+        }
+        this.setState({
+            checked: false
+        })
+
+    }
+
     /**
          * 为了给交叉表与树表格内部使用的单击事件
          * @param {*} id 
@@ -192,15 +209,7 @@ class Tree extends Component {
         })
 
     }
-    shouldComponentUpdate(nextProps, nextState) {
-        if (func.diffOrder(nextProps, this.props)) {
-            return true;
-        }
-        if (func.diff(nextState, this.state)) {
-            return true;
-        }
-        return false;
-    }
+
     render() {
         this.treeNodesRef = [];//清空
         let nodeControl = [];
@@ -211,15 +220,15 @@ class Tree extends Component {
                     isParent = true;
                 }
                 //通过输入框的值与自身的勾选情况综合判断
-                let ref=React.createRef();
+                let ref = React.createRef();
                 this.treeNodesRef.push(ref);
-                let inputValue =this.props.inputValue? this.props.inputValue.toString().split(","):[];
-                let checked = inputValue.indexOf((item.id||"").toString()) > -1 ? true : item.checked;
+                let inputValue = this.props.inputValue ? this.props.inputValue.toString().split(",") : [];
+                let checked = inputValue.indexOf((item.id || "").toString()) > -1 ? true : item.checked;
                 nodeControl.push(<TreeNode ref={ref}
                     key={"treenode-" + item[this.props.idField] + "-" + index}
                     {...this.props}
                     {...item}
-                    inputValue={this.props.inputValue||""}
+                    inputValue={this.props.inputValue || ""}
                     checked={checked}
                     id={item[this.props.idField]}
                     text={item[this.props.textField]}

@@ -1,0 +1,75 @@
+/**
+列表样式
+ */
+ @import url("../../Sass/base.css");
+ 
+
+
+/*
+表格基本样式
+*/
+ .wasabi-table {
+    clear: both;
+    max-width: none;
+    border-top: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    table-layout: fixed;
+}
+.wasabi-table td,.wasabi-table th
+{    border-bottom: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+   padding: 10px 5px;
+    vertical-align: middle;
+    box-sizing: border-box;
+    text-align:center;
+}
+/*
+没有边框的时候
+*/
+
+ .wasabi-table.table-no-bordered td {
+   border: none;
+   border-top: 1px solid #ccc;
+}
+ .wasabi-table.table-no-bordered th {
+   border: none;
+   border-bottom: 1px solid var(--border-color);
+}
+
+/*
+背景颜色
+*/
+
+ .wasabi-table > tbody > tr.selected {
+  background-color: var(--background-color);
+ }
+
+/*
+单元格样式
+*/
+ .wasabi-table-cell{
+  width: 100%;
+  box-sizing:border-box;  
+  min-height: 20px;
+  word-break:break-all;
+}
+
+.wasabi-pivot .wasabi-table .wasabi-table-cell{
+  overflow: hidden;
+  white-space:nowrap;
+  text-overflow:clip; 
+}
+.wasabi-treegrid .wasabi-table .wasabi-table-cell{
+  overflow: hidden;
+  white-space:nowrap;
+  text-overflow:clip; 
+}
+.wasabi-propertygrid .wasabi-table .wasabi-table-cell{
+  white-space:nowrap;;
+  text-overflow:clip; 
+}
+

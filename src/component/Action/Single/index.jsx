@@ -120,7 +120,7 @@ class Single extends React.Component {
                     headers={this.state.headers}
                     updateHandler={typeof this.props.pageHandler === "function" ? this.props.pageHandler : null}
                     rowNumber={true}
-                    selectAble={true}
+                    selectAble={this.props.selectAble}
                     data={this.props.data}
                 ></DataGrid>
                 <Modal style={modalStyle}
@@ -165,6 +165,7 @@ Single.propTypes = {
     editAble: PropTypes.bool,//是否可以编辑
     deleteAble:PropTypes.bool,//是否可以删除
     detailAble: PropTypes.bool,//是否可以查看详情
+    selectAble:PropTypes.bool,//是否可以勾选
     //事件
     openAddHandler: PropTypes.func,//打开新增窗口
     addHandler: PropTypes.func, //新增地址函数
@@ -191,11 +192,12 @@ Single.defaultProps = {
     dataSource: "data",
     totalSource: "total",
     attachParams: null, //默认条件为空
-    autoOp: false,
+    autoOp: true,
     addAble: true,
     deleteAble:true,
     editAble: true,
     detailAble: true,
+    selectAble:true,
     openAddHandler: null,
     addHandler: null,
     deleteHandler: null,

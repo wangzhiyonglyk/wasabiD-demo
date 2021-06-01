@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import func from "../../libs/func";
 import regs from "../../Lang/regs"
 import "./calendar.css"
+import Values from "../../Data/Pivot/Configuration/Values";
 class Time extends React.Component {
     constructor(props) {
         super(props);
@@ -22,7 +23,7 @@ class Time extends React.Component {
         minuteArr.push(0);//0放在最后，因为要隔5个拉长一点
 
         this.state = {
-            oldPropsValue:null,
+            oldPropsValue: null,
             hourVisible: true,
             hourAm: hourAm,
             hourPm: hourPm,
@@ -32,11 +33,14 @@ class Time extends React.Component {
         }
         this.getValue = this.getValue.bind(this);
         this.setValue = this.setValue.bind(this);
-      
+
         this.hourVisibleHandler = this.hourVisibleHandler.bind(this);
         this.hourClick = this.hourClick.bind(this);
         this.minuteClick = this.minuteClick.bind(this);
-        this.onClick=this.onClick.bind(this)
+        this.onClick = this.onClick.bind(this)
+        this.hourChange=this.hourChange.bind(this);
+        this.minuteChange=this.minuteChange.bind(this);
+        this.onFocus=this.onFocus.bind(this)
     }
     static getDerivedStateFromProps(props, state) {
         if (func.diff((props.hour || "") + "-" + (props.minute || ""), state.oldPropsValue)) {
@@ -44,7 +48,7 @@ class Time extends React.Component {
             let hour = props.hour != null && props.hour != undefined ? props.hour : date.getHours();
             let minute = props.hour != null && props.hour != undefined ? props.minute : date.getMinutes();
             return {
-                oldPropsValue:(props.hour || "") + "-" + (props.minute || ""),
+                oldPropsValue: (props.hour || "") + "-" + (props.minute || ""),
                 hour: hour,
                 minute: minute
             }
@@ -80,13 +84,33 @@ class Time extends React.Component {
 
     hourClick(value) {
         this.setState({
-            hour: value*1,
+            hour: value * 1,
             hourVisible: false,
         })
     }
+    hourChange(event) {
+        let value = event.target.value.toString();
+        if (!value||value&&regs.number.test(value)&&value<=23) {
+            this.setState({
+                hour: value,
+                hourVisible: true,
+            })
+        }
+        else{
+            this.setState({
+                hour: value.slice(-1),//取最后一位，方便输入
+                hourVisible: true,
+            })
+        }
+       
+
+    }
+    onFocus(event){
+        event.target.select();
+    }
     minuteClick(value) {
         this.setState({
-            minute: value*1,
+            minute: value * 1,
             hourVisible: true,
         }, () => {
             if (this.props.onSelect != null) {
@@ -96,14 +120,28 @@ class Time extends React.Component {
 
         })
     }
+    minuteChange(event) {
+        let value = event.target.value.toString();
+        if (!value||value&&regs.number.test(value)&&value<=59) {
+            this.setState({
+                minute: value,
+                hourVisible: false,
+            })
+        }  else{
+            this.setState({
+                minute: value.slice(-1),//取最后一位，方便输入
+                hourVisible: false,
+            })
+        }
+    }
     hourVisibleHandler(visible) {
         this.setState({
             hourVisible: visible
         })
     }
-    onClick(){
+    onClick() {
         let value = this.getValue();
-        this.props.onSelect&& this.props.onSelect(value, value, this.props.name, value);
+        this.props.onSelect && this.props.onSelect(value, value, this.props.name, value);
     }
     render() {
         let arotate = -90;//角度
@@ -114,7 +152,7 @@ class Time extends React.Component {
                     {
                         this.state.hourAm.map((item, index) => {
 
-                            return <a title={item} key={item} onClick={this.hourClick.bind(this,item)} className={"hour " + (item * 1 == this.state.hour ? "active" : "")} style={{
+                            return <a title={item} key={item} onClick={this.hourClick.bind(this, item)} className={"hour " + (item * 1 == this.state.hour ? "active" : "")} style={{
                                 transform: "rotate(" + (arotate + index * 30).toString() + "deg) translate(92px)"
                             }}>
                                 <span style={{ transform: "rotate(" + (spanrotate + index * -30).toString() + "deg)" }}>
@@ -124,7 +162,7 @@ class Time extends React.Component {
                     {
                         this.state.hourPm.map((item, index) => {
 
-                            return <a title={item} key={item} onClick={this.hourClick.bind(this,item)} className={"hour " + (item * 1 == this.state.hour ? "active" : "")} style={{
+                            return <a title={item} key={item} onClick={this.hourClick.bind(this, item)} className={"hour " + (item * 1 == this.state.hour ? "active" : "")} style={{
                                 transform: "rotate(" + (arotate + index * 30).toString() + "deg) translate(62px)"
                             }}>
                                 <span style={{ transform: "rotate(" + (spanrotate + index * -30).toString() + "deg)" }}>
@@ -140,7 +178,7 @@ class Time extends React.Component {
                 <div key="2" style={{ display: this.state.hourVisible ? "none" : "block" }} className="wasabi-time-circle-minute">
                     {
                         this.state.minuteArr.map((item, index) => {
-                            return <a title={item} key={item} onClick={this.minuteClick.bind(this,item)} className={"minute " + (item * 1 == this.state.minute ? "active" : "")}
+                            return <a title={item} key={item} onClick={this.minuteClick.bind(this, item)} className={"minute " + (item * 1 == this.state.minute ? "active" : "")}
                                 style={{ transform: "rotate(" + (arotate + item * 6).toString() + "deg) translate(82px)" }}
                             ><span style={{ transform: "rotate(" + (spanrotate + item * -6).toString() + "deg)" }}>{item < 10 ? "0" + item : item}</span></a>
                         })
@@ -150,9 +188,9 @@ class Time extends React.Component {
             </div>
             <div key="2" className="wasabi-time-ok">
                 <span key="1" onClick={this.hourVisibleHandler.bind(this, true)}>时:
-                <a key="2" >{this.state.hour < 10 ? "0" + this.state.hour : this.state.hour}</a></span>
+                <input key="2" onFocus={this.onFocus} style={{width:40,height:20,outline:"none"}} onChange={this.hourChange} value={this.state.hour}></input></span>
                 <span key="3" onClick={this.hourVisibleHandler.bind(this, false)}>分:
-                <a key="4" >{this.state.minute < 10 ? "0" + this.state.minute : this.state.minute}</a></span>
+                <input key="4" onFocus={this.onFocus}  style={{width:40,height:20,outline:"none"}} onChange={this.minuteChange} value={this.state.minute}></input></span>
                 <a key="5" onClick={this.onClick}>确定</a>
             </div>
             <div></div>
@@ -166,8 +204,8 @@ Time.propTypes = {
     attachSecond: PropTypes.bool,//是否带上秒
 };
 Time.defaultProps = {
-    hour:null,
+    hour: null,
     minute: null,
-    attachSecond: true,//是否带秒
+    attachSecond: false,//是否带秒
 };
 export default Time;

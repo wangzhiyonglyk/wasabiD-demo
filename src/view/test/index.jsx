@@ -111,6 +111,7 @@ class PivotPage extends React.Component {
     render() {
         return <div style={{ padding: 20 }}>
          <Button onClick={this.onClick.bind(this)}>提交</Button>
+         <Input  key="8"  required={true} type="daterange" data={this.state.data}></Input>
             {/* <Form ref={this.form}>
                 <Input  ref={this.input} key="1" valueField="id" required={true} type="picker" data={this.state.data}></Input>
                 <Input     key="2" valueField="id" multiple={true} required={true} type="select" data={this.state.data}></Input>
@@ -127,8 +128,8 @@ class PivotPage extends React.Component {
             {/* <Input type="daterange" key="1"></Input>
             <Input type="datetime" key="2"></Input> */}
 
-            <DataGrid data={this.state.data}  fixedHeaders={this.state.fixedHeaders}   headers={this.state.headers}></DataGrid>
-            <TreeGrid ref={"reff"} data={this.state.data}  headers={this.state.headers}></TreeGrid>
+            {/* <DataGrid data={this.state.data}  fixedHeaders={this.state.fixedHeaders}   headers={this.state.headers}></DataGrid> */}
+            {/* <TreeGrid ref={"reff"} data={this.state.data}  headers={this.state.headers}></TreeGrid> */}
         </div>
 
     }

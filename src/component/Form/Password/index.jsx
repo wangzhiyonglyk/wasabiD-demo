@@ -1,15 +1,16 @@
 import React from "react";
 import BaseInput from "../BaseInput"
-import Label from "../../Info/Label"
 import validateHoc from "../validateHoc";
 import propType from "../../propsConfig/propTypes.js";
 import defaultProps from "../../propsConfig/defaultProps.js";
-class Password extends React.PureComponent {
+class Password extends React.Component {
     constructor(props) {
         super(props);
         this.inputControl = React.createRef();
         this.inputdom = React.createRef();
-        this.tempValue = this.props.value || "";
+        this.state = {
+            tempValue: this.props.value || ""
+        }
         this.onChange = this.onChange.bind(this);
         this.onKeyUp = this.onKeyUp.bind(this);
         this.onBlur = this.onBlur.bind(this);
@@ -23,50 +24,74 @@ class Password extends React.PureComponent {
      */
     onChange(event) {
         let value = event.target.value;
+        let tempValue;
         if (event.target.selectionStart === value.length) {
-            this.inputControl.current.setValue(value.replace(/./g, "*"));
-            let add = value.length > this.tempValue.length;
-            this.tempValue = add ? this.tempValue + (value.slice(this.tempValue.length)) : this.tempValue.slice(0, value.length);
+
+            let add = value.length > this.state.tempValue.length;
+            tempValue = add ? this.state.tempValue + (value.slice(this.state.tempValue.length)) : this.state.tempValue.slice(0, value.length);
+            this.setState({
+                tempValue: tempValue
+            })
             this.props.onChange && this.props.onChange(tempValue, tempValue, this.props.name, event)
         }
         else {
             //禁止从中间删除
-            this.inputControl.current.setValue(this.tempValue.replace(/./g, "*"));
+
         }
 
     }
     getValue() {
-        return this.tempValue;
+        return this.state.tempValue;
     }
     setValue(value) {
-        this.inputControl.current.setValue(value.replace(/./g, "*"));
-        this.tempValue = value;
-    }
-    onKeyUp(event) {
+        this.setState({
+            tempValue: value
+        })
 
+    }
+    /************以下事件都是为了防止密码的输入出问题 ***********/
+    onKeyUp(event) {
+        //禁止移动光标
         if (event.keyCode >= 35 && event.keyCode <= 40) {
             //控制光标位置
             event.target.selectionStart = event.target.value.length;
         }
 
     }
+    /**
+     * //验证密码强度
+     * @param {*} event 
+     */
     onBlur(event) {
-        this.props.validate && this.props.validate(this.tempValue)
+
+        this.props.validate && this.props.validate(this.state.tempValue)
     }
     /**
-     * 粘贴处理
+     * 粘贴处理,禁止粘贴
      * @param {*} event 
      */
     onPaste(event) {
-        event.preventDefault();
+        event.preventDefault();//阻止默认事件
     }
+    /**
+     *  //控制光标位置
+     * @param {*} event 
+     */
     onClick(event) {
-        //控制光标位置
+
         event.target.selectionStart = event.target.value.length;
     }
     render() {
-        return <React.Fragment> <BaseInput   {...this.props} ref={this.inputControl} onBlur={this.onBlur} onPaste={this.onPaste} onChange={this.onChange}
-            onKeyUp={this.onKeyUp} onClick={this.onClick} onFocus={this.onClick} ></BaseInput>
+        return <React.Fragment> <BaseInput   {...this.props}
+            ref={this.inputControl}
+            value={this.state.tempValue.replace(/./g, "*")}
+            onBlur={this.onBlur}
+            onPaste={this.onPaste}
+            onChange={this.onChange}
+            onKeyUp={this.onKeyUp}
+            onClick={this.onClick}
+            onFocus={this.onClick}
+        ></BaseInput>
             {this.props.children} </React.Fragment>
     }
 }

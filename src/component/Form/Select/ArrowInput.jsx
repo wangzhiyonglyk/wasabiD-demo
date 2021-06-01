@@ -12,83 +12,76 @@ class ArrowInput extends React.PureComponent {
         this.state = {
 
         }
+        this.getIconProps = this.getIconProps.bind(this);
     }
-    onSort(event) {
-        event.stopPropagation();//防止冒泡
-        this.props.onSort && this.props.onSort.bind(event);
-    }
-    setValue(value) {
-        this.input.current.setValue(value);
+    /**
+     * 计算得到图标属性
+     * @param {*} type 
+     * @returns 
+     */
+    getIconProps(type) {
+        switch (type) {
+            case "sort":
+                return {
+                    title: this.props.sortType == "asc" ? "顺排" : this.props.sortType == "desc" ? "倒排" : "点击排序",
+                    style: { position: "absolute", top: 14, right: 10, color: (this.props.sortType ? "var(--icon-hover-color)" : "var(--icon-color)") },
+                    className: this.props.sortType == "asc" ? "icon-sort-asc" : this.props.sortType == "desc" ? "icon-sort-desc" : "icon-sort",
+                    onClick: this.props.onSort
+                };
+            case "chose":
+                return {
+                    className: "comboxbox-icon icon-caret-down " + (this.props.show ? "rotate" : ""),
+                    onClick: this.props.onClick
+                };
+            case "clear":
+                return {
+                    title: "清除",
+                    className: 'combobox-clear icon-clear',
+                    onClick: this.props.onClear,
+                    style: { display: this.props.readOnly ? 'none' : this.props.value == '' || !this.props.value ? 'none' : 'inline' }
+                }
+        }
+
     }
     render() {
-        let placeholder = "可搜索";
-        if ((this.props.attachAble || this.props.attachAble)) {
-            placeholder += ",回车添加"
-        }
-        let inputProps =
-        {
-            name: this.props.name,
-            title: this.props.title,
-            placeholder: this.props.placeholder,
-            readOnly: this.props.readOnly,
-            required: this.props.required,
-            className: "wasabi-input  ",//去掉className
-        }//文本框的属性
         return <div>
-
-            {this.props.attachAble ? <i title={this.props.sortType == "asc" ? "顺排" : this.props.sortType == "desc" ? "倒排" : "点击排序"}
-                style={{ position: "absolute", top: 12, right: 10, color: (this.props.sortType ? "var(--primary-color)" : "var(--border-color)") }}
-                className={this.props.sortType == "asc" ? "icon-sort-down" : this.props.sortType == "desc" ?
-                    "icon-sort-up" : "icon-sorting"} onClick={this.props.onSort}></i> :
-                <i className={"comboxbox-icon icon-drop-down " + (this.props.show ? "rotate" : "")} onClick={this.props.onClick}></i>}
-            <i
-                title="清除"
-                className={'combobox-clear icon-clear'}
-                onClick={this.props.onClear}
-                style={{
-                    display: this.props.readOnly
-                        ? 'none'
-                        : this.props.value == '' || !this.props.value
-                            ? 'none'
-                            : 'inline'
-                }}
-            ></i>
+            {this.props.attachAble ? <i {...this.getIconProps("sort")} ></i> : <i {...this.getIconProps("chose")}></i>}
+            <i {...this.getIconProps("clear")} ></i>
             <BaseInput
-                {...inputProps}
-                value={
-                    this.props.value || ""
-                }
-                onBlur={this.props.onBlur}
-                onClick={this.props.onClick}
-                onKeyUp={this.props.onKeyUp}
-                onChange={this.props.onChange}
-                autoComplete="off"
                 ref={this.input}
+                name={this.props.name}
+                title={this.props.title}
+                placeholder={this.props.placeholder + (this.props.attachAble ? "回车添加" : "")}
+                readOnly={this.props.readOnly}
+                value={this.props.value || ""}
+                onClick={this.props.onClick}
+                onChange={this.props.onChange}
+                onKeyUp={this.props.onKeyUp}
             />
         </div>
     }
 }
 
 ArrowInput.propsTypes = {
+    show: PropTypes.bool,//下拉框的状态
     sortType: PropTypes.oneOf(["", "asc", "desc"]),//排序方式
+    name: PropTypes.string,//name
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),//值
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),//提示
+    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),//
+    attachAble: PropTypes.bool,//是否可以添加
     readOnly: PropTypes.bool,//是否只读
     onChange: PropTypes.func,//change事件
     onKeyUp: PropTypes.func,//键盘事件
-    onBlur: PropTypes.func,//失去焦点
     onClick: PropTypes.func,//单击事件
     onClear: PropTypes.func,//清除事件
+    onSort: PropTypes.func,//排序事件
 
 }
 ArrowInput.defaultProps = {
     sortType: "",
     value: "",
     readOnly: false,
-    onChange: null,
-    onKeyUp: null,
-    onBlur: null,
-    onClick: null,
-    onClear: null
 }
 
 export default ArrowInput;

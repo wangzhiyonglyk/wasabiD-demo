@@ -205,8 +205,6 @@ class Calendar extends Component {
             <div className="header-text" ><div style={{ display: "inline", marginRight: 8 }} onClick={this.choseYear}>
                 <span>{this.state.year}</span>.</div>
                 <div style={{ display: "inline" }} onClick={this.choseMonth}><span>{lang.cn.Month[this.state.month - 1]}</span>.</div></div>
-            {/* <a className=" triangle-left icon-arrow-left" onClick={this.handleLeftClick}></a>
-            <a className="triangle-right icon-arrow-right" onClick={this.handleRightClick}></a> */}
         </div>
 
     }

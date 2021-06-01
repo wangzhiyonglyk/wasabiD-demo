@@ -1,87 +1,138 @@
 import React, { Component } from 'react';
+
+import GridHeader from "./View/GridHeader";
+import GridBody from "./View/GridBody"
+import GridColGroup from "./View/GridColGroup"
+import func from "../../libs/func"
 export default {
-    onScroll(event) {
-        this.onRealTableScoll(event);
-    },
 
     /**
      *渲染列的样式
      */
-    renderColGruop(fixed = false) {
-        let colgroup = [];
-        if (
-            !(this.state.data instanceof Array) ||
-            !(this.state.headers instanceof Array)
-        ) {
-            return;
-        }
-        if (this.props.detailAble) {
-            colgroup.push(<col key="wasabi-check-column" name="wasabi-check-column" width={30}></col>)
-        }
-        //处理序号列的宽度
-        if (this.props.rowNumber) {
-            colgroup.push(<col key="wasabi-order-column" name="wasabi-order-column" width={60}></col>)
-        }
-        //处理选择列的宽度
-        if (this.props.selectAble) {
-            colgroup.push(<col key="wasabi-check-column" name="wasabi-check-column" width={37}></col>)
-        }
-        if (this.state.single) {
-            colgroup = this.renderSingleColGroup(colgroup, fixed);
-        }
-        else {
+    renderColGruop() {
+     
+       return  <GridColGroup
+        single={this.state.single}
+        headers={this.state.headers}
+        selectAble={this.props.selectAble}
+        rowNumber={this.props.rowNumber}
+        detailAble={this.props.detailAble}
+        perColumnWidth={this.perColumnWidth}
+        >
 
-            colgroup = this.renderComplexColGroup(colgroup);
-        }
-        return <colgroup>{colgroup}</colgroup>;
-
+        </GridColGroup>
     },
     /**
      * 固定列的样式
      */
     renderFixedColGruop() {
-        return this.renderColGruop(true);
+        return  <GridColGroup
+        single={this.state.single}
+        headers={this.state.fixedHeaders}
+        selectAble={this.props.selectAble}
+        rowNumber={this.props.rowNumber}
+        detailAble={this.props.detailAble}
+        perColumnWidth={this.perColumnWidth}
+        >
+
+        </GridColGroup>
     },
     /**
-    * 处理表头
+    * 处理非固定表头
     */
     renderHeader() {
+        return <GridHeader
+            single={this.state.single}
+            headers={this.state.headers}
+            selectAble={this.props.selectAble}
+            singleSelect={this.props.singleSelect}
+            rowNumber={this.props.rowNumber}
+            detailAble={this.props.detailAble}
+            sortName={this.state.sortName}
+            sortOrder={this.state.sortOrder}
+            checkedAllHandler={this.checkedAllHandler}
+            isCheckAll={this.checkCurrentPageCheckedAll()}
+            onSort={this.onSort}>
+        </GridHeader>
 
-        return this.state.single ? this.renderSingleHeader() : this.renderComplexHeader();
     },
     /**
      * 处理固定列的表头
      */
     renderFixedHeader() {
-        return this.state.single ? this.renderSingleHeader(true) : this.renderComplexHeader();
+        return <GridHeader
+            single={this.state.single}
+            headers={this.state.fixedHeaders}
+            selectAble={this.props.selectAble}
+            singleSelect={this.props.singleSelect}
+            rowNumber={this.props.rowNumber}
+            detailAble={this.props.detailAble}
+            sortName={this.state.sortName}
+            sortOrder={this.state.sortOrder}
+            checkedAllHandler={this.checkedAllHandler}
+            isCheckAll={this.checkCurrentPageCheckedAll()}
+            onSort={this.onSort}>
+        </GridHeader>
     },
 
     /**
      * 处理表体
      */
     renderBody() {
-        return this.state.single ? this.renderSingleBody() : this.renderComplexBody();
+let checkedData=func.clone( this.state.checkedData);
+        return <GridBody
+            single={this.state.single}
+            headers={this.state.headers}
+            data={this.state.data}
+            priKey={this.props.priKey}
+            checkedData={checkedData}
+            pageIndex={this.state.pageIndex}
+            pageSize={this.state.pageSize}
+            selectAble={this.props.selectAble}
+            singleSelect={this.props.singleSelect}
+            rowNumber={this.props.rowNumber}
+            detailAble={this.props.detailAble}
+            editIndex={this.state.editIndex}
+            detailIndex={this.state.detailIndex}
+            detailView={this.state.detailView}
+            focusIndex={this.state.focusIndex}
+            rowAllowChecked={this.props.rowAllowChecked}
+            onClick={this.onClick}
+            onDoubleClick={this.onDoubleClick}
+            onChecked={this.onChecked}
+            tableCellEditHandler={this.tableCellEditHandler}
+            onSort={this.onSort}
+            detailHandler={this.detailHandler}
+            >
+               
+        </GridBody>
     },
     /**
      * 处理固定列的表体
      */
     renderFixedBody() {
-        return this.state.single ? this.renderSingleBody(true) : this.renderComplexBody();
+        //todo 暂时不支持详情行
+        return <GridBody
+            single={this.state.single}
+            headers={this.state.fixedHeaders}
+            data={this.state.data}
+            priKey={this.props.priKey}
+            checkedData={this.state.checkedData}
+            pageIndex={this.state.pageIndex}
+            pageSize={this.state.pageSize}
+            selectAble={this.props.selectAble}
+            singleSelect={this.props.singleSelect}
+            rowNumber={this.props.rowNumber}
+            editIndex={this.state.editIndex}
+            rowAllowChecked={this.props.rowAllowChecked}
+            onClick={this.onClick}
+            onDoubleClick={this.onDoubleClick}
+            onChecked={this.onChecked}
+            tableCellEditHandler={this.tableCellEditHandler}
+            onSort={this.onSort}>
+        </GridBody>
     },
-    /**
-     * 得到单元格内容
-     * @param {*} str 
-     * @param {*} obj 
-     */
-    substitute(str, obj) {
-        //得到绑定字段的内容
-        return str.replace(/\\?\{([^{}]+)\}/g, function (match, name) {
-            if (match.charAt(0) === '\\') {
-                return match.slice(1);
-            }
-            return obj[name] === null || obj[name] === undefined ? '' : obj[name];
-        });
-    },
+
     /**
      * 渲染总记录数
      */
@@ -364,7 +415,7 @@ export default {
     /**
      * 真实的表格
      */
-    renderRealTable(height) {
+    renderTable(height) {
         let colgroup = this.renderColGruop();
         let headerControl = this.renderHeader();
         return <div className='table-container' key="table-container"   >
@@ -372,7 +423,7 @@ export default {
                 //有高度的时候，才会出现固定表头
                 height ? <div className="table-fixedth" id={this.state.fixedthcontainerid}>
                     <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }}
-                        className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}>
+                        className={this.props.borderAble ? ' wasabi-table ' : ' wasabi-table table-no-bordered '}>
                         {
                             /**colgroup */
                             colgroup
@@ -401,7 +452,7 @@ export default {
                 <div key="table-fixed" className="table-fixed"
                     id={this.state.fixedTableContainerid} >
                     <table style={{ width: this.fixedTableWidth ? this.fixedTableWidth : "100%" }}
-                        className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}
+                        className={this.props.borderAble ? ' wasabi-table ' : ' wasabi-table table-no-bordered '}
                         id={this.state.fixedTableid}
                     >
                         {
@@ -422,11 +473,11 @@ export default {
             <div key="table-realTable"
                 className={'table-realTable '}
                 id={this.state.realTableContainerid}
-                onScroll={this.onScroll.bind(this)}
+                onScroll={this.onRealTableScoll.bind(this)}
                 style={{ height: height }}
             >
                 <table style={{ width: this.tableWidth ? this.tableWidth : "100%" }}
-                    className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}
+                    className={this.props.borderAble ? ' wasabi-table ' : ' wasabi-table table-no-bordered '}
                     id={this.state.realTableid} >
                     {
                         /**colgroup */
@@ -452,41 +503,19 @@ export default {
 
         /* 头部分页 */
         grid.push(
-            <div
-                className='wasabi-pagination '
-
-                key="toppagination"
-                style={{
-                    display:
-                        this.props.pagePosition == 'top' ||
-                            this.props.pagePosition == 'both'
-                            ? 'block'
-                            : 'none'
-                }}
-            >
-                {this.renderTotal()}
-                {this.renderPagination()}
+            <div className='wasabi-pagination ' key="toppagination" style={{ display: this.props.pagePosition == 'top' || this.props.pagePosition == 'both' ? 'block' : 'none' }}>
+                {this.renderTotal()}{this.renderPagination()}
             </div>)
 
         {/* 真实表格容器 */ }
-        grid.push(this.renderRealTable(height))
+        grid.push(this.renderTable(height))
 
         {/* 底部分页 */ }
-        grid.push(<div
-            key="bottompagination"
-            className='wasabi-pagination '
-
-            style={{
-                display:
-                    this.props.pagePosition == 'bottom' ||
-                        this.props.pagePosition == 'both'
-                        ? 'block'
-                        : 'none'
-            }}
-        >
+        grid.push(<div key="bottompagination" className='wasabi-pagination ' style={{ display: this.props.pagePosition == 'bottom' || this.props.pagePosition == 'both' ? 'block' : 'none' }}>
             {this.renderTotal()}
             {this.renderPagination()}
         </div>)
+
         /* 加载动画 */
         grid.push(<div
             className='wasabi-grid-loading'

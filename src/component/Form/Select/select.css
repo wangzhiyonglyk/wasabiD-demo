@@ -37,7 +37,7 @@ desc:下拉框样式
   .wasabi-select ul li.active:after
   {
     font-family: 'iconfont' !important;
-    content:"\e769";
+    content:"\ea38";
     position: absolute;
     top:0px;
     right: 10px;

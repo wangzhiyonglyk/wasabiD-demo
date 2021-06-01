@@ -54,7 +54,9 @@ class DatePicker extends Component {
     }
     return null;
   }
-
+  componentDidUpdate() {
+    dom.scrollVisible(document.getElementById(this.state.pickerid));//20是加上多余被挡的
+  }
   /**
    * 获取值
    * @returns 
@@ -106,7 +108,7 @@ class DatePicker extends Component {
       value: value,
       text: value
     });
-    this.input.current.setValue(value);
+    value = this.getValue();//用于添加附加时间
     this.props.onSelect && this.props.onSelect(value, value, this.props.name, null);
   }
 
@@ -114,10 +116,13 @@ class DatePicker extends Component {
      * 输入框
      * @param {*} value 
      */
-  onChange(value) {
-    if (this.props.validate && this.props.validate(value)) {
-      this.setValue(value);
-      this.props.onSelect && this.props.onSelect(value, value, this.props.name, null);
+  onChange(event) {
+    this.setState({
+      value:event.target. value,
+      text: event.target.value
+    });
+    if (this.props.validate && this.props.validate(event.target. value)) {
+      this.props.onSelect && this.props.onSelect(event.target. value, event.target. value, this.props.name, null);
     }
   }
   /**
@@ -165,13 +170,13 @@ class DatePicker extends Component {
       //如果不为空
       var splitdate = datetime.split(" ")[0];
       if (splitdate && splitdate != "") {
-         returnvalue = {
+        returnvalue = {
           year: splitdate.split("-")[0] * 1,
           month: splitdate.split("-")[1] * 1,
           day: splitdate.split("-")[2] * 1,
           time: datetime.split(" ")[1]
         };
-       
+
       }
     }
     return returnvalue;
@@ -186,9 +191,13 @@ class DatePicker extends Component {
       this.setState({
         show: true
       });
+
+
+
     }
     document.addEventListener("click", this.hidePicker)
   }
+
   /**
    * 隐藏下拉框
    * @param {*} event 
@@ -358,7 +367,7 @@ class DatePicker extends Component {
   render() {
     let control = null;
     let controlDropClassName = "";
-    let value=this.state.value;
+    let value = this.state.value;
     switch (this.props.type) {
       case "date":
         control = this.renderDate();
@@ -392,7 +401,7 @@ class DatePicker extends Component {
         break;
 
     }
-    return <div className='combobox' id={this.state.pickerid}>
+    return <div className='combobox' >
       <DateInput
         {...this.props}
         ref={this.input}
@@ -401,7 +410,7 @@ class DatePicker extends Component {
         onClick={this.showPicker.bind(this)}
         onClear={this.onClear.bind(this)}
       > </DateInput>
-      <div className={"dropcontainter " + controlDropClassName + " "}
+      <div id={this.state.pickerid} className={"dropcontainter " + controlDropClassName + " "}
         style={{
           display: this.state.show == true ? "flex" : "none",
           flexWrap: "wrap"

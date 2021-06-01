@@ -348,7 +348,7 @@ color:var(--primary-color);
   background: #ffffff;
   border: 1px solid var(--border-color);
   border-radius: 5px;
-  box-shadow: var(--button-shadow);
+  box-shadow: var(--box-shadow);
   text-align: left;
   z-index: 1;
 }

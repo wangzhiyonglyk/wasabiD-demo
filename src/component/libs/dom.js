@@ -78,19 +78,21 @@ let dom = {
         return scrollTop;
     },
 
+
     /**
      * 元素是不是不可见
      * @param {*} el 元素
-     * @param {*} pad 间距
+     * @param {*} parent 父节点，默认window
+     * @param {*} pad 多余间距
      * @returns 
      */
-    overView: function (el, pad = 0) {
-        let height = window.innerHeight || document.documentElement.clientHeight;
+    overView: function (el, parent = null, pad = 0) {
+        let height = parent ? parent.getBoundingClientRect().bottom : window.innerHeight || document.documentElement.clientHeight;
         let bottom = el.getBoundingClientRect().bottom + pad;
         return bottom > height;
     },
     /**
-     * 
+     * 获取元素样式
      * @param {*} el 元素节点
      * @param {*} attr css样式属性，非驼峰写法
      * @returns 
@@ -105,6 +107,38 @@ let dom = {
         return attrValue;
     },
 
+    /**
+     * 找到有滚动条的祖先节点
+     * @param {*} el 
+     * @param {*} pad 多余间距
+     */
+    scrollParent(el) {
+        let node = el.parentNode;
+
+        while (node !== null&&node!=document.documentElement) {
+            let overflow = this.computedStyle(node, "overflow");
+            if (node.scrollHeight > node.offsetHeight && overflow != "visible" && overflow != "hidden") {
+                return node;
+            }
+            else {
+                node = node.parentNode;
+            }
+        }
+        return null;
+    },
+    /**
+     * 让被滚动条挡住的节点可见
+     * @param {*} el 
+     * @param {*} pad 
+     */
+    scrollVisible(el, pad = 0) {
+        let scrollParent = dom.scrollParent(el);
+        if (el && scrollParent && dom.overView(el, scrollParent, pad)) {//判断是否不可见
+            if (scrollParent&&scrollParent!=window) {
+                scrollParent.scrollTop = (scrollParent.scrollHeight - scrollParent.offsetHeight)
+            }
+        }
+    }
 
 
 };

@@ -90,10 +90,6 @@ class Input extends Component {
 
             return this.renderUnInput(this.props.type);
         }
-
-
-        return null;
-
     }
 }
 Input.propTypes = propTypes;

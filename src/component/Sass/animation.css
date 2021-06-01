@@ -6,7 +6,11 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  display: inline;
+}
+.nowrap{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow:clip; 
 }
 
 /*
@@ -38,8 +42,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: inherit;
+  cursor: pointer;
 }
 
+[class^="icon-"][disabled], [class*=" icon-"][disabled] {
+  opacity: 0.40;
+  cursor: not-allowed;
+  box-shadow: none;
+}
 
 /*
 自定义水波纹点按效果
@@ -137,11 +147,11 @@
 /*自定义打开与关闭动画*/
 
 .wasabi-scale-in {
-  animation: wasabi-scale-in 0.3s ease forwards;
+  animation: wasabi-scale-in 0.5s ease forwards;
 }
 
 .wasabi-scale-out {
-  animation: wasabi-scale-out 0.3s ease forwards;
+  animation: wasabi-scale-out 0.5s ease forwards;
 }
 
 @keyframes wasabi-scale-in {
