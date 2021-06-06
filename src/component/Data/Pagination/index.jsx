@@ -292,7 +292,6 @@ Pagination.defaultProps = {
     pageSize: 20,
     pageTotal: 0,
     total: 0,
-    onChange:null
 }
 
 export default Pagination;

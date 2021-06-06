@@ -17,7 +17,7 @@ class SlidePanel extends React.Component {
 
         this.state = {
             width: width,
-            title: this.props.title,
+            title: this.props.title||"",
             panelwidth: 0,//总宽度
             containerwidth: 0,//容器宽度
             leftwidth: 0,//左侧滑块宽度
@@ -34,13 +34,6 @@ class SlidePanel extends React.Component {
         buttons: PropTypes.array,//自定义按钮
         buttonClick: PropTypes.func,//按钮的单击事件,
     }
-    static defaultProps = {
-        title: "",
-        buttons: [],
-        buttonClick: null,
-        url: null
-    }
-
     open(title) {//打开事件，用于外部调用
 
         this.setState({
@@ -82,7 +75,7 @@ class SlidePanel extends React.Component {
 
                 <div className="slide-header" >
                     <div className="title" onClick={this.close}><i className="icon-back" style={{ marginRight: 10 }}></i>{this.state.title}</div>
-                    <div className="slide-toolbar"><Toolbar buttons={this.props.buttons} onClick={this.buttonClick}></Toolbar></div>
+                    <div className="slide-toolbar"><Toolbar buttons={this.props.buttons||[]} onClick={this.buttonClick}></Toolbar></div>
 
                 </div>
                 <div className="slide-body">

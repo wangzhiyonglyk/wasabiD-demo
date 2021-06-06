@@ -69,7 +69,9 @@ desc:模态窗口样式
   z-index: 1;
 }
 
-
+.wasabi-modal-close:hover{
+  color:var(--danger-color);
+}
 
 .wasabi-modal-header {
   font-size: 18px;

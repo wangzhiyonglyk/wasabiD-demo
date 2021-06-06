@@ -350,17 +350,8 @@ Transfer.propTypes = {
 
 };
 Transfer.defaultProps = {
-
-    name: null,
     valueField: "value",
     textField: "text",
-    url: null,
-    params: null,
     dataSource: "data",
-    data: [],
-    selectData: [],
-
-    onSelect: null,
-
 };
 export default Transfer;

@@ -109,17 +109,12 @@ class TimeRange extends Component {
 }
 
 TimeRange.propTypes = {
-    name: PropTypes.string,//表单字段名称
+ 
     firstTime: PropTypes.string,//第一个时间
     secondTime: PropTypes.string,//第二个时间
     attachSecond: PropTypes.bool,//附带秒
-    allMinute: PropTypes.bool,//是否显示全部分钟
 };
 TimeRange.defaultProps = {
-    name: "",
-    firstTime: "",
-    secondTime: "",
-    attachSecond: true,
-    allMinute: false,
+    attachSecond: true,  
 }
 export default TimeRange;

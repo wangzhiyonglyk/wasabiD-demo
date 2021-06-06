@@ -9,7 +9,6 @@ import React from "react"
 import func from "../libs/func";
 import api from "wasabi-api";
 import propsTran from "../libs/propsTran";
-import defaultProps from "../propsConfig/defaultProps";
 import propTypes from "../propsConfig/propTypes";
 /**
  * 预处理各类数据
@@ -211,7 +210,6 @@ function loadDataHoc(Widget, type = "select") {
             ></Widget>
         }
     }
-    loadDataHocCompnent.defaultProps = defaultProps;
     loadDataHocCompnent.propTypes = propTypes;
     return loadDataHocCompnent;
 }

@@ -14,11 +14,11 @@ class SelectbleList extends React.Component {
         this.props.onRemove&&this.props.onRemove(index);
     }
     componentDidUpdate() {
-        dom.scrollVisible(document.getElementById( this.state.pickerid));//20是加上多余被挡的
+        dom.scrollVisible(document.getElementById( this.state.pickerid));//
       }
     render() {
         let control = null;
-        if (this.props.data && this.props.data.length > 0) {
+        if (this.props.data &&this.props.data instanceof Array && this.props.data.length > 0) {
             control = (
                 <ul ref='ul'>
                     {this.props.data.map((child, i) => {
@@ -68,7 +68,6 @@ class SelectbleList extends React.Component {
 SelectbleList.propTypes={
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),//值
     show:PropTypes.bool,//是否显示
-    data:PropTypes.array,//数据
     removeAble:PropTypes.bool,//删除
     onSelect: PropTypes.func,//选择事件
     onRemove: PropTypes.func,//移除事件
@@ -76,11 +75,8 @@ SelectbleList.propTypes={
 }
 SelectbleList.defaultProps={
     value:"",
-    show:false,
     data:[],
     removeAble:false,
-    onSelect:null,
-    onRemove:null
 }
 
 export default SelectbleList;

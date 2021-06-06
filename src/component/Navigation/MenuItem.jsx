@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 class MenuItem extends React.Component {
     constructor(props) {
         super(props);
-
         this.activeChange = this.activeChange.bind(this);
-
         this.state = {
             expand: this.props.expand,
             activeIndex: null,
@@ -15,10 +13,6 @@ class MenuItem extends React.Component {
         iconCls: PropTypes.string,//图标
         title: PropTypes.any.isRequired,//标题是必须，可以是组件
         expand: PropTypes.bool //是否展开
-    }
-    static defaultProps = {
-        expand: false,
-        className: ""
     }
 
     activeChange(index) {
@@ -31,7 +25,7 @@ class MenuItem extends React.Component {
     }
 
     render() {
-        return <li className={this.props.className + " " + (this.props.active ? "active" : "")} onClick={this.props.onClick}>
+        return <li className={(this.props.className||"")+ " " + (this.props.active ? "active" : "")} onClick={this.props.onClick}>
             <a style={{ textAlign: "left", marginLeft: "40px" }} >
                 <i className={ this.props.iconCls} style={{marginRight:10}}></i>
                 <span >
@@ -50,7 +44,6 @@ MenuItem.propTypes = {
 
 };
 MenuItem.defaultProps = {
-    className: "",
     iconCls: "icon-txt",
     active: false,
 };

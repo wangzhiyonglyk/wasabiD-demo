@@ -84,9 +84,5 @@ Button.defaultProps = {
     iconAlign: "left",
     theme: 'primary',
     size: 'default',
-    style: {},
-    className: '',
-
-
 };
 export default Button;

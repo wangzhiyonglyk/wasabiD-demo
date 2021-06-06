@@ -315,17 +315,10 @@ SearchBar.propTypes = {
   expand: PropTypes.bool //是否默认展开
 };
 SearchBar.defaultProps = {
-  style: {},
-  className: "",
   submitTitle: "搜索", //查询按钮的标题
   addTitle: "添加", //查询按钮的标题
-  submitHide: false, //是否隐藏按钮
-  addAble: false,//是否有添加按钮
   submitTheme: "primary", //主题
-  submitStyle: {}, //查询按钮的样式
   cols: 3, //一行排几个
-  onSubmit: null, //提交成功后的回调事
-  expand: false
 };
 
 export default SearchBar;

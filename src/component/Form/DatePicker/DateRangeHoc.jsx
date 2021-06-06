@@ -270,14 +270,7 @@ export default function (WrappedComponent) {
         onSelect: PropTypes.func,//确定事件
     };
     DateRangeHoc.defaultProps = {
-        name: "",
-        firstDate: "",
-        secondDate: "",
-        firstTime: "",
-        secondTime: "",
-        attachSecond: true,
-        onSelect: null,//
-
+        attachSecond: true,  
     };
     return DateRangeHoc;
 }

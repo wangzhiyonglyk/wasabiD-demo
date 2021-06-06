@@ -332,9 +332,7 @@ TreeGrid.defaultProps = {
     /**
     * 基本属性
     */
-    style: {},
-    className: "",
-    id: null,
+  
     idField: "id",
     parentField: "pId",
     textField: "text",
@@ -347,12 +345,10 @@ TreeGrid.defaultProps = {
     /**
    * ajax请求参数
    */
-    url: null, //
-    updateUrl: null,
+  
     httpType: "POST",
     contentType: "application/x-www-form-urlencoded",
-    httpHeaders: {},//http请求的头部字段
-    params: null,
+   
 
     /**
      * 数据源
@@ -361,12 +357,6 @@ TreeGrid.defaultProps = {
     footerSource: 'footer', //页脚数据源
     totalSource: 'total', //
 
-    /**
-     * 事件
-     */
-    onClick: null,
-    onDoubleClick: null,
-    onChecked: null,
 }
 
 export default TreeGrid;

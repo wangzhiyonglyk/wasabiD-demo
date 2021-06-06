@@ -4,7 +4,6 @@
  * 
  */
 import React from "react";
-import Label from "../../Info/Label";
 import Button from "../../Buttons/Button"
 import loadDataHoc from "../../loadDataHoc";
 import validateHoc from "../validateHoc";
@@ -16,7 +15,7 @@ class CheckButton extends React.Component {
         this.state = {
             text: "",
             value: "",
-            oldPropsValue: "",//保存初始化的值
+            oldPropsValue: null,//保存初始化的值
         }
         this.setValue = this.setValue.bind(this);
         this.getValue = this.getValue.bind(this);

@@ -80,8 +80,7 @@ ArrowInput.propsTypes = {
 }
 ArrowInput.defaultProps = {
     sortType: "",
-    value: "",
-    readOnly: false,
+    value: ""
 }
 
 export default ArrowInput;

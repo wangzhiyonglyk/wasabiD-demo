@@ -47,7 +47,7 @@ class Drop extends  React.Component {
     }
     render() {
         return (
-            <div className={this.props.className + " " + this.state.dropClass} style={this.props.style} onDrop={this.dropHandler}
+            <div className={(this.props.className||"")+ " " + this.state.dropClass} style={this.props.style} onDrop={this.dropHandler}
                  onDragEnter={this.dragEnterHandler} onDragOver={this.dragOverHandler}
                  onDragLeave={this.dragLeaveHandler}>
                 {
@@ -59,9 +59,5 @@ class Drop extends  React.Component {
 }
 Drop.propTypes={
     onDrop: PropTypes.func.isRequired,//元素停靠事件
-}
-Drop.defaultProps={
-    className:"",
-    style:{}
 }
 export default Drop;

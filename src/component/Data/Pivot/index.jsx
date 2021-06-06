@@ -116,16 +116,6 @@ Pivot.propTypes = {
   
 }
 
-Pivot.defaultProps = {
-    fields: [],//所有的字段
-    rows: [],//行维度
-    columns: [],//列维度
-    values: [],//统计参数
-    filters: [],//筛选条件
-    data: [],//数据,
-    checkAble:false,//是否允许勾选
-    applyHandler: null,//请求数据处理
 
-}
 mixins(Pivot, [dataHandler])
 export default Pivot;

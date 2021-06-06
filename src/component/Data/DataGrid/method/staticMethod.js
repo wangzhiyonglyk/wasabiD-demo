@@ -4,7 +4,7 @@
  */
 import React from "react";
 import func from "../../../libs/func.js";
-import Msg from "../../../Info/msg"
+import Msg from "../../../Info/Msg"
 export default {
     /**
      * 清空数据

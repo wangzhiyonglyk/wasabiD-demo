@@ -55,14 +55,10 @@ Badge.propTypes={
       onClick:PropTypes.func,
 }
 Badge.defaultProps={
-    style:{},
-    className:"",
-    tag:"",
+   
     max:99,
     theme:"default",
-    style:null,
-    hide:false,
-    onClick:null
+   
 }
 
 export default Badge;

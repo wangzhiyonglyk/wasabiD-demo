@@ -14,7 +14,7 @@ let validateHoc = function (InputWidget) {
             super(props);
             this.input = React.createRef();
             this.state = {
-                containerid:func.uuid(),
+                containerid: func.uuid(),
                 validateClass: "",
                 inValidateText: "",//失败的文字
             }
@@ -25,8 +25,8 @@ let validateHoc = function (InputWidget) {
          * @returns 
          */
         validate(value) {
-            value=(value==null||value==undefined)?this.input.current.getValue():value;//如果没有传值，则取文本框值
-          
+            value = (value == null || value == undefined) ? this.input.current.getValue() : value;//如果没有传值，则取文本框值
+
             let isvalidate = true;//默认是有效的
             let inValidateText = "";
             let valueArr = [];
@@ -200,7 +200,7 @@ let validateHoc = function (InputWidget) {
         getValue() {
             return this.input.current.getValue();
         }
-        
+
         /**
          * 刷新
          * @param {*} params 
@@ -210,7 +210,7 @@ let validateHoc = function (InputWidget) {
 
             this.input.current.reload && this.input.current.loadData(url, params);
         }
-   
+
         shouldComponentUpdate(nextProps, nextState) {
             if (func.diffOrder(nextProps, this.props)) {
                 return true;
@@ -219,19 +219,20 @@ let validateHoc = function (InputWidget) {
                 return true;
             }
             return false;
-        }        render() {
-            let style = this.props.style? JSON.parse(JSON.stringify(this.props.style)) : {};
+        }
+         render() {
+            let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
             if (this.props.hide) {
                 style.display = 'none';
             } else {
                 style.display = 'flex';
             }
             return <div id={this.state.containerid}
-             className={"wasabi-form-group " + (this.props.className || "") + " " + this.state.validateClass}
-              style={style}>
+                className={"wasabi-form-group " + (this.props.className || "") + " " + this.state.validateClass}
+                style={style}>
                 <Label readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>
                 <div className={'wasabi-form-group-body' + (this.props.readOnly || this.props.disabled ? " readOnly" : "")}>
-                    <InputWidget  {...this.props}  ref={this.input} containerid={this.state.containerid}  validate={this.validate}></InputWidget>
+                    <InputWidget  {...this.props} ref={this.input} containerid={this.state.containerid} validate={this.validate}></InputWidget>
                     <small className={'wasabi-help-block '} style={{ display: this.state.inValidateText ? "block" : 'none' }}>
                         <div className='text' >{this.state.inValidateText}</div>
                     </small>

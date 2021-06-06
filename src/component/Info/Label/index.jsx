@@ -26,10 +26,10 @@ class Label extends React.PureComponent {
 
     render() {
         let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
-        style.display = this.props.children || this.props.title ? "block" : "none";
+        style.display = this.props.children || this.props.title ? "inline-block" : "none";
         return <div id={this.state.controlid}
             title={this.props.title}
-            className={"wasabi-label "+this.props.className||""}
+            className={"wasabi-label "+(this.props.className||"")}
             style={style}>
             {this.props.required?<span style={{color:"red"}}>*</span>:null} {this.props.children || this.props.title}
         </div>
@@ -43,8 +43,6 @@ Label.propTypes = {
     className: PropTypes.string,
     title: PropTypes.oneOfType([PropTypes.string]),//标题
 };
-Label.defaultProps = {
-  className: "",
-};
+
 
 export default Label;

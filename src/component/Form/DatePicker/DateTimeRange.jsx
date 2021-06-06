@@ -170,14 +170,7 @@ DateTimeRange.propTypes = {
 };
 DateTimeRange.defaultProps =
 {
-
-    firstDate: "",
-    secondDate: "",
-    firstTime: "",
-    secondTime: "",
     attachSecond: true,
-    allMinute: false,
-    onSelect: null
 };
 
 export default DateRangeHoc(DateTimeRange);

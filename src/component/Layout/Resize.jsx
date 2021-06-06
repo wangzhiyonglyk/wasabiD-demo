@@ -132,12 +132,9 @@ class Resize extends React.Component {
         return cursor;
     }
     render() {
-
-        let style = this.props.style ? this.props.style : {};
-
         return (
-            <div className={"resize  " + this.props.className} id={this.state.resizeid}
-                style={style}>
+            <div className={"resize  " + (this.props.className || "")} id={this.state.resizeid}
+                style={this.props.style}>
                 {this.props.children}
             </div>)
     }
@@ -149,9 +146,6 @@ Resize.propTypes = {
     resize: PropTypes.bool,//是否允许调整大小
 }
 Resize.defaultProps = {
-    style: {},
-    className: "",
-
     resize: true,//默认是可以改变大小的
 
 

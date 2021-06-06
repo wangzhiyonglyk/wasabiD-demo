@@ -6,22 +6,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 require('../Sass/Action/Page.css');
-class Page extends React.Component {
+class Page extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
   }
-
-  static defaultProps = {
-    width: '100%',
-    height: '100%',
-    style: null,
-    className: ''
-  };
-
-  static propTypes = {
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), //宽度
-    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), //高度
+  static propTypes = {  
     style: PropTypes.object,
     className: PropTypes.string
   };
@@ -30,7 +20,11 @@ class Page extends React.Component {
     return (
       <div className='wasabi-page'>
         {React.Children.map(this.props.children, child => {
-          return React.cloneElement(child);
+          if(child){
+            return React.cloneElement(child);
+          }
+          return  null;
+     
         })}
       </div>
     );

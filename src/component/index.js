@@ -3,11 +3,18 @@
  * edit by wangzhiyong 
  * date:2017-08-14 进行大改版
  * date 2020-11-20 调整组件，去掉不需要的组件
+ * desc 2021-05-20 大改
  * desc:框架入口
  */
-
+import React from "react";
 import("./Sass/base.css");
-
+window.onerror = function (message, url, line, column, error) {
+  console.log('log---onerror::::', message, url, line, column, error);
+  return false;
+}
+if (React.version <= "17.0.0") {
+  console.warn("请将react升级到了17+版本");
+}
 /*****************按钮组件******************/
 import Tag from "./Buttons/Tag";//标签
 import Button from './Buttons/Button';//普通按钮
@@ -31,7 +38,7 @@ import TreeGrid from "./Data/TreeGrid";//树型表格
 import Pagination from "./Data/Pagination";//分页控件
 
 /*******************表格组件*************************/
-import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow} from "./Data/Table";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "./Data/Table";
 
 /*******************表格组件*************************/
 
@@ -113,21 +120,21 @@ import func from './libs/func.js';//常用函数
 import mixins from './Mixins/mixins';//mixins
 import regs from "./Lang/regs";//常用的正则
 export {
-    Tag, Button, LinkButton, Toolbar, Badge, Dropdown, DropdownItem,
-    DataGrid, Tree, Transfer, Progress, Step, StepItem, Avatar, Pivot, TreeGrid, Pagination,
-    Table,TableBody,TableCell,TableContainer,TableHead,TableRow,
-    Input, Form, SearchBar,
-    BaseInput, Text, None, Rate, Select, Switch, CheckBox, CheckButton, Radio, Picker, TreePicker, DatePicker,
-    Password, Search,
-    Calendar,
-    Box, Drag, Drop, Layout, Center, Header, Footer, Left, Right, Container, Row, Col,
-    Modal, Panel, Resize, SlidePanel,
-    Menus, MenuPanel, MenuItem, Tabs, TabPanel, Track,
-    Label, Msg,
-    RotateChart, PageIn, ProgressChart,
-    Upload, Editor, Article, Single, Simulator,
-    Login, System,
-    func, mixins, regs
+  Tag, Button, LinkButton, Toolbar, Badge, Dropdown, DropdownItem,
+  DataGrid, Tree, Transfer, Progress, Step, StepItem, Avatar, Pivot, TreeGrid, Pagination,
+  Table, TableBody, TableCell, TableHead, TableRow,
+  Input, Form, SearchBar,
+  BaseInput, Text, None, Rate, Select, Switch, CheckBox, CheckButton, Radio, Picker, TreePicker, DatePicker,
+  Password, Search,
+  Calendar,
+  Box, Drag, Drop, Layout, Center, Header, Footer, Left, Right, Container, Row, Col,
+  Modal, Panel, Resize, SlidePanel,
+  Menus, MenuPanel, MenuItem, Tabs, TabPanel, Track,
+  Label, Msg,
+  RotateChart, PageIn, ProgressChart,
+  Upload, Editor, Article, Single, Simulator,
+  Login, System,
+  func, mixins, regs
 
 }
 

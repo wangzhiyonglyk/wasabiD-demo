@@ -21,7 +21,7 @@ class Right extends React.Component {
     }
     static defaultProps = {
         title: "right",
-        top: null,
+        top: 0,
         width: 0,
         height: 0
     }

@@ -16,11 +16,11 @@ class Search extends React.PureComponent {
         this.onSearch = this.onSearch.bind(this);
     }
     onSearch(event) {//开始查询
-            this.props.onSearch && this.props.onSearch(this.input.current.getValue(), this.props.name,event);
+            this.props.onSearch && this.props.onSearch(event.target.value, this.props.name,event);
     }
     onKeyUp(event){
         if(event.keyCode===13){
-            this.props.onSearch&&this.props.onSearch(this.input.current.getValue(), this.props.name,event);
+            this.props.onSearch&&this.props.onSearch(event.target.value, this.props.name,event);
         }
     }
     setValue(value){
@@ -33,10 +33,12 @@ class Search extends React.PureComponent {
     }
     
     render() {
-        return <div className={"wasabi-searchbox " + this.props.className} style={this.props.style}>
-           <BaseInput   {...this.props}
+        return <div className={"wasabi-searchbox " +(this.props.className||"")} style={this.props.style}>
+           <BaseInput   
+           {...this.props}
             ref={this.input} 
             value={this.state.value||""}
+            onChange={this.onSearch}
            onKeyUp={this.onKeyUp}></BaseInput>
             <i className=" icon-search" onClick={this.onSearch}></i>
         </div>
@@ -52,13 +54,5 @@ Search.propTypes = {
     onSearch: PropTypes.func,//查询事件
 
 };
-Search.defaultProps = {
-    name: "",
-    title: null,
-    className: "",
-    style: {},
-    onSearch: null,
 
-
-};
 export default Search;

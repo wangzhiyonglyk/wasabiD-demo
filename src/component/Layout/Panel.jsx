@@ -95,7 +95,7 @@ Panel.defaultProps = {
     iconCls:"",
     closeAble: false,
     expand: true,
-    expandAble: true,
+    expandAble: false,
     title: "",
     headerStyle: {},
     buttons: [],

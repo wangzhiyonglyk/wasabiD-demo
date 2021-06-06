@@ -362,9 +362,6 @@ class Select extends Component {
    */
     onClear(event) {
         event.stopPropagation();//防止冒泡
-        /**
-         * 此处因为要清除inputText，不可以直接调用父组件的
-         */
         this.setState({
             inputText: "",
             value: "",
@@ -443,90 +440,7 @@ class Select extends Component {
     }
 
 }
-Select.propTypes = {
-    //公共属性
-    type: PropTypes.string,//字段类型，
-    name: PropTypes.string,//字段名
-    label: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.element, PropTypes.node]),//字段文字说明属性
-    title: PropTypes.string,//提示信息
-    help: PropTypes.string,//帮助信息
 
-    //基础属性
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool]),//默认值,
-    text: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//默认文本值
-    placeholder: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//输入框预留文字
-    readOnly: PropTypes.bool,//是否只读
-    required: PropTypes.bool,//是否必填
-    hide: PropTypes.bool,//是否隐藏
-    regexp: PropTypes.string,//正则表达式
-    invalidTip: PropTypes.string,//无效时的提示字符
-    style: PropTypes.object,//自定义style
-    className: PropTypes.string,//自定义class
-
-    //其他属性 text
-    min: PropTypes.number,//最小值,最小长度,最少选项
-    max: PropTypes.number,//最大值,最大长度,最多选项
-    onClick: PropTypes.func,//单击事件
-    onChange: PropTypes.func,//值改变事件
-
-    //其他属性 combobox
-    contentType: PropTypes.string,//http请求的request类型
-    httpHeader: PropTypes.object,//http请求的头部
-    multiple: PropTypes.bool,//是否允许多选
-    valueField: PropTypes.string,//数据字段值名称
-    textField: PropTypes.string,//数据字段文本名称
-    url: PropTypes.string,//ajax的后台地址
-    params: PropTypes.object,//查询参数
-    dataSource: PropTypes.string,//ajax的返回的数据源中哪个属性作为数据源,为null时直接后台返回的数据作为数据源
-    data: PropTypes.array,//自定义数据源
-    sortAble: PropTypes.bool,//是否允许排序
-    onSelect: PropTypes.func,//选中后的事件，回传，value,与text,data
-    attachAble: PropTypes.bool,//select是否可以添加数据
-    removeAble: PropTypes.bool,//select 是否可以删除
-
-};
-Select.defaultProps = {
-    //公共属性
-    type: "select",
-    name: "",
-    label: null,
-    title: null,
-    help: "",
-
-    //基础属性
-    value: "",
-    text: "",
-    placeholder: "",
-    readOnly: false,
-    required: false,
-    hide: false,
-    regexp: null,
-    invalidTip: null,
-    style: {},
-    className: "",
-
-    //其他属性 text
-    min: null,
-    max: null,
-    onClick: null,
-    onChange: null,
-
-
-    //其他属性 combobox
-    contentType: "",//http的request的数据类型
-    httpHeader: null,
-    multiple: false,
-    valueField: "value",
-    textField: "text",
-    url: null,
-    params: null,
-    dataSource: "data",
-    data: null,
-    sortAble: true,
-    onSelect: null,
-    attachAble: false,
-
-}
 export default validateHoc(loadDataHoc(Select, "select"));
 
 

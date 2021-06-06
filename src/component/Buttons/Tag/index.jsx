@@ -57,13 +57,6 @@ Tag.propTypes = {
   disabled: PropTypes.bool //标签是否无效
 };
 Tag.defaultProps = {
-  name: '',
-  title: null,
   theme: 'primary',
-  style: {},
-  className: '',
-  onClick: null,
-  onRemove: null,
-  disabled: false
 };
 export default Tag;

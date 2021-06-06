@@ -1,57 +1,53 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import "../sass/Navigation/menu.css";
 class Menus extends Component {
   constructor(props) {
     super(props);
-   this.state={
-     expandIndex:0,
-   },
-   this.expandHandler=this.expandHandler.bind(this);
-  } 
-static propTypes={
-  style:PropTypes.object,
-  className:PropTypes.string,
-}
-static defaultProps={
-  style:{},
-  className:""
-}
-expandHandler(index)
-{
-  this.setState({
-  expandIndex:index===this.state.expandIndex?null:index
-  })
-}
+    this.state = {
+      expandIndex: 0,
+    },
+      this.expandHandler = this.expandHandler.bind(this);
+  }
+  static propTypes = {
+    style: PropTypes.object,
+    className: PropTypes.string,
+  }
+
+  expandHandler(index) {
+    this.setState({
+      expandIndex: index === this.state.expandIndex ? null : index
+    })
+  }
   render() {
-    return <div style={this.props.style} className={"wasabi-menu "+this.props.className +" "+this.props.theme}>
-         {
-                      React.  Children.map(this.props.children, (child, index) => {
+    return <div style={this.props.style} className={"wasabi-menu " + (this.props.className || "") + " " + this.props.theme}>
+      {
+        React.Children.map(this.props.children, (child, index) => {
+          if (child && typeof child.type !== "function") {//非react组件
+            return child;
+          } else if (child) {
+            return React.cloneElement(child, { expandHandler: this.expandHandler.bind(this, index), expand: this.state.expandIndex === index ? true : false, key: index, ref: child.ref ? child.ref : index })
+          }
+          else {
+            return child;
+          }
 
-                           
-                            if (typeof child.type !== "function") {//非react组件
-                                return child;
-                            } else {
-                                return React. cloneElement(child, {expandHandler:this.expandHandler.bind(this,index), expand:this.state.expandIndex===index?true:false,key: index, ref: child.ref?child.ref:index })
-                            }
-
-                        })
-                    }
-      </div>;
+        })
+      }
+    </div>;
   }
 
 }
 Menus.propTypes = {
-  className:PropTypes.string,
+  className: PropTypes.string,
   theme: PropTypes.oneOf([//主题
-      "default",
-      "black",
+    "default",
+    "black",
   ]),
- 
+
 };
 Menus.defaultProps = {
-  className:"",
   theme: "default",
 };
 
-export default  Menus;
+export default Menus;

@@ -20,7 +20,7 @@ class Dropdown extends Component {
             containerid: func.uuid(),
             menuShow: false,
         }
-    
+
         this.menuClickHandler = this.menuClickHandler.bind(this)
         this.showMenu = this.showMenu.bind(this);
         this.hideMenu = this.hideMenu.bind(this);
@@ -33,8 +33,8 @@ class Dropdown extends Component {
         this.props.onClick && this.props.onClick(index, menuName);
     }
     showMenu() {
-        if(this.props.disabled){
-            return ;
+        if (this.props.disabled) {
+            return;
         }
         this.setState({
             menuShow: true
@@ -72,29 +72,16 @@ class Dropdown extends Component {
             //文字提示
             title: this.props.title
         };
-        let buttonControl = [];
-        if (this.props.plain) {
-            buttonControl.push(<LinkButton disabled={this.props.disabled} key={1} disabled={this.props.disabled} iconCls={this.props.iconCls} name={this.props.name} onClick={this.showMenu} theme={this.props.theme} size={this.props.size} title={this.props.title}>{this.props.label}</LinkButton>
-            );
-        }
-        else {
-            buttonControl.push(<Button disabled={this.props.disabled} key={1} disabled={this.props.disabled} iconCls={this.props.iconCls} name={this.props.name} onClick={this.showMenu} theme={this.props.theme} size={this.props.size} title={this.props.title}>{this.props.label}</Button>
-            );
-          
-        }
         return <div ref={this.wasabidropdown}  {...props} id={this.state.containerid} >
-            {
-                buttonControl
-            }
-
+            <LinkButton disabled={this.props.disabled} key={1} disabled={this.props.disabled} iconCls={this.props.iconCls} name={this.props.name} onClick={this.showMenu} theme={this.props.theme} size={this.props.size} title={this.props.title}>{this.props.label}</LinkButton>
             <ul className={"wasabi-dropdown-menu " + (this.props.plain ? " " : " unplain ") + this.props.size} style={{ display: this.state.menuShow ? "block" : "none" }}>
                 {
                     React.Children.map(this.props.children, (child, index) => {
-                        if(child){
+                        if (child) {
                             return React.cloneElement(child, { index: index, key: index, onClick: this.menuClickHandler })
                         }
                         return null;
-                       
+
                     })
                 }
 
@@ -133,19 +120,9 @@ Dropdown.propTypes = {
     plain: PropTypes.bool //按钮是否是平铺
 };
 Dropdown.defaultProps = {
-    name: '',
-    title: null,
-    label: "",//按钮的文字
-    iconCls: "",
     menuIconCls: "icon-arrow-down",//默认向下箭头
     theme: 'primary',
     size: 'default',
-    style: {},
-    className: '',
-    onClick: null,
-    menuClick: null,
-    disabled: false,
-    plain: false,
 };
 
 

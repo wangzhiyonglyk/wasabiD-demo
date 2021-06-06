@@ -320,13 +320,13 @@ export default {
         var dataSource = this.props.dataSource;//数据源
 
         if (dataSource) {//需要重新指定数据源
-            dataResult = func.getSource(result, dataSource);
+            dataResult = func.getSource(result, dataSource||"data");
         }
         else {
             dataResult = result;
         }
         if (this.props.pagination && this.props.totalSource) {//分页而且需要重新指定总记录数的数据源
-            totalResult = func.getSource(result, this.props.totalSource);
+            totalResult = func.getSource(result, this.props.totalSource||"total");
         }
         else if (this.props.pagination) {//分页了,没有指定,使用默认的
             if (result.total) {
@@ -344,7 +344,7 @@ export default {
 
         if (this.props.footerSource)//需要重新指定页脚的数据源
         {
-            footerResult = func.getSource(result, this.props.footerSource);
+            footerResult = func.getSource(result, this.props.footerSource||"footer");
         }
         else {//没有指定，
             if (result.footer) {
@@ -427,7 +427,7 @@ export default {
             }
            
         }
-        return key;
+        return key+"";
     },
 
     /**

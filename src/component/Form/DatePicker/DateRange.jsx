@@ -65,11 +65,5 @@ DateRange.propTypes = {
     secondDate: PropTypes.string,//第二个日期
     onSelect: PropTypes.func,//确定事件
 };
-DateRange.defaultProps = {
-    name: "",
-    firstDate: "",
-    secondDate: "",
-    onSelect: "",//
 
-};
 export default DateRangeHoc(DateRange);

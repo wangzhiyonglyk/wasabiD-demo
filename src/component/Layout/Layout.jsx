@@ -6,12 +6,12 @@ desc:圣杯布局
 
 import React from 'react';
 import PropTypes from "prop-types";
-import ("../Sass/Layout/Layout.css");
+import("../Sass/Layout/Layout.css");
 class Layout extends React.Component {
     constructor(props) {
         super(props);
         this.calWidthHeight = this.calWidthHeight.bind(this);
-        this.state={
+        this.state = {
             leftid: Math.random().toString(36).slice(-8),
             rightid: Math.random().toString(36).slice(-8),
             centerid: Math.random().toString(36).slice(-8),
@@ -30,7 +30,7 @@ class Layout extends React.Component {
         let centerReduceHeight = 0;
         let centerReduceWidth = 0;
         let top = 0;
-        let left=0;
+        let left = 0;
         React.Children.map(this.props.children, (child, index) => {
             switch (child.props.title) {
                 case "header":
@@ -41,9 +41,9 @@ class Layout extends React.Component {
                     centerReduceHeight += child.props.height ? child.props.height : 0;
                     break;
                 case "left":
-                    
+
                     centerReduceWidth += child.props.width ? child.props.width : 0;
-                    left =child.props.width ? child.props.width : 0;
+                    left = child.props.width ? child.props.width : 0;
                     break;
                 case "right":
                     centerReduceWidth += child.props.width ? child.props.width : 0;
@@ -56,25 +56,25 @@ class Layout extends React.Component {
             reduceWidth: centerReduceWidth ? centerReduceWidth : 0,//这里是center要扣除的宽度
             reduceHeight: centerReduceHeight ? centerReduceHeight : 0,//不仅仅是center的高度是left,right的扣除高度
             top: top,//left center  right的位置
-            left:left
-           
+            left: left
+
         }
     }
     render() {
         let widthHeight = this.calWidthHeight();//计算宽高
-        
-        return <div className={"wasabi-layout clearfix " +this.props.className }
+
+        return <div className={"wasabi-layout clearfix " + (this.props.className || "")}
             style={{ width: this.props.width, height: this.props.height }}  >
             {
                 React.Children.map(this.props.children, (child, index) => {
-                 
+
                     switch (child.props.title) {
                         case "center":
-                            return React.cloneElement(child, {leftid:this.state.leftid,centerid:this.state.centerid,rightid:this.state.rightid,key: index, ref: index, ...widthHeight });
+                            return React.cloneElement(child, { leftid: this.state.leftid, centerid: this.state.centerid, rightid: this.state.rightid, key: index, ref: index, ...widthHeight });
                         case "left":
-                            return React.cloneElement(child, { leftid:this.state.leftid,centerid:this.state.centerid,rightid:this.state.rightid, key: index, ref: index, ...widthHeight });
+                            return React.cloneElement(child, { leftid: this.state.leftid, centerid: this.state.centerid, rightid: this.state.rightid, key: index, ref: index, ...widthHeight });
                         case "right":
-                            return React.cloneElement(child, {leftid:this.state.leftid,centerid:this.state.centerid,rightid:this.state.rightid,key: index, ref: index, ...widthHeight });
+                            return React.cloneElement(child, { leftid: this.state.leftid, centerid: this.state.centerid, rightid: this.state.rightid, key: index, ref: index, ...widthHeight });
                         default:
                             return React.cloneElement(child, { key: index, ref: index });
 

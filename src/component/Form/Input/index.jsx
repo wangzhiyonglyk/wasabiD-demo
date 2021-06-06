@@ -14,7 +14,6 @@ import ComboBox from "../ComboBox";
 import Text from "../Text";
 import None from "../None.jsx";
 import propTypes from "../../propsConfig/propTypes.js";
-import defaultProps from "../../propsConfig/defaultProps.js";
 import Rate from "../Rate"
 import("./input.css");
 class Input extends Component {
@@ -93,5 +92,5 @@ class Input extends Component {
     }
 }
 Input.propTypes = propTypes;
-Input.defaultProps = defaultProps;
+
 export default Input;

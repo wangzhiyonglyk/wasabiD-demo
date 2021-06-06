@@ -9,9 +9,6 @@ import PropTypes from "prop-types";
 import Button from "../../Buttons/Button";
 import propsTran from "../../libs/propsTran"
 import func from "../../libs/func"
-if (React.version <= "17.0.0") {
-    console.warn("请将react升级到了17+版本");
-}
 import("./form.css");
 class Form extends Component {
     constructor(props) {
@@ -225,7 +222,7 @@ class Form extends Component {
                     let width = func.charWidth(child.props.label);
                     maxWidth = maxWidth < width ? width : maxWidth;
                     maxWidth = maxWidth > 160 ? 165 : maxWidth;//超过160就不管了，否则很难看
-                    maxWidth=maxWidth<=40?60:maxWidth;
+                    maxWidth = maxWidth <= 40 ? 60 : maxWidth;
                 }
 
             }
@@ -236,7 +233,7 @@ class Form extends Component {
         this.inputs = [];//先清空
         let maxWidth = this.computerLabelWidth();
         return (
-            <div className={"wasabi-form  clearfix " + " " + this.props.className} style={this.props.style}>
+            <div className={"wasabi-form  clearfix " + (this.props.className || "")} style={this.props.style}>
                 <div className={"form-body clearfix "} cols={this.props.cols}>
                     {
                         React.Children.map(this.props.children, (child, index) => {
@@ -256,7 +253,7 @@ class Form extends Component {
                                         {
                                             data: data,
                                             labelStyle: labelStyle,
-                                            disabled:this.props.disabled,
+                                            disabled: this.props.disabled,
                                             readOnly: this.state.disabled ? this.state.disabled : child.props.readOnly,
                                             key: index, ref: ref
                                         })
@@ -290,13 +287,9 @@ Form.propTypes = {
     cols: PropTypes.number//一行几列
 };
 Form.defaultProps = {
-    style: {},
-    className: "",
-    disabled: false,
     submitTitle: "提交",//查询按钮的标题
     submitHide: true,//是否隐藏按钮
     submitTheme: "primary",//主题
-    onSubmit: null,//提交成功后的回调事 
     cols: 3,//默认3个
 };
 export default Form;

@@ -9,7 +9,6 @@
 import React, { Component } from "react";
 import Label from "../../Info/Label";
 import propType from "../../propsConfig/propTypes.js";
-import defaultProps from "../../propsConfig/defaultProps.js";
 import "./switch.css"
 class Switch extends Component {
     constructor(props) {
@@ -94,5 +93,5 @@ class Switch extends Component {
 }
 
 Switch.propTypes = propType;
-Switch.defaultProp = Object.assign({},defaultProps, { type: "switch" });
+Switch.defaultProp = { type: "switch" }
 export default Switch;

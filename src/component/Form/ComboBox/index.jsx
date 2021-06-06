@@ -9,7 +9,7 @@
  import Select from "../Select";
  import TreePicker from "../TreePicker";
  import propTypes from "../../propsConfig/propTypes.js";
- import defaultProps from "../../propsConfig/defaultProps.js";
+
  import("./combobox.css");
  class ComboBox extends React.PureComponent {
      constructor(props) {
@@ -36,9 +36,7 @@
      reload(params, url) {
         this.combobox.current.reload && this.combobox.current.reload(params, url);
      }
- 
-     changeHandler(event) {
-     }
+
      renderSelect() {//普通下拉框        
          return <Select ref={this.combobox} {...this.props}  ></Select>
      }
@@ -62,9 +60,6 @@
              case "picker":
                  control = this.renderPicker();
                  break;
-             case "gridpicker":
-                 control = this.renderGridPicker();
-                 break;
              case "treepicker":
                  control = this.renderTreePicker();
                  break;
@@ -79,7 +74,6 @@
                  break;
              case "datetime":
                  control = this.renderDatePicker();
- 
                  break;
              case "daterange":
                  control = this.renderDatePicker();
@@ -87,14 +81,12 @@
              case "datetimerange":
                  control = this.renderDatePicker();
                  break;
-             case "panelpicker":
-                 control = this.renderPanelPicker();
-                 break;
+
          }
          return control;
      }
  }
  
  ComboBox.propTypes =propTypes;
- ComboBox.defaultProps =  Object.assign({}, defaultProps, { type: "select" });;
+ ComboBox.defaultProps ={ type: "select" }
  export default ComboBox;

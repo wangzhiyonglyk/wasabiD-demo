@@ -6,7 +6,6 @@ desc:链接按钮
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import func from "../../libs/func";
 import('./linkbutton.css');
 class LinkButton extends React.PureComponent {
     constructor(props) {
@@ -93,9 +92,7 @@ LinkButton.propTypes = {
 
 };
 LinkButton.defaultProps = {
-    className: "",
     iconAlign: 'left', //图标位置
-    iconColor: null,
     theme: 'primary',
 
 

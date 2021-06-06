@@ -350,12 +350,7 @@ RotateChart.defaultProps = {
   ringRadius: 12,//
   innerRadius: 20,//内圆半径
   interval: 2000,
-  data: [],
   ableStop: true,
-  finishHandler: null,
-  oneFinishHandler: null,
-  disabled: false,
-  decimal: false,
   countType:"sum",
 }
 RotateChart.propTypes = {

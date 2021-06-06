@@ -349,13 +349,5 @@ Calendar.propTypes = {
 
 
 };
-Calendar.defaultProps = {
-    year: null,
-    month: null,
-    day: null,
-    isRange: false,///默认否
-    rangeBegin: null,//默认为空，日期范围选择时开始值
-    rangeEnd: null,//默认为空，日期范围选择时结果值
 
-};
 export default Calendar;

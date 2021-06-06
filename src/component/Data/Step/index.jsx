@@ -66,9 +66,6 @@ Step.propTypes = {
 
 };
 Step.defaultProps = {
-    activeIndex:null,
-    style: {},
-    className: "",
     theme: "default"
 };
 export default Step;

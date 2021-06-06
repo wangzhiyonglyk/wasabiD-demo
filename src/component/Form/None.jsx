@@ -4,7 +4,6 @@
 //属性与状态值保留,可能以后有用
 import React, { Component } from "react";
 import propType from "../propsConfig/propTypes.js";
-import defaultProps from "../propsConfig/defaultProps.js";
 class None extends Component {
     constructor(props) {
         super(props);
@@ -31,5 +30,5 @@ class None extends Component {
     }
 }
 None.propTypes = propType;
-None.defaultProps = Object.assign(defaultProps, { type: "none" });
+None.defaultProps = { type: "none" }
 export default None;

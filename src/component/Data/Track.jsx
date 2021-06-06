@@ -42,9 +42,5 @@ Track.propTypes = {
     expressName: PropTypes.string,//快递公司名称
     exrepssId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//快递单号
 }
-Track.defaultProps = {
-    model: null,
-    expressName: null,
-    expressId: null,
-}
+
 export default Track;

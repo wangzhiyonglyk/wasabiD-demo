@@ -264,19 +264,7 @@ Avatar.propTypes = {
     uploadSuccess: PropTypes.func, //上传成功事件
     disabled:PropTypes.bool,//是否禁止
 };
-Avatar.defaultProps = {
-    className:"",
-    style:{},
+Avatar.defaultProps = { 
     type:"file",
-    httpHeaders: {},
-    params: null,
-    uploadurl:"",
-
-    name:"",
-    uploadSuccess: () => {
-
-    },
-    disabled:false,
- 
 };
 export default Avatar;

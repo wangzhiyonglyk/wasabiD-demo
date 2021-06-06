@@ -11,7 +11,7 @@ import("./index.css")
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.usernameref=React.createRef();
+        this.usernameref = React.createRef();
         this.state = {
             username: "",
             password: ""
@@ -31,7 +31,7 @@ class Login extends React.Component {
         document.addEventListener("keydown", (event) => {
             if (event.keyCode == 13) //回车键的键值为13
                 this.onSumbit();
-            }
+        }
         )
     }
     usernameChange(event) {
@@ -58,9 +58,7 @@ class Login extends React.Component {
         if (this.props.url || this.props.loginHandler) {
             if (this.state.username && this.state.password) {
                 if (this.props.loginHandler && typeof this.props.loginHandler === "function") {
-                    this
-                        .props
-                        .loginHandler(this.state.username, this.state.password);
+                    this.props.loginHandler(this.state.username, this.state.password);
                 } else {
                     api.ajax({
                         url: this.props.url,
@@ -70,7 +68,7 @@ class Login extends React.Component {
                             .props
                             .contentType
                             .indexOf("json") > -1
-                            ? JSON.stringify({username: this.state.username, password: this.state.password})
+                            ? JSON.stringify({ username: this.state.username, password: this.state.password })
                             : {
                                 username: this.state.username,
                                 password: this.state.password
@@ -119,35 +117,35 @@ class Login extends React.Component {
             <img
                 className="bgone"
                 src={this.props.backgroundImage
-                ? this.props.backgroundImage
-                : require("./img/1.jpg")}/>
+                    ? this.props.backgroundImage
+                    : require("./img/1.jpg")} />
             <img
                 className="pic"
                 src={this.props.leftImage
-                ? this.props.leftImage
-                : require("./img/a.png")}/>
+                    ? this.props.leftImage
+                    : require("./img/a.png")} />
 
             <div className="login-table">
-                <div className="welcome">{this.props.title}</div>
+                <div className="welcome">{this.props.title || ""}</div>
 
                 <div className="user">
-                    <div ><img src={require("./img/yhm.png")}/></div>
+                    <div ><img src={require("./img/yhm.png")} /></div>
                     <input
                         type="text"
                         ref={this.usernameref}
                         name="username"
                         placeholder="用户名"
                         value={this.state.username}
-                        onChange={this.usernameChange}/>
+                        onChange={this.usernameChange} />
                 </div>
                 <div className="password">
-                    <div ><img src={require("./img/mm.png")}/></div>
+                    <div ><img src={require("./img/mm.png")} /></div>
                     <input
                         type="password"
                         name="密码"
                         placeholder="密码"
                         value={this.state.password}
-                        onChange={this.passwordChange}/>
+                        onChange={this.passwordChange} />
                 </div>
                 <button className="login-btn" type="button" onClick={this.onSumbit}>登录</button>
             </div>
@@ -166,11 +164,6 @@ Login.propTypes = {
 
 }
 Login.defaultProps = {
-    title: "",
-    url: "",
     contentType: "application/x-www-form-urlencoded",
-    backgroundImage: "",
-    leftImage: "",
-    loginHandler: null
 }
 export default Login;

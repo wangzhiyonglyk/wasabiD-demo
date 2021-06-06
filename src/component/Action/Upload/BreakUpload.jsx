@@ -260,15 +260,5 @@ Upload.propTypes = {
     uploadSuccess: PropTypes.func, //上传成功事件
     onChange: PropTypes.func //选择文件事件
 };
-Upload.defaultProps = {
-    httpHeaders: {},
-    params: null,
-    name: null,
-    multiple: false,
-    size: null,
-    accept: null,
-    uploadurl: null,
-    uploadSuccess: null,
-    onChange: null,
-};
+
 export default Upload;

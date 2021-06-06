@@ -51,8 +51,11 @@ desc:表单输入框样式
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+  resize: vertical;
 }
-
+textarea.wasabi-input{
+  height: 140px;
+}
 .wasabi-input[disabled], .wasabi-input[readOnly] {
   background-color: var(--background-color);
   border-color: var(--border-color);

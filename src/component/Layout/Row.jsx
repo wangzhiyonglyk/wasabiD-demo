@@ -23,8 +23,6 @@ class Row extends React.PureComponent {
     }
     static defaultProps = {
         title: "row",
-        style: {},
-        className: ""
     }
     /**
         * 合并两种refs引用方式

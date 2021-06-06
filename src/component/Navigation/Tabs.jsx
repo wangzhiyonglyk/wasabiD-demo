@@ -59,7 +59,7 @@ class Tabs extends React.Component {
     }
     render() {
         return (
-            <div className={"wasabi-tabs " + this.props.className} style={this.props.style} >
+            <div className={"wasabi-tabs " +( this.props.className||"")} style={this.props.style} >
                 <div className={"wasabi-tab-nav "} id={this.state.navid} >
                     {
 
@@ -80,10 +80,14 @@ class Tabs extends React.Component {
                 </div>
                 {
                     React.Children.map(this.props.children, (child, index) => {
-
-                        return <div key={index} style={this.props.style} className={"section  " + this.props.theme + " " + (index == this.state.activeIndex ? "active" : "")}  >
+                        if(child){
+                            return <div key={index} style={this.props.style} className={"section  " + this.props.theme + " " + (index == this.state.activeIndex ? "active" : "")}  >
                             {child}
                         </div>
+                        }else{
+                            return null;
+                        }
+                     
                     })
                 }
 
@@ -108,12 +112,9 @@ Tabs.propTypes = {
     tabClick: PropTypes.func,//单击事件
 };
 Tabs.defaultProps = {
-    className: "",
-    style: {},
     theme: "primary",
     activeIndex: 0,
-    onClose: null,
-    tabClick: null
+ 
 
 };
 export default Tabs;

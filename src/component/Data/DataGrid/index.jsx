@@ -51,8 +51,8 @@ class DataGrid extends Component {
             fixedTableid: func.uuid(),//固定的表格
             realTableContainerid: func.uuid(),//真实表格容器
             realTableid: func.uuid(),//真实表格
-            url:null,
-            rawUrl:null,
+            url: null,
+            rawUrl: null,
             params: null, //参数
             rawParams: null,//保留旧的，用于对比
             pageIndex: this.props.pageIndex,//页号
@@ -105,7 +105,7 @@ class DataGrid extends Component {
             newState = {
                 reloadData: true,
                 url: props.url,
-                rawUrl:props.url,
+                rawUrl: props.url,
                 rawParams: func.clone(props.params),
                 params: func.clone(props.params),
             }
@@ -201,7 +201,7 @@ class DataGrid extends Component {
     }
     componentDidMount() {
         if (this.state.reloadData) {
-       
+
             this.setState({
                 reloadData: false,
             })
@@ -363,7 +363,7 @@ class DataGrid extends Component {
         style.height = null;
         return (
             <div
-                className={'wasabi-grid' + (this.props.className || "") + (this.state.fixedHeaders.length > 0 ? " fixedHeader" : "")}
+                className={'wasabi-grid' + (this.props.className || "") + (this.state.fixedHeaders && this.state.fixedHeaders.length > 0 ? " fixedHeader" : "")}
                 onPaste={this.onPaste}
                 style={style}
             >
@@ -387,7 +387,6 @@ DataGrid.propTypes = {
     focusAble: PropTypes.bool, //是否显示焦点行，默认值 true
     borderAble: PropTypes.bool, //是否显示表格边框，默认值 false
     editAble: PropTypes.bool, //是否允许编辑
-    clearChecked: PropTypes.bool, //刷新数据后是否清除选择,true
     selectChecked: PropTypes.bool, //选择行的时候是否同时选中,false
     exportAble: PropTypes.bool,//是否允许导出
 
@@ -417,7 +416,6 @@ DataGrid.propTypes = {
     /**
      * ajax请求参数
      */
-    priKey:PropTypes.string,//主键key
     url: PropTypes.string, //ajax地址
     updateUrl: PropTypes.string, //列更新的地址
     httpType: PropTypes.string,//请求类型
@@ -425,7 +423,7 @@ DataGrid.propTypes = {
     httpHeaders: PropTypes.object,//请求的头部
     params: PropTypes.object, //查询条件
     uploadUrl: PropTypes.string,//excel导入的时候地址
-    
+
     /**
      * 数据源
      */
@@ -453,18 +451,11 @@ DataGrid.defaultProps = {
     /**
      * 表格常用属性设置
      */
-    style: {},
-    className: "",
-    selectAble: false,
-    singleSelect: false,
-    detailAble: false,
-    rowNumber: true,
-    focusAble: true,
-    borderAble: true,
-    editAble: false,
+
+
     selectChecked: false,
     exportAble: true,
-
+    borderAble:true,
     /**
     * 分页
     */
@@ -480,42 +471,20 @@ DataGrid.defaultProps = {
    */
     headers: [],
     fixedHeaders: [],
-    footer: [],
     total: 0,
-    data: null,
-
-
     /**
      * ajax请求参数
      */
-    url: null, //
-    updateUrl: null,
+
     httpType: "POST",
     contentType: "application/x-www-form-urlencoded",
-    httpHeaders: {},//http请求的头部字段
-    params: null,
-    uploadUrl: null,
+
     /**
       * 数据源
       */
     dataSource: 'data', //
     footerSource: 'footer', //页脚数据源
     totalSource: 'total', //
-
-
-    /**
-     * 事件
-     */
-    onClick: null,
-    onDoubleClick: null,
-    onChecked: null,
-    updateHandler: null,
-    detailHandler: null,
-    pasteSuccess: null,
-    /**
-    * pivot 专门为交叉提供的属性
-    */
-    isPivot: false,
 };
 
 mixins(DataGrid, [render, eventHandler,

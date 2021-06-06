@@ -40,9 +40,4 @@ Simulator.propTypes = {
     style: PropTypes.object,
     url: PropTypes.string,//url地址
 }
-Simulator.defaultProps = {
-    className: "",
-    style: {},
-    url: "",
-}
 export default Simulator;

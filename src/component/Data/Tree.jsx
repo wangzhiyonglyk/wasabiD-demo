@@ -294,53 +294,16 @@ Tree.propTypes = {
     isPivot: PropTypes.bool
 }
 Tree.defaultProps = {
-    style: {},
-    className: "",
-    name: null,
-    value: null,
-    text: null,
     idField: "id",
     parentField: "pId",
     textField: "text",
-
-    url: null,
-    params: null,
     dataSource: "data",
-    data: [],
     simpleData: true,//默认为真
-    checkAble: false,
     checkStyle: "checkbox",
     checkType: { "y": "ps", "n": "ps" },//默认勾选/取消勾选都影响父子节点，todo 暂时还没完成
     radioType: "all",//todo 
-    renameAble: false,
-    editAble: false,
-    removeAble: false,
 
 
-    //after事件
-    onClick: null,
-    onDoubleClick: null,
-    onCheck: null,
-    onCollapse: null,
-    onExpand: null,
-    onRename: null,
-    onEdit: null,
-    onRemove: null,
-    onRightClick: null,
-    onDrag: null,
-    onDrop: null,
-    onAsyncSuccess: null,
 
-    //before 事件
-    beforeDrag: null,
-    beforeDrop: null,
-    beforeRemove: null,
-    beforeRename: null,
-    beforeRightClick: null,
-
-    /**
-    * pivot 专门为交叉提供的属性
-    */
-    isPivot: false,
 }
 export default loadDataHoc(Tree, "tree");

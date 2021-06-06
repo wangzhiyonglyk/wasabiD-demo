@@ -25,8 +25,7 @@ class Toolbar extends Component {
       style: this.props.style
     };
     var buttonlist = [];
-    if (this.props.buttons != null) {
-      this.props.buttons.map((child, index) => {
+     this.props.buttons&& this.props.buttons.map((child, index) => {
         if (this.props.type == 'button') {
           buttonlist.push(
             <Button key={index} {...child} onClick={this.onClick}>{this.props.title}</Button>
@@ -41,7 +40,6 @@ class Toolbar extends Component {
           );
         }
       });
-    }
     return <div {...props}>{buttonlist}</div>;
   }
 }
@@ -58,10 +56,7 @@ Toolbar.propTypes = {
   onClick: PropTypes.func
 };
 Toolbar.defaultProps = {
-  buttons: [],
   type: 'button',
-  style: {},
-  className: ''
 };
 
 export default Toolbar;

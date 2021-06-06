@@ -295,8 +295,8 @@ func.clone = function (obj) {
                 } else if (obj instanceof Date) {//对日期的复制
                     o = new Date(obj.valueOf())
                 }
-                else if(obj instanceof Map){
-                    o=new Map(obj);
+                else if (obj instanceof Map) {
+                    o = new Map(obj);
                 }
 
                 else {//其他对象
@@ -314,7 +314,7 @@ func.clone = function (obj) {
     return o;
 }
 //获取真正的数据源
-func.getSource = function (data, source) {
+func.getSource = function (data, source="data") {
     /// <summary>
     /// 获取真正的数据源
     /// </summary>
@@ -634,7 +634,7 @@ func.deepMerge = function (targetObj, sourceObj) {
  * @param {*} key key值
  * @returns 
  */
-func.arrayObjectMerge = function (arr1 = [], arr2 = [], key = "id") {
+func.arrayNodupMerge = function (arr1 = [], arr2 = [], key = "id") {
     let arr = [].concat(arr1, arr2);
     let result = [];
     let obj = {};
@@ -756,12 +756,12 @@ let DateExtends = {
         newDate.setDate(newDate.getDate() + n);
         return newDate;
     },
-     /**
-     * 取得几小时后的日期
-     * @param {*} date 日期
-     * @param {*} n 小时量
-     */
-      getNextHour(date, n = 1) {
+    /**
+    * 取得几小时后的日期
+    * @param {*} date 日期
+    * @param {*} n 小时量
+    */
+    getNextHour(date, n = 1) {
         let newDate = func.clone(date);
         newDate.setHours(newDate.getHours() + n);
         return newDate;

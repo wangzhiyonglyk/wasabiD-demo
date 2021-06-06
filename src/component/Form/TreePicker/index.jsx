@@ -6,9 +6,7 @@
  */
 import React, { Component } from "react";
 import Tree from "../../Data/Tree.jsx";
-import Label from "../../Info/Label";
 import props from "../../propsConfig/propTypes.js";
-import defaultProps from "../../propsConfig/defaultProps.js";
 import CheckBox from "../CheckBox/index.jsx";
 import propsTran from "../../libs/propsTran.js";
 import validateHoc from "../validateHoc";
@@ -202,5 +200,5 @@ class TreePicker extends Component {
     }
 }
 TreePicker.propTypes = props;
-TreePicker.defaultProps = Object.assign({}, defaultProps, { type: "treepicker", checkStyle: "checkbox" });
+TreePicker.defaultProps = { type: "treepicker", checkStyle: "checkbox" }
 export default validateHoc(loadDataHoc(TreePicker, "treepicker"));

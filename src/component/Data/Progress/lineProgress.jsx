@@ -75,8 +75,6 @@ LineProgress.propTypes = {
 };
 LineProgress.defaultProps = {
     value: 0,
-    style: {},
-    className: "",
     theme: "default"
 };
 export default LineProgress;

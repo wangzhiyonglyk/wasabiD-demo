@@ -362,20 +362,4 @@ Article.propTypes = {
     imgUploadSuccess: PropTypes.func,//图片上传成功后的事件，返回处理好的结果
     urlPrefix:PropTypes.string,//图片上传后url地址前缀，防止保存需要不是图片地址，但是又要预览
 }
-Article.defaultProps = {
-    className: "",
-    style: {},
-    mobile: true,
-    title: "",
-    author: "",
-    headerIcon: "",
-    content: [],
-    httpHeaders: {},
-    params: {},
-    uploadurl: "",
-    uploadFileName: "",
-    imgUploadSuccess: null,
-    urlPrefix:""
-
-}
 export default Article;

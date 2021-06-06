@@ -777,42 +777,9 @@ TreeNode.propTypes = {
 
 };
 TreeNode.defaultProps = {
-    isParent: false,
-    id: null,
-    text: null,
-    title: null,
     iconCls: "icon-text",
     iconClose: "icon-folder",
     iconOpen: "icon-open-folder",
     open: true,
-    checked: false,
-    checkAble: false,
-    dragAble: false,
-    dropAble: false,
-    href: null,
-    hide: null,
-    children: [],
-
-    //after事件
-    onClick: null,
-    onDoubleClick: null,
-    onCheck: null,
-    onCollapse: null,
-    onExpand: null,
-    onRename: null,
-    onEdit: null,
-    onRemove: null,
-    onRightClick: null,
-    onDragEnd: null,
-    onDrop: null,
-    onAsyncSuccess: null,
-
-    //before 事件
-    beforeDrag: null,
-    beforeDrop: null,
-    beforeRemove: null,
-    beforeRename: null,
-    beforeRightClick: null,
-
 };
 export default TreeNode;

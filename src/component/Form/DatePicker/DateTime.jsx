@@ -116,15 +116,7 @@ DateTime.propTypes = {
 }
 DateTime.defaultProps =
 {
-    className: "",
-    type: "datetime",
-    year: null,
-    month: null,
-    day: null,
-    time: null,
-    attachSecond: true,
-    allMinute: false,
-    onSelect: null
+    attachSecond: true, 
 };
 
 export default DateTime

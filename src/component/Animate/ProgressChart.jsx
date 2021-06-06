@@ -107,12 +107,8 @@ class ProgressChart extends React.Component {
 
 
 }
-ProgressChart.defaultProps = {
-    className: "",
-    style: {},//样式，或者百分比
+ProgressChart.defaultProps = { 
     computer: "max",//
-    data: [],
-
 }
 ProgressChart.propTypes = {
     className: PropTypes.string,//样式

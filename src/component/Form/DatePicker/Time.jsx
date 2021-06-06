@@ -38,9 +38,9 @@ class Time extends React.Component {
         this.hourClick = this.hourClick.bind(this);
         this.minuteClick = this.minuteClick.bind(this);
         this.onClick = this.onClick.bind(this)
-        this.hourChange=this.hourChange.bind(this);
-        this.minuteChange=this.minuteChange.bind(this);
-        this.onFocus=this.onFocus.bind(this)
+        this.hourChange = this.hourChange.bind(this);
+        this.minuteChange = this.minuteChange.bind(this);
+        this.onFocus = this.onFocus.bind(this)
     }
     static getDerivedStateFromProps(props, state) {
         if (func.diff((props.hour || "") + "-" + (props.minute || ""), state.oldPropsValue)) {
@@ -90,22 +90,24 @@ class Time extends React.Component {
     }
     hourChange(event) {
         let value = event.target.value.toString();
-        if (!value||value&&regs.number.test(value)&&value<=23) {
+        if ((value + "").length > 2) {
+            //长度不对不处理
+        }
+        else {
             this.setState({
                 hour: value,
                 hourVisible: true,
             })
+            if (!value || value && regs.number.test(value) && value > 23) {//重新选择
+                event.target.selectionStart = 0;
+                event.target.selectionEnd = (value + "").length;
+            }
         }
-        else{
-            this.setState({
-                hour: value.slice(-1),//取最后一位，方便输入
-                hourVisible: true,
-            })
-        }
-       
+
+
 
     }
-    onFocus(event){
+    onFocus(event) {
         event.target.select();
     }
     minuteClick(value) {
@@ -115,24 +117,28 @@ class Time extends React.Component {
         }, () => {
             if (this.props.onSelect != null) {
                 let value = this.getValue();
-                this.props.onSelect(value, value, this.props.name, value);
+                this.props.onSelect(value, value, this.props.name);
             }
 
         })
     }
     minuteChange(event) {
         let value = event.target.value.toString();
-        if (!value||value&&regs.number.test(value)&&value<=59) {
+        if ((value + "").length > 2) {
+            //长度不对不处理
+        }
+        else {
             this.setState({
                 minute: value,
                 hourVisible: false,
             })
-        }  else{
-            this.setState({
-                minute: value.slice(-1),//取最后一位，方便输入
-                hourVisible: false,
-            })
+            if (!value || value && regs.number.test(value) && value > 59) {//重新选择
+                event.target.selectionStart = 0;
+                event.target.selectionEnd = (value + "").length;
+            }
+
         }
+
     }
     hourVisibleHandler(visible) {
         this.setState({
@@ -188,9 +194,9 @@ class Time extends React.Component {
             </div>
             <div key="2" className="wasabi-time-ok">
                 <span key="1" onClick={this.hourVisibleHandler.bind(this, true)}>时:
-                <input key="2" onFocus={this.onFocus} style={{width:40,height:20,outline:"none"}} onChange={this.hourChange} value={this.state.hour}></input></span>
+                <input key="2" onFocus={this.onFocus} style={{ width: 40, height: 20, outline: "none" }} onChange={this.hourChange} value={this.state.hour}></input></span>
                 <span key="3" onClick={this.hourVisibleHandler.bind(this, false)}>分:
-                <input key="4" onFocus={this.onFocus}  style={{width:40,height:20,outline:"none"}} onChange={this.minuteChange} value={this.state.minute}></input></span>
+                <input key="4" onFocus={this.onFocus} style={{ width: 40, height: 20, outline: "none" }} onChange={this.minuteChange} value={this.state.minute}></input></span>
                 <a key="5" onClick={this.onClick}>确定</a>
             </div>
             <div></div>
@@ -203,9 +209,5 @@ Time.propTypes = {
     minute: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),//分钟
     attachSecond: PropTypes.bool,//是否带上秒
 };
-Time.defaultProps = {
-    hour: null,
-    minute: null,
-    attachSecond: false,//是否带秒
-};
+
 export default Time;

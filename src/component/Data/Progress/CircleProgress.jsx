@@ -13,7 +13,7 @@ class CircleProgress extends React.Component {
         this.state = {
             cantainerid:Math.random().toString(36).slice(-8) + 'cantainer',
             canvasid: Math.random().toString(36).slice(-8) + 'canvas',
-            oldPropsValue: this.props.value,
+            oldPropsValue: null,
             value: this.props.value||"",//初始化的0
         }
     }
@@ -170,9 +170,6 @@ CircleProgress.propTypes = {
 };
 CircleProgress.defaultProps = {
     value: 0,
-    text:"",
-    style: {},
-    className: "",
     theme: "default"
 };
 export default CircleProgress;

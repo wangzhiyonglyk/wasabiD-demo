@@ -16,11 +16,6 @@ class MenuPanel extends React.Component {
     title: PropTypes.any.isRequired,//标题是必须，可以是组件
     expand:PropTypes.bool //是否展开
   }
-  static defaultProps={
-    expand:false,
-    className:""
-  }
-
   activeChange(index){
     this.setState({
       activeIndex:index
@@ -31,10 +26,10 @@ onChange(){
 }
 
   render() {
-    return       <div   className={"dropdown "+this.props.className+" "+( this.props.expand?"expand":"")}>
+    return       <div   className={"dropdown "+(this.props.className||"")+" "+( this.props.expand?"expand":"")}>
     
-    <label htmlFor={this.props.title} onClick={this.props.expandHandler} >
-     <i className={ this.props.iconCls} style={{marginRight:10}}></i> {this.props.title}
+    <label htmlFor={this.props.title||""} onClick={this.props.expandHandler} >
+     <i className={ this.props.iconCls||""} style={{marginRight:10}}></i> {this.props.title}
      <i style={{float:"right",marginRight:10,marginTop:20}} className={this.props.expand?"icon-arrow-down":"icon-arrow-up"} onClick={this.props.expandHandler} ></i>
      </label>
     
@@ -52,7 +47,6 @@ MenuPanel.propTypes = {
  
 };
 MenuPanel.defaultProps = {
-  className:"",
   iconCls: "icon-category",
 };
 

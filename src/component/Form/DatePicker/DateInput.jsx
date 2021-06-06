@@ -23,8 +23,10 @@ class DateInput extends React.PureComponent {
                 readOnly={this.props.readOnly}
                 required={ this.props.required}
                 value={this.props.value||""}
-                onClick={this.props.onClick}
                 onChange={this.props.onChange}
+                onKeyUp={this.props.onKeyUp}
+                onClick={this.props.inputClick}
+                onFocus={this.props.inputFocus}
             />
         </div>
 
@@ -36,9 +38,5 @@ DateInput.propTypes = {
     onChange:PropTypes.func,
 }
 
-DateInput.defaultProps = {
-    onClear: null,
-    onClick: null,
-    onChange:null
-}
+
 export default DateInput;

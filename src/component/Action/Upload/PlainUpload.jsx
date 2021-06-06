@@ -360,18 +360,7 @@ Upload.propTypes = {
 };
 Upload.defaultProps = {
     autoUpload: true,//允许
-    className: "",
-    style: {},
     type: "file",
-    httpHeaders: {},
-    params: null,
-    uploadurl: "",
-    accept: null,
-    multiple: false,
-    size: null,
-    name: "",
-    uploadSuccess: null,
-    disabled: false,
-    value: "",
+  
 };
 export default Upload;

@@ -53,8 +53,5 @@ PickerInput.propTypes = {
     onClick: PropTypes.func,
 }
 
-PickerInput.defaultProps = {
-    onClear: null,
-    onClick: null
-}
+
 export default PickerInput;

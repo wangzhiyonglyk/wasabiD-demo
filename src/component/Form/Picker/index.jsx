@@ -15,7 +15,6 @@ import FetchModel from "../../Model/FetchModel.js";
 import PickerModel from "../../Model/PickerModel.js";
 import PickerInput from "./PickerInput";
 import propType from "../../propsConfig/propTypes.js";
-import defaultProps from "../../propsConfig/defaultProps.js";
 import api from "wasabi-api"
 import "./picker.css"
 class Picker extends Component {
@@ -43,7 +42,6 @@ class Picker extends Component {
         this.setValue = this.setValue.bind(this);
         this.getValue = this.getValue.bind(this);
         this.onClear = this.onClear.bind(this);
-        this.changeHandler = this.changeHandler.bind(this);
         this.showPicker = this.showPicker.bind(this);
         this.hidePicker = this.hidePicker.bind(this);
         this.setPickerModel = this.setPickerModel.bind(this);
@@ -105,9 +103,6 @@ class Picker extends Component {
         })
         this.input.current.setValue("");
         this.props.onSelect && this.props.onSelect("", "", this.props.name, {});
-    }
-    changeHandler(event) {
-
     }
     /**
      * 
@@ -197,7 +192,7 @@ class Picker extends Component {
                 selectText = newData[currentProvinceIndex].text;
                 show = false;
                 this.input.current.setValue(selectText);
-             
+
                 if (this.props.onSelect != null) {
                     this.props.onSelect(selectValue, selectText, this.props.name, null);
                 }
@@ -588,5 +583,5 @@ class Picker extends Component {
     }
 }
 Picker.propTypes = propType;
-Picker.defaultProps = Object.assign(defaultProps, { type: "picker" });
+Picker.defaultProps = { type: "picker" }
 export default validateHoc(loadDataHoc(Picker, "picker"));
