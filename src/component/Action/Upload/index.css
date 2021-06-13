@@ -24,7 +24,7 @@
 }
 .wasabi-upload .wasabi-upload-icon {
     font-size: 68px;
-    color: #c0c4cc;
+    color: var(--border-hover-color);
     margin: 40px 0 16px;
     line-height: 50px;
     display: inline-block;

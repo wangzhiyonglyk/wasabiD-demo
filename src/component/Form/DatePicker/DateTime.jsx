@@ -84,8 +84,8 @@ class DateTime extends Component {
     }
     render() {
         return (
-            <div className={this.props.className + " "} style={this.props.style}>
-                <div style={{ position: "relative", height: 32 }}>
+            <React.Fragment>
+                <div style={{ height: 40 ,width:"100%"}}>
                     <input className=" wasabi-input timeinput"
                         value={this.state.time} onClick={this.timeHandler.bind(this)} onChange={() => { }}></input>
                     <div style={{ display: this.state.showTime ? "inline-block" : "none", zIndex: 1 }}>
@@ -98,8 +98,9 @@ class DateTime extends Component {
                 <Calendar year={this.state.year}
                     month={this.state.month}
                     day={this.state.day} onSelect={this.dateChange} ></Calendar>
+            </React.Fragment>
 
-            </div>
+
         )
     }
 }
@@ -116,7 +117,7 @@ DateTime.propTypes = {
 }
 DateTime.defaultProps =
 {
-    attachSecond: true, 
+    attachSecond: true,
 };
 
 export default DateTime

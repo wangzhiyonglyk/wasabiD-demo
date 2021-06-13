@@ -169,10 +169,10 @@ let propsTran = {
                 second_year = secondDate.split("-")[0] * 1;
                 second_month = secondDate.split("-")[1] * 1;
                 second_rangeEnd = second_day = secondDate.split("-")[2] * 1;
-                second_rangeBegin = 1;//第二个的开始就是第一天
+                second_rangeBegin = -1;//第二个的开始就是第一天
                 //第一个日期的开始就是 选中，结束是最大的
                 first_rangeBegin = first_day;
-                first_rangeEnd = 31;
+                first_rangeEnd = 32;
             }
         }
         else {//第二日期没有值

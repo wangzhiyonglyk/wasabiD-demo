@@ -7,8 +7,100 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import lang from "../../Lang/language.js";
-import utils from "../../libs/func"
+import utils from "../../libs/func";
 import("./calendar.css");
+
+function CalendarHeader({ year, month, choseYear, choseMonth }) {
+    return <div className="wasabi-datetime-header">
+        <div style={{ display: "inline", marginRight: 8 }} onClick={choseYear}>
+            <span>{year}</span>.</div>
+        <div style={{ display: "inline" }} onClick={choseMonth}><span>{(month * 1 < 10 ? "0" + (month * 1) : month)}</span>.</div>
+    </div>
+
+}
+
+function YearView({ year, tempyear, showChangeYear, yearInputClick, yearonBlur, yearOKHandler, yearOnChange, changeYearHandler }) {
+    let yearControl = [];
+    for (let index = year * 1 - 7; index <= year * 1 + 7; index++) {
+        let className = index === year * 1 ? "yearspan chosed" : "yearspan";
+        yearControl.push(<div key={index} className={className} onClick={changeYearHandler.bind(this, index)} key={"year" + index}>{index}</div>);
+    }
+    return <div className="wasabi-datetime-year" style={{ display: showChangeYear ? "flex" : "none" }}>
+        <div style={{ display: "block", textAlign: "center", marginBottom: 10 ,width:"100%"}}>
+            <input type="text" value={tempyear} name="year" onClick={yearInputClick} onBlur={yearonBlur}
+                onKeyUp={yearOKHandler}
+                title="回车确认" onChange={yearOnChange}></input></div>
+        {yearControl}</div>
+}
+
+function MonthView({ month, showChangeMonth, changeMonthHandler }) {
+    let control = [];
+    for (let i = 1; i <= 12; i++) {
+        control.push(<div  key={i} className={"monthspan " + ((month === i) ? "chosed" : "")} onClick={changeMonthHandler.bind(this, i)}>{i < 10 ? "0" + i : i}</div>
+        )
+    }
+    return <div className="wasabi-datetime-month" style={{ display: showChangeMonth ? "flex" : "none" }}> {control}
+    </div>
+}
+
+function WeekView({ visible }) {
+    return <div className="weekul" style={{ display: visible ? "block" : "none" }}>
+        <div key={lang.cn.SUN} className="weekspan">{lang.cn.SUN}</div>
+        <div key={lang.cn.MON} className="weekspan">{lang.cn.MON}</div>
+        <div key={lang.cn.TUE} className="weekspan">{lang.cn.TUE}</div>
+        <div key={lang.cn.WED} className="weekspan">{lang.cn.WED}</div>
+        <div key={lang.cn.THU} className="weekspan">{lang.cn.THU}</div>
+        <div key={lang.cn.FRI} className="weekspan">{lang.cn.FRI}</div>
+        <div key={lang.cn.SAT} className="weekspan">{lang.cn.SAT}</div>
+    </div>
+}
+
+function DayView({ year, month, day, visible, isRange, rangeBegin, rangeEnd, dayHandler }) {
+
+    let preMonthWeekDays = [], thisMonthDays = [];
+    //总天数
+    const daytotal = new Date(year, month, 0).getDate();
+    //头一天星期几
+    const FirstDayWeek = new Date(year, month - 1, 1).getDay();
+    for (let i = 0; i < FirstDayWeek; i++) {
+        preMonthWeekDays[i] = i;
+    }
+    for (let i = 0; i < daytotal; i++) {
+        thisMonthDays[i] = (i + 1);
+    }
+    let preMonthWeekDaysNodes = preMonthWeekDays.map(function (item, i) {
+        return <div className="datespan" key={i}></div>
+    })
+    let thisMonthDaysNodes = thisMonthDays.map((item, index) => {
+        let chosed = false;//当前日期是否被选中
+        if (isRange) {
+            if (rangeBegin && rangeEnd && rangeBegin <= item && rangeEnd >= item) {
+                chosed = true;
+            }
+        }
+        else if (day === item) {
+            chosed = true;
+        }
+        let control = null;
+         if (item === rangeBegin&&item !== rangeEnd) {
+            control = <div className={"datespan begin rangespan"}
+             key={"li2" + index} onClick={dayHandler.bind(this, item)}>
+             <div className="radius">{item}</div></div>;
+        }
+        else if (item !== rangeBegin&&item === rangeEnd) {
+            control = <div className={"datespan end rangespan"} 
+            key={"li2" + index} onClick={dayHandler.bind(this, item)}>
+             <div className="radius">{item}</div></div>;
+        }
+        else{
+            control = <div className={"datespan  "+(chosed&&isRange?"rangespan":"")} key={"li2" + index} 
+            onClick={dayHandler.bind(this, item)}>
+                <div className={"radius "+(chosed&&!isRange?"chosed":"")}>{item}</div></div>;
+        }
+        return control;
+    })
+    return <div className="dayul" style={{ display: visible ? "block" : "none" }}>{preMonthWeekDaysNodes} {thisMonthDaysNodes}</div>
+}
 class Calendar extends Component {
     constructor(props) {
         super(props)
@@ -27,7 +119,7 @@ class Calendar extends Component {
         }
         this.setValue = this.setValue.bind(this)
         this.choseYear = this.choseYear.bind(this);
-        this.yearClick = this.yearClick.bind(this);
+        this.yearInputClick = this.yearInputClick.bind(this);
         this.yearOnChange = this.yearOnChange.bind(this);
         this.yearOKHandler = this.yearOKHandler.bind(this);
         this.yearonBlur = this.yearonBlur.bind(this);
@@ -35,8 +127,7 @@ class Calendar extends Component {
         this.choseMonth = this.choseMonth.bind(this);
         this.changeMonthHandler = this.changeMonthHandler.bind(this);
         this.dayHandler = this.dayHandler.bind(this);
-        this.getMonthDays = this.getMonthDays.bind(this);
-        this.getFirstDayWeek = this.getFirstDayWeek.bind(this);
+
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};
@@ -77,7 +168,7 @@ class Calendar extends Component {
             showChangeMonth: false,
         })
     }
-    yearClick(event) {
+    yearInputClick(event) {
         event.target.select();
     }
     /**
@@ -116,8 +207,8 @@ class Calendar extends Component {
             year: value,
             day: null,//清空，防止没有
         }, () => {
-            
-            this.props.updateYearAndMonth&&this.props.updateYearAndMonth(value,this.state.month);
+
+            this.props.updateYearAndMonth && this.props.updateYearAndMonth(value, this.state.month);
         })
 
     }
@@ -140,10 +231,10 @@ class Calendar extends Component {
             month: value,
             showChangeYear: false,
             showChangeMonth: false,
-            day: 1,//日归一
+            day: null,
 
         }, () => {
-            this.props.updateYearAndMonth&&this.props.updateYearAndMonth(this.state.year,value);
+            this.props.updateYearAndMonth && this.props.updateYearAndMonth(this.state.year, value);
         })
 
 
@@ -169,22 +260,7 @@ class Calendar extends Component {
         }
 
     }
-    /**
-     * 根据月份获取当月总天数
-     * @returns 
-     */
-    getMonthDays() {
-        //
-        return new Date(this.state.year, this.state.month, 0).getDate();
-    }
-    /**
-     * 获取当月第一天是星期几
-     * @returns 
-     */
-    getFirstDayWeek() {
-        //
-        return new Date(this.state.year, this.state.month - 1, 1).getDay();
-    }
+
 
     shouldComponentUpdate(nextProps, nextState) {
         if (utils.diffOrder(nextProps, this.props)) {
@@ -202,120 +278,56 @@ class Calendar extends Component {
      */
     renderHeader() {
         return <div className="wasabi-datetime-header">
-            <div className="header-text" ><div style={{ display: "inline", marginRight: 8 }} onClick={this.choseYear}>
+            <div style={{ display: "inline", marginRight: 8 }} onClick={this.choseYear}>
                 <span>{this.state.year}</span>.</div>
-                <div style={{ display: "inline" }} onClick={this.choseMonth}><span>{lang.cn.Month[this.state.month - 1]}</span>.</div></div>
+            <div style={{ display: "inline" }} onClick={this.choseMonth}><span>{(this.state.month * 1 < 10 ? "0" + (this.state.month * 1) : this.state.month)}</span>.</div>
         </div>
 
+
     }
+
 
     /**
      * 渲染下一部分
      * @returns 
      */
     renderBody() {
-        let preMonthWeekDays = [], thisMonthDays = [];
-        let getDays = this.getMonthDays(), FirstDayWeek = this.getFirstDayWeek();
-        for (let i = 0; i < FirstDayWeek; i++) {
-            preMonthWeekDays[i] = i;
+        const visible = (!this.state.showChangeMonth && !this.state.showChangeYear);
+        const dayProps = {
+            year: this.state.year,
+            month: this.state.month,
+            day: this.state.day,
+            visible,
+            isRange:this.props.isRange,
+            rangeBegin: this.props.rangeBegin,
+            rangeEnd: this.props.rangeEnd,
+            dayHandler: this.dayHandler
         }
-        for (let i = 0; i < getDays; i++) {
-            thisMonthDays[i] = (i + 1);
-        }
-        let preMonthWeekDaysNodes = preMonthWeekDays.map(function (item, i) {
-            return <div className="datespan" key={i}></div>
-        })
-        let thisMonthDaysNodes = thisMonthDays.map((item, index) => {
-            let choseed = false;//当前日期是否被选中
-            if (this.props.isRange) {
-                if (this.props.rangeBegin && this.props.rangeEnd && this.props.rangeBegin <= item && this.props.rangeEnd >= item) {
-                    choseed = true;
-                }
-            }
-            else if (this.state.day === item) {
-                choseed = true;
-            }
-            let control = null;
-            if (item === this.props.rangeBegin && (!this.props.rangeEnd || item === this.props.rangeEnd)) {
-                control = <div className={"datespan "} key={"li2" + index} onClick={this.dayHandler.bind(this, item)}><div className="onlyradius">{item}</div></div>;
-            }
-            else if (item === this.props.rangeBegin) {
-                control = <div className={"datespan begin"} key={"li2" + index} onClick={this.dayHandler.bind(this, item)}>
-                    <div className="blank"><div className="radius">{item}</div></div></div>;
-            }
-            else if (item === this.props.rangeEnd) {
-                control = <div className={"datespan end"} key={"li2" + index} onClick={this.dayHandler.bind(this, item)}>
-                    <div className="blank"><div className="radius">{item}</div></div></div>;
-            }
-            else if (choseed) {
-                if (this.props.isRange) {
-                    control = <div className={"datespan chosed"} key={"li2" + index} onClick={this.dayHandler.bind(this, item)}>{item}</div>;
-
-                }
-                else {
-                    control = <div className={"datespan "} key={"li2" + index} onClick={this.dayHandler.bind(this, item)}><div className="onlyradius">{item}</div></div>;
-
-                }
-            }
-            else {
-
-                control = <div className={"datespan "} key={"li2" + index} onClick={this.dayHandler.bind(this, item)}><div className="radius">{item}</div></div>;
-            }
-            return control;
-        })
-
-        let yearControl = [];
-        for (let index = this.state.year * 1 - 7; index <= this.state.year * 1 + 4; index++) {
-            if (index === this.state.year * 1) {
-                yearControl.push(<div className="datespan chosed" onClick={this.changeYearHandler.bind(this, index)} key={"year" + index}>{index}</div>);
-            }
-            else {
-                yearControl.push(<div className="datespan" onClick={this.changeYearHandler.bind(this, index)} key={"year" + index}>{index}</div>);
-            }
-
+        const yearProps = {
+            year: this.state.year,
+            tempyear: this.state.tempyear,
+            showChangeYear: this.state.showChangeYear,
+            yearInputClick: this.yearInputClick,
+            yearonBlur: this.yearonBlur,
+            yearOKHandler: this.yearOKHandler,
+            yearOnChange: this.yearOnChange,
+            changeYearHandler: this.changeYearHandler
         }
         return (
             <div className="wasabi-datetime-body">
-                <div className="weekul" style={{ display: (!this.state.showChangeMonth && !this.props.showChangeYear) ? "block" : "none" }}>
-                    <div className="weekspan">{lang.cn.SUN}</div>
-                    <div className="weekspan">{lang.cn.MON}</div>
-                    <div className="weekspan">{lang.cn.TUE}</div>
-                    <div className="weekspan">{lang.cn.WED}</div>
-                    <div className="weekspan">{lang.cn.THU}</div>
-                    <div className="weekspan">{lang.cn.FRI}</div>
-                    <div className="weekspan">{lang.cn.SAT}</div>
-                </div>
-                <div className="dayul" style={{ display: (!this.state.showChangeMonth && !this.state.showChangeYear) ? "block" : "none" }}>{preMonthWeekDaysNodes} {thisMonthDaysNodes}</div>
-                <div className="wasabi-datetime-month" style={{ display: this.state.showChangeMonth ? "block" : "none" }}>
-
-                    <div className={"datespan " + ((this.state.month === 1) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 1)}>{lang.cn.Month[0]}</div>
-                    <div className={"datespan " + ((this.state.month === 2) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 2)}>{lang.cn.Month[1]}</div>
-                    <div className={"datespan " + ((this.state.month === 3) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 3)}  >{lang.cn.Month[2]}</div>
-                    <div className={"datespan " + ((this.state.month === 4) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 4)}>{lang.cn.Month[3]}</div>
-                    <div className={"datespan " + ((this.state.month === 5) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 5)}>{lang.cn.Month[4]}</div>
-                    <div className={"datespan " + ((this.state.month === 6) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 6)}>{lang.cn.Month[5]}</div>
-                    <div className={"datespan " + ((this.state.month === 7) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 7)}>{lang.cn.Month[6]}</div>
-                    <div className={"datespan " + ((this.state.month === 8) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 8)}>{lang.cn.Month[7]}</div>
-                    <div className={"datespan " + ((this.state.month === 9) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 9)}>{lang.cn.Month[8]}</div>
-                    <div className={"datespan " + ((this.state.month === 10) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 10)}>{lang.cn.Month[9]}</div>
-                    <div className={"datespan " + ((this.state.month === 11) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 11)}>{lang.cn.Month[10]}</div>
-                    <div className={"datespan " + ((this.state.month === 12) ? "chosed" : "")} onClick={this.changeMonthHandler.bind(this, 12)}>{lang.cn.Month[11]}</div>
-                </div>
-                <div className="wasabi-datetime-year" style={{ display: this.state.showChangeYear ? "block" : "none" }}>
-                    <div style={{ display: "block", textAlign: "center", marginBottom: 10 }}>
-                        <input type="text" value={this.state.tempyear} name="year" onClick={this.yearClick} onBlur={this.yearonBlur}
-                            onKeyUp={this.yearOKHandler} style={{ width: 60, height: 30, paddingLeft: 5 }}
-                            title="回车确认" onChange={this.yearOnChange}></input></div>
-                    {yearControl}</div>
+                <WeekView visible={visible}></WeekView>
+                <DayView {...dayProps} ></DayView>
+                <MonthView month={this.state.month} showChangeMonth={this.state.showChangeMonth} changeMonthHandler={this.changeMonthHandler}></MonthView>
+                <YearView {...yearProps}></YearView>
             </div>
         )
 
     }
     render() {
-
+            console.log("dd",this.props.rangeBegin)
         return (
             <div className="wasabi-datetime"  >
-                {this.renderHeader()}
+                <CalendarHeader year={this.state.year} month={this.state.month} choseYear={this.choseYear} choseMonth={this.choseMonth}></CalendarHeader>
                 {this.renderBody()}
             </div>
         )

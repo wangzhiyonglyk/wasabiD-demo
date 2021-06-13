@@ -1,8 +1,9 @@
 import React from "react";
 import func from "../../libs/func";
 import validation from "../../Lang/validation";
-import Label from "../../Info/Label"
-import regexp from "../../Lang/regs"
+import Label from "../../Info/Label";
+import regexp from "../../Lang/regs";
+import dom from "../../libs/dom"
 /**
  * 验证组件
  * @param {*} InputWidget 表单组件
@@ -19,6 +20,7 @@ let validateHoc = function (InputWidget) {
                 inValidateText: "",//失败的文字
             }
             this.validate = this.validate.bind(this);
+            this.hideSuccess=this.hideSuccess.bind(this);
         }
         /**
          * 验证有效性
@@ -63,7 +65,6 @@ let validateHoc = function (InputWidget) {
                                     isvalidate = regexp[this.props.type](value);
                                 }
                                 else {
-
                                     isvalidate = regexp[this.props.type].test(value);
                                 }
 
@@ -180,7 +181,7 @@ let validateHoc = function (InputWidget) {
                     inValidateText = validation["required"];
                 }
                 this.setState({
-                    validateClass: !isvalidate ? " wasabi-has-error " : "",
+                    validateClass: !isvalidate ? "wasabi-has-error" : "",//todo 暂时不处理成功的样式
                     inValidateText: inValidateText,
 
                 })
@@ -188,6 +189,8 @@ let validateHoc = function (InputWidget) {
 
 
             }
+           
+         
             return isvalidate;
         }
         /**
@@ -210,7 +213,26 @@ let validateHoc = function (InputWidget) {
 
             this.input.current.reload && this.input.current.loadData(url, params);
         }
+        /**
+         * 失去焦点后，如果验证成功，则去掉成功样式
+         * @param {*} event 
+         */
+        hideSuccess(event) {
+            if (event.target &&this.state.validateClass==="wasabi-has-success"&& !dom.isDescendant(document.getElementById(this.state.containerid), event.target)) {
+                this.setState({
+                    validateClass: ""
+                });
+                try {
 
+                    document.removeEventListener("click", this.hideSuccess);
+
+                }
+                catch (e) {
+
+                }
+            }
+        }
+        
         shouldComponentUpdate(nextProps, nextState) {
             if (func.diffOrder(nextProps, this.props)) {
                 return true;
@@ -220,7 +242,8 @@ let validateHoc = function (InputWidget) {
             }
             return false;
         }
-         render() {
+
+        render() {
             let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
             if (this.props.hide) {
                 style.display = 'none';

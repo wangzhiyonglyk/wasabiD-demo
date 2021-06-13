@@ -18,7 +18,7 @@ label
   }
   
   .wasabi-label.readOnly {
-    color: #c0c4cc;
+    color: var(--border-hover-color);
   }
   
   .wasabi-form-group .wasabi-label.required label:before {

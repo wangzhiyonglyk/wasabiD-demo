@@ -83,6 +83,7 @@ class TimeRange extends Component {
             value = value[0] + ":" + value[1] + ":59";//结束时间如果带上秒一定是59
         }
         this.setState({
+            firstTime:this.state.firstTime?this.state.firstTime:value,
             secondTime: value,
 
         }, () => {

@@ -202,6 +202,9 @@ module.exports =env=> {
 
   //插件项
   plugins: [
+    new webpack.DefinePlugin({
+      'env': JSON.stringify(env.mode)
+    }),
     new CleanWebpackPlugin(), // 打包前先清空,因为命名的采用了hash，不清空，打包文件越来越大
     new MiniCssExtractPlugin({
       //分离js中的css,独立打包
@@ -209,20 +212,21 @@ module.exports =env=> {
       //  chunkFilename，未被列在entry中，却又需要被打包出来的文件命名配置，是一些公共代码
       filename: 'css/[name]-[hash:8].css', //可以更变文件产生路径
       chunkFilename: 'css/common-[id].css', //公共文件
+
     }),
 
     new webpack.HotModuleReplacementPlugin(), //热加载插件
-    // new CopyWebpackPlugin({
-    //   patterns: [
-    //     {
-    //       // from: path.resolve(__dirname+"/public", 'test.txt'),
-    //     },
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname+"/public", 'favicon.ico'),
+        },
       
-    //   ],
-    // }) 
+      ],
+    }) 
   ].concat(htmlplugin), //生成对应的html文件,在htmlplugin中
 
-  //devtool: 'eval-source-map', // eval-source-map is faster for development
+  devtool:env.mode=="development"? 'eval-source-map':null, // eval-source-map is faster for development
   // 本地web服务器配置
   devServer: {
     contentBase: path.resolve(__dirname, './dist/'), // 默认webpack-dev-server会为根文件夹提供本地服务器，如果想为另外一个目录下的文件提供本地服务器，应该在这里设置其所在目录
@@ -232,6 +236,11 @@ module.exports =env=> {
     port: port, //服务器IP地址,
     open: true, // 自动打开浏览器
     hot: true, //模块热替换
+    //nginx 代理 demo
+    proxy:{
+      '/map': 'http://banktest.longmap.com/emap/zhonghang/js/LongMap',
+      '/mapfile':'http://banktest.longmap.com/model/s1/tiles/'
+    }
   },
- 
+  
 }}

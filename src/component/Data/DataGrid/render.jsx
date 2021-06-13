@@ -10,14 +10,14 @@ export default {
      *渲染列的样式
      */
     renderColGruop() {
-     
-       return  <GridColGroup
-        single={this.state.single}
-        headers={this.state.headers}
-        selectAble={this.props.selectAble}
-        rowNumber={this.props.rowNumber}
-        detailAble={this.props.detailAble}
-        perColumnWidth={this.perColumnWidth}
+
+        return <GridColGroup
+            single={this.state.single}
+            headers={this.state.headers}
+            selectAble={this.props.selectAble}
+            rowNumber={this.props.rowNumber}
+            detailAble={this.props.detailAble}
+            perColumnWidth={this.perColumnWidth}
         >
 
         </GridColGroup>
@@ -26,13 +26,13 @@ export default {
      * 固定列的样式
      */
     renderFixedColGruop() {
-        return  <GridColGroup
-        single={this.state.single}
-        headers={this.state.fixedHeaders}
-        selectAble={this.props.selectAble}
-        rowNumber={this.props.rowNumber}
-        detailAble={this.props.detailAble}
-        perColumnWidth={this.perColumnWidth}
+        return <GridColGroup
+            single={this.state.single}
+            headers={this.state.fixedHeaders}
+            selectAble={this.props.selectAble}
+            rowNumber={this.props.rowNumber}
+            detailAble={this.props.detailAble}
+            perColumnWidth={this.perColumnWidth}
         >
 
         </GridColGroup>
@@ -79,7 +79,7 @@ export default {
      * 处理表体
      */
     renderBody() {
-let checkedData=func.clone( this.state.checkedData);
+        let checkedData = func.clone(this.state.checkedData);
         return <GridBody
             single={this.state.single}
             headers={this.state.headers}
@@ -103,8 +103,8 @@ let checkedData=func.clone( this.state.checkedData);
             tableCellEditHandler={this.tableCellEditHandler}
             onSort={this.onSort}
             detailHandler={this.detailHandler}
-            >
-               
+        >
+
         </GridBody>
     },
     /**
@@ -300,9 +300,7 @@ let checkedData=func.clone( this.state.checkedData);
                 );
             } else {
                 //小于7页直接显示
-
                 let pagearr = [];
-
                 for (let i = 0; i < pageAll; i++) {
                     let control = (
                         <li
@@ -335,7 +333,7 @@ let checkedData=func.clone( this.state.checkedData);
         return paginationComponent;
     },
     /**
-     * 表尾
+     * 表尾 todo
      */
     renderFooter() {
         //渲染页脚

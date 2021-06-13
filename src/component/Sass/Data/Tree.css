@@ -96,7 +96,7 @@
   color: var(--primary-color);
 }
 .wasabi-tree [class*=" icon-"],.wasabi-tree [class^=icon-] {
-  color:#c0c4cc;
+  color:var(--border-hover-color);
 }
 .wasabi-tree a{
   position: relative;

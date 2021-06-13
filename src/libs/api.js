@@ -6,13 +6,11 @@ import wasabiapi from 'wasabi-api'
 import func from '../component/libs/func'
 import Mssaege from '../component/Info/Msg'
 import config from "./config"
-
 let ajax = function (settings) {
     let headers = getHeaders(settings.url)
     //说明要对接用管系统
     if (!func.isEmptyObject(headers)) {
         settings.headers = settings.headers instanceof Object ? Object.assign(settings.headers, headers) : headers
-
         let success = func.clone(settings.success)//复制一份
         //默认错误
         settings.error = settings.error ? settings.error : (message) => {
@@ -31,48 +29,33 @@ let ajax = function (settings) {
             }
         }
     }
-    settings.url=settings.url;//请求
+    if(settings.url.indexOf(config.url)<=-1){
+        settings.url=config.url+settings.url;//请求
+    }
     wasabiapi.ajax(settings)
 }
 
 let fetch = async function (fetchModel) {
 
     let headers = getHeaders();
-    fetchModel.url=config.url+fetchModel.url;//添加前缀
-    fetchModel.headers = fetchModel.headers && fetchModel.headers instanceof Object ? Object.assign(fetchModel.headers, headers) : {}
-    let res = await wasabiapi.fetch(fetchModel)
-
-    try {
-
-        if (res && res.code && res.code == '401') {
-            window.parent.postMessage(JSON.stringify({ msg: 'token过期' }), '*')
-            return ('登陆失效') //返回json格式的数据
-        } else if (res && res.code && res.code != '200') {
-
-            //失败
-            return (res.message) //返回错误
-        } else {//成功
-            if (typeof res == 'string') {
-                return (res) //返回错误
-            } else {
-                return (res) //返回json格式的数据
-            }
-        }
-    } catch (err) {
-        return (err.message) //返回错误
+    if(fetchModel.url.indexOf(config.url)<=-1){
+        fetchModel.url=config.url+fetchModel.url;//请求
     }
+    fetchModel.headers = fetchModel.headers && fetchModel.headers instanceof Object ? Object.assign(fetchModel.headers, headers) : {}
+   return  await wasabiapi.fetch(fetchModel)
+   
 
 }
 let getHeaders = function (url) {
 
     url=url?url.replace(config.url,""):url;
     url=url.indexOf("?")>-1?url.replace("?"+url.split("?")[1],""):url;
-    let token = func.GetArgsFromHref(window.location.href, 'token') ? func.GetArgsFromHref(window.location.href, 'token') : window.sessionStorage.getItem('token')
+    let token = func.GetArgsFromHref( 'token') ? func.GetArgsFromHref( 'token') : window.sessionStorage.getItem('token')
     let headers = {}
     if (token) {
-        let userId = func.GetArgsFromHref(window.location.href, 'userId') ? func.GetArgsFromHref(window.location.href, 'token') : window.sessionStorage.getItem('userId')
-        let perId = func.GetArgsFromHref(window.location.href, 'perId') ? func.GetArgsFromHref(window.location.href, 'perId') : window.sessionStorage.getItem('perId')
-        let sysId = func.GetArgsFromHref(window.location.href, 'sysId') ? func.GetArgsFromHref(window.location.href, 'sysId') : window.sessionStorage.getItem('sysId')
+        let userId = func.GetArgsFromHref( 'userId') ? func.GetArgsFromHref('token') : window.sessionStorage.getItem('userId')
+        let perId = func.GetArgsFromHref( 'perId') ? func.GetArgsFromHref( 'perId') : window.sessionStorage.getItem('perId')
+        let sysId = func.GetArgsFromHref('sysId') ? func.GetArgsFromHref('sysId') : window.sessionStorage.getItem('sysId')
 
         window.sessionStorage.setItem('token', token)
         window.sessionStorage.setItem('userId', userId)
@@ -92,7 +75,7 @@ let getHeaders = function (url) {
 
 let location = function () {
 
-    let path = func.GetArgsFromHref(window.location.href, 'path')//如果有地
+    let path = func.GetArgsFromHref('path')//如果有地
     //if(window.location.href.indexOf("token")>-1){
     if (window.location.href.indexOf('typtUserInfo') > -1) {//说明是用管系统过来的
         //绝对定位，改成相对

@@ -9,6 +9,15 @@ import validateHoc from "../validateHoc";
 import func from "../../libs/func"
 import propsTran from "../../libs/propsTran"
 import "../Radio/radio.css"
+
+function LiView(props) {
+    const { text, checked, half, readOnly } = props;
+    return <li onClick={props.onSelect}  >
+        <input type="checkbox" className={!checked && half ? "checkbox halfcheck" : "checkbox"} checked={checked} onChange={() => { }}></input>
+        <label className="checkbox-label" readOnly={readOnly} ></label>
+        <div className={"checktext " + (checked ? " checked" : "")} readOnly={readOnly} >{text}</div>
+    </li >
+}
 class CheckBox extends React.Component {
     constructor(props) {
         super(props);
@@ -61,7 +70,7 @@ class CheckBox extends React.Component {
      * @param {*} row 
      * @returns 
      */
-    onSelect(value = "", text, row) {//选中事件
+    onSelect(value = "", text) {//选中事件
         if (this.props.readOnly) {
             return;
         }
@@ -110,15 +119,10 @@ class CheckBox extends React.Component {
     render() {
         let control = null;
         if (this.props.data && this.props.data instanceof Array) {
-            control = this.props.data.map((child, i) => {
+            control = this.props.data.map((child, index) => {
                 let checked = this.isChecked(child);
-                return <li key={i} onClick={this.onSelect.bind(this, child.value, child.text, child)}  >
-                    <input type="checkbox" className={!checked && this.props.half ? "checkbox halfcheck" : "checkbox"} checked={checked} onChange={() => { }}></input>
-                    <label className="checkbox-label" readOnly={this.props.readOnly} ></label>
-                    <div className={"checktext " + (checked ? " checked" : "")} readOnly={this.props.readOnly} >{child.text}</div>
-                </li >
+                return <LiView key={index} onSelect={this.onSelect.bind(this, child.value, child.text, child)} value={child.value} text={child.text} checked={checked} half={this.props.half} readOnly={this.props.readOnly} ></LiView>
             });
-
         }
         return <ul className="wasabi-checkul" >{control} {this.props.children} </ul>
     }

@@ -46,7 +46,7 @@ desc:日期选择样式
   width: 12px;
   height: 12px;
   position: absolute;
-  right: 23px;
+  right: 25px;
   top: 14px;
   color: var(--icon-color);
   cursor: pointer;
@@ -77,15 +77,20 @@ desc:日期选择样式
 }
 
 .dropcontainter.datetime {
-  width: 250px;
+  width: 292px;
+  height: 385px;
 }
-
+.dropcontainter.datetime .wasabi-datetime{
+  border:none;
+}
 .dropcontainter.daterange {
-  width: 600px;
+  width: 686px;
+  height: 345px;
 }
 
 .dropcontainter.datetimerange {
-  width: 600px;
+  width: 686px;
+  height: 385px;
 }
 
 .dropcontainter::before {
@@ -113,8 +118,9 @@ desc:日期选择样式
 /*日期*/
 
 .combobox .date {
-  width: 250px;
-  height: 246px;
+  width: 294px;
+  height: 304px;
+
 }
 
 .combobox .time {
@@ -122,10 +128,7 @@ desc:日期选择样式
   height: 220px;
 }
 
-.combobox .date.time {
-  width: 250px;
-  height: 286px;
-}
+
 
 /*日期范围*/
 
@@ -157,14 +160,14 @@ desc:日期选择样式
 
 .combobox .timeinput {
   width: 120px;
-  height: 25px;
-  top: 6px;
+  height: 34px;
+  top: 2px;
   position: absolute;
   margin-left: 15px;
   border-radius: 4px;
   outline: none;
   border: 1px solid #dddddd;
-  right: 20px;
+  right: 5px;
   padding-right: 6px;
 }
 

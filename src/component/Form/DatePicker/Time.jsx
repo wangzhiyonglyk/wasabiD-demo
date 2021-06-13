@@ -21,7 +21,7 @@ class Time extends React.Component {
             minuteArr.push(i);
         }
         minuteArr.push(0);//0放在最后，因为要隔5个拉长一点
-
+        this.minuteInput=React.createRef();
         this.state = {
             oldPropsValue: null,
             hourVisible: true,
@@ -58,7 +58,7 @@ class Time extends React.Component {
         return null;
     }
     getValue() {//获取值
-        let value = (this.state.hour * 1 >= 10 ? this.state.hour : "0" + this.state.hour) + ":" + (this.state.minute * 1 >= 10 ? this.state.minute : "0" + this.state.minute)
+        let value = (this.state.hour * 1 >= 10 ? this.state.hour : "0" + (this.state.hour*1)) + ":" + (this.state.minute * 1 >= 10 ? this.state.minute : "0" +(this.state.minute*1))
             + (!this.props.attachSecond ? "" : this.props.secondRange ? ":59" : ":00");
         return value;
     }
@@ -102,6 +102,9 @@ class Time extends React.Component {
                 event.target.selectionStart = 0;
                 event.target.selectionEnd = (value + "").length;
             }
+            else{
+                
+            }
         }
 
 
@@ -136,6 +139,7 @@ class Time extends React.Component {
                 event.target.selectionStart = 0;
                 event.target.selectionEnd = (value + "").length;
             }
+         
 
         }
 
@@ -194,9 +198,10 @@ class Time extends React.Component {
             </div>
             <div key="2" className="wasabi-time-ok">
                 <span key="1" onClick={this.hourVisibleHandler.bind(this, true)}>时:
-                <input key="2" onFocus={this.onFocus} style={{ width: 40, height: 20, outline: "none" }} onChange={this.hourChange} value={this.state.hour}></input></span>
+                <input key="2" onFocus={this.onFocus} style={{ width: 40, height: 20, outline: "none" }} 
+                onChange={this.hourChange} value={this.state.hour}></input></span>
                 <span key="3" onClick={this.hourVisibleHandler.bind(this, false)}>分:
-                <input key="4" onFocus={this.onFocus} style={{ width: 40, height: 20, outline: "none" }} onChange={this.minuteChange} value={this.state.minute}></input></span>
+                <input key="4" ref={this.minuteInput} onFocus={this.onFocus} style={{ width: 40, height: 20, outline: "none" }} onChange={this.minuteChange} value={this.state.minute}></input></span>
                 <a key="5" onClick={this.onClick}>确定</a>
             </div>
             <div></div>

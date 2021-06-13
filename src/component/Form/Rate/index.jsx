@@ -86,7 +86,7 @@ class Rate extends Component {
             while (index <= num) {
                 try {
                     //如果小于值，则全选，如果大于值，但是上一个却小于值，则是半选
-                    let iconCls = index * percent <= value ? "icon-star" : (index * percent > value && (index - 1) * percent < value) ? "icon-star_half" : "icon-star_blank";
+                    let iconCls = index * percent <= value ? "icon-star" : (index * percent > value && (index - 1) * percent < value) ? "icon-star-half" : "icon-star-blank";
                     let color = "rgb(247, 186, 42)";//星星颜色值
                     if (this.props.colors instanceof Array) {
                         color = this.props.colors[index - 1];
@@ -95,7 +95,7 @@ class Rate extends Component {
                         color = this.props.colors;
                     }
 
-                    control.push(<i key={index} style={{ fontSize: this.props.starSize, color: (iconCls == "icon-star_blank" ? null : color) }}
+                    control.push(<i key={index} style={{ fontSize: this.props.starSize, color: (iconCls == "icon-star-blank" ? null : color) }}
                         className={"wasabi-rate-star " + iconCls} onClick={this.onSelect.bind(this, index * percent)} onMouseOver={this.onMouseOver.bind(this, index * percent)}></i>)
                 }
                 catch (e) {

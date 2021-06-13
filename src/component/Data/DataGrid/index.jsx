@@ -348,7 +348,6 @@ class DataGrid extends Component {
             //防止父组件被隐藏了，datagrid无法得到真实的宽度
             this.timeout = setTimeout(this.computeHeaderStyleAndColumnWidth, 1000)
         }
-        console.log()
         this.setState({
             adjustHeight: false,//调整完成
         })

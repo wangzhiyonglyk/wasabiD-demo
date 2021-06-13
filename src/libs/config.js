@@ -1,6 +1,6 @@
 
 import api from "./api"
-const APP_ENV = window.dev;
+const APP_ENV =env==="development"?"dev":"pro"||"dev";
 
 const config = {
   dev: {

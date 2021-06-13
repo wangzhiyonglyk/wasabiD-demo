@@ -6,13 +6,13 @@
 
 let func = {};
 
-/// 获取地址栏参数的值
-func.GetArgsFromHref = function (sHref, sArgName) {
-    /// <summary>
-    /// 获取地址栏参数的值
-    /// </summary>
-    /// <param name="sHref" type="string">url地址，</param>
-    /// <param name="iwidth" type="int">参数名称</param>
+/**
+ * 获取地址栏参数的值
+ * @param {*} sArgName 参数名
+ * @returns 
+ */
+func.GetArgsFromHref = function (sArgName = "", sHref) {
+    sHref = sHref || window.location.href;
     let args = sHref.toString().split("?");
     let retval = "";
     if (args[0] == sHref) /*参数为空*/ {
@@ -35,7 +35,10 @@ func.GetArgsFromHref = function (sHref, sArgName) {
     return retval;
 }
 
-//判断浏览器类型
+/**
+ * 判断浏览器类型
+ * @returns 
+ */
 func.BrowserType = function () {
     let browserType = "";
     let userAgent = navigator.userAgent.toLowerCase(); //取得浏览器的userAgent字符串
@@ -61,7 +64,10 @@ func.BrowserType = function () {
 
     return browserType;
 }
-//判断IE类型
+/**
+ * 判断IE类型
+ * @returns 
+ */
 func.IEType = function () {
     if (navigator.userAgent.indexOf("MSIE 6.") > -1) {
         return ("IE 6");
@@ -83,12 +89,12 @@ func.IEType = function () {
     }
 }
 
-//将数字转为英文表达格式
+/**
+ * 将数字转为英文表达格式
+ * @param {*} num 数字
+ * @returns 
+ */
 func.dealNumToEnglishFormat = function (num) {
-    /// <summary>
-    /// 将数字转为英文表达格式
-    /// </summary>
-    /// <param name="num" type="int">数字</param>
     if (isNaN(num)) {
         return num;
     }
@@ -96,7 +102,6 @@ func.dealNumToEnglishFormat = function (num) {
     let number = num.toString();
     return number.split('').reverse().join('').replace(/(.{3})/g, '$1,').split('').reverse().join('').replace(/^,/, "");
 }
-
 
 /**
  * 日期格式化为字符串
@@ -153,9 +158,11 @@ func.dateformat = function (date = new Date(), format = 'yyyy-MM-dd HH:mm:ss') {
     return format;
 }
 
-
-
-/// 字符转日期
+/**
+ * 字符转日期
+ * @param {*} strDate 日期字符
+ * @returns 
+ */
 func.stringToDate = function (strDate) {
     /// <summary>
     /// 字符转日期
@@ -165,6 +172,9 @@ func.stringToDate = function (strDate) {
     return date;
 }
 
+/**
+ * cookie操作
+ */
 func.cookies = {
     /// <summary>
     /// cookies设置
@@ -191,7 +201,6 @@ func.cookies = {
     }
 }
 
-
 /**
  * 根据字符计算宽度
  * @param {*} str 字符
@@ -217,58 +226,7 @@ func.charWidth = function (str = "") {
     return width;
 }
 
-func.showError = function (msg) {
-    if (!!document.getElementById("alog-error")) {
-        //存在
-        let child = document.getElementById("alog-error");
-        document.body.removeChild(child);
 
-
-    }
-    let error = document.createElement("div");
-    error.id = "alog-error";
-    error.title = "";
-    error.style.position = "absolute";
-    error.style.zIndex = 9;
-    error.innerHTML = '<div class="wasabi-message error"   >'
-        + '<div class="notice">' + msg + '</div>'
-        + ' </div>';
-    error.onmousemove = onMouseOver;
-    error.onmouseout = onMosueOut;
-    document.body.appendChild(error);
-    timeoutHandler();//开始执行
-    function onMosueOut() {
-        let child = document.getElementById("alog-error");
-        child.title = "";
-        timeoutHandler();
-    }
-    function onMouseOver() {
-        let child = document.getElementById("alog-error");
-        child.title = "0";
-        child.style.opacity = 1;
-    }
-
-    function timeoutHandler() {
-        setTimeout(() => {
-            let child = document.getElementById("alog-error");
-
-            if (child && child.title == "") {
-                child.style.opacity = 0.7;
-                child.style.transition = "opacity 2s";
-            }
-        }, 1000);
-        setTimeout(() => {
-            let child = document.getElementById("alog-error");
-            if (child && child.title == "") {
-
-                document.body.removeChild(child);
-
-            }
-        }, 4000
-        );
-    }
-
-}
 /**
  * 对象的复制
  * @param {*} obj 源对象
@@ -314,7 +272,7 @@ func.clone = function (obj) {
     return o;
 }
 //获取真正的数据源
-func.getSource = function (data, source="data") {
+func.getSource = function (data, source = "data") {
     /// <summary>
     /// 获取真正的数据源
     /// </summary>
@@ -367,80 +325,6 @@ func.download = function (url, title) {
     window.URL.revokeObjectURL(downloadA.href);//释放
 }
 
-/**
- * 将二维json数据转树型结构
- * @param {Array} data 数据
- * @param {string } idField 节点key
- * @param {string } parentField 父节点key
- * @param {string } textField 文本key
- */
-func.toTreeData = function (data, idField = "id", parentField = "pId", textField = "text") {
-    let pos = {};
-    let tree = [];
-    let count = 0;
-    let pId = "";//一级父节点pid值
-    let ids = "";//所有id值
-    for (let i = 0; i < data.length; i++) {
-        ids += "," + data[i][idField] + ","
-    }
-
-    for (let i = 0; i < data.length; i++) {
-        if (ids.indexOf("," + data[i][parentField] + ",") <= -1) {//属于一级节点的pid值
-            pId += "," + data[i][parentField] + ",";
-        }
-    }
-    let index = 0;
-    while (data.length != 0 && count < 200000) {
-        count++;
-        if (pId.indexOf("," + data[index][parentField] + ",") > -1 || !data[index][parentField]) {
-            let item = {
-                ...data[index],
-                id: data[index][idField],
-                pId: data[index][parentField],
-                text: data[index][textField],
-                children: data[index].children || [],
-            }
-            item[idField] = data[index][idField];//添加key
-            tree.push(item);
-
-            pos[data[index][idField]] = [tree.length - 1];
-            data.splice(index, 1);
-            index--;
-        } else {
-            let posArr = pos[data[index][parentField]];
-            if (posArr != undefined) {
-
-                let obj = tree[posArr[0]];
-                for (let j = 1; j < posArr.length; j++) {
-                    obj = obj.children[posArr[j]];
-                }
-
-                let item = {
-                    ...data[index],
-                    id: data[index][idField],
-                    pId: data[index][parentField],
-                    text: data[index][textField],
-                    children: data[index].children || [],
-                }
-                item[idField] = data[index][idField];//添加key
-                obj.children.push(item);
-                pos[data[index][idField]] = posArr.concat([obj.children.length - 1]);
-                data.splice(index, 1);
-                index--;
-            }
-        }
-        index++;
-        if (index > data.length - 1) {
-            index = 0;
-        }
-    }
-    if (data.length > 0) {
-        console.log("Data", data);
-        console.error("数据格式不正确，或者是数据量过大，请使用异步请求,");
-    }
-    return tree;
-
-}
 /**
  * 生成uuid
  */
@@ -623,7 +507,7 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
 func.deepMerge = function (targetObj, sourceObj) {
     for (var key in sourceObj) {
         targetObj[key].toString() === "[object Object]" ?
-            deepMerge(targetObj[key], sourceObj[key]) : targetObj[key] = sourceObj[key];
+            func.deepMerge(targetObj[key], sourceObj[key]) : targetObj[key] = sourceObj[key];
     }
     return targetObj;
 }
@@ -652,124 +536,120 @@ func.arrayNodupMerge = function (arr1 = [], arr2 = [], key = "id") {
  * date:2021-04-22
  * 日期扩展
  */
-let DateExtends = {
-
-    /**
-     * 两个日期，相隔多少天
-     * @param {Date} startDate 开始日期
-     * @param {Date} endDate 结束日期
-     */
-    getDateDiffDay(startDate, endDate) {
-        try {
-            return (startDate * 1 - endDate * 1) / 60 / 60 / 1000 / 24;
-        }
-        catch (e) {
-            return NaN;
-        }
-
-    },
-    /**
-     * 所在月的第一天
-     * @param {Date} date 
-     * @returns 
-     */
-    getFirstDateInMonth(date) {
-        return new Date(date.getFullYear(), date.getMonth(), 1);
-    },
-    /**
-     * 所在月的最后一天
-     * @param {Date} date 
-     * @returns 
-     */
-    getLastDateInMonth(date) {
-        return new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    },
-    /**
-     * 求所在季度的第一天
-     * @param {Date} date 
-     */
-    getFirstDateInQuarter(date) {
-        return new Date(date.getFullYear(), ~~(date.getMonth() / 3) * 3, 1);
-    },
-    /**
-   * 求所在季度的最后一天
-   * @param {Date} date 
+/**
+   * 两个日期，相隔多少天
+   * @param {Date} startDate 开始日期
+   * @param {Date} endDate 结束日期
    */
-    getLastDateInQuarter(date) {
-        return new Date(date.getFullYear(), ~~(date.getMonth() / 3) * 3 + 3, 0);
-    },
-    /**
-     * 判断是否为闰年
-     * @param {Date} date 
-     * @returns 
-     */
-    isLeapYear(date) {
-        return new Date(date.getFullYear(), 2, 0).getDate() === 29;
-
-    },
-    /**
-     * /**
-     * 取得当前月份的天数
-     * @param {Date} date 
-     * @returns 
-     */
-    getDaysInMonth(date) {
-        return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-    },
-    /**
-     * 取得当前第一天是星期几
-     * @returns 
-     */
-    getFirstDayWeek(date) {
-        //
-        return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-    },
-    /**
-    * 取得几个年后的日期
-    * @param {*} date 日期
-    * @param {*} n 年数量
-    * @returns 
-    */
-    getNextYear(date, n = 1) {
-        let newDate = func.clone(date);
-        newDate.setYear(newDate.getFullYear() + n);
-        return newDate;
-    },
-    /**
-     * 取得几个月后的日期
-     * @param {*} date 日期
-     * @param {*} n 月数量
-     * @returns 
-     */
-    getNextMonth(date, n = 1) {
-        let newDate = func.clone(date);
-        newDate.setMonth(newDate.getMonth() + n);
-        return newDate;
-    },
-    /**
-     * 取得几天后的日期
-     * @param {*} date 日期
-     * @param {*} n 天数量
-     */
-    getNextDay(date, n = 1) {
-        let newDate = func.clone(date);
-        newDate.setDate(newDate.getDate() + n);
-        return newDate;
-    },
-    /**
-    * 取得几小时后的日期
-    * @param {*} date 日期
-    * @param {*} n 小时量
-    */
-    getNextHour(date, n = 1) {
-        let newDate = func.clone(date);
-        newDate.setHours(newDate.getHours() + n);
-        return newDate;
+func.getDateDiffDay = function (startDate, endDate) {
+    try {
+        return (startDate * 1 - endDate * 1) / 60 / 60 / 1000 / 24;
     }
+    catch (e) {
+        return NaN;
+    }
+
+}
+/**
+ * 所在月的第一天
+ * @param {Date} date 
+ * @returns 
+ */
+func.getFirstDateInMonth = function (date) {
+    return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+/**
+ * 所在月的最后一天
+ * @param {Date} date 
+ * @returns 
+ */
+func.getLastDateInMonth = function (date) {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+}
+/**
+ * 求所在季度的第一天
+ * @param {Date} date 
+ */
+func.getFirstDateInQuarter = function (date) {
+    return new Date(date.getFullYear(), ~~(date.getMonth() / 3) * 3, 1);
+}
+/**
+* 求所在季度的最后一天
+* @param {Date} date 
+*/
+func.getLastDateInQuarter = function (date) {
+    return new Date(date.getFullYear(), ~~(date.getMonth() / 3) * 3 + 3, 0);
+}
+/**
+ * 判断是否为闰年
+ * @param {Date} date 
+ * @returns 
+ */
+func.isLeapYear = function (date) {
+    return new Date(date.getFullYear(), 2, 0).getDate() === 29;
+
+}
+/**
+ * /**
+ * 取得当前月份的天数
+ * @param {Date} date 
+ * @returns 
+ */
+func.getDaysInMonth = function (date) {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+}
+/**
+ * 取得当前第一天是星期几
+ * @returns 
+ */
+func.getFirstDayWeek = function (date) {
+    //
+    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+}
+/**
+* 取得几个年后的日期
+* @param {*} date 日期
+* @param {*} n 年数量
+* @returns 
+*/
+func.getNextYear = function (date, n = 1) {
+    let newDate = func.clone(date);
+    newDate.setYear(newDate.getFullYear() + n);
+    return newDate;
+}
+/**
+ * 取得几个月后的日期
+ * @param {*} date 日期
+ * @param {*} n 月数量
+ * @returns 
+ */
+func.getNextMonth = function (date, n = 1) {
+    let newDate = func.clone(date);
+    newDate.setMonth(newDate.getMonth() + n);
+    return newDate;
+}
+/**
+ * 取得几天后的日期
+ * @param {*} date 日期
+ * @param {*} n 天数量
+ */
+func.getNextDay = function (date, n = 1) {
+    let newDate = func.clone(date);
+    newDate.setDate(newDate.getDate() + n);
+    return newDate;
+}
+/**
+* 取得几小时后的日期
+* @param {*} date 日期
+* @param {*} n 小时量
+*/
+func.getNextHour = function (date, n = 1) {
+    let newDate = func.clone(date);
+    newDate.setHours(newDate.getHours() + n);
+    return newDate;
 }
 import base64 from "./base64.js";
 func.base64 = base64;
 import md5 from "./md5.js";
 func.md5 = md5;
-func = { ...func, ...DateExtends };
 export default func;

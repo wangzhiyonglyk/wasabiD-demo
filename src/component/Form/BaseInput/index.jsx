@@ -5,7 +5,7 @@
  */
 import React from "react";
 
-let BaseInput = React.forwardRef((props, ref) => {
+const BaseInput = React.forwardRef((props, ref) => {
     return <input
         type={"text"}//类型固定好
         {...props}
@@ -15,6 +15,6 @@ let BaseInput = React.forwardRef((props, ref) => {
         autoComplete="off" />
 
 })
-export default BaseInput;
+export default React.memo( BaseInput);
 
 

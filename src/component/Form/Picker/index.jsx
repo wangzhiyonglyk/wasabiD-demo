@@ -3,7 +3,7 @@
  date:2016-05-23
  desc:级联选择组件
  采用了es6语法
- edit 2017-08-17 TODO
+ edit 2017-08-17
  */
 import React, { Component } from "react";
 import func from "../../libs/func.js";
@@ -17,6 +17,99 @@ import PickerInput from "./PickerInput";
 import propType from "../../propsConfig/propTypes.js";
 import api from "wasabi-api"
 import "./picker.css"
+/**
+ * 热门选择
+ */
+function HotView(props) {
+    const { data, hotTitle, activeHot } = props;
+    if (data && data instanceof Array && data.length > 0) {
+        return <div>
+            <div className="hot-wrap">
+                <p style={{ display: (hotTitle && hotTitle != "") ? "block" : "none" }}>{hotTitle}</p>
+                <ul>{data.map((item, index) => {
+                    return (< li key={"hot" + item.text} className="hot-item"
+                     onClick={activeHot.bind(this, item.value, item.text)} title={item.text}>{item.text}</li>);
+                })}</ul></div>
+            <div className="line" > </div >
+        </div>
+    }
+    else {
+        return null;
+
+    }
+}
+/**
+ * 一级节点
+ */
+function ProvinceView(props) {
+    const { data, activeProvince,provinceActiveIndex,activeCity ,distinctActiveIndex ,activeDistinct} = props;
+    let provinceComponents = [];
+    if (data && data instanceof Array && data.length > 0) {
+        data.map((child, index) => {
+            let left = (index % 5) * -65;//todo
+            provinceComponents.push(<li key={"province" + index} className={"picker-container  " + (child.expand ? "expand" : "")}>
+                <ul className="picker-container-wrap" style={{ display: (child.expand ? "block" : "none"), left: left }}>
+                    <CityView data={child.children} provinceActiveIndex={provinceActiveIndex} activeCity={activeCity} activeDistinct={activeDistinct} distinctActiveIndex={distinctActiveIndex}></CityView>
+                </ul>
+                <div className={"picker-container-name " + (child.expand ? "expand" : "")} onClick={activeProvince.bind(this, index, child.value)} title={child.text}>{child.text}</div>
+            </li>
+            );
+        });
+        return provinceComponents;
+    }
+    else {
+        return null;
+    }
+}
+/**
+ * 二级节点
+ */
+function CityView(props) {
+    
+    const { data, provinceActiveIndex, activeCity,distinctActiveIndex,activeDistinct } = props;
+    let cityComponents = [];
+    if (data && data instanceof Array && data.length > 0) {
+        data.map((child, index) => {
+            let left = (index % 4) * -80;//todo
+            if (index % 4 == 0) {
+                left = -14;
+            }
+            cityComponents.push(
+                <li key={"city" + index} className={"picker-container  " + (child.expand ? "expand" : "")}>
+                    <ul className="picker-container-wrap" style={{ display: (child.expand ? "block" : "none"), left: left }}>
+                        <DistinctView data={child.children} distinctActiveIndex={distinctActiveIndex} activeDistinct={activeDistinct} ></DistinctView>
+                    </ul>
+                    <div className={"picker-container-name " + (child.expand ? "expand" : "")}
+                     onClick={activeCity.bind(this, provinceActiveIndex,index, child.value)} title={child.text}>{child.text}</div>
+                </li>
+            )
+        });
+        return cityComponents;
+    } else {
+        return null;
+    }
+}
+/**
+ * 三级节点
+ */
+function DistinctView(props) {
+    const { data, distinctActiveIndex, activeDistinct } = props;
+    let distinctComponents = [];
+    if (data && data instanceof Array && data.length > 0) {
+        data.map((child, index) => {
+            distinctComponents.push(
+                <li key={"distinct" + index}
+                    className={"pickeritem " + (distinctActiveIndex === index ? "expand" : "")}
+                    onClick={activeDistinct.bind(this, index)} title={child.text}>{child.text}</li>
+            )
+        });
+        return distinctComponents;
+    } else {
+        return null;
+    }
+
+}
+
 class Picker extends Component {
     constructor(props) {
         super(props);
@@ -46,13 +139,11 @@ class Picker extends Component {
         this.hidePicker = this.hidePicker.bind(this);
         this.setPickerModel = this.setPickerModel.bind(this);
         this.activeHot = this.activeHot.bind(this);
+        this.activeProvince=this.activeProvince.bind(this);
+        this.activeCity=this.activeCity.bind(this);
+        this.activeDistinct=this.activeDistinct.bind(this)
         this.flodChildren = this.flodChildren.bind(this);
-        this.activeProvince = this.activeProvince.bind(this);
         this.loadCitySuccess = this.loadCitySuccess.bind(this);
-        this.renderDistinct = this.renderDistinct.bind(this);
-        this.renderHot = this.renderHot.bind(this);
-        this.renderProvince = this.renderProvince.bind(this);
-
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};
@@ -101,7 +192,6 @@ class Picker extends Component {
             value: "",
             text: "",
         })
-        this.input.current.setValue("");
         this.props.onSelect && this.props.onSelect("", "", this.props.name, {});
     }
     /**
@@ -160,7 +250,6 @@ class Picker extends Component {
             value: value,
             text: text,
         });
-        this.input.current.setValue(text);
         if (this.props.onSelect != null) {
             this.props.onSelect(value, text, this.props.name);
         }
@@ -191,8 +280,6 @@ class Picker extends Component {
                 selectValue = newData[currentProvinceIndex].value;
                 selectText = newData[currentProvinceIndex].text;
                 show = false;
-                this.input.current.setValue(selectText);
-
                 if (this.props.onSelect != null) {
                     this.props.onSelect(selectValue, selectText, this.props.name, null);
                 }
@@ -254,7 +341,7 @@ class Picker extends Component {
                     selectValue = newData[currentProvinceIndex].value;
                     selectText = newData[currentProvinceIndex].text;
                     show = false;
-                    this.input.current.setValue(selectText);
+
                     if (this.props.onSelect != null) {
                         this.props.onSelect(selectValue, selectText, this.props.name, null);
                     }
@@ -293,13 +380,10 @@ class Picker extends Component {
             let expand = newData[currentProviceIndex].expand;
             newData = this.flodChildren(newData);//折叠
             newData[currentProviceIndex].expand = !expand;//当前一级节点展开
-
-
         }
         else {//没有数据,则直接执行选择事件
             selectValue = newData[currentProviceIndex].value;
             selectText = newData[currentProviceIndex].text;
-            this.input.current.setValue(selectText);
             if (this.props.onSelect != null) {
                 this.props.onSelect(selectValue, selectText, this.props.name, null);
             }
@@ -333,7 +417,7 @@ class Picker extends Component {
                 show = false;
                 selectValue = newData[this.state.provinceActiveIndex].value + "," + newData[this.state.provinceActiveIndex].children[currentCityIndex].value;
                 selectText = newData[this.state.provinceActiveIndex].text + "," + newData[this.state.provinceActiveIndex].children[currentCityIndex].text;
-                this.input.current.setValue(selectText);
+               
                 if (this.props.onSelect != null) {
                     this.props.onSelect(selectValue, selectText, this.props.name, newData[this.state.provinceActiveIndex]);
                 }
@@ -397,7 +481,7 @@ class Picker extends Component {
                     show = false;
                     selectValue = newData[this.state.provinceActiveIndex].value + "," + newData[this.state.provinceActiveIndex].children[currentCityIndex].value;
                     selectText = newData[this.state.provinceActiveIndex].text + "," + newData[this.state.provinceActiveIndex].children[currentCityIndex].text;
-                    this.input.current.setValue(selectText);
+                   
                     if (this.props.onSelect != null) {
                         this.props.onSelect(selectValue, selectText, this.props.name, newData[this.state.provinceActiveIndex]);
                     }
@@ -442,7 +526,6 @@ class Picker extends Component {
         else {
             selectValue = newData[this.state.provinceActiveIndex].value + "," + newData[this.state.provinceActiveIndex].children[currentCityIndex].value;
             selectText = newData[this.state.provinceActiveIndex].text + "," + newData[this.state.provinceActiveIndex].children[currentCityIndex].text;
-            this.input.current.setValue(selectText);
             if (this.props.onSelect != null) {
                 this.props.onSelect(selectValue, selectText, this.props.name, null);
             }
@@ -475,7 +558,6 @@ class Picker extends Component {
         selectText = newData[this.state.provinceActiveIndex].text + ","
             + newData[this.state.provinceActiveIndex].children[this.state.cityActiveIndex].text + ","
             + newData[this.state.provinceActiveIndex].children[this.state.cityActiveIndex].children[currentDistinctIndex].text;
-        this.input.current.setValue(selectText);
         if (this.props.onSelect != null) {
             this.props.onSelect(selectValue, selectText, this.props.name, newData[this.state.provinceActiveIndex]);
         }
@@ -488,92 +570,17 @@ class Picker extends Component {
             distinctActiveIndex: currentDistinctIndex,
         })
     }
-    renderHot() {//热门选择
-        if (this.props.hotData instanceof Array) {
-            let controlArray = [];
-            this.props.hotData.map((item, index) => {
-                controlArray.push(< li key={"hot" + item.text} className="hot-item" onClick={this.activeHot.bind(this, item.value, item.text)} title={item.text}>{item.text}</li>);
-            });
-            return <div>
-                <div className="hot-wrap">
-                    <p style={{ display: (this.props.hotTitle && this.props.hotTitle != "") ? "block" : "none" }}>{this.props.hotTitle}</p>
-                    <ul>{controlArray}</ul></div>
-                <div className="line" > </div >
-            </div>
-        }
-        else {
-            return null;
-        }
-    }
-    renderProvince() {//一级节点渲染
-        let provinceComponents = [];
-        if (this.state.data && this.state.data instanceof Array) {
-
-            this.state.data.map((child, index) => {
-                let left = (index % 5) * -65;
-
-                provinceComponents.push(<li key={"province" + index} className={"picker-container  " + (child.expand ? "expand" : "")}>
-                    <ul className="picker-container-wrap" style={{ display: (child.expand ? "block" : "none"), left: left }}>
-                        {
-                            this.renderCity(index, child.children)
-                        }
-                    </ul>
-                    <div className={"picker-container-name " + (child.expand ? "expand" : "")} onClick={this.activeProvince.bind(this, index, child.value)} title={child.text}>{child.text}</div>
-                </li>
-                );
-            });
-            return provinceComponents;
-        }
-        else {
-            return null;
-        }
-    }
-    renderCity(provinceIndex, cityData) {//二级节点渲染
-        let cityComponents = [];
-        if (cityData instanceof Array) {
-            cityData.map((child, index) => {
-                let left = (index % 4) * -80;
-                if (index % 4 == 0) {
-                    left = -14;
-                }
-
-                cityComponents.push(
-                    <li key={"city" + index} className={"picker-container  " + (child.expand ? "expand" : "")}>
-                        <ul className="picker-container-wrap" style={{ display: (child.expand ? "block" : "none"), left: left }}>
-                            {
-                                this.renderDistinct(child.children)
-                            }
-                        </ul>
-                        <div className={"picker-container-name " + (child.expand ? "expand" : "")} onClick={this.activeCity.bind(this, provinceIndex, index, child.value)} title={child.text}>{child.text}</div>
-                    </li>
-                )
-            });
-            return cityComponents;
-        } else {
-            return null;
-        }
-
-    }
-    renderDistinct(distinctData) {//三级节点渲染
-        let distinctComponents = [];
-        if (distinctData instanceof Array) {
-            distinctData.map((child, index) => {
-                distinctComponents.push(
-                    <li key={"distinct" + index} className={"pickeritem " + (this.state.distinctActiveIndex === index ? "expand" : "")} onClick={this.activeDistinct.bind(this, index, child.value)} title={child.text}>{child.text}</li>
-                )
-            });
-            return distinctComponents;
-        } else {
-            return null;
-        }
-
-    }
     render() {
+        const   {data, provinceActiveIndex ,distinctActiveIndex}=this.state;
+        const provinceProps= {data, activeProvince:this.activeProvince,provinceActiveIndex,
+            activeCity:this.activeCity,distinctActiveIndex,activeDistinct:this.activeDistinct};
         return (<div className="combobox"     >
-            <PickerInput ref={this.input} {...this.props} value={this.state.value} onClear={this.onClear} onClick={this.showPicker}></PickerInput>
+            <PickerInput ref={this.input} {...this.props} show={this.state.show} value={this.state.text} onClear={this.onClear} onClick={this.showPicker}></PickerInput>
             <div className={"dropcontainter  picker "} style={{ display: this.state.show == true ? "block" : "none" }}>
-                {this.renderHot()}
-                <ul className="wrap" ><p>{this.props.placeholder}</p> {this.renderProvince()}
+                <HotView data={this.props.hotData}  hotTitle={this.props.hotTitle}
+                activeHot={this.state.activeHot} ></HotView>
+                <ul className="wrap" ><p>{this.props.placeholder}</p>
+              <ProvinceView  {...provinceProps}></ProvinceView>
                 </ul>
             </div>
         </div>

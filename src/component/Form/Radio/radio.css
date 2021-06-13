@@ -126,7 +126,7 @@ desc:checkbox
   background-color: var(--background-color);
   cursor: not-allowed;
   border-color: var(--border-color);
-  color: #c0c4cc;
+  color: var(--border-hover-color);
 }
 .wasabi-radio-btn input[type="radio"]{
   visibility: hidden;
@@ -167,7 +167,7 @@ desc:checkbox
 
 }
 .wasabi-checkul .radiotext.readOnly{
-  color: #c0c4cc;
+  color: var(--border-hover-color);
 }
 .wasabi-checkul .radiotext.checkedRadio{
   color: var(--primary-color);

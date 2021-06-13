@@ -103,9 +103,9 @@ export default function (WrappedComponent) {
                     newState.second_day = null;
                 }
                 else if (second_rangeBegin) {//第二个日期的开始日期不为空
-                    newState.first_rangeEnd = 31;
+                    newState.first_rangeEnd = 32;
                     newState.second_rangeEnd = second_rangeBegin;
-                    newState.second_rangeBegin = 1;
+                    newState.second_rangeBegin = -1;
                 }
             }
             else {//不为空
@@ -162,8 +162,8 @@ export default function (WrappedComponent) {
                 }
                 else if (first_rangeBegin) {
                     //第一个日期的开始日期不为空
-                    newState.first_rangeEnd = 31;
-                    newState.second_rangeBegin = 1;
+                    newState.first_rangeEnd = 32;
+                    newState.second_rangeBegin = -1;
                     newState.second_rangeEnd = newState.second_day;
                 }
             }
@@ -189,7 +189,7 @@ export default function (WrappedComponent) {
             }
             /*判断与后面一个的复合情况*/
             this.setState(newState, () => {
-                this.onSelect(this.props.type == "daterange" ? true : false);
+                this.onSelect();
             });
         }
         /**
@@ -221,9 +221,8 @@ export default function (WrappedComponent) {
         }
         /**
          * 值确认事件
-         * @param {*} hide 
          */
-        onSelect(hide) {
+        onSelect() {
             let firstDate, secondDate;
             if (this.state.first_rangeBegin) {
                 firstDate = this.state.first_year + "-" + (this.state.first_month.toString().length == 1 ? "0" + this.state.first_month : this.state.first_month) + "-" + (this.state.first_rangeBegin.toString().length == 1 ? "0" + this.state.first_rangeBegin : this.state.first_rangeBegin);
@@ -241,13 +240,13 @@ export default function (WrappedComponent) {
                 if (firstDate && secondDate) {
                     firstDate = firstDate + (this.state.firstTime ? " " + this.state.firstTime : "");
                     secondDate = secondDate + (this.state.secondTime ? " " + this.state.secondTime : "");
-                    this.props.onSelect(firstDate + "," + secondDate, firstDate + "," + secondDate, this.props.name, hide);
+                    this.props.onSelect(firstDate + "," + secondDate, firstDate + "," + secondDate, this.props.name);
                 }
             }
         }
 
         render() {
-
+console.log("Test",this.state)
             return <WrappedComponent {...this.props} {...this.state}
                 firstHandler={this.firstHandler}
                 secondHandler={this.secondHandler}

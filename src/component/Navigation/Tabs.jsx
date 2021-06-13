@@ -5,10 +5,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import func from "../libs/func"
 require("../sass/Navigation/Tabs.css");
-
-// var addRipple=require("../Mixins/addRipple.js");
 class Tabs extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -55,16 +52,13 @@ class Tabs extends React.Component {
             })
             this.props.tabClick && this.props.tabClick(index)
         }
-
     }
     render() {
         return (
             <div className={"wasabi-tabs " +( this.props.className||"")} style={this.props.style} >
                 <div className={"wasabi-tab-nav "} id={this.state.navid} >
                     {
-
                         React.Children.map(this.props.children, (child, index) => {
-
                             if (child) {
                                 let iconCls = child && child.props.iconCls ? child.props.iconCls : "txt";
                                 return <div key={index} onClick={this.tabClickHandler.bind(this, index)} className={"wasabi-tab " + this.props.theme + " " + (this.state.activeIndex == index ? "active " : "")} >

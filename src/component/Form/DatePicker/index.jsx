@@ -7,6 +7,7 @@
 import React, { Component } from "react";
 import Calendar from "./Calendar";
 import DateInput from "./DateInput"
+import DateRangeInput from "./DateRangeInput"
 import DateTime from "./DateTime.jsx";
 import DateRange from "./DateRange.jsx";
 import DateTimeRange from "./DateTimeRange.jsx";
@@ -24,7 +25,6 @@ class DatePicker extends Component {
     this.input = React.createRef();
     this.state = {
       pickerid: func.uuid(),
-      rangeCount: "-150%", // 时间选择框的位置
       oldPropsValue: "",//保留原来的值
       value: "",
       text: "",
@@ -37,16 +37,11 @@ class DatePicker extends Component {
     this.hidePicker = this.hidePicker.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onClear = this.onClear.bind(this);
-    this.onChange = this.onChange.bind(this);
-
     this.renderDate = this.renderDate.bind(this);
     this.renderDateRange = this.renderDateRange.bind(this);
     this.renderDateTime = this.renderDateTime.bind(this);
     this.renderTime = this.renderTime.bind(this);
     this.renderTimeRange = this.renderTimeRange.bind(this);
-    this.autoForMat = this.autoForMat.bind(this);
-    this.inputClick = this.inputClick.bind(this);
-    this.inputFocus = this.inputFocus.bind(this);
   }
   static getDerivedStateFromProps(props, state) {
     if (props.value != state.oldPropsValue) {
@@ -99,236 +94,29 @@ class DatePicker extends Component {
    * @param {*} value 
    */
   setValue(value) {
-    if (value && this.props.validate && this.props.validate(value)) {
-      this.setState({
-        value: value,
-        text: value
-      });
-    } else {
-      this.setState({
-        value: "",
-        text: ""
-      });
-    }
+    this.setState({
+      value: value,
+      text: value
+    });
+    this.props.validate && this.props.validate(value)
   }
-
   /**
   * 
   * @param {*} value 
   * @param {*} text 
   * @param {*} name 
-  * @param {*} hide 是否隐藏，用于范围 todo
   */
-  onSelect(value, text, name, hide = true) {
+  onSelect(value, text, name) {
     //选中事件
     //防止异步取值
     this.state.value = value;
     this.setState({
-      show: !hide,
+      show:false,
       value: value,
       text: value
     });
     value = this.getValue();//用于添加附加时间
     this.props.onSelect && this.props.onSelect(value, value, this.props.name, null);
-  }
-
-  /**
-     * 输入框
-     * @param {*} value 
-     */
-   onChange(event) {
-    let value = this.autoForMat(event);
-    if (value !== false) {
-      this.setState({
-        value: value,
-        text: value
-      }, () => {
-        let value = this.getValue();//用于添加附加时间
-        if (this.props.validate && this.props.validate(value)) {//数据有效值
-          this.props.onSelect && this.props.onSelect(value, value, this.props.name, null);
-        }
-      });
-    } else {
-   
-    }
-
-
-  }
-  /**
-   * 格式化输入
-   * @param {*} value 
-   * @returns 
-   */
-  autoForMat(event) {
-    let value = event.target.value;
-    let reg;
-    /**
-     * 先两种情况，1.顺序输入，2.插入输入
-     * 1.顺序输入，先判断有效性，无效,则不改变
-     * 2.顺序输入，有效判断是否要加-或：
-     * 3.插入输入时，判断对应的段是否有效，无效则光标选择，不禁止输入，因为禁止输入后光标会跳转末尾
-     */
-    switch (this.props.type) {
-      case "time":
-        reg = /^\d{1,2}$|^\d{2,2}:?$|^\d{2,2}:([0-5]|[0-5]\d)$/;
-        if (value.length == event.target.selectionStart && reg.test(value) != true) {//值的输入不合法
-          //末尾输入，格式不正确，
-          return false;
-        }
-        else if (value && event.target.selectionStart === 2) {//时输入完时
-          let hour = value.slice(0, 2);
-          if ( /^(20|21|22|23|[0-1]\d)$/.test(hour) !== true) {
-            //输入不正确
-            event.target.selectionStart = 0;
-            event.target.selectionEnd = 2;
-          }
-          else {
-            //正确
-            if (value.length === 2) {//后面没值
-              value = value + ":";
-              event.target.selectionStart = value.length;
-            }
-            else {
-              event.target.selectionStart = 3;
-              event.target.selectionEnd = 5;
-            }
-          }
-        }
-      
-
-
-        break;
-      case "date":
-        reg =/^\d{1,4}-?$|^\d{4,4}-(0[1-9]*|1[0-2]*)-?$|^\d{4,4}-(0[1-9]|1[0-2])-(0[1-9]*|[1-2][0-9]*|3[0-1]*)$/;
-        if (value.length == event.target.selectionStart&&reg.test(value)!=true) {
-          //末尾输入，格式不正确
-          return false;
-        }
-        else if (value && event.target.selectionStart === 4) {//年输入完成,年不用验证正确性
-          if (/^[\d-]*$/.test(value)) {
-            if (value.length == 4) {
-              //后面没有值
-              value = value + "-";
-              event.target.selectionStart = value.length;
-            }
-            else {
-              //后面有值
-              event.target.selectionStart = 5;
-              event.target.selectionEnd = 7;
-            }
-          }
-          else {
-            event.target.selectionStart = 0;
-            event.target.selectionEnd = 2;
-          }
-
-
-        }
-        else if (value.indexOf("-") > -1 && event.target.selectionStart == 7) {//月输入完成
-          if (value.split("-")[1] * 1 > 12) {//输入不正确
-            event.target.selectionStart = 5;
-            event.target.selectionEnd = 7;
-          }
-          else {
-            if (value.length === 7) {
-              value = value + "-";
-              event.target.selectionStart = value.length;
-            }
-            else {
-              //后面有日
-              event.target.selectionStart = 8;
-              event.target.selectionEnd = 10;
-            }
-
-          }
-        }
-        else if (value.length === 10) {
-          //全部输入完成，正则这里没有处理这个情况，因为太长了
-          let month = value.split("-")[1] * 1;
-          let day = value.split("-")[2] * 1;
-          //判断闰年，与大小月
-          if (month === 2) {
-            //2月
-
-            if (func.isLeapYear(new Date(value.split("-")[0])) && day > 29) {
-              //不正确
-              event.target.selectionStart = 8;
-              event.target.selectionEnd = 10;
-            }
-            else if (!func.isLeapYear(new Date(value.split("-")[0])) && day > 28) {//不正确     
-              event.target.selectionStart = 8;
-              event.target.selectionEnd = 10;
-            }
-          }
-          else if ([1, 3, 5, 7, 8, 10, 12].indexOf(month) > -1 && day > 31) {//不正确
-            event.target.selectionStart = 8;
-            event.target.selectionEnd = 10;
-          }
-          else if (day > 30) {//不正确
-            event.target.selectionStart = 8;
-            event.target.selectionEnd = 10;
-          }
-
-
-        }
-      default:
-        break;
-    }
-    return value;
-  }
-  /**
-   * 控制光标
-   */
-  inputClick(event) {
-    switch (this.props.type) {
-      case "time":
-        if (event.target.selectionStart <= 2) {
-          event.target.selectionStart = 0;
-          event.target.selectionEnd = 2;
-
-        }
-        else if (event.target.selectionStart > 2) {
-          event.target.selectionStart = 3;
-          event.target.selectionEnd = 5;
-        }
-        break;
-      case "date":
-        if (event.target.selectionStart <= 4) {
-          event.target.selectionStart = 0;
-          event.target.selectionEnd = 4;
-
-        }
-        else if (event.target.selectionStart <= 7) {
-          event.target.selectionStart = 5;
-          event.target.selectionEnd = 7
-        }
-        else if (event.target.selectionStart > 7) {
-          event.target.selectionStart = 8;
-          event.target.selectionEnd = 10;
-        }
-        break;
-      default:
-        break;
-
-    }
-  }
-  /**
-   * 得到焦点
-   */
-  inputFocus(event) {
-    switch (this.props.type) {
-      case "time":
-        event.target.selectionStart = 0;
-        event.target.selectionEnd = 2;
-        break;
-      case "date":
-        event.target.selectionStart = 0;
-        event.target.selectionEnd = 4;
-      default:
-        break;
-
-
-    }
   }
   /**
    *清除数据
@@ -340,9 +128,12 @@ class DatePicker extends Component {
     });
     this.props.onSelect && this.props.onSelect("", "", this.props.name);
   }
-
+  /**
+   * 拆分日期格式
+   * @param {*} datestr 
+   * @returns 
+   */
   splitDate(datestr) {
-    //拆分日期格式
     let returnvalue = {};
     if (regs.datetime.test(datestr)) {
       //有时间
@@ -385,6 +176,11 @@ class DatePicker extends Component {
     }
     return returnvalue;
   }
+  /**
+   * 显示下拉
+   * @param {*} e 
+   * @returns 
+   */
   showPicker(e) {
 
     //显示选择
@@ -571,33 +367,33 @@ class DatePicker extends Component {
   render() {
     let control = null;
     let controlDropClassName = "";
-    let placeholder=this.props.placeholder;
-    switch (this.props.type) {
+    let placeholder = this.props.placeholder;
+    let { type } = this.props;
+    switch (type) {
       case "date":
         control = this.renderDate();
         controlDropClassName = "date";
-        placeholder=placeholder||"0000-00-00";
+        placeholder = placeholder || "0000-00-00";
         break;
       case "time":
         control = this.renderTime();
         controlDropClassName = "time";
-        placeholder=placeholder||"00:00";
+        placeholder = placeholder || "00:00";
         break;
       case "timerange":
-
         control = this.renderTimeRange();
         controlDropClassName = "timerange";
-        placeholder=placeholder||"00:00,00:00";
+        placeholder = placeholder || "00:00,00:00";
         break;
       case "datetime":
         control = this.renderDateTime();
         controlDropClassName = "datetime";
-        placeholder=placeholder||"0000-00-00 00:00";
+        placeholder = placeholder || "0000-00-00 00:00";
         break;
       case "daterange":
         control = this.renderDateRange();
         controlDropClassName = "daterange";
-        placeholder=placeholder||"0000-00-00,0000-00-00";
+        placeholder = placeholder || "0000-00-00,0000-00-00";
         break;
       case "datetimerange":
         control = this.renderDateTimeRange();
@@ -606,24 +402,25 @@ class DatePicker extends Component {
       default:
         control = this.renderDate();
         controlDropClassName = "date";
-        placeholder=placeholder||"0000-00-00";
+        placeholder = placeholder || "0000-00-00";
         break;
 
     }
+    let inputprops = {
+      type: type,
+      title: this.props.title,
+      name: this.props.name,
+      placeholder: this.props.placeholder,
+      value: this.state.value || "",
+      showPicker: this.showPicker,
+      onClear: this.onClear,
+      setValue: this.setValue,
+      validate: this.props.validate
+    }
     return <div className='combobox' >
-      <DateInput
-        {...this.props}
-        ref={this.input}
-        value={this.state.value || ""}
-        placeholder={placeholder}  
-        onChange={this.onChange.bind(this)}
-        onClick={this.showPicker.bind(this)}
-        onClear={this.onClear.bind(this)}
-        inputClick={this.inputClick.bind(this)}
-        inputFocus={this.inputFocus.bind(this)}
-      > </DateInput>
+      {type.indexOf("range") > -1 ? <DateRangeInput {...inputprops}></DateRangeInput> : <DateInput  {...inputprops}> </DateInput>}
       <div id={this.state.pickerid} className={"dropcontainter " + controlDropClassName + " "}
-        style={{display: this.state.show == true ? "flex" : "none", flexWrap: "wrap"}}>
+        style={{ display: this.state.show == true ? "flex" : "none", flexWrap: "wrap" }}>
         {control}
       </div>
       {this.props.children}

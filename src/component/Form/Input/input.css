@@ -18,6 +18,7 @@ desc:表单输入框样式
   white-space: nowrap;
   min-height: 40px;
 }
+
 /*
  输入框主体
  */
@@ -37,7 +38,6 @@ desc:表单输入框样式
   height: 40px;
   padding: 0px 6px;
   font-size: 14px;
-  color: var(--color);
   background-color: #fff;
   background-image: none;
   border: 1px solid var(--border-color);
@@ -46,46 +46,45 @@ desc:表单输入框样式
   display: block;
   width: 100%;
   outline: none;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+  border-radius: 4px;
   resize: vertical;
 }
-textarea.wasabi-input{
-  height: 140px;
+
+
+textarea.wasabi-input {
+  height: 100%;
 }
+
 .wasabi-input[disabled], .wasabi-input[readOnly] {
   background-color: var(--background-color);
   border-color: var(--border-color);
-  color: #c0c4cc;
+  color: var(--border-hover-color);
   cursor: not-allowed;
 }
 
 .wasabi-input::placeholder {
-  color: #c0c4cc;
+  color: var(--border-hover-color);
 }
 
 .wasabi-input:hover {
-  border-color: #c0c4cc;
+  border-color: var(--border-hover-color);
 }
 
 .wasabi-input:focus {
-  border-color: var(--primary-color);
+  border-color:var(--border-hover-color);
 }
 
 .wasabi-input[disabled]:hover, .wasabi-input[readOnly]:hover {
   background-color: var(--background-color);
   border-color: var(--border-color);
-  color: #c0c4cc;
+  color: var(--border-hover-color);
   cursor: not-allowed;
 }
 
 .wasabi-input[disabled]:focus, .wasabi-input[readOnly]:focus {
   background-color: var(--background-color);
   border-color: var(--border-color);
-  color: #c0c4cc;
+  color: var(--border-hover-color);
   cursor: not-allowed;
 }
 
@@ -101,7 +100,6 @@ input验证失败
   border-color: var(--danger-color);
 }
 
-
 .wasabi-has-error .timeinput {
   border: 1px solid var(--border-color);
 }
@@ -111,15 +109,15 @@ input验证通过
 */
 
 .wasabi-has-success .wasabi-input {
-  border-color: var(--primary-color);
+  border-color: var(--success-color);
 }
 
 .wasabi-has-success input[type="checkbox"] {
-  border-color: var(--primary-color);
+  border-color: var(--success-color);
 }
 
 .wasabi-has-success input[type="radio"] {
-  border-color: var(--primary-color);
+  border-color: var(--success-color);
 }
 
 /*
@@ -130,12 +128,14 @@ input验证通过
   color: var(--danger-color);
   display: none;
   white-space: pre-wrap;
-  overflow: visible;
+  overflow: hidden;
   z-index: 1;
   font-size: 12px;
   position: absolute;
-  top: 100%;
-  padding-top: 4px;
+  top: -6px;
+  margin-left: 5px;
+  background: white;
+  transform: scale(0.9);
 }
 
 /*
@@ -201,5 +201,3 @@ input验证通过
     transform: rotate(360deg) scale(1);
   }
 }
-
-
