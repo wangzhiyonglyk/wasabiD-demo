@@ -152,7 +152,7 @@ class SearchBar extends Component {
         if (cref.props.name && cref.getValue) {//说明是表单控件
 
           if (cref.props.name.indexOf(",") > -1) {//含有多个字段
-  
+
             var nameSplit = cref.props.name.split(",");
             let value = cref.getValue();
             if (value) {

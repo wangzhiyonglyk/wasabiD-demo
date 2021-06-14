@@ -118,7 +118,7 @@ import System from "./page/System"
 /*********************** 常用函数 *****************/
 import func from './libs/func.js';//常用函数
 import mixins from './Mixins/mixins';//mixins
-import regs from "./Lang/regs";//常用的正则
+import regs from "./libs/regs";//常用的正则
 export {
   Tag, Button, LinkButton, Toolbar, Badge, Dropdown, DropdownItem,
   DataGrid, Tree, Transfer, Progress, Step, StepItem, Avatar, Pivot, TreeGrid, Pagination,

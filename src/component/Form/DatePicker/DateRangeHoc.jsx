@@ -246,7 +246,6 @@ export default function (WrappedComponent) {
         }
 
         render() {
-console.log("Test",this.state)
             return <WrappedComponent {...this.props} {...this.state}
                 firstHandler={this.firstHandler}
                 secondHandler={this.secondHandler}

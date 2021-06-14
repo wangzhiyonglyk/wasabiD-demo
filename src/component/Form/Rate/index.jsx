@@ -75,7 +75,7 @@ class Rate extends Component {
         let value = this.state.hoverValue || this.state.value;//先等于鼠标停留的值，没有，才是选中的值；
         let control = [];
         if (this.props.percent <= 0) {
-            console.error("每个星星的分数不为0")
+            console.error("每颗星星的分数不为0")
             return null;
         }
         else {
@@ -137,7 +137,6 @@ class Rate extends Component {
 
     }
 }
-
 Rate.propTypes = {
     /**颜色值
      * 可以是一个字符，也可是一个数组,每个值对应一个星星
@@ -167,5 +166,4 @@ Rate.defaultProps = {
     textColor: "var(--color)",
     value: 0,
 }
-
 export default validateHoc(Rate)

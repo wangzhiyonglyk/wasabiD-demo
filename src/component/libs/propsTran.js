@@ -4,7 +4,7 @@
  * wangzhiyong
  */
 import func from "./func";
-import regs from "../Lang/regs.js";
+import regs from "./regs.js";
 let propsTran = {
     /**  
      * 格式化数据，checkbox ,radio,select ,picker,treepicker,tree,treegrid

@@ -6,7 +6,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import DateInput from "./DateInput";
-import regs from "../../Lang/regs"
+import regs from "../../libs/regs"
 class DateRangeInput extends React.Component {
   constructor(props) {
     super(props);

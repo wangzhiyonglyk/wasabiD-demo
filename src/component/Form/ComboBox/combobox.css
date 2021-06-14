@@ -20,11 +20,12 @@ desc:日期选择样式
   height: 24px;
   position: absolute;
   right: 4px;
-  top: 14px;
+  top: 12px;
   cursor: pointer;
   text-align: center;
   transition: all, transform .6s;
   color: var(--icon-color);
+  font-size: var(--icon-size);
 }
 .combobox .comboxbox-icon:hover{
   color:var(--icon-hover-color);
@@ -35,7 +36,7 @@ desc:日期选择样式
 
 
 .combobox .comboxbox-icon.rotate {
-  transform: rotate(180deg) translateY(10px);
+  transform: rotate(180deg) translateY(8px);
 }
 
 /*清空图标*/

@@ -324,7 +324,6 @@ class Calendar extends Component {
 
     }
     render() {
-            console.log("dd",this.props.rangeBegin)
         return (
             <div className="wasabi-datetime"  >
                 <CalendarHeader year={this.state.year} month={this.state.month} choseYear={this.choseYear} choseMonth={this.choseMonth}></CalendarHeader>

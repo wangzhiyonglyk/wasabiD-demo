@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Input from "../../component/Form/Input"
 import Form from "../../component/Form/Form"
-import { Button,DataGrid,TreeGrid ,Tree,Calendar} from '../../component';
+import { Button,DataGrid,TreeGrid ,Tree,Calendar,Search,Password} from '../../component';
 
 import("./index.css")
 class PivotPage extends React.Component {
@@ -134,6 +134,13 @@ class PivotPage extends React.Component {
             <Input  key="6"  required={true} type="datetime" data={this.state.data}></Input>
                 <Input  key="8"  required={true} type="daterange" data={this.state.data}></Input>
                 <Input  key="9"  required={true} type="datetimerange" data={this.state.data}></Input>
+                <Input  key="10"  required={true} type="select" data={this.state.data}></Input>
+                <Input  key="1"  required={true} type="text" data={this.state.data}></Input>
+                <Input  key="2"  required={true} type="idcard" data={this.state.data}></Input>
+                <Input  key="15"  required={true} type="checkbox" data={this.state.data}></Input>
+                <Input  key="16"  required={true} type="radio" data={this.state.data}></Input>
+                <Search></Search>
+                <Password></Password>
         </div>
 
     }

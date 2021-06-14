@@ -13,10 +13,11 @@ import propsTran from "../../libs/propsTran"
 import dom from "../../libs/dom"
 //hoc
 import loadDataHoc from "../../loadDataHoc";
-import validateHoc from "../validateHoc"
+import validateHoc from "../validateHoc";
 
-import ArrowInput from "./ArrowInput"
-import SelectbleList from "./SelectbleList"
+import ArrowInput from "./ArrowInput";
+import SelectbleList from "./SelectbleList";
+import Msg from "../../Info/Msg"
 import("./select.css");
 class Select extends Component {
     constructor(props) {
@@ -415,11 +416,11 @@ class Select extends Component {
             <ArrowInput
                 ref={this.input}
                 show={this.state.show}
-                value={this.state.inputText}
+                value={this.state.inputText||""}
                 attachAble={this.props.attachAble}
                 name={this.props.name}
-                title={this.props.title}
-                placeholder={this.props.placeholder}
+                title={this.props.title||""}
+                placeholder={this.props.placeholder||""}
                 sortType={this.state.sortType}
                 readOnly={this.props.readOnly}
                 onChange={this.onChange.bind(this)}

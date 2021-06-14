@@ -13,11 +13,10 @@ import DateRange from "./DateRange.jsx";
 import DateTimeRange from "./DateTimeRange.jsx";
 import Time from "./Time";
 import TimeRange from "./TimeRange";
-import regs from "../../Lang/regs.js";
+import regs from "../../libs/regs.js";
 import validateHoc from "../validateHoc"
 import func from "../../libs/func"
 import propTypes from "../../propsConfig/propTypes.js";
-
 import dom from "../../libs/dom"
 class DatePicker extends Component {
   constructor(props) {

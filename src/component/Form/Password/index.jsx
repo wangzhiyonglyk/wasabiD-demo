@@ -16,6 +16,7 @@ class Password extends React.Component {
         this.onBlur = this.onBlur.bind(this);
         this.onPaste = this.onPaste.bind(this);
         this.onClick = this.onClick.bind(this);
+        this.onMouseOut = this.onMouseOut.bind(this)
     }
 
     /**
@@ -81,8 +82,19 @@ class Password extends React.Component {
 
         event.target.selectionStart = event.target.value.length;
     }
+    /**
+     * 防止选择部分，然后滑出，再删除
+     * @param {*} event 
+     */
+    onMouseOut(event) {
+        this.inputControl.current.selectionStart = this.state.tempValue.length;
+    }
     render() {
-        return <React.Fragment> <BaseInput   {...this.props}
+        return <React.Fragment> <BaseInput
+            title={this.props.title}
+            name={this.props.name}
+            placeholder={this.props.placeholder}
+            readOnly={this.props.readOnly}
             ref={this.inputControl}
             value={this.state.tempValue.replace(/./g, "*")}
             onBlur={this.onBlur}
@@ -91,10 +103,11 @@ class Password extends React.Component {
             onKeyUp={this.onKeyUp}
             onClick={this.onClick}
             onFocus={this.onClick}
+            onMouseOut={this.onMouseOut}
         ></BaseInput>
             {this.props.children} </React.Fragment>
     }
 }
 Password.propTypes = propType;
-Password.defaultProps ={ type: "password" }
+Password.defaultProps = { type: "password" }
 export default validateHoc(Password);

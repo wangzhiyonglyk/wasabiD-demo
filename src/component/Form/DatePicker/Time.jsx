@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import func from "../../libs/func";
-import regs from "../../Lang/regs"
+import regs from "../../libs/regs"
 import "./calendar.css"
 import Values from "../../Data/Pivot/Configuration/Values";
 class Time extends React.Component {

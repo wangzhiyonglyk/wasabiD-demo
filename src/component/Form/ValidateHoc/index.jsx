@@ -1,8 +1,8 @@
 import React from "react";
 import func from "../../libs/func";
-import validation from "../../Lang/validation";
+import validation from "../../libs/validation";
 import Label from "../../Info/Label";
-import regexp from "../../Lang/regs";
+import regexp from "../../libs/regs";
 import dom from "../../libs/dom"
 /**
  * 验证组件
@@ -126,6 +126,7 @@ let validateHoc = function (InputWidget) {
                             }
                         }
                         if (isvalidate && typeof this.props.max === "number") {
+                            //这里要加isvalidate
                             {
                                 switch (this.props.type) {
                                     case "text":
@@ -168,6 +169,24 @@ let validateHoc = function (InputWidget) {
                                         }
                                         break;
                                 }
+                            }
+                        }
+                        if(isvalidate&&  this.props.type.indexOf("range")>-1){
+                            valueArr=value.toString().split(",");
+                            if(valueArr.length<2){
+                                isvalidate = false;
+                                inValidateText = "输入两个值";
+                            }
+                            else if(valueArr.length===2&&valueArr[1]<valueArr[0]){
+                                isvalidate = false;
+                                inValidateText = "第二值大于等于第一个值";
+                            }
+                            else if (valueArr.length>2){
+                                isvalidate = false;
+                                inValidateText = "输入错误";
+                            }
+                            else {
+                                isvalidate=true;
                             }
                         }
 

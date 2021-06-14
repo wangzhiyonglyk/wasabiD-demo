@@ -59,7 +59,7 @@ class Input extends Component {
         else if (type == "switch") {//开关
             control = <Switch ref={this.input}  {...props} ></Switch>
         }
-        else if (type == "muti" || type == "select" || type == "datetime" || type == "time" || type == "timerange" || type == "date" || type == "daterange" || type == "datetimerange" || type == "picker" || type == "treepicker") {//下拉组件
+        else if (type == "select" || type == "datetime" || type == "time" || type == "timerange" || type == "date" || type == "daterange" || type == "datetimerange" || type == "picker" || type == "treepicker") {//下拉组件
             control = <ComboBox ref={this.input} {...props} ></ComboBox>
         }
 
