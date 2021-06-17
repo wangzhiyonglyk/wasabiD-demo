@@ -26,7 +26,7 @@ function LiView(props) {
         control = data.map((child, index) => {
             let checked = isChecked(child);
             return <li key={index} onClick={onSelect.bind(this, child.value, child.text, child)}  >
-                <input type="checkbox" className={!checked && half ? "checkbox halfcheck" : "checkbox"} checked={checked} onChange={() => { }}></input>
+                <input type="checkbox" className={ half ? "checkbox halfcheck" : "checkbox"} checked={checked} onChange={() => { }}></input>
                 <label className="checkbox-label" readOnly={readOnly} ></label>
                 <div className={"checktext " + (checked ? " checked" : "")} readOnly={readOnly} >{child.text}</div>
             </li >
@@ -74,11 +74,11 @@ class CheckBox extends React.Component {
      * @param {*} row 
      * @returns 
      */
-    onSelect(value = "", text) {//选中事件
+    onSelect(value = "", text,row) {//选中事件
         if (this.props.readOnly) {
             return;
         }
-        if (value) {
+        if (value!=null&&value!=undefined&&value!="") {//0是有效值
             let newValue = this.state.value.toString() || ""
             let newText = this.state.text.toString() || "";
             newValue = newValue ? newValue.split(",") : [];
@@ -94,8 +94,8 @@ class CheckBox extends React.Component {
 
             }
             else {
-                newValue.push(value);
-                newText.push(text);
+                newValue.push(value+"");
+                newText.push(text+"");
             }
             this.setState({
                 value: newValue.join(","),
@@ -120,9 +120,10 @@ class CheckBox extends React.Component {
     }
 
     render() {
-        const { data, value, half, readOnly } = this.props;
-        const liprops = { data, value, half, readOnly, onSelect: this.onSelect };
-        return <ul className="wasabi-checkul" ><LiView {...liprops}></LiView> {this.props.children} </ul>
+        const { data, half, readOnly } = this.props;
+
+        const liprops = { data, half, readOnly, onSelect: this.onSelect,value:this.state.value };
+        return <ul className="wasabi-checkul" ><LiView {...liprops} ></LiView> {this.props.children} </ul>
     }
 }
 export default validateHoc(loadDataHoc(CheckBox, "checkbox"));

@@ -26,7 +26,7 @@ import Toolbar from './Buttons/Toolbar';//LinkButton按钮集合组件
 
 /*****************数据组件******************/
 import DataGrid from './Data/DataGrid';//数据列表组件
-import Tree from './Data/Tree.jsx';//树的组件
+import Tree from './Data/Tree/index.jsx';//树的组件
 import Transfer from './Data/Transfer.jsx';//穿梭框组件
 import Progress from './Data/Progress';//进度条
 import Track from './Data/Track.jsx';//物流跟踪

@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "7239549",
+      "name": "setting",
+      "font_class": "setting",
+      "unicode": "e706",
+      "unicode_decimal": 59142
+    },
+    {
       "icon_id": "18592618",
       "name": "stop",
       "font_class": "stop",
@@ -410,13 +417,6 @@
       "font_class": "calendar",
       "unicode": "ea2e",
       "unicode_decimal": 59950
-    },
-    {
-      "icon_id": "348339",
-      "name": "certificate",
-      "font_class": "setting",
-      "unicode": "ea35",
-      "unicode_decimal": 59957
     },
     {
       "icon_id": "348340",

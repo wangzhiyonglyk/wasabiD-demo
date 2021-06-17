@@ -16,7 +16,7 @@ let propsTran = {
      * @param {*} simpleData 是否是简单数据格式
      * @returns 
      */
-    processData(type, value, data = [], idOrValueField = "value", textField = "text", parentField = "pId", simpleData = true) {
+    formartData(type, value, data = [], idOrValueField = "value", textField = "text", parentField = "pId", simpleData = true) {
         if (!data) {
             return data;
         }
@@ -38,7 +38,7 @@ let propsTran = {
                 //如果有子节点的时候.tree,treepicker,picker
                 if (realData[i].children && realData[i].children.length > 0) {
 
-                    realData[i].children = propsTran.processData(type, value, realData[i].children, idOrValueField, textField, parentField, simpleData);
+                    realData[i].children = propsTran.formartData(type, value, realData[i].children, idOrValueField, textField, parentField, simpleData);
 
                 }
             }
@@ -206,7 +206,7 @@ let propsTran = {
         let filterResult = [];
         data && data.forEach((item, index) => {
             let filterItem = null;
-            if (item.id.toString().indexOf(filterText) > -1 || item.text.indexOf(filterText) > -1) {
+            if (item.id&&item.id.toString().indexOf(filterText) > -1 || item.text.indexOf(filterText) > -1) {
                 filterItem = { ...item, children: [] }
             }
             if (item.children && item.children.length > 0) {
@@ -221,7 +221,6 @@ let propsTran = {
                 filterResult.push(filterItem);
             }
         })
-        console.log(filterResult);
         return filterResult;
     },
     /**

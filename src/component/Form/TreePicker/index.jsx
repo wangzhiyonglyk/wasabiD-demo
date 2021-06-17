@@ -5,7 +5,7 @@
  desc:树下拉选择
  */
 import React, { Component } from "react";
-import Tree from "../../Data/Tree.jsx";
+import Tree from "../../Data/Tree/index.jsx";
 import props from "../../propsConfig/propTypes.js";
 import CheckBox from "../CheckBox/index.jsx";
 import propsTran from "../../libs/propsTran.js";
@@ -32,7 +32,7 @@ class TreePicker extends Component {
         if (props.value != state.oldPropsValue) {//父组件强行更新了
             return {
                 value: props.value || "",
-                text: propsTran.processText(props.value, this.props.data),
+                text: propsTran.processText(props.value,props.data),
                 oldPropsValue: props.value
             }
         }
@@ -201,4 +201,4 @@ class TreePicker extends Component {
 }
 TreePicker.propTypes = props;
 TreePicker.defaultProps = { type: "treepicker", checkStyle: "checkbox" }
-export default validateHoc(loadDataHoc(TreePicker, "treepicker"));
+export default validateHoc(TreePicker, "treepicker");

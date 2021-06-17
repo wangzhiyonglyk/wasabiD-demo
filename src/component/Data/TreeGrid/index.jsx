@@ -55,7 +55,7 @@ class TreeGrid extends Component {
             //如果传了死数据
             newState.rawData = props.data;
             //拿到text
-            let result = propsTran.processData("tree", props.value, props.data, props.idField, props.textField);
+            let result = propsTran.formartData("tree", props.value, props.data, props.idField, props.textField);
 
             if (props.simpleData) {
                 //生成树结构
@@ -140,16 +140,7 @@ class TreeGrid extends Component {
             realData = func.getSource(data, this.props.dataSource);
         }
         //根据value值拿到text
-        let result = propsTran.processData("tree", this.state.value, realData, this.props.idField, this.props.textField);
-
-        if (this.props.simpleData) {
-            //生成树结构
-            realTreeData = func.toTreeData(result, this.props.idField, this.props.parentField, this.props.textField)
-        }
-        else {
-            realTreeData = result;
-        }
-
+        let result = propsTran.formartData("tree", this.state.value, realData, this.props.idField, this.props.textField,this.props.simpleData);
         /**
             *为了保存顺序，要根据树的数据，生成表格的数据 
             */

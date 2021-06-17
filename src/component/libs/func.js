@@ -348,7 +348,7 @@ func.uuid = function () {
  * @param {*} objB  
  * @returns 
  */
-func.diff = function (objA, objB) {//
+func.diff = function (objA = null, objB = null) {//
     if (objA === objB) {
         return false;
     }
@@ -431,15 +431,15 @@ func.componentMixins = function (component, mixinClass = []) {
  * @param {string } textField 文本key
  */
 func.toTreeData = function (data, idField = "id", parentField = "pId", textField = "text") {
+    data = func.clone(data);//复制一份
     let pos = {};
-    let tree = [];
-    let count = 0;
+    let tree = [];//最终数据
+    let count = 0;//
     let pId = "";//一级父节点pid值
     let ids = "";//所有id值
     for (let i = 0; i < data.length; i++) {
         ids += "," + data[i][idField] + ","
     }
-
     for (let i = 0; i < data.length; i++) {
         if (ids.indexOf("," + data[i][parentField] + ",") <= -1) {//属于一级节点的pid值
             pId += "," + data[i][parentField] + ",";
@@ -449,28 +449,29 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
     while (data.length !== 0 && count < 200000) {
         count++;
         if (pId.indexOf("," + data[index][parentField] + ",") > -1 || !data[index][parentField]) {
+            //一级节点
             let item = {
                 ...data[index],
                 id: data[index][idField],
                 pId: data[index][parentField],
                 text: data[index][textField],
-                children: data[index].children || [],
-            }
-            item[idField] = data[index][idField];//添加key
-            tree.push(item);
+                children: []
 
-            pos[data[index][idField]] = [tree.length - 1];
+            }
+            tree.push(item);
+            pos[data[index][idField]] = [tree.length - 1];//节点路径
+            item._path = [tree.length - 1]//保存路径,
+            //格式化子节点
+            item.children = func.formatTreeDataChildren(data[index].children, item.id, item._path, idField, parentField, textField);
             data.splice(index, 1);
             index--;
         } else {
-            let posArr = pos[data[index][parentField]];
+            let posArr = pos[data[index][parentField]];//拿出父节点的路径
             if (posArr) {
-
-                let obj = tree[posArr[0]];
+                let obj = tree[posArr[0]];//找到在树中的位置
                 for (let j = 1; j < posArr.length; j++) {
                     obj = obj.children[posArr[j]];
                 }
-
                 let item = {
                     ...data[index],
                     id: data[index][idField],
@@ -478,9 +479,11 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
                     text: data[index][textField],
                     children: data[index].children || [],
                 }
-                item[idField] = data[index][idField];//添加key
                 obj.children.push(item);
                 pos[data[index][idField]] = posArr.concat([obj.children.length - 1]);
+                item._path = pos[data[index][idField]];//保存路径
+                //格式化子节点
+                item.children = func.formatTreeDataChildren(data[index].children, item.id, item._path, idField, parentField, textField);
                 data.splice(index, 1);
                 index--;
             }
@@ -491,11 +494,73 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
         }
     }
     if (data.length > 0) {
-        console.log("Data", data);
-        console.error("数据格式不正确，或者是数据量过大，请使用异步请求,");
+        console.error("数据格式不正确，或者是数据量过大，请使用异步请求");
     }
     return tree;
 
+}
+/**
+ * 如果树节点本身包含了子节点，格式化节点
+ * @param {*} node 
+ * @param {*} path 
+ */
+func.formatTreeDataChildren = function (children, pId, path, idField = "id", parentField = "pId", textField = "text") {
+    if (children && children instanceof Array && children.length > 0) {
+        for (let i = 0; i < children.length; i++) {
+            let newPath = [...path, i];
+            let item = {
+                ...children[i],
+                id: children[i][idField],
+                pId: pId,
+                text:  children[i][textField],
+                _path: newPath,
+                children: func.formatTreeDataChildren(children[i].children, children[i][idField], newPath, idField, parentField, textField)
+            }
+            children[i] = item;
+        }
+        return children;
+    }
+    return [];
+
+
+}
+/**
+ * 找到所有父节点
+ * @param {*} data 
+ * @param {*} pId 
+ */
+func.treeFindParent = function (data, pId) {
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].id === pId) {
+            return data[i];
+
+        }
+        if (data[i].children && data[i].children.length > 0) {
+            let findNode = func.treeFindParent(data[i].children, pId);
+            if (findNode) {
+                return findNode;
+            }
+        }
+    }
+    return null;
+}
+
+/**
+ * 找到所有祖先节点
+ * @param {*} data 
+ * @param {*} pId 
+ */
+func.treeFindALLParents = function (data, pId) {
+    let parents = [];
+    let parent = func.treeFindParent(data, pId);
+    let count = 0;;//防止死循环
+    while (parent && count < 1000) {
+        count++;
+        parents.push(parent);
+        parent = func.treeFindParent(data, parent.pId);
+
+    }
+    return parents;
 }
 
 /**

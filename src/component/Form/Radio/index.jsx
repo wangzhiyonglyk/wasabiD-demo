@@ -63,23 +63,19 @@ class Radio extends Component {
         return this.state.value;
     }
 
-    onSelect(value, text, name, row) {
+    onSelect(value="", text, name, row) {
 
         if (this.props.readOnly) {
             return;
         }
-        if (value) {
-            //防止异步取值
-            this.state.value = value;
-            this.state.text = text;
-
+        if (value!=null&&value!=undefined&&value!="") {//0是有效值
             //更新
             this.setState({
-                value: value,
-                text: text,
+                value: value+"",
+                text: text+"",
             })
-            this.props.validate && this.props.validate(value);
-            this.props.onSelect && this.props.onSelect(value, text, name, row);
+            this.props.validate && this.props.validate(value+"");
+            this.props.onSelect && this.props.onSelect(value+"", text, name, row);
         }
         else{
             Msg.info("值是空值");
@@ -87,8 +83,8 @@ class Radio extends Component {
 
     }
     render() {
-        const { data, value, readOnly } = this.props;
-        const liProps = { data, value, readOnly, onSelect: this.onSelect }
+        const { data, readOnly } = this.props;
+        const liProps = { data, readOnly,value:this.state.value, onSelect: this.onSelect }
         return <ul className="wasabi-checkul radio"> <LiView {...liProps} onSelect={this.onSelect.bind(this)}></LiView> {this.props.children}</ul>
     }
 }

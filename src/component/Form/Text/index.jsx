@@ -178,6 +178,7 @@ class Text extends Component {
     render() {
         return <React.Fragment>
             <TextInput
+                id={this.props.id}
                 type={this.props.type}
                 name={this.props.name}
                 className={"wasabi-input "}

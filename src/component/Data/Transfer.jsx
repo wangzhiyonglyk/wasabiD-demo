@@ -18,8 +18,8 @@ class Transfer extends React.Component {
         this.transfer = React.createRef();
         this.up = React.createRef();
         this.down = React.createRef();
-        let realData = propsTran.processData("transfer", "", this.props.data, this.props.valueField, this.props.textField);
-        let realSelectData = propsTran.processData("transfer", "", this.props.selectData, this.props.valueField, this.props.textField);
+        let realData = propsTran.formartData("transfer", "", this.props.data, this.props.valueField, this.props.textField);
+        let realSelectData = propsTran.formartData("transfer", "", this.props.selectData, this.props.valueField, this.props.textField);
         this.state = {
             name: this.props.name,
             data: realData,
@@ -336,7 +336,6 @@ class Transfer extends React.Component {
         </div>
     }
 }
-
 Transfer.propTypes = {
     name: PropTypes.string,//名称
     valueField: PropTypes.string,//数据字段值名称

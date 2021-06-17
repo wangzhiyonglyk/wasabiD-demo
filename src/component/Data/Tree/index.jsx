@@ -3,16 +3,18 @@ create by wangzhiyong
  date:2016-07
 create by wangzhiyong 创建树组件
  edit 2020-10 参照ztree改造
+ 2021-06-16 重新优化
  desc:树下拉选择
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Msg from "../Info/Msg";
+import Msg from "../../Info/Msg";
 import TreeNode from "./TreeNode.jsx";
-import func from "../libs/func.js";
-import propsTran from "../libs/propsTran";
-import loadDataHoc from "../loadDataHoc"
-require("../Sass/Data/Tree.css");
+import func from "../../libs/func.js";
+import loadDataHoc from "../../loadDataHoc"
+import treeFunc from "./treeFunc";
+import("./tree.css")
+
 class Tree extends Component {
     constructor(props) {
         super(props);
@@ -21,28 +23,20 @@ class Tree extends Component {
             rawData: [],
             data: [],
             clickId: "",//单击的id
-            value: "",//勾选的值
-            oldPropsValue: "",
-            text: "",
-            idField: this.props.idField,
-            textField: this.props.textField,
-
         }
         //单击与双击需要改变样式
         this.onClick = this.onClick.bind(this);
-        this.onradioChecked = this.onradioChecked.bind(this);
         this.onDoubleClick = this.onDoubleClick.bind(this);
         this.onChecked = this.onChecked.bind(this)
         this.getChecked = this.getChecked.bind(this);
+        this.clearChecked = this.clearChecked.bind(this);
         this.setClickNode = this.setClickNode.bind(this);
-        this.expandHandler = this.expandHandler.bind(this)
-        //因为第一级节点没有父节点，在移除时需要树组件配合
-        this.parentRemoveChild = this.parentRemoveChild.bind(this);
-
-        /**
-         * 其他事件则自行定义就可以了
-         */
+        this.onExpand = this.onExpand.bind(this)
+        this.onRename = this.onRename.bind(this);
+        this.onRemove = this.onRemove.bind(this);
+        this.onDrop = this.onDrop.bind(this)
     }
+    //todo
     static getDerivedStateFromProps(props, state) {
         let newState = {};
         if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData)) {
@@ -54,49 +48,43 @@ class Tree extends Component {
             newState.data = func.clone(props.data);
 
         }
-        if (props.value != state.oldPropsValue) {//父组件强行更新了值            
-            return {
-                value: props.value || "",
-                text: propsTran.processText(props.value, newState.data || props.data).join(","),
-                oldPropsValue: props.value
-            }
-        }
-
         return newState;
     }
-    onChecked(checked, id, text, children, row) {
-        this.props.onChecked && this.props.onChecked(checked, id, text, children, row, this.props.name);
-    }
     /**
-   * 返回勾选的数据
-   */
-    getChecked() {
-        let data = [];
-        for (let i = 0; i < this.treeNodesRef.length; i++) {
-            let cref = this.treeNodesRef[i].current;
-            if (cref) {
-                data = [].concat(data, cref.getNodeChecked());
-            }
-        }
-        return data;
-    }
+     * 节点勾选
+     * @param {*} id 
+     * @param {*} text 
+     * @param {*} row 
+     * @param {*} checkValue 
+     */
+    onChecked(id, text, row, checkValue) {
 
-    /**
-   * 清除勾选
-   */
-    clearChecked() {
-        for (let i = 0; i < this.treeNodesRef.length; i++) {
-            let cref = this.treeNodesRef[i].current;
-            if (cref) {
-                cref.clearChecked();
-            }
-        }
+        let path = row._path;
+        let checked = (id + "") === (checkValue + "")
+        let data = treeFunc.setChecked(this.state.data, path, checked, this.props.checkType);
         this.setState({
-            checked: false
+            data: data
         })
-
+        this.props.onChecked && this.props.onChecked(checked, id, text, row);
     }
 
+
+    /**
+    * 返回勾选的数据
+    */
+    getChecked() {
+        return treeFunc.getChecked(this.state.data);
+    }
+
+    /**
+    * 清除勾选
+    */
+    clearChecked() {
+        let data = treeFunc.clearChecked(this.state.data);
+        this.setState({
+            data: data
+        })
+    }
     /**
          * 为了给交叉表与树表格内部使用的单击事件
          * @param {*} id 
@@ -116,9 +104,9 @@ class Tree extends Component {
      * 单击事件
      * @param {*} id 值
      * @param {*} text 文本
-     * @param {*} children 子节点
+     * @param {*} row 
      */
-    onClick(id, text, children, row) {
+    onClick(id, text, row) {
         if (this.props.isPivot) {
             setTimeout(() => {
                 this.setState({
@@ -135,45 +123,14 @@ class Tree extends Component {
     }
 
     /**
-     * 单选按钮 radioType="all"
-     * @param {*} id 
-     * @param {*} text 
-     * @param {*} children 
-     */
-    onradioChecked(id, text, children, row) {
-        this.setState({
-            value: id,
-            text: text
-        }, () => {
-
-            if (this.state.data && this.state.data instanceof Array && this.state.data.length > 0) {
-                for (let i = 0; i < this.treeNodesRef.length; i++) {
-                    let cref = this.treeNodesRef[i].current;
-                    if (cref) {
-                        cref.setNodeSelfRadioChecked(false, { id: id, text: text });//改变一级子节点
-                        cref.setChildrenRadioChecked(false, { id: id, text: text });//改变子孙节点
-                    }
-                }
-            }
-            setTimeout(() => {
-                this.onChecked(true, id, text, children, row);
-            }, 200);
-            //只有一个单选
-
-        })
-
-    }
-    /**
      * 双击事件
      * @param {*} id 
      * @param {*} text 
      * @param {*} children 
      */
-    onDoubleClick(id, text, children, row) {
-        this.props.onDoubleClick && this.props.onDoubleClick(id, text, children, row, this.props.name);
+    onDoubleClick(id, text, row) {
+        this.props.onDoubleClick && this.props.onDoubleClick(id, text, row);
     }
-
-
     /**
      * 树展开与折叠事件
      * @param {*} open 是否展开
@@ -181,38 +138,79 @@ class Tree extends Component {
      * @param {*} text 文本
      * @param {*} children  子节点
      */
-    expandHandler(open, id, text, children) {
-        this.props.expandHandler && this.props.expandHandler(open, id, text, children)
+    onExpand(open, id, text, row) {
+        this.props.onExpand && this.props.onExpand(open, id, text, row)
     }
 
     /**
-   * 由节点的父组件处理删除与移动时的删除
-   * @param {*} childIndex 
-   */
-    parentRemoveChild(childid, childText, subChildren, row) {
-        Msg.confirm("您确定删除[" + childText + "]吗？", () => {
-            let children = func.clone(this.state.data);
-            let childIndex = null;
-            for (let i = 0; i < children.length; i++) {
-                if (children[i].id == childid) {
-                    childIndex = i; break;
-                }
-            }
-            if (childIndex != null) {
-                children.splice(childIndex, 1);
-                this.setState({
-                    data: children
-                })
-            }
-
-            this.props.onRemove && this.props.onRemove(childid, childText, subChildren, row);
+     * 重命名
+     * @param {*} id 
+     * @param {*} text 
+     * @param {*} row 
+     * @param {*} newText 
+     */
+    onRename(id, text, row, newText) {
+        let data = treeFunc.renameNode(this.state.data, row, newText);
+        this.setState({
+            data: data
+        })
+        this.props.onRename && this.props.onRename(id, text, row, newText);
+    }
+    /**
+    * 处理删除与移动时的删除
+    * @param {*}
+    */
+    onRemove(id, text, row) {
+        Msg.confirm("您确定删除[" + text + "]吗？", () => {
+            let data = treeFunc.removeNode(this.state.data, row._path);
+            this.setState({
+                data: data
+            })
+            this.props.onRemove && this.props.onRemove(id, text, row);
         })
 
+    }
+    /**
+     * 停靠事件
+     * @param {*} dragNode 移动节点
+     * @param {*} dropNode 停靠节点
+     * @param {*} dragType 停靠方式
+     */
+    onDrop(dragNode, dropNode, dragType) {
+        let data = [];
+        if (dragType == "in") {
+            data = treeFunc.moveInNode(this.state.data, dragNode, dropNode);
+        }
+        else if (dragType == "before") {
+            data = treeFunc.moveBeforeNode(this.state.data, dragNode, dropNode);
+        }
+        else if (dragType == "after") {
+            data = treeFunc.moveAterNode(this.state.data, dragNode, dropNode);
+        }
+        this.setState({
+            data: data
+        })
     }
 
     render() {
         this.treeNodesRef = [];//清空
         let nodeControl = [];
+        //全局属性
+        const { checkAble, checkStyle, renameAble, removeAble } = this.props;
+        //得到传下去的属性
+        const treeProps = { checkAble, checkStyle, renameAble, removeAble, clickId: this.state.clickId };
+        //全局事件
+        const treeEvents = {
+            onClick: this.onClick,
+            onDoubleClick: this.onDoubleClick,
+            onChecked: this.onChecked,
+            onRemove: this.onRemove,
+            onExpand: this.onExpand,
+            onRename: this.onRename,
+
+            beforeDrag: this.props.beforeDrag,
+            onDrop: this.onDrop
+        }
         if (this.state.data instanceof Array) {
             this.state.data.map((item, index) => {
                 let isParent = false;//是否为父节点
@@ -222,30 +220,26 @@ class Tree extends Component {
                 //通过输入框的值与自身的勾选情况综合判断
                 let ref = React.createRef();
                 this.treeNodesRef.push(ref);
-                let inputValue = this.props.inputValue ? this.props.inputValue.toString().split(",") : [];
-                let checked = inputValue.indexOf((item.id || "").toString()) > -1 ? true : item.checked;
                 nodeControl.push(<TreeNode ref={ref}
-                    key={"treenode-" + item[this.props.idField] + "-" + index}
-                    {...this.props}
+                    key={"treenode-" + item.id + "-" + index}
+                    {
+                    ...treeProps
+                    }
                     {...item}
-                    inputValue={this.props.inputValue || ""}
-                    checked={checked}
-                    id={item[this.props.idField]}
-                    text={item[this.props.textField]}
                     isParent={isParent}
-                    clickId={this.state.clickId}
-                    /** 其他事件不需要绑定，因为父组件设定 */
-                    onClick={this.onClick}
-                    onradioChecked={this.onradioChecked}
-                    onDoubleClick={this.onDoubleClick}
-                    onChecked={this.onChecked}
-                    parentRemoveChild={this.parentRemoveChild.bind(this)}
+                    {
+                    ...treeEvents
+                    }
+
+
                 />);
             });
         }
         return <ul className={"wasabi-tree clearfix " + this.props.className} style={this.props.style}>
             {nodeControl}
         </ul>
+
+
     }
 }
 Tree.propTypes = {
@@ -265,7 +259,6 @@ Tree.propTypes = {
     checkType: PropTypes.object,//勾选对于父子节点的关联关系
     radioType: PropTypes.oneOf(["level", "all"]),//单选时影响的层级
     renameAble: PropTypes.bool,//是否允许重命名
-    editAble: PropTypes.bool,//是否允许编辑
     removeAble: PropTypes.bool,//是否允许移除
 
     //after事件
@@ -275,7 +268,6 @@ Tree.propTypes = {
     onCollapse: PropTypes.func,//折叠事件
     onExpand: PropTypes.func,//展开事件
     onRename: PropTypes.func,//重命名事件
-    onEdit: PropTypes.func,//编辑事件
     onRemove: PropTypes.func,//删除事件
     onRightClick: PropTypes.func,//右键菜单
     onDrag: PropTypes.func,//拖动事件
@@ -299,6 +291,7 @@ Tree.defaultProps = {
     textField: "text",
     dataSource: "data",
     simpleData: true,//默认为真
+    checkAble: true,
     checkStyle: "checkbox",
     checkType: { "y": "ps", "n": "ps" },//默认勾选/取消勾选都影响父子节点，todo 暂时还没完成
     radioType: "all",//todo 

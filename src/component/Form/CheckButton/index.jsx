@@ -72,10 +72,11 @@ class CheckButton extends React.Component {
         this.props.onSelect && this.props.onSelect("", "", this.props.name, {});
     }
     onSelect(value = "", text, row) {//选中事件
+        
         if (this.props.readOnly) {
             return;
         }
-        if (value) {
+        if (value!=null&&value!=undefined&&value!="") {//0是有效值
             let newValue = this.state.value.toString() || ""
             let newText = this.state.text.toString() || "";
             newValue = newValue ? newValue.split(",") : [];
@@ -91,8 +92,8 @@ class CheckButton extends React.Component {
 
             }
             else {
-                newValue.push(value);
-                newText.push(text);
+                newValue.push(value+"");
+                newText.push(text+"");
             }
             this.setState({
                 value: newValue.join(","),
@@ -124,8 +125,8 @@ class CheckButton extends React.Component {
     }
 
     render() {
-        const { data, value, half, readOnly } = this.props;
-        const liprops = { data, value, half, readOnly, onSelect: this.onSelect };
+        const { data, half, readOnly } = this.props;
+        const liprops = { data, value, half, readOnly,value:this.state.value, onSelect: this.onSelect };
         return <ul className="wasabi-checkul" style={{ marginTop: 6 }}><LiView {...liprops}></LiView> {this.props.children} </ul>
     }
 }

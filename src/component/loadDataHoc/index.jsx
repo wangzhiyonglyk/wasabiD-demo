@@ -45,7 +45,7 @@ function loadDataHoc(Widget, type = "select") {
             let newState = {
                
             };
-            if (props.url!=state.url||func.diff(props.params, state.rawParams)) {
+            if (props.url&&props.url!=state.url||func.diff(props.params, state.rawParams)) {
                 //传的请求参数发生改变
                 newState = {
                     loadDataStatus: "url",//通过url加载数据
@@ -67,7 +67,7 @@ function loadDataHoc(Widget, type = "select") {
             this.handlerData();//处理数据
         }
         componentDidUpdate() {
-            this.handlerData();//处理数据
+           this.handlerData();//处理数据
         }
         /**
          * 统一加工数据
@@ -77,8 +77,8 @@ function loadDataHoc(Widget, type = "select") {
                 this.loadData();
             }
             else if (this.state.loadDataStatus === "data") {
-                let idOrValueField = (type == "tree" || type === "treegrid" || type === "treepicker") ? this.props.idField : this.props.valueField;
-                let tempFormatData = propsTran.processData(type, this.getValue(), this.state.rawData, idOrValueField, this.props.textField);
+                let idOrValueField = (type == "tree" || type === "treegrid" || type === "treepicker") ? this.props.idField||"id": this.props.valueField||"value";
+                let tempFormatData = propsTran.formartData(type, this.getValue(), this.state.rawData, idOrValueField, this.props.textField||"text");
 
                 this.setState({
                     data: tempFormatData,
@@ -170,7 +170,7 @@ function loadDataHoc(Widget, type = "select") {
           
             let realData = func.getSource(res, this.props.dataSource || "data");
             let idOrValueField = (type == "tree" || type === "treegrid" || type === "treepicker") ? this.props.idField : this.props.valueField;
-          let tempFormatData = propsTran.processData(type, this.getValue(), realData, idOrValueField, this.props.textField);
+          let tempFormatData = propsTran.formartData(type, this.getValue(), realData, idOrValueField, this.props.textField);
 
             this.setState({
                 loadDataStatus: null,
