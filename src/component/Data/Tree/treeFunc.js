@@ -255,6 +255,7 @@ const treeFunc = {
         if (dropNodes) {
             let leafDragNode = dragNodes[dragNodes.length - 1];//在数据中找到移动节点
             let leafDropNode = dropNodes[dropNodes.length - 1];//在数据中找到停靠节点
+            
             if (!leafDropNode.children) { leafDropNode.children = []; }
             //先添加到停靠节点上
             leafDropNode.children.push({

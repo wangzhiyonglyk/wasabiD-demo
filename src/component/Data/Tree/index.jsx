@@ -287,6 +287,7 @@ class Tree extends Component {
             if (dragType == "in") {
                 if (dragNode.pId !== dropNode.id) {
                     data = treeFunc.moveInNode(this.state.data, dragNode, dropNode);
+                    console.log("data",data);
                 } else {
                     return;
                 }

@@ -363,7 +363,9 @@ class TreeNode extends Component {
             }
             if (dropAble) {
                 window.localStorage.removeItem("wasabi-drag-type");
-               // this.props.onDrag&&this.props.onDrag(drag.id,drag.text,drag);
+                this.setState({
+                    open:true
+                })
                 this.props.onDrop && this.props.onDrop(drag, row, dragType);
             }
         }
