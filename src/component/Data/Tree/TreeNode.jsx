@@ -272,11 +272,12 @@ class TreeNode extends Component {
             }
             let draggAble = true;
             if (this.props.beforeDrag) {
-
                 draggAble = this.props.beforeDrag((row.id, row.text, row));
             }
             if (draggAble) {
-                window.localStorage.setItem("wasabi-drag-item", JSON.stringify(row));//用于拖动到其他地方
+    
+                event.dataTransfer.setData("drag", JSON.stringify(row));//保存起来
+                window.localStorage.setItem("wasabi-drag-item", JSON.stringify(row));//
             }
 
         }
@@ -284,14 +285,15 @@ class TreeNode extends Component {
 
     }
     /**
-     * 拖动组件，拖动结束 todo
+     * 拖动组件，拖动结束
      */
     onNodeDragEnd(event) {
-        //todo 暂时不用处理
+       //在树组件本身内停靠时，这个事件有时候没有响应，原因不详，并用要使用缓存中的，用自身的，数据不对，原因不详
+       //但是拖动到外部的时候，没有问题，这个事件本身主要也是用于外部
         event.preventDefault()
         event.stopPropagation();
-
-
+        let drag = JSON.parse( window.localStorage.getItem("wasabi-drag-item"))
+        this.props.onDrag&&this.props.onDrag(drag.id,drag.text,drag);
     }
     /**
      * 容器经过事件,要阻止默认事件，否则浏览默认是搜索
@@ -339,13 +341,13 @@ class TreeNode extends Component {
     /**
      * 容器组件的停靠事件
      */
-    onNodeDrop(event) {
-        event.preventDefault();
+    onNodeDrop(event) { 
+        event.preventDefault()
         event.stopPropagation();
         document.getElementById(this.state.nodeid).style.borderTop = "none";
         document.getElementById(this.state.nodeid).style.borderBottom = "none";
         document.getElementById(this.state.nodeid).style.backgroundColor = null;
-        let drag = JSON.parse(window.localStorage.getItem("wasabi-drag-item"));
+        let drag = JSON.parse(event.dataTransfer.getData("drag"))
         let dragType = (window.localStorage.getItem("wasabi-drag-type"));
         if (!drag) {
             return;
@@ -360,8 +362,8 @@ class TreeNode extends Component {
                 dropAble = this.props.beforeDrop(drag, row, dragType);//存在并且返回
             }
             if (dropAble) {
-                window.localStorage.removeItem("wasabi-drag-item");
                 window.localStorage.removeItem("wasabi-drag-type");
+               // this.props.onDrag&&this.props.onDrag(drag.id,drag.text,drag);
                 this.props.onDrop && this.props.onDrop(drag, row, dragType);
             }
         }
@@ -413,19 +415,16 @@ TreeNode.propTypes = {
     onCheck: PropTypes.func,//勾选/取消勾选事件
     onCollapse: PropTypes.func,//折叠事件
     onExpand: PropTypes.func,//展开事件
-    onNodeRename: PropTypes.func,//重命名事件
-    onNodeEdit: PropTypes.func,//编辑事件
+    onRename: PropTypes.func,//重命名事件
     onRemove: PropTypes.func,//删除事件
     onRightClick: PropTypes.func,//右键菜单
-    onNodeDragEnd: PropTypes.func,//拖动事件
-    onNodeDrop: PropTypes.func,//停靠事件
-    onAsyncSuccess: PropTypes.func,//异步回调事件
-
+    onDrag: PropTypes.func,//拖动事件
+    onDrop: PropTypes.func,//停靠事件
     //before 事件
     beforeDrag: PropTypes.func,//拖动前事件
     beforeDrop: PropTypes.func,//停靠前事件
-    beforeNodeRemove: PropTypes.func,//删除前事件
-    beforeNodeRename: PropTypes.func,//重命名前事件
+    beforeRemove: PropTypes.func,//删除前事件
+    beforeRename: PropTypes.func,//重命名前事件
     beforeRightClick: PropTypes.func,//鼠标右键前事件
 
 };

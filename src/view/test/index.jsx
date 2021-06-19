@@ -56,7 +56,7 @@ class PivotPage extends React.Component {
             data: [
                 {
                     id: 1, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, children: [
-                        { id: 11, label: "子节点11"},
+                        { id: 11, label: "子节点11",dropAble:true,},
                         {
                             id: 12, label: "子节点12", children: [{
                                 id: 111, label: "孙子节点,可移动",draggAble:true,
@@ -68,8 +68,8 @@ class PivotPage extends React.Component {
                 },
                 {
                     id: 2, pId: "", name: "good1", label: "可以停靠", dropAble:true, editor: { type: "select" }, children: [
-                        { id: 21, pId: 2, label: "子节点21 移动" },
-                        { id: 22, pId: 2, label: "子节点22 移动" }
+                        { id: 21, pId: 2, label: "移动1",draggAble:true, },
+                        { id: 22, pId: 2, label: "移动2",draggAble:true, }
                     ]
                 },
                 { id: 3, pId: "", name: "good", label: "机构尖3", editor: { type: "date" }, },
@@ -127,6 +127,9 @@ class PivotPage extends React.Component {
             label:"异步"
         }]
     }
+    onDrag(id,text,row){
+        console.log("d",id,text,row)
+    }
     render() {
         func.toTreeData(this.state.data, "id", "pId", "label")
         return <div style={{ padding: 20 }}>
@@ -157,7 +160,7 @@ class PivotPage extends React.Component {
                ></Input></div>
 
             <br></br>
-            <div><Tree ref="tree" onAsync={this.onAsync} asyncAble={true} key="16" checkStyle="radio" radioType="level" onEdit={this.onEdit.bind(this)} editAble={true} removeAble={true} renameAble={true} required={true} type="treepicker" data={this.state.data} idField={"id"} textField={"label"}></Tree></div>
+            <div><Tree ref="tree" onDrag={this.onDrag.bind(this)} onAsync={this.onAsync} asyncAble={true} key="16" checkStyle="radio" radioType="level" onEdit={this.onEdit.bind(this)} editAble={true} removeAble={true} renameAble={true} required={true} type="treepicker" data={this.state.data} idField={"id"} textField={"label"}></Tree></div>
 
         </div>
 

@@ -153,13 +153,13 @@ class Tree extends Component {
      */
     onExpand(open, id, text, row) {
         this.props.onExpand && this.props.onExpand(open, id, text, row)
-        if ( this.props.asyncAble && (!row.children || row.children.length == 0)) {//没有数据
+        if (this.props.asyncAble && (!row.children || row.children.length == 0)) {//没有数据
             let asyncChildrenData = [];
             if (this.props.onAsync && typeof this.props.onAsync === "function") {//自行处理
                 asyncChildrenData = this.props.onAsync(id, row);//得到数据
                 //格式化数据
                 asyncChildrenData = propsTran.formartData("tree", "", asyncChildrenData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
-               let data=treeFunc.appendChildren(this.state.data,row,asyncChildrenData);
+                let data = treeFunc.appendChildren(this.state.data, row, asyncChildrenData);
                 //同时处理保持一致
                 let filter = treeFunc.filter(data, this.state.filterValue);
                 this.setState({
@@ -259,6 +259,23 @@ class Tree extends Component {
 
     }
     /**
+     * 删除某个节点，给父组件调用
+     * @param {*} row 节点
+     */
+    remove(row) {
+        if (row && row._path) {
+            let data = treeFunc.removeNode(this.state.data, row);
+            //同时处理保持一致
+            let filter = treeFunc.filter(data, this.state.filterValue);
+            this.setState({
+                data: data,
+                filter: filter
+            })
+            this.props.onRemove && this.props.onRemove(row.id, row.text, row);
+        }
+
+    }
+    /**
      * 停靠事件
      * @param {*} dragNode 移动节点
      * @param {*} dropNode 停靠节点
@@ -313,9 +330,9 @@ class Tree extends Component {
 
         let nodeControl = [];
         //全局属性
-        const { checkAble, checkStyle, renameAble, removeAble,asyncAble } = this.props;
+        const { checkAble, checkStyle, renameAble, removeAble, asyncAble } = this.props;
         //得到传下去的属性
-        const treeProps = { checkAble, checkStyle, renameAble, removeAble,asyncAble, clickId: this.state.clickId };
+        const treeProps = { checkAble, checkStyle, renameAble, removeAble, asyncAble, clickId: this.state.clickId };
         //全局事件
         const treeEvents = {
             beforeDrag: this.props.beforeDrag,
@@ -328,7 +345,8 @@ class Tree extends Component {
             onRemove: this.onRemove,
             onExpand: this.onExpand,
             onRename: this.onRename,
-            onDrop: this.onDrop
+            onDrop: this.onDrop,
+            onDrag: this.props.onDrag
         }
         let data = this.state.filter.length > 0 ? this.state.filter : this.state.data;
         if (data instanceof Array && data.length > 0) {
@@ -337,7 +355,7 @@ class Tree extends Component {
                 if (item.isParent == true || (item.children instanceof Array && item.children.length > 0)) {//如果明确规定了，或者子节点不为空，则设置为父节点
                     isParent = true;
                 }
-    
+
                 //通过输入框的值与自身的勾选情况综合判断
                 nodeControl.push(<TreeNode
                     key={"treenode-" + item.id + "-" + index}
