@@ -4,6 +4,7 @@
  desc:树节点组件
  edit 2020-10-24 勾选还是有缺陷
  edit 2021-05-11 勾选优化，todo 还要继续优化
+ edit 2021-06-19 完善完成
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -11,8 +12,10 @@ import Input from "../../Form/Input"
 import func from "../../libs/func";
 import TreeNodeRow from "./TreeNodeRow"
 function ChildrenView(props) {
+
     let nodeControl = [];
-    if (props.children && props.children instanceof Array) {
+
+    if (props.children && props.children instanceof Array && props.children.length > 0) {
         props.children.map((item, index) => {
             let isParent = false;//是否为父节点
             if (item.isParent == true || (item.children instanceof Array && item.children.length > 0)) {//如果明确规定了，或者子节点不为空，则设置为父节点
@@ -25,26 +28,31 @@ function ChildrenView(props) {
                 /**
                  * 不管有没有这个属性，都来自自身
                  */
-                checked={item.checked||false}
+                checked={item.checked || false}
                 half={item.half || false}
                 draggAble={item.draggAble || false}
                 dropAble={item.dropAble || false}
                 isParent={isParent}
-
+                children={item.children||[]}
+                hide={item.hide||false}
             />);
         });
-
+        return nodeControl;
     }
-    return nodeControl;
+    else {
+        return null;
+    }
+
 }
 function NodeView(props) {
+
     //节点属性
     let row = new TreeNodeRow();//得到无数据
     for (let key in row) {
         row[key] = props[key] != undefined && props[key] != null ? props[key] : row[key];
     }
     //tree的属性
-    const { clickId, checkAble, checkStyle, renameAble, removeAble } = props;
+    const { clickId, loadingId, checkAble, checkStyle, renameAble, removeAble } = props;
     //node的属性
     const { rename } = props;
 
@@ -52,7 +60,6 @@ function NodeView(props) {
     const { onDoubleClick, onClick, onChecked } = props;
     //node的事件
     const { onNodeDragStart, onNodeDragEnd, onNodeDrop, onNodeDragOver, onNodeDragLeave, onNodeExpand, onBlur, onKeyUp } = props;
-
     let title = row.title || row.text;//提示信息 
     let iconCls = row.iconCls;//默认图标图标
     if (row.isParent) {//如果是父节点
@@ -61,17 +68,25 @@ function NodeView(props) {
         }
         else {//关闭状态
             iconCls = row.iconClose ? row.iconClose : row.iconCls;///没有则用默认图标
-
         }
     }
+    if (loadingId === row.id) {
+        //正在异步加载
+        iconCls = "icon-spinner tree-loading";
+
+    }
+
     let childrenControl = null;
     if (row.children && row.children.length > 0) {
+      
         childrenControl = <ChildrenView {...props}></ChildrenView>
+    }
+    else {
     }
     //节点元素
     return <li style={{ display: row.hide ? "none" : "block" }} >
         <div id={row.nodeid} className={clickId == row.id ? "treenode-container selected" : "treenode-container"} >
-            <i className={row.open ? "icon-arrow-down" : "icon-arrow-right"} style={{ opacity: row.isParent ? 1 : 0, transform:"translateY(12px)" }}
+            <i className={row.open ? "icon-arrow-down" : "icon-arrow-right"} style={{ opacity: row.isParent ? 1 : 0, transform: "translateY(12px)" }}
                 onClick={onNodeExpand}></i>
             <div className="treenode" title={title}
                 onDrop={onNodeDrop}
@@ -89,8 +104,7 @@ function NodeView(props) {
                             value={row.checked ? row.id : ""} data={[{ value: row.id, text: "" }]}
                             onSelect={onChecked.bind(this, row.id, row.text, row)}></Input>
                         <div key="2" draggable={row.draggAble} onDragEnd={onNodeDragEnd} onDragStart={onNodeDragStart}>
-                            <i key="3" className={iconCls}
-                            ></i>
+                            <i key="3" className={iconCls} ></i>
                             <a href={row.href} className="wasabi-tree-txt">{row.text}&nbsp;&nbsp;</a></div>
                     </React.Fragment>
                 }
@@ -119,7 +133,7 @@ class TreeNode extends Component {
         this.treeNodesRef = [];
         //异步的情况下，如果没有子节点就默认不展开
         this.state = {
-            open: this.props.asyncAble&&(!this.props.children||this.props.children.length==0)?false: this.props.open,//异步的情况下，默认不打开
+            open: this.props.asyncAble && (!this.props.children || this.props.children.length == 0) ? false : this.props.open,//异步的情况下，默认不打开
             rename: false,//是否处于重命名状态
             nodeid: func.uuid(),
             textid: func.uuid()
@@ -156,10 +170,11 @@ class TreeNode extends Component {
         for (let key in row) {
             row[key] = this.props[key] != undefined && this.props[key] != null ? this.props[key] : row[key];
         }
-        this.setState({
-            open: !this.state.open
-        })
-        this.props.onExpand && this.props.onExpand( !this.state.open,row.id, row.text, row)
+        if (this.props.asyncAble)
+            this.setState({
+                open: !this.state.open
+            })
+        this.props.onExpand && this.props.onExpand(!this.state.open, row.id, row.text, row)
     }
 
 
@@ -275,7 +290,7 @@ class TreeNode extends Component {
                 draggAble = this.props.beforeDrag((row.id, row.text, row));
             }
             if (draggAble) {
-    
+
                 event.dataTransfer.setData("drag", JSON.stringify(row));//保存起来
                 window.localStorage.setItem("wasabi-drag-item", JSON.stringify(row));//
             }
@@ -288,12 +303,12 @@ class TreeNode extends Component {
      * 拖动组件，拖动结束
      */
     onNodeDragEnd(event) {
-       //在树组件本身内停靠时，这个事件有时候没有响应，原因不详，并用要使用缓存中的，用自身的，数据不对，原因不详
-       //但是拖动到外部的时候，没有问题，这个事件本身主要也是用于外部
+        //在树组件本身内停靠时，这个事件有时候没有响应，原因不详，并用要使用缓存中的，用自身的，数据不对，原因不详
+        //但是拖动到外部的时候，没有问题，这个事件本身主要也是用于外部
         event.preventDefault()
         event.stopPropagation();
-        let drag = JSON.parse( window.localStorage.getItem("wasabi-drag-item"))
-        this.props.onDrag&&this.props.onDrag(drag.id,drag.text,drag);
+        let drag = JSON.parse(window.localStorage.getItem("wasabi-drag-item"))
+        this.props.onDrag && this.props.onDrag(drag.id, drag.text, drag);
     }
     /**
      * 容器经过事件,要阻止默认事件，否则浏览默认是搜索
@@ -335,13 +350,13 @@ class TreeNode extends Component {
         event.stopPropagation();
         document.getElementById(this.state.nodeid).style.borderTop = "none";
         document.getElementById(this.state.nodeid).style.borderBottom = "none";
-        document.getElementById(this.state.nodeid).style.backgroundColor =null;
+        document.getElementById(this.state.nodeid).style.backgroundColor = null;
 
     }
     /**
      * 容器组件的停靠事件
      */
-    onNodeDrop(event) { 
+    onNodeDrop(event) {
         event.preventDefault()
         event.stopPropagation();
         document.getElementById(this.state.nodeid).style.borderTop = "none";
@@ -364,7 +379,7 @@ class TreeNode extends Component {
             if (dropAble) {
                 window.localStorage.removeItem("wasabi-drag-type");
                 this.setState({
-                    open:true
+                    open: true
                 })
                 this.props.onDrop && this.props.onDrop(drag, row, dragType);
             }
@@ -373,6 +388,7 @@ class TreeNode extends Component {
 
     }
     render() {
+
         return <NodeView
             {...this.props}
             {...this.state}
@@ -434,9 +450,12 @@ TreeNode.defaultProps = {
     iconCls: "icon-text",
     iconClose: "icon-folder",
     iconOpen: "icon-folder-open",
+    checked:false,
+    checkAble:false,
     open: true,
     half: false,
     draggAble: false,
     dropAble: false,
+    children:[]
 };
 export default TreeNode;

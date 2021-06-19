@@ -26,6 +26,7 @@ class Tree extends Component {
             filterValue: "",
             filter: [],
             clickId: "",//单击的id
+            loadingId: "",//正在异步的节点
         }
         //单击与双击需要改变样式
         this.onClick = this.onClick.bind(this);
@@ -40,6 +41,8 @@ class Tree extends Component {
         this.onDrop = this.onDrop.bind(this);
         this.loadError = this.loadError.bind(this);
         this.loadSuccess = this.loadSuccess.bind(this);
+        this.filter=this.filter.bind(this);
+        this.append=this.append.bind(this)
     }
     //todo
     static getDerivedStateFromProps(props, state) {
@@ -156,16 +159,26 @@ class Tree extends Component {
         if (this.props.asyncAble && (!row.children || row.children.length == 0)) {//没有数据
             let asyncChildrenData = [];
             if (this.props.onAsync && typeof this.props.onAsync === "function") {//自行处理
-                asyncChildrenData = this.props.onAsync(id, row);//得到数据
-                //格式化数据
-                asyncChildrenData = propsTran.formartData("tree", "", asyncChildrenData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
-                let data = treeFunc.appendChildren(this.state.data, row, asyncChildrenData);
-                //同时处理保持一致
-                let filter = treeFunc.filter(data, this.state.filterValue);
-                this.setState({
-                    data: data,
-                    filter: filter
-                })
+                asyncChildrenData = this.props.onAsync(id,text, row);//得到数据
+                if (asyncChildrenData && asyncChildrenData instanceof Array && asyncChildrenData.length > 0) {
+                    //格式化数据
+                    asyncChildrenData = propsTran.formartData("tree", "", asyncChildrenData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
+                    let data = treeFunc.appendChildren(this.state.data, row, asyncChildrenData);
+                    //同时处理保持一致
+                    let filter = treeFunc.filter(data, this.state.filterValue);
+                    this.setState({
+                        data: data,
+                        filter: filter,
+                        loadingId: id
+                    })
+                }
+                else{
+                    //没有返回值，可能异步处理了
+                    this.setState({
+                        loadingId:row.id
+                    })
+                }
+
             }
             else if (this.props.url) {
                 window.sessionStorage.setItem("async-tree-node", JSON.stringify(row));
@@ -180,6 +193,9 @@ class Tree extends Component {
                     fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
                 }
                 let wasabi_api = window.api || api;
+                this.setState({
+                    loadingId: id
+                })
                 wasabi_api.ajax(fetchmodel);
                 console.log("tree async-fetch", fetchmodel);
             }
@@ -193,6 +209,9 @@ class Tree extends Component {
       */
     loadError(message) {//查询失败
         console.log("combobox-error", message);
+        this.setState({
+            loadingId: ""
+        })
         Msg.error(message);
     }
     /**
@@ -220,7 +239,8 @@ class Tree extends Component {
 
         this.setState({
             data: data,
-            filter: filter
+            filter: filter,
+            loadingId: ""
         })
     }
 
@@ -258,23 +278,7 @@ class Tree extends Component {
         })
 
     }
-    /**
-     * 删除某个节点，给父组件调用
-     * @param {*} row 节点
-     */
-    remove(row) {
-        if (row && row._path) {
-            let data = treeFunc.removeNode(this.state.data, row);
-            //同时处理保持一致
-            let filter = treeFunc.filter(data, this.state.filterValue);
-            this.setState({
-                data: data,
-                filter: filter
-            })
-            this.props.onRemove && this.props.onRemove(row.id, row.text, row);
-        }
 
-    }
     /**
      * 停靠事件
      * @param {*} dragNode 移动节点
@@ -287,7 +291,7 @@ class Tree extends Component {
             if (dragType == "in") {
                 if (dragNode.pId !== dropNode.id) {
                     data = treeFunc.moveInNode(this.state.data, dragNode, dropNode);
-                    console.log("data",data);
+                    console.log("data", data);
                 } else {
                     return;
                 }
@@ -308,6 +312,23 @@ class Tree extends Component {
 
     }
     /**
+   * 删除某个节点，给父组件调用
+   * @param {*} row 节点
+   */
+    remove(row) {
+        if (row && row._path) {
+            let data = treeFunc.removeNode(this.state.data, row);
+            //同时处理保持一致
+            let filter = treeFunc.filter(data, this.state.filterValue);
+            this.setState({
+                data: data,
+                filter: filter
+            })
+            this.props.onRemove && this.props.onRemove(row.id, row.text, row);
+        }
+
+    }
+    /**
      * 筛选节点
      * @param {*} key 
      */
@@ -317,6 +338,23 @@ class Tree extends Component {
             filterValue: key.trim(),
             filter: filter
         })
+    }
+    /**
+     * 添加节点
+     * @param {*} children 
+     * @param {*}node
+     */
+    append(children, node = null) {
+      
+        if (children && children.length > 0) {
+            let data = treeFunc.appendChildren(this.state.data, children, node);
+            this.setState({
+                data: data,
+                loadingId: ""
+            },()=>{
+            
+            })
+        }
     }
     shouldComponentUpdate(nextProps, nextState) {
         if (func.diffOrder(nextProps, this.props)) {
@@ -328,12 +366,11 @@ class Tree extends Component {
         return false;
     }
     render() {
-
         let nodeControl = [];
         //全局属性
         const { checkAble, checkStyle, renameAble, removeAble, asyncAble } = this.props;
         //得到传下去的属性
-        const treeProps = { checkAble, checkStyle, renameAble, removeAble, asyncAble, clickId: this.state.clickId };
+        const treeProps = { checkAble, checkStyle, renameAble, removeAble, asyncAble, clickId: this.state.clickId, loadingId: this.state.loadingId };
         //全局事件
         const treeEvents = {
             beforeDrag: this.props.beforeDrag,

@@ -50,6 +50,32 @@
   cursor: not-allowed;
   box-shadow: none;
 }
+/**
+加载动画
+*/
+.loading{
+  animation: loading 1s linear infinite;
+}
+.tree-loading{
+  animation: tree-loading 1s linear infinite;
+}
+
+@keyframes loading {
+  0% {
+    transform:rotate(0deg)
+}
+100% {
+    transform: rotate(360deg)
+}
+}
+@keyframes tree-loading {
+  0% {
+    transform:translateY(4px) rotate(0deg)
+}
+100% {
+    transform:translateY(4px) rotate(360deg)
+}
+}
 
 /*
 自定义水波纹点按效果

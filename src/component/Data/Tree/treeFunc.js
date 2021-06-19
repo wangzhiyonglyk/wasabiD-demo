@@ -229,7 +229,7 @@ const treeFunc = {
             //根节点
             data.splice(nodes[0]._path[0], 1);//删除
             //改变所有节点的路径
-            treeFunc.setChildrenPath("", [], data);
+           data= treeFunc.setChildrenPath("", [], data);
         }
         else {
             //父节点删除子节点
@@ -255,7 +255,7 @@ const treeFunc = {
         if (dropNodes) {
             let leafDragNode = dragNodes[dragNodes.length - 1];//在数据中找到移动节点
             let leafDropNode = dropNodes[dropNodes.length - 1];//在数据中找到停靠节点
-            
+
             if (!leafDropNode.children) { leafDropNode.children = []; }
             //先添加到停靠节点上
             leafDropNode.children.push({
@@ -375,13 +375,13 @@ const treeFunc = {
                 let item = null;
                 if ((data[i].id + "").indexOf(key) > -1 || (data[i].text + "").indexOf(key) > -1) {
                     item = data[i];
-                    item.open=true;
+                    item.open = true;
                 }
                 if (data[i].children && data[i].children.length > 0) {
                     let childrenFilter = treeFunc.filter(data[i].children, key);
                     if (childrenFilter && childrenFilter.length > 0) {
                         item = data[i];
-                        item.open=true;
+                        item.open = true;
                         item.children = childrenFilter;
                     }
                 }
@@ -396,17 +396,25 @@ const treeFunc = {
     /**
      * 添加子节点
      */
-    appendChildren(data, row, asyncChildrenData) {
+    appendChildren(data, children,row) {
         //格式化
         data = func.clone(data);
-        let nodes = treeFunc.findLeafNodes(data, row._path);
-        if (nodes && nodes.length > 0) {
-            let leaf = nodes[nodes.length - 1];
-            leaf.children = asyncChildrenData;
-            //设置节点路径
-            treeFunc.setChildrenPath(leaf.id, leaf._path, leaf.children);
+        if (row && row._path) {
+            let nodes = treeFunc.findLeafNodes(data, row._path);
+            if (nodes && nodes.length > 0) {
+                //找到了
+                let leaf = nodes[nodes.length - 1];
+                leaf.children = children;
+                //设置节点路径
+                leaf.children= treeFunc.setChildrenPath(leaf.id, leaf._path, leaf.children);
+            }
+            return data;
         }
-        return data;
+        else{//根节点
+            data=data.concat(children);
+           data= treeFunc.setChildrenPath("", [], data);
+        }
+
     }
 
 }

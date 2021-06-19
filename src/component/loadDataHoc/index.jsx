@@ -129,10 +129,24 @@ function loadDataHoc(Widget, type = "select") {
          * @returns 
          */
         clearChecked(){
-            return this.input.current.clearChecked && this.input.current.clearChecked();
+             this.input.current.clearChecked && this.input.current.clearChecked();
         }
+        /**
+         * 筛选，tree
+         * @param {*} value 
+         * @returns 
+         */
         filter(value){
-            return this.input.current.filter&&this.input.current.filter(value);
+             this.input.current.filter&&this.input.current.filter(value);
+        }
+        /**
+         * 追加数据
+         * @param {*} children 
+         * @param {*} node 
+         * @returns 
+         */
+        append(children,node){
+             this.input.current.append&&this.input.current.append(children,node);
         }
         /**
      * 加载数据

@@ -81,7 +81,7 @@ class PivotPage extends React.Component {
                 { id: 9, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, },
                 { id: 10, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, },
                 { id: 100, pId: 1, name: "good", label: "机构尖", editor: { type: "date" }, },
-                { id: 101, pId: 3, name: "good", label: "机构尖", editor: { type: "date" }, isParent:true },
+                { id: 101, pId: "", name: "good", label: "异步", editor: { type: "date" }, isParent:true },
             ],
             tabs: [{
                 title: "你好"
@@ -121,11 +121,15 @@ class PivotPage extends React.Component {
             this.refs.tree.filter(event.target.value);
         }
     }
-    onAsync(){
-        return [{
+    onAsync(id,text,row){
+        console.log("this",this)
+      setTimeout(() => {
+          this.refs.tree.append([{
             id:"c1",
-            label:"异步"
-        }]
+            label:"异步",
+          
+        }],row)
+      }, 2000);
     }
     onDrag(id,text,row){
         console.log("d",id,text,row)
@@ -154,13 +158,14 @@ class PivotPage extends React.Component {
             {/* <DataGrid data={this.state.data}  fixedHeaders={this.state.fixedHeaders}   headers={this.state.headers}></DataGrid> */}
             {/* <TreeGrid ref={"reff"} data={this.state.data}  headers={this.state.headers}></TreeGrid> */}
             <button onClick={this.onClick.bind(this)}>test</button>
+           
             <div style={{ height: 100 }}>         
                <Input key="6" required={true} type="text" 
                onKeyUp={this.onChange.bind(this)}
-               ></Input></div>
+               ></Input>  <i className="icon-spinner loading" style={{fontSize:18}}></i></div>
 
             <br></br>
-            <div><Tree ref="tree" onDrag={this.onDrag.bind(this)} onAsync={this.onAsync} asyncAble={true} key="16" checkStyle="radio" radioType="level" onEdit={this.onEdit.bind(this)} editAble={true} removeAble={true} renameAble={true} required={true} type="treepicker" data={this.state.data} idField={"id"} textField={"label"}></Tree></div>
+            <div><Tree ref="tree" onDrag={this.onDrag.bind(this)} onAsync={this.onAsync.bind(this)} asyncAble={true} key="16" checkStyle="radio" radioType="level" onEdit={this.onEdit.bind(this)} editAble={true} removeAble={true} renameAble={true} required={true} type="treepicker" data={this.state.data} idField={"id"} textField={"label"}></Tree></div>
 
         </div>
 
