@@ -166,4 +166,4 @@ Rate.defaultProps = {
     textColor: "var(--color)",
     value: 0,
 }
-export default validateHoc(Rate)
+export default validateHoc(Rate,"rate")

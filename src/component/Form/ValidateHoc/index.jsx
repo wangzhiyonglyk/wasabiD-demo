@@ -9,7 +9,7 @@ import dom from "../../libs/dom"
  * @param {*} InputWidget 表单组件
  * @returns 
  */
-let validateHoc = function (InputWidget) {
+let validateHoc = function (InputWidget,inputType="text") {
     class ValidateComponent extends React.Component {
         constructor(props) {
             super(props);
@@ -27,6 +27,7 @@ let validateHoc = function (InputWidget) {
          * @returns 
          */
         validate(value) {
+          let type=this.props.type||inputType;
             value = (value == null || value == undefined) ? this.input.current.getValue() : value;//如果没有传值，则取文本框值
 
             let isvalidate = true;//默认是有效的
@@ -51,26 +52,26 @@ let validateHoc = function (InputWidget) {
                     }
                     else {//没有正则表达式，则验证默认正则
 
-                        if (regexp[this.props.type]) {//系统存在这个类型
-                            if (this.props.type === "daterange") {
+                        if (regexp[type]) {//系统存在这个类型
+                            if (type === "daterange") {
                                 //日期可以包含时间，
-                                isvalidate = regexp[this.props.type].test(value) || regexp["datetimerange"].test(value);
+                                isvalidate = regexp[type].test(value) || regexp["datetimerange"].test(value);
                             }
-                            else if (this.props.type === "date") {
+                            else if (type === "date") {
                                 //日期可以包含时间，
-                                isvalidate = regexp[this.props.type].test(value) || regexp["datetime"].test(value);
+                                isvalidate = regexp[type].test(value) || regexp["datetime"].test(value);
                             }
                             else {
-                                if (typeof regexp[this.props.type] === "function") {
-                                    isvalidate = regexp[this.props.type](value);
+                                if (typeof regexp[type] === "function") {
+                                    isvalidate = regexp[type](value);
                                 }
                                 else {
-                                    isvalidate = regexp[this.props.type].test(value);
+                                    isvalidate = regexp[type].test(value);
                                 }
 
                             }
 
-                            inValidateText = isvalidate ? "" : validation[this.props.type];
+                            inValidateText = isvalidate ? "" : validation[type];
                         } else {
                             //默认是有效的
                         }
@@ -80,7 +81,7 @@ let validateHoc = function (InputWidget) {
                     if (isvalidate) {//有效再验证长度，大小问题
 
                         if (typeof this.props.min === "number") {
-                            switch (this.props.type) {
+                            switch (type) {
                                 case "text":
                                 case "textarea":
                                     if (value.toString().length < this.props.min) {
@@ -128,7 +129,7 @@ let validateHoc = function (InputWidget) {
                         if (isvalidate && typeof this.props.max === "number") {
                             //这里要加isvalidate
                             {
-                                switch (this.props.type) {
+                                switch (type) {
                                     case "text":
                                     case "textarea":
                                         if (value.toString().length > this.props.max) {
@@ -171,7 +172,7 @@ let validateHoc = function (InputWidget) {
                                 }
                             }
                         }
-                        if(isvalidate&&  this.props.type.indexOf("range")>-1){
+                        if(isvalidate&&  type.indexOf("range")>-1){
                             valueArr=value.toString().split(",");
                             if(valueArr.length<2){
                                 isvalidate = false;

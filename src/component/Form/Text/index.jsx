@@ -199,4 +199,4 @@ class Text extends Component {
 }
 
 Text.propTypes = propTypes;
-export default validateHoc(loadDataHoc(Text, "text"));
+export default validateHoc(loadDataHoc(Text, "text"),"text");

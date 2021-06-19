@@ -442,6 +442,6 @@ class Select extends Component {
 
 }
 
-export default validateHoc(loadDataHoc(Select, "select"));
+export default validateHoc(loadDataHoc(Select, "select"),"select");
 
 

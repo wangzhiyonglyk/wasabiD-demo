@@ -130,4 +130,4 @@ class CheckButton extends React.Component {
         return <ul className="wasabi-checkul" style={{ marginTop: 6 }}><LiView {...liprops}></LiView> {this.props.children} </ul>
     }
 }
-export default validateHoc(loadDataHoc(CheckButton, "checkbox"));
+export default validateHoc(loadDataHoc(CheckButton, "checkbox"),"checkbox");

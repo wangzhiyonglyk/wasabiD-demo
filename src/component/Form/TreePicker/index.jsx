@@ -10,7 +10,6 @@ import props from "../../propsConfig/propTypes.js";
 import CheckBox from "../CheckBox/index.jsx";
 import propsTran from "../../libs/propsTran.js";
 import validateHoc from "../validateHoc";
-import loadDataHoc from "../../loadDataHoc"
 import func from "../../libs/func";
 import dom from "../../libs/dom"
 class TreePicker extends Component {
@@ -32,7 +31,7 @@ class TreePicker extends Component {
         if (props.value != state.oldPropsValue) {//父组件强行更新了
             return {
                 value: props.value || "",
-                text: propsTran.processText(props.value,props.data),
+                text: propsTran.processText(props.value,props.data).join(","),
                 oldPropsValue: props.value
             }
         }
@@ -44,7 +43,7 @@ class TreePicker extends Component {
      * @param {*} value 
      */
     setValue(value) {
-        let text = propsTran.processText(value, this.props.data);
+        let text = propsTran.processText(value, this.props.data).join(",");
         this.setState({
             value: value,
             text: text,
@@ -102,29 +101,38 @@ class TreePicker extends Component {
             }
         }
     }
-    onSelect(checked, nodeid, nodeText, children, row, name) {
-        let data = [];
-        try
-        {
-            data= this.tree.current.input.current.getChecked();
+    /**
+     * 选择
+     * @param {*} checked 
+     * @param {*} value 
+     * @param {*} text 
+     * @param {*} row 
+     */
+    onSelect(checked, value, text, row) {
+        let newValue = this.state.value||""; let newText = this.state.text||"";
+        console.log(newValue,newText);
+        newValue=newValue?newValue.split(","):[];newText=newText?newText.split(","):[];
+        if(checked){
+            newValue.push(value);
+            newText.push(text);
         }
-        catch(e){
-
-        }
-        let value = []; let text = [];
-        for (let i = 0; i < data.length; i++) {
-            value.push(data[i].id);
-            text.push(data[i].text);
+        else{
+            newValue.splice(newValue.indexOf(value.toString()), 1);
+            newText.splice(newText.indexOf(text.toString()), 1);
         }
         this.setState({
-            value: value.join(","),
-            text: text.join(","),
+            value: newValue.join(","),
+            text: newText.join(","),
             show:true,
 
         });
-        this.props.onSelect && this.props.onSelect(value.join(","), text.join(","), this.props.name, row);
+        this.props.onSelect && this.props.onSelect(newValue.join(","), text.join(","), this.props.name, row);
 
     }
+    /**
+     * 全选
+     * @param {*} value 
+     */
     choseAllHandler(value) {
         if (value) {
             let data = this.props.data;
@@ -133,17 +141,23 @@ class TreePicker extends Component {
                 value: r.values.join(","),
                 text: r.texts.join(","),
             })
+            this.tree.current.checkedAll&&this.tree.current.checkedAll();
         }
         else {
             this.setState({
                 value: "",
                 text: "",
             })
+            this.tree.current.clearChecked&&this.tree.current.clearChecked();
         }
     }
+    /**
+     * 筛选
+     * @param {*} event 
+     */
     filterHandler(event) {
         if (event.keyCode === 13) {
-            this.props.filterHandler && this.props.filterHandler(event.target.value.toString());
+            this.tree.current.filter&&this.tree.current.filter(event.target.value.trim())
         }
 
 
@@ -182,15 +196,10 @@ class TreePicker extends Component {
                             style={{ marginTop: -1 }}
                             data={[{ value: "1", text: "全选" }]} onSelect={this.choseAllHandler.bind(this)}></CheckBox> : null
                     } </div>
-
                 <Tree
                     ref={this.tree}
                     {...this.props}
                     data={this.props.data}
-                    /**
-                     * 专门用于勾选
-                     */
-                    inputValue={this.state.value}
                     onChecked={this.onSelect.bind(this)}
                     checkAble={true}
                 ></Tree>
@@ -201,4 +210,7 @@ class TreePicker extends Component {
 }
 TreePicker.propTypes = props;
 TreePicker.defaultProps = { type: "treepicker", checkStyle: "checkbox" }
-export default validateHoc(TreePicker, "treepicker");
+/**
+ *不用使用 loadDataHoc处理数据，在Tree处理了
+ */
+export default validateHoc(TreePicker,"treepicker");

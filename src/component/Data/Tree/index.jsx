@@ -41,8 +41,8 @@ class Tree extends Component {
         this.onDrop = this.onDrop.bind(this);
         this.loadError = this.loadError.bind(this);
         this.loadSuccess = this.loadSuccess.bind(this);
-        this.filter=this.filter.bind(this);
-        this.append=this.append.bind(this)
+        this.filter = this.filter.bind(this);
+        this.append = this.append.bind(this)
     }
     //todo
     static getDerivedStateFromProps(props, state) {
@@ -79,8 +79,10 @@ class Tree extends Component {
         this.setState({
             data: data,
             filter: filter
+        }, () => {
+            this.props.onChecked && this.props.onChecked(checked, id, text, row);
         })
-        this.props.onChecked && this.props.onChecked(checked, id, text, row);
+
     }
     /**
     * 返回勾选的数据
@@ -100,6 +102,21 @@ class Tree extends Component {
             data: data,
             filter: filter,
         })
+    }
+    /**
+     * 全部勾选
+     */
+    checkedAll() {
+        if (this.props.checkStyle==="checkbox") {
+            let data = treeFunc.checkedAll(this.state.data);
+            //同时处理保持一致
+            let filter = treeFunc.filter(data, this.state.filterValue);
+            this.setState({
+                data: data,
+                filter: filter,
+            })
+        }
+
     }
     /**
     * 为了给交叉表与树表格内部使用的单击事件
@@ -159,7 +176,7 @@ class Tree extends Component {
         if (this.props.asyncAble && (!row.children || row.children.length == 0)) {//没有数据
             let asyncChildrenData = [];
             if (this.props.onAsync && typeof this.props.onAsync === "function") {//自行处理
-                asyncChildrenData = this.props.onAsync(id,text, row);//得到数据
+                asyncChildrenData = this.props.onAsync(id, text, row);//得到数据
                 if (asyncChildrenData && asyncChildrenData instanceof Array && asyncChildrenData.length > 0) {
                     //格式化数据
                     asyncChildrenData = propsTran.formartData("tree", "", asyncChildrenData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
@@ -172,10 +189,10 @@ class Tree extends Component {
                         loadingId: id
                     })
                 }
-                else{
+                else {
                     //没有返回值，可能异步处理了
                     this.setState({
-                        loadingId:row.id
+                        loadingId: row.id
                     })
                 }
 
@@ -345,14 +362,14 @@ class Tree extends Component {
      * @param {*}node
      */
     append(children, node = null) {
-      
+
         if (children && children.length > 0) {
             let data = treeFunc.appendChildren(this.state.data, children, node);
             this.setState({
                 data: data,
                 loadingId: ""
-            },()=>{
-            
+            }, () => {
+
             })
         }
     }

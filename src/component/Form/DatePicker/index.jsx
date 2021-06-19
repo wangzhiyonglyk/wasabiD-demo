@@ -428,4 +428,4 @@ class DatePicker extends Component {
 }
 DatePicker.propTypes = propTypes;
 DatePicker.defaultProps = { type: "datetime" };
-export default validateHoc(DatePicker);
+export default validateHoc(DatePicker,"date");

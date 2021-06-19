@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Tree from "../../component/Data/Tree"
-import { Input, func } from "../../component"
+import { Input, func ,CheckBox,Text} from "../../component"
 
 import("./index.css")
 class PivotPage extends React.Component {
@@ -56,20 +56,20 @@ class PivotPage extends React.Component {
             data: [
                 {
                     id: 1, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, children: [
-                        { id: 11, label: "子节点11",dropAble:true,},
+                        { id: 11, label: "子节点11", dropAble: true, },
                         {
                             id: 12, label: "子节点12", children: [{
-                                id: 111, label: "孙子节点,可移动",draggAble:true,
+                                id: 111, label: "孙子节点,可移动", draggAble: true,
                             }, {
-                                id: 112, label: "孙子节点2,可移动",draggAble:true,
+                                id: 112, label: "孙子节点2,可移动", draggAble: true,
                             }]
                         }
                     ]
                 },
                 {
-                    id: 2, pId: "", name: "good1", label: "可以停靠", dropAble:true, editor: { type: "select" }, children: [
-                        { id: 21, pId: 2, label: "移动1",draggAble:true, },
-                        { id: 22, pId: 2, label: "移动2",draggAble:true, }
+                    id: 2, pId: "", name: "good1", label: "可以停靠", dropAble: true, editor: { type: "select" }, children: [
+                        { id: 21, pId: 2, label: "移动1", draggAble: true, },
+                        { id: 22, pId: 2, label: "移动2", draggAble: true, }
                     ]
                 },
                 { id: 3, pId: "", name: "good", label: "机构尖3", editor: { type: "date" }, },
@@ -81,7 +81,7 @@ class PivotPage extends React.Component {
                 { id: 9, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, },
                 { id: 10, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, },
                 { id: 100, pId: 1, name: "good", label: "机构尖", editor: { type: "date" }, },
-                { id: 101, pId: "", name: "good", label: "异步", editor: { type: "date" }, isParent:true },
+                { id: 101, pId: "", name: "good", label: "异步", editor: { type: "date" }, isParent: true },
             ],
             tabs: [{
                 title: "你好"
@@ -112,27 +112,27 @@ class PivotPage extends React.Component {
             dropData: dropData
         })
     }
-    onEdit(id,text,row){
-        console.log("d",id,text,row)
+    onEdit(id, text, row) {
+        console.log("d", id, text, row)
     }
 
-    onChange(event){
-        if(event.keyCode===13){
+    onChange(event) {
+        if (event.keyCode === 13) {
             this.refs.tree.filter(event.target.value);
         }
     }
-    onAsync(id,text,row){
-        console.log("this",this)
-      setTimeout(() => {
-          this.refs.tree.append([{
-            id:"c1",
-            label:"异步",
-          
-        }],row)
-      }, 2000);
+    onAsync(id, text, row) {
+        console.log("this", this)
+        setTimeout(() => {
+            this.refs.tree.append([{
+                id: "c1",
+                label: "异步",
+
+            }], row)
+        }, 2000);
     }
-    onDrag(id,text,row){
-        console.log("d",id,text,row)
+    onDrag(id, text, row) {
+        console.log("d", id, text, row)
     }
     render() {
         func.toTreeData(this.state.data, "id", "pId", "label")
@@ -157,15 +157,16 @@ class PivotPage extends React.Component {
 
             {/* <DataGrid data={this.state.data}  fixedHeaders={this.state.fixedHeaders}   headers={this.state.headers}></DataGrid> */}
             {/* <TreeGrid ref={"reff"} data={this.state.data}  headers={this.state.headers}></TreeGrid> */}
-            <button onClick={this.onClick.bind(this)}>test</button>
-           
-            <div style={{ height: 100 }}>         
-               <Input key="6" required={true} type="text" 
-               onKeyUp={this.onChange.bind(this)}
-               ></Input>  <i className="icon-spinner loading" style={{fontSize:18}}></i></div>
 
-            <br></br>
-            <div><Tree ref="tree" onDrag={this.onDrag.bind(this)} onAsync={this.onAsync.bind(this)} asyncAble={true} key="16" checkStyle="radio" radioType="level" onEdit={this.onEdit.bind(this)} editAble={true} removeAble={true} renameAble={true} required={true} type="treepicker" data={this.state.data} idField={"id"} textField={"label"}></Tree></div>
+            <div >
+                <Text></Text>
+                <CheckBox key="1" name="dd"  valueField={"id"} textField={"label"}  data={this.state.data}></CheckBox>
+                <Input key="6" required={true} type="treepicker"
+                    onKeyUp={this.onChange.bind(this)}
+                    idField={"id"} textField={"label"}
+                    data={this.state.data}
+                ></Input>  <i className="icon-spinner loading" style={{ fontSize: 18 }}></i></div>
+            <Input key="2" valueField="id" multiple={true} required={true} type="idcard" data={this.state.data}></Input>
 
         </div>
 

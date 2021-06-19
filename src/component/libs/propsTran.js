@@ -68,7 +68,7 @@ let propsTran = {
                 }
             }
         }
-        return text;
+        return text||[];
 
     },
     /**

@@ -204,6 +204,24 @@ const treeFunc = {
         }
     },
     /**
+  * 清除勾选
+  * @param {*} data 
+  * @returns 
+  */
+    checkedAll(data) {
+        data = func.clone(data);
+        if (data && data instanceof Array && data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+                data[i].checked = true;
+                data[i].half = false;
+                if (data[i].children && data[i].children.length > 0) {
+                    data[i].children = treeFunc.clearChecked(data[i].children);
+                }
+            }
+            return data;
+        }
+    },
+    /**
      * 重命名
      * @param {*} data 
      * @param {*} id 
@@ -229,7 +247,7 @@ const treeFunc = {
             //根节点
             data.splice(nodes[0]._path[0], 1);//删除
             //改变所有节点的路径
-           data= treeFunc.setChildrenPath("", [], data);
+            data = treeFunc.setChildrenPath("", [], data);
         }
         else {
             //父节点删除子节点
@@ -396,7 +414,7 @@ const treeFunc = {
     /**
      * 添加子节点
      */
-    appendChildren(data, children,row) {
+    appendChildren(data, children, row) {
         //格式化
         data = func.clone(data);
         if (row && row._path) {
@@ -406,13 +424,13 @@ const treeFunc = {
                 let leaf = nodes[nodes.length - 1];
                 leaf.children = children;
                 //设置节点路径
-                leaf.children= treeFunc.setChildrenPath(leaf.id, leaf._path, leaf.children);
+                leaf.children = treeFunc.setChildrenPath(leaf.id, leaf._path, leaf.children);
             }
             return data;
         }
-        else{//根节点
-            data=data.concat(children);
-           data= treeFunc.setChildrenPath("", [], data);
+        else {//根节点
+            data = data.concat(children);
+            data = treeFunc.setChildrenPath("", [], data);
         }
 
     }

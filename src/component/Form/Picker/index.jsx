@@ -591,4 +591,4 @@ class Picker extends Component {
 }
 Picker.propTypes = propType;
 Picker.defaultProps = { type: "picker" }
-export default validateHoc(loadDataHoc(Picker, "picker"));
+export default validateHoc(loadDataHoc(Picker, "picker"),"picker");

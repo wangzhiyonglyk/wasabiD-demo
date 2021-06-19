@@ -88,4 +88,4 @@ class Radio extends Component {
     }
 }
 
-export default validateHoc(loadDataHoc(Radio, "radio"));
+export default validateHoc(loadDataHoc(Radio, "radio"),"radio");

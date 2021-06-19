@@ -110,4 +110,4 @@ class Password extends React.Component {
 }
 Password.propTypes = propType;
 Password.defaultProps = { type: "password" }
-export default validateHoc(Password);
+export default validateHoc(Password,"password");
