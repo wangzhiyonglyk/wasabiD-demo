@@ -71,7 +71,7 @@ function NodeView(props) {
     //节点元素
     return <li style={{ display: row.hide ? "none" : "block" }} >
         <div id={row.nodeid} className={clickId == row.id ? "treenode-container selected" : "treenode-container"} >
-            <i className={row.open ? "icon-arrow-down" : "icon-arrow-right"} style={{ opacity: row.isParent ? 1 : 0, transform: "translateY(11px)" }}
+            <i className={row.open ? "icon-arrow-down" : "icon-arrow-right"} style={{ opacity: row.isParent ? 1 : 0, transform:"translateY(12px)" }}
                 onClick={onNodeExpand}></i>
             <div className="treenode" title={title}
                 onDrop={onNodeDrop}
@@ -117,8 +117,9 @@ class TreeNode extends Component {
     constructor(props) {
         super(props);
         this.treeNodesRef = [];
+        //异步的情况下，如果没有子节点就默认不展开
         this.state = {
-            open: this.props.asyncAble?false: this.props.open,//异步的情况下，默认不打开
+            open: this.props.asyncAble&&(!this.props.children||this.props.children.length==0)?false: this.props.open,//异步的情况下，默认不打开
             rename: false,//是否处于重命名状态
             nodeid: func.uuid(),
             textid: func.uuid()

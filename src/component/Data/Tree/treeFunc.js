@@ -110,7 +110,6 @@ const treeFunc = {
         catch (e) {
             console.log(e)
         }
-        console.log("data", data);
         return data;
     },
     /**
@@ -375,11 +374,13 @@ const treeFunc = {
                 let item = null;
                 if ((data[i].id + "").indexOf(key) > -1 || (data[i].text + "").indexOf(key) > -1) {
                     item = data[i];
+                    item.open=true;
                 }
                 if (data[i].children && data[i].children.length > 0) {
                     let childrenFilter = treeFunc.filter(data[i].children, key);
                     if (childrenFilter && childrenFilter.length > 0) {
                         item = data[i];
+                        item.open=true;
                         item.children = childrenFilter;
                     }
                 }
