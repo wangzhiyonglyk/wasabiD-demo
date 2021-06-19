@@ -44,11 +44,6 @@
   cursor: pointer;
 }
 
-.wasabi-tree li>div.wasabi-radio-btn {
-  height: 18px;
-  margin-top: 8px;
-}
-
 .wasabi-tree li>div:hover {
   background-color: var(--background-color);
 }

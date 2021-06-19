@@ -13,6 +13,9 @@ desc:checkbox
   padding-top:9px;
 
 }
+.wasabi-checkul.radio{
+  padding-top:6px;
+}
 .wasabi-checkul li
 {
   float: left;

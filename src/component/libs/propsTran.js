@@ -24,15 +24,15 @@ let propsTran = {
         if (realData && realData instanceof Array && realData.length > 0) {
             for (let i = 0; i < realData.length; i++) {
                 if (type == "tree" || type == "treepicker") {
-                    realData[i].id = realData[i] && realData[i][idOrValueField];//追加这个属性
+                    realData[i].id =  realData[i].id|| realData[i][idOrValueField];//追加这个属性
                 }
                 else {
 
-                    realData[i].value = realData[i] && realData[i][idOrValueField];//追加这个属性
+                    realData[i].value =realData[i].value|| realData[i][idOrValueField];//追加这个属性
                 }
 
-                realData[i].text = realData[i] && realData[i][textField];//追加这个属性
-                if (("," + (value || "") + ",").indexOf("," + ((type == "tree" || type == "treepicker") ? realData[i].id : realData[i].value) + ",") > -1) {
+                realData[i].text =realData[i].text|| realData[i][textField];//追加这个属性
+                if (value&&("," + (value) + ",").indexOf("," + ((type == "tree" || type == "treepicker") ? realData[i].id : realData[i].value) + ",") > -1) {
                     realData[i].checked = true;//节点选中，专门用于树组件
                 }
                 //如果有子节点的时候.tree,treepicker,picker

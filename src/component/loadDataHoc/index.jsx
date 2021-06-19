@@ -131,6 +131,9 @@ function loadDataHoc(Widget, type = "select") {
         clearChecked(){
             return this.input.current.clearChecked && this.input.current.clearChecked();
         }
+        filter(value){
+            return this.input.current.filter&&this.input.current.filter(value);
+        }
         /**
      * 加载数据
      * @param {*} url 

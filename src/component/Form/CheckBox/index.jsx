@@ -26,7 +26,7 @@ function LiView(props) {
         control = data.map((child, index) => {
             let checked = isChecked(child);
             return <li key={index} onClick={onSelect.bind(this, child.value, child.text, child)}  >
-                <input type="checkbox" className={ half ? "checkbox halfcheck" : "checkbox"} checked={checked} onChange={() => { }}></input>
+                <input type="checkbox" className={!checked&& half ? "checkbox halfcheck" : "checkbox"} checked={checked} onChange={() => { }}></input>
                 <label className="checkbox-label" readOnly={readOnly} ></label>
                 <div className={"checktext " + (checked ? " checked" : "")} readOnly={readOnly} >{child.text}</div>
             </li >

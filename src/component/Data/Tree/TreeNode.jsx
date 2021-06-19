@@ -25,6 +25,7 @@ function ChildrenView(props) {
                 /**
                  * 不管有没有这个属性，都来自自身
                  */
+                checked={item.checked||false}
                 half={item.half || false}
                 draggAble={item.draggAble || false}
                 dropAble={item.dropAble || false}
@@ -42,9 +43,8 @@ function NodeView(props) {
     for (let key in row) {
         row[key] = props[key] != undefined && props[key] != null ? props[key] : row[key];
     }
-  
     //tree的属性
-    const { clickId, checkAble, checkStyle, renameAble, editAble, removeAble } = props;
+    const { clickId, checkAble, checkStyle, renameAble, removeAble } = props;
     //node的属性
     const { rename } = props;
 
@@ -100,8 +100,8 @@ function NodeView(props) {
                 {
                     !rename && removeAble ? <i key="delete" className={"icon-delete"} title="删除" style={{ transform: "translateY(13px)" }} onClick={props.beforeNodeRemove} ></i> : null
                 }
-              
-                
+
+
             </div>
 
         </div>
@@ -118,7 +118,7 @@ class TreeNode extends Component {
         super(props);
         this.treeNodesRef = [];
         this.state = {
-            open: this.props.open,
+            open: this.props.asyncAble?false: this.props.open,//异步的情况下，默认不打开
             rename: false,//是否处于重命名状态
             nodeid: func.uuid(),
             textid: func.uuid()
@@ -158,7 +158,7 @@ class TreeNode extends Component {
         this.setState({
             open: !this.state.open
         })
-        this.props.onExpand && this.props.onExpand(row.id, row.text, row)
+        this.props.onExpand && this.props.onExpand( !this.state.open,row.id, row.text, row)
     }
 
 
@@ -289,7 +289,7 @@ class TreeNode extends Component {
         //todo 暂时不用处理
         event.preventDefault()
         event.stopPropagation();
-       
+
 
     }
     /**
@@ -299,28 +299,27 @@ class TreeNode extends Component {
         event.preventDefault()
         event.stopPropagation();
         if (this.props.dropAble) {
-            const domClientY=document.getElementById(this.state.nodeid).getBoundingClientRect().top;
-            const  mouseClientY=event.clientY;
-          if(mouseClientY-domClientY<10)
-          {
-            document.getElementById(this.state.nodeid).style.borderTop = "1px solid var(--border-color)";
-            document.getElementById(this.state.nodeid).style.borderBottom="none";
-            document.getElementById(this.state.nodeid).style.backgroundColor="white";
-            window.localStorage.setItem("wasabi-drag-type","before");
-          }
-           
-          else if(mouseClientY-domClientY<30){
-            document.getElementById(this.state.nodeid).style.borderTop = "none";
-            document.getElementById(this.state.nodeid).style.borderBottom="none";
-            document.getElementById(this.state.nodeid).style.backgroundColor = "var(--background-color)";
-            window.localStorage.setItem("wasabi-drag-type","in");
-          }
-          else{
-            document.getElementById(this.state.nodeid).style.borderTop = "none";
-            document.getElementById(this.state.nodeid).style.borderBottom = "1px solid var(--border-color)";
-            document.getElementById(this.state.nodeid).style.backgroundColor = "white";
-            window.localStorage.setItem("wasabi-drag-type","after");
-          }
+            const domClientY = document.getElementById(this.state.nodeid).getBoundingClientRect().top;
+            const mouseClientY = event.clientY;
+            if (mouseClientY - domClientY < 10) {
+                document.getElementById(this.state.nodeid).style.borderTop = "1px solid var(--border-color)";
+                document.getElementById(this.state.nodeid).style.borderBottom = "none";
+                document.getElementById(this.state.nodeid).style.backgroundColor = null;
+                window.localStorage.setItem("wasabi-drag-type", "before");
+            }
+
+            else if (mouseClientY - domClientY < 30) {
+                document.getElementById(this.state.nodeid).style.borderTop = "none";
+                document.getElementById(this.state.nodeid).style.borderBottom = "none";
+                document.getElementById(this.state.nodeid).style.backgroundColor = "var(--background-color)";
+                window.localStorage.setItem("wasabi-drag-type", "in");
+            }
+            else {
+                document.getElementById(this.state.nodeid).style.borderTop = "none";
+                document.getElementById(this.state.nodeid).style.borderBottom = "1px solid var(--border-color)";
+                document.getElementById(this.state.nodeid).style.backgroundColor = null;
+                window.localStorage.setItem("wasabi-drag-type", "after");
+            }
         }
 
     }
@@ -332,8 +331,8 @@ class TreeNode extends Component {
         event.preventDefault()
         event.stopPropagation();
         document.getElementById(this.state.nodeid).style.borderTop = "none";
-        document.getElementById(this.state.nodeid).style.borderBottom="none";
-        document.getElementById(this.state.nodeid).style.backgroundColor = "white";
+        document.getElementById(this.state.nodeid).style.borderBottom = "none";
+        document.getElementById(this.state.nodeid).style.backgroundColor =null;
 
     }
     /**
@@ -343,29 +342,26 @@ class TreeNode extends Component {
         event.preventDefault();
         event.stopPropagation();
         document.getElementById(this.state.nodeid).style.borderTop = "none";
-        document.getElementById(this.state.nodeid).style.borderBottom="none";
-        document.getElementById(this.state.nodeid).style.backgroundColor = "white";
+        document.getElementById(this.state.nodeid).style.borderBottom = "none";
+        document.getElementById(this.state.nodeid).style.backgroundColor = null;
         let drag = JSON.parse(window.localStorage.getItem("wasabi-drag-item"));
         let dragType = (window.localStorage.getItem("wasabi-drag-type"));
         if (!drag) {
             return;
         }
-        if ((drag.id === this.props.id) || (drag.pId === this.props.id)) {
-            //相同层级，不处理
-        }
-        else if (this.props.dropAble) {//允许停靠
+        if (this.props.dropAble) {//允许停靠
             let row = new TreeNodeRow();
             for (let key in row) {
                 row[key] = this.props[key] != undefined && this.props[key] != null ? this.props[key] : row[key];
             }
             let dropAble = true;//可以停靠
             if (this.props.beforeDrop) {
-                dropAble = this.props.beforeDrop(drag, row,dragType);//存在并且返回
+                dropAble = this.props.beforeDrop(drag, row, dragType);//存在并且返回
             }
             if (dropAble) {
                 window.localStorage.removeItem("wasabi-drag-item");
                 window.localStorage.removeItem("wasabi-drag-type");
-                this.props.onDrop && this.props.onDrop(drag, row,dragType);
+                this.props.onDrop && this.props.onDrop(drag, row, dragType);
             }
         }
 
