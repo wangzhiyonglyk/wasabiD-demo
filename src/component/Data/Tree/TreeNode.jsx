@@ -170,10 +170,9 @@ class TreeNode extends Component {
         for (let key in row) {
             row[key] = this.props[key] != undefined && this.props[key] != null ? this.props[key] : row[key];
         }
-        if (this.props.asyncAble)
-            this.setState({
-                open: !this.state.open
-            })
+        this.setState({
+            open: !this.state.open
+        })
         this.props.onExpand && this.props.onExpand(!this.state.open, row.id, row.text, row)
     }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Tree from "../../component/Data/Tree"
-import { Input, func ,CheckBox,Text} from "../../component"
+import { Input, func ,CheckBox,Text,Radio} from "../../component"
 
 import("./index.css")
 class PivotPage extends React.Component {
@@ -158,16 +158,18 @@ class PivotPage extends React.Component {
             {/* <DataGrid data={this.state.data}  fixedHeaders={this.state.fixedHeaders}   headers={this.state.headers}></DataGrid> */}
             {/* <TreeGrid ref={"reff"} data={this.state.data}  headers={this.state.headers}></TreeGrid> */}
 
-            <div >
-                <Text></Text>
+           
+              
+                <Radio key="2" name="dd"  valueField={"id"} textField={"label"}  data={this.state.data}></Radio>
                 <CheckBox key="1" name="dd"  valueField={"id"} textField={"label"}  data={this.state.data}></CheckBox>
-                <Input key="6" required={true} type="treepicker"
+                <Tree key="6" required={true} 
+                ref="tree"
+                asyncAble={true}
+                onAsync={this.onAsync.bind(this)}
                     onKeyUp={this.onChange.bind(this)}
                     idField={"id"} textField={"label"}
                     data={this.state.data}
-                ></Input>  <i className="icon-spinner loading" style={{ fontSize: 18 }}></i></div>
-            <Input key="2" valueField="id" multiple={true} required={true} type="idcard" data={this.state.data}></Input>
-
+                ></Tree>  
         </div>
 
     }
