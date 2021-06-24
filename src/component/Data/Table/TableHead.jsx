@@ -10,7 +10,8 @@ class TableHead extends React.PureComponent {
 
     }
     render() {
-        return <thead className={this.props.className} style={this.props.style} >{
+        return <thead className={this.props.className} style={this.props.style} onClick={this.props.onClick||null}
+        onDoubleClick={this.props.onDoubleClick} >{
                 this.props.children
             }</thead>
     }
@@ -18,7 +19,6 @@ class TableHead extends React.PureComponent {
 TableHead.propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
-    onMouseDown: PropTypes.func,
     onClick: PropTypes.func,
     onDoubleClick: PropTypes.func,
 }

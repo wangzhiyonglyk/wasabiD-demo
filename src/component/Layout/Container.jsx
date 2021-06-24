@@ -7,7 +7,7 @@
 import React from 'react';
 import propsTran from "../libs/propsTran";
 import func from "../libs/func"
-
+import PropTypes from "prop-types";
 import("../Sass/Layout/Layout.css");
 class Container extends React.PureComponent {
     constructor(props) {
@@ -19,6 +19,17 @@ class Container extends React.PureComponent {
         this.clearData = this.clearData.bind(this);
         this.getRefs = this.getRefs.bind(this);
     }
+    static propTypes = {
+        size:PropTypes.oneOf(["","fluid","xxl","xl","lg","md","sm"]),
+        style: PropTypes.object,
+        className: PropTypes.string,
+    }
+    static defaultProps = {
+        size:"",//
+        style: {},
+        className: ""
+    }
+
     /**
       * 合并两种refs引用方式
       * @returns 
@@ -148,7 +159,7 @@ class Container extends React.PureComponent {
     render() {
         this.inputs = [];//先清空
         let maxWidth = this.computerLabelWidth();
-        return <div className={"wasabi-container " + this.props.className} style={this.props.style}>{
+        return <div className={"container-"+(this.props.size||"")+" " + this.props.className} style={this.props.style}>{
             React.Children.map(this.props.children, (child, index) => {
                 if (typeof child.type !== "function") {//非react组件
                     return child;
@@ -170,4 +181,5 @@ class Container extends React.PureComponent {
     }
 
 }
+
 export default Container;

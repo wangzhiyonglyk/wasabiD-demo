@@ -118,7 +118,7 @@ class Single extends React.Component {
                     url={typeof this.props.pageHandler === "string" ? this.props.pageHandler : ""}
                     params={this.state.params}
                     headers={this.state.headers}
-                    updateHandler={typeof this.props.pageHandler === "function" ? this.props.pageHandler : null}
+                    onUpdate={typeof this.props.pageHandler === "function" ? this.props.pageHandler : null}
                     rowNumber={true}
                     selectAble={this.props.selectAble}
                     data={this.props.data}
@@ -170,10 +170,10 @@ Single.propTypes = {
     openAddHandler: PropTypes.func,//打开新增窗口
     addHandler: PropTypes.func, //新增地址函数
     deleteHandler: PropTypes.func, //修改函数
-    openUpdateHandler: PropTypes.func,//打开编辑窗口
-    updateHandler: PropTypes.func, //更新函数
+    openonUpdate: PropTypes.func,//打开编辑窗口
+    onUpdate: PropTypes.func, //更新函数
     pageHandler: PropTypes.oneOfType([PropTypes.string, PropTypes.func]), //分页查询url或者函数
-    detailHandler: PropTypes.func, //详情查询函数
+    onDetail: PropTypes.func, //详情查询函数
     buttons: PropTypes.array, //自定义的页面按钮
   
     btnHandler: PropTypes.func,//自定义的按钮的单击事件
@@ -201,10 +201,10 @@ Single.defaultProps = {
     openAddHandler: null,
     addHandler: null,
     deleteHandler: null,
-    openUpdateHandler: null,
-    updateHandler: null,
+    openonUpdate: null,
+    onUpdate: null,
     pageHandler: null,
-    detailHandler: null,
+    onDetail: null,
     buttons: [],//操作按钮
     btnHandler: null,
     modalStyle: null,

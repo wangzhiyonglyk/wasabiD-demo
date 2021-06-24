@@ -57,7 +57,7 @@
 
 
 .wasabi-confirm {
-  width: 250px;
+  width: 300px;
   position: absolute;
   z-index: 9999;
   display: none;
@@ -91,7 +91,7 @@
   text-align: center;
   color: #333;
   line-height: 23px;
-  padding: 0 20px;
+  padding: 0 10px;
   opacity: 0;
   transform: translateY(10px);
   animation: wasabi-confirm-text 0.5s ease forwards;

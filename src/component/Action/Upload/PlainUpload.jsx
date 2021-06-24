@@ -96,7 +96,7 @@ class Upload extends Component {
      * 
      * @param {*} event 
      */
-    onDragOver(event) {
+    onDragOver(event) {//在ondragover中一定要执行preventDefault()，否则ondrop事件不会被触发
         event.preventDefault();
     }
     //验证文件上传类型是否正确

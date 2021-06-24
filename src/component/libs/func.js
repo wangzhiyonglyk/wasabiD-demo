@@ -315,12 +315,18 @@ func.isEmptyObject = function (obj) {
     return isempty;
 
 }
-func.download = function (url, title) {
-    let extend = url.substr(url.lastIndexOf("."));
+func.download = function (url, title,extend=".xlsx") {
+  
+    if (typeof url == 'object' && url instanceof Blob) {
+        url = URL.createObjectURL(url); // 创建blob地址
+    }
+    else {
+        extend= url.substr(url.lastIndexOf("."));
+    }
     title = title || func.dateformat(new Date(), "yyyy-MM-dd HH:mm:ss");
     let downloadA = document.createElement("a");
     downloadA.href = url;
-    downloadA.download = title + extend;
+    downloadA.download = title+extend;
     downloadA.click();
     window.URL.revokeObjectURL(downloadA.href);//释放
 }
@@ -397,8 +403,6 @@ func.diffOrder = function (objA, objB) {
     return true;
 
 }
-
-
 
 /**
  * component Mixins实现
@@ -512,7 +516,7 @@ func.formatTreeDataChildren = function (children, pId, path, idField = "id", par
                 ...children[i],
                 id: children[i][idField],
                 pId: pId,
-                text:  children[i][textField],
+                text: children[i][textField],
                 _path: newPath,
                 children: func.formatTreeDataChildren(children[i].children, children[i][idField], newPath, idField, parentField, textField)
             }
@@ -713,6 +717,8 @@ func.getNextHour = function (date, n = 1) {
     newDate.setHours(newDate.getHours() + n);
     return newDate;
 }
+
+
 import base64 from "./base64.js";
 func.base64 = base64;
 import md5 from "./md5.js";

@@ -237,7 +237,9 @@ class Tree extends Component {
      */
     loadSuccess(res) {//数据加载成功
         if (typeof this.props.loadSuccess === "function") {
-            res = this.props.loadSuccess(res);
+            //正确返回
+            let resData = this.props.loadSuccess(res);
+            res=resData&&resData instanceof Array?resData:res;
         }
         let realData = func.getSource(res, this.props.dataSource || "data");
         let row = window.sessionStorage.getItem("async-tree-node");
@@ -466,7 +468,6 @@ Tree.propTypes = {
     onDrag: PropTypes.func,//拖动事件
     onDrop: PropTypes.func,//停靠事件
     onAsync: PropTypes.func,//异步查询
-    onAsyncSuccess: PropTypes.func,//异步回调事件
 
     //before 事件
     beforeDrag: PropTypes.func,//拖动前事件

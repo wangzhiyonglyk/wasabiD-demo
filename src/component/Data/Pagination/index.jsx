@@ -1,15 +1,20 @@
+
+/**
+ * 分页组件
+ * create by wangzhiyong
+ * date:2021-04,从datagrid独立出来
+ */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import "./pagination.css"
-/**
- * 公共方法
- */
 import func from '../../libs/func.js';
+import pageSizeList from './pageSizeList.js';
 
 
 class Pagination extends React.Component {
     constructor(props) {
         super(props);
+     
         this.state = {
             oldProps: func.clone(this.props),
             total: this.props.total,//总记录数
@@ -30,7 +35,8 @@ class Pagination extends React.Component {
                 total: props.total,
                 pageTotal: props.pageTotal,
                 pageSize: props.pageSize,
-                pageIndex: props.pageIndex
+                pageIndex: props.pageIndex,
+
             }
         }
         return null;
@@ -114,23 +120,23 @@ class Pagination extends React.Component {
                 <div
                     style={{ display: this.props.pagination ? 'inline-block' : 'none' }}
                 >每页&nbsp;
-                        <select
-                        className='pagination-select'
-                        value={this.state.pageSize}
-                        onChange={this.pageSizeHandler}
-                    >
-                        <option key="1" value={10}>10</option>
-                        <option key="2" value={20}>20</option>
-                        <option key="3" value={30}>30</option>
-                        <option key="4" value={50}>50</option>
-                        <option key="5" value={100}>100</option>
-                        <option key="6" value={200}>200</option>
-                        <option key="7" value={500}>500</option>
-                        <option key="8" value={1000}>1000</option>
+                    <select className='pagination-select'value={this.state.pageSize}onChange={this.pageSizeHandler}
+>
+                        {
+                            pageSizeList.map((item,index)=>{
+                                return   <option key={index} value={item}>{item}</option>
+                            })
+                        }
+                      
+                       
                     </select>&nbsp;条&nbsp;&nbsp;
 
-
-                    </div>
+                    {<i title="刷新" style={{ fontSize: 16, cursor: "pointer" }} className="icon-refresh" onClick={this.props.reload}></i>}
+                    &nbsp;&nbsp;
+                    {
+                        this.props.exportAble ? <div style={{ display: "inline-block", height: 20, position: "relative", width: 30 }}> <i title="导出" style={{ cursor: "pointer", fontSize: 20, position: "absolute", top: 5 }} className="icon-excel" onClick={this.props.export}></i></div> : null
+                    }
+                </div>
             </div>
         );
 
@@ -272,6 +278,8 @@ class Pagination extends React.Component {
         }
         return paginationComponent;
     }
+
+   
     render() {
         return <div className='wasabi-pagination '>
             {this.renderTotal()}{this.renderPagination()}
@@ -284,7 +292,7 @@ Pagination.propTypes = {
     pageSize: PropTypes.number,//页大小
     pageTotal: PropTypes.number,//当前数据量
     total: PropTypes.number,//总记录数
-    onChange:PropTypes.func,//回调函数
+    onChange: PropTypes.func,//回调函数
 }
 Pagination.defaultProps = {
     pagination: true,

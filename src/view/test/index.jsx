@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Tree from "../../component/Data/Tree"
-import { Input, func ,CheckBox,Text,Radio} from "../../component"
+import { DataGrid,Input, func ,CheckBox,Text,Radio,Upload} from "../../component"
 
 import("./index.css")
 class PivotPage extends React.Component {
@@ -23,39 +23,39 @@ class PivotPage extends React.Component {
             headers: [
 
                 {
-                    name: "text",
+                    name: "label",
                     label: "省1",
                     width: 200
                 },
                 {
-                    name: "text",
+                    name: "省2",
                     label: "省2",
 
                 },
                 {
-                    name: "text",
+                    name: "省3",
                     label: "省3",
                     width: 200
                 },
                 {
-                    name: "text",
+                    name: "省4",
                     label: "省4",
                     width: 200
                 },
                 {
-                    name: "text",
+                    name: "省5",
                     label: "省5",
                     width: 200
                 },
                 {
-                    name: "text",
+                    name: "省6",
                     label: "省6",
-                    width: 200
+                  
                 },
             ],
             data: [
                 {
-                    id: 1, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, children: [
+                    id: 1, pId: "", name: "good", label: "可以fdfdsfsdfsdfsdfsdfsdfsdfdsssssssss停靠", editor: { type: "date" }, children: [
                         { id: 11, label: "子节点11", dropAble: true, },
                         {
                             id: 12, label: "子节点12", children: [{
@@ -135,42 +135,10 @@ class PivotPage extends React.Component {
         console.log("d", id, text, row)
     }
     render() {
-        func.toTreeData(this.state.data, "id", "pId", "label")
-        return <div style={{ padding: 20 }}>
-            {/* <Button onClick={this.onClick.bind(this)}>提交</Button>
-         <Input  key="8"  required={true} type="daterange" data={this.state.data}></Input> */}
-            {/* <Form ref={this.form}>
-                <Input  ref={this.input} key="1" valueField="id" required={true} type="picker" data={this.state.data}></Input>
-                <Input  key="2" valueField="id" multiple={true} required={true} type="select" data={this.state.data}></Input>
-                <Input   key="3" valueField="id" required={true} type="checkbox" data={this.state.data}></Input>
-                <Input key="4"  valueField="id" required={true} type="checkbutton" data={this.state.data}></Input>
-                <Input  key="5"valueField="id"  required={true} type="radio" data={this.state.data}></Input>
-                <Input  key="6"  required={true} type="date" data={this.state.data}></Input>
-                <Input  key="7"  required={true} type="datetime" data={this.state.data}></Input>
-                <Input  key="8"  required={true} type="daterange" data={this.state.data}></Input>
-                <Input  key="9"  required={true} type="datetimerange" data={this.state.data}></Input>
-               
-                <Input  key="10"  required={true} type="treepicker" data={this.state.data}></Input>
-            </Form> */}
-            {/* <Input type="daterange" key="1"></Input>
-            <Input type="datetime" key="2"></Input> */}
-
-            {/* <DataGrid data={this.state.data}  fixedHeaders={this.state.fixedHeaders}   headers={this.state.headers}></DataGrid> */}
-            {/* <TreeGrid ref={"reff"} data={this.state.data}  headers={this.state.headers}></TreeGrid> */}
-
+       return <div>
+<DataGrid  importAble={true} data={this.state.data} editAble={true}  headers={this.state.headers}></DataGrid>
+       </div> 
            
-              
-                <Radio key="2" name="dd"  valueField={"id"} textField={"label"}  data={this.state.data}></Radio>
-                <CheckBox key="1" name="dd"  valueField={"id"} textField={"label"}  data={this.state.data}></CheckBox>
-                <Tree key="6" required={true} 
-                ref="tree"
-                asyncAble={true}
-                onAsync={this.onAsync.bind(this)}
-                    onKeyUp={this.onChange.bind(this)}
-                    idField={"id"} textField={"label"}
-                    data={this.state.data}
-                ></Tree>  
-        </div>
 
     }
 }

@@ -27,15 +27,10 @@ import mixins from '../../Mixins/mixins';
  * 事件处理
  */
 import eventHandler from './method/eventHandler.js';
-import editHandler from './method/editHandler.js';
 import staticMethod from "./method/staticMethod"
 import pasteExtend from './method/pasteExtend.js';
-
-/**
- * ui处理
- */
-import render from "./render"
 import Msg from "../../Info/Msg"
+import Grid from "./View/Grid"
 /**
  * 样式
  */
@@ -79,16 +74,17 @@ class DataGrid extends Component {
             loading: this.props.url ? true : false, //显示正在加载图示
             footer: this.props.footer, //页脚
             updateUrl: this.props.updateUrl,
-            editAble: this.props.editAble,
+            editAble: this.props.editAble || this.props.addAble||this.props.importAble,//如果允许添加或者导入，自然就允许编辑
             editIndex: null, //当前处理编辑的列
             addData: new Map(), //新增的数据,因为有可能新增一个空的，然后再修改
-            updatedData: new Map(), //被修改过的数据，因为要判断曾经是否修改
+            updateData: new Map(), //被修改过的数据，因为要判断曾经是否修改
             deleteData: [], //删除的数据
             reloadData: false,//是否重新加载数据,用于强制刷新
             adjustHeight: false,//是否调整宽度
+
         };
         //绑定事件
-        let baseCtors = [eventHandler, editHandler, staticMethod, pasteExtend];
+        let baseCtors = [eventHandler, staticMethod, pasteExtend];
         baseCtors.forEach(baseCtor => {
             Object.getOwnPropertyNames(baseCtor).forEach(name => {
                 if (typeof baseCtor[name] == 'function') {
@@ -100,7 +96,7 @@ class DataGrid extends Component {
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};//新的状态值
-        if ((props.url != state.rawUrl) || (props.params &&
+        if ((props.url && props.url != state.rawUrl) || (props.params &&
             func.diff(props.params, state.rawParams))) {//父如果参数有变
             newState = {
                 reloadData: true,
@@ -207,22 +203,18 @@ class DataGrid extends Component {
             })
             this.reload();
         }
-        else {
-
-        }
-
 
         //监听window.resize事件
         window.onresize = () => {
             this.computeHeaderStyleAndColumnWidth();//重新计算一下宽度
         }
+        //延迟处理，因为有时候无法获取到真正的宽度
         setTimeout(() => {
             let containerWidth = document.getElementById(this.state.realTableContainerid).getBoundingClientRect().width;
-            if (containerWidth > this.containerWidth) {
+            if (containerWidth > this.containerWidth + 2) {
                 this.computeHeaderStyleAndColumnWidth();
             }
-
-        }, 300);
+        }, 50);
     }
 
     /**
@@ -230,7 +222,7 @@ class DataGrid extends Component {
      *因为有固定表头，固定列，还有拖动列等，必须设置好列的宽度，否则对不齐
      */
     computeHeaderStyleAndColumnWidth() {
-        //数据网格的宽度
+        //数据网格的宽度   
         this.containerWidth = document.getElementById(this.state.realTableContainerid).getBoundingClientRect().width;
         this.containerWidth -= 2;//减去两个像素防止横向滚动条
         this.columnSum = 0;//总列数
@@ -317,9 +309,9 @@ class DataGrid extends Component {
                 this.fixedTableWidth += 30;
             }
             if (this.props.selectAble) {//存在勾选列
-                this.releaseWidth -= 37;
-                this.tableWidth += 37;
-                this.fixedTableWidth += 37;
+                this.releaseWidth -= 36;
+                this.tableWidth += 36;
+                this.fixedTableWidth += 36;
             }
             if (this.props.rowNumber) {////存在序号列
                 this.releaseWidth -= 60;
@@ -360,15 +352,34 @@ class DataGrid extends Component {
         let style = func.clone(this.props.style) || {};
         let height = style.height;//通过高度来判断是否渲染固定的表头
         style.height = null;
-        return (
-            <div
-                className={'wasabi-grid' + (this.props.className || "") + (this.state.fixedHeaders && this.state.fixedHeaders.length > 0 ? " fixedHeader" : "")}
-                onPaste={this.onPaste}
-                style={style}
-            >
-                { this.renderGrid(height)}
-            </div>
-        );
+        return <Grid
+            {...this.props}
+            {...this.state}
+            style={style}
+            height={height}
+            tableWidth={this.tableWidth}
+            fixedTableWidth={this.fixedTableWidth}
+            perColumnWidth={this.perColumnWidth}
+            checkedAllHandler={this.checkedAllHandler}
+            checkCurrentPageCheckedAll={this.checkCurrentPageCheckedAll}
+            onClick={this.onClick}
+            onDoubleClick={this.onDoubleClick}
+            onChecked={this.onChecked}
+            tableCellEditHandler={this.tableCellEditHandler}
+            onSort={this.onSort}
+            onDetail={this.onDetail}
+            onRealTableScoll={this.onRealTableScoll}
+            paginationHandler={this.paginationHandler}
+            onPaste={this.onPaste}
+            exportAble={this.props.exportAble}
+            reload={this.reload}
+            export={this.export.bind(this, false, "grid-")}
+            upload={this.upload}
+            onAdd={this.onAdd}
+            onSave={this.onSave}
+            onDrop={this.onDrop}
+            onDragOver={this.onDragOver}
+        ></Grid>
     }
 }
 
@@ -385,11 +396,11 @@ DataGrid.propTypes = {
     rowNumber: PropTypes.bool, //是否显示行号,true
     focusAble: PropTypes.bool, //是否显示焦点行，默认值 true
     borderAble: PropTypes.bool, //是否显示表格边框，默认值 false
+    addAble: PropTypes.bool,//是否允许添加
     editAble: PropTypes.bool, //是否允许编辑
+    importAble: PropTypes.bool,//是否允许导入
     selectChecked: PropTypes.bool, //选择行的时候是否同时选中,false
     exportAble: PropTypes.bool,//是否允许导出
-
-
     /**
      * 分页
      */
@@ -421,7 +432,7 @@ DataGrid.propTypes = {
     contentType: PropTypes.string,//请求的参数传递类型
     httpHeaders: PropTypes.object,//请求的头部
     params: PropTypes.object, //查询条件
-    uploadUrl: PropTypes.string,//excel导入的时候地址
+
 
     /**
      * 数据源
@@ -437,9 +448,12 @@ DataGrid.propTypes = {
     onClick: PropTypes.func, //单击事件
     onDoubleClick: PropTypes.func, //双击事件
     onChecked: PropTypes.func, //监听表格中某一行被选中/取消
-    updateHandler: PropTypes.func, //手动更新事件，父组件一定要有返回值,返回详情组件
-    detailHandler: PropTypes.func, //展示详情的函数，父组件一定要有返回值,返回详情组件
-    pasteSuccess: PropTypes.func, //粘贴成功事件
+    onUpdate: PropTypes.func, //手动更新事件，父组件一定要有返回值,返回详情组件
+    onDetail: PropTypes.func, //展示详情的函数，父组件一定要有返回值,返回详情组件
+    onSave: PropTypes.func,//保存事件
+    onPaste: PropTypes.func, //粘贴成功事件
+    onDrop: PropTypes.func,//停靠事件
+    loadSuccess: PropTypes.func,//异步加载数据后，对数据进行进一步加工
 
     /**
      * pivot 专门为交叉提供的属性
@@ -454,7 +468,8 @@ DataGrid.defaultProps = {
 
     selectChecked: false,
     exportAble: true,
-    borderAble:true,
+    borderAble: true,
+  
     /**
     * 分页
     */
@@ -486,7 +501,6 @@ DataGrid.defaultProps = {
     totalSource: 'total', //
 };
 
-mixins(DataGrid, [render, eventHandler,
-    editHandler, staticMethod, pasteExtend]);
+mixins(DataGrid, [eventHandler, staticMethod, pasteExtend]);
 
 export default DataGrid;

@@ -72,6 +72,8 @@ class Text extends Component {
         this.onSelect = this.onSelect.bind(this);
         this.onSearch = this.onSearch.bind(this);
         this.hidePicker = this.hidePicker.bind(this);
+        this.onPaste = this.onPaste.bind(this);
+        this.cellHandler = this.cellHandler.bind(this);
     }
     static getDerivedStateFromProps(props, state) {
         if (props.value != state.oldPropsValue) {
@@ -121,16 +123,13 @@ class Text extends Component {
 
         if ((this.props.type == "number" || this.props.type == "integer")) {
             if (isvalidate) {
-                this.setState({
-                    value: event.target.value,
-                })
+
+                this.cellHandler(event);
                 this.props.onChange && this.props.onChange(value, value, this.props.name);//自定义的改变事件   
             }
         }
         else {
-            this.setState({
-                value: event.target.value,
-            })
+            this.cellHandler(event);
             this.props.onChange && this.props.onChange(value, value, this.props.name);//自定义的改变事件
         }
 
@@ -148,7 +147,7 @@ class Text extends Component {
         }
     }
     onSearch() {
-        if (this.props.url) {
+        if (this.props.url && (this.props.priKey || this.props.name)) {
             let params = {};
             params[this.props.priKey || this.props.name] = this.state.value;
             this.props.reload && this.props.reload(params)
@@ -175,6 +174,29 @@ class Text extends Component {
         this.setValue(value)
         this.props.onChange && this.props.onChange(value, value, this.props.name);
     }
+    onPaste(event) {
+        this.props.onPaste && this.props.onPaste(event, this.state.value);
+    }
+    /**
+     * 为excel单元格粘贴复制做特殊处理
+     */
+    cellHandler(event) {
+        const ancestorNode = dom.ancestorByClass(event.target, "wasabi-table-cell");
+        console.log("cange")
+        let value = event.target.value;
+        if (ancestorNode) {
+            //是单元格中的输入框
+            if (value.indexOf("\t") > -1 || value.indexOf("\n") > -1) {//csv
+                console.log("你好")
+            }
+            else {
+                this.setValue(value)
+            }
+        }
+        else {
+            this.setValue(value)
+        }
+    }
     render() {
         return <React.Fragment>
             <TextInput
@@ -186,6 +208,7 @@ class Text extends Component {
                 onKeyUp={this.keyUpHandler}
                 onBlur={this.blurHandler}
                 value={this.state.value || ""}
+                onPaste={this.onPaste.bind(this)}
             ></TextInput>
             {(this.props.url || this.props.onSearch) ? <Icon disabled={this.props.disabled} onSearch={this.onSearch}></Icon> : null}
             {this.props.children}
@@ -199,4 +222,4 @@ class Text extends Component {
 }
 
 Text.propTypes = propTypes;
-export default validateHoc(loadDataHoc(Text, "text"),"text");
+export default validateHoc(loadDataHoc(Text, "text"), "text");

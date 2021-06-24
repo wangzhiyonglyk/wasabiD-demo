@@ -11,7 +11,8 @@ class TableRow extends React.PureComponent {
     }
     render() {
        return <tr className={this.props.className} style={this.props.style}
-        onMouseDown={this.props.onMouseDown}
+     onClick={this.props.onClick||null}
+        onDoubleClick={this.props.onDoubleClick||null}
         >{
             this.props.children
         }</tr>
@@ -20,7 +21,7 @@ class TableRow extends React.PureComponent {
 TableRow.propTypes = {
     className:PropTypes.string,
     style:PropTypes.object,
-    onMouseDown:PropTypes.func,
+ 
     onClick: PropTypes.func,
     onDoubleClick: PropTypes.func,
 }

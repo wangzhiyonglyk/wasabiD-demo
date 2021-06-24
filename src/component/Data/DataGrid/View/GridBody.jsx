@@ -17,7 +17,7 @@ class GridBody extends React.Component {
         this.onDoubleClick = this.onDoubleClick.bind(this);
         this.onChecked = this.onChecked.bind(this);
         this.tableCellEditHandler = this.tableCellEditHandler.bind(this);
-        this.detailHandler = this.detailHandler.bind(this);
+        this.onDetail = this.onDetail.bind(this);
         this.getRowCellContent = this.getRowCellContent.bind(this);
         this.setOrderAndSelectAndDetailRow = this.setOrderAndSelectAndDetailRow.bind(this);
         this.renderSingleBody = this.renderSingleBody.bind(this);
@@ -87,8 +87,11 @@ class GridBody extends React.Component {
     * @param {*} text 文本值
     * @param {*} name 对字段名
     */
-    tableCellEditHandler(rowIndex, columnIndex, headerRowIndex, headerColumnIndex, callBack, value, text, name) {
-        this.props.tableCellEditHandler && this.props.tableCellEditHandler(rowIndex, columnIndex, headerRowIndex, headerColumnIndex, callBack, value, text, name);
+    tableCellEditHandler(rowIndex, callBack, value, text, name) {
+        if(name){
+            this.props.tableCellEditHandler && this.props.tableCellEditHandler(rowIndex, callBack, value, text, name);
+        }
+     
     }
 
     /**
@@ -96,8 +99,8 @@ class GridBody extends React.Component {
      * @param {*} rowData 行数据
      * @param {*} rowIndex 行号
      */
-    detailHandler(rowData, rowIndex) {
-        this.props.detailHandler && this.props.detailHandler(rowData, rowIndex);
+    onDetail(rowData, rowIndex) {
+        this.props.onDetail && this.props.onDetail(rowData, rowIndex);
     }
 
     /**
@@ -143,7 +146,7 @@ class GridBody extends React.Component {
             control.push(<TableCell key={'bodydetail-' + rowIndex.toString()}
                 className={" wasabi-detail-column "}>
                 {<i style={{ cursor: "pointer" }} title="详情"
-                    className={iconCls} onClick={this.detailHandler.bind(this, rowData, rowIndex)}></i>}
+                    className={iconCls} onClick={this.onDetail.bind(this, rowData, rowIndex)}></i>}
             </TableCell>);
 
         }
@@ -169,10 +172,6 @@ class GridBody extends React.Component {
                 onSelect: this.onChecked.bind(this, rowIndex),
                 name: key
             };
-            if(key=='90'){
-                console.log("value", props)
-            }
-          
             let rowAllowChecked = this.props.rowAllowChecked;//是否可以选择
             if (typeof rowAllowChecked === "function") {
                 rowAllowChecked = rowAllowChecked(rowData, rowIndex);
@@ -208,36 +207,45 @@ class GridBody extends React.Component {
             let key = this.getKey(rowIndex); //获取这一行的关键值
             //生成数据列
             let columnIndex = 0;//真正的列序号
+            if(this.props.rowNumber){columnIndex++};
+            if(this.props.detailAble){columnIndex++};
+            if(this.props.selectAble){columnIndex++};
+
             let headers = this.props.headers;
             headers.map((header, headerColumnIndex) => {
                 //处理数据单元格
+                let editAble= this.props.editIndex != null &&this.props.editIndex ===(rowIndex+"-"+columnIndex)&&header.editor;
                 tds.push(
                     <TableCell
                         onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
                         onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex, columnIndex)}
-                        key={'col-' + rowIndex.toString() + "-" + headerColumnIndex + '-' + columnIndex.toString()}
+                        key={'cell-' + rowIndex.toString() + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                         className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
                         style={{ textAlign: header.align }}
                     >
                         {
-                            this.props.editIndex != null &&
-                                this.props.editIndex == rowIndex &&
-                                header.editor ?
+                            editAble ?
                                 <Input
                                     {...header.editor.options}
                                     type={header.editor.type}
                                     name={header.name}
                                     value={rowData[header.name]}
-                                    onChange={this.tableCellEditHandler.bind(this, rowIndex, columnIndex, 0, headerColumnIndex, headerColumnIndex, header.editor && header.editor.options && header.editor.options.onChange || null)}
-                                    onSelect={this.tableCellEditHandler.bind(this, rowIndex, columnIndex, 0, headerColumnIndex, headerColumnIndex, header.editor && header.editor.options && header.editor.options.onSelect || null)}
+                                    onChange={this.tableCellEditHandler.bind(this, rowIndex,  header.editor && header.editor.options && header.editor.options.onChange || null)}
+                                    onSelect={this.tableCellEditHandler.bind(this, rowIndex, header.editor && header.editor.options && header.editor.options.onSelect || null)}
+                                    onPaste={this.inputonPaste.bind(this,rowIndex,columnIndex)}
                                     label={''}
                                 ></Input> : this.getRowCellContent(header, rowData, rowIndex)}
                     </TableCell>
                 );
                 columnIndex++;
             });
+            let trClassName="";
+            if(this.props.focusIndex === rowIndex){
+                trClassName+=" selected ";
+            }
+            
             trArr.push(
-                <TableRow key={'row' + rowIndex.toString()} className={this.props.focusIndex === rowIndex ? "selected" : ""} >
+                <TableRow key={'row' + rowIndex.toString()} className={trClassName} >
                     {this.setOrderAndSelectAndDetailRow(rowData, rowIndex)}
                     {tds}
                 </TableRow>
@@ -268,6 +276,9 @@ class GridBody extends React.Component {
             let key = this.getKey(rowIndex); //获取这一行的关键值
             //生成数据列
             let columnIndex = 0;//真正的序号列
+            if(this.props.rowNumber){columnIndex++};
+            if(this.props.detailAble){columnIndex++};
+            if(this.props.selectAble){columnIndex++};
             this.props.headers.map((trheader, headerRowIndex) => {
                 if (trheader instanceof Array) {
                     trheader.map((header, headerColumnIndex) => {
@@ -280,7 +291,7 @@ class GridBody extends React.Component {
                             <TableCell
                                 onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
                                 onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex, columnIndex)}
-                                key={'col-' + rowIndex.toString() + "-" + headerColumnIndex + '-' + columnIndex.toString()}
+                                key={'cell-' + rowIndex.toString() +"-"+headerRowIndex+ "-" + headerColumnIndex + '-' + columnIndex.toString()}
                                 className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
                                 style={{ textAlign: header.align }}
                             >
@@ -293,8 +304,8 @@ class GridBody extends React.Component {
                                             type={header.editor.type}
                                             name={header.name}
                                             value={rowData[header.name]}
-                                            onChange={this.tableCellEditHandler.bind(this, rowIndex, columnIndex, null, headerColumnIndex, headerColumnIndex, header.editor && header.editor.options && header.editor.options.onChange || null)}
-                                            onSelect={this.tableCellEditHandler.bind(this, rowIndex, columnIndex, null, headerColumnIndex, headerColumnIndex, header.editor && header.editor.options && header.editor.options.onSelect || null)}
+                                            onChange={this.tableCellEditHandler.bind(this, rowIndex, header.editor && header.editor.options && header.editor.options.onChange || null)}
+                                            onSelect={this.tableCellEditHandler.bind(this, rowIndex, header.editor && header.editor.options && header.editor.options.onSelect || null)}
                                             label={''}
                                         ></Input> : this.getRowCellContent(header, rowData, rowIndex)}
                             </TableCell>
@@ -304,8 +315,15 @@ class GridBody extends React.Component {
                     });
                 }
             });
+            let trClassName="";
+            if(this.props.focusIndex === rowIndex){
+                trClassName+=" selected ";
+            }
+            if(this.props.editIndex===rowIndex){
+                trClassName+=" edited ";
+            }
             trArr.push(
-                <TableRow key={'row' + rowIndex.toString()} className={this.props.focusIndex === rowIndex ? "selected" : ""}  >
+                <TableRow key={'row' + rowIndex.toString()} className={trClassName}  >
                     {this.setOrderAndSelectAndDetailRow(rowData, rowIndex)}
                     {tds}
                 </TableRow>
@@ -327,6 +345,13 @@ class GridBody extends React.Component {
 
         return false;
     }
+    /**
+     * 文本框的粘贴事件
+     * @param {*} event 
+     */
+    inputonPaste(rowIndex,columnIndex,event){
+      this.props.onPaste&&this.props.onPaste(rowIndex,columnIndex,event);
+    }
     render() {
         return this.props.single ? this.renderSingleBody() : this.renderComplexBody();
     }
@@ -345,7 +370,7 @@ GridBody.propTypes = {
     rowNumber: PropTypes.bool,//显示序号列
     detailAble: PropTypes.bool,//显示详情列
     focusIndex: PropTypes.number,//焦点行下标
-    editIndex: PropTypes.number,//编辑的行号
+    editIndex: PropTypes.string,//编辑的行号
     detailIndex: PropTypes.string,//详情key
     detailView: PropTypes.any,//详情视图
     rowAllowChecked: PropTypes.func,//某一行是否允许勾选
@@ -353,7 +378,7 @@ GridBody.propTypes = {
     onDoubleClick: PropTypes.func,//单元格双击
     onChecked: PropTypes.func,//勾选
     tableCellEditHandler: PropTypes.func,//单元格编辑后
-    detailHandler: PropTypes.func,//详情图标单击事件
+    onDetail: PropTypes.func,//详情图标单击事件
 
 }
 

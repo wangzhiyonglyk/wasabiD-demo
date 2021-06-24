@@ -129,7 +129,8 @@ fileType.getTypeMap = function (value) {
 }
 
 //文件筛选
-fileType.filter = function (accept, files) {
+fileType.filter = function (accept = "", files = []) {
+
     let result = true;
     if (accept && files) {
         accept = accept ? accept.split(",") : [];
@@ -142,15 +143,25 @@ fileType.filter = function (accept, files) {
                 }
             }
         }
-        for (let i = 0; i < files.length; i++) {
-            if (files[i].type&&fileTypestr.indexOf(files[i].type) <= -1) {
-                result = false;
-                break;
-            }
-            else{
-                
+        if (files.length > 0) {
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].type && fileTypestr.indexOf(files[i].type) <= -1) {
+                    result = false;
+                    break;
+                }
+                else {
+
+                }
             }
         }
+        else if (files) {
+            //一个文件
+            if (files.type && fileTypestr.indexOf(files.type) <= -1) {
+                result = false;
+
+            }
+        }
+
     }
     return result;
 }

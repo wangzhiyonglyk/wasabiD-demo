@@ -23,7 +23,7 @@ function loadDataHoc(Widget, type = "select") {
             this.state = {
                 url: null,
                 params: null,//参数 
-                rawParams:null, 
+                rawParams: null,
                 rawData: [],//原始数据,用于判断是否通过父组件强制更新数据源         
                 data: [],//处理后的数据
                 filterText: "",//筛选文本
@@ -43,14 +43,14 @@ function loadDataHoc(Widget, type = "select") {
         }
         static getDerivedStateFromProps(props, state) {
             let newState = {
-               
+
             };
-            if (props.url&&props.url!=state.url||func.diff(props.params, state.rawParams)) {
+            if (props.url && props.url != state.url || func.diff(props.params, state.rawParams)) {
                 //传的请求参数发生改变
                 newState = {
                     loadDataStatus: "url",//通过url加载数据
                     url: props.url,
-                    rawParams:func.clone(props.params),
+                    rawParams: func.clone(props.params),
                     params: func.clone(props.params),
                 }
             }
@@ -67,7 +67,7 @@ function loadDataHoc(Widget, type = "select") {
             this.handlerData();//处理数据
         }
         componentDidUpdate() {
-           this.handlerData();//处理数据
+            this.handlerData();//处理数据
         }
         /**
          * 统一加工数据
@@ -77,8 +77,8 @@ function loadDataHoc(Widget, type = "select") {
                 this.loadData();
             }
             else if (this.state.loadDataStatus === "data") {
-                let idOrValueField = (type == "tree" || type === "treegrid" || type === "treepicker") ? this.props.idField||"id": this.props.valueField||"value";
-                let tempFormatData = propsTran.formartData(type, this.getValue(), this.state.rawData, idOrValueField, this.props.textField||"text");
+                let idOrValueField = (type == "tree" || type === "treegrid" || type === "treepicker") ? this.props.idField || "id" : this.props.valueField || "value";
+                let tempFormatData = propsTran.formartData(type, this.getValue(), this.state.rawData, idOrValueField, this.props.textField || "text");
 
                 this.setState({
                     data: tempFormatData,
@@ -109,7 +109,7 @@ function loadDataHoc(Widget, type = "select") {
         * @param {*} url 
          */
         reload(params, url) {
-          
+
             url = url || this.props.url;
             params = params || this.state.params;
             this.setState({
@@ -121,23 +121,23 @@ function loadDataHoc(Widget, type = "select") {
          * 获取所有勾选的值
          * @returns 
          */
-        getChecked(){
+        getChecked() {
             return this.input.current.getChecked && this.input.current.getChecked();
         }
         /**
          * 清除勾选
          * @returns 
          */
-        clearChecked(){
-             this.input.current.clearChecked && this.input.current.clearChecked();
+        clearChecked() {
+            this.input.current.clearChecked && this.input.current.clearChecked();
         }
         /**
          * 筛选，tree
          * @param {*} value 
          * @returns 
          */
-        filter(value){
-             this.input.current.filter&&this.input.current.filter(value);
+        filter(value) {
+            this.input.current.filter && this.input.current.filter(value);
         }
         /**
          * 追加数据
@@ -145,8 +145,8 @@ function loadDataHoc(Widget, type = "select") {
          * @param {*} node 
          * @returns 
          */
-        append(children,node){
-             this.input.current.append&&this.input.current.append(children,node);
+        append(children, node) {
+            this.input.current.append && this.input.current.append(children, node);
         }
         /**
      * 加载数据
@@ -181,14 +181,14 @@ function loadDataHoc(Widget, type = "select") {
          * @param {*} data 
          */
         loadSuccess(res) {//数据加载成功
-            if(typeof this.props.loadSuccess==="function"){
-                res = this.props.loadSuccess(res);
+            if (typeof this.props.loadSuccess === "function") {
+                //有正确处理的数据
+                let resData = this.props.loadSuccess(res);
+                res = resData && resData instanceof Array ? resData : res;
             }
-          
             let realData = func.getSource(res, this.props.dataSource || "data");
             let idOrValueField = (type == "tree" || type === "treegrid" || type === "treepicker") ? this.props.idField : this.props.valueField;
-          let tempFormatData = propsTran.formartData(type, this.getValue(), realData, idOrValueField, this.props.textField);
-
+            let tempFormatData = propsTran.formartData(type, this.getValue(), realData, idOrValueField, this.props.textField);
             this.setState({
                 loadDataStatus: null,
                 rawData: realData,//保存方便对比

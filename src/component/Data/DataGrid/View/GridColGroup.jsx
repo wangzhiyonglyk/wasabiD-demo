@@ -61,7 +61,7 @@ class GridColGroup extends React.PureComponent{
         }
         //处理选择列的宽度
         if (this.props.selectAble) {
-            colgroup.push(<col key="wasabi-check-column" name="wasabi-check-column" width={37}></col>)
+            colgroup.push(<col key="wasabi-check-column" name="wasabi-check-column" width={36}></col>)
         }
         if (this.props.single) {
             colgroup = this.renderSingleColGroup(colgroup);

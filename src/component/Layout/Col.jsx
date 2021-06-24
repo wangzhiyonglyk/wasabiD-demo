@@ -17,11 +17,13 @@ class Col extends React.PureComponent {
         this.getRefs = this.getRefs.bind(this);
     }
     static propTypes = {
+        size:PropTypes.oneOf(["","fluid","xxl","xl","lg","md","sm"]),
         cols: PropTypes.number,
         style: PropTypes.object,
         className: PropTypes.string,
     }
     static defaultProps = {
+        size:"",
         cols: 3,//默认3列
         style: {},
         className: ""
@@ -132,7 +134,7 @@ class Col extends React.PureComponent {
     }
     render() {
         this.inputs = [];//先清空
-        return <div className={"col-xs-" + (this.props.cols || "3") + " wasabi-cols " + (this.props.className || "")} style={this.props.style}>{
+        return <div className={"col"+(this.props.size?"-"+this.props.size:"") + ("-"+(this.props.cols || "3")) + " wasabi-cols " + (this.props.className || "")} style={this.props.style}>{
             React.Children.map(this.props.children, (child, index) => {
                 if(child){
                     if (typeof child.type !== "function") {//非react组件

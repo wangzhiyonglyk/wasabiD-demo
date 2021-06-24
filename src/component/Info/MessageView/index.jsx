@@ -44,6 +44,7 @@ class MessageView extends Component {
         this.setState({
             visible: false
         })
+        console.log("dd")
         if (this.props.OKHandler != null) {
             this.props.OKHandler();
         }

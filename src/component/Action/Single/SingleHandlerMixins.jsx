@@ -30,7 +30,7 @@ let SingleHandlerMixins = {
    */
   modalOKHandler() {
     if (this.state.opType == "edit") {
-      this.updateHandler();
+      this.onUpdate();
     }
     else if (this.state.opType == "add") {
       this.addHandler();
@@ -104,8 +104,8 @@ let SingleHandlerMixins = {
     }
     catch (e) {
     }
-    if (typeof this.props.openUpdateHandler === "function") {
-      this.props.openUpdateHandler(rowData);
+    if (typeof this.props.openonUpdate === "function") {
+      this.props.openonUpdate(rowData);
     }
 
 
@@ -116,8 +116,8 @@ let SingleHandlerMixins = {
    * 更新处理
    * @param {*} model 
    */
-  updateHandler() {
-    if (typeof this.props.updateHandler === "function") {
+  onUpdate() {
+    if (typeof this.props.onUpdate === "function") {
       let data = {};
       if (this.props.autoOp) {
         if (this.form.current && this.form.current.validate()) {
@@ -127,7 +127,7 @@ let SingleHandlerMixins = {
           return;
         }
       }
-      this.props.updateHandler && this.props.updateHandler(data);
+      this.props.onUpdate && this.props.onUpdate(data);
     }
     else {
       Msg.error("您没有设置更新接口");
@@ -170,8 +170,8 @@ let SingleHandlerMixins = {
     catch (e) {
     }
 
-    if (typeof this.props.detailHandler === "function") {
-      this.props.detailHandler && this.props.detailHandler(rowData);
+    if (typeof this.props.onDetail === "function") {
+      this.props.onDetail && this.props.onDetail(rowData);
     }
     else {
 

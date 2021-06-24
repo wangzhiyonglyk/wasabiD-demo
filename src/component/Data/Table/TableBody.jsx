@@ -10,7 +10,8 @@ class TableBody extends React.PureComponent {
 
     }
     render() {
-     return   <tbody className={this.props.className} style={this.props.style} >{
+     return   <tbody className={this.props.className} style={this.props.style}  onClick={this.props.onClick||null}
+     onDoubleClick={this.props.onDoubleClick||null} >{
             this.props.children
         }</tbody>
     }
@@ -18,7 +19,6 @@ class TableBody extends React.PureComponent {
 TableBody.propTypes = {
     className:PropTypes.string,
     style:PropTypes.object,
-    onMouseDown:PropTypes.func,
     onClick: PropTypes.func,
     onDoubleClick: PropTypes.func,
 }
