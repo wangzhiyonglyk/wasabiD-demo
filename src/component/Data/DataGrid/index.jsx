@@ -132,23 +132,12 @@ class DataGrid extends Component {
                     //有改变
                     newState.fixedHeaders = func.clone(props.fixedHeaders);
                     newState.rawFixedHeaders = props.fixedHeaders;
-                    if (props.fixedHeaders && props.fixedHeaders instanceof Array && props.fixedHeaders.length > 0) {//
-                        //有固定表头
-                        if (props.fixedHeaders[0] instanceof Array || (props.headers && props.headers instanceof Array && props.headers[0] instanceof Array)) {
-                            //二维数组不支持
-                            Msg.error("fixedHeaders目前只支持一维数组格式的headers");
-                            newState.fixedHeaders = [];//清除
-                        }
-                        else {
-
-                            newState.headers = [].concat(props.fixedHeaders, props.headers);//合并列
-                        }
-                    }
+                    newState.headers = [].concat( newState.fixedHeaders, newState.headers );//合并列
                 }
                 else {//没有改变
                     if (props.fixedHeaders && props.fixedHeaders instanceof Array && props.fixedHeaders.length > 0) {//没有改变，但是有固定列
 
-                        newState.headers = [].concat(props.fixedHeaders, props.headers);//合并列
+                        newState.headers = [].concat(state.fixedHeaders,newState.headers );//合并列
                     }
                 }
             }
@@ -224,7 +213,7 @@ class DataGrid extends Component {
     computeHeaderStyleAndColumnWidth() {
         //数据网格的宽度   
         this.containerWidth = document.getElementById(this.state.realTableContainerid).getBoundingClientRect().width;
-        this.containerWidth -= 2;//减去两个像素防止横向滚动条
+   
         this.columnSum = 0;//总列数
         this.fixedcolumnSum = 0;//固定列的总列数
         this.releaseWidth = this.containerWidth;//剩余可分配宽度
@@ -362,6 +351,7 @@ class DataGrid extends Component {
             perColumnWidth={this.perColumnWidth}
             checkedAllHandler={this.checkedAllHandler}
             checkCurrentPageCheckedAll={this.checkCurrentPageCheckedAll}
+            getKey={this.getKey}
             onClick={this.onClick}
             onDoubleClick={this.onDoubleClick}
             onChecked={this.onChecked}

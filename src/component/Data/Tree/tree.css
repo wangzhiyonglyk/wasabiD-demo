@@ -12,20 +12,7 @@
   border-top: 1px solid var(--border-color);
 }
 
-.wasabi-tree .treenode-container {
-  line-height: 41px;
-  height: 41px;
-  box-sizing: border-box;
-  display: flex;
-}
 
-.wasabi-pivot .wasabi-tree .treenode-container {
-  border-bottom: 1px solid var(--border-color);
-}
-
-.wasabi-treegrid .wasabi-tree .treenode-container {
-  border-bottom: 1px solid var(--border-color);
-}
 
 .wasabi-tree .treenode {
   display: flex;
@@ -37,29 +24,92 @@
   margin: 0px;
 }
 
-.wasabi-tree li {
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.wasabi-tree li.wasabi-tree-node {
   list-style: none;
   cursor: pointer;
+  position: relative;
+}
+.wasabi-tree>li.wasabi-tree-node::before{
+  content: "";
+  height: calc(100% - 0px);
+  width: 1px;
+  border-right-width: 1px;
+  box-sizing: border-box;
+  border-right-style: dashed;
+  border-right-color: var(--border-color);
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 1;
+}
+.wasabi-tree>li.wasabi-tree-node:first-child:before{
+  top: 20px;
+}
+.wasabi-tree>li.wasabi-tree-node:last-child:before{
+  height: calc(100% - 20px);
+}
+.wasabi-tree .wasabi-tree-node-text {
+  line-height: 42px;
+  height: 42px;
+  box-sizing: border-box;
+  display: flex;
+  position: relative;
+}
+.wasabi-tree .wasabi-tree-node-text::before{
+  content: "";
+  width: 18px;
+  height: 1px;
+  border-top: 1px dashed var(--border-color);
+  position: absolute;
+  top: 22px;
+  left: 0px;
+  z-index: 1;
 }
 
-.wasabi-tree li>div:hover {
+.wasabi-pivot .wasabi-tree .wasabi-tree-node-text {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.wasabi-treegrid .wasabi-tree .wasabi-tree-node-text {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.wasabi-tree  .wasabi-tree-node-text:hover {
   background-color: var(--background-color);
+  color: var(--primary-color);
 }
-
-.wasabi-tree li>div:hover a,
-.wasabi-tree li>div:hover i {
+.wasabi-tree  .wasabi-tree-node-text:hover a,
+.wasabi-tree  .wasabi-tree-node-text:hover i {
+  color: var(--primary-color);
+}
+.wasabi-tree .wasabi-tree-node-text.selected {
+  background-color: var(--background-color);
+  color: var(--primary-color);
+}
+.wasabi-tree  .wasabi-tree-node-text.selected a,
+.wasabi-tree  .wasabi-tree-node-text.selected i {
   color: var(--primary-color);
 }
 
-.wasabi-tree li>div.selected {
-  background-color: var(--background-color);
+.wasabi-tree .wasabi-tree-sub {
+  padding-left: 25px;
+  position: relative;
 }
 
-.wasabi-tree li>div.selected a,
-.wasabi-tree li>div.selected i {
-  color: var(--primary-color);
+
+.wasabi-tree .wasabi-tree-sub::before{
+  content: "";
+    height: calc(100% - 10px);
+    width: 1px;
+    border-right-width: 1px;
+    box-sizing: border-box;
+    border-right-style: dashed;
+    border-right-color: var(--border-color);
+    position: absolute;
+    left: 24px;
+    top: -10px;
+    z-index: 1;
+
 }
 
 .wasabi-tree [class*=" icon-"],
@@ -83,25 +133,18 @@
 }
 
 .wasabi-tree i {
-  margin-right: 3px;
-  font-size: 18px;
+  margin-right: 1px;
+  font-size: 16px;
+  height: 16px;
   display: inline-block;
   transform: translateY(3px);
   -webkit-transform: translateY(3px);
   -moz-transform: translateY(3px);
   -ms-transform: translateY(3px);
   -o-transform: translateY(3px);
+  z-index: 2;
 }
 
-.wasabi-tree li ul.hide {
-  display: none;
-  margin-left: 25px;
-}
-
-.wasabi-tree li ul.show {
-  display: block;
-  margin-left: 25px;
-}
 
 .wasabi-tree .wasabi-drag-box {
   cursor: pointer;

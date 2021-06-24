@@ -1,10 +1,21 @@
 /**
- * 拆分datagrid,表体组件
+ * 拆分datagrid,表头组件
  * 2021-05-28
  */
-
+/**
+ * :[[
+    {name:'itemid',label:'Item ID',rowSpan:2,width:80,sortAble:true},
+    {name:'productid',label:'Product ID',rowSpan:2,width:80,sortAble:true},
+    {label:'Item Details',colSpan:4}
+],[
+    {name:'listprice',label:'List Price',width:80,align:'right',sortAble:true},
+    {name:'unitcost',label:'Unit Cost',width:80,align:'right',sortAble:true},
+    {name:'attr1',label:'Attribute',width:100},
+    {name:'status',label:'Status',width:60}
+]]
+ */
 import React from "react";
-import PropTypes from 'prop-types';
+
 import { TableCell, TableHead, TableRow } from "../../Table";
 import CheckBox from "../../../Form/CheckBox"
 class GridHeader extends React.PureComponent {
@@ -117,6 +128,7 @@ class GridHeader extends React.PureComponent {
             headerControl.push(<TableCell
                 key={'header-0-' + headerColumnIndex.toString()}
                 position="header"
+                align={header.align}
                 rowSpan={header.rowSpan}
                 colSpan={header.colSpan}
                 className={props.className || ""}
@@ -146,8 +158,9 @@ class GridHeader extends React.PureComponent {
                 trheader.map((header, headerColumnIndex) => {
                     let props = this.getHeaderProps(header);
                     trcontrol.push(<TableCell
-                        key={'header-0-' + headerColumnIndex.toString()}
+                        key={"header-"+headerRowIndex+"-"+ headerColumnIndex.toString()}
                         position="header"
+                        align={header.align}
                         rowSpan={header.rowSpan}
                         colSpan={header.colSpan}
                         className={props.className || ""}
@@ -180,17 +193,5 @@ class GridHeader extends React.PureComponent {
         return this.props.single ? this.renderSingleHeader() : this.renderComplexHeader();
     }
 }
-GridHeader.propTypes = {
-    single: PropTypes.bool,//表头类型，是否为简单的表头
-    headers: PropTypes.array,//表头
-    selectAble: PropTypes.bool,//是否   可以选择
-    singleSelect: PropTypes.bool,//是否为单选
-    isCheckAll: PropTypes.bool,//是否已经全部勾选，
-    rowNumber: PropTypes.bool,//显示序号列
-    detailAble: PropTypes.bool,//显示详情列
-    sortName: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),//排序字段
-    sortOrder: PropTypes.oneOf(["asc", "desc"]),//排序方式
-    checkedAllHandler: PropTypes.func,//勾选事件
-    onSort: PropTypes.func,//排序事件
-}
+
 export default GridHeader;

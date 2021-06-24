@@ -84,10 +84,10 @@ function NodeView(props) {
     else {
     }
     //节点元素
-    return <li style={{ display: row.hide ? "none" : "block" }} >
-        <div id={row.nodeid} className={clickId == row.id ? "treenode-container selected" : "treenode-container"} >
-            <i className={row.open ? "icon-arrow-down" : "icon-arrow-right"} style={{ opacity: row.isParent ? 1 : 0, transform: "translateY(12px)" }}
-                onClick={onNodeExpand}></i>
+    return <li className="wasabi-tree-node" style={{ display: row.hide ? "none" : "block" }} >
+        <div id={row.nodeid} className={clickId == row.id ? "wasabi-tree-node-text selected" : "wasabi-tree-node-text"} >
+            <i className={row.open ? "icon-reduce" : "icon-expand"} style={{ opacity: row.isParent ? 1 : 0, transform: "translateY(15px)" }}
+                onClick={ row.isParent?onNodeExpand:null}></i>
             <div className="treenode" title={title}
                 onDrop={onNodeDrop}
                 onDragOver={onNodeDragOver} onDragLeave={onNodeDragLeave}
@@ -120,7 +120,7 @@ function NodeView(props) {
 
         </div>
         {
-            childrenControl ? <ul className={row.open ? "clearfix show" : "clearfix hide "}>
+            childrenControl ? <ul className={row.open ? " wasabi-tree-sub clearfix   show" : " wasabi-tree-sub clearfix  hide "}>
                 {childrenControl}
             </ul> : null
         }

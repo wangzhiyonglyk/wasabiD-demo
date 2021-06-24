@@ -429,7 +429,7 @@ class Tree extends Component {
                 />);
             });
         }
-        return <ul className={"wasabi-tree clearfix " + this.props.className} style={this.props.style}>
+        return <ul className={"wasabi-tree clearfix " + (this.props.className||"")} style={this.props.style}>
             {nodeControl}
         </ul>
 

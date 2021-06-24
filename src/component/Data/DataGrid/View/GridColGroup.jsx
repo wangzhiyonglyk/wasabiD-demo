@@ -3,7 +3,6 @@
  * 2021-05-28
  */
 import React from "react";
-import PropTypes from 'prop-types';
 
 class GridColGroup extends React.PureComponent{
     constructor(props){
@@ -73,14 +72,4 @@ class GridColGroup extends React.PureComponent{
         return <colgroup>{colgroup}</colgroup>;
     }
 }
-
-GridColGroup.propTypes={
-    single: PropTypes.bool,//表头类型，是否为简单的表头
-    selectAble: PropTypes.bool,//是否   可以选择
-    rowNumber: PropTypes.bool,//显示序号列
-    detailAble: PropTypes.bool,//显示详情列
-    perColumnWidth:PropTypes.number,//每一列宽度
-    headers:PropTypes.array,//列
-}
-
 export default GridColGroup;

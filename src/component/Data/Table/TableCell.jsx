@@ -12,7 +12,7 @@ class TableCell extends React.PureComponent {
         this.renderTh = this.renderTh.bind(this);
     }
     renderCell() {
-        return <div className={"wasabi-table-cell  "+(this.props.position!=="body"?'nowrap':"") + (this.props.className || "")}
+        return <div className={"wasabi-table-cell  "+(this.props.position!=="body"?' nowrap ':"") + (this.props.className || "")}
         style={this.props.style || null} title={typeof this.props.children==="string"?this.props.children:""}>
             {
                 this.props.children

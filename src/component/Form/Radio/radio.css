@@ -5,13 +5,13 @@ desc:checkbox
 .wasabi-checkul {
   list-style: none;
   padding: 0;
-  height: 40px;
   margin: 0;
   padding-top: 9px;
   padding-bottom: 9px;
 }
 .wasabi-tree .wasabi-checkul{
-  margin-top:4px;
+  margin-top:6px;
+  width: 23px;
 }
 .wasabi-checkul li {
   float: left;
@@ -24,12 +24,9 @@ desc:checkbox
 
 .wasabi-checkul .checktext {
   cursor: default;
-  max-width: 130px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  height: 20px;
-  line-height: 20px;
+ 
+  height: 21px;
+  line-height: 21px;
   font-size: var(--font-size);
   color: var(--color);
   margin-top: -2px;

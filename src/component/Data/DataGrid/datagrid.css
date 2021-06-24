@@ -10,22 +10,19 @@ grid
 }
 
 .wasabi-grid .wasabi-grid-tool{
-  border-top: 1px solid var(--border-color);
+  border: 1px solid var(--border-color);
+  border-bottom: none;
   height: 40px;
   line-height: 40px;
   padding-left: 20px;
-  border-radius: 4px;
   background-color: var(--background-color);
 }
-
-/*
-   grid下的表格容器
-   */
-
-.wasabi-grid .table-container {
-  width: 100%;
-  position: relative;
-  overflow: hidden;
+.wasabi-grid .wasabi-check-column .wasabi-form-group
+{
+  height: 21px;
+  min-height: 0px;
+  margin-bottom: 0px;
+  margin-left: 4px;
 }
 
 /*
@@ -42,6 +39,7 @@ grid
 .wasabi-grid .wasabi-checkul {
   margin: 0px;
   padding: 0px;
+  margin-top: 3px;
 }
 
 /*

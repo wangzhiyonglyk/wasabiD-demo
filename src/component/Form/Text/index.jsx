@@ -125,12 +125,12 @@ class Text extends Component {
             if (isvalidate) {
 
                 this.cellHandler(event);
-                this.props.onChange && this.props.onChange(value, value, this.props.name);//自定义的改变事件   
+                 
             }
         }
         else {
             this.cellHandler(event);
-            this.props.onChange && this.props.onChange(value, value, this.props.name);//自定义的改变事件
+            
         }
 
 
@@ -182,19 +182,20 @@ class Text extends Component {
      */
     cellHandler(event) {
         const ancestorNode = dom.ancestorByClass(event.target, "wasabi-table-cell");
-        console.log("cange")
         let value = event.target.value;
         if (ancestorNode) {
             //是单元格中的输入框
             if (value.indexOf("\t") > -1 || value.indexOf("\n") > -1) {//csv
-                console.log("你好")
+              
             }
             else {
-                this.setValue(value)
+                this.setValue(value);
+                this.props.onChange && this.props.onChange(value, value, this.props.name);//自定义的改变事件
             }
         }
         else {
-            this.setValue(value)
+            this.setValue(value);
+            this.props.onChange && this.props.onChange(value, value, this.props.name);//自定义的改变事件
         }
     }
     render() {

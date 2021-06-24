@@ -157,21 +157,11 @@ export default {
             }
         }
         if (this.state.editAble) {//没有自定义,允许编辑表格
-            //如果没有设置编辑，则设置
-            let headers = func.clone(this.state.headers);
-            if (headers && headers.length > 0) {
-                for (let i = 0; i < headers.length; i++) {
-                    headers[i].editor = headers[i].editor ? headers[i].editor : {
-                        type: "text"
-                    }
-                }
-            }
             this.setState({
-                headers: headers,
-                editIndex: rowIndex+"-"+columnIndex,
+                ...this.setHeaderEditor(),//设置表头
+                editIndex: rowIndex + "-" + columnIndex,
             }, () => {
-               
-               this.focus(rowIndex,columnIndex);
+                this.focusCell(rowIndex, columnIndex);
             })
 
         }
@@ -195,15 +185,18 @@ export default {
      * @param {*} rowIndex 
      * @param {*} columnIndex 
      */
-    focus(rowIndex,columnIndex){
-        try{
-            let f= document.getElementById(this.state.realTableid).children[2].querySelector(".focus");
-            if(f)
-            {f.className=""};
-             document.getElementById(this.state.realTableid).children[2].children[rowIndex].children[columnIndex].className="focus";
-             document.getElementById(this.state.realTableid).children[2].children[rowIndex].children[columnIndex].querySelector("input").focus()
-         }
-        catch(e){
+    focusCell(rowIndex, columnIndex) {
+        try {
+            if (this.props.rowNumber) { columnIndex++ };
+            if (this.props.detailAble) { columnIndex++ };
+            if (this.props.selectAble) { columnIndex++ };
+            
+            let f = document.getElementById(this.state.realTableid).children[2].querySelector(".focus");
+            if (f) { f.className = "" };
+            document.getElementById(this.state.realTableid).children[2].children[rowIndex].children[columnIndex].className = "focus";
+            document.getElementById(this.state.realTableid).children[2].children[rowIndex].children[columnIndex].querySelector("input").focus()
+        }
+        catch (e) {
 
         }
 
@@ -251,23 +244,71 @@ export default {
         }
     },
 
+
+
     /**
-     * 排序事件
-     * @param {*} sortName 
-     * @param {*} sortOrder 
-     */
+    * 编辑时设置单元格的编辑样式
+    */
+    setHeaderEditor() {
+        //如果没有设置编辑，则设置
+        let headers = func.clone(this.state.headers);
+        if (headers && headers.length > 0) {
+            if(this.state.single){
+                for (let i = 0; i < headers.length; i++) {
+                    headers[i].editor = headers[i].editor ? headers[i].editor : {
+                        type: "text"
+                    }
+                }
+            }
+            else{
+               for(let i=0;i<headers.length;i++){
+                   if(headers[i] instanceof Array &&headers[i].length>0){
+                       for(let j=0;j<headers[i].length;j++){
+                           if(headers[i][j].colSpan&&headers[i][j].colSpan>1){
+                               //跨行的列不设置
+                               continue;
+                           }
+                           else{
+                            headers[i][j].editor =  headers[i][j].editor ? headers[i][j].editor : {
+                                type: "text"
+                            }
+                           }
+                       }
+                   }
+               }
+            }
+            
+        }
+        let fixedHeaders = [];
+        if (this.state.fixedHeaders && this.state.fixedHeaders.length > 0) {
+            fixedHeaders = func.clone(this.state.fixedHeaders);
+            for (let i = 0; i < fixedHeaders.length; i++) {
+                fixedHeaders[i].editor = fixedHeaders[i].editor ? fixedHeaders[i].editor : {
+                    type: "text"
+                }
+            }
+        }
+        return {
+            headers: headers,
+            fixedHeaders: fixedHeaders
+        }
+    },
+    /**
+       * 排序事件
+       * @param {*} sortName 
+       * @param {*} sortOrder 
+       */
     onSort: function (sortName, sortOrder) {  //排序事件
         this.onUpdate(this.state.url, this.state.pageSize, 1, sortName, sortOrder);
 
     },
-
     /**
     * 添加一条
     */
     onAdd() {
-        let rowData={};
+        let rowData = {};
         for (let i = 0; i < this.state.headers.length; i++) {
-            rowData[this.state.headers[i].name]="";
+            rowData[this.state.headers[i].name] = "";
         }
         this.addRow(rowData, true);//添加的是空数据，允许编辑
     },
@@ -343,26 +384,26 @@ export default {
      * @param {*} text 文本值
      * @param {*} name 对字段名
      */
-    tableCellEditHandler: function (rowIndex, callBack, value, text, name) {  //编辑时单元格内的表单onchange的监听事件   
-            if (this.state.addData.has(rowIndex)) {//说明是属于新增的
-                this.state.addData.set(this.getKey(rowIndex), this.state.data[rowIndex]);
-            }
-            else {//属于修改的
-                this.state.updateData.set(this.getKey(rowIndex), this.state.data[rowIndex]);
-            }
-            let data=func.clone(this.state.data);
-            data[rowIndex][name]=value;
-            this.setState({
-                data:data,
-                addData: this.state.addData,
-                updateData:this.state.updateData
-            })
-            //自定义的回调函数
-            if (callBack && typeof callBack == "function") {
-                callBack(value, text, name);
-            }
-        
-        
+    tableCellEditHandler: function (rowIndex, callBack, value, text, name) {  //编辑时单元格内的表单onchange的监听事件 
+        if (this.state.addData.has(rowIndex)) {//说明是属于新增的
+            this.state.addData.set(this.getKey(rowIndex), this.state.data[rowIndex]);
+        }
+        else {//属于修改的
+            this.state.updateData.set(this.getKey(rowIndex), this.state.data[rowIndex]);
+        }
+        let data = func.clone(this.state.data);
+        data[rowIndex][name] = value;
+        this.setState({
+            data: data,
+            addData: this.state.addData,
+            updateData: this.state.updateData
+        })
+        //自定义的回调函数
+        if (callBack && typeof callBack == "function") {
+            callBack(value, text, name);
+        }
+
+
     },
 
     /**
@@ -376,7 +417,7 @@ export default {
      */
     onUpdate: function (url, pageSize, pageIndex, sortName, sortOrder, params) {////数据处理函数,更新
         if (this.state.addData.size > 0 || this.state.deleteData.size > 0 || this.state.updateData.size > 0) {
-            Msg.confirm("有脏数据,是否继续更新列表?",()=>{
+            Msg.confirm("有脏数据,是否继续更新列表?", () => {
                 this.onUpdateConfirm(url, pageSize, pageIndex, sortName, sortOrder, params);
             })
 
@@ -448,7 +489,7 @@ export default {
                 this.props.onUpdate(pageSize, pageIndex, sortName, sortOrder);
             }
             else {
-                if (this.state.rawData.length>(pageIndex*pageSize)) {
+                if (this.state.rawData.length > (pageIndex * pageSize)) {
                     //说明父传的数据就是全部的
                     this.setState({
                         pageSize: pageSize,

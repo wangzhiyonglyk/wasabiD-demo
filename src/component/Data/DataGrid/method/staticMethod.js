@@ -53,7 +53,7 @@ export default {
 
         }
         else {
-            index = this.state.focusIndexthis.state.focusIndex;
+            index = this.state.focusIndex;
         }
         return this.state.data && this.state.data[index || 0];
     },
@@ -125,35 +125,25 @@ export default {
     clearChecked: function () {
         this.checkedAllHandler("no");
     },
-  /**
-   * 添加一行
-   * @param {*} rowData 数据
-   * @param {*} editAble 是否可编辑
-   */
+    /**
+     * 添加一行
+     * @param {*} rowData 数据
+     * @param {*} editAble 是否可编辑
+     */
     addRow: function (rowData = {}, editAble = false) {//
         let newData = func.clone(this.state.data);
         newData.push(rowData || {});
         let addData = func.clone(this.state.addData) || [];
         this.state.addData.set(this.getKey(newData.length - 1), rowData);//添加到脏数据里
-        //如果没有设置编辑，则设置
-        let headers = func.clone(this.state.headers);
-        if (headers && headers.length > 0) {
-            for (let i = 0; i < headers.length; i++) {
-                headers[i].editor = headers[i].editor ? headers[i].editor : {
-                    type: "text"
-                }
-                rowData[headers[i].name]= rowData[headers[i].name]||"";//初始化
-            }
-        }
         this.setState({
-            headers: headers,
+            ... this.setHeaderEditor(),//设置表头
             data: newData,
             total: this.state.total + 1,
             addData: addData,
             editAble: editAble || this.state.editAble,
             editIndex: editAble ? (newData.length - 1).toString() + "-0" : this.state.editIndex,
         }, () => {
-           this.focus(this.state.data.length - 1,0);
+            this.focusCell(this.state.data.length - 1, 0);
         });
     },
     /**
@@ -171,44 +161,36 @@ export default {
             deleteData: deleteData
         });
     },
-  /**
-   *  更新某一行数据
-   * @param {*} rowIndex 行号
-   * @param {*} rowData 数据
-   * @param {*} editAble 是否可编辑
-   */
+    /**
+     *  更新某一行数据
+     * @param {*} rowIndex 行号
+     * @param {*} rowData 数据
+     * @param {*} editAble 是否可编辑
+     */
     updateRow: function (rowIndex, rowData, editAble = false) {
-        if(rowData&&typeof rowData==="object"){
+        if (rowData && typeof rowData === "object") {
             this.state.updateData.set(this.getKey(rowIndex), rowData);//更新某一行
             if (rowIndex >= 0 && rowIndex < this.state.data.length) {
                 let newData = func.clone(this.state.data);
                 if (rowData && typeof rowData === "object") {//如果有值，则取新值
                     newData[rowIndex] = rowData;
                 }
-                //如果没有设置编辑，则设置
-                let headers = func.clone(this.state.headers);
-                if (headers && headers.length > 0) {
-                    for (let i = 0; i < headers.length; i++) {
-                        headers[i].editor = headers[i].editor ? headers[i].editor : {
-                            type: "text"
-                        }
-                        rowData[headers[i].name]= rowData[headers[i].name]||"";//初始化
-                    }
-                }
                 this.setState(
                     {
-                        headers: headers,
+                        ... this.setHeaderEditor(),//设置表头
                         data: newData,
                         updateData: this.state.updateData,
                         editAble: editAble || this.state.editAble,
-                        editIndex: editAble ?rowIndex+"-0" :this.state.editIndex
+                        editIndex: editAble ? rowIndex + "-0" : this.state.editIndex
                     }, () => {
-                        this.focus(rowIndex,0);
+                        this.focusCell(rowIndex, 0);
                     });
             }
         }
-       
+
     },
+   
+
     /**
      * 清除脏数据
      */
@@ -340,6 +322,6 @@ export default {
         func.download(excel.sheet2blob(sheet), title);
 
     },
-   
+
 
 }

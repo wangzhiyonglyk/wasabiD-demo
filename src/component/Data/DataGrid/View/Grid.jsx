@@ -104,6 +104,7 @@ class Grid extends React.Component {
             detailView={this.props.detailView}
             focusIndex={this.props.focusIndex}
             rowAllowChecked={this.props.rowAllowChecked}
+            getKey={this.props.getKey}
             onClick={this.props.onClick}
             onDoubleClick={this.props.onDoubleClick}
             onChecked={this.props.onChecked}
@@ -119,13 +120,13 @@ class Grid extends React.Component {
      * 处理固定列的表体
      */
     renderFixedBody() {
-        //todo 暂时不支持详情行,暂时不支持粘贴
+        let checkedData = func.clone(this.props.checkedData);
         return <GridBody
             single={this.props.single}
             headers={this.props.fixedHeaders}
             data={this.props.data}
             priKey={this.props.priKey}
-            checkedData={this.props.checkedData}
+            checkedData={checkedData}
             pageIndex={this.props.pageIndex}
             pageSize={this.props.pageSize}
             selectAble={this.props.selectAble}
@@ -133,11 +134,13 @@ class Grid extends React.Component {
             rowNumber={this.props.rowNumber}
             editIndex={this.props.editIndex}
             rowAllowChecked={this.props.rowAllowChecked}
+            getKey={this.props.getKey}
             onClick={this.props.onClick}
             onDoubleClick={this.props.onDoubleClick}
             onChecked={this.props.onChecked}
             tableCellEditHandler={this.props.tableCellEditHandler}
             onSort={this.props.onSort}
+        
             > 
         </GridBody>
     }
@@ -154,7 +157,7 @@ class Grid extends React.Component {
     renderTable(height) {
         let colgroup = this.renderColGruop();
         let headerControl = this.renderHeader();
-        return <div className='table-container' key="table-container"   >
+        return <div className='wasabi-table-container' key="wasabi-table-container"   >
             {
                 //有高度的时候，才会出现固定表头
                 height ? <div className="table-fixedth" id={this.props.fixedthcontainerid}>

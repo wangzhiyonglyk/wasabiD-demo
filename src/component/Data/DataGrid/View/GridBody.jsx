@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+
 import Input from '../../../Form/Input/index.jsx';
 import CheckBox from "../../../Form/CheckBox";
 import TableCell from '../../Table/TableCell.jsx';
@@ -31,23 +31,7 @@ class GridBody extends React.Component {
    * @param {*} pageIndex 
    */
     getKey(rowIndex, pageIndex) {
-        let key = "";
-        if (!pageIndex) {
-            pageIndex = this.props.pageIndex;
-        }
-        if (rowIndex == null && rowIndex == undefined) {
-            console.error(new Error("index 值传错"));
-            Msg.error("index 值传错");
-        }
-        else {
-            if (this.props.priKey) {
-                key = this.props.data[rowIndex][this.props.priKey];
-            }
-            else {
-                key = pageIndex.toString() + "-" + rowIndex.toString();//默认用序号作为关键字
-            }
-        }
-        return key+"";
+        return this.props.getKey(rowIndex, pageIndex);
     }
     /**
      * 单击事件
@@ -88,10 +72,10 @@ class GridBody extends React.Component {
     * @param {*} name 对字段名
     */
     tableCellEditHandler(rowIndex, callBack, value, text, name) {
-        if(name){
+        if (name) {
             this.props.tableCellEditHandler && this.props.tableCellEditHandler(rowIndex, callBack, value, text, name);
         }
-     
+
     }
 
     /**
@@ -207,14 +191,10 @@ class GridBody extends React.Component {
             let key = this.getKey(rowIndex); //获取这一行的关键值
             //生成数据列
             let columnIndex = 0;//真正的列序号
-            if(this.props.rowNumber){columnIndex++};
-            if(this.props.detailAble){columnIndex++};
-            if(this.props.selectAble){columnIndex++};
-
             let headers = this.props.headers;
             headers.map((header, headerColumnIndex) => {
                 //处理数据单元格
-                let editAble= this.props.editIndex != null &&this.props.editIndex ===(rowIndex+"-"+columnIndex)&&header.editor;
+                let editAble = this.props.editIndex != null && this.props.editIndex === (rowIndex + "-" + columnIndex) && header.editor;
                 tds.push(
                     <TableCell
                         onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
@@ -230,20 +210,20 @@ class GridBody extends React.Component {
                                     type={header.editor.type}
                                     name={header.name}
                                     value={rowData[header.name]}
-                                    onChange={this.tableCellEditHandler.bind(this, rowIndex,  header.editor && header.editor.options && header.editor.options.onChange || null)}
+                                    onChange={this.tableCellEditHandler.bind(this, rowIndex, header.editor && header.editor.options && header.editor.options.onChange || null)}
                                     onSelect={this.tableCellEditHandler.bind(this, rowIndex, header.editor && header.editor.options && header.editor.options.onSelect || null)}
-                                    onPaste={this.inputonPaste.bind(this,rowIndex,columnIndex)}
+                                    onPaste={this.inputonPaste.bind(this, rowIndex, columnIndex)}
                                     label={''}
                                 ></Input> : this.getRowCellContent(header, rowData, rowIndex)}
                     </TableCell>
                 );
                 columnIndex++;
             });
-            let trClassName="";
-            if(this.props.focusIndex === rowIndex){
-                trClassName+=" selected ";
+            let trClassName = "";
+            if (this.props.focusIndex === rowIndex) {
+                trClassName += " selected ";
             }
-            
+
             trArr.push(
                 <TableRow key={'row' + rowIndex.toString()} className={trClassName} >
                     {this.setOrderAndSelectAndDetailRow(rowData, rowIndex)}
@@ -269,16 +249,13 @@ class GridBody extends React.Component {
         }
         let trArr = [];//行数据
         this.props.data.map((rowData, rowIndex) => {
-            if (rowData.hide) {//隐藏该行
+            if (rowData.hide) {//隐藏该行,用于treegrid
                 return;
             }
             let tds = []; //当前的列集合
             let key = this.getKey(rowIndex); //获取这一行的关键值
             //生成数据列
             let columnIndex = 0;//真正的序号列
-            if(this.props.rowNumber){columnIndex++};
-            if(this.props.detailAble){columnIndex++};
-            if(this.props.selectAble){columnIndex++};
             this.props.headers.map((trheader, headerRowIndex) => {
                 if (trheader instanceof Array) {
                     trheader.map((header, headerColumnIndex) => {
@@ -291,10 +268,9 @@ class GridBody extends React.Component {
                             <TableCell
                                 onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
                                 onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex, columnIndex)}
-                                key={'cell-' + rowIndex.toString() +"-"+headerRowIndex+ "-" + headerColumnIndex + '-' + columnIndex.toString()}
+                                key={'cell-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
                                 className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-                                style={{ textAlign: header.align }}
-                            >
+                                style={{ textAlign: header.align }}>
                                 {
                                     this.props.editIndex != null &&
                                         this.props.editIndex == rowIndex &&
@@ -315,12 +291,12 @@ class GridBody extends React.Component {
                     });
                 }
             });
-            let trClassName="";
-            if(this.props.focusIndex === rowIndex){
-                trClassName+=" selected ";
+            let trClassName = "";
+            if (this.props.focusIndex === rowIndex) {
+                trClassName += " selected ";
             }
-            if(this.props.editIndex===rowIndex){
-                trClassName+=" edited ";
+            if (this.props.editIndex === rowIndex) {
+                trClassName += " edited ";
             }
             trArr.push(
                 <TableRow key={'row' + rowIndex.toString()} className={trClassName}  >
@@ -349,37 +325,13 @@ class GridBody extends React.Component {
      * 文本框的粘贴事件
      * @param {*} event 
      */
-    inputonPaste(rowIndex,columnIndex,event){
-      this.props.onPaste&&this.props.onPaste(rowIndex,columnIndex,event);
+    inputonPaste(rowIndex, columnIndex, event) {
+       
+        this.props.onPaste && this.props.onPaste(rowIndex, columnIndex, event);
     }
     render() {
         return this.props.single ? this.renderSingleBody() : this.renderComplexBody();
     }
-}
-
-GridBody.propTypes = {
-    single: PropTypes.bool,//表头类型，是否为简单的表头
-    headers: PropTypes.array,//表头
-    data: PropTypes.array,//数据
-    priKey:PropTypes.string,//主键
-    checkedData: PropTypes.any,//勾选的数据
-    pageIndex: PropTypes.number,//页号，
-    pageSize: PropTypes.number,//分页大小
-    selectAble: PropTypes.bool,//是否   可以选择
-    singleSelect: PropTypes.bool,//是否为单选
-    rowNumber: PropTypes.bool,//显示序号列
-    detailAble: PropTypes.bool,//显示详情列
-    focusIndex: PropTypes.number,//焦点行下标
-    editIndex: PropTypes.string,//编辑的行号
-    detailIndex: PropTypes.string,//详情key
-    detailView: PropTypes.any,//详情视图
-    rowAllowChecked: PropTypes.func,//某一行是否允许勾选
-    onClick: PropTypes.func,//单元格单击
-    onDoubleClick: PropTypes.func,//单元格双击
-    onChecked: PropTypes.func,//勾选
-    tableCellEditHandler: PropTypes.func,//单元格编辑后
-    onDetail: PropTypes.func,//详情图标单击事件
-
 }
 
 export default GridBody;

@@ -3,14 +3,18 @@
  */
 @import url("../../Sass/base.css");
 
-
+.wasabi-table-container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
 
 /*
 表格基本样式
+border奇怪的现象，出现变粗的现象
 */
 .wasabi-table {
   clear: both;
-  max-width: none;
   border-top: 1px solid var(--border-color);
   border-left: 1px solid var(--border-color);
   width: 100%;
@@ -18,6 +22,14 @@
   border-collapse: collapse;
   box-sizing: border-box;
   table-layout: fixed;
+}
+.wasabi-table::before{
+  content: '';
+  height: 1px;
+  background-color: var(--border-color);
+  width: 100%;
+  position:absolute;
+  top:0px;
 }
 
 .wasabi-table td,
