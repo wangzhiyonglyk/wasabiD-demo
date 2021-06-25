@@ -1,6 +1,6 @@
 /**
  * Created by zhiyongwang on 2020-11-07
- * 所有下拉框的基类,专门处理数据
+ * 数据处理基类
  * todo 
  * edit 2021-04-26
  */
@@ -118,11 +118,19 @@ function loadDataHoc(Widget, type = "select") {
             })
         }
         /**
-         * 获取所有勾选的值
+         * 获取所有勾选的值 tree
          * @returns 
          */
         getChecked() {
             return this.input.current.getChecked && this.input.current.getChecked();
+        }
+        /**
+         * 设置勾选 tree
+         * @param {*} value 设置勾选
+         * @returns 
+         */
+        setChecked(value){
+            return this.input.current.setChecked && this.input.current.setChecked();
         }
         /**
          * 清除勾选
@@ -132,7 +140,7 @@ function loadDataHoc(Widget, type = "select") {
             this.input.current.clearChecked && this.input.current.clearChecked();
         }
         /**
-         * 全部选择
+         * 全部选择 tree
          */
         checkedAll() {
             return this.input.current.checkedAll && this.input.current.checkedAll();

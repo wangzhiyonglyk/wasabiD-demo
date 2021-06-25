@@ -78,7 +78,7 @@ class Select extends Component {
         this.setState({
             value: value,
             text: text,
-            inputText: text,
+            inputText: text.join(","),
         })
       
     }

@@ -8,7 +8,7 @@ import regs from "./regs.js";
 let propsTran = {
     /**  
      * 格式化数据，checkbox ,radio,select ,picker,treepicker,tree,treegrid
-     * @param {string|number} value 选择的值
+     * @param {string|number} value 选择的值,处理勾选情况
      * @param {Array} realData 数据
      * @param {string } idOrValueField id或value对应的字段名
      * @param {string} textField  文本对应的字段名
@@ -23,23 +23,24 @@ let propsTran = {
         let realData = func.clone(data);//复制,否则影响父节点，导致重复更新
         if (realData && realData instanceof Array && realData.length > 0) {
             for (let i = 0; i < realData.length; i++) {
-                if (type == "tree" || type == "treepicker") {
-                    realData[i].id =  realData[i].id|| realData[i][idOrValueField];//追加这个属性
+                if (type == "tree" || type == "treepicker" || type == "treegrid") {
+                    realData[i].id = realData[i].id || realData[i][idOrValueField];//追加这个属性
                 }
                 else {
 
-                    realData[i].value =realData[i].value|| realData[i][idOrValueField];//追加这个属性
+                    realData[i].value = realData[i].value || realData[i][idOrValueField];//追加这个属性
                 }
 
-                realData[i].text =realData[i].text|| realData[i][textField];//追加这个属性
-                if (value&&("," + (value) + ",").indexOf("," + ((type == "tree" || type == "treepicker") ? realData[i].id : realData[i].value) + ",") > -1) {
+                realData[i].text = realData[i].text || realData[i][textField];//追加这个属性
+                if (value && ("," + (value) + ",").indexOf("," + ((type == "tree" || type == "treepicker") ? realData[i].id : realData[i].value) + ",") > -1) {
                     realData[i].checked = true;//节点选中，专门用于树组件
+                }
+                else {
+                    //不处理，不影响原因的
                 }
                 //如果有子节点的时候.tree,treepicker,picker
                 if (realData[i].children && realData[i].children.length > 0) {
-
                     realData[i].children = propsTran.formartData(type, value, realData[i].children, idOrValueField, textField, parentField, simpleData);
-
                 }
             }
         }
@@ -68,7 +69,7 @@ let propsTran = {
                 }
             }
         }
-        return text||[];
+        return text || [];
 
     },
     /**
@@ -104,7 +105,7 @@ let propsTran = {
         //先设置默认值的，再判断用户是否有输入值
         let newDate = new Date();
         //设置第一日期的值
-        let firstDate = regs.date.test( props.firstDate)?props.firstDate:regs.datetime.test(props.firstDate)?props.firstDate.split(" ")[0]:"";//给的第一个值
+        let firstDate = regs.date.test(props.firstDate) ? props.firstDate : regs.datetime.test(props.firstDate) ? props.firstDate.split(" ")[0] : "";//给的第一个值
         let firstTime = props.type == "daterange" ? "" : props.firstTime || func.dateformat(newDate, "HH:mm:") + "00";
         //先设置默认值
         let first_year = newDate.getFullYear();
@@ -178,7 +179,7 @@ let propsTran = {
         else {//第二日期没有值
             first_rangeBegin = first_rangeEnd = first_day;
         }
-        let result= {
+        let result = {
             oldPropsValue: (props.firstDate || "") + (props.firstTime || "") + (props.secondDate || "") + (props.secondTime || ""),//保存旧值，用于更新
             first_year: first_year,
             first_month: first_month,
@@ -206,7 +207,7 @@ let propsTran = {
         let filterResult = [];
         data && data.forEach((item, index) => {
             let filterItem = null;
-            if (item.id&&item.id.toString().indexOf(filterText) > -1 || item.text.indexOf(filterText) > -1) {
+            if (item.id && item.id.toString().indexOf(filterText) > -1 || item.text.indexOf(filterText) > -1) {
                 filterItem = { ...item, children: [] }
             }
             if (item.children && item.children.length > 0) {
@@ -224,29 +225,56 @@ let propsTran = {
         return filterResult;
     },
     /**
-     * 表格是否隐藏某行数据
+     * 表格是否隐藏某行数据,toto,要优化
      * @param {*} data 
      * @param {*} open 
      * @param {*} children 
      * @returns 
      */
-    gridShowOrHideData(data, open, children) {
-        let ids = [];
-        if (children && children instanceof Array && children.length > 0) {
-            for (let i = 0; i < children.length; i++) {
-                ids.push(children[i].id);
+    gridShowOrHideData(data,open, row) {
+        data = func.clone(data);
+   
+        let foldids = [];
+        let openids=[];
+        let f = function (o,node) {
+            if (node.children && node.children instanceof Array && node.children.length > 0) {
+                //折叠
+                for (let i = 0; i < node.children.length; i++) {
+                    if(o === false)
+                    {
+                        foldids.push(node.children[i].id);
+                        if(node.children[i].children&&node.children[i].children.length>0){
+                            f(o, node.children[i]);
+                        }             
+                    }
+                    else{
+                        openids.push(node.children[i].id);
+                        if(node.children[i].children&&node.children[i].children.length>0){
+                            f( node.children[i].open, node.children[i]);
+                        } 
+                    }
+
+                  
+                }
+            }else{
+
             }
         }
-        ids = "," + ids.join(",") + ",";
+       f(open,row);
+       foldids = "," + foldids.join(",") + ",";
+       openids = "," + openids.join(",") + ",";
+       console.log("data",foldids,openids);
         if (data && data instanceof Array && data.length > 0) {
 
             for (let i = 0; i < data.length; i++) {
-                if (ids.indexOf("," + data[i].id + ",") > -1) {
-                    data[i].hide = !open;//隐藏该行
+                if (openids.indexOf("," + data[i].id + ",") > -1) {
+                    data[i].hide =false;
                 }
-                else {
+                if (foldids.indexOf("," + data[i].id + ",") > -1) {
+                    data[i].hide =true;
+                }
+               
 
-                }
             }
         }
         return data;
@@ -258,7 +286,7 @@ let propsTran = {
      * @returns 
      */
     handlerLabelStyle(labelStyle, maxWidth) {
-         labelStyle = func.clone(labelStyle) || {};
+        labelStyle = func.clone(labelStyle) || {};
         if (labelStyle.width && labelStyle.width.indexOf("%") <= -1 && parseFloat(labelStyle.width) < maxWidth) {
             labelStyle.width = maxWidth;
         }

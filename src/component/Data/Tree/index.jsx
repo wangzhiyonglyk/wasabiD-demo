@@ -90,7 +90,26 @@ class Tree extends Component {
     getChecked() {
         return treeFunc.getChecked(this.state.data);
     }
+    /**
+     * 设置勾选
+     */
+    setChecked(value) {
+        if (value) {
+            for (let i = 0; i < value.length; i++) {
+                data = treeFunc.setSelfChecked(value, this.state.data);
+            }
+            let filter = treeFunc.filter(data, this.state.filterValue);
+            this.setState({
+                data: data,
+                filter
+            })
 
+        }
+        else {
+            this.clearChecked();
+        }
+
+    }
     /**
     * 清除勾选
     */
@@ -107,7 +126,8 @@ class Tree extends Component {
      * 全部勾选
      */
     checkedAll() {
-        if (this.props.checkStyle==="checkbox") {
+        if (this.props.checkStyle === "checkbox") {
+
             let data = treeFunc.checkedAll(this.state.data);
             //同时处理保持一致
             let filter = treeFunc.filter(data, this.state.filterValue);
@@ -133,7 +153,51 @@ class Tree extends Component {
 
 
     }
+    /**
+      * 删除某个节点，给父组件调用
+      * @param {*} row 节点
+      */
+    remove(row) {
+        if (row && row._path) {
+            let data = treeFunc.removeNode(this.state.data, row);
+            //同时处理保持一致
+            let filter = treeFunc.filter(data, this.state.filterValue);
+            this.setState({
+                data: data,
+                filter: filter
+            })
+            this.props.onRemove && this.props.onRemove(row.id, row.text, row);
+        }
 
+    }
+    /**
+     * 筛选节点
+     * @param {*} key 
+     */
+    filter(key) {
+        let filter = treeFunc.filter(this.state.data, key);
+        this.setState({
+            filterValue: key.trim(),
+            filter: filter
+        })
+    }
+    /**
+     * 添加节点
+     * @param {*} children 
+     * @param {*}node
+     */
+    append(children, node = null) {
+
+        if (children && children.length > 0) {
+            let data = treeFunc.appendChildren(this.state.data, children, node);
+            this.setState({
+                data: data,
+                loadingId: ""
+            }, () => {
+
+            })
+        }
+    }
     /**
      * 单击事件
      * @param {*} id 值
@@ -172,8 +236,8 @@ class Tree extends Component {
      * @param {*} text 文本
      * @param {*} children  子节点
      */
-    onExpand(open, id, text, row) {
-        this.props.onExpand && this.props.onExpand(open, id, text, row)
+    onExpand(open,id, text, row) {
+        let data = treeFunc.setOpen(this.state.data, row);//先处理折叠
         if (this.props.asyncAble && (!row.children || row.children.length == 0)) {//没有数据
             let asyncChildrenData = [];
             if (this.props.onAsync && typeof this.props.onAsync === "function") {//自行处理
@@ -181,7 +245,7 @@ class Tree extends Component {
                 if (asyncChildrenData && asyncChildrenData instanceof Array && asyncChildrenData.length > 0) {
                     //格式化数据
                     asyncChildrenData = propsTran.formartData("tree", "", asyncChildrenData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
-                    let data = treeFunc.appendChildren(this.state.data, row, asyncChildrenData);
+                    data = treeFunc.appendChildren(data, row, asyncChildrenData);
                     //同时处理保持一致
                     let filter = treeFunc.filter(data, this.state.filterValue);
                     this.setState({
@@ -193,7 +257,8 @@ class Tree extends Component {
                 else {
                     //没有返回值，可能异步处理了
                     this.setState({
-                        loadingId: row.id
+                        loadingId: row.id,
+                        data:data
                     })
                 }
 
@@ -212,13 +277,24 @@ class Tree extends Component {
                 }
                 let wasabi_api = window.api || api;
                 this.setState({
-                    loadingId: id
+                    loadingId: id,
+                    data:data,
                 })
                 wasabi_api.ajax(fetchmodel);
                 console.log("tree async-fetch", fetchmodel);
             }
 
         }
+        else {
+            let filter = treeFunc.filter(data, this.state.filterValue);
+            this.setState({
+                data: data,
+                filter: filter,
+
+            })
+        }
+
+        this.props.onExpand && this.props.onExpand(open,id,text,row);
 
     }
     /**
@@ -240,7 +316,7 @@ class Tree extends Component {
         if (typeof this.props.loadSuccess === "function") {
             //正确返回
             let resData = this.props.loadSuccess(res);
-            res=resData&&resData instanceof Array?resData:res;
+            res = resData && resData instanceof Array ? resData : res;
         }
         let realData = func.getSource(res, this.props.dataSource || "data");
         let row = window.sessionStorage.getItem("async-tree-node");
@@ -311,7 +387,7 @@ class Tree extends Component {
             if (dragType == "in") {
                 if (dragNode.pId !== dropNode.id) {
                     data = treeFunc.moveInNode(this.state.data, dragNode, dropNode);
-                  
+
                 } else {
                     return;
                 }
@@ -331,51 +407,7 @@ class Tree extends Component {
         }
 
     }
-    /**
-   * 删除某个节点，给父组件调用
-   * @param {*} row 节点
-   */
-    remove(row) {
-        if (row && row._path) {
-            let data = treeFunc.removeNode(this.state.data, row);
-            //同时处理保持一致
-            let filter = treeFunc.filter(data, this.state.filterValue);
-            this.setState({
-                data: data,
-                filter: filter
-            })
-            this.props.onRemove && this.props.onRemove(row.id, row.text, row);
-        }
 
-    }
-    /**
-     * 筛选节点
-     * @param {*} key 
-     */
-    filter(key) {
-        let filter = treeFunc.filter(this.state.data, key);
-        this.setState({
-            filterValue: key.trim(),
-            filter: filter
-        })
-    }
-    /**
-     * 添加节点
-     * @param {*} children 
-     * @param {*}node
-     */
-    append(children, node = null) {
-
-        if (children && children.length > 0) {
-            let data = treeFunc.appendChildren(this.state.data, children, node);
-            this.setState({
-                data: data,
-                loadingId: ""
-            }, () => {
-
-            })
-        }
-    }
     shouldComponentUpdate(nextProps, nextState) {
         if (func.diffOrder(nextProps, this.props)) {
             return true;
@@ -406,7 +438,7 @@ class Tree extends Component {
             onDrop: this.onDrop,
             onDrag: this.props.onDrag
         }
-        let data = this.state.filter.length > 0 ? this.state.filter : this.state.data;
+        let data = this.state.filterValue ? this.state.filter : this.state.data;
         if (data instanceof Array && data.length > 0) {
             data.map((item, index) => {
                 let isParent = false;//是否为父节点
@@ -430,7 +462,7 @@ class Tree extends Component {
                 />);
             });
         }
-        return <ul className={"wasabi-tree clearfix " + (this.props.className||"")} style={this.props.style}>
+        return <ul className={"wasabi-tree clearfix " + (this.props.className || "")} style={this.props.style}>
             {nodeControl}
         </ul>
 

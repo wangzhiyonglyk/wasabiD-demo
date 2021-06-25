@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Tree from "../../component/Data/Tree"
-import { DataGrid,Input, func ,CheckBox,Text,Radio,Upload} from "../../component"
+import { DataGrid,TreeGrid, Input, func ,CheckBox,Text,Radio,Upload} from "../../component"
 
 import("./index.css")
 class PivotPage extends React.Component {
@@ -16,7 +16,7 @@ class PivotPage extends React.Component {
                 {
                     name: "id",
                     label: "id",
-                    width: 200
+                  
                 },
 
             ],
@@ -25,7 +25,7 @@ class PivotPage extends React.Component {
                 {
                     name: "label",
                     label: "省1",
-                    width: 200
+                  
                 },
                 {
                     name: "省2",
@@ -35,17 +35,17 @@ class PivotPage extends React.Component {
                 {
                     name: "省3",
                     label: "省3",
-                    width: 200
+                   
                 },
                 {
                     name: "省4",
                     label: "省4",
-                    width: 200
+                 
                 },
                 {
                     name: "省5",
                     label: "省5",
-                    width: 200
+                  
                 },
                 {
                     name: "省6",
@@ -139,9 +139,12 @@ class PivotPage extends React.Component {
     }
     render() {
        return <div style={{padding:5}}>
-           <Tree ref="tree" key="1" type="checkbox" asyncAble={true} onAsync={this.onAsync.bind(this)} data={this.state.data} textField="label"  idField="id" valueField="id"></Tree><br></br>
-           <Input key="2" type="treepicker" data={this.state.data} textField="label" valueField="id"></Input><br></br>
+          {/* <Input key="1" type="treepicker" headers={this.state.headers} data={this.state.data} textField="label" valueField="id"></Input><br></br> */}
+           {/* <Input key="2" type="gridpicker" headers={this.state.headers} data={this.state.data} textField="label" valueField="id"></Input><br></br> */}
 {/* <DataGrid onSave={this.onSave.bind(this)} rowNumber={true} selectAble={true} importAble={true} data={this.state.data} editAble={true}  headers={this.state.headers}></DataGrid> */}
+    <TreeGrid  treeHeader="树节点" textField="label" idField="id" onSave={this.onSave.bind(this)} rowNumber={true} selectAble={true} importAble={true} data={this.state.data} editAble={true}  headers={this.state.headers}></TreeGrid>
+    {/* <Tree textField="label" idField="id" onSave={this.onSave.bind(this)} rowNumber={true} selectAble={true} importAble={true} data={this.state.data} editAble={true}  headers={this.state.headers}></Tree>
+       */}
        </div> 
            
 

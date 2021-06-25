@@ -189,41 +189,20 @@ desc:日期选择样式
   height: 527px;
 }
 
-.combobox .picker.default {
-  left: 0px;
-}
-
-.combobox .picker.left {
-  left: 0px;
-}
-
-.combobox .picker.right {
-  left: -170px;
-}
-
 /*下拉列表*/
 
 .combobox .gridpicker {
-  width: 410px;
-  height: 527px;
+  min-width: 500px;
+  width:100%;
+  height: 600px;
 }
 
-.combobox .gridpicker.default {
-  left: 0px;
-}
-
-.combobox .gridpicker.left {
-  left: 0px;
-}
-
-.combobox .gridpicker.right {
-  left: -140px;
-}
 
 /*下拉列表*/
 
 .combobox .treepicker {
-  width: 300px;
+  width: 100%;
+  min-width: 300px;
   height: 400px;
   overflow: auto;
 }
@@ -250,11 +229,4 @@ desc:日期选择样式
   border-color: var(--border-color)!important;
 }
 
-.combobox .ok {
-  display: block;
-  width: 100%;
-  height: 40px;
-  border-bottom: none;
-  text-align: right;
-  padding-top: 5px;
-}
+

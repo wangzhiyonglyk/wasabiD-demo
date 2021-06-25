@@ -34,6 +34,7 @@ export default {
                 "switch",//开关
                 "picker",//级联选择组件
                 "treepicker",//下拉树选择
+                "gridpicker",//表格下拉
                 "panelpicker",//面板选择
         ]),//字段类型，
         name: PropTypes.string,//字段名
@@ -59,7 +60,7 @@ export default {
         max: PropTypes.number,//最大值,最大长度,最多选项
         onClick: PropTypes.func,//单击事件
         onChange: PropTypes.func,//值改变事件
-        onSearch:PropTypes.func,//查询事件
+        onSearch: PropTypes.func,//查询事件
 
         //其他属性 combobox
         contentType: PropTypes.string,//http请求的request类型
@@ -89,4 +90,7 @@ export default {
         attachTime: PropTypes.bool,//日期组件时是否附带时间
         attachSecond: PropTypes.bool,//时间组件是否附带秒
         allMinute: PropTypes.bool,//时间组件是否显示全部分钟
+
+        priKey:PropTypes.array,//主键
+        headers: PropTypes.array,//表头
 }

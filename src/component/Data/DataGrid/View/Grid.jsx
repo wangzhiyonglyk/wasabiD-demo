@@ -242,11 +242,11 @@ class Grid extends React.Component {
         let pageTotal = this.props.data.length < this.props.total ? this.props.data.length : this.props.total;
         grid.push(this.props.editAble?<GridTool key="tool"  upload={this.props.upload} importAble={this.props.importAble} addAble={this.props.addAble} editAble={this.props.editAble} onAdd={this.props.onAdd} onSave={this.props.onSave}></GridTool>:null)
         /* 头部分页 */
-        grid.push(this.props.pagePosition == 'top' || this.props.pagePosition == 'both' ? <Pagination key="p1"  reload={this.props.reload} exportAble={this.props.exportAble} export={this.props.export} onChange={this.props.paginationHandler} pageIndex={this.props.pageIndex} pageSize={this.props.pageSize} pageTotal={pageTotal} total={this.props.total}></Pagination> : null)
+        grid.push(this.props.pagination&&( this.props.pagePosition == 'top' || this.props.pagePosition == 'both')? <Pagination key="p1"  reload={this.props.reload} exportAble={this.props.exportAble} export={this.props.export} onChange={this.props.paginationHandler} pageIndex={this.props.pageIndex} pageSize={this.props.pageSize} pageTotal={pageTotal} total={this.props.total}></Pagination> : null)
         {/* 真实表格容器 */ }
         grid.push(this.renderTable(this.props.height))
         {/* 底部分页 */ }
-        grid.push(this.props.pagePosition == 'bottom' || this.props.pagePosition == 'both' ? <Pagination key="p2"   reload={this.props.reload} exportAble={this.props.exportAble} export={this.props.export} onChange={this.props.paginationHandler} pageIndex={this.props.pageIndex} pageSize={this.props.pageSize} pageTotal={pageTotal} total={this.props.total}></Pagination> : null)
+        grid.push(this.props.pagination&&( this.props.pagePosition == 'bottom' || this.props.pagePosition == 'both') ? <Pagination key="p2"   reload={this.props.reload} exportAble={this.props.exportAble} export={this.props.export} onChange={this.props.paginationHandler} pageIndex={this.props.pageIndex} pageSize={this.props.pageSize} pageTotal={pageTotal} total={this.props.total}></Pagination> : null)
         /* 加载动画 */
         grid.push(this.props.loading ? <GridLoading key="loading"></GridLoading> : null)
         return <div  onDragOver={this.props.editAble?this.props.onDragOver:null} onDrop={ this.props.editAble? this.props.onDrop:null} className={'wasabi-grid' + (this.props.className || "") + (this.state.fixedHeaders && this.state.fixedHeaders.length > 0 ? " fixedHeader" : "")}

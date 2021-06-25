@@ -16,6 +16,7 @@ class TreePicker extends Component {
     constructor(props) {
         super(props);
         this.tree = React.createRef();
+        this.checkbox = React.createRef();
         this.state = {
             containerid: func.uuid(),
             show: false,//是否显示下拉框
@@ -26,13 +27,13 @@ class TreePicker extends Component {
         }
         this.showPicker = this.showPicker.bind(this);
         this.hidePicker = this.hidePicker.bind(this);
-        this.checkedAll=this.checkedAll.bind(this);
+        this.checkedAll = this.checkedAll.bind(this);
     }
     static getDerivedStateFromProps(props, state) {
         if (props.value != state.oldPropsValue) {//父组件强行更新了
             return {
                 value: props.value || "",
-                text: propsTran.processText(props.value,props.data).join(","),
+                text: propsTran.processText(props.value, props.data).join(","),
                 oldPropsValue: props.value
             }
         }
@@ -44,11 +45,23 @@ class TreePicker extends Component {
      * @param {*} value 
      */
     setValue(value) {
-        let text = propsTran.processText(value, this.props.data).join(",");
-        this.setState({
-            value: value,
-            text: text,
-        })
+        if (value) {
+            let text = propsTran.processText(value, this.props.data).join(",");
+            this.setState({
+                value: value,
+                text: text,
+            })
+            this.tree.current.setChecked(value);
+        }
+        else {
+            this.setState({
+                value: "",
+                text: "",
+            })
+            this.checkbox.current.setValue("");
+            this.checkedAll("");
+        }
+
     }
     /**
      * 获取值
@@ -57,11 +70,14 @@ class TreePicker extends Component {
     getValue() {
         return this.state.value;
     }
+    /**
+     * 清除
+     */
     onClear() {
         this.setValue("");
     }
     showPicker(event) {//显示选择
-        try{
+        try {
             event.stopPropagation();//防止冒泡
             if (this.props.readOnly) {
                 //只读不显示
@@ -73,12 +89,12 @@ class TreePicker extends Component {
                 })
             }
             document.addEventListener("click", this.hidePicker)
-    
-        }
-        catch(e){
 
         }
-       
+        catch (e) {
+
+        }
+
     }
     /**
      * 隐藏下拉框
@@ -93,7 +109,7 @@ class TreePicker extends Component {
             try {
 
                 document.removeEventListener("click", this.hidePicker);
-                this.props.validate&&this.props.validate(this.state.value);
+                this.props.validate && this.props.validate(this.state.value);
                 //在此处处理失去焦点事件
                 this.props.onBlur && this.props.onBlur(this.state.value, this.state.text, this.props.name);
             }
@@ -110,21 +126,20 @@ class TreePicker extends Component {
      * @param {*} row 
      */
     onSelect(checked, value, text, row) {
-        let newValue = this.state.value||""; let newText = this.state.text||"";
-        console.log(newValue,newText);
-        newValue=newValue?newValue.split(","):[];newText=newText?newText.split(","):[];
-        if(checked){
+        let newValue = this.state.value || ""; let newText = this.state.text || "";
+        newValue = newValue ? newValue.split(",") : []; newText = newText ? newText.split(",") : [];
+        if (checked) {
             newValue.push(value);
             newText.push(text);
         }
-        else{
+        else {
             newValue.splice(newValue.indexOf(value.toString()), 1);
             newText.splice(newText.indexOf(text.toString()), 1);
         }
         this.setState({
             value: newValue.join(","),
             text: newText.join(","),
-            show:true,
+            show: true,
 
         });
         this.props.onSelect && this.props.onSelect(newValue.join(","), text.join(","), this.props.name, row);
@@ -134,22 +149,21 @@ class TreePicker extends Component {
      * 全选
      * @param {*} value 
      */
-    checkedAll(value) {  
+    checkedAll(value) {
         if (value) {
-          let data=  this.tree.current.checkedAll&&this.tree.current.checkedAll();    
-            console.log("data");
-          let r = propsTran.getTreePickerValueAll(data);
-          this.setState({
-              value: r.values.join(","),
-              text: r.texts.join(","),
-          })   
+            let data = this.tree.current.checkedAll && this.tree.current.checkedAll();
+            let r = propsTran.getTreePickerValueAll(data);
+            this.setState({
+                value: r.values.join(","),
+                text: r.texts.join(","),
+            })
         }
         else {
             this.setState({
                 value: "",
                 text: "",
             })
-            this.tree.current.clearChecked&&this.tree.current.clearChecked();
+            this.tree.current.clearChecked && this.tree.current.clearChecked();
         }
     }
     /**
@@ -158,7 +172,7 @@ class TreePicker extends Component {
      */
     filterHandler(event) {
         if (event.keyCode === 13) {
-            this.tree.current.filter&&this.tree.current.filter(event.target.value.trim())
+            this.tree.current.filter && this.tree.current.filter(event.target.value.trim())
         }
 
 
@@ -194,6 +208,7 @@ class TreePicker extends Component {
                         onKeyUp={this.filterHandler.bind(this)}  ></input>
                     {
                         this.props.checkStyle == "checkbox" ? <CheckBox name="wasabi-tree-choseall"
+                            ref={this.checkbox}
                             style={{ marginTop: -1 }}
                             data={[{ value: "1", text: "全选" }]} onSelect={this.checkedAll.bind(this)}></CheckBox> : null
                     } </div>
@@ -214,4 +229,4 @@ TreePicker.defaultProps = { type: "treepicker", checkStyle: "checkbox" }
 /**
  *不用使用 loadDataHoc处理数据，在Tree处理了
  */
-export default validateHoc(TreePicker,"treepicker");
+export default validateHoc(TreePicker, "treepicker");

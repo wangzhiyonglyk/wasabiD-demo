@@ -21,7 +21,12 @@
     text-align: center;
     cursor: pointer;
     border-top: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
     overflow: hidden;
+    height: 42px;
+    color: var(--color);
+    font-size: var(--font-size);
+    font-weight: bold;
 }
 .wasabi-treegrid-configuration-panel
 {
@@ -60,5 +65,8 @@
 
 .wasabi-treegrid-rowsData{
     position:relative;
+    border-top: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+    overflow: hidden;
 }
 

@@ -57,9 +57,9 @@ function NodeView(props) {
     const { rename } = props;
 
     //tree的事件
-    const { onDoubleClick, onClick, onChecked } = props;
+    const { onDoubleClick, onClick, onChecked,onExpand } = props;
     //node的事件
-    const { onNodeDragStart, onNodeDragEnd, onNodeDrop, onNodeDragOver, onNodeDragLeave, onNodeExpand, onBlur, onKeyUp } = props;
+    const { onNodeDragStart, onNodeDragEnd, onNodeDrop, onNodeDragOver, onNodeDragLeave, onBlur, onKeyUp } = props;
     let title = row.title || row.text;//提示信息 
     let iconCls = row.iconCls;//默认图标图标
     if (row.isParent) {//如果是父节点
@@ -84,11 +84,11 @@ function NodeView(props) {
     else {
     }
     //节点元素
-    return <li className="wasabi-tree-node" style={{ display: row.hide ? "none" : "block" }} >
-        <div id={row.nodeid} className={clickId == row.id ? "wasabi-tree-node-text selected" : "wasabi-tree-node-text"} >
+    return <li className="wasabi-tree-li" style={{ display: row.hide ? "none" : "block" }} >
+        <div id={row.nodeid} className={clickId == row.id ? "wasabi-tree-li-node selected" : "wasabi-tree-li-node"} >
             <i className={row.open ? "icon-reduce" : "icon-expand"} style={{ opacity: row.isParent ? 1 : 0, transform: "translateY(13px)" }}
-                onClick={ row.isParent?onNodeExpand:null}></i>
-            <div className="treenode" title={title}
+                onClick={ row.isParent?onExpand.bind(this,!row.open,row.id, row.text, row):null}></i>
+            <div className="wasabi-tree-li-node-text" title={title}
                 onDrop={onNodeDrop}
                 onDragOver={onNodeDragOver} onDragLeave={onNodeDragLeave}
                 onClick={onClick.bind(this, row.id, row.text, row)}
@@ -103,9 +103,9 @@ function NodeView(props) {
                             name={"node" + row.id}
                             value={row.checked ? row.id : ""} data={[{ value: row.id, text: "" }]}
                             onSelect={onChecked.bind(this, row.id, row.text, row)}></Input>
-                        <div key="2" draggable={row.draggAble} onDragEnd={onNodeDragEnd} onDragStart={onNodeDragStart}>
+                        <div key="2" className="wasabi-tree-li-node-text-div" draggable={row.draggAble} onDragEnd={onNodeDragEnd} onDragStart={onNodeDragStart}>
                             <i key="3" className={iconCls} ></i>
-                            <a href={row.href} className="wasabi-tree-txt">{row.text}&nbsp;&nbsp;</a></div>
+                            <a href={row.href} className="wasabi-tree-txt">{row.text}</a></div>
                     </React.Fragment>
                 }
                 {
@@ -133,12 +133,10 @@ class TreeNode extends Component {
         this.treeNodesRef = [];
         //异步的情况下，如果没有子节点就默认不展开
         this.state = {
-            open: this.props.asyncAble && (!this.props.children || this.props.children.length == 0) ? false : this.props.open,//异步的情况下，默认不打开
             rename: false,//是否处于重命名状态
             nodeid: func.uuid(),
             textid: func.uuid()
         }
-        this.onNodeExpand = this.onNodeExpand.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.onKeyUp = this.onKeyUp.bind(this);
         this.onNodeRename = this.onNodeRename.bind(this);
@@ -161,22 +159,6 @@ class TreeNode extends Component {
             }
         }
     }
-    /**
-     * 展开/折叠
-     */
-    onNodeExpand() {
-        //节点属性
-        let row = new TreeNodeRow();//得到无数据
-        for (let key in row) {
-            row[key] = this.props[key] != undefined && this.props[key] != null ? this.props[key] : row[key];
-        }
-        this.setState({
-            open: !this.state.open
-        })
-        this.props.onExpand && this.props.onExpand(!this.state.open, row.id, row.text, row)
-    }
-
-
     /**
      * 失去焦点
      * @param {*} id 
@@ -377,9 +359,6 @@ class TreeNode extends Component {
             }
             if (dropAble) {
                 window.localStorage.removeItem("wasabi-drag-type");
-                this.setState({
-                    open: true
-                })
                 this.props.onDrop && this.props.onDrop(drag, row, dragType);
             }
         }

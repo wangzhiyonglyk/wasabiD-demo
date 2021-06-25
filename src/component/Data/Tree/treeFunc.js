@@ -22,6 +22,30 @@ const treeFunc = {
         return nodes;
     },
     /**
+     * 只设置自身的勾选
+     * @param {*} value 
+     * @param {*} data 
+     */
+    setSelfChecked(value, data) {
+        data=func.clone(data);
+        if (value) {
+            for (let i = 0; i < data.length; i++) {
+                if (("," + value + ",").indexOf("," + data[i].id + ",") > -1) {
+                    data[i].checked = true;
+                }
+                else {
+                    data[i].checked = false;
+                }
+                if (data[i].children && data[i].children.length > 0) {
+                    data[i].children = treeFunc.setSelfChecked(value, data[i].children);
+                }
+            }
+
+        }
+        return data;
+
+    },
+    /**
      * 设置节点及子孙节点的勾选
      * @param {*} data 数据
      * @param {*} node 节点路径
@@ -220,6 +244,20 @@ const treeFunc = {
             }
             return data;
         }
+    },
+    /**
+     * 设置折叠
+     * @param {*} data 
+     * @param {*} node 
+     */
+    setOpen(data,node){
+        data=func.clone(data);
+        let nodes = this.findLeafNodes(data, node._path);
+        if (nodes && nodes.length > 0) {
+            let leaf = nodes[nodes.length - 1];//叶子节点，即实际的节点    
+            leaf.open=leaf.open==null||leaf.open==undefined?false:!leaf.open; 
+        }
+        return data;
     },
     /**
      * 重命名

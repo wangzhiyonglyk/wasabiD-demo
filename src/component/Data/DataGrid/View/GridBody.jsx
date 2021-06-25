@@ -187,6 +187,9 @@ class GridBody extends React.Component {
             return;
         }
         this.props.data.map((rowData, rowIndex) => {
+            if (rowData.hide) {//隐藏该行,用于treegrid
+                return;
+            }
             let tds = []; //当前的列集合
             let key = this.getKey(rowIndex); //获取这一行的关键值
             //生成数据列

@@ -25,7 +25,6 @@ class TreeGrid extends Component {
         this.grid = React.createRef();
         this.tree = React.createRef();
         this.state = {
-            value: this.props.value,
             headers: this.props.headers,
             url: this.props.url,
             params: null,
@@ -55,16 +54,9 @@ class TreeGrid extends Component {
             //如果传了死数据
             newState.rawData = props.data;
             //拿到text
-            let result = propsTran.formartData("tree", props.value, props.data, props.idField, props.textField);
+            let result = propsTran.formartData("treegrid", "", props.data, props.idField, props.textField);
 
-            if (props.simpleData) {
-                //生成树结构
-                newState.realTreeData = func.toTreeData(result, props.idField, props.parentField, props.textField)
-
-            }
-            else {
-                newState.realTreeData = func.clone(result);
-            }
+            newState.realTreeData =result;
 
             /**
              *为了保存顺序，要根据树的数据，生成表格的数据 
@@ -140,7 +132,7 @@ class TreeGrid extends Component {
             realData = func.getSource(data, this.props.dataSource);
         }
         //根据value值拿到text
-        let result = propsTran.formartData("tree", this.state.value, realData, this.props.idField, this.props.textField,this.props.simpleData);
+        let result = propsTran.formartData("tree","", realData, this.props.idField, this.props.textField,this.props.simpleData);
         /**
             *为了保存顺序，要根据树的数据，生成表格的数据 
             */
@@ -196,9 +188,9 @@ class TreeGrid extends Component {
      * @param {*} children 
      * @param {*} nodeData 
      */
-    treeClick(id, text, children, nodeData) {
+    treeClick(id, text, row) {
         this.grid.current.setClick(id);
-        this.props.onClick && this.props.onClick(nodeData);
+        this.props.onClick && this.props.onClick(id, text, row);
     }
     /**
      * 树的勾选事件
@@ -218,16 +210,15 @@ class TreeGrid extends Component {
      * @param {*} open 是否展开
      * @param {*} id id,
      * @param {*} text 文本
-     * @param {*} children  子节点
      * @param {*} row 当前行节点
      */
-    expandHandler(open, id, text, children, row) {
+    onExpand( open, id, text, row) {
 
-        let realGridData = propsTran.gridShowOrHideData(this.state.realGridData, open, children);
-
+        let realGridData = propsTran.gridShowOrHideData(this.state.realGridData,open,row);
         this.setState({
             realGridData: realGridData
         })
+        this.props.onExpand&&this.props.onExpand(open,id,text,row);
     }
     /**
      * 获取勾选的数据
@@ -251,25 +242,25 @@ class TreeGrid extends Component {
     }
     render() {
 
-        let treeTop = 0;
+        let treeTopHeight = 0;
         if (this.state.headers instanceof Array && this.state.headers.length > 0) {
             if (this.state.headers[0] instanceof Array) {
-                treeTop = this.state.headers.length * 41;
+                treeTopHeight = this.state.headers.length * 42;
             }
             else {
-                treeTop = 41;
+                treeTopHeight = 42;
             }
         }
 
         return <div className={"wasabi-treegrid "+(this.props.className||"")} style={this.props.style}>
             <div className="wasabi-treegrid-left" style={{width:300}}>
-                <div className="wasabi-treegrid-configuration" style={{ height: treeTop }}>
+                <div className="wasabi-treegrid-configuration" style={{ height: treeTopHeight ,lineHeight:treeTopHeight+"px"}}>
                     {this.props.treeHeader}
                 </div>
                 <div className="wasabi-treegrid-rowsData" >
-                    <Tree checkAble={this.props.checkAble} checkStyle={this.props.checkStyle}
+                    <Tree isPivot={true} checkAble={this.props.checkAble} checkStyle={this.props.checkStyle}
                         ref={this.tree} onClick={this.treeClick.bind(this)} data={this.state.realTreeData} simpleData={true}
-                        onChecked={this.onChecked.bind(this)} isPivot={true} expandHandler={this.expandHandler.bind(this)}
+                        onChecked={this.onChecked.bind(this)} isPivot={true} onExpand={this.onExpand.bind(this)}
                     ></Tree>
                 </div>
             </div>
