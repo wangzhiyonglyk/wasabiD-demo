@@ -140,7 +140,7 @@ class PivotPage extends React.Component {
     render() {
        return <div style={{padding:5}}>
            <Tree ref="tree" key="1" type="checkbox" asyncAble={true} onAsync={this.onAsync.bind(this)} data={this.state.data} textField="label"  idField="id" valueField="id"></Tree><br></br>
-           {/* <Input key="2" type="treepicker" data={this.state.data} textField="label" idField="id"></Input><br></br> */}
+           <Input key="2" type="treepicker" data={this.state.data} textField="label" valueField="id"></Input><br></br>
 {/* <DataGrid onSave={this.onSave.bind(this)} rowNumber={true} selectAble={true} importAble={true} data={this.state.data} editAble={true}  headers={this.state.headers}></DataGrid> */}
        </div> 
            

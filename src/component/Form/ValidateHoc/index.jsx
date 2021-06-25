@@ -9,7 +9,7 @@ import dom from "../../libs/dom"
  * @param {*} InputWidget 表单组件
  * @returns 
  */
-let validateHoc = function (InputWidget,inputType="text") {
+let validateHoc = function (InputWidget, inputType = "text") {
     class ValidateComponent extends React.Component {
         constructor(props) {
             super(props);
@@ -20,14 +20,14 @@ let validateHoc = function (InputWidget,inputType="text") {
                 inValidateText: "",//失败的文字
             }
             this.validate = this.validate.bind(this);
-            this.hideSuccess=this.hideSuccess.bind(this);
+            this.hideSuccess = this.hideSuccess.bind(this);
         }
         /**
          * 验证有效性
          * @returns 
          */
         validate(value) {
-          let type=this.props.type||inputType;
+            let type = this.props.type || inputType;
             value = (value == null || value == undefined) ? this.input.current.getValue() : value;//如果没有传值，则取文本框值
 
             let isvalidate = true;//默认是有效的
@@ -172,22 +172,22 @@ let validateHoc = function (InputWidget,inputType="text") {
                                 }
                             }
                         }
-                        if(isvalidate&&  type.indexOf("range")>-1){
-                            valueArr=value.toString().split(",");
-                            if(valueArr.length<2){
+                        if (isvalidate && type.indexOf("range") > -1) {
+                            valueArr = value.toString().split(",");
+                            if (valueArr.length < 2) {
                                 isvalidate = false;
                                 inValidateText = "输入两个值";
                             }
-                            else if(valueArr.length===2&&valueArr[1]<valueArr[0]){
+                            else if (valueArr.length === 2 && valueArr[1] < valueArr[0]) {
                                 isvalidate = false;
                                 inValidateText = "第二值大于等于第一个值";
                             }
-                            else if (valueArr.length>2){
+                            else if (valueArr.length > 2) {
                                 isvalidate = false;
                                 inValidateText = "输入错误";
                             }
                             else {
-                                isvalidate=true;
+                                isvalidate = true;
                             }
                         }
 
@@ -209,8 +209,8 @@ let validateHoc = function (InputWidget,inputType="text") {
 
 
             }
-           
-         
+
+
             return isvalidate;
         }
         /**
@@ -220,6 +220,10 @@ let validateHoc = function (InputWidget,inputType="text") {
         setValue(value) {
             this.input.current.setValue && this.input.current.setValue(value);
         }
+        /**
+         * 获取值
+         * @returns 
+         */
         getValue() {
             return this.input.current.getValue();
         }
@@ -234,11 +238,48 @@ let validateHoc = function (InputWidget,inputType="text") {
             this.input.current.reload && this.input.current.loadData(url, params);
         }
         /**
+       * 获取所有勾选的值
+       * @returns 
+       */
+        getChecked() {
+            return this.input.current.getChecked && this.input.current.getChecked();
+        }
+        /**
+         * 清除勾选
+         * @returns 
+         */
+        clearChecked() {
+            this.input.current.clearChecked && this.input.current.clearChecked();
+        }
+        /**
+         * 全部选择
+         */
+        checkedAll() {
+          return  this.input.current.checkedAll && this.input.current.checkedAll();
+        }
+        /**
+         * 筛选，tree
+         * @param {*} value 
+         * @returns 
+         */
+        filter(value) {
+            this.input.current.filter && this.input.current.filter(value);
+        }
+        /**
+         * 追加数据
+         * @param {*} children 
+         * @param {*} node 
+         * @returns 
+         */
+        append(children, node) {
+            this.input.current.append && this.input.current.append(children, node);
+        }
+        /**
          * 失去焦点后，如果验证成功，则去掉成功样式
          * @param {*} event 
          */
         hideSuccess(event) {
-            if (event.target &&this.state.validateClass==="wasabi-has-success"&& !dom.isDescendant(document.getElementById(this.state.containerid), event.target)) {
+            if (event.target && this.state.validateClass === "wasabi-has-success" && !dom.isDescendant(document.getElementById(this.state.containerid), event.target)) {
                 this.setState({
                     validateClass: ""
                 });
@@ -252,7 +293,7 @@ let validateHoc = function (InputWidget,inputType="text") {
                 }
             }
         }
-        
+
         shouldComponentUpdate(nextProps, nextState) {
             if (func.diffOrder(nextProps, this.props)) {
                 return true;

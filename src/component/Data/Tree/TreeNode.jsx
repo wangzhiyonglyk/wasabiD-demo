@@ -86,7 +86,7 @@ function NodeView(props) {
     //节点元素
     return <li className="wasabi-tree-node" style={{ display: row.hide ? "none" : "block" }} >
         <div id={row.nodeid} className={clickId == row.id ? "wasabi-tree-node-text selected" : "wasabi-tree-node-text"} >
-            <i className={row.open ? "icon-reduce" : "icon-expand"} style={{ opacity: row.isParent ? 1 : 0, transform: "translateY(15px)" }}
+            <i className={row.open ? "icon-reduce" : "icon-expand"} style={{ opacity: row.isParent ? 1 : 0, transform: "translateY(13px)" }}
                 onClick={ row.isParent?onNodeExpand:null}></i>
             <div className="treenode" title={title}
                 onDrop={onNodeDrop}

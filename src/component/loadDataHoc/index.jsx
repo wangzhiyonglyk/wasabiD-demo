@@ -132,6 +132,12 @@ function loadDataHoc(Widget, type = "select") {
             this.input.current.clearChecked && this.input.current.clearChecked();
         }
         /**
+         * 全部选择
+         */
+        checkedAll(){
+           return this.input.current.checkedAll && this.input.current.checkedAll();
+        }
+        /**
          * 筛选，tree
          * @param {*} value 
          * @returns 
@@ -195,18 +201,7 @@ function loadDataHoc(Widget, type = "select") {
                 data: tempFormatData,
             })
         }
-        /**
-         * 数据筛选
-         * @param {*} value 
-         */
-        filterHandler(value) {
-            let filterData = propsTran.treeFilter(value, this.state.data);
-
-            this.setState({
-                filterText: value.trim(),
-                filterData: filterData
-            })
-        }
+       
         shouldComponentUpdate(nextProps, nextState) {
             if (func.diffOrder(nextProps, this.props)) {
                 return true;
@@ -221,7 +216,6 @@ function loadDataHoc(Widget, type = "select") {
                 type={type}
                 {...this.props}
                 ref={this.input}
-                filterHandler={this.filterHandler.bind(this)}
                 reload={this.reload}
                 data={this.state.filterText ? this.state.filterData : this.state.data}
             ></Widget>

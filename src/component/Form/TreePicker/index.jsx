@@ -26,6 +26,7 @@ class TreePicker extends Component {
         }
         this.showPicker = this.showPicker.bind(this);
         this.hidePicker = this.hidePicker.bind(this);
+        this.checkedAll=this.checkedAll.bind(this);
     }
     static getDerivedStateFromProps(props, state) {
         if (props.value != state.oldPropsValue) {//父组件强行更新了
@@ -133,15 +134,15 @@ class TreePicker extends Component {
      * 全选
      * @param {*} value 
      */
-    choseAllHandler(value) {
+    checkedAll(value) {  
         if (value) {
-            let data = this.props.data;
-            let r = propsTran.getTreePickerValueAll(data);
-            this.setState({
-                value: r.values.join(","),
-                text: r.texts.join(","),
-            })
-            this.tree.current.checkedAll&&this.tree.current.checkedAll();
+          let data=  this.tree.current.checkedAll&&this.tree.current.checkedAll();    
+            console.log("data");
+          let r = propsTran.getTreePickerValueAll(data);
+          this.setState({
+              value: r.values.join(","),
+              text: r.texts.join(","),
+          })   
         }
         else {
             this.setState({
@@ -194,7 +195,7 @@ class TreePicker extends Component {
                     {
                         this.props.checkStyle == "checkbox" ? <CheckBox name="wasabi-tree-choseall"
                             style={{ marginTop: -1 }}
-                            data={[{ value: "1", text: "全选" }]} onSelect={this.choseAllHandler.bind(this)}></CheckBox> : null
+                            data={[{ value: "1", text: "全选" }]} onSelect={this.checkedAll.bind(this)}></CheckBox> : null
                     } </div>
                 <Tree
                     ref={this.tree}

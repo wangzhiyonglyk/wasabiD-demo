@@ -204,7 +204,7 @@ const treeFunc = {
         }
     },
     /**
-  * 清除勾选
+  * 勾选
   * @param {*} data 
   * @returns 
   */
@@ -215,7 +215,7 @@ const treeFunc = {
                 data[i].checked = true;
                 data[i].half = false;
                 if (data[i].children && data[i].children.length > 0) {
-                    data[i].children = treeFunc.clearChecked(data[i].children);
+                    data[i].children = treeFunc.checkedAll(data[i].children);
                 }
             }
             return data;

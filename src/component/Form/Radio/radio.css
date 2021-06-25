@@ -10,7 +10,7 @@ desc:checkbox
   padding-bottom: 9px;
 }
 .wasabi-tree .wasabi-checkul{
-  margin-top:6px;
+  margin-top:4px;
   width: 23px;
 }
 .wasabi-checkul li {
@@ -78,7 +78,7 @@ desc:checkbox
 }
 .wasabi-tree .wasabi-checkul .checkbox-label::after
 {
-  top:-12px;
+  top:-13px;
 }
 
 
