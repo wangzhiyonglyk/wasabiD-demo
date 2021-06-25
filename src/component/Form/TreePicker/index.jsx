@@ -40,36 +40,7 @@ class TreePicker extends Component {
         return null;
     }
 
-    /**
-     * 设置值
-     * @param {*} value 
-     */
-    setValue(value) {
-        if (value) {
-            let text = propsTran.processText(value, this.props.data).join(",");
-            this.setState({
-                value: value,
-                text: text,
-            })
-            this.tree.current.setChecked(value);
-        }
-        else {
-            this.setState({
-                value: "",
-                text: "",
-            })
-            this.checkbox.current.setValue("");
-            this.checkedAll("");
-        }
 
-    }
-    /**
-     * 获取值
-     * @returns 
-     */
-    getValue() {
-        return this.state.value;
-    }
     /**
      * 清除
      */
@@ -151,7 +122,7 @@ class TreePicker extends Component {
      */
     checkedAll(value) {
         if (value) {
-            let data = this.tree.current.checkedAll && this.tree.current.checkedAll();
+            let data = this.tree.current.input.current.checkedAll && this.tree.current.input.current.checkedAll();
             let r = propsTran.getTreePickerValueAll(data);
             this.setState({
                 value: r.values.join(","),
@@ -163,7 +134,7 @@ class TreePicker extends Component {
                 value: "",
                 text: "",
             })
-            this.tree.current.clearChecked && this.tree.current.clearChecked();
+            this.tree.current.input.current.clearChecked && this.tree.current.input.current.clearChecked();
         }
     }
     /**
@@ -172,11 +143,42 @@ class TreePicker extends Component {
      */
     filterHandler(event) {
         if (event.keyCode === 13) {
-            this.tree.current.filter && this.tree.current.filter(event.target.value.trim())
+            this.tree.current.input.current.filter && this.tree.current.input.current.filter(event.target.value.trim())
         }
 
 
     }
+    /**
+     * 设置值
+     * @param {*} value 
+     */
+    setValue(value) {
+        if (value) {
+            let text = propsTran.processText(value, this.props.data).join(",");
+            this.setState({
+                value: value,
+                text: text,
+            })
+            this.tree.current.input.current.setChecked(value);
+        }
+        else {
+            this.setState({
+                value: "",
+                text: "",
+            })
+            this.checkbox.current.setValue("");
+            this.checkedAll("");
+        }
+
+    }
+    /**
+     * 获取值
+     * @returns 
+     */
+    getValue() {
+        return this.state.value;
+    }
+
     render() {
         let inputProps =
         {

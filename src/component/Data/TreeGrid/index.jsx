@@ -217,6 +217,12 @@ class TreeGrid extends Component {
         })
         this.props.onExpand&&this.props.onExpand(open,id,text,row);
     }
+
+     /**
+      * 可调用
+      * @returns 
+      */
+
     /**
      * 获取勾选的数据
      * @returns 
@@ -230,6 +236,15 @@ class TreeGrid extends Component {
         }
         return [];
        
+    }
+    setChecked(value){
+        return this.tree.current.input.current.setChecked(value);
+    }
+    clearChecked(){
+         this.tree.current.input.current.clearChecked();
+    }
+    checkedAll(){
+       return this.tree.current.input.current.clearChecked();
     }
     /**
      * 强制刷新

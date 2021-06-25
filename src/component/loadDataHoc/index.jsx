@@ -87,81 +87,8 @@ function loadDataHoc(Widget, type = "select") {
 
             }
         }
-        //以下四个方法方便给父组件，ref调用
-        /**
-         * 
-         * @param {*} value 
-         */
-        setValue(value) {
-            this.input.current.setValue && this.input.current.setValue(value);
-        }
-        /**
-         * 获取值
-         * @returns 
-         */
-        getValue() {
-            return this.input.current.getValue && this.input.current.getValue();
-        }
-
-        /**
-         * 刷新
-         * @param {*} params 
-        * @param {*} url 
-         */
-        reload(params, url) {
-
-            url = url || this.props.url;
-            params = params || this.state.params;
-            this.setState({
-                loadDataStatus: "url",
-                params: params
-            })
-        }
-        /**
-         * 获取所有勾选的值 tree
-         * @returns 
-         */
-        getChecked() {
-            return this.input.current.getChecked && this.input.current.getChecked();
-        }
-        /**
-         * 设置勾选 tree
-         * @param {*} value 设置勾选
-         * @returns 
-         */
-        setChecked(value){
-            return this.input.current.setChecked && this.input.current.setChecked();
-        }
-        /**
-         * 清除勾选
-         * @returns 
-         */
-        clearChecked() {
-            this.input.current.clearChecked && this.input.current.clearChecked();
-        }
-        /**
-         * 全部选择 tree
-         */
-        checkedAll() {
-            return this.input.current.checkedAll && this.input.current.checkedAll();
-        }
-        /**
-         * 筛选，tree
-         * @param {*} value 
-         * @returns 
-         */
-        filter(value) {
-            this.input.current.filter && this.input.current.filter(value);
-        }
-        /**
-         * 追加数据,用于tree
-         * @param {*} children 
-         * @param {*} node 
-         * @returns 
-         */
-        append(children, node) {
-            this.input.current.append && this.input.current.append(children, node);
-        }
+        
+      
         /**
      * 加载数据
      * @param {*} url 
@@ -207,6 +134,36 @@ function loadDataHoc(Widget, type = "select") {
                 loadDataStatus: null,
                 rawData: realData,//保存方便对比
                 data: tempFormatData,
+            })
+        }
+
+        //以下三个方法方便给父组件，ref调用
+        /**
+         * 
+         * @param {*} value 
+         */
+         setValue(value) {
+            this.input.current.setValue && this.input.current.setValue(value);
+        }
+        /**
+         * 获取值
+         * @returns 
+         */
+        getValue() {
+            return this.input.current.getValue && this.input.current.getValue();
+        }
+        /**
+         * 刷新
+         * @param {*} params 
+        * @param {*} url 
+         */
+        reload(params, url) {
+
+            url = url || this.props.url;
+            params = params || this.state.params;
+            this.setState({
+                loadDataStatus: "url",
+                params: params
             })
         }
 

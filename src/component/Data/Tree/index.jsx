@@ -95,9 +95,7 @@ class Tree extends Component {
      */
     setChecked(value) {
         if (value) {
-            for (let i = 0; i < value.length; i++) {
-                data = treeFunc.setSelfChecked(value, this.state.data);
-            }
+            data = treeFunc.setSelfChecked(value, this.state.data);
             let filter = treeFunc.filter(data, this.state.filterValue);
             this.setState({
                 data: data,
