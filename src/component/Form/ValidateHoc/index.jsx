@@ -237,43 +237,8 @@ let validateHoc = function (InputWidget, inputType = "text") {
 
             this.input.current.reload && this.input.current.loadData(url, params);
         }
-        /**
-       * 获取所有勾选的值
-       * @returns 
-       */
-        getChecked() {
-            return this.input.current.getChecked && this.input.current.getChecked();
-        }
-        /**
-         * 清除勾选
-         * @returns 
-         */
-        clearChecked() {
-            this.input.current.clearChecked && this.input.current.clearChecked();
-        }
-        /**
-         * 全部选择
-         */
-        checkedAll() {
-          return  this.input.current.checkedAll && this.input.current.checkedAll();
-        }
-        /**
-         * 筛选，tree
-         * @param {*} value 
-         * @returns 
-         */
-        filter(value) {
-            this.input.current.filter && this.input.current.filter(value);
-        }
-        /**
-         * 追加数据
-         * @param {*} children 
-         * @param {*} node 
-         * @returns 
-         */
-        append(children, node) {
-            this.input.current.append && this.input.current.append(children, node);
-        }
+       
+        
         /**
          * 失去焦点后，如果验证成功，则去掉成功样式
          * @param {*} event 
