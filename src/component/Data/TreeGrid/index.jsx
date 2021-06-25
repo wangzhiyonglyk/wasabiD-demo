@@ -53,11 +53,8 @@ class TreeGrid extends Component {
         if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData)) {
             //如果传了死数据
             newState.rawData = props.data;
-            //拿到text
             let result = propsTran.formartData("treegrid", "", props.data, props.idField, props.textField);
-
             newState.realTreeData =result;
-
             /**
              *为了保存顺序，要根据树的数据，生成表格的数据 
              */
