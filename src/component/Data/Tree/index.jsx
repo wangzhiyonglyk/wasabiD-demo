@@ -59,144 +59,6 @@ class Tree extends Component {
         return newState;
     }
     /**
-     * 节点勾选
-     * @param {*} id 
-     * @param {*} text 
-     * @param {*} row 
-     * @param {*} checkValue 
-     */
-    onChecked(id, text, row, checkValue) {
-        let checked = (id + "") === (checkValue + "");
-        let data = [];
-        if (this.props.checkStyle === "checkbox") {
-            data = treeFunc.setChecked(this.state.data, row, checked, this.props.checkType);
-        }
-        else {
-            data = treeFunc.setRadioChecked(this.state.data, row, checked, this.props.radioType);
-        }
-        //同时处理保持一致
-        let filter = treeFunc.filter(data, this.state.filterValue);
-        this.setState({
-            data: data,
-            filter: filter
-        }, () => {
-            this.props.onChecked && this.props.onChecked(checked, id, text, row);
-        })
-
-    }
-    /**
-    * 返回勾选的数据
-    */
-    getChecked() {
-        return treeFunc.getChecked(this.state.data);
-    }
-    /**
-     * 设置勾选
-     */
-    setChecked(value) {
-        if (value) {
-            data = treeFunc.setSelfChecked(value, this.state.data);
-            let filter = treeFunc.filter(data, this.state.filterValue);
-            this.setState({
-                data: data,
-                filter
-            })
-
-        }
-        else {
-            this.clearChecked();
-        }
-
-    }
-    /**
-    * 清除勾选
-    */
-    clearChecked() {
-        let data = treeFunc.clearChecked(this.state.data);
-        //同时处理保持一致
-        let filter = treeFunc.filter(data, this.state.filterValue);
-        this.setState({
-            data: data,
-            filter: filter,
-        })
-    }
-    /**
-     * 全部勾选
-     */
-    checkedAll() {
-        if (this.props.checkStyle === "checkbox") {
-
-            let data = treeFunc.checkedAll(this.state.data);
-            //同时处理保持一致
-            let filter = treeFunc.filter(data, this.state.filterValue);
-            this.setState({
-                data: data,
-                filter: filter,
-            })
-            return data;
-        }
-
-    }
-    /**
-    * 为了给交叉表与树表格内部使用的单击事件
-    * @param {*} id 
-     */
-    setClickNode(id) {
-        this.setState({
-            clickId: id,
-
-        }, () => {
-
-        })
-
-
-    }
-    /**
-      * 删除某个节点，给父组件调用
-      * @param {*} row 节点
-      */
-    remove(row) {
-        if (row && row._path) {
-            let data = treeFunc.removeNode(this.state.data, row);
-            //同时处理保持一致
-            let filter = treeFunc.filter(data, this.state.filterValue);
-            this.setState({
-                data: data,
-                filter: filter
-            })
-            this.props.onRemove && this.props.onRemove(row.id, row.text, row);
-        }
-
-    }
-    /**
-     * 筛选节点
-     * @param {*} key 
-     */
-    filter(key) {
-        let filter = treeFunc.filter(this.state.data, key);
-        this.setState({
-            filterValue: key.trim(),
-            filter: filter
-        })
-    }
-    /**
-     * 添加节点
-     * @param {*} children 
-     * @param {*}node
-     */
-    append(children, node = null) {
-
-        if (children && children.length > 0) {
-            let data = treeFunc.appendChildren(this.state.data, children, node);
-            this.setState({
-                data: data,
-                loadingId: ""
-            }, () => {
-
-            })
-        }
-    }
-    /**
      * 单击事件
      * @param {*} id 值
      * @param {*} text 文本
@@ -234,7 +96,7 @@ class Tree extends Component {
      * @param {*} text 文本
      * @param {*} children  子节点
      */
-    onExpand(open,id, text, row) {
+    onExpand(open, id, text, row) {
         let data = treeFunc.setOpen(this.state.data, row);//先处理折叠
         if (this.props.asyncAble && (!row.children || row.children.length == 0)) {//没有数据
             let asyncChildrenData = [];
@@ -256,7 +118,7 @@ class Tree extends Component {
                     //没有返回值，可能异步处理了
                     this.setState({
                         loadingId: row.id,
-                        data:data
+                        data: data
                     })
                 }
 
@@ -276,7 +138,7 @@ class Tree extends Component {
                 let wasabi_api = window.api || api;
                 this.setState({
                     loadingId: id,
-                    data:data,
+                    data: data,
                 })
                 wasabi_api.ajax(fetchmodel);
                 console.log("tree async-fetch", fetchmodel);
@@ -292,7 +154,7 @@ class Tree extends Component {
             })
         }
 
-        this.props.onExpand && this.props.onExpand(open,id,text,row);
+        this.props.onExpand && this.props.onExpand(open, id, text, row);
 
     }
     /**
@@ -405,7 +267,144 @@ class Tree extends Component {
         }
 
     }
+    /**
+         * 节点勾选
+         * @param {*} id 
+         * @param {*} text 
+         * @param {*} row 
+         * @param {*} checkValue 
+         */
+    onChecked(id, text, row, checkValue) {
+        let checked = (id + "") === (checkValue + "");
+        let data = [];
+        if (this.props.checkStyle === "checkbox") {
+            data = treeFunc.setChecked(this.state.data, row, checked, this.props.checkType);
+        }
+        else {
+            data = treeFunc.setRadioChecked(this.state.data, row, checked, this.props.radioType);
+        }
+        //同时处理保持一致
+        let filter = treeFunc.filter(data, this.state.filterValue);
+        this.setState({
+            data: data,
+            filter: filter
+        }, () => {
+            this.props.onChecked && this.props.onChecked(checked, id, text, row);
+        })
 
+    }
+    /**
+    * 返回勾选的数据
+    */
+    getChecked() {
+        return treeFunc.getChecked(this.state.data);
+    }
+    /**
+     * 设置勾选
+     */
+    setChecked(value) {
+        if (value) {
+           let data = treeFunc.setSelfChecked(value, this.state.data);
+            let filter = treeFunc.filter(data, this.state.filterValue);
+            this.setState({
+                data: data,
+                filter
+            })
+
+        }
+        else {
+            this.clearChecked();
+        }
+
+    }
+    /**
+    * 清除勾选
+    */
+    clearChecked() {
+        let data = treeFunc.clearChecked(this.state.data);
+        //同时处理保持一致
+        let filter = treeFunc.filter(data, this.state.filterValue);
+        this.setState({
+            data: data,
+            filter: filter,
+        })
+    }
+    /**
+     * 全部勾选
+     */
+    checkedAll() {
+        if (this.props.checkStyle === "checkbox") {
+
+            let data = treeFunc.checkedAll(this.state.data);
+            //同时处理保持一致
+            let filter = treeFunc.filter(data, this.state.filterValue);
+            this.setState({
+                data: data,
+                filter: filter,
+            })
+            return data;
+        }
+
+    }
+    /**
+    * 为了给交叉表与树表格内部使用的单击事件
+    * @param {*} id 
+     */
+    setClickNode(id) {
+        this.setState({
+            clickId: id,
+
+        }, () => {
+
+        })
+
+
+    }
+    /**
+      * 删除某个节点，给父组件调用
+      * @param {*} row 节点
+      */
+    remove(row) {
+        if (row && row._path) {
+            let data = treeFunc.removeNode(this.state.data, row);
+            //同时处理保持一致
+            let filter = treeFunc.filter(data, this.state.filterValue);
+            this.setState({
+                data: data,
+                filter: filter
+            })
+            this.props.onRemove && this.props.onRemove(row.id, row.text, row);
+        }
+
+    }
+    /**
+     * 筛选节点
+     * @param {*} key 
+     */
+    filter(key) {
+        let filter = treeFunc.filter(this.state.data, key);
+        this.setState({
+            filterValue: key.trim(),
+            filter: filter
+        })
+    }
+    /**
+     * 添加节点
+     * @param {*} children 
+     * @param {*}node
+     */
+    append(children, node = null) {
+
+        if (children && children.length > 0) {
+            let data = treeFunc.appendChildren(this.state.data, children, node);
+            this.setState({
+                data: data,
+                loadingId: ""
+            }, () => {
+
+            })
+        }
+    }
     shouldComponentUpdate(nextProps, nextState) {
         if (func.diffOrder(nextProps, this.props)) {
             return true;

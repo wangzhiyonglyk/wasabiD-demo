@@ -37,6 +37,14 @@ class TreeGrid extends Component {
         this.loadData = this.loadData.bind(this);
         this.loadSuccess = this.loadSuccess.bind(this);
         this.loadError = this.loadError.bind(this);
+        this.treeClick=this.treeClick.bind(this);
+        this.getChecked=this.getChecked.bind(this);
+        this.setChecked=this.setChecked.bind(this);
+        this.clearChecked=this.clearChecked.bind(this);
+        this.checkedAll=this.checkedAll.bind(this);
+        this.reload=this.reload.bind(this);
+        this.dataGridClick=this.dataGridClick.bind(this);
+        
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};
@@ -194,11 +202,10 @@ class TreeGrid extends Component {
      * @param {*} checked 
      * @param {*} id 
      * @param {*} text 
-     * @param {*} children 
      * @param {*} row 
      */
-    onChecked(checked, id, text, children, row) {
-        this.props.onChecked && this.props.onChecked(checked, row);
+    onChecked(checked, id, text, row) {
+        this.props.onChecked && this.props.onChecked(checked,id,text, row);
     }
 
 
@@ -237,12 +244,24 @@ class TreeGrid extends Component {
         return [];
        
     }
+    /**
+     * 
+     * @param {*} value 
+     * @returns 
+     */
     setChecked(value){
         return this.tree.current.input.current.setChecked(value);
     }
+    /**
+     * 清除勾选
+     */
     clearChecked(){
          this.tree.current.input.current.clearChecked();
     }
+    /**
+     * 勾选全部
+     * @returns 
+     */
     checkedAll(){
        return this.tree.current.input.current.clearChecked();
     }

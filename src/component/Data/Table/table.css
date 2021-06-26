@@ -92,6 +92,7 @@ border奇怪的现象，出现变粗的现象
   min-height: 21px;
   word-break: break-all;
   position: relative;
+  cursor: pointer;
 }
 .wasabi-table-cell:hover{
   color: var(--primary-color);

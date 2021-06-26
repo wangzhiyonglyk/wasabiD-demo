@@ -102,8 +102,12 @@ class PivotPage extends React.Component {
     }
     onClick() {
         let data = this.refs.tree.getChecked();
-        console.log("data", data);
-        this.refs.tree.clearChecked();
+       
+        console.log("data",  this.refs.tree.loadData1, this.refs.tree);
+        setTimeout(() => {
+            //this.refs.tree.remove(data[0])
+        }, 1000);
+      
     }
     onDrop(data) {
         let dropData = this.state.dropData;
@@ -139,10 +143,11 @@ class PivotPage extends React.Component {
     }
     render() {
        return <div style={{padding:5}}>
+           <button onClick={this.onClick.bind(this)}>test</button>
           {/* <Input key="1" type="treepicker" headers={this.state.headers} data={this.state.data} textField="label" valueField="id"></Input><br></br> */}
            {/* <Input key="2" type="gridpicker" headers={this.state.headers} data={this.state.data} textField="label" valueField="id"></Input><br></br> */}
 {/* <DataGrid onSave={this.onSave.bind(this)} rowNumber={true} selectAble={true} importAble={true} data={this.state.data} editAble={true}  headers={this.state.headers}></DataGrid> */}
-    <TreeGrid  treeHeader="树节点" textField="label" idField="id" onSave={this.onSave.bind(this)} rowNumber={true} selectAble={true} importAble={true} data={this.state.data} editAble={true}  headers={this.state.headers}></TreeGrid>
+    <TreeGrid ref="tree" treeHeader="树节点" textField="label" idField="id" onSave={this.onSave.bind(this)} rowNumber={true} selectAble={true} importAble={true} data={this.state.data} editAble={true}  headers={this.state.headers}></TreeGrid>
     {/* <Tree textField="label" idField="id" onSave={this.onSave.bind(this)} rowNumber={true} selectAble={true} importAble={true} data={this.state.data} editAble={true}  headers={this.state.headers}></Tree>
        */}
        </div> 
