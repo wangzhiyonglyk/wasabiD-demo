@@ -95,7 +95,7 @@ class GridHeader extends React.PureComponent {
         if (this.props.rowNumber) {
             control.unshift(
                 <TableCell rowSpan={rowSpan} key='headerorder' position="header" className="wasabi-order-column" >
-                    {"序号"}
+                    {}
                 </TableCell>
             );
         }

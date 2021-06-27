@@ -6,6 +6,139 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "16951792",
+      "name": "number",
+      "font_class": "number",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "18865997",
+      "name": "百分比",
+      "font_class": "baifenbi",
+      "unicode": "e68d",
+      "unicode_decimal": 59021
+    },
+    {
+      "icon_id": "10082791",
+      "name": "date",
+      "font_class": "date",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "13811289",
+      "name": "id-card",
+      "font_class": "idcard",
+      "unicode": "e6fb",
+      "unicode_decimal": 59131
+    },
+    {
+      "icon_id": "18636138",
+      "name": "Select",
+      "font_class": "select",
+      "unicode": "e71b",
+      "unicode_decimal": 59163
+    },
+    {
+      "icon_id": "18833151",
+      "name": "drop down",
+      "font_class": "drop-down",
+      "unicode": "e7ff",
+      "unicode_decimal": 59391
+    },
+    {
+      "icon_id": "13275132",
+      "name": "drop down-up",
+      "font_class": "drop-up",
+      "unicode": "e697",
+      "unicode_decimal": 59031
+    },
+    {
+      "icon_id": "13714838",
+      "name": "icomoon italic",
+      "font_class": "italic",
+      "unicode": "eeb2",
+      "unicode_decimal": 61106
+    },
+    {
+      "icon_id": "10975098",
+      "name": "bold",
+      "font_class": "bold",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "7234509",
+      "name": "颜色选择器",
+      "font_class": "colorSelector",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "167468",
+      "name": "underline",
+      "font_class": "underline",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "586977",
+      "name": "merge-cell",
+      "font_class": "merge-cell",
+      "unicode": "e780",
+      "unicode_decimal": 59264
+    },
+    {
+      "icon_id": "705465",
+      "name": "wrap",
+      "font_class": "wrap",
+      "unicode": "ebb6",
+      "unicode_decimal": 60342
+    },
+    {
+      "icon_id": "1116996",
+      "name": "align-right",
+      "font_class": "align-right",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "4765837",
+      "name": "undo",
+      "font_class": "undo",
+      "unicode": "e787",
+      "unicode_decimal": 59271
+    },
+    {
+      "icon_id": "8953129",
+      "name": "redo",
+      "font_class": "redo",
+      "unicode": "e82a",
+      "unicode_decimal": 59434
+    },
+    {
+      "icon_id": "11348874",
+      "name": "align-left",
+      "font_class": "align-left",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "17511144",
+      "name": "align-center",
+      "font_class": "align-center",
+      "unicode": "e7c6",
+      "unicode_decimal": 59334
+    },
+    {
+      "icon_id": "19665041",
+      "name": "字体颜色",
+      "font_class": "font-colors",
+      "unicode": "eaef",
+      "unicode_decimal": 60143
+    },
+    {
       "icon_id": "15067467",
       "name": "reduce",
       "font_class": "reduce",

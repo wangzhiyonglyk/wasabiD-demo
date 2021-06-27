@@ -15,7 +15,6 @@ desc:下拉框样式
     top: 34px;
     padding: 0;
     margin: 0;
-    min-width: 120px;
   }
   .wasabi-select ul li {
     height: 35px;

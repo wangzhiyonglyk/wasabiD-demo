@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 import Button from "../Buttons/Button";
 import Resize from "./Resize.jsx";
 import func from "../libs/func";
-import dom from "../libs/dom";
 import("../Sass/Layout/Modal.css");
 class Modal extends React.Component {
     constructor(props) {

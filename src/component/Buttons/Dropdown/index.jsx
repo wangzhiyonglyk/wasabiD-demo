@@ -63,10 +63,9 @@ class Dropdown extends Component {
     render() {
         let props = {
             className:
-                'wasabi-dropdown '
-                + (this.props.plain ? "" : " unplain ") +
-                this.props.theme +
-                this.props.className,
+                'wasabi-dropdown ' + 
+                this.props.theme+" " +
+                (this.props.className||""),
             style: this.props.style ? this.props.style : {},
             disabled: this.props.disabled == true ? 'disabled' : null,
             //文字提示
@@ -74,7 +73,8 @@ class Dropdown extends Component {
         };
         return <div ref={this.wasabidropdown}  {...props} id={this.state.containerid} >
             <LinkButton disabled={this.props.disabled} key={1} disabled={this.props.disabled} iconCls={this.props.iconCls} name={this.props.name} onClick={this.showMenu} theme={this.props.theme} size={this.props.size} title={this.props.title}>{this.props.label}</LinkButton>
-            <ul className={"wasabi-dropdown-menu " + (this.props.plain ? " " : " unplain ") + this.props.size} style={{ display: this.state.menuShow ? "block" : "none" }}>
+            <i className={"wasabi-dropdown-arrow icon-drop-down "+(this.props.iconCls?"":"noicon") } onClick={this.showMenu}></i>
+            <ul className={"wasabi-dropdown-menu "} style={{ display: this.state.menuShow ? "block" : "none" }}>
                 {
                     React.Children.map(this.props.children, (child, index) => {
                         if (child) {
@@ -105,13 +105,7 @@ Dropdown.propTypes = {
         'danger',
         'cancel'
     ]),
-    size: PropTypes.oneOf([
-        //按钮大小
-        'large',
-        'default',
-        'small',
-        "mini"
-    ]),
+ 
     onClick: PropTypes.func, //按钮单击事件
     menuClick: PropTypes.func, //按钮单击事件
     style: PropTypes.object, //样式

@@ -4,6 +4,7 @@
 	height: 100%;
 	font-size: 14px;
 	color: var(--color);
+	position: relative;
 }
 .wasabi-tabs .wasabi-tab-nav{
 	border: 1px solid var(--border-color);
@@ -13,13 +14,13 @@
 	border-left:none;
 	padding: 0;
     position: relative;
-	height: 41px;
+	height: 42px;
 }
 .wasabi-tab {
 	padding: 0 20px;
-	height: 40px;
+	height: 41px;
 	box-sizing: border-box;
-	line-height: 40px;
+	line-height: 41px;
 	display: inline-block;
 	list-style: none;
 	font-size: 14px;
@@ -136,7 +137,7 @@ color:var(--danger-color);
 .wasabi-tabs .section {
 	display: none;
 	min-height: 400px;
-	height: calc(100% - 34px);
+	height: calc(100% - 42px);
 }
 
 .wasabi-tabs .section.active {

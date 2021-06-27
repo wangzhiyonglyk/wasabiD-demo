@@ -12,7 +12,7 @@ class TableCell extends React.PureComponent {
         this.renderTh = this.renderTh.bind(this);
     }
     renderCell() {
-        return <div className={"wasabi-table-cell  "+(this.props.position!=="body"?' nowrap ':"") + (this.props.className || "")}
+        return <div className={"wasabi-table-cell  " }
         style={this.props.style || null} title={typeof this.props.children==="string"?this.props.children:""}>
             {
                 this.props.children
@@ -20,12 +20,12 @@ class TableCell extends React.PureComponent {
         </div>;
     }
     renderTh() {
-        return <th colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1}    export={"1"} onClick={this.props.onClick} onDoubleClick={this.props.onDoubleClick}>
+        return <th className={ (this.props.className || "")+(this.props.position!=="body"?' nowrap ':"")} align={this.props.align} colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1}    export={"1"} onClick={this.props.onClick} onDoubleClick={this.props.onDoubleClick}>
             {this.renderCell()}
         </th>
     }
     renderTd() {
-        return <td colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1}    export={"1"} onClick={this.props.onClick} onDoubleClick={this.props.onDoubleClick}>
+        return <td className={ (this.props.className || "")+(this.props.position!=="body"?' nowrap ':"")} align={this.props.align} colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1}    export={"1"} onClick={this.props.onClick} onDoubleClick={this.props.onDoubleClick}>
             {this.renderCell()}
         </td>
     }

@@ -52,6 +52,7 @@ export default {
             if (fileType.filter("excel", event.target.files[0])) {
                 excel.readFile(event.target.files[0]).then((workbook) => {
                     event.target.value = "";//清空
+                    console.log("workbook",workbook)
                     let json = excel.workbook2json(workbook);
                     this.json2data(json,this.state.data.length);
                 })

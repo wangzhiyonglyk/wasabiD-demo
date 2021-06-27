@@ -4,7 +4,7 @@ import Input from '../../../Form/Input/index.jsx';
 import CheckBox from "../../../Form/CheckBox";
 import TableCell from '../../Table/TableCell.jsx';
 import TableRow from '../../Table/TableRow.jsx';
-import Msg from "../../../Info/Msg"
+import TableBody from '../../Table/TableBody.jsx';
 import func from "../../../libs/func"
 class GridBody extends React.Component {
     constructor(props) {
@@ -239,7 +239,7 @@ class GridBody extends React.Component {
                 trArr.push(this.props.detailView);
             }
         });
-        return trArr;
+        return <TableBody>{trArr}</TableBody> ;
     }
     /**
      *渲染复杂的表体
@@ -315,7 +315,7 @@ class GridBody extends React.Component {
             }
 
         });
-        return trArr;
+        return <TableBody>{trArr}</TableBody> ;
     }
     shouldComponentUpdate(nextProps, nextState) {
         if (func.diffOrder(nextProps, this.props)) {

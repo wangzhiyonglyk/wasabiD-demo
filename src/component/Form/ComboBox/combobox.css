@@ -74,26 +74,8 @@ desc:日期选择样式
   box-shadow: var(--box-shadow);
   background-color: white;
   margin: 5px 0;
-  width: 250px;
+  width: 100%;
 }
-
-.dropcontainter.datetime {
-  width: 292px;
-  height: 385px;
-}
-.dropcontainter.datetime .wasabi-datetime{
-  border:none;
-}
-.dropcontainter.daterange {
-  width: 686px;
-  height: 345px;
-}
-
-.dropcontainter.datetimerange {
-  width: 686px;
-  height: 385px;
-}
-
 .dropcontainter::before {
   border-color: transparent transparent #ffffff;
   z-index: 1;
@@ -128,6 +110,24 @@ desc:日期选择样式
   width: 220px;
   height: 220px;
 }
+.combobox .datetime {
+  width: 292px;
+  height: 385px;
+}
+.combobox  .datetime .wasabi-datetime{
+  border:none;
+}
+.combobox  .daterange {
+  width: 686px;
+  height: 345px;
+}
+
+.combobox  .datetimerange {
+  width: 686px;
+  height: 385px;
+}
+
+
 
 
 
@@ -143,17 +143,7 @@ desc:日期选择样式
   height: 223px;
 }
 
-.combobox .range.default {
-  left: 0px;
-}
 
-.combobox .range.left {
-  left: 0px;
-}
-
-.combobox .range.right {
-  left: -170px;
-}
 
 .combobox .datetimeicon .icon-time {
   font-size: 20px;

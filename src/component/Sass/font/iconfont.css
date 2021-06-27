@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2563689 */
-  src: url('iconfont.woff?t=1624540121361') format('woff'),
-       url('iconfont.ttf?t=1624540121361') format('truetype'),
-       url('iconfont.svg?t=1624540121361#iconfont') format('svg');
+  src: url('iconfont.woff?t=1624795513816') format('woff'),
+       url('iconfont.ttf?t=1624795513816') format('truetype'),
+       url('iconfont.svg?t=1624795513816#iconfont') format('svg');
 }
 
 .iconfont {
@@ -11,6 +11,82 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-number:before {
+  content: "\e608";
+}
+
+.icon-baifenbi:before {
+  content: "\e68d";
+}
+
+.icon-date:before {
+  content: "\e603";
+}
+
+.icon-idcard:before {
+  content: "\e6fb";
+}
+
+.icon-select:before {
+  content: "\e71b";
+}
+
+.icon-drop-down:before {
+  content: "\e7ff";
+}
+
+.icon-drop-up:before {
+  content: "\e697";
+}
+
+.icon-italic:before {
+  content: "\eeb2";
+}
+
+.icon-bold:before {
+  content: "\e600";
+}
+
+.icon-colorSelector:before {
+  content: "\e627";
+}
+
+.icon-underline:before {
+  content: "\e633";
+}
+
+.icon-merge-cell:before {
+  content: "\e780";
+}
+
+.icon-wrap:before {
+  content: "\ebb6";
+}
+
+.icon-align-right:before {
+  content: "\e61c";
+}
+
+.icon-undo:before {
+  content: "\e787";
+}
+
+.icon-redo:before {
+  content: "\e82a";
+}
+
+.icon-align-left:before {
+  content: "\e606";
+}
+
+.icon-align-center:before {
+  content: "\e7c6";
+}
+
+.icon-font-colors:before {
+  content: "\eaef";
 }
 
 .icon-reduce:before {

@@ -17,10 +17,10 @@ class GridColGroup extends React.PureComponent{
     renderSingleColGroup(colgroup) {
         let headers = this.props.headers;
         headers.map((header, headerColumnIndex) => {
-                let width = header.width ? header.width : this.props.perColumnWidth || null;
+                let width = header.width ? header.width : this.props.width || null;
                 colgroup.push(<col
                     key={headerColumnIndex}
-                    name={header.label}//以label为准，是因为name可能没有设置
+                    name={header.name||""}
                     width={width}></col>)
             
         });

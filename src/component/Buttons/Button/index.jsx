@@ -40,7 +40,7 @@ class Button extends React.PureComponent {
     }
     render() {
         let props = {
-            className: " wasabi-button " + (this.props.theme || "default") + ' size-' + (this.props.size || "default") + ' ' + this.props.className,
+            className: "  " + (this.props.theme || " default ")+ ' ' + (this.props.className||""),
             style: this.props.style ? this.props.style : {},
             disabled: this.props.disabled === true ? 'disabled' : null,
             //文字提示
@@ -67,13 +67,6 @@ Button.propTypes = {
         'warning',
         'danger',
         'cancel'
-    ]),
-    size: PropTypes.oneOf([
-        //按钮大小
-        'large',
-        'default',
-        'small',
-        "mini"
     ]),
     onClick: PropTypes.func, //按钮单击事件
     style: PropTypes.object, //样式

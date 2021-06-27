@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Tree from "../../component/Data/Tree"
 import { DataGrid,TreeGrid, Input, func ,CheckBox,Text,Radio,Upload} from "../../component"
-
+import Excel from "../../component/Data/Excel"
 import("./index.css")
 class PivotPage extends React.Component {
     constructor(props) {
@@ -142,15 +142,7 @@ class PivotPage extends React.Component {
         console.log(data);
     }
     render() {
-       return <div style={{padding:5}}>
-           <button onClick={this.onClick.bind(this)}>test</button>
-          {/* <Input key="1" type="treepicker" headers={this.state.headers} data={this.state.data} textField="label" valueField="id"></Input><br></br> */}
-           {/* <Input key="2" type="gridpicker" headers={this.state.headers} data={this.state.data} textField="label" valueField="id"></Input><br></br> */}
-{/* <DataGrid onSave={this.onSave.bind(this)} rowNumber={true} selectAble={true} importAble={true} data={this.state.data} editAble={true}  headers={this.state.headers}></DataGrid> */}
-    <TreeGrid ref="tree" treeHeader="树节点" textField="label" idField="id" onSave={this.onSave.bind(this)} rowNumber={true} selectAble={true} importAble={true} data={this.state.data} editAble={true}  headers={this.state.headers}></TreeGrid>
-    {/* <Tree textField="label" idField="id" onSave={this.onSave.bind(this)} rowNumber={true} selectAble={true} importAble={true} data={this.state.data} editAble={true}  headers={this.state.headers}></Tree>
-       */}
-       </div> 
+       return  <Excel></Excel> 
            
 
     }
