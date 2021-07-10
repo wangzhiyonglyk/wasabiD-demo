@@ -40,6 +40,7 @@ let excel = {
             let sheetNames = workbook.SheetNames; // 工作表名称集合
             let worksheet = workbook.Sheets[sheetNames[sheetIndex]]; // 这里我们只读取第一张sheet
             let csv = XLSX.utils.sheet_to_csv(worksheet);
+            console.log("csv",csv);
             return csv;
 
         }

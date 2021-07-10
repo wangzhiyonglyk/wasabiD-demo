@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2563689 */
-  src: url('iconfont.woff?t=1624795513816') format('woff'),
-       url('iconfont.ttf?t=1624795513816') format('truetype'),
-       url('iconfont.svg?t=1624795513816#iconfont') format('svg');
+  src: url('iconfont.woff?t=1625316417687') format('woff'),
+       url('iconfont.ttf?t=1625316417687') format('truetype'),
+       url('iconfont.svg?t=1625316417687#iconfont') format('svg');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-csv:before {
+  content: "\e67a";
 }
 
 .icon-number:before {

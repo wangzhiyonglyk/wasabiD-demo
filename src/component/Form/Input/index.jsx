@@ -91,5 +91,7 @@ class Input extends Component {
     }
 }
 Input.propTypes = propTypes;
-
+Input.defaultProps={
+    type:"text"
+}
 export default Input;

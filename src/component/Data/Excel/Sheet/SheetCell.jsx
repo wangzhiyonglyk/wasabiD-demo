@@ -10,27 +10,26 @@ class SheetCell extends React.Component {
         super(props);
         this.state = {
         }
-        this.onClick = this.onClick.bind(this);
-        this.onDoubleClick = this.onDoubleClick.bind(this);
+
     }
-    onClick(event) {
-        this.props.onClick && this.props.onClick(event, this.props.rowIndex, this.props.columnIndex);
-    }
-    onDoubleClick(event) {
-        this.props.onDoubleClick && this.props.onDoubleClick(event, this.props.rowIndex, this.props.columnIndex);
-    }
+
+
     render() {
         return <TableCell
+            id={this.props.id}
             className={this.props.className}
             style={this.props.style}
             rowSpan={this.props.rowSpan}
             colSpan={this.props.colSpan}
+            rowIndex={this.props.rowIndex}
+            columnIndex={this.props.columnIndex}
             className={this.props.className || ""}
-            onClick={this.onClick}
-            onDoubleClick={this.onDoubleClick}
-        >{
-            this.props.children
-        }
+            onClick={this.props.onClick}
+            onDoubleClick={this.props.onDoubleClick}
+            onMouseDown={this.props.onMouseDown}
+            onMouseUp={this.props.onMouseUp}
+        >
+            {this.props.children}
         </TableCell>
 
     }

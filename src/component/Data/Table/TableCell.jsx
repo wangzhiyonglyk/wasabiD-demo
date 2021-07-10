@@ -12,20 +12,25 @@ class TableCell extends React.PureComponent {
         this.renderTh = this.renderTh.bind(this);
     }
     renderCell() {
-        return <div className={"wasabi-table-cell  " }
-        style={this.props.style || null} title={typeof this.props.children==="string"?this.props.children:""}>
+        return <div data-rowindex={this.props.rowIndex} data-columnindex={this.props.columnIndex} colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1} className={"wasabi-table-cell  "}
+            style={this.props.style || null} title={typeof this.props.children === "string" ? this.props.children : ""}>
             {
                 this.props.children
             }
         </div>;
     }
     renderTh() {
-        return <th className={ (this.props.className || "")+(this.props.position!=="body"?' nowrap ':"")} align={this.props.align} colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1}    export={"1"} onClick={this.props.onClick} onDoubleClick={this.props.onDoubleClick}>
+        return <th className={(this.props.className || "") + (this.props.position !== "body" ? ' nowrap ' : "")} align={this.props.align} colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1} 
+            onClick={this.props.onClick} onDoubleClick={this.props.onDoubleClick}>
             {this.renderCell()}
         </th>
     }
     renderTd() {
-        return <td className={ (this.props.className || "")+(this.props.position!=="body"?' nowrap ':"")} align={this.props.align} colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1}    export={"1"} onClick={this.props.onClick} onDoubleClick={this.props.onDoubleClick}>
+        return <td id={this.props.id} data-rowindex={this.props.rowIndex} data-columnindex={this.props.columnIndex} align={this.props.align} colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1} className={(this.props.className || "") + (this.props.position !== "body" ? ' nowrap ' : "")}  
+            onClick={this.props.onClick} onDoubleClick={this.props.onDoubleClick}
+            onMouseDown={this.props.onMouseDown}
+            onMouseUp={this.props.onMouseUp}
+        >
             {this.renderCell()}
         </td>
     }

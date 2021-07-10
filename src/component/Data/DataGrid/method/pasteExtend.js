@@ -68,7 +68,7 @@ export default {
         try {
             let text = await window.navigator.clipboard.readText();
             if (text.indexOf("\t") > -1 || text.indexOf("\n") > -1) {
-                text = text.replace(/\r\n/g, "\n").replace(/\t/g, ",");//转成标准的可操作的csv格式
+                text = text.replace(/\r\n/g, "\n").replace(/\t/g, ",");//转成xlsx脚本的可操作的csv格式
                 //说明是csv数据，不包含头部
                 this.json2data(excel.csv2json(text, false), rowIndex, columnIndex);
             }

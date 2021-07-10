@@ -13,7 +13,7 @@ let SheetTabs = function (props) {
         {
             props.sheetTabs && props.sheetTabs.map((item, index) => {
                 return  <div key={index} 
-                className={"wasabi-execel-tool-button "+(props.activeIndex===index?"active":"")}>
+                className={"wasabi-excel-tool-button "+(props.activeIndex===index?"active":"")}>
                     {item.title}&nbsp;&nbsp;
                     <LinkButton key="op" theme="info" iconCls="icon-drop-down"  title="编辑"></LinkButton>
                     </div>

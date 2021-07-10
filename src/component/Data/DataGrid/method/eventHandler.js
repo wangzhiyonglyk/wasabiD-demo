@@ -322,6 +322,11 @@ export default {
         let addData = this.getAddData();
         let updateData = this.getUpdateData();
         let deleteData = this.getDeleteData();
+        console.log({
+            addData: addData,
+            updateData,
+            deleteData
+        })
         this.props.onSave && this.props.onSave({
             addData: addData,
             updateData,

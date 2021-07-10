@@ -21,10 +21,10 @@ class Excel extends React.Component {
     componentDidMount() {
         if (!this.props.workbook){
             let sheet1 = sheetFunc.init();//初始化一个工作表
-            let sheet2 = sheetFunc.init("sheet2");//初始化一个工作表
+            // let sheet2 = sheetFunc.init("sheet2");//初始化一个工作表
             this.setState({
                 workbook: {
-                    sheets: [sheet1,sheet2],
+                    sheets: [sheet1],
                     title: "工作表1",
                     activeIndex:0,
                 }

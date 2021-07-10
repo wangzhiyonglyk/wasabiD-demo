@@ -102,6 +102,7 @@ border奇怪的现象，出现变粗的现象
   width: 100%;
   box-sizing: border-box;
   min-height: 21px;
+  line-height: 21px;
   word-break: break-all;
   position: relative;
   cursor: pointer;
@@ -149,4 +150,10 @@ border奇怪的现象，出现变粗的现象
   height: 36px;
   line-height: 36px;
   font-weight: normal;
+}
+
+
+
+.wasabi-excel-sheet .wasabi-table td.chosed{
+  background-color: var(--background-color);
 }

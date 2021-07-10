@@ -38,6 +38,15 @@ let dom = {
 
         return null;
     },
+    /**
+     * 找到某个css类的子节点
+     * @param {*} node 
+     * @param {*} className 
+     * @returns 
+     */
+    descendantByClass(node,className){
+       return node&& node.querySelector("."+className);
+    },
 
     /**
      * 元素是不是不可见

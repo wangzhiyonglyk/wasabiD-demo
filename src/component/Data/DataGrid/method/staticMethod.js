@@ -293,7 +293,7 @@ export default {
                     if (html.indexOf("wasabi-detail-column") > -1 || html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-check-column") > -1 || html.indexOf("wasabi-noexport") > -1) {//除去序号列与选择列及不需要导出的列
                         continue;
                     }
-                    console.log(html, realTable.children[2].children[value].children[columnIndex])
+            
                     row.push(html)
                 }
                 json.body.push(row);

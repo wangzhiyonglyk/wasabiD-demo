@@ -7,6 +7,7 @@ import Pagination from '../../Pagination';
 import GridLoading from './GridLoading'
 import GridTool from "./GridTool"
 import func from "../../../libs/func"
+import Table from "../../Table/Table"
 class Grid extends React.Component {
     constructor(props) {
         super(props)
@@ -159,7 +160,7 @@ class Grid extends React.Component {
             {
                 //有高度的时候，才会出现固定表头
                 height ? <div className="table-fixedth" id={this.props.fixedthcontainerid}>
-                    <table style={{ width: this.props.tableWidth ? this.props.tableWidth : "100%" }}
+                    <Table style={{ width: this.props.tableWidth ? this.props.tableWidth : "100%" }}
                         className={this.props.borderAble ? ' wasabi-table ' : ' wasabi-table table-no-bordered '}>
                         {
                             /**colgroup */
@@ -167,28 +168,28 @@ class Grid extends React.Component {
                         }
                         {/* 表头 */}
                         {headerControl}
-                    </table>
+                    </Table>
                 </div> : null
 
             }
             {/* /** 有固定列，并有高度，要将固定列的表头也固定下来*/}
             {height && this.props.fixedHeaders && this.props.fixedHeaders.length > 0 ?
                 <div key="table-fixed-fixedth" className="table-fixed-fixedth" >
-                    <table style={{ width: this.props.fixedTableWidth ? this.props.fixedTableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}>
+                    <Table style={{ width: this.props.fixedTableWidth ? this.props.fixedTableWidth : "100%" }} className={this.props.borderAble ? ' table ' : ' table table-no-bordered '}>
                         {
                             /**colgroup */
                             this.renderFixedColGruop()
                         }
                         {/* 表头 */}
                         {this.renderFixedHeader()}
-                    </table>
+                    </Table>
                 </div>
                 : null}
             {/* 有固定列表 */}
             {this.props.fixedHeaders && this.props.fixedHeaders.length > 0 ?
                 <div key="table-fixed" className="table-fixed"
                     id={this.props.fixedTableContainerid} >
-                    <table style={{ width: this.props.fixedTableWidth ? this.props.fixedTableWidth : "100%" }}
+                    <Table style={{ width: this.props.fixedTableWidth ? this.props.fixedTableWidth : "100%" }}
                         className={this.props.borderAble ? ' wasabi-table ' : ' wasabi-table table-no-bordered '}
                         id={this.props.fixedTableid}
                     >
@@ -202,7 +203,7 @@ class Grid extends React.Component {
                        {this.renderFixedBody()}
                         {/* 表尾  todo */}
                         {/* <tfoot>{this.renderFooter()}</tfoot> */}
-                    </table>
+                    </Table>
 
                 </div> : null
             }
@@ -213,7 +214,7 @@ class Grid extends React.Component {
                 onScroll={this.props.onRealTableScoll}
                 style={{ height: this.props.height }}
             >
-                <table style={{ width: this.props.tableWidth ? this.props.tableWidth : "100%" }}
+                <Table style={{ width: this.props.tableWidth ? this.props.tableWidth : "100%" }}
                     className={this.props.borderAble ? ' wasabi-table ' : ' wasabi-table table-no-bordered '}
                     id={this.props.realTableid} >
                     {
@@ -226,7 +227,7 @@ class Grid extends React.Component {
                    {this.renderBody()}
                     {/* 表尾 */}
                     {/* <tfoot>{this.renderFooter()}</tfoot> */}
-                </table>
+                </Table>
             </div>
 
 

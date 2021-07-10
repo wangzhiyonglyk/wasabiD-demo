@@ -10,7 +10,7 @@ class Table extends React.PureComponent {
 
     }
     render() {
-        return <table className={" wasabi-table " + (this.props.className || "")} style={this.props.style}>{
+        return <table id={this.props.id} className={" wasabi-table " + (this.props.className || "")} style={this.props.style}>{
             this.props.children
         }</table>
     }
