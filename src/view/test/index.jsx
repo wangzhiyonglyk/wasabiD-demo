@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Tree from "../../component/Data/Tree"
-import { DataGrid,TreeGrid, Input, func ,CheckBox,Text,Radio,Upload} from "../../component"
+import { DataGrid,TreeGrid, Input, func ,CheckBox,Text,Radio,Upload, Button} from "../../component"
 import Excel from "../../component/Data/Excel"
+import Color from "../../component/Data/Color"
 import("./index.css")
 class PivotPage extends React.Component {
     constructor(props) {
@@ -144,7 +145,10 @@ class PivotPage extends React.Component {
     render() {
         // return <DataGrid importAble={true} headers={this.state.headers} data={this.state.data} editAble={true}></DataGrid>
        return  <Excel></Excel> 
-           
+//            return<div>
+//                <Button>ddd</Button>
+// <Color></Color>
+//            </div>
 
     }
 }

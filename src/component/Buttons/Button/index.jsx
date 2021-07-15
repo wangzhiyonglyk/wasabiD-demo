@@ -40,7 +40,7 @@ class Button extends React.PureComponent {
     }
     render() {
         let props = {
-            className: "  " + (this.props.theme || " default ")+ ' ' + (this.props.className||""),
+            className: "  wasabi-button " + (this.props.theme || " default ")+ ' ' + (this.props.className||"")+" size-"+(this.props.size||""),
             style: this.props.style ? this.props.style : {},
             disabled: this.props.disabled === true ? 'disabled' : null,
             //文字提示
