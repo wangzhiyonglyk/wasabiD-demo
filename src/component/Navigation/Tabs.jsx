@@ -4,6 +4,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import func from "../libs/func"
+import LinkButton from "../Buttons/LinkButton";
 require("../sass/Navigation/Tabs.css");
 class Tabs extends React.Component {
     constructor(props) {
@@ -56,8 +57,11 @@ class Tabs extends React.Component {
     render() {
         return (
             <div className={"wasabi-tabs " +( this.props.className||"")} style={this.props.style} >
-               {    React.Children.count(this.props.children)>0? <div className={"wasabi-tab-nav "} id={this.state.navid} >
-                    {
+               {    React.Children.count(this.props.children)>0? 
+               
+               <div className={"wasabi-tab-nav "} id={this.state.navid} >
+                  <div key="pre" title="上一个" className={"wasabi-tab "} style={{float:"left",textAlign:"center", width:40 }}> <LinkButton theme="info" style={{transform: "translateY(-3px)"}} iconCls="icon-angle-double-left"></LinkButton></div>
+                   <div style={{width:"calc(100% - 120px)",float:"left"}}> {
                         React.Children.map(this.props.children, (child, index) => {
                             if (child) {
                                 let iconCls = child && child.props.iconCls ? child.props.iconCls : "txt";
@@ -70,7 +74,11 @@ class Tabs extends React.Component {
                             return null;
 
                         })
+                       
                     }
+                      </div>  
+                      <div key="next" title="下一个" className={"wasabi-tab "} style={{float:"left",textAlign:"center", width:40}}>  <LinkButton   style={{transform: "translateY(-3px)"}}  theme="info" iconCls="icon-angle-double-right"></LinkButton></div>
+                      <div key="refresh" title="刷新" className={"wasabi-tab "} style={{float:"right",textAlign:"center", width:40}}>  <LinkButton   style={{transform: "translateY(-3px)"}}  theme="info" iconCls="icon-refresh"></LinkButton></div>
                 </div>:null}
                 
                 {

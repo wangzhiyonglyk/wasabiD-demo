@@ -5,7 +5,7 @@
 	font-size: 14px;
 	color: var(--color);
 	position: relative;
-	background-color: var(--background-color);
+	/* background-color: var(--background-color); */
 }
 .wasabi-tabs .wasabi-tab-nav{
 	border: 1px solid var(--border-color);
@@ -18,25 +18,19 @@
     position: relative;
 	height: 42px;
 }
-.wasabi-tab {
+.wasabi-tabs .wasabi-tab-nav .wasabi-tab {
 	padding: 0 10px;
 	height: 42px;
 	box-sizing: border-box;
 	line-height: 42px;
 	display: inline-block;
 	list-style: none;
-	font-size: 14px;
-	font-weight: 500;
+	font-size: var(--font-size);
 	color: var(--color);
 	position: relative;
 	overflow: hidden;
 	transition: all .3s ease-out 0s;
 	cursor: pointer;
-	-webkit-transition: all .3s ease-out 0s;
-	-moz-transition: all .3s ease-out 0s;
-	-ms-transition: all .3s ease-out 0s;
-	-o-transition: all .3s ease-out 0s;
-	border-bottom: 1px solid transparent;
     border-left: 1px solid var(--border-color);
 }
 .wasabi-tab:last-child{

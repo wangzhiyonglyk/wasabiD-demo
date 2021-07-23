@@ -222,15 +222,15 @@ class System extends React.Component {
                 >
                   <dd className='user-menu'>
                     <i className=' icon-user' style={{ marginRight: 10 }}></i>
-                    <cite>个人资料</cite>
+                    <span>个人资料</span>
                   </dd>
                   <dd className='user-menu'>
                     <i className=' icon-edit' style={{ marginRight: 10 }}></i>
-                    <cite>修改密码</cite>
+                    <span>修改密码</span>
                   </dd>
                   <dd className='user-menu' onClick={this.logout}>
                     <i className=' icon-switch' style={{ marginRight: 10 }}></i>
-                    <cite>退出</cite>
+                    <span>退出</span>
                   </dd>
                 </dl>
               </div>
