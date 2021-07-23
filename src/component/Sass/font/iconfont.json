@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "13004843",
+      "name": "row",
+      "font_class": "row",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "19797788",
+      "name": "tab",
+      "font_class": "tab",
+      "unicode": "e654",
+      "unicode_decimal": 58964
+    },
+    {
+      "icon_id": "21668190",
+      "name": "导航",
+      "font_class": "daohang",
+      "unicode": "e680",
+      "unicode_decimal": 59008
+    },
+    {
+      "icon_id": "2299504",
+      "name": "One button alarm",
+      "font_class": "button",
+      "unicode": "e6df",
+      "unicode_decimal": 59103
+    },
+    {
+      "icon_id": "14921711",
+      "name": "form",
+      "font_class": "form",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "21042780",
+      "name": "layout",
+      "font_class": "layout",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
       "icon_id": "20563701",
       "name": "csv",
       "font_class": "csv",
@@ -627,13 +669,6 @@
       "font_class": "coffee",
       "unicode": "ea7a",
       "unicode_decimal": 60026
-    },
-    {
-      "icon_id": "348410",
-      "name": "cog",
-      "font_class": "cog",
-      "unicode": "ea7b",
-      "unicode_decimal": 60027
     },
     {
       "icon_id": "348443",

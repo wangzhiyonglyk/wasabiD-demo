@@ -5,22 +5,24 @@
 	font-size: 14px;
 	color: var(--color);
 	position: relative;
+	background-color: var(--background-color);
 }
 .wasabi-tabs .wasabi-tab-nav{
 	border: 1px solid var(--border-color);
     border-radius: 4px 4px 0 0;
 	box-sizing: border-box;
 	border-bottom: 1px solid var(--border-color);
+	background-color: white;
 	border-left:none;
 	padding: 0;
     position: relative;
 	height: 42px;
 }
 .wasabi-tab {
-	padding: 0 20px;
-	height: 41px;
+	padding: 0 10px;
+	height: 42px;
 	box-sizing: border-box;
-	line-height: 41px;
+	line-height: 42px;
 	display: inline-block;
 	list-style: none;
 	font-size: 14px;
@@ -43,7 +45,7 @@
 .wasabi-tab .tab-icon {
 	color: var(--color);
 	font-size: 12px;
-	margin-left: 5px;
+	margin-left: 10px;
 	top: 1px;
 	position: relative;
 }

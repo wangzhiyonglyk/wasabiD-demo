@@ -9,7 +9,7 @@
 	background-color:white;
 }
 .wasabi-menu.black{
-	background-color:rgb(84, 92, 100)
+	background-color:#001529;
 }
 .wasabi-menu .dropdown {
 	position: relative;
@@ -30,7 +30,7 @@
 }
 
 .wasabi-menu.black .dropdown label{
-	color: white;
+	color:rgba(255,255,255,0.7)
 
 }
 .wasabi-menu.default .dropdown label:hover {
@@ -38,13 +38,14 @@
 
 }
 .wasabi-menu.black .dropdown label:hover {
-	background-color: rgb(67, 74, 80);
+
 	color: white;
 }
 
 .dropdown ul {
 	display: none;
 	list-style: none;
+	padding-left:0px;
 }
 
 .dropdown ul li  {
@@ -66,11 +67,11 @@
 	color: var(--color);
 }
 .wasabi-menu.black .dropdown ul li{
-	color: white;
-	background-color: rgb(84, 92, 100);
+	color:rgba(255,255,255,0.7);
+	background-color: #0c2135;
 }
 .wasabi-menu.black .dropdown ul li *{
-	color: white;
+	color:rgba(255,255,255,0.7)
 
 }
 
@@ -79,20 +80,22 @@
 {
 	background-color: #ecf5ff;
 }
-
-.wasabi-menu.black .dropdown ul li:hover
+.wasabi-menu.black .dropdown ul li:hover *
 {
-	background-color: rgb(67, 74, 80);
+color:white;
 }
-
-
 
 .wasabi-menu.default .dropdown ul li.active * {
 	color: var(--primary-color);
 	
 }
+.wasabi-menu.black .dropdown ul li.active{
+background-color: var(--primary-color);
+color: white;
+
+}
 .wasabi-menu.black .dropdown ul li.active *{
-	color: rgb(255, 208, 75);
+	color:white;
 
 }
 

@@ -8,9 +8,11 @@
     -o-border-radius: 4px;
     font-size: 14px;
     color: var(--color);
-    padding-right:5px;
 }
-
+.wasabi-dropdown+.wasabi-dropdown {
+    margin-left: 10px;
+  }
+  
 .wasabi-dropdown[disabled] {
   cursor: not-allowed;
 }
@@ -31,7 +33,7 @@
     overflow: visible;
     top: 26px;
     z-index: 10;
-    padding: 10px 0;
+    padding: 0;
     margin: 5px 0;
     background-color: #fff;
     border: 1px solid var(--border-color);

@@ -33,6 +33,7 @@ class Left extends React.Component {
         reduceHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }
     componentDidMount() {//设置鼠标事件
+        //先去掉拖动事件
         // let center = document.getElementById(this.props.centerid);
         // if (center) {
         //     document.addEventListener( "mousedown", this.mouseDownHandler)

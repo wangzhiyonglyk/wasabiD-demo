@@ -12,24 +12,56 @@ class TableCell extends React.PureComponent {
         this.renderTh = this.renderTh.bind(this);
     }
     renderCell() {
+       let style=this.props.style?JSON.parse( JSON.stringify(this.props.style)):{};
+       style.background=null;
+       style.backgroundColor=null;
+     
         return <div data-rowindex={this.props.rowIndex} data-columnindex={this.props.columnIndex} colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1} className={"wasabi-table-cell  "}
-            style={this.props.style || null} title={typeof this.props.children === "string" ? this.props.children : ""}>
+            style={style} title={typeof this.props.children === "string" ? this.props.children : ""}>
             {
                 this.props.children
             }
         </div>;
     }
     renderTh() {
-        return <th className={(this.props.className || "") + (this.props.position !== "body" ? ' nowrap ' : "")} align={this.props.align} colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1} 
-            onClick={this.props.onClick} onDoubleClick={this.props.onDoubleClick}>
+        let backgroundColor=this.props.style&&this.props.style.backgroundColor||null;
+        let background=this.props.style&&this.props.style.background||null;
+        let style={
+            background:background,
+            backgroundColor:backgroundColor
+        }
+        return <th className={(this.props.className || "") + (this.props.position !== "body" ? ' nowrap ' : "")}
+         align={this.props.align} 
+         style={style}
+         colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1} 
+            onClick={this.props.onClick} 
+            onDoubleClick={this.props.onDoubleClick}
+            onMouseDown={this.props.onMouseDown}
+            onMouseUp={this.props.onMouseUp}
+            onMouseMove={this.props.onMouseMove}
+            onMouseOut={this.props.onMouseOut}
+            >
             {this.renderCell()}
         </th>
     }
     renderTd() {
-        return <td id={this.props.id} data-rowindex={this.props.rowIndex} data-columnindex={this.props.columnIndex} align={this.props.align} colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1} className={(this.props.className || "") + (this.props.position !== "body" ? ' nowrap ' : "")}  
+        let backgroundColor=this.props.style&&this.props.style.backgroundColor||null;
+        let background=this.props.style&&this.props.style.background||null;
+        let style={
+            background:background,
+            backgroundColor:backgroundColor
+        }
+        return <td id={this.props.id} data-rowindex={this.props.rowIndex} 
+        data-columnindex={this.props.columnIndex} 
+        align={this.props.align} 
+         colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1} 
+         style={style}
+         className={(this.props.className || "") + (this.props.position !== "body" ? ' nowrap ' : "")}  
             onClick={this.props.onClick} onDoubleClick={this.props.onDoubleClick}
             onMouseDown={this.props.onMouseDown}
             onMouseUp={this.props.onMouseUp}
+            onMouseMove={this.props.onMouseMove}
+            onMouseOut={this.props.onMouseOut}
         >
             {this.renderCell()}
         </td>
@@ -51,8 +83,6 @@ TableCell.propTypes = {
     rowSpan: PropTypes.number,
     colSpan: PropTypes.number,
     position: PropTypes.oneOf(["header", "body", "footer"]),//位置  
-    onClick: PropTypes.func,
-    onDoubleClick: PropTypes.func,
 }
 TableCell.defaultProps = {
     rowSpan: 1,

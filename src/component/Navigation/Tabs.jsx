@@ -56,7 +56,7 @@ class Tabs extends React.Component {
     render() {
         return (
             <div className={"wasabi-tabs " +( this.props.className||"")} style={this.props.style} >
-                <div className={"wasabi-tab-nav "} id={this.state.navid} >
+               {    React.Children.count(this.props.children)>0? <div className={"wasabi-tab-nav "} id={this.state.navid} >
                     {
                         React.Children.map(this.props.children, (child, index) => {
                             if (child) {
@@ -71,7 +71,8 @@ class Tabs extends React.Component {
 
                         })
                     }
-                </div>
+                </div>:null}
+                
                 {
                     React.Children.map(this.props.children, (child, index) => {
                         if(child){

@@ -32,6 +32,7 @@ class SheetBody extends React.Component {
                         fontFamily: cell.fontFamily || null,
                         fontSize: cell.fontSize || null,
                         color: cell.color || null,
+                        backgroundColor:cell.backgroundColor||null,
                     };
                     tds.push(
                         <SheetCell

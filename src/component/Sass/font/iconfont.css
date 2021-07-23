@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2563689 */
-  src: url('iconfont.woff?t=1625316417687') format('woff'),
-       url('iconfont.ttf?t=1625316417687') format('truetype'),
-       url('iconfont.svg?t=1625316417687#iconfont') format('svg');
+  src: url('iconfont.woff?t=1627027655355') format('woff'),
+       url('iconfont.ttf?t=1627027655355') format('truetype'),
+       url('iconfont.svg?t=1627027655355#iconfont') format('svg');
 }
 
 .iconfont {
@@ -11,6 +11,30 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-row:before {
+  content: "\e61e";
+}
+
+.icon-tab:before {
+  content: "\e654";
+}
+
+.icon-daohang:before {
+  content: "\e680";
+}
+
+.icon-button:before {
+  content: "\e6df";
+}
+
+.icon-form:before {
+  content: "\e607";
+}
+
+.icon-layout:before {
+  content: "\e60e";
 }
 
 .icon-csv:before {
@@ -367,10 +391,6 @@
 
 .icon-coffee:before {
   content: "\ea7a";
-}
-
-.icon-cog:before {
-  content: "\ea7b";
 }
 
 .icon-eur:before {

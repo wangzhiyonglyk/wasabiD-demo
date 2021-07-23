@@ -1,36 +1,57 @@
-.wasabi-system .header{
+.wasabi-system{
+   position: relative;
+   font-size: var(--font-size);
+   color:var(--color);
+}
 
-   height: 60px;
-   line-height: 60px;
+
+.wasabi-system  .system{
+   height: 42px;
+   line-height: 42px;
    
 }
-.wasabi-system.default .header{
-   background-color: #206da5;
-}
-.wasabi-system.black .header{
-   background-color: #2f353c;
 
+.wasabi-system .system.default{
+	background-color:white;
+   border-bottom: 1px solid var(--border-color);
 }
-.wasabi-system .header .system{
-   height: 100%;
-   float: left;
+.wasabi-system .system.black{
+	background-color:#001529;
+   color: white;
+   border-bottom: 1px solid rgba(255,255,255,0.2);
 }
 
 .wasabi-system .system .logo {
    height:20px;
    width:20px;
-   margin-left:10px;
-   margin-top:22px;
+   margin-left:20px;
+   margin-top:11px;
    float: left;
+ 
 }
-.system .title{
+.wasabi-system .system .title{
    margin-left: 5px;
-   color: #fff;
+   line-height: 42px;
+   height:42px;
    font-size: 16px;
-   line-height: 60px;
-   height:60px;
+   font-weight: 700;
    float: left;
 }
+.wasabi-system .wasabi-menu{
+   min-height: calc(100% - 42px);
+   height: auto;
+}
+
+.wasabi-system .header{
+
+   height: 42px;
+   line-height: 42px;
+   font-size: var(--font-size);
+   
+}
+
+
+
 .wasabi-system .header .nav{
 float:right;
 height: 100%;
@@ -46,24 +67,38 @@ height: 100%;
     text-align: center;
     position: relative;
     padding :0px 10px;
-    color: #fff;
+    color:var(--color);
     cursor: pointer; 
 }
 .wasabi-system .header .nav ul li:hover
 {
-   background-color: rgba(255,255,255,0.2)
+   color: var(--primary-color);
 }
 .wasabi-system .header .nav li.active{
-   background-color: var(--primary-hover-color);
+  
+   color: var(--primary-color);
 }
 
+.wasabi-system .header .system{
+   float: right;
+   height: 100%;
+   margin-right: 10px;
+   position: relative;
+   text-align: center;
+   width: 40px;
+}
+.wasabi-system .header .system:hover{
+   background-color: var(--background-color);
+}
 .wasabi-system .header .user{
    float: right;
    height: 100%;
-   margin-right: 30px;
+   margin-right: 10px;
    position: relative;
 }
-
+.wasabi-system .header .user:hover{
+   background-color: var(--background-color);
+}
 .wasabi-system .user .userheader {
    height: 25px;
    width: 25px;
@@ -72,9 +107,10 @@ height: 100%;
 }
 .wasabi-system .user .title{
    margin-left: 5px;
-   color: #fff;
+   color: var(--color);
    font-size: 14px;
    float: right;
+   margin-right: 5px;
 }
 .wasabi-system .user .user-menus{
    
@@ -106,7 +142,7 @@ height: 100%;
    color:#333;
    padding: 0 20px;
    cursor: pointer;
-}
+}  
 .wasabi-system .menuicon{
    display: inline-block!important;
    padding:0px!important;

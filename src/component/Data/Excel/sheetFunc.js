@@ -63,6 +63,7 @@ const sheetFunc = {
             align: "center",
             underline: false,
             italic: false,
+            backgroundColor:null,
             bold: false,
             fontSize: 14,
             fontFamily: "inherit",

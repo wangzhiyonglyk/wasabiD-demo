@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Tree from "../../component/Data/Tree"
-import { DataGrid,TreeGrid, Input, func ,CheckBox,Text,Radio,Upload, Button} from "../../component"
+import { DataGrid, TreeGrid, Input, func, CheckBox, Text, Radio, Upload, Button } from "../../component"
 import Excel from "../../component/Data/Excel"
 import Color from "../../component/Data/Color"
 import("./index.css")
@@ -17,7 +17,7 @@ class PivotPage extends React.Component {
                 {
                     name: "id",
                     label: "id",
-                  
+
                 },
 
             ],
@@ -26,7 +26,7 @@ class PivotPage extends React.Component {
                 {
                     name: "label",
                     label: "省1",
-                  
+
                 },
                 {
                     name: "省2",
@@ -36,22 +36,22 @@ class PivotPage extends React.Component {
                 {
                     name: "省3",
                     label: "省3",
-                   
+
                 },
                 {
                     name: "省4",
                     label: "省4",
-                 
+
                 },
                 {
                     name: "省5",
                     label: "省5",
-                  
+
                 },
                 {
                     name: "省6",
                     label: "省6",
-                  
+
                 },
             ],
             data: [
@@ -103,12 +103,12 @@ class PivotPage extends React.Component {
     }
     onClick() {
         let data = this.refs.tree.getChecked();
-       
-        console.log("data",  this.refs.tree.loadData1, this.refs.tree);
+
+        console.log("data", this.refs.tree.loadData1, this.refs.tree);
         setTimeout(() => {
             //this.refs.tree.remove(data[0])
         }, 1000);
-      
+
     }
     onDrop(data) {
         let dropData = this.state.dropData;
@@ -139,16 +139,16 @@ class PivotPage extends React.Component {
     onDrag(id, text, row) {
         console.log("d", id, text, row)
     }
-    onSave(data){
+    onSave(data) {
         console.log(data);
     }
     render() {
-        // return <DataGrid importAble={true} headers={this.state.headers} data={this.state.data} editAble={true}></DataGrid>
-       return  <Excel></Excel> 
-//            return<div>
-//                <Button>ddd</Button>
-// <Color></Color>
-//            </div>
+        return <DataGrid importAble={true} headers={this.state.headers} data={this.state.data} editAble={true}></DataGrid>
+        //    return  <Excel></Excel> 
+        //            return<div>
+        //                <Button>ddd</Button>
+        // return <Color></Color>
+        //            </div>
 
     }
 }

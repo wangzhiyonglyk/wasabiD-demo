@@ -132,9 +132,13 @@
     border-color: var(--border-hover-color);
 }
 
+.wasabi-excel-tool-button .wasabi-dropdown{
+    color: inherit!important;
+}
 .wasabi-excel-tool-button .wasabi-linkbutton {
     margin-top: -7px;
     margin-left: 7px;
+    color: inherit!important;
 }
 
 .wasabi-execel-tool-group .wasabi-form-group {

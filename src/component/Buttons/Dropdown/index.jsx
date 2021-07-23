@@ -24,6 +24,8 @@ class Dropdown extends Component {
         this.menuClickHandler = this.menuClickHandler.bind(this)
         this.showMenu = this.showMenu.bind(this);
         this.hideMenu = this.hideMenu.bind(this);
+        this.open=this.open.bind(this);
+        this.close=this.close.bind(this);
     }
 
     menuClickHandler(index, menuName) {
@@ -31,6 +33,14 @@ class Dropdown extends Component {
             menuShow: false
         })
         this.props.onClick && this.props.onClick(index, menuName);
+    }
+    open(){
+        this.showMenu();
+    }
+    close(){
+        this.setState({
+            menuShow: false
+        })
     }
     showMenu() {
         if (this.props.disabled) {
@@ -42,7 +52,7 @@ class Dropdown extends Component {
         document.addEventListener("click", this.hideMenu)
     }
     hideMenu(event) {
-        if (!dom.isDescendant(document.getElementById(this.state.containerid), event.target)) {
+        if (!dom.isDescendant(document.getElementById(this.state.containerid),event&&event.target)) {
             this.setState({
                 menuShow: false
             })

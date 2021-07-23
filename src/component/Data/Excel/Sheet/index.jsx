@@ -445,6 +445,7 @@ class Sheet extends React.Component {
    * @param {*} type 
    */
     onToolClick(type, props, value) {
+        console.log("tool",type,props)
         try {
             this[type](props, value);
         }

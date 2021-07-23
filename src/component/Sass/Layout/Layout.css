@@ -25,11 +25,9 @@ desc:圣杯布局样式
 }
 
 .wasabi-layout .wasabi-layout-header {
-	height:55px;
+	height:42px;
 	width: 100%;
 	top: 0;
-	border-bottom: 1px solid var(--border-color);
-
 }
 
 .wasabi-layout .wasabi-layout-footer {
@@ -46,6 +44,7 @@ desc:圣杯布局样式
 	border-top:0;
 	border-bottom: 0;
 	overflow-x: hidden;	
+	transition: all 0.3s;
 }
 
 .wasabi-layout .wasabi-layout-right {
@@ -54,10 +53,12 @@ desc:圣杯布局样式
 	border-top:0;
 	border-bottom: 0;
 	box-sizing: border-box;
+	transition: all 0.3s;
 }
 .wasabi-layout .wasabi-layout-center{
 	border:none;
 	height: 100%;
+	transition: all 0.3s;
 
 }
 .wasabi-layout .wasabi-separator-left{
