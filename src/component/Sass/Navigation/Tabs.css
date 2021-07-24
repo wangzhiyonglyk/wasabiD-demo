@@ -19,6 +19,7 @@
 	height: 42px;
 }
 .wasabi-tabs .wasabi-tab-nav .wasabi-tab {
+	flex-shrink: 0;
 	padding: 0 10px;
 	height: 42px;
 	box-sizing: border-box;

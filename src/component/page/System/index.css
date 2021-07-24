@@ -19,6 +19,10 @@
 	background-color:#001529;
    color: white;
    border-bottom: 1px solid rgba(255,255,255,0.2);
+   left: 0px;
+   top:0px;
+   z-index: 1;
+   position:sticky;
 }
 
 .wasabi-system .system .logo {
