@@ -16,7 +16,8 @@ class Index extends React.Component {
   
   render() {
    
-      return<Login title="BI数据分析系统" url="http://localhost:7007/user/login"></Login>
+      // return<Login title="BI数据分析系统" url="http://localhost:7007/user/login"></Login>
+      return <img src={require("./image/test.png")}></img>
  
   }
 }

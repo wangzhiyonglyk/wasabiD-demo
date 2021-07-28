@@ -159,7 +159,7 @@ class Container extends React.PureComponent {
     render() {
         this.inputs = [];//先清空
         let maxWidth = this.computerLabelWidth();
-        return <div className={"container-"+(this.props.size||"")+" " + this.props.className} style={this.props.style}>{
+        return <div className={" wasabi-container container-"+(this.props.size||"")+" " + this.props.className} style={this.props.style}>{
             React.Children.map(this.props.children, (child, index) => {
                 if (typeof child.type !== "function") {//非react组件
                     return child;
@@ -171,7 +171,7 @@ class Container extends React.PureComponent {
                     return React.cloneElement(child,
                         {
                             labelStyle: labelStyle,
-                            readOnly: this.state.disabled ? this.state.disabled : child.props.readOnly,
+                            readOnly: this.props.disabled ? this.props.disabled : child.props.readOnly,
                             key: index, ref: ref
                         })
                 }

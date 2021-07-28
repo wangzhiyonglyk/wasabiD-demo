@@ -21,9 +21,9 @@
 .wasabi-tabs .wasabi-tab-nav .wasabi-tab {
 	flex-shrink: 0;
 	padding: 0 10px;
-	height: 42px;
+	height: 40px;
 	box-sizing: border-box;
-	line-height: 42px;
+	line-height: 40px;
 	display: inline-block;
 	list-style: none;
 	font-size: var(--font-size);
@@ -62,27 +62,27 @@ color:var(--info-color);
 	color: var(--primary-color);
 }
 .wasabi-tab.primary.active {
-	border-bottom-color: #fff;
-	color: var(--primary-color);
+background-color: var(--primary-color);
+	color: white;
 }
 .wasabi-tab.primary:hover .tab-icon {
 	color: var(--primary-color);
 }
 .wasabi-tab.primary.active .tab-icon{
-color:var(--primary-color);
+	color: white;
 }
 .wasabi-tab.success:hover {
 	color: var( --success-color);
 }
 .wasabi-tab.success.active {
-	border-bottom-color: #fff;
-	color: var( --success-color);
+	color: white;
+	background-color: var( --success-color);
 }
 .wasabi-tab.success:hover .tab-icon {
 	color: var( --success-color);
 }
 .wasabi-tab.success.active .tab-icon{
-color:var( --success-color);
+	color: white;
 }
 
 
@@ -91,42 +91,42 @@ color:var( --success-color);
 	color: var(--info-color);
 }
 .wasabi-tab.info.active {
-	border-bottom-color: #fff;
-	color: var(--info-color);
+	color: white;
+	background-color: var(--info-color);
 }
 .wasabi-tab.info:hover .tab-icon {
 	color: var(--info-color);
 }
 .wasabi-tab.info.active .tab-icon{
-color:var(--info-color);
+	color: white;
 }
 
 .wasabi-tab.warning:hover {
 	color: var(--warning-color);
 }
 .wasabi-tab.warning.active {
-	border-bottom-color: #fff;
-	color: var(--warning-color);
+	color: white;
+	background-color: var(--warning-color);
 }
 .wasabi-tab.warning:hover .tab-icon {
 	color: var(--warning-color);
 }
 .wasabi-tab.warning.active .tab-icon{
-color:var(--warning-color);
+	color: white;
 }
 
 .wasabi-tab.danger:hover {
 	color: var(--danger-color);
 }
 .wasabi-tab.danger.active {
-	border-bottom-color: #fff;
-	color: var(--danger-color);
+	color: white;
+	background-color: var(--danger-color);
 }
 .wasabi-tab.danger:hover .tab-icon {
 	color: var(--danger-color);
 }
 .wasabi-tab.danger.active .tab-icon{
-color:var(--danger-color);
+	color: white;
 }
 
 

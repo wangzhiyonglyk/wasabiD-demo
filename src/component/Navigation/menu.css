@@ -1,16 +1,18 @@
-
 .wasabi-menu {
 	width: 100%;
 	height: 100%;
 	font-size: 14px;
 	color: var(--color);
 }
-.wasabi-menu.default{
-	background-color:white;
+
+.wasabi-menu.white {
+	background-color: white;
 }
-.wasabi-menu.black{
-	background-color:#001529;
+
+.wasabi-menu.black {
+	background-color: #001529;
 }
+
 .wasabi-menu .dropdown {
 	position: relative;
 	display: block;
@@ -22,80 +24,82 @@
 	color: var(--color);
 	text-align: left;
 	padding-left: 20px;
-	padding-right:20px;
+	padding-right: 20px;
 	display: block;
 	font-size: 14px;
 	height: 56px;
 	line-height: 56px;
 }
 
-.wasabi-menu.black .dropdown label{
-	color:rgba(255,255,255,0.7)
-
+.wasabi-menu.white .dropdown label {
+	color: var(--color);
 }
-.wasabi-menu.default .dropdown label:hover {
-	background-color: #ecf5ff;
 
+.wasabi-menu.black .dropdown label {
+	color: rgba(255, 255, 255, 0.7)
 }
+
+.wasabi-menu.white .dropdown label:hover {
+	background-color: var(--background-color)
+}
+
 .wasabi-menu.black .dropdown label:hover {
-
 	color: white;
 }
 
 .dropdown ul {
 	display: none;
 	list-style: none;
-	padding-left:0px;
+	padding-left: 0px;
 }
 
-.dropdown ul li  {
+.dropdown ul li {
 	height: 50px;
-    line-height: 50px;
-    font-size: 14px;
-    color: var(--color);
-    padding: 0 20px;
-    list-style: none;
-    cursor: pointer;
-    position: relative;
-    transition: border-color .3s,background-color .3s,color .3s;
-    box-sizing: border-box;
+	line-height: 50px;
+	font-size: 14px;
+	color: var(--color);
+	padding: 0 20px;
+	list-style: none;
+	cursor: pointer;
+	position: relative;
+	transition: all 0.3s;
+	box-sizing: border-box;
 	white-space: nowrap;
 	cursor: pointer;
 }
 
-.wasabi-menu.default .dropdown ul li *{
-	color: var(--color);
-}
-.wasabi-menu.black .dropdown ul li{
-	color:rgba(255,255,255,0.7);
+
+
+.wasabi-menu.black .dropdown ul li {
+	
 	background-color: #0c2135;
 }
-.wasabi-menu.black .dropdown ul li *{
-	color:rgba(255,255,255,0.7)
 
+.wasabi-menu.black .dropdown ul li * {
+	color: rgba(255, 255, 255, 0.7)
 }
 
 
-.wasabi-menu.default .dropdown ul li:hover
-{
-	background-color: #ecf5ff;
-}
-.wasabi-menu.black .dropdown ul li:hover *
-{
-color:white;
+.wasabi-menu.white .dropdown ul li:hover {
+	background-color: var(--background-color);
 }
 
-.wasabi-menu.default .dropdown ul li.active * {
+.wasabi-menu.black .dropdown ul li:hover * {
+	color: white;
+}
+
+.wasabi-menu.white .dropdown ul li.active * {
 	color: var(--primary-color);
-	
-}
-.wasabi-menu.black .dropdown ul li.active{
-background-color: var(--primary-color);
-color: white;
-
-}
-.wasabi-menu.black .dropdown ul li.active *{
-	color:white;
 
 }
 
+.wasabi-menu.black .dropdown ul li.active {
+	background-color: var(--primary-color);
+	color: white;
+
+}
+
+.wasabi-menu.black .dropdown ul li.active * {
+	color: white;
+
+}

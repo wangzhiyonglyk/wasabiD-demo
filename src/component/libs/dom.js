@@ -27,10 +27,9 @@ let dom = {
     /**
      * 找到某个css类的祖先节点
      */
-    ancestorByClass(node,className)
-    {
+    ancestorByClass(node, className) {
         while (node !== null) {
-            if (node.className&&node.className.indexOf(className)>-1) {
+            if (node.className && node.className.indexOf(className) > -1) {
                 return node;
             }
             node = node.parentNode;
@@ -44,8 +43,8 @@ let dom = {
      * @param {*} className 
      * @returns 
      */
-    descendantByClass(node,className){
-       return node&& node.querySelector("."+className);
+    descendantByClass(node, className) {
+        return node && node.querySelector("." + className);
     },
 
     /**
@@ -84,12 +83,11 @@ let dom = {
     scrollParent(el) {
         let node = el.parentNode;
 
-        while (node !== null&&node!=document.documentElement) {
+        while (node !== null && node != document.documentElement) {
             let overflow = this.computedStyle(node, "overflow");
             if (node.scrollHeight > node.offsetHeight && overflow != "visible" && overflow != "hidden") {
                 return node;
-            }
-            else {
+            } else {
                 node = node.parentNode;
             }
         }
@@ -102,13 +100,39 @@ let dom = {
      */
     scrollVisible(el, pad = 0) {
         let scrollParent = dom.scrollParent(el);
-        if (el && scrollParent && dom.overView(el, scrollParent, pad)) {//判断是否不可见
-            if (scrollParent&&scrollParent!=window) {
+        if (el && scrollParent && dom.overView(el, scrollParent, pad)) { //判断是否不可见
+            if (scrollParent && scrollParent != window) {
                 scrollParent.scrollTop = (scrollParent.scrollHeight - scrollParent.offsetHeight)
             }
         }
-    }
+    },
 
+    //全屏
+    fullScreen() {
+        var element = document.documentElement;
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+        } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) {
+            element.webkitRequestFullscreen();
+        }
+    },
+
+    //退出全屏 
+    exitFullscreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+    }
 
 };
 export default dom;

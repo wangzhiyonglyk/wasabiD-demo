@@ -41,13 +41,13 @@ class Menus extends Component {
 Menus.propTypes = {
   className: PropTypes.string,
   theme: PropTypes.oneOf([//主题
-    "default",
+    "white",
     "black",
   ]),
 
 };
 Menus.defaultProps = {
-  theme: "default",
+  theme: "white",
 };
 
 export default Menus;

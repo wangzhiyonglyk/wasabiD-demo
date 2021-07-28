@@ -54,7 +54,6 @@ class Login extends React.Component {
      * 登陆
      */
     onSumbit() {
-
         if (this.props.url || this.props.loginHandler) {
             if (this.state.username && this.state.password) {
                 if (this.props.loginHandler && typeof this.props.loginHandler === "function") {

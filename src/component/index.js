@@ -83,14 +83,14 @@ import Col from './Layout/Col.jsx';//布局组件-列
 import Modal from './Layout/Modal.jsx';//模态层组件
 import Panel from './Layout/Panel.jsx';//面板组件
 import Resize from './Layout/Resize.jsx';//可调整大小组件
-import SlidePanel from './Layout/SlidePanel.jsx';//滑动面板
+
 
 /*****************导航组件******************/
 import Menus from './Navigation/Menus.jsx';//菜单组件
 import MenuPanel from './Navigation/MenuPanel.jsx';//菜单面板组件
 import MenuItem from './Navigation/MenuItem.jsx';//菜单节点组件
-import Tabs from './Navigation/Tabs.jsx';//页签组件
-import TabPanel from './Navigation/TabPanel.jsx';//页签面板组件
+import Tabs from './Navigation/Tabs/Tabs.jsx';//页签组件
+import TabPanel from './Navigation/Tabs/TabPanel.jsx';//页签面板组件
 
 
 
@@ -128,7 +128,7 @@ export {
   Password, Search,
   Calendar,
   Box, Drag, Drop, Layout, Center, Header, Footer, Left, Right, Container, Row, Col,
-  Modal, Panel, Resize, SlidePanel,
+  Modal, Panel, Resize,
   Menus, MenuPanel, MenuItem, Tabs, TabPanel, Track,
   Label, Msg,
   RotateChart, PageIn, ProgressChart,

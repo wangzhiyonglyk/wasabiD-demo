@@ -38,7 +38,7 @@ class Index extends React.Component {
               name:"msg",
               title:"弹出消息",
               iconCls:"icon-msg",
-              url:"./msg.html"
+              url:"./login.html"
             },
             {
               name:"label",
@@ -383,10 +383,10 @@ class Index extends React.Component {
               url: "./panel.html"
             },
             {
-              name: "slidepanel",
-              title: "滑动面板",
+              name: "slidemenu",
+              title: "滑动菜单",
               iconCls: "icon-layout",
-              url: "./slidepanel.html"
+              url: "./slidemenu.html"
             },
 
           ]
