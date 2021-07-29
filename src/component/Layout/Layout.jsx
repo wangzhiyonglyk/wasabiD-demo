@@ -32,24 +32,26 @@ class Layout extends React.Component {
         let top = 0;
         let left = 0;
         React.Children.map(this.props.children, (child, index) => {
-            switch (child.props.title) {
-                case "header":
-                    centerReduceHeight += child.props.height ? child.props.height : 0;//默认100
-                    top = child.props.height ? child.props.height : 0;
-                    break;
-                case "footer":
-                    centerReduceHeight += child.props.height ? child.props.height : 0;
-                    break;
-                case "left":
+            if (child) {
+                switch (child.props.type) {
+                    case "header":
+                        centerReduceHeight += child.props.height ? child.props.height : 0;//默认100
+                        top = child.props.height ? child.props.height : 0;
+                        break;
+                    case "footer":
+                        centerReduceHeight += child.props.height ? child.props.height : 0;
+                        break;
+                    case "left":
+                        centerReduceWidth += child.props.width ? child.props.width : 0;
+                        left = child.props.width ? child.props.width : 0;
+                        break;
+                    case "right":
+                        centerReduceWidth += child.props.width ? child.props.width : 0;
+                        break;
 
-                    centerReduceWidth += child.props.width ? child.props.width : 0;
-                    left = child.props.width ? child.props.width : 0;
-                    break;
-                case "right":
-                    centerReduceWidth += child.props.width ? child.props.width : 0;
-                    break;
-
+                }
             }
+
         })
 
         return {
@@ -62,23 +64,25 @@ class Layout extends React.Component {
     }
     render() {
         let widthHeight = this.calWidthHeight();//计算宽高
-
         return <div className={"wasabi-layout clearfix " + (this.props.className || "")}
             style={{ width: this.props.width, height: this.props.height }}  >
             {
                 React.Children.map(this.props.children, (child, index) => {
 
-                    switch (child.props.title) {
-                        case "center":
-                            return React.cloneElement(child, { leftid: this.state.leftid, centerid: this.state.centerid, rightid: this.state.rightid, key: index, ref: index, ...widthHeight });
-                        case "left":
-                            return React.cloneElement(child, { leftid: this.state.leftid, centerid: this.state.centerid, rightid: this.state.rightid, key: index, ref: index, ...widthHeight });
-                        case "right":
-                            return React.cloneElement(child, { leftid: this.state.leftid, centerid: this.state.centerid, rightid: this.state.rightid, key: index, ref: index, ...widthHeight });
-                        default:
-                            return React.cloneElement(child, { key: index, ref: index });
+                    if (child) {
+                        switch (child.props.type) {
+                            case "center":
+                                return React.cloneElement(child, { leftid: this.state.leftid, centerid: this.state.centerid, rightid: this.state.rightid, key: index, ref: index, ...widthHeight });
+                            case "left":
+                                return React.cloneElement(child, { leftid: this.state.leftid, centerid: this.state.centerid, rightid: this.state.rightid, key: index, ref: index, ...widthHeight });
+                            case "right":
+                                return React.cloneElement(child, { leftid: this.state.leftid, centerid: this.state.centerid, rightid: this.state.rightid, key: index, ref: index, ...widthHeight });
+                            default:
+                                return React.cloneElement(child, { key: index, ref: index });
 
+                        }
                     }
+
                 })
             }</div>
     }

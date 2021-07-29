@@ -9,6 +9,7 @@ require("./tabs.css");
 class Tabs extends React.Component {
     constructor(props) {
         super(props);
+        this.tabpanels = [];
         this.state = {
             navid: func.uuid(),//id
             activeIndex: 0,
@@ -72,11 +73,22 @@ class Tabs extends React.Component {
         let nav = document.getElementById(this.state.navid);
         nav.scrollLeft += 80;
     }
-    refresh() { }
+    //刷新
+    refresh() {
+        try {
+            this.tabpanels[this.state.activeIndex].current.refresh();
+        }
+        catch (e) {
+
+        }
+
+
+    }
     render() {
+        this.tabpanels = [];
         return (
             <div className={"wasabi-tabs " + (this.props.className || "")} style={this.props.style} >
-                <div className={"wasabi-tab-nav "+(this.props.plain?"plain":"")}  >
+                <div className={"wasabi-tab-nav " + (this.props.plain ? "plain" : "")}  >
                     {this.props.plain ? null : <div key="pre" title="上一个" onClick={this.preClick.bind(this)} className={"wasabi-tab "}
                         style={{ float: "left", textAlign: "center", width: 40, borderRight: React.Children.count(this.props.children) > 0 ? null : "1px solid var(--border-color)" }}> <LinkButton theme="info" style={{ transform: "translateY(-3px)" }} iconCls="icon-angle-double-left"></LinkButton></div>}
                     <div id={this.state.navid} style={{ width: "calc(100% - 120px)", float: "left", height: "42px", overflow: "hidden", display: "flex", flexDirection: "row", flexWrap: "nowrap" }}>
@@ -98,14 +110,14 @@ class Tabs extends React.Component {
 
                     </div>
                     {this.props.plain ? null : <div key="next" onClick={this.nextClick.bind(this)} title="下一个" className={"wasabi-tab "} style={{ float: "left", textAlign: "center", width: 40 }}>  <LinkButton style={{ transform: "translateY(-3px)" }} theme="info" iconCls="icon-angle-double-right"></LinkButton></div>}
-                    {this.props.plain ? null : <div key="refresh" title="刷新" className={"wasabi-tab "} style={{ float: "right", textAlign: "center", width: 40 }}>  <LinkButton style={{ transform: "translateY(-3px)" }} theme="info" iconCls="icon-refresh"></LinkButton></div>}
+                    {this.props.plain ? null : <div onClick={this.refresh.bind(this)} key="refresh" title="刷新" className={"wasabi-tab "} style={{ float: "right", textAlign: "center", width: 40 }}>  <LinkButton style={{ transform: "translateY(-3px)" }} theme="info" iconCls="icon-refresh"></LinkButton></div>}
                 </div>
                 {
                     React.Children.map(this.props.children, (child, index) => {
                         if (child) {
-                            return <div key={index} style={this.props.style} className={"section  " + this.props.theme + " " + (index == this.state.activeIndex ? "active" : "")}  >
-                                {child}
-                            </div>
+                            let ref = React.createRef();
+                            this.tabpanels.push(ref);
+                            return React.cloneElement(child, { index:index, ref: ref, key: index, active: this.state.activeIndex === index })
                         } else {
                             return null;
                         }

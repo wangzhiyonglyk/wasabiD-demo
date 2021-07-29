@@ -44,7 +44,7 @@ class Index extends React.Component {
               name:"label",
               title:"普通文本",
               iconCls:"icon-txt",
-              url:"./label.html"
+              url:"http://www.taobao.com"
             }
           ],
           
@@ -501,7 +501,16 @@ class Index extends React.Component {
           iconCls: "icon-windows",
           url: "./intro.html"
         }
-      ]}></System>
+      ]}
+  
+      notices={[
+        { title: "你收到了 14 份新周报", date: "2021-07-28 10:10:10", iconCls: <img style={{ width: 32, height: 32 }} src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"></img> },
+                            { title: "你推荐的 曲妮妮 已通过第三轮面试", date: "2021-07-28 10:10:10", iconCls: <img style={{ width: 32, height: 32 }} src="https://gw.alipayobjects.com/zos/rmsportal/OKJXDXrmkNshAMvwtvhu.png"></img> },
+                            { title: "这种模板可以区分多种通知类型", date: "2021-07-28 10:10:10", iconCls: <img style={{ width: 32, height: 32 }} src="https://gw.alipayobjects.com/zos/rmsportal/kISTdvpyTAhtGxpovNWd.png"></img> },
+                            { title: "左侧图标用于区分不同的类型", date: "2021-07-28 10:10:10", iconCls: <img style={{ width: 32, height: 32 }} src="https://gw.alipayobjects.com/zos/rmsportal/GvqBnKhFgObvnSGkDsje.png"></img> },
+      ]}
+      
+      ></System>
   }
 }
 ReactDOM.render(

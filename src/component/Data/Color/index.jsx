@@ -5,6 +5,7 @@ import regs from "../../libs/regs";
 import "./color.css"
 import colorFunc from "./colorFunc";
 import colors from "./colors";
+import PropTypes from 'prop-types';
 class ColorPickerPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -399,5 +400,7 @@ class Color extends React.Component {
         </div>
     }
 }
-
+Color.propTypes = {
+    onSelect: PropTypes.func,//搜索事件
+}
 export default Color;

@@ -12,7 +12,7 @@ class Footer extends  React.Component{
         super(props);
     }
     static defaultProps = {
-        title:"footer",
+        type:"footer",
         height:null
     }
     static propTypes={

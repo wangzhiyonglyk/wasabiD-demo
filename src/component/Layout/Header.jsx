@@ -13,7 +13,7 @@ class Header extends  React.Component{
     }
   
     static  defaultProps= {
-       title:"header",
+       type:"header",
        height:null,
     }
     static propTypes={
@@ -21,8 +21,8 @@ class Header extends  React.Component{
     }
     
     render() {
-        return <div className={"wasabi-layout-header  layout-panel" }
-         style={ {height:this.props.height,top:this.props.top}}>
+        return <div className={"wasabi-layout-header  layout-panel "+(this.props.className||"")  }
+         style={ {height:this.props.height}}>
             {  this.props.children}
         </div>
     }

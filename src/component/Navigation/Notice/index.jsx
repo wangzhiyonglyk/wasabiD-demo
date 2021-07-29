@@ -12,7 +12,7 @@ class Notice extends React.PureComponent{
     render(){
         return <div className="wasabi-notice">
             {this.props.data.map((item,index)=>{
-                return <div key={index} className="wasabi-notice-item" onClick={this.props.onClick}>
+                return <div key={index} className="wasabi-notice-item" onClick={this.props.onClick&&this.props.onClick.bind(this,item)}>
                     <div className="wasabi-notice-left">
                       {item.iconCls}
                     </div>

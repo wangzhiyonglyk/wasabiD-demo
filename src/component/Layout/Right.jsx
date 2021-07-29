@@ -20,7 +20,7 @@ class Right extends React.Component {
         this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
     }
     static defaultProps = {
-        title: "right",
+        type: "right",
         top: 0,
         width: 0,
         height: 0

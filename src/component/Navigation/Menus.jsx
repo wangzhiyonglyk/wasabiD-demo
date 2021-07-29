@@ -20,7 +20,7 @@ class Menus extends Component {
     })
   }
   render() {
-    return <div style={this.props.style} className={"wasabi-menu " + (this.props.className || "") + " " + this.props.theme}>
+    return <div style={this.props.style} className={"wasabi-menu " + (this.props.className || "") + " " + (this.props.theme||"black")+" "+(this.props.colorTheme||"primary")}>
       {
         React.Children.map(this.props.children, (child, index) => {
           if (child && typeof child.type !== "function") {//非react组件
@@ -44,10 +44,16 @@ Menus.propTypes = {
     "white",
     "black",
   ]),
-
+  colorTheme: PropTypes.oneOf([//主题
+    "primary",
+    "success",
+    "warning",
+    "danger"
+  ]),
 };
 Menus.defaultProps = {
   theme: "white",
+  colorTheme:"primary"
 };
 
 export default Menus;

@@ -13,6 +13,8 @@
 	background-color: #001529;
 }
 
+
+
 .wasabi-menu .dropdown {
 	position: relative;
 	display: block;
@@ -79,27 +81,38 @@
 	color: rgba(255, 255, 255, 0.7)
 }
 
-
+.wasabi-menu.black .dropdown ul li:hover * {
+	color: white;
+}
+.wasabi-menu.black .dropdown ul li.active * {
+	color: white;
+}
 .wasabi-menu.white .dropdown ul li:hover {
 	background-color: var(--background-color);
 }
 
-.wasabi-menu.black .dropdown ul li:hover * {
-	color: white;
-}
 
-.wasabi-menu.white .dropdown ul li.active * {
+.wasabi-menu.white.primary .dropdown ul li.active * {
 	color: var(--primary-color);
-
 }
-
-.wasabi-menu.black .dropdown ul li.active {
+.wasabi-menu.white.success .dropdown ul li.active * {
+	color: var(--success-color);
+}
+.wasabi-menu.white.warning .dropdown ul li.active * {
+	color: var(--warning-color);
+}
+.wasabi-menu.white.danger .dropdown ul li.active * {
+	color: var(--danger-color);
+}
+.wasabi-menu.black.primary .dropdown ul li.active {
 	background-color: var(--primary-color);
-	color: white;
-
 }
-
-.wasabi-menu.black .dropdown ul li.active * {
-	color: white;
-
+.wasabi-menu.black.success .dropdown ul li.active {
+	background-color: var(--success-color);
+}
+.wasabi-menu.black.warning .dropdown ul li.active {
+	background-color: var(--warning-color);
+}
+.wasabi-menu.black.danger .dropdown ul li.active {
+	background-color: var(--danger-color);
 }

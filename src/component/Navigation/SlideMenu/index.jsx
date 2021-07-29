@@ -26,7 +26,6 @@ class SlideMenu extends React.Component {
         buttonClick: PropTypes.func,//按钮的单击事件,
     }
     open() {//打开事件，用于外部调用
-
         this.setState({
             visible: true
         }, () => {

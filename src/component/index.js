@@ -33,10 +33,13 @@ import Track from './Data/Track.jsx';//物流跟踪
 import Step from './Data/Step';//进度条
 import StepItem from './Data/Step/StepItem';//进度条
 import Avatar from "./Data/Avatar";//头像上传组件
-import Pivot from "./Data/Pivot";//交叉表
+// import Pivot from "./Data/Pivot";//交叉表
 import TreeGrid from "./Data/TreeGrid";//树型表格
 import Pagination from "./Data/Pagination";//分页控件
-
+import ContentMenu from "./Data/ContentMenu"//右键菜单
+import Color from "./Data/Color";//调色板
+import GlobalSearch from "./Data/GlobalSearch";//全局搜索
+// import Excel from "./Data/Excel";//Excel
 /*******************表格组件*************************/
 import { Table, TableBody, TableCell, TableHead, TableRow } from "./Data/Table";
 
@@ -66,6 +69,7 @@ import Search from "./Form/Search";//搜索栏组件
 import Calendar from './Form/DatePicker/Calendar';//日历组件
 
 /*****************布局组件******************/
+import Separator from "./Layout/Separator";//分隔线
 import Box from './Layout/Box.jsx';//箱子组件
 import Drag from './Layout/Drag.jsx';//拖动组件
 import Drop from './Layout/Drop.jsx';//停靠组件
@@ -91,6 +95,8 @@ import MenuPanel from './Navigation/MenuPanel.jsx';//菜单面板组件
 import MenuItem from './Navigation/MenuItem.jsx';//菜单节点组件
 import Tabs from './Navigation/Tabs/Tabs.jsx';//页签组件
 import TabPanel from './Navigation/Tabs/TabPanel.jsx';//页签面板组件
+import Notice from './Navigation/Notice';//通知组件
+import SlideMenu from './Navigation/SlideMenu';//右侧滑动菜单组件
 
 
 
@@ -121,15 +127,15 @@ import mixins from './Mixins/mixins';//mixins
 import regs from "./libs/regs";//常用的正则
 export {
   Tag, Button, LinkButton, Toolbar, Badge, Dropdown, DropdownItem,
-  DataGrid, Tree, Transfer, Progress, Step, StepItem, Avatar, Pivot, TreeGrid, Pagination,
+  DataGrid, Tree, Transfer, Progress, Step, StepItem, Avatar, TreeGrid, Pagination,ContentMenu,Color,GlobalSearch, Track,
   Table, TableBody, TableCell, TableHead, TableRow,
   Input, Form, SearchBar,
   BaseInput, Text, None, Rate, Select, Switch, CheckBox, CheckButton, Radio, Picker, TreePicker, DatePicker,
   Password, Search,
   Calendar,
-  Box, Drag, Drop, Layout, Center, Header, Footer, Left, Right, Container, Row, Col,
+  Separator,Box, Drag, Drop, Layout, Center, Header, Footer, Left, Right, Container, Row, Col,
   Modal, Panel, Resize,
-  Menus, MenuPanel, MenuItem, Tabs, TabPanel, Track,
+  Menus, MenuPanel, MenuItem, Tabs, Notice,TabPanel,SlideMenu,
   Label, Msg,
   RotateChart, PageIn, ProgressChart,
   Upload, Editor, Article, Single, Simulator,

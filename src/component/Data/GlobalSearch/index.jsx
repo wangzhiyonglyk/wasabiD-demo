@@ -5,6 +5,7 @@
  */
 import React from "react";
 import func from "../../libs/func";
+import PropTypes from 'prop-types';
 import("./search.css")
 class GlobalSearch extends React.Component {
     constructor(props) {
@@ -55,5 +56,7 @@ class GlobalSearch extends React.Component {
         </div>
     }
 }
-
+GlobalSearch.propTypes = {
+    onSearch: PropTypes.func,//搜索事件
+}
 export default GlobalSearch

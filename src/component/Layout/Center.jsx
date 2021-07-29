@@ -13,7 +13,7 @@ class Center extends  React.Component{
         
     }
     static defaultProps = {
-        title:"center",
+        type:"center",
         top:0,
         left:0,
         reduceWidth:0,
