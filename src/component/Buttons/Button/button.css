@@ -21,7 +21,7 @@
   user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  padding: 12px 20px;
+  padding: 10px 12px;
   border-radius: 4px;
   box-shadow: var(--box-shadow);
   position: relative;
@@ -32,22 +32,16 @@
   margin-left: 10px;
 }
 
-.wasabi-button.size-large .wasabi-button-icon {
-  transform: translateY(2px);
-}
 
-.wasabi-button.size-default .wasabi-button-icon {
-  transform: translateY(2px);
-}
 
 .wasabi-button.size-large {
   padding: 10px 16px;
-  font-size: 18px;
-  line-height: 1.3333333;
+  font-size: 16px;
+ 
 }
 
 .wasabi-button.size-default {
-  padding: 12px 20px;
+  padding: 10px 12px;
   font-size: 14px;
 
 }
@@ -55,16 +49,18 @@
 .wasabi-button.size-small {
   padding: 5px 10px;
   font-size: 12px;
-  line-height: 1.5;
-
 }
 
 .wasabi-button.size-mini {
-  padding: 1px 5px;
+  padding: 3px 5px;
   font-size: 12px;
-  line-height: 1.5;
-
 }
+
+.wasabi-button .wasabi-button-icon {
+  transform: translateY(1px);
+}
+
+
 
 .wasabi-button.default {
   background: #fff;
@@ -108,8 +104,6 @@
 
 
 .wasabi-button[disabled] {
-  -khtml-opacity: 0.40;
-  -moz-opacity: 0.40;
-  opacity: 0.40;
+  opacity: 0.70;
   cursor: not-allowed;
 }

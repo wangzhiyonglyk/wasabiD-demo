@@ -8,6 +8,7 @@
     -o-border-radius: 4px;
     font-size: 14px;
     color: var(--color);
+    padding-right: 6px;
 }
 .wasabi-dropdown+.wasabi-dropdown {
     margin-left: 10px;
@@ -21,8 +22,8 @@
 
 .wasabi-dropdown .wasabi-dropdown-arrow{
   position: absolute;
-  right: -2px;
-  bottom: 2px;
+  right: -1px;
+  bottom: -4px;
 }
 .wasabi-dropdown .wasabi-dropdown-arrow.noicon{
     top:12px
@@ -36,9 +37,6 @@
     padding: 0;
     margin: 5px 0;
     background-color: #fff;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
     display: none;
     min-width: 100px;
 }

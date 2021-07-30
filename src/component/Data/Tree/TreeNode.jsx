@@ -72,7 +72,7 @@ function NodeView(props) {
     }
     if (loadingId === row.id) {
         //正在异步加载
-        iconCls = "icon-spinner tree-loading";
+        iconCls = "icon-loading tree-loading";
 
     }
 

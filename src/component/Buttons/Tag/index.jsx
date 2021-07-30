@@ -32,7 +32,7 @@ class Tag extends Component {
   }
   render() {
 
-    return <span title={this.props.title} className={"wasabi-tag " + this.props.theme + " " + this.props.className + (this.props.disabled ? " disabled" : "")} style={this.props.style}>{this.props.children}
+    return <span title={this.props.title} className={"wasabi-tag " + (this.props.theme||"primary")+ " " + (this.props.className||"")+ (this.props.disabled ? " disabled" : "")} style={this.props.style}>{this.props.children}
       {
         this.props.removeAble ? <i className="icon-close" onClick={this.onRemove}></i> : null
       }</span>
@@ -44,7 +44,6 @@ Tag.propTypes = {
   theme: PropTypes.oneOf([
     //主题
     'primary',
-    'default',
     'success',
     'info',
     'warning',

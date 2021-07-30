@@ -61,10 +61,10 @@ class Index extends React.Component {
               url: "./button.html"
             },
             {
-              name: "linkbuton",
+              name: "linkbutton",
               title: "链接按钮",
               iconCls: "icon-chain",
-              url: "./linkbuton.html"
+              url: "./linkbutton.html"
             },
             {
               name: "dropbutton",

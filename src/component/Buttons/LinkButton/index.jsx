@@ -62,6 +62,16 @@ class LinkButton extends React.PureComponent {
             {this.props.iconAlign === "left" ? icon : null}
             {this.props.children}
             {this.props.iconAlign !== "left" ? icon : null}
+          {this.props.dot?  <div style={{
+            width: 12,
+            height: 12,
+            backgroundColor:(this.props.dotColor||"#f14d41"),
+            position: "absolute",
+            top: -5,
+            right: -7,
+            borderRadius: "50%",
+            transform: "scale(0.5)"
+        }}></div>:null}
         </a>
 
     }
@@ -73,7 +83,7 @@ LinkButton.propTypes = {
     style: PropTypes.object,//样式
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     iconCls: PropTypes.string, //图片
-    iconAlign: PropTypes.oneOf(['left', 'right', 'rightTop', 'rightBottom']), //图片位置
+    iconAlign: PropTypes.oneOf(['left', 'right', 'rightTop']), //图片位置
     iconColor: PropTypes.string,
     theme: PropTypes.oneOf([
         //主题

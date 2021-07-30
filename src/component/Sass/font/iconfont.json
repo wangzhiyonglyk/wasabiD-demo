@@ -750,7 +750,7 @@
     {
       "icon_id": "348798",
       "name": "spinner",
-      "font_class": "spinner",
+      "font_class": "loading",
       "unicode": "ebfe",
       "unicode_decimal": 60414
     },

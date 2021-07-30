@@ -158,6 +158,7 @@ class SystemHeader extends React.Component {
                 noticeExpand={this.noticeExpand.bind(this)}
                 notices={this.props.notices}
                 noticeClick={this.props.noticeClick}
+                headerTheme={this.props.headerTheme}
             ></SystemNoitce> : null}
             <div className='system-icon' onClick={props.searchOpen}>
                 <i style={{

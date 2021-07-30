@@ -17,30 +17,23 @@ class Toolbar extends Component {
     this.state = {};
   }
   onClick(name, title, event) {
-   this.props.onClick&& this.props.onClick(name, title, event); //执行父组件的事件
+    this.props.onClick && this.props.onClick(name, title, event); //执行父组件的事件
   }
   render() {
     let props = {
-      className: this.props.className + ' wasabi-toolbar',
+      className: (this.props.className || "") + ' wasabi-toolbar',
       style: this.props.style
     };
-    var buttonlist = [];
-     this.props.buttons&& this.props.buttons.map((child, index) => {
+
+    return <div {...props}>{this.props.buttons && this.props.buttons.map((child, index) => {
+      if (child) {
         if (this.props.type == 'button') {
-          buttonlist.push(
-            <Button key={index} {...child} onClick={this.onClick}>{this.props.title}</Button>
-          );
+          return <Button key={index} {...child} onClick={this.onClick}>{child.label ||child.title}</Button>
         } else {
-          buttonlist.push(
-            <LinkButton
-              key={index}
-              {...child}
-              onClick={this.onClick}
-            >{this.props.title}</LinkButton>
-          );
+          return <LinkButton key={index} {...child} onClick={this.onClick}>{child.label || child.title}</LinkButton>
         }
-      });
-    return <div {...props}>{buttonlist}</div>;
+      }
+    })}</div>;
   }
 }
 
