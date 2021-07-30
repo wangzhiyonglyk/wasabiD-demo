@@ -24,15 +24,16 @@ let entry = [
     src: './view/login/index.jsx' //脚本路径
   },
   {
-    filename: 'test', //文件名，
-    title: '登录', // 标题
-    src: './view/test/index.jsx' //脚本路径
+    filename: 'button', //文件名，
+    title: '普通按钮', // 标题
+    src: './view/button.jsx' //脚本路径
   },
   {
-    filename: 'rule', //文件名，
-    title: '规则管理', // 标题
-    src: './view/RulePage/index.jsx' //脚本路径
+    filename: 'linkbutton', //文件名，
+    title: '普通按钮', // 标题
+    src: './view/linkbutton.jsx' //脚本路径
   },
+ 
 ];
 
 module.exports = entry;
