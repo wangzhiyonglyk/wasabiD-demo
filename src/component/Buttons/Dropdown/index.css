@@ -22,8 +22,8 @@
 
 .wasabi-dropdown .wasabi-dropdown-arrow{
   position: absolute;
-  right: -1px;
-  bottom: -4px;
+  right: -4px;
+  bottom: -2px;
 }
 .wasabi-dropdown .wasabi-dropdown-arrow.noicon{
     top:12px
