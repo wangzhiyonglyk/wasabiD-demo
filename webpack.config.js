@@ -121,7 +121,6 @@ module.exports = (arg1, env) => {
               },
              
             ],
-            include:path.resolve(__dirname,"src"),
           },
           //.css 文件使用 style-loader 和 css-loader 来处理,注意这里可以使用要引用ExtractTextPlugin,独立出来
           {
@@ -151,7 +150,7 @@ module.exports = (arg1, env) => {
         //别名，快速访问
         alias: {
           '@': path.resolve(__dirname, './src'),
-         
+          component: path.resolve(__dirname, './src/component'),
         },
         //指定模块路径，可以不设置，有默认值,方便更快的打包
         modules: ['node_modules', path.join(__dirname, './node_modules')],
