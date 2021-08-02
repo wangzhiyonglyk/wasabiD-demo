@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { System } from "../../component"
-import api from "../../libs/api"
+import config from "../../libs/config";
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -10,9 +10,6 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
-
-    api.message();
-    api.location();
   }
 
   render() {

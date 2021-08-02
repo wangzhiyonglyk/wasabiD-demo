@@ -6,7 +6,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import Msg from "../../Info/Msg";
-import api from "../../../libs/api";
+import api from "wasabi-api";
 import("./index.css")
 class Login extends React.Component {
     constructor(props) {
