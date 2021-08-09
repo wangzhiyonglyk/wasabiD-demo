@@ -79,7 +79,7 @@ class GridPicker extends Component {
     }
     showPicker(event) {//显示选择
         try {
-            event.stopPropagation();//防止冒泡
+         
             if (this.props.readOnly) {
                 //只读不显示
                 return;

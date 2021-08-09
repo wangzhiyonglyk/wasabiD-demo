@@ -95,7 +95,7 @@ class Select extends Component {
    */
     showPicker(event) {
         try{
-            event.stopPropagation();//防止冒泡
+          
              //显示下拉选项
         if (this.props.readOnly) {
             return;

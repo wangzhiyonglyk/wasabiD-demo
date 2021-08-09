@@ -143,7 +143,7 @@ class TreeNode extends Component {
         this.beforeNodeRename = this.beforeNodeRename.bind(this);
         this.beforeNodeRemove = this.beforeNodeRemove.bind(this);
 
-        this.onMouseOver = this.onMouseOver.bind(this);
+     
         this.onNodeDragEnd = this.onNodeDragEnd.bind(this);
         this.onNodeDragLeave = this.onNodeDragLeave.bind(this);
         this.onNodeDragOver = this.onNodeDragOver.bind(this);
@@ -249,18 +249,13 @@ class TreeNode extends Component {
      * 下面是处理拖动的事件
      */
 
-    /**
-     * 鼠标经过事件
-     */
-    onMouseOver(event) {
-        event.stopPropagation();//阻止冒泡
-
-    }
+   
 
     /**
      * 拖动组件，拖动事件
      */
     onNodeDragStart(event) {
+        event.preventDefault()
         if (this.props.draggAble) {
             let row = new TreeNodeRow();
             for (let key in row) {
@@ -274,6 +269,7 @@ class TreeNode extends Component {
 
                 event.dataTransfer.setData("drag", JSON.stringify(row));//保存起来
                 window.localStorage.setItem("wasabi-drag-item", JSON.stringify(row));//
+                this.props.onDrag && this.props.onDrag(drag.id, drag.text, row);
             }
 
         }
@@ -284,19 +280,18 @@ class TreeNode extends Component {
      * 拖动组件，拖动结束
      */
     onNodeDragEnd(event) {
-        //在树组件本身内停靠时，这个事件有时候没有响应，原因不详，并用要使用缓存中的，用自身的，数据不对，原因不详
-        //但是拖动到外部的时候，没有问题，这个事件本身主要也是用于外部
-        event.preventDefault()
-        event.stopPropagation();
-        let drag = JSON.parse(window.localStorage.getItem("wasabi-drag-item"))
-        this.props.onDrag && this.props.onDrag(drag.id, drag.text, drag);
+        event.preventDefault();
+        //在树组件本身内停靠时，这个事件有时候没有响应，原因不详，并用要使用缓存中的，用 event.dataTransfer的，数据不对，原因不详
+        //但是拖动到外部的时候，没有问题,先标记
+       
+        // let drag = JSON.parse(window.localStorage.getItem("wasabi-drag-item"))
+    
     }
     /**
      * 容器经过事件,要阻止默认事件，否则浏览默认是搜索
      */
     onNodeDragOver(event) {
-        event.preventDefault()
-        event.stopPropagation();
+      event.preventDefault();//一定加这句
         if (this.props.dropAble) {
             const domClientY = document.getElementById(this.state.nodeid).getBoundingClientRect().top;
             const mouseClientY = event.clientY;
@@ -326,9 +321,8 @@ class TreeNode extends Component {
      * 容器离开事件
      * @param {} event 
      */
-    onNodeDragLeave(event) {
+    onNodeDragLeave(event) {    
         event.preventDefault()
-        event.stopPropagation();
         document.getElementById(this.state.nodeid).style.borderTop = "none";
         document.getElementById(this.state.nodeid).style.borderBottom = "none";
         document.getElementById(this.state.nodeid).style.backgroundColor = null;
@@ -339,7 +333,6 @@ class TreeNode extends Component {
      */
     onNodeDrop(event) {
         event.preventDefault()
-        event.stopPropagation();
         document.getElementById(this.state.nodeid).style.borderTop = "none";
         document.getElementById(this.state.nodeid).style.borderBottom = "none";
         document.getElementById(this.state.nodeid).style.backgroundColor = null;
@@ -377,7 +370,7 @@ class TreeNode extends Component {
             onNodeRename={this.onNodeRename}
             beforeNodeRemove={this.beforeNodeRemove}
             onNodeEdit={this.onNodeEdit}
-            onMouseOver={this.onMouseOver}
+        
             onNodeDragEnd={this.onNodeDragEnd}
             onNodeDragLeave={this.onNodeDragLeave}
             onNodeDragOver={this.onNodeDragOver}

@@ -22,7 +22,6 @@ export default {
      */
     onDrop(event) {
         event.preventDefault();
-        event.stopPropagation();
         if (event.dataTransfer.files && event.dataTransfer.files.length > 0 && this.props.importAble) {
             try {
                 if (fileType.filter("excel", event.dataTransfer.files[0])) {

@@ -55,7 +55,7 @@ class SystemHeader extends React.Component {
      */
     noticeExpand(event) {
         this.target = event.target;
-        event.stopPropagation();
+     
         this.setState({
             isuserExpand: false,
             isnoticeExpand: true

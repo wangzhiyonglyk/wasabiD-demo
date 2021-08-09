@@ -143,7 +143,8 @@ class PivotPage extends React.Component {
         console.log(data);
     }
     render() {
-        return <DataGrid importAble={true} headers={this.state.headers} data={this.state.data} editAble={true}></DataGrid>
+        return <div style={{width:200}}><Tree  data={this.state.data} textField={"label"}></Tree></div>
+        // return <DataGrid importAble={true} headers={this.state.headers} editAble={true}></DataGrid>
         //    return  <Excel></Excel> 
         //            return<div>
         //                <Button>ddd</Button>

@@ -233,7 +233,7 @@ class ColorNumberPanel extends React.Component {
     }
     colorChange(event) {
         try {
-            event.stopPropagation();
+          
             let left = 0;
             if (event.target === document.getElementById(this.state.colordotId)) {
                 left = event.target.offsetLeft + 6;

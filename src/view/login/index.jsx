@@ -10,11 +10,14 @@ class Index extends React.Component {
   componentDidMount() {
    
   }
-
+  onChange(event){
+    console.log("event",event);
+  }
   
-  render() {
+  render() {  
+    return <input onInput={this.onChange.bind(this)}></input>
    
-      return<Login title="BI数据分析系统" url="http://localhost:7007/user/login"></Login>
+      // return<Login title="BI数据分析系统" url="http://localhost:7007/user/login"></Login>
       // return <React.Fragment><Button>test</Button></React.Fragment>
  
   }

@@ -55,7 +55,6 @@ class Avatar extends Component {
     }
     onDrop(event){
         event.preventDefault();
-        event.stopPropagation();
         if(event.dataTransfer.files&&event.dataTransfer.files.length>0){
             this.setFile(event.dataTransfer.files)
         }

@@ -50,8 +50,7 @@ class Upload extends Component {
         if (this.props.disabled || this.state.uploadSuccessStatus != -1) {
             return;
         }
-        event.preventDefault();
-        event.stopPropagation();
+      
         if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
             this.setFile(event.dataTransfer.files)
         }
