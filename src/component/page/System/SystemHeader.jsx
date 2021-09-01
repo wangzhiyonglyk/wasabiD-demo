@@ -40,8 +40,8 @@ class SystemHeader extends React.Component {
   * 个人设置
   */
     userExpand(event) {
+        event.stopPropagation();//阻止冒泡
         this.target = event.target;
-        event.stopPropagation();
         this.setState({
             isnoticeExpand: false,
             isuserExpand: true
@@ -54,8 +54,8 @@ class SystemHeader extends React.Component {
      * @param {*} event 
      */
     noticeExpand(event) {
+        event.stopPropagation();//阻止冒泡
         this.target = event.target;
-     
         this.setState({
             isuserExpand: false,
             isnoticeExpand: true
@@ -87,10 +87,10 @@ class SystemHeader extends React.Component {
     }
     render() {
         let props = this.props;
-       
-        return <Header height={props.height} className={"header "+(this.props.headerTheme||"white")}>
-            {this.props.navTheme === "leftTop" ? <div style={{width:props.leftWidth-1,float:"left"}}
-             className={"system "}>
+        console.log("test", this.props.notices)
+        return <Header height={props.height} className={"header " + (this.props.headerTheme || "white")}>
+            {this.props.navTheme === "leftTop" ? <div style={{ width: props.leftWidth - 1, float: "left" }}
+                className={"system "}>
                 <img className='logo' src={this.props.logo || require("./img/logo.png")}></img>
                 <span className='title'>{this.props.title}</span>
             </div> : null}
@@ -139,11 +139,11 @@ class SystemHeader extends React.Component {
                     }
                     style={{ padding: 5 }}
                 >
-                    <dd className='user-menu'  onClick={this.props.userSet}>
-                        <i className=' icon-user'   style={{ marginRight: 10 }}></i>
+                    <dd className='user-menu' onClick={this.props.userSet}>
+                        <i className=' icon-user' style={{ marginRight: 10 }}></i>
                         <span>个人设置</span>
                     </dd>
-                    <dd className='user-menu'  onClick={this.props.changePassword} >
+                    <dd className='user-menu' onClick={this.props.changePassword} >
                         <i className=' icon-edit' style={{ marginRight: 10 }}></i>
                         <span>修改密码</span>
                     </dd>
