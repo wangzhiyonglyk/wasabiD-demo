@@ -49,7 +49,6 @@
 
 .wasabi-menu.black .dropdown label:hover {
 	color: white;
-	background-color:#0c2135;
 }
 
 .dropdown ul {
@@ -77,9 +76,6 @@
 .wasabi-menu.black .dropdown ul li {
 	
 	background-color: #0c2135;
-}
-.wasabi-menu.black .dropdown ul li:hover{
-	background-color: #102b44;
 }
 
 .wasabi-menu.black .dropdown ul li * {
