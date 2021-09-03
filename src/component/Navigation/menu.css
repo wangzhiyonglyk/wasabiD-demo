@@ -50,7 +50,9 @@
 .wasabi-menu.black .dropdown label:hover {
 	color: white;
 }
-
+.wasabi-menu.black .dropdown label:hover {
+	color: white;
+}
 .dropdown ul {
 	display: none;
 	list-style: none;
