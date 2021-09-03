@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { System } from "../../component"
-import config from "../../libs/config";
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +22,7 @@ class Index extends React.Component {
     }
     return <System
       nick={nick || "灰太狼，冲呀"}
-      title={"BI大数据分析系统"}
+      title={"后台管理系统"}
 
       menus={[
         {
@@ -35,7 +34,7 @@ class Index extends React.Component {
               name:"msg",
               title:"弹出消息",
               iconCls:"icon-msg",
-              url:"./login.html"
+              url:"./msg.html"
             },
             {
               name:"label",
@@ -53,41 +52,11 @@ class Index extends React.Component {
           children: [
             {
               name: "button",
-              title: "普通按钮",
+              title: "各类按钮",
               iconCls: "icon-bullseye",
               url: "./button.html"
             },
-            {
-              name: "linkbutton",
-              title: "链接按钮",
-              iconCls: "icon-chain",
-              url: "./linkbutton.html"
-            },
-            {
-              name: "dropbutton",
-              title: "下拉按钮",
-              iconCls: "icon-caret-down",
-              url: "./dropbutton.html"
-            },
-            {
-              name: "tag",
-              title: "标签",
-              iconCls: "icon-tags",
-              url: "./dropbutton.html"
-            },
-
-            {
-              name: "badge",
-              title: "标记",
-              iconCls: "icon-twitch",
-              url: "./dropbutton.html"
-            },
-            {
-              name: "toolbar",
-              title: "按钮工具栏",
-              iconCls: "icon-wrench",
-              url: "./toolbar.html"
-            }
+        
           ]
         },
         {

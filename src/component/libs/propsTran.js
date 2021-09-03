@@ -231,49 +231,48 @@ let propsTran = {
      * @param {*} children 
      * @returns 
      */
-    gridShowOrHideData(data,open, row) {
+    gridShowOrHideData(data, open, row) {
         data = func.clone(data);
-   
+
         let foldids = [];
-        let openids=[];
-        let f = function (o,node) {
+        let openids = [];
+        let f = function (o, node) {
             if (node.children && node.children instanceof Array && node.children.length > 0) {
                 //折叠
                 for (let i = 0; i < node.children.length; i++) {
-                    if(o === false)
-                    {
+                    if (o === false) {
                         foldids.push(node.children[i].id);
-                        if(node.children[i].children&&node.children[i].children.length>0){
+                        if (node.children[i].children && node.children[i].children.length > 0) {
                             f(o, node.children[i]);
-                        }             
+                        }
                     }
-                    else{
+                    else {
                         openids.push(node.children[i].id);
-                        if(node.children[i].children&&node.children[i].children.length>0){
-                            f( node.children[i].open, node.children[i]);
-                        } 
+                        if (node.children[i].children && node.children[i].children.length > 0) {
+                            f(node.children[i].open, node.children[i]);
+                        }
                     }
 
-                  
+
                 }
-            }else{
+            } else {
 
             }
         }
-       f(open,row);
-       foldids = "," + foldids.join(",") + ",";
-       openids = "," + openids.join(",") + ",";
-       console.log("data",foldids,openids);
+        f(open, row);
+        foldids = "," + foldids.join(",") + ",";
+        openids = "," + openids.join(",") + ",";
+
         if (data && data instanceof Array && data.length > 0) {
 
             for (let i = 0; i < data.length; i++) {
                 if (openids.indexOf("," + data[i].id + ",") > -1) {
-                    data[i].hide =false;
+                    data[i].hide = false;
                 }
                 if (foldids.indexOf("," + data[i].id + ",") > -1) {
-                    data[i].hide =true;
+                    data[i].hide = true;
                 }
-               
+
 
             }
         }
@@ -287,12 +286,7 @@ let propsTran = {
      */
     handlerLabelStyle(labelStyle, maxWidth) {
         labelStyle = func.clone(labelStyle) || {};
-        if (labelStyle.width && labelStyle.width.indexOf("%") <= -1 && parseFloat(labelStyle.width) < maxWidth) {
-            labelStyle.width = maxWidth;
-        }
-        else if (!labelStyle.width) {
-            labelStyle.width = maxWidth;
-        }
+        labelStyle.width = labelStyle.width != null && labelStyle.width != undefined ? labelStyle.width : maxWidth;
         return labelStyle;
     }
 }

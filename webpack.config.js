@@ -55,6 +55,7 @@ module.exports = (arg1, env) => {
         path: path.resolve(__dirname, './dist/'), //路径配置
         filename: 'js/[name][hash].js', //文件名称
         publicPath: '', // 配置发布打包时js,css资源的url前缀，
+        assetModuleFilename: 'images/[name][hash:8][ext][query]'//资源存放地
       },
       //优化配置项 todo
       optimization: {
@@ -119,26 +120,41 @@ module.exports = (arg1, env) => {
               {
                 loader: 'babel-loader',
               },
-             
+
             ],
           },
           //.css 文件使用 style-loader 和 css-loader 来处理,注意这里可以使用要引用ExtractTextPlugin,独立出来
           {
             test: /\.(css)$/,
-            use: [MiniCssExtractPlugin.loader, 'css-loader?minimize'],
+            use: [{
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                publicPath: "../"
+              }
+            }, 'css-loader?minimize'],
           },
           {
             test: /\.(sass|scss)$/,
-            use: [MiniCssExtractPlugin.loader, 'css-loader?minimize', 'sass-loader'],
+            use: [{
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                publicPath: "../"
+              }
+            }, 'css-loader?minimize', 'sass-loader'],
           },
           {
             test: /\.(less)$/,
-            use: [MiniCssExtractPlugin.loader, 'css-loader?minimize', 'less-loader'],
+            use: [{
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                publicPath: "../"
+              }
+            }, 'css-loader?minimize', 'less-loader'],
           },
           {
             test: /\.(?:ico|gif|png|jpg|jpeg|bmp)$/i,
             type: 'asset/resource',
-           },
+          },
           {
             test: /\.(svg|woff|woff2|eot|ttf|otf)$/i,
             type: "asset/inline",//使用这种才能导出字体

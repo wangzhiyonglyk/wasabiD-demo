@@ -90,7 +90,7 @@ class Index extends React.Component {
                 <Toolbar buttons={[{ label: "按钮一", theme: "primary", title: "按钮1" }, { label: "按钮二", theme: "success", title: "按钮2" }]}></Toolbar>
             </div>
 
-            <Separator key="s10">工具栏-Toolbar-type==button</Separator>
+            <Separator key="s10">工具栏-Toolbar-type==linkbutton</Separator>
             <div key="d10" style={{ textAlign: "center" }}>
                 <Toolbar type="link" buttons={[{ label: "按钮一", theme: "primary", title: "按钮1" }, { label: "按钮二", theme: "success", title: "按钮2" }]}></Toolbar>
             </div>

@@ -315,18 +315,18 @@ func.isEmptyObject = function (obj) {
     return isempty;
 
 }
-func.download = function (url, title,extend=".xlsx") {
-  
+func.download = function (url, title, extend = ".xlsx") {
+
     if (typeof url == 'object' && url instanceof Blob) {
         url = URL.createObjectURL(url); // 创建blob地址
     }
     else {
-        extend= url.substr(url.lastIndexOf("."));
+        extend = url.substr(url.lastIndexOf("."));
     }
     title = title || func.dateformat(new Date(), "yyyy-MM-dd HH:mm:ss");
     let downloadA = document.createElement("a");
     downloadA.href = url;
-    downloadA.download = title+extend;
+    downloadA.download = title + extend;
     downloadA.click();
     window.URL.revokeObjectURL(downloadA.href);//释放
 }
@@ -529,7 +529,7 @@ func.formatTreeDataChildren = function (children, pId, path, idField = "id", par
 
 }
 /**
- * 找到所有父节点
+ * 找到父节点
  * @param {*} data 
  * @param {*} pId 
  */

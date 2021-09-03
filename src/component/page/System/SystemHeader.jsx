@@ -87,11 +87,10 @@ class SystemHeader extends React.Component {
     }
     render() {
         let props = this.props;
-        console.log("test", this.props.notices)
         return <Header height={props.height} className={"header " + (this.props.headerTheme || "white")}>
             {this.props.navTheme === "leftTop" ? <div style={{ width: props.leftWidth - 1, float: "left" }}
                 className={"system "}>
-                <img className='logo' src={this.props.logo || require("./img/logo.png")}></img>
+                {this.props.logo ? <img className='logo' src={this.props.logo}></img> : null}
                 <span className='title'>{this.props.title}</span>
             </div> : null}
             <LinkButton onClick={props.setLeftWidth} iconCls="icon-bars" theme="info" style={{ float: "left", marginLeft: 10, marginTop: 5, width: 30, height: 30 }}></LinkButton>

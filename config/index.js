@@ -10,7 +10,7 @@ let entry = [
   {
     filename: 'index', //文件名，
     title: '首页', // 标题
-    src: './view/index/index.js', //脚本路径
+    src: './view/index/index.jsx', //脚本路径
     hide:true,
   },
   {
@@ -25,15 +25,15 @@ let entry = [
   },
   {
     filename: 'button', //文件名，
-    title: '普通按钮', // 标题
+    title: '按钮', // 标题
     src: './view/button.jsx' //脚本路径
   },
-  {
-    filename: 'linkbutton', //文件名，
-    title: '普通按钮', // 标题
-    src: './view/linkbutton.jsx' //脚本路径
-  },
  
+  {
+    filename: 'msg', //文件名，
+    title: '消息框', // 标题
+    src: './view/msg/index.jsx' //脚本路径
+  },
 ];
 
 module.exports = entry;

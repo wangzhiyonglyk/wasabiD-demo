@@ -119,7 +119,6 @@ class MessageView extends Component {
         switch (this.props.type) {
             case "loading":
                 return this.renderLoading();
-            case "info":
             case "alert":
                 return this.renderInfo();
             case "success":
@@ -137,7 +136,6 @@ MessageView.propTypes = {
     type: PropTypes.oneOf([
         "loading",
         "alert",
-        "info",
         "success",
         "error",
         "confirm",

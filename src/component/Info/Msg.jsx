@@ -7,7 +7,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import MessageView from "./MessageView";
 export default {
-    loading() {//正在加载
+    /**
+     * 弹出正在加载
+     */
+    loading() {
         if (!!document.getElementById("wasabi-loading")) {
             //存在
             let child = document.getElementById("wasabi-loading");
@@ -29,6 +32,9 @@ export default {
 
         }
     },
+    /**
+     * 隐藏正在加载
+     */
     hide() {
         try {
             let child = document.getElementById("wasabi-loading");
@@ -40,26 +46,32 @@ export default {
 
         }
     },
-    info(msg, timeout = 3000) {
-
-        if (!!document.getElementById("wasabi-info")) {
+    /**
+     * 普通消息
+     * @param {*} msg 
+     */
+    alert(msg) {
+        if (!!document.getElementById("wasabi-alert")) {
             //存在
-            let child = document.getElementById("wasabi-info");
+            let child = document.getElementById("wasabi-alert");
             document.body.removeChild(child);
-            let info = document.createElement("div");
-            info.id = "wasabi-info";
-            document.body.appendChild(info);
-            ReactDOM.render(<MessageView type="info" timeout={timeout} msg={msg} />, document.getElementById("wasabi-info"));
-
+            let alert = document.createElement("div");
+            alert.id = "wasabi-alert";
+            document.body.appendChild(alert);
+            ReactDOM.render(<MessageView type="alert" msg={msg} />, document.getElementById("wasabi-alert"));
         }
         else {
-            let info = document.createElement("div");
-            info.id = "wasabi-info";
-            document.body.appendChild(info);
-            ReactDOM.render(<MessageView type="info" timeout={timeout} msg={msg} />, document.getElementById("wasabi-info"));
+            let alert = document.createElement("div");
+            alert.id = "wasabi-alert";
+            document.body.appendChild(alert);
+            ReactDOM.render(<MessageView type="alert" msg={msg} />, document.getElementById("wasabi-alert"));
         }
-
     },
+    /**
+     * 成功消息
+     * @param {*} msg 
+     * @param {*} timeout 
+     */
     success(msg, timeout = 3000) {
         msg = msg || "操作成功"
         if (!!document.getElementById("wasabi-success")) {
@@ -80,6 +92,11 @@ export default {
         }
 
     },
+    /**
+     * 错误消息
+     * @param {*} msg 
+     * @param {*} timeout 
+     */
     error(msg, timeout = 3000) {
         msg = msg || "服务器内部错误"
         if (!!document.getElementById("wasabi-error")) {
@@ -100,24 +117,13 @@ export default {
         }
 
     },
-    alert(msg) {
-        if (!!document.getElementById("wasabi-alert")) {
-            //存在
-            let child = document.getElementById("wasabi-alert");
-            document.body.removeChild(child);
-            let alert = document.createElement("div");
-            alert.id = "wasabi-alert";
-            document.body.appendChild(alert);
-            ReactDOM.render(<MessageView type="alert" msg={msg} />, document.getElementById("wasabi-alert"));
-        }
-        else {
-            let alert = document.createElement("div");
-            alert.id = "wasabi-alert";
-            document.body.appendChild(alert);
-            ReactDOM.render(<MessageView type="alert" msg={msg} />, document.getElementById("wasabi-alert"));
-        }
-    },
-    confirm(msg, success, cancel) {
+    /**
+     * 确认对话框
+     * @param {*} msg 消息 
+     * @param {*} ok 确认函数
+     * @param {*} cancel 取消函数
+     */
+    confirm(msg, ok, cancel) {
         if (!!document.getElementById("wasabi-confirm")) {
             //存在
             let child = document.getElementById("wasabi-confirm");
@@ -125,13 +131,13 @@ export default {
             let confirm = document.createElement("div");
             confirm.id = "wasabi-confirm";
             document.body.appendChild(confirm);
-            ReactDOM.render(<MessageView type="confirm" msg={msg} OKHandler={success} cancelHandler={cancel} />, document.getElementById("wasabi-confirm"));
+            ReactDOM.render(<MessageView type="confirm" msg={msg} OKHandler={ok} cancelHandler={cancel} />, document.getElementById("wasabi-confirm"));
         }
         else {
             let confirm = document.createElement("div");
             confirm.id = "wasabi-confirm";
             document.body.appendChild(confirm);
-            ReactDOM.render(<MessageView type="confirm" msg={msg} OKHandler={success} cancelHandler={cancel} />, document.getElementById("wasabi-confirm"));
+            ReactDOM.render(<MessageView type="confirm" msg={msg} OKHandler={ok} cancelHandler={cancel} />, document.getElementById("wasabi-confirm"));
         }
     }
 };

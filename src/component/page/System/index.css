@@ -17,12 +17,14 @@
 .wasabi-system .system.wihte {
    background-color: white;
    border-bottom: 1px solid var(--border-color);
+   text-align: center;
 }
 
 .wasabi-system .system.black {
    background-color: #001529;
    color: white;
    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+   text-align: center;
  
 }
 
@@ -59,7 +61,7 @@
    width: 20px;
    margin-left: 20px;
    margin-top: 11px;
-   float: left;
+
 
 }
 
@@ -69,7 +71,7 @@
    height: 42px;
    font-size: 16px;
    font-weight: 700;
-   float: left;
+
 }
 
 .wasabi-system .wasabi-menu {

@@ -9,7 +9,7 @@ class SystemMenu extends React.Component {
     render() {
         return <React.Fragment>
             {this.props.navTheme === "left" ? <div className={"system " + (this.props.menuTheme || "black")}>
-                <img className='logo' src={this.props.logo || require("./img/logo.png")}></img>
+            {this.props.logo ? <img className='logo' src={this.props.logo}></img> : null}
                 <span className='title'>{this.props.title}</span>
             </div> : null}
             <Menus theme={this.props.menuTheme || "black"} colorTheme={this.props.systemTheme} style={{minHeight: this.props.navTheme !== "left"?"100%":null}}>
