@@ -55,7 +55,6 @@
   left: -40px;
 }
 
-
 .wasabi-confirm {
   width: 300px;
   position: absolute;
@@ -77,7 +76,7 @@
 .wasabi-confirm .wasabi-confirm-title {
   padding: 15px 0;
   opacity: 0;
-  color: #333;
+  color: var(--color);
   transform: translateY(10px);
   animation: wasabi-confirm-text 0.5s ease forwards;
   animation-delay: 0.3s;
@@ -89,7 +88,7 @@
 .wasabi-confirm .wasabi-confirm-message {
   font-size: 14px;
   text-align: center;
-  color: #333;
+  color: var(--color);
   line-height: 23px;
   padding: 0 10px;
   opacity: 0;

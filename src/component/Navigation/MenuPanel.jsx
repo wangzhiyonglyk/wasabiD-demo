@@ -23,15 +23,13 @@ class MenuPanel extends React.Component {
   }
   render() {
     return <div className={"dropdown " + (this.props.className || "") + " " + (this.props.expand ? "expand" : "")}>
-
-      <label htmlFor={this.props.title || ""} onClick={React.Children.count(this.props.children)>0?this.props.expandHandler:this.props.onClick} >
+      <label htmlFor={this.props.title || ""} onClick={React.Children.count(this.props.children) > 0 ? this.props.expandHandler : this.props.onClick} >
         <i className={this.props.iconCls || "icon-bars"} style={{ marginRight: 10 }}></i> {this.props.title}
-        {React.Children.count(this.props.children)>0? <i style={{ float: "right", marginRight: 10, marginTop: 20 }} className={this.props.expand ? "icon-arrow-down" : "icon-arrow-up"} onClick={this.props.expandHandler} ></i> : null}
+        {React.Children.count(this.props.children) > 0 ? <i style={{ float: "right", marginRight: 10, marginTop: 20 }} className={this.props.expand ? "icon-arrow-down" : "icon-arrow-up"} onClick={this.props.expandHandler} ></i> : null}
       </label>
-
-      <ul className="" style={{ display: this.props.expand ? "block" : "none" }}>
+      {this.props.children ? <ul className="" style={{ display: this.props.expand ? "block" : "none" }}>
         {this.props.children}
-      </ul>
+      </ul> : null}
     </div>
   }
 

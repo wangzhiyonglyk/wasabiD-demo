@@ -101,7 +101,6 @@ import SlideMenu from './Navigation/SlideMenu';//右侧滑动菜单组件
 
 
 /*****************消息组件******************/
-import Label from './Info/Label';//消息组件
 import Msg from './Info/Msg.jsx';//消息组件
 
 /*****************动画组件******************/
@@ -127,16 +126,16 @@ import mixins from './Mixins/mixins';//mixins
 import regs from "./libs/regs";//常用的正则
 export {
   Tag, Button, LinkButton, Toolbar, Badge, Dropdown, DropdownItem,
-  DataGrid, Tree, Transfer, Progress, Step, StepItem, Avatar, TreeGrid, Pagination,ContentMenu,Color,GlobalSearch, Track,
+  DataGrid, Tree, Transfer, Progress, Step, StepItem, Avatar, TreeGrid, Pagination, ContentMenu, Color, GlobalSearch, Track,
   Table, TableBody, TableCell, TableHead, TableRow,
   Input, Form, SearchBar,
   BaseInput, Text, None, Rate, Select, Switch, CheckBox, CheckButton, Radio, Picker, TreePicker, DatePicker,
   Password, Search,
   Calendar,
-  Separator,Box, Drag, Drop, Layout, Center, Header, Footer, Left, Right, Container, Row, Col,
+  Separator, Box, Drag, Drop, Layout, Center, Header, Footer, Left, Right, Container, Row, Col,
   Modal, Panel, Resize,
-  Menus, MenuPanel, MenuItem, Tabs, Notice,TabPanel,SlideMenu,
-  Label, Msg,
+  Menus, MenuPanel, MenuItem, Tabs, Notice, TabPanel, SlideMenu,
+  Msg,
   RotateChart, PageIn, ProgressChart,
   Upload, Editor, Article, Single, Simulator,
   Login, System,

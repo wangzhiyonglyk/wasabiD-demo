@@ -88,7 +88,7 @@ class MessageView extends Component {
         let iconCls = "icon-";
         switch (this.props.type) {
             case "success":
-                iconCls += "yes";
+                iconCls += "success";
                 break;
             case "error":
                 iconCls += "error";
@@ -104,7 +104,7 @@ class MessageView extends Component {
     renderConfirm() {
         return <div className={" wasabi-overlay " + (this.state.visible == true ? "active " : "")} >
             <div className={"wasabi-confirm " + (this.state.visible ? " wasabi-scale-in" : " wasabi-scale-out")} style={{ display: this.state.visible ? "block" : "none" }} >
-                <div className="wasabi-confirm-title"><i className="icon-info" style={{ marginRight: 5 }}></i>提示</div>
+                <div className="wasabi-confirm-title"><i className="icon-question" style={{ marginRight: 5 }}></i>提示</div>
                 <div className="wasabi-confirm-message">
                     {(this.props.msg == null || this.props.msg == "") ? "确定删除这条信息吗?" : this.props.msg}
                 </div>

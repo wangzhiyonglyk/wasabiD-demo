@@ -29,35 +29,13 @@ class Index extends React.Component {
           name:"message",
           title:"消息组件",
           iconCls:"icon-comment",
-          children:[
-            {
-              name:"msg",
-              title:"弹出消息",
-              iconCls:"icon-msg",
-              url:"./msg.html"
-            },
-            {
-              name:"label",
-              title:"普通文本",
-              iconCls:"icon-txt",
-              url:"http://www.taobao.com"
-            }
-          ],
-          
+          url:"./msg.html"
         },
         {
           name: "buttons",
           title: "按钮",
           iconCls: "icon-button",
-          children: [
-            {
-              name: "button",
-              title: "各类按钮",
-              iconCls: "icon-bullseye",
-              url: "./button.html"
-            },
-        
-          ]
+          url: "./button.html"
         },
         {
           title: "表单",

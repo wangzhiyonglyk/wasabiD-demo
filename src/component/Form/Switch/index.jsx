@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from "react";
-import Label from "../../Info/Label";
+import Label from "../Label";
 import propType from "../../propsConfig/propTypes.js";
 import "./switch.css"
 class Switch extends Component {

@@ -1,7 +1,7 @@
 import React from "react";
 import func from "../../libs/func";
 import validation from "../../libs/validation";
-import Label from "../../Info/Label";
+import Label from "../Label";
 import regexp from "../../libs/regs";
 import dom from "../../libs/dom"
 /**

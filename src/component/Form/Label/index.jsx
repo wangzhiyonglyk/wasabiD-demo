@@ -14,7 +14,7 @@ class Label extends React.PureComponent {
         this.state = {
             controlid: utils.uuid(),
         }
-        this.onClick=this.onClick.bind(this)
+        this.onClick = this.onClick.bind(this)
     }
     /**
      * 单击事件
@@ -26,12 +26,12 @@ class Label extends React.PureComponent {
 
     render() {
         let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
-        style.display = this.props.children || this.props.title ? "inline-block" : "none";
+        style.display = this.props.children ? "inline-block" : "none";
         return <div id={this.state.controlid}
             title={this.props.title}
-            className={"wasabi-label "+(this.props.className||"")}
+            className={"wasabi-label " + (this.props.className || "")}
             style={style}>
-            {this.props.required?<span style={{color:"red"}}>*</span>:null} {this.props.children || this.props.title}
+            {this.props.required ? <span style={{ color: "red" }}>*</span> : null} {this.props.children}
         </div>
 
 
@@ -41,6 +41,7 @@ class Label extends React.PureComponent {
 Label.propTypes = {
     style: PropTypes.object,
     className: PropTypes.string,
+    required: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string]),//标题
 };
 
