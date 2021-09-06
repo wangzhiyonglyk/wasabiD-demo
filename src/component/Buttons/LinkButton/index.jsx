@@ -83,12 +83,13 @@ LinkButton.propTypes = {
     style: PropTypes.object,//样式
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     iconCls: PropTypes.string, //图片
-    iconAlign: PropTypes.oneOf(['left', 'right', 'rightTop']), //图片位置
-    iconColor: PropTypes.string,
+    iconAlign: PropTypes.oneOf(['left', 'right', 'rightTop']), //图标的位置
+    iconColor: PropTypes.string,//图标的颜色值
+    dot:PropTypes.bool,//是否带红点
+    dotColor:PropTypes.string,//红点的颜色
     theme: PropTypes.oneOf([
         //主题
         'primary',
-        'default',
         'success',
         'info',
         'warning',

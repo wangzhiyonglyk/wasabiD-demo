@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from "../Button"
 import LinkButton from "../LinkButton"
 import dom from "../../libs/dom"
 import func from "../../libs/func"
@@ -82,8 +81,13 @@ class Dropdown extends Component {
             title: this.props.title
         };
         return <div ref={this.wasabidropdown}  {...props} id={this.state.containerid} >
-            <LinkButton disabled={this.props.disabled} key={1} disabled={this.props.disabled} iconCls={this.props.iconCls} name={this.props.name} onClick={this.showMenu} theme={this.props.theme} size={this.props.size} title={this.props.title}>{this.props.label}</LinkButton>
-            <i className={"wasabi-dropdown-arrow icon-drop-down "+(this.props.iconCls?"":"noicon") } onClick={this.showMenu}></i>
+            <LinkButton disabled={this.props.disabled} key={1} disabled={this.props.disabled} iconCls={this.props.iconCls}
+             iconAlign={this.props.iconAlign} name={this.props.name}
+             iconColor={this.props.iconColor}
+              onClick={this.showMenu} 
+             theme={this.props.theme} size={this.props.size} 
+             title={this.props.title}>{this.props.label}</LinkButton>
+            <i className={"wasabi-dropdown-arrow  "+(this.props.menuIconCls||"")+(this.props.iconCls?"":"noicon") } onClick={this.showMenu}></i>
             <ul className={"wasabi-dropdown-menu "} style={{ display: this.state.menuShow ? "block" : "none" }}>
                 {
                     React.Children.map(this.props.children, (child, index) => {
@@ -103,7 +107,10 @@ class Dropdown extends Component {
 Dropdown.propTypes = {
     name: PropTypes.string, //按钮名称
     title: PropTypes.string, //按钮提示信息
+    label:PropTypes.any,//按钮的文字
     iconCls: PropTypes.string, //按钮图标
+    iconAlign: PropTypes.oneOf(['left', 'right', 'rightTop']), //图标的位置
+    iconColor: PropTypes.string,//图标的颜色值
     menuIconCls: PropTypes.string, //菜单按钮图标
     theme: PropTypes.oneOf([
         //主题
@@ -115,16 +122,14 @@ Dropdown.propTypes = {
         'danger',
         'cancel'
     ]),
- 
-    onClick: PropTypes.func, //按钮单击事件
-    menuClick: PropTypes.func, //按钮单击事件
+    menuClick: PropTypes.func, //子菜单的单击事件
     style: PropTypes.object, //样式
     className: PropTypes.string, //自定义样式
     disabled: PropTypes.bool,//按钮是否无效
-    plain: PropTypes.bool //按钮是否是平铺
+ 
 };
 Dropdown.defaultProps = {
-    menuIconCls: "icon-arrow-down",//默认向下箭头
+    menuIconCls: "icon-drop-down",//默认向下箭头
     theme: 'primary',
     size: 'default',
 };

@@ -95,10 +95,11 @@ class Button extends React.Component {
         return (this.props.children || this.props.iconCls) ? <button {...props} id={this.buttonid} onDoubleClick={this.onDoubleClick} onClick={this.onClick} type='button' >
 
             <span style={{ display: "flex" }}>
-                {this.props.iconCls && this.props.iconAlign === "left" ? <i style={{ marginRight: 3 }} className={"wasabi-button-icon " + this.props.iconCls + " " + (this.state.isdelay ? "loading" : "")}></i> : null}
+                {this.props.iconCls && this.props.iconAlign === "left" ? <i style={{ marginRight: 3 , color: this.props.iconColor}}
+                 className={"wasabi-button-icon " + this.props.iconCls + " " + (this.state.isdelay ? "loading" : "")}></i> : null}
                 {!this.props.iconCls&&this.state.isdelay? <i style={{ marginRight: 3 }} className={"wasabi-button-icon icon-loading loading" }></i> : null}
                 {this.props.children}
-                {this.props.iconAlign === "right" ? <i style={{ marginLeft: 3 }} className={"wasabi-button-icon " + this.props.iconCls + " " + (this.state.isdelay ? "loading" : "")}></i> : null}
+                {this.props.iconAlign === "right" ? <i style={{ marginLeft: 3, color: this.props.iconColor }} className={"wasabi-button-icon " + this.props.iconCls + " " + (this.state.isdelay ? "loading" : "")}></i> : null}
             </span>
 
         </button> : null
@@ -110,6 +111,7 @@ Button.propTypes = {
     title: PropTypes.string, //按钮提示信息
     iconCls: PropTypes.string, //图标
     iconAlign: PropTypes.oneOf(["left", "right"]),//图标的位置
+    iconColor: PropTypes.string,//图标的颜色值
     theme: PropTypes.oneOf([
         //主题
         'primary',

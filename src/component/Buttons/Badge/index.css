@@ -8,12 +8,7 @@
     cursor: pointer;
 }
 
-.wasabi-badge-content.is-fixed {
-    position: absolute;
-    top: 0;
-    right: 10px;
-    transform: translateY(-60%) translateX(100%);
-}
+
 .wasabi-badge-content {
     background-color: var(--danger-color);
     border-radius: 10px;
@@ -26,7 +21,12 @@
     text-align: center;
     white-space: nowrap;
     border: 1px solid #fff;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    transform: translateY(-60%) translateX(100%);
 }
+
 .wasabi-badge.default .wasabi-badge-content{
     background-color: var(--danger-color);
 }

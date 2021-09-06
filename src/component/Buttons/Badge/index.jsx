@@ -32,7 +32,7 @@ class Badge extends Component {
     render() {
         return <div className={"wasabi-badge " +(this.props.className||"") +" "+ (this.props.theme||"primary")} style={this.props.style} onClick={this.props.onClick}>
             {this.props.children}
-            <sup className="wasabi-badge-content is-fixed" style={{display:this.state.hide?"none":"block"}}>{this.props.tag>this.props.max?this.props.max+"+":this.props.tag}</sup></div>
+            <sup className="wasabi-badge-content" style={{display:this.state.hide?"none":"block"}}>{this.props.tag>this.props.max?this.props.max+"+":this.props.tag}</sup></div>
     }
 }
 Badge.propTypes={
@@ -54,9 +54,8 @@ Badge.propTypes={
       onClick:PropTypes.func,
 }
 Badge.defaultProps={
-   
     max:99,
-    theme:"default",
+    theme:"primary",
    
 }
 

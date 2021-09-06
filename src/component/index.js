@@ -1,6 +1,6 @@
 /**
- * Created by wangzhiyong on 16/6/17.
- * edit by wangzhiyong 
+ * create by wangzhiyong 
+ * 本项目在2015开始写组件，2016-04-05开始独立为了UI框架
  * date:2017-08-14 进行大改版
  * date 2020-11-20 调整组件，去掉不需要的组件
  * desc 2021-05-20 大改
