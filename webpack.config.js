@@ -152,7 +152,7 @@ module.exports = (arg1, env) => {
             }, 'css-loader?minimize', 'less-loader'],
           },
           {
-            test: /\.(?:ico|gif|png|jpg|jpeg|bmp)$/i,
+            test: /\.(ico|gif|png|jpg|jpeg|bmp)$/i,
             type: 'asset/resource',
           },
           {
