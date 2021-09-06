@@ -34,6 +34,11 @@ let entry = [
     title: '消息框', // 标题
     src: './view/msg/index.jsx' //脚本路径
   },
+  {
+    filename: 'excel', //文件名，
+    title: 'excel组件', // 标题
+    src: './view/excel/index.jsx' //脚本路径
+  },
 ];
 
 module.exports = entry;
