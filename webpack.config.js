@@ -129,7 +129,7 @@ module.exports = (arg1, env) => {
             use: [{
               loader: MiniCssExtractPlugin.loader,
               options: {
-                publicPath: "../"
+                publicPath: "../"//配置路径，
               }
             }, 'css-loader?minimize'],
           },
@@ -138,7 +138,7 @@ module.exports = (arg1, env) => {
             use: [{
               loader: MiniCssExtractPlugin.loader,
               options: {
-                publicPath: "../"
+                publicPath: "../"//配置路径
               }
             }, 'css-loader?minimize', 'sass-loader'],
           },
@@ -147,7 +147,7 @@ module.exports = (arg1, env) => {
             use: [{
               loader: MiniCssExtractPlugin.loader,
               options: {
-                publicPath: "../"
+                publicPath: "../"//配置路径
               }
             }, 'css-loader?minimize', 'less-loader'],
           },
