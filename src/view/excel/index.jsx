@@ -26,6 +26,14 @@ class PivotPage extends React.Component {
                 {
                     name: "label",
                     label: "省1",
+                    editor:{
+                        type:"select",
+                        options:{
+                            data:[
+                                {text:"test",value:"test"}
+                            ]
+                        }
+                    }
 
                 },
                 {
@@ -143,8 +151,8 @@ class PivotPage extends React.Component {
         console.log(data);
     }
     render() {
-        return <div style={{width:200}}><Tree  data={this.state.data} textField={"label"}></Tree></div>
-        // return <DataGrid importAble={true} headers={this.state.headers} editAble={true}></DataGrid>
+        // return <div style={{width:200}}><Tree  data={this.state.data} textField={"label"}></Tree></div>
+        return <DataGrid importAble={true} headers={this.state.headers} editAble={true} data={this.state.data}></DataGrid>
         //    return  <Excel></Excel> 
         //            return<div>
         //                <Button>ddd</Button>

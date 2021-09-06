@@ -14,7 +14,7 @@ class SelectbleList extends React.Component {
         this.props.onRemove&&this.props.onRemove(index);
     }
     componentDidUpdate() {
-        dom.scrollVisible(document.getElementById( this.state.pickerid));//
+        dom.scrollVisible(document.getElementById( this.state.pickerid));//上在滚动条的情况下自动止浮
       }
     render() {
         let control = null;

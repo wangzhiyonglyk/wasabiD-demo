@@ -205,7 +205,6 @@ class Slider extends React.Component {
    * 手动滚动
    */
   refresh(){
-    console.log("slider refhre",this.props);
     if(!this.props.auto){
     this.setSliderAnimate();//设置滑动效果
   }

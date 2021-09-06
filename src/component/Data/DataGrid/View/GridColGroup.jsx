@@ -17,7 +17,7 @@ class GridColGroup extends React.PureComponent{
     renderSingleColGroup(colgroup) {
         let headers = this.props.headers;
         headers.map((header, headerColumnIndex) => {
-                let width = header.width ? header.width : this.props.width || null;
+                let width = header.width ? header.width : this.props.perColumnWidth || null;
                 colgroup.push(<col
                     key={headerColumnIndex}
                     name={header.name||""}
@@ -69,7 +69,7 @@ class GridColGroup extends React.PureComponent{
 
             colgroup = this.renderComplexColGroup(colgroup);
         }
-        return <colgroup>{colgroup}</colgroup>;
+        return <colgroup id={this.props.colgroupid}>{colgroup}</colgroup>;
     }
 }
 export default GridColGroup;

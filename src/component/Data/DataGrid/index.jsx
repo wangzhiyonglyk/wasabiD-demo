@@ -9,6 +9,8 @@
  2020-12-19开始 重新扩展表格功能，扩展表头，表尾 固定表头，拖动列，固定列，高度，宽表的适应，编辑，粘贴，导入excel等功能 将表格拆分更细
  desc 简单表头，与复杂表头是为了处理兼容性问题
  2021-05-28 创建table组件， 重新改造datagrid，将view,event,data分离，组件单一责任原则
+ 2021-09-06 修复列拖动改变宽度的问题
+ 固定列，复杂表头仍然有bug，需要检查
  */
 
 import React, { Component } from 'react';
@@ -74,7 +76,7 @@ class DataGrid extends Component {
             loading: this.props.url ? true : false, //显示正在加载图示
             footer: this.props.footer, //页脚
             updateUrl: this.props.updateUrl,
-            editAble: this.props.editAble || this.props.addAble||this.props.importAble,//如果允许添加或者导入，自然就允许编辑
+            editAble: this.props.editAble || this.props.addAble || this.props.importAble,//如果允许添加或者导入，自然就允许编辑
             editIndex: null, //当前处理编辑的列
             addData: new Map(), //新增的数据,因为有可能新增一个空的，然后再修改
             updateData: new Map(), //被修改过的数据，因为要判断曾经是否修改
@@ -132,12 +134,12 @@ class DataGrid extends Component {
                     //有改变
                     newState.fixedHeaders = func.clone(props.fixedHeaders);
                     newState.rawFixedHeaders = props.fixedHeaders;
-                    newState.headers = [].concat( newState.fixedHeaders, newState.headers );//合并列
+                    newState.headers = [].concat(newState.fixedHeaders, newState.headers);//合并列
                 }
                 else {//没有改变
                     if (props.fixedHeaders && props.fixedHeaders instanceof Array && props.fixedHeaders.length > 0) {//没有改变，但是有固定列
 
-                        newState.headers = [].concat(state.fixedHeaders,newState.headers );//合并列
+                        newState.headers = [].concat(state.fixedHeaders, newState.headers);//合并列
                     }
                 }
             }
@@ -213,7 +215,7 @@ class DataGrid extends Component {
     computeHeaderStyleAndColumnWidth() {
         //数据网格的宽度   
         this.containerWidth = document.getElementById(this.state.realTableContainerid).getBoundingClientRect().width;
-   
+        this.containerWidth = this.containerWidth - 2;//去掉两个像素
         this.columnSum = 0;//总列数
         this.fixedcolumnSum = 0;//固定列的总列数
         this.releaseWidth = this.containerWidth;//剩余可分配宽度
@@ -331,8 +333,72 @@ class DataGrid extends Component {
         }
         this.setState({
             adjustHeight: false,//调整完成
+            headers:this.setHeaderWidth(),
+            fixedHeaders:this.setFixedHeaderWidth(),
         })
 
+    }
+    /**
+     * 通过计算得到每一列的宽度
+     * @returns 
+     */
+    setHeaderWidth() {
+        let headers;
+        if (this.state.single) {
+            headers = this.state.headers&&this.state.headers.map(item => {
+                item.width = item.width || this.perColumnWidth;
+                return item;
+            })
+
+        }
+        else {
+            headers = this.state.headers.map(trheader => {
+                if (trheader instanceof Array) {
+                    return trheader.map(item => {
+                        if ((item.colSpan && header.colSpan > 1)) {
+                            return item;
+                        }
+                        else {
+                            item.width = item.width || this.perColumnWidth;
+                            return item;
+                        }
+                    })
+                }
+                else {
+                    trheader.width = trheader.width || this.perColumnWidth;
+                }
+            })
+        }
+        return headers;
+    }
+    setFixedHeaderWidth(){
+        let headers;
+        if (this.state.single) {
+            headers =  this.state.fixedHeaders&&this.state.fixedHeaders.map(item => {
+                item.width = item.width || this.perColumnWidth;
+                return item;
+            })
+
+        }
+        else {
+            headers =  this.state.fixedHeaders&&this.state.fixedHeaders.map(trheader => {
+                if (trheader instanceof Array) {
+                    return trheader.map(item => {
+                        if ((item.colSpan && header.colSpan > 1)) {
+                            return item;
+                        }
+                        else {
+                            item.width = item.width || this.perColumnWidth;
+                            return item;
+                        }
+                    })
+                }
+                else {
+                    trheader.width = trheader.width || this.perColumnWidth;
+                }
+            })
+        }
+        return headers;
     }
     componentWillUnmount() {
         this.timeout && clearTimeout(this.timeout)
@@ -459,7 +525,7 @@ DataGrid.defaultProps = {
     selectChecked: false,
     exportAble: true,
     borderAble: true,
-  
+
     /**
     * 分页
     */

@@ -115,6 +115,7 @@ class Picker extends Component {
         super(props);
         this.input = React.createRef();
         this.state = {
+            pickerid:func.uuid(),
             show: false,//是否显示下拉框
             text: "",
             value: "",
@@ -164,7 +165,9 @@ class Picker extends Component {
         }
         return newState;
     }
-
+    componentDidUpdate() {
+        dom.scrollVisible(document.getElementById( this.state.pickerid));//上在滚动条的情况下自动止浮
+      }
     /**
     * 设置值
     * @param {*} value 
@@ -574,19 +577,17 @@ class Picker extends Component {
         const   {data, provinceActiveIndex ,distinctActiveIndex}=this.state;
         const provinceProps= {data, activeProvince:this.activeProvince,provinceActiveIndex,
             activeCity:this.activeCity,distinctActiveIndex,activeDistinct:this.activeDistinct};
-        return (<div className="combobox"     >
+        return <div className="combobox"     >
             <PickerInput ref={this.input} {...this.props} show={this.state.show} value={this.state.text} onClear={this.onClear} onClick={this.showPicker}></PickerInput>
-            <div className={"dropcontainter  picker "} style={{ display: this.state.show == true ? "block" : "none" }}>
+            <div className={"dropcontainter  picker "} style={{ display: this.state.show == true ? "block" : "none" }} id={this.state.pickerid}>
                 <HotView data={this.props.hotData}  hotTitle={this.props.hotTitle}
                 activeHot={this.state.activeHot} ></HotView>
                 <ul className="wrap" ><p>{this.props.placeholder}</p>
               <ProvinceView  {...provinceProps}></ProvinceView>
                 </ul>
-            </div>
-        </div>
-
-
-        )
+            </div></div>
+    
+        
     }
 }
 Picker.propTypes = propType;

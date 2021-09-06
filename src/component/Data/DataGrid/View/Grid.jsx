@@ -12,20 +12,70 @@ class Grid extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-
+            containerid: func.uuid(),
+            colgroupid: func.uuid(),
+            divideid: func.uuid(),
         }
+        this.onHeaderMouseDown = this.onHeaderMouseDown.bind(this);
+        this.onDivideMouseMove = this.onDivideMouseMove.bind(this);
+        this.onDivideMouseUp = this.onDivideMouseUp.bind(this);
+    }
+
+    onHeaderMouseDown(headerColumnIndex, event) {
+        this.headerColumnIndex = headerColumnIndex;
+        let container = document.getElementById(this.state.containerid);
+        this.left = container.getBoundingClientRect().left;
+        this.beginLeft = event.clientX;
+        container.style.userSelect = "none";
+        container.style.cursor = "ew-resize";
+        let divide = document.getElementById(this.state.divideid);
+        divide.style.display = "block";
+        divide.style.left = (event.clientX - this.left) + "px";//这个位置才是相对容器的位置
+        document.addEventListener("mousemove", this.onDivideMouseMove);
+        document.addEventListener("mouseup", this.onDivideMouseUp);
+    }
+    onDivideMouseMove(event) {
+        if (this.headerColumnIndex != null) {
+            let divide = document.getElementById(this.state.divideid);
+            divide.style.left = (event.clientX - this.left) + "px";//这个位置才是相对容器的位置
+        }
+    }
+    onDivideMouseUp(event) {
+        if(this.headerColumnIndex!=null){
+            try{
+                let width=  document.getElementById(this.state.colgroupid).children[this.headerColumnIndex].getAttribute("width")*1||0;
+                document.getElementById(this.state.colgroupid).children[this.headerColumnIndex].setAttribute("width",width+event.clientX - this.beginLeft);
+                this.state.headers[this.headerColumnIndex].width=width+event.clientX - this.beginLeft;
+            }
+            catch(e){
+
+            }
+       
+            this.headerColumnIndex = null;
+            let divide = document.getElementById(this.state.divideid);
+            divide.style.display = "none";
+            let container = document.getElementById(this.state.containerid);
+            container.style.userSelect = null;
+            container.style.cursor = "pointer";
+            document.removeEventListener("mousemove", this.onDivideMouseMove);
+            document.removeEventListener("mouseup", this.onDivideMouseUp);
+        }
+     
+      
+
     }
     /**
      *渲染列的样式
      */
     renderColGruop() {
         return <GridColGroup
+            colgroupid={this.state.colgroupid}
             single={this.props.single}
             headers={this.props.headers}
             selectAble={this.props.selectAble}
             rowNumber={this.props.rowNumber}
             detailAble={this.props.detailAble}
-            width={this.props.perColumnWidth} >
+            perColumnWidth={this.props.perColumnWidth} >
         </GridColGroup>
     }
     /**
@@ -58,6 +108,7 @@ class Grid extends React.Component {
             sortOrder={this.props.sortOrder}
             checkedAllHandler={this.props.checkedAllHandler}
             isCheckAll={this.props.checkCurrentPageCheckedAll && this.props.checkCurrentPageCheckedAll()}
+            onHeaderMouseDown={this.onHeaderMouseDown}
             onSort={this.onSort}>
         </GridHeader>
 
@@ -77,6 +128,7 @@ class Grid extends React.Component {
             sortOrder={this.props.sortOrder}
             checkedAllHandler={this.props.checkedAllHandler}
             isCheckAll={this.props.checkCurrentPageCheckedAll && this.props.checkCurrentPageCheckedAll()}
+            onHeaderMouseDown={this.onHeaderMouseDown}
             onSort={this.props.onSort}>
         </GridHeader>
     }
@@ -156,7 +208,7 @@ class Grid extends React.Component {
     renderTable(height) {
         let colgroup = this.renderColGruop();
         let headerControl = this.renderHeader();
-        return <div className='wasabi-table-container' key="wasabi-table-container"   >
+        return <div className='wasabi-table-container' key="wasabi-table-container" id={this.state.containerid}  >
             {
                 //有高度的时候，才会出现固定表头
                 height ? <div className="table-fixedth" id={this.props.fixedthcontainerid}>
@@ -200,7 +252,7 @@ class Grid extends React.Component {
                         {/* 表头 */}
                         {this.renderFixedHeader()}
                         {/* 表体 */}
-                       {this.renderFixedBody()}
+                        {this.renderFixedBody()}
                         {/* 表尾  todo */}
                         {/* <tfoot>{this.renderFooter()}</tfoot> */}
                     </Table>
@@ -224,13 +276,12 @@ class Grid extends React.Component {
                     {/* 表头 */}
                     {headerControl}
                     {/* 表体 */}
-                   {this.renderBody()}
+                    {this.renderBody()}
                     {/* 表尾 */}
                     {/* <tfoot>{this.renderFooter()}</tfoot> */}
                 </Table>
             </div>
-
-
+            <div className="wasabi-grid-divide" id={this.state.divideid}></div>
         </div >
     }
     /**

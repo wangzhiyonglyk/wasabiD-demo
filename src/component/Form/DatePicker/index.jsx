@@ -53,7 +53,7 @@ class DatePicker extends Component {
   }
   componentDidUpdate() {
     //
-    dom.scrollVisible(document.getElementById(this.state.pickerid));//是加上多余被挡的
+    dom.scrollVisible(document.getElementById(this.state.pickerid));//上在滚动条的情况下自动止浮
   }
   /**
    * 获取值

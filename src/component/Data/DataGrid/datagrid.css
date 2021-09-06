@@ -16,6 +16,7 @@ grid
   line-height: 40px;
   padding-left: 20px;
   background-color: var(--background-color);
+  width:calc(100% - 2px);
 }
 .wasabi-grid .wasabi-check-column .wasabi-form-group
 {
@@ -113,5 +114,5 @@ grid
   top: 0px;
   display: none;
   cursor: ew-resize;
-  background-color: #dedede;
+  background-color:var(--border-color);
 }

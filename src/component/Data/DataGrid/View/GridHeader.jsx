@@ -24,22 +24,52 @@ class GridHeader extends React.PureComponent {
         this.state = {
 
         }
+        this.headerColumnIndex=null;
         this.getHeaderProps = this.getHeaderProps.bind(this);
         this.getHeaderContent = this.getHeaderContent.bind(this);
         this.setOrderAndSelectAndDetailHeader = this.setOrderAndSelectAndDetailHeader.bind(this);
         this.onSort = this.onSort.bind(this);
         this.renderSingleHeader = this.renderSingleHeader.bind(this);
         this.renderComplexHeader = this.renderComplexHeader.bind(this);
+        this.onMouseMove = this.onMouseMove.bind(this);
+        this.onMouseDown = this.onMouseDown.bind(this);
+    }
+    /**
+     * 表头的鼠标监听事件
+     * @param {*} event 
+     */
+    onMouseMove( event) {
+        try {
+            let offsetX = event && event.nativeEvent && event.nativeEvent.offsetX;
+            let width = event.target.getBoundingClientRect().width;
+            if (width - offsetX <=2||offsetX<=2) {
+                event.target.style.cursor="ew-resize";
+            }
+            else{
+                event.target.style.cursor="pointer";
+                   
+            }
+        }
+        catch (e) {
+
+        }
+
+    }
+    onMouseDown(headerColumnIndex,event){
+     if(event.target.style.cursor==="ew-resize"){
+        let offsetX = event && event.nativeEvent && event.nativeEvent.offsetX;
+         this.props.onHeaderMouseDown&&this.props.onHeaderMouseDown(offsetX<=2? headerColumnIndex-1:headerColumnIndex,event);
+     }
     }
     /**
     * 得到头部相关属性
     */
     getHeaderProps(header) {
         //排序样式
-     
+
         let props = {}; //设置单击事件
-        props.iconCls= header.sortAble == true ? this.props.sortName == header.name ? "icon-sort-"+this.props.sortOrder : 'icon-sort' : '';
-        props.className =  (header.export === false ? " wasabi-noexport" : "");
+        props.iconCls = header.sortAble == true ? this.props.sortName == header.name ? "icon-sort-" + this.props.sortOrder : 'icon-sort' : '';
+        props.className = (header.export === false ? " wasabi-noexport" : "");
         props.onClick = header.sortAble == true ? this.props.sortName == header.name
             ? this.onSort.bind(this, header.name, this.props.sortOrder == 'asc' ? 'desc' : 'asc')
             : this.onSort.bind(this, header.name, 'asc')
@@ -95,7 +125,7 @@ class GridHeader extends React.PureComponent {
         if (this.props.rowNumber) {
             control.unshift(
                 <TableCell rowSpan={rowSpan} key='headerorder' position="header" className="wasabi-order-column" >
-                    {}
+                    { }
                 </TableCell>
             );
         }
@@ -132,9 +162,13 @@ class GridHeader extends React.PureComponent {
                 rowSpan={header.rowSpan}
                 colSpan={header.colSpan}
                 className={props.className || ""}
-                onClick={props.onClick || null} >
+                onClick={props.onClick || null}
+                onMouseMove={this.onMouseMove}
+                onMouseDown={this.onMouseDown.bind(this, headerColumnIndex)}
+            >
                 {props.content}
                 <i className={props.iconCls} ></i>
+
             </TableCell>);
         });
         if (headers && headers.length > 0) {
@@ -158,16 +192,16 @@ class GridHeader extends React.PureComponent {
                 trheader.map((header, headerColumnIndex) => {
                     let props = this.getHeaderProps(header);
                     trcontrol.push(<TableCell
-                        key={"header-"+headerRowIndex+"-"+ headerColumnIndex.toString()}
+                        key={"header-" + headerRowIndex + "-" + headerColumnIndex.toString()}
                         position="header"
                         align={header.align}
                         rowSpan={header.rowSpan}
                         colSpan={header.colSpan}
                         className={props.className || ""}
                         onClick={props.onClick || null} >
-                              {props.content}
-                            <i className={props.iconCls}></i>
-                      
+                        {props.content}
+                        <i className={props.iconCls}></i>
+
                     </TableCell>);
                 })
                 headerControl.push(trcontrol)
@@ -189,7 +223,7 @@ class GridHeader extends React.PureComponent {
         </TableHead>
 
     }
-    render() {     
+    render() {
         return this.props.single ? this.renderSingleHeader() : this.renderComplexHeader();
     }
 }
