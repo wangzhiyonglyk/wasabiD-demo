@@ -3,7 +3,6 @@ import React from "react";
 import LinkButton from "../../Buttons/LinkButton";
 import Notice from "../../Navigation/Notice";
 function SystemNoitce(props) {
-    console.log("test",props);
     return <div className='system-icon' onClick={props.noticeExpand}>
         <LinkButton
             style={{

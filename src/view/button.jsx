@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Button, LinkButton, Separator, Dropdown, Color, Tag, Badge, Toolbar } from "../component"
-
+import config from "../libs/config"
 class Index extends React.Component {
     constructor(props) {
         super(props);

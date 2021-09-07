@@ -5,8 +5,9 @@
   "main": "no",
   "homepage": "./",
   "scripts": {
-    "dev": "   webpack serve  --mode=development ",
-    "build": " webpack    --mode=production "
+    "dev": "   webpack serve   --env mode=development type=dev ",
+    "test": " webpack  --env mode=production type=test",
+    "build": " webpack  --env mode=production type=production"
   },
   "keywords": [
     "wasabi",

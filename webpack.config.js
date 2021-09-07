@@ -28,7 +28,7 @@ entry.forEach((item, index) => {
 
 
 
-module.exports = (arg1, env) => {
+module.exports = (env, argv) => {
   try {
     /*插件：动态生成html，在webpack完成前端资源打包以后，自动将打包后的资源路径和版本号写入HTML中，达到自动化的效果。*/
     //生成多个html页面
@@ -44,6 +44,7 @@ module.exports = (arg1, env) => {
     })
 
     return {
+      mode:env.mode,//打包模式
       //入口文件来源的路径
       context: path.resolve(__dirname, './src'),
 
