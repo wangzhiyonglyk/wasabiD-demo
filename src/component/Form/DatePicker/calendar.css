@@ -1,6 +1,6 @@
 .wasabi-datetime {
   width: 292px;
-  height: 342px;
+  height: 330px;
   background-color: white;
   font-size: var(--font-size);
   color:var(--color);
@@ -9,8 +9,18 @@
   padding:5px;
   display: inline-block;
 }
+.daterangeinput{
+  border:1px solid var(--border-color);
+  border-radius: 4px;
+}
+.daterangeinput:hover {
+  border-color: var(--border-hover-color);
+}
+.wasabi-has-error .daterangeinput {
+  border-color: var(--danger-color);
+}
 
-.wasabi-input .wasabi-input{
+.daterangeinput .wasabi-input{
   outline: none;
     height: 38px;
     border: none;
@@ -68,7 +78,6 @@
 
 .wasabi-datetime-body {
   width: 100%;
-  height: 215px;
 }
 
 .wasabi-datetime-year {
@@ -163,7 +172,7 @@ background-color: var(--primary-color);
 
 .wasabi-datetime-body .dayul {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 2px;
 }
 
 .wasabi-datetime-body .datespan {

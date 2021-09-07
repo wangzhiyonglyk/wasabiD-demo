@@ -6,15 +6,17 @@
  * edit 2020-04-07
  *  生产环境 不设置devtool
  * edit 2021-08-02 升级为webpack5
+ * edit 2021-09-07 优化webpack配置
  * desc:打包入口
  */
 const path = require('path')
 const webpack = require('webpack')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') // 打包前先清空dist
-var HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //分离js中的css
-let CopyWebpackPlugin = require('copy-webpack-plugin');//引入静态资源
-const host = '127.0.0.1' //地址
+const CopyWebpackPlugin = require('copy-webpack-plugin');//引入静态资源
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");//压缩css
+const host = '10.66.66.175' //地址
 const port = 8081 //端口号
 
 let entry = require('./config') //打包的配置文件,多页面的配置文件
@@ -55,7 +57,7 @@ module.exports = (env, argv) => {
       // 出口文件输出配置
       output: {
         path: path.resolve(__dirname, './dist/'), //路径配置
-        filename: 'js/[name][hash].js', //文件名称
+        filename: 'js/[name]_[hash:8].js', //文件名称
         publicPath: '', // 配置发布打包时js,css资源的url前缀，
         assetModuleFilename: 'images/[name][hash:8][ext][query]'//资源存放地
       },
@@ -106,11 +108,16 @@ module.exports = (env, argv) => {
               name: 'common', // 分离包的名字
               minChunks: 2, // 引入两次及以上被打包
               chunks: 'initial',
-              priority: 7,//优先级低一点
+              priority: 5,//优先级低一点
               reuseExistingChunk: true
             }
           },
         },
+        minimizer: [
+          // 在 webpack@5 中，你可以使用 `...` 语法来扩展现有的 minimizer（即 `terser-webpack-plugin`），将下一行取消注释
+          `...`,
+          new CssMinimizerPlugin(),
+        ],
       },
       module: {
         // 加载器配置

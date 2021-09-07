@@ -70,7 +70,7 @@ class DateRangeInput extends React.Component {
     const width = this.props.type === "datetimerange" ? 350 : 280;
     const { value } = this.props; const valueArr = value ? value.split(",") : ["", ""];
     const type = this.props.type === "daterange" ? "date" : this.props.type === "timerange" ? "time" : "datetime";
-    return <div style={{ position:"relative", display: "flex", width: width }} className="wasabi-input container">
+    return <div style={{ position:"relative", display: "flex", width: width }} className="daterangeinput">
       <DateInput ref={this.fristinput} key="1" {...this.props} value={valueArr[0]} type={type} validate={this.validate} setValue={this.setValue.bind(this, 1)}></DateInput>
       <span style={{ lineHeight: "40px", marginRight: 10 }}>至</span>
       <DateInput ref={this.secondinput} key="2" {...this.props} value={valueArr[1]} type={type} validate={this.validate} setValue={this.setValue.bind(this, 2)}></DateInput>

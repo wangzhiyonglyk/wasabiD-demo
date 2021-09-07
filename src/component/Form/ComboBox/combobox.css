@@ -58,7 +58,7 @@ desc:日期选择样式
   color:var(--icon-hover-color);
 }
 
-/**/
+/*下拉容器*/
 
 .dropcontainter {
   padding: 0px;
@@ -117,9 +117,9 @@ desc:日期选择样式
 .combobox  .datetime .wasabi-datetime{
   border:none;
 }
-.combobox  .daterange {
+.combobox .daterange {
   width: 686px;
-  height: 345px;
+  height: 330px;
 }
 
 .combobox  .datetimerange {

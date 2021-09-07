@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Form, Input} from "../../component"
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -15,10 +16,15 @@ class Index extends React.Component {
   }
   
   render() {  
-    return <input onInput={this.onChange.bind(this)}></input>
-   
-      // return<Login title="BI数据分析系统" url="http://localhost:7007/user/login"></Login>
-      // return <React.Fragment><Button>test</Button></React.Fragment>
+    return <div>
+      <Form  style={{width:1000}}>
+      <Input key="1" type="date"></Input>
+      <Input key="2" type="time"></Input>
+      <Input key="3" type="datetime"></Input>
+      <Input key="4" type="daterange"></Input>
+      </Form>
+    </div>
+
  
   }
 }
