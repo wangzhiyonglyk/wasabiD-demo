@@ -16,7 +16,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //分离js中的css
 const CopyWebpackPlugin = require('copy-webpack-plugin');//引入静态资源
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");//压缩css
-const host = '10.66.66.175' //地址
+const host = 'localhost' //地址
 const port = 8081 //端口号
 
 let entry = require('./config') //打包的配置文件,多页面的配置文件
