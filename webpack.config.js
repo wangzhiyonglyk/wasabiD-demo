@@ -29,6 +29,7 @@ entry.forEach((item, index) => {
 
 
 module.exports = (env, argv) => {
+  console.log("env",env)
   try {
     /*插件：动态生成html，在webpack完成前端资源打包以后，自动将打包后的资源路径和版本号写入HTML中，达到自动化的效果。*/
     //生成多个html页面
@@ -178,7 +179,7 @@ module.exports = (env, argv) => {
       //插件项
       plugins: [
         new webpack.DefinePlugin({
-          'env': JSON.stringify(env.mode)
+          'env': JSON.stringify(env.type)
         }),
         new CleanWebpackPlugin(), // 打包前先清空,因为命名的采用了hash，不清空，打包文件越来越大
         //分离js中的css,独立打包

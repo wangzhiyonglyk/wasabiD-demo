@@ -1,5 +1,5 @@
 
-const APP_ENV =env==="development"?"dev":"pro";
+const APP_ENV =env;
 console.log("env11",env)
 const config = {
   dev: {
