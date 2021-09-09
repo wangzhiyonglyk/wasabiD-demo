@@ -119,7 +119,7 @@ class DateTimeRange extends Component {
                 <a key="5" onClick={this.onClick.bind(this, 5)}> 最近一年</a>
             </div>
             <div>
-            <div className="ok">
+            <div className="ok" style={{height:40}}>
                 <div style={{ position: "absolute", width: 250,zIndex:3}}>
                     <input className=" wasabi-input timeinput"
                         value={this.state.firstTime} onClick={this.firstTimeShowHandler.bind(this)} onChange={() => { }}></input>

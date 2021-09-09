@@ -112,7 +112,7 @@ background-color: var(--primary-color);
   border: 1px solid var(--border-color);
   outline: none;
   width: 90px;
-  padding-left: 10px;
+  text-align: center;
   height: 40px;
 }
 

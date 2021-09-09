@@ -35,6 +35,11 @@ let entry = [
     src: './view/msg/index.jsx' //脚本路径
   },
   {
+    filename: 'form', //文件名，
+    title: '表单', // 标题
+    src: './view/form/index.jsx' //脚本路径
+  },
+  {
     filename: 'excel', //文件名，
     title: 'excel组件', // 标题
     src: './view/excel/index.jsx' //脚本路径

@@ -20,7 +20,7 @@ function LiView(props) {
                 <li key={index}>
                     <div className={className + ((value && (value+"")=== (child.value+"")) ? " checkedRadio" : "")}
                         onClick={onSelect.bind(this, child.value, child.text, child)}><i></i></div>
-                    <div className={"radiotext " + (readOnly ? " readOnly" : "") + ((value && value === child.value) ? " checkedRadio" : "")} onClick={onSelect.bind(this, child.value, child.text, child)}>{child.text}
+                    <div className={"radiotext " + (readOnly ? " readOnly" : "") + ((value && (value+"")=== (child.value+"")) ? " checkedRadio" : "")} onClick={onSelect.bind(this, child.value, child.text, child)}>{child.text}
                     </div>
                 </li>
             );

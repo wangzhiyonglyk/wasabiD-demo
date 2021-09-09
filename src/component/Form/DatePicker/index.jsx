@@ -252,7 +252,7 @@ class DatePicker extends Component {
         hour={hour}
         minute={minute}
         onSelect={this.onSelect}
-        attachSecond={false}//不传下去
+        attachSecond={this.props.attachSecond}
       ></Time>
     );
   }
@@ -392,11 +392,12 @@ class DatePicker extends Component {
       case "daterange":
         control = this.renderDateRange();
         controlDropClassName = "daterange";
-        placeholder = placeholder || "0000-00-00,0000-00-00";
+        placeholder = placeholder || "0000-00-00";
         break;
       case "datetimerange":
         control = this.renderDateTimeRange();
         controlDropClassName = "datetimerange";
+        placeholder = placeholder || "0000-00-00 00:00";
         break;
       default:
         control = this.renderDate();
@@ -409,12 +410,12 @@ class DatePicker extends Component {
       type: type,
       title: this.props.title,
       name: this.props.name,
-      placeholder: this.props.placeholder,
+      placeholder:placeholder,
       value: this.state.value || "",
       showPicker: this.showPicker,
       onClear: this.onClear,
       setValue: this.setValue,
-      validate: this.props.validate
+      validate: this.props.validate,
     }
     return <div className='combobox' >
       {type.indexOf("range") > -1 ? <DateRangeInput {...inputprops}></DateRangeInput> : <DateInput  {...inputprops}> </DateInput>}

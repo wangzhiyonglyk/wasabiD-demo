@@ -111,10 +111,13 @@ desc:日期选择样式
   height: 220px;
 }
 .combobox .datetime {
-  width: 292px;
-  height: 385px;
+  width: 294px;
+  height: 370px;
 }
 .combobox  .datetime .wasabi-datetime{
+  border:none;
+}
+.combobox  .datetimerange .wasabi-datetime{
   border:none;
 }
 .combobox .daterange {
@@ -124,7 +127,7 @@ desc:日期选择样式
 
 .combobox  .datetimerange {
   width: 686px;
-  height: 385px;
+  height: 370px;
 }
 
 

@@ -1,7 +1,7 @@
 /*
 create by wangzhiyong
 date:2016-05-20
-desc:日期范围选择控件 todo 这里要改
+desc:日期范围/[日期时间范围]选择控件 todo 这里要改
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";

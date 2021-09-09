@@ -184,7 +184,7 @@ class DateInput extends React.Component {
      * @returns 
      */
     timeInput(value, event, beginIndex = 0) {
-
+     
         if (value && event.target.selectionStart === beginIndex + 2) {//时输入完时
             const hour = value.slice(beginIndex + 0, beginIndex + 2);
             if (/^(20|21|22|23|[0-1]\d{0,1})$/.test(hour) !== true) {
@@ -198,18 +198,42 @@ class DateInput extends React.Component {
                     value = value + ":";
                     event.target.selectionStart = value.length;
                 }
-                else {
+                else {//后面有值
                     event.target.selectionStart = 3 + beginIndex;
                     event.target.selectionEnd = 5 + beginIndex;
                 }
             }
         }
+        //todo 暂时不处理秒
+        // else if (value && event.target.selectionStart === beginIndex + 5) {//分输入完时
+        //     const minute = value.slice(beginIndex + 3, beginIndex + 5);
+        //     if (/^[0-5]\d$/.test(minute) !== true) {
+        //         //输入不正确
+        //         event.target.selectionStart = 3 + beginIndex;
+        //         event.target.selectionEnd = 5 + beginIndex;
+        //     }
+        //     else{
+        //         //正确
+        //         if(this.props.attachSecond){
+        //             if (value.length === 5 + beginIndex) {//后面没值
+        //                 value = value + ":";
+        //                 event.target.selectionStart = value.length;
+        //             }
+        //             else {//后面有值
+        //                 event.target.selectionStart = 6 + beginIndex;
+        //                 event.target.selectionEnd = 8 + beginIndex;
+        //             }
+        //         }
+               
+        //     }
+        // }
         return value;
     }
     /**
      * 控制光标
      */
     inputClick(event) {
+        this.props.showPicker&&this.props.showPicker();
         switch (this.props.type) {
             case "time":
                 if (event.target.selectionStart <= 2) {
@@ -314,4 +338,5 @@ DateInput.propTypes = {
     onClick: PropTypes.func,
     onChange: PropTypes.func,
 }
+
 export default DateInput;

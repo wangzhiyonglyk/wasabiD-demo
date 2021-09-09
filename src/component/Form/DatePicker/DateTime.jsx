@@ -115,9 +115,4 @@ DateTime.propTypes = {
     onSelect: PropTypes.func,//选择后的事件
 
 }
-DateTime.defaultProps =
-{
-    attachSecond: true,
-};
-
 export default DateTime

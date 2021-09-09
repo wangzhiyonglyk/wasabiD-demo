@@ -67,7 +67,7 @@ class DateRangeInput extends React.Component {
   }
  
   render() {
-    const width = this.props.type === "datetimerange" ? 350 : 280;
+    const width = this.props.type === "datetimerange" ? 380 : 290;
     const { value } = this.props; const valueArr = value ? value.split(",") : ["", ""];
     const type = this.props.type === "daterange" ? "date" : this.props.type === "timerange" ? "time" : "datetime";
     return <div style={{ position:"relative", display: "flex", width: width }} className="daterangeinput">
