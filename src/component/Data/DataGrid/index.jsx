@@ -31,7 +31,6 @@ import mixins from '../../Mixins/mixins';
 import eventHandler from './method/eventHandler.js';
 import staticMethod from "./method/staticMethod"
 import pasteExtend from './method/pasteExtend.js';
-import Msg from "../../Info/Msg"
 import Grid from "./View/Grid"
 /**
  * 样式

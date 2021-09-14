@@ -1,11 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Tree from "../../component/Data/Tree"
-import { DataGrid, TreeGrid, Input, func, CheckBox, Text, Radio, Upload, Button } from "../../component"
-import Excel from "../../component/Data/Excel"
-import Color from "../../component/Data/Color"
-import("./index.css")
-class PivotPage extends React.Component {
+import ReactDOM from 'react-dom'
+import { DataGrid} from "../../component"
+class Page extends React.Component {
     constructor(props) {
         super(props);
         this.input = React.createRef();
@@ -101,65 +97,13 @@ class PivotPage extends React.Component {
 
 
     }
-    static getDerivedStateFromProps(props, state) {
-
-        return false;
-    }
-    componentDidMount() {
-
-
-    }
-    onClick() {
-        let data = this.refs.tree.getChecked();
-
-        console.log("data", this.refs.tree.loadData1, this.refs.tree);
-        setTimeout(() => {
-            //this.refs.tree.remove(data[0])
-        }, 1000);
-
-    }
-    onDrop(data) {
-        let dropData = this.state.dropData;
-        dropData.push(data);
-        this.setState({
-            dropData: dropData
-        })
-    }
-    onEdit(id, text, row) {
-        console.log("d", id, text, row)
-    }
-
-    onChange(event) {
-        if (event.keyCode === 13) {
-            this.refs.tree.filter(event.target.value);
-        }
-    }
-    onAsync(id, text, row) {
-        console.log("this", this)
-        setTimeout(() => {
-            this.refs.tree.append([{
-                id: "c1",
-                label: "异步",
-
-            }], row)
-        }, 2000);
-    }
-    onDrag(id, text, row) {
-        console.log("d", id, text, row)
-    }
-    onSave(data) {
-        console.log(data);
-    }
+  
     render() {
-        // return <div style={{width:200}}><Tree  data={this.state.data} textField={"label"}></Tree></div>
-        return <DataGrid importAble={true} headers={this.state.headers} editAble={true} data={this.state.data}></DataGrid>
-           return  <Excel></Excel> 
-        //            return<div>
-        //                <Button>ddd</Button>
-        // return <Color></Color>
-        //            </div>
+    
+        return <DataGrid importAble={true} headers={this.state.headers}  data={this.state.data}></DataGrid>
+       
 
     }
 }
 
-ReactDOM.render(<PivotPage />, document.getElementById('root'));
+ReactDOM.render(<Page />, document.getElementById('root'));

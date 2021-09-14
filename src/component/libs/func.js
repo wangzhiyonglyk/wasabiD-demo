@@ -2,10 +2,42 @@
  * Created by zhiyongwang on 2016-06-08.
  * 将独立于项目的公共函数分享出来
  *2020-11-06，重新规划
+ 2021-09-10添加新功能
  */
 
 let func = {};
 
+
+/**
+ * 将每个单词的首字母转换为大写
+ * @param {*} str 
+ * @returns 
+ */
+func.titleize = function (str) {
+    return str.toLowerCase().replace(/(?:^|\s)\w/g, function (c) {
+        return c.toUpperCase();
+    });
+}
+
+/**
+ * 驼峰化
+ * @param {*} str 
+ * @returns 
+ */
+func.camelize = function (str) {
+    return str.replace(/[-_\s]+(.)?/g, function (match, c) {
+        return c ? c.toUpperCase() : '';
+    });
+}
+
+/**
+ *  中划线化
+ * @param {*} str 
+ * @returns 
+ */
+func.dasherize = function (str) {
+    return str.replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
+}
 /**
  * 获取地址栏参数的值
  * @param {*} sArgName 参数名

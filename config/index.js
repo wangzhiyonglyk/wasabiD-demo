@@ -44,6 +44,11 @@ let entry = [
     title: 'excel组件', // 标题
     src: './view/excel/index.jsx' //脚本路径
   },
+  {
+    filename: 'datagrid', //文件名，
+    title: 'datagrid组件', // 标题
+    src: './view/datagrid/index.jsx' //脚本路径
+  },
 ];
 
 module.exports = entry;
