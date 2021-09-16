@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { System } from "../../component"
+import { System } from "wasabiD"
+import "wasabiD/lib/index.css"
 class Index extends React.Component {
   constructor(props) {
     super(props);
