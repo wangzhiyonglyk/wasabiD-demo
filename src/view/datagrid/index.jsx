@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { DataGrid} from "../../component"
+import { DataGrid} from "wasabiD"
+import "wasabiD/lib/index.css"
 class Page extends React.Component {
     constructor(props) {
         super(props);

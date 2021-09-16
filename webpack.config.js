@@ -11,7 +11,7 @@
  */
 const path = require('path')
 const webpack = require('webpack')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin') // 打包前先清空dist
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //分离js中的css
 const CopyWebpackPlugin = require('copy-webpack-plugin');//引入静态资源
@@ -59,7 +59,8 @@ module.exports = (env, argv) => {
         path: path.resolve(__dirname, './dist/'), //路径配置
         filename: 'js/[name]_[hash:8].js', //文件名称
         publicPath: '', // 配置发布打包时js,css资源的url前缀，
-        assetModuleFilename: 'images/[name][hash:8][ext][query]'//资源存放地
+        assetModuleFilename: 'images/[name][hash:8][ext][query]',//资源存放地
+        clean:true,
       },
       //优化配置项 todo
       optimization: {
@@ -132,7 +133,7 @@ module.exports = (env, argv) => {
 
             ],
           },
-          //.css 文件使用 style-loader 和 css-loader 来处理,注意这里可以使用要引用ExtractTextPlugin,独立出来
+          //.css 文件使用 style-loader 和 css-loader 来处理,注意这里可以使用要引用MiniCssExtractPlugin,独立出来
           {
             test: /\.(css)$/,
             use: [{
@@ -180,7 +181,7 @@ module.exports = (env, argv) => {
         //指定模块路径，可以不设置，有默认值,方便更快的打包
         modules: ['node_modules', path.join(__dirname, './node_modules')],
         //其它解决方案配置 自动扩展文件后缀名，意味着我们require模块可以省略不写后缀名
-        extensions: ['.js', '.jsx', '.json', 'css', '.scss', 'sass', 'less'],
+        extensions: ['.js', '.jsx', '.json', 'css', '.scss', '.sass', '.less'],
       },
 
       //插件项
@@ -188,7 +189,6 @@ module.exports = (env, argv) => {
         new webpack.DefinePlugin({
           'env': JSON.stringify(env.type)
         }),
-        new CleanWebpackPlugin(), // 打包前先清空,因为命名的采用了hash，不清空，打包文件越来越大
         //分离js中的css,独立打包
         new MiniCssExtractPlugin({
           ignoreOrder: true,//忽略警告

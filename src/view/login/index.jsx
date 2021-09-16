@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Input} from "../../component"
+import { Login} from "wasabiD"
+import "wasabiD/lib/index.css"
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -16,14 +17,7 @@ class Index extends React.Component {
   }
   
   render() {  
-    return <div>
-      <Form  style={{width:1000}}>
-      <Input key="1" type="date"></Input>
-      <Input key="2" type="time"></Input>
-      <Input key="3" type="datetime"></Input>
-      <Input key="4" type="daterange"></Input>
-      </Form>
-    </div>
+    return <Login backgroundImage={require("./image/1.jpg")} url="https://www.baidu.com"></Login>
 
  
   }
