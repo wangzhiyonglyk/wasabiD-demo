@@ -18,316 +18,64 @@ class Index extends React.Component {
       .getItem("user");
     let nick = "";
     if (user) {
-      user = JSON.parse(user);
-      nick = user.nick;
+      try{
+        user = JSON.parse(user);
+        nick = user.nick;
+      }
+      catch(e){
+        
+      }
+  
     }
     return <System
-      nick={nick || "灰太狼，冲呀"}
-      title={"后台管理系统"}
+      nick={nick || "灰太狼"}
+      logo={require("./logo03.png")}
+      title={"多益计算机-管理中心"}
 
       menus={[
-        {
-          name:"message",
-          title:"消息组件",
-          iconCls:"icon-comment",
-          url:"./msg.html"
-        },
-        {
-          name: "buttons",
-          title: "按钮",
-          iconCls: "icon-button",
-          url: "./button.html"
-        },
-        {
-          title: "表单",
-          name: "form",
-          iconCls: "icon-form",
-          url:"./form.html"
-        },
-        {
+         {
+           title:"用户中心",
+           iconCls:"icon-user",
+           url:"http://www.xiaopeng.com",
+           children:[
+             {
+               title:"用户管理",
+               url:"./users.html"
+               
+             },
+             {
+               title:"登录记录",
 
-          title: "数据",
-          name: "data",
-          iconCls: "icon-database",
-          children: [
+             },
+             {
+               title:"修改密码",
+               url:"./changePassword.html"
+             }
+           ]
+         },
+         
+         {
+          title:"权限配置",
+          children:[
             {
-              title: "头像",
-              name: "avatar",
-              iconCls: "icon-user",
-              url: "./avatar.html"
+              title:"系统菜单"
             },
             {
-              title: "右键菜单",
-              name: "contentmenu",
-              iconCls: "icon-bars",
-              url: "./contentmenu.html"
+              title:"用户角色"
             },
             {
-              title: "分页",
-              name: "pagination",
-              iconCls: "icon-caret-right",
-              url: "./pagination.html"
+              title:"角色分配"
             },
             {
-              title: "进度条",
-              name: "progress",
-              iconCls: "icon-con-tasks",
-              url: "./pagination.html"
-            },
-            {
-              title: "步骤",
-              name: "step",
-              iconCls: "icon-icon-arrowsh",
-              url: "./step.html"
-            },
-            {
-              title: "物流",
-              name: "track",
-              iconCls: "icon-icon-arrowsv",
-              url: "./track.html"
-            },
-            {
-              title: "普通表格",
-              name: "table",
-              iconCls: "icon-table",
-              url: "./table.html"
-            },
-            {
-              title: "数据表格",
-              name: "datagrid",
-              iconCls: "icon-database",
-              url: "./datagrid.html"
-            },
-            {
-              title: "树",
-              name: "tree",
-              iconCls: "icon-tree",
-              url: "./tree.html"
-            },
-            {
-              title: "树表格",
-              name: "treegrid",
-              iconCls: "icon-tree",
-              url: "./treegrid.html"
-            },
-            {
-              title: "交叉表",
-              name: "pivot",
-              iconCls: "icon-sum",
-              url: "./pivot.html"
-            },
-            {
-              title: "Excel",
-              name: "excel",
-              iconCls: "icon-excel",
-              url: "./excel.html"
+              title:"权限分配"
             },
           ]
-        },
-        {
-          name: "nav",
-          title: "导航",
-          iconCls: "icon-daohang",
-          children: [
-            {
-              name: "tabs",
-              title: "标签页",
-              iconCls: "icon-tab",
-              url: "./tabs.html"
-            },
-            {
-              name: "menu",
-              title: "菜单",
-              iconCls: "icon-bars",
-              url: "./menus.html"
-            }
-          ]
+         },
+         {
+           title:"系统设置",
+         
 
-        },
-        {
-          name: "layout",
-          title: "布局",
-          iconCls: "icon-layout",
-          children: [
-            {
-              name: "row",
-              title: "行",
-              iconCls: "icon-row",
-              url: "./row.html"
-            },
-            {
-              name: "col",
-              title: "列",
-              iconCls: "icon-columns",
-              url: "./col.html"
-            },
-            {
-              name: "drag",
-              title: "拖动容器",
-              iconCls: "icon-arrow-salt",
-              url: "./drag.html"
-            },
-            {
-              name: "drop",
-              title: "停靠容器",
-              iconCls: "icon-clone",
-              url: "./drop.html"
-            },
-            {
-              name: "box",
-              title: "统计容器",
-              iconCls: "icon-layout",
-              url: "./box.html"
-            },
-            {
-              name: "layout",
-              title: "圣杯布局",
-              iconCls: "icon-layout",
-              url: "./layout.html"
-            },
-            {
-              name: "container",
-              title: "网格容器",
-              iconCls: "icon-align-center",
-              url: "./container.html"
-            },
-            {
-              name: "resize",
-              title: "缩放容器",
-              iconCls: "icon-arrow-salt",
-              url: "./resize.html"
-            },
-            {
-              name: "modal",
-              title: "弹出层",
-              iconCls: "icon-layout",
-              url: "./modal.html"
-            },
-            {
-              name: "panel",
-              title: "面板",
-              iconCls: "icon-layout",
-              url: "./panel.html"
-            },
-            {
-              name: "slidemenu",
-              title: "滑动菜单",
-              iconCls: "icon-layout",
-              url: "./slidemenu.html"
-            },
-
-          ]
-
-        },
-        {
-          name: "animate",
-          title: "动画",
-          iconCls: "",
-          children: [
-            {
-              name: "pagein",
-              title: "展现容器",
-              iconCls: "icon-phone",
-              url: "./pagein.html"
-            },
-            {
-              name: "slider",
-              title: "轮播",
-              iconCls: "icon-phone",
-              url: "./slider.html"
-            },
-            {
-              name: "progressChart",
-              title: "线性报表",
-              iconCls: "icon-phone",
-              url: "./progressChart.html"
-            },
-            {
-              name: "totateChart",
-              title: "环形报表",
-              iconCls: "icon-phone",
-              url: "./totateChart.html"
-            },
-          
-          ]
-        },
-        {
-          name: "action",
-          title: "功能组件",
-          iconCls: "",
-          children: [
-            {
-              name: "upload",
-              title: "上传组件",
-              iconCls: "icon-cloud",
-              url: "./upload.html"
-            },
-            {
-              name: "editor",
-              title: "富文本框",
-              iconCls: "icon-word",
-              url: "./editor.html"
-            },
-            {
-              name: "simulator",
-              title: "手机模拟器",
-              iconCls: "icon-mobile",
-              url: "./simulator.html"
-            },
-            {
-              name: "article",
-              title: "文章编辑",
-              iconCls: "icon-archive",
-              url: "./article.html"
-            },
-            {
-              name: "single",
-              title: "单表页面",
-              iconCls: "icon-text",
-              url: "./single.html"
-            },
-          ]
-        },
-        {
-
-          title: "功能页面",
-          name: "page",
-          iconCls: "icon-sitemap",
-          children: [
-            {
-              title: "登录",
-              name: "login",
-              iconCls: "icon-keyboardo",
-              url:"./login.html",
-            },
-            {
-              title: "系统主页",
-              name: "system",
-              iconCls: "icon-flag",
-              url:"./sytem.html",
-            },
-            {
-              title: "主页",
-              name: "home",
-              iconCls: "icon-home",
-              url:"./home.html",
-            }
-          ]
-        },
-        {
-
-          title: "常用函数",
-          name: "func",
-          iconCls: "icon-code",
-          url: "./func.html"
-        },
-        {
-
-          title: "系统介绍",
-          name: "intro",
-          iconCls: "icon-windows",
-          url: "./intro.html"
-        }
+         },
       ]}
   
       notices={[

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Login} from "wasabiD"
+import { Login} from "../../component"
 import "wasabiD/lib/index.css"
 class Index extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class Index extends React.Component {
   }
   
   render() {  
-    return <Login backgroundImage={require("./image/1.jpg")} url="https://www.baidu.com"></Login>
+    return <Login backgroundImage={require("./image/1.jpg")} url="http://localhost:7001/user/login"></Login>
 
  
   }

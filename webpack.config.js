@@ -31,7 +31,7 @@ entry.forEach((item, index) => {
 
 
 module.exports = (env, argv) => {
-  console.log("env",env)
+  console.log("env", env)
   try {
     /*插件：动态生成html，在webpack完成前端资源打包以后，自动将打包后的资源路径和版本号写入HTML中，达到自动化的效果。*/
     //生成多个html页面
@@ -47,7 +47,7 @@ module.exports = (env, argv) => {
     })
 
     return {
-      mode:env.mode,//打包模式
+      mode: env.mode,//打包模式
       //入口文件来源的路径
       context: path.resolve(__dirname, './src'),
 
@@ -60,7 +60,7 @@ module.exports = (env, argv) => {
         filename: 'js/[name]_[hash:8].js', //文件名称
         publicPath: '', // 配置发布打包时js,css资源的url前缀，
         assetModuleFilename: 'images/[name][hash:8][ext][query]',//资源存放地
-        clean:true,
+        clean: true,
       },
       //优化配置项 todo
       optimization: {
@@ -132,6 +132,12 @@ module.exports = (env, argv) => {
               },
 
             ],
+          },
+          {
+            test: /\.ts[x]?$/,
+            use: [
+              { loader: 'ts-loader' }
+            ]
           },
           //.css 文件使用 style-loader 和 css-loader 来处理,注意这里可以使用要引用MiniCssExtractPlugin,独立出来
           {

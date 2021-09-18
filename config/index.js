@@ -24,6 +24,16 @@ let entry = [
     title: 'datagrid组件', // 标题
     src: './view/login/index.jsx' //脚本路径
   },
+  {
+    filename: 'users', //文件名，
+    title: '用户管理', // 标题
+    src: './view/users/index.jsx' //脚本路径
+  },
+  {
+    filename: 'changePassword', //文件名，
+    title: '修改密码', // 标题
+    src: './view/changePassword/index.jsx' //脚本路径
+  },
 ];
 
 module.exports = entry;
