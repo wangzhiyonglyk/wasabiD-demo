@@ -248,19 +248,14 @@ export default {
                 this.props.onUpdate(this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder);
             }
         }
-        else {//传了url        
-            if (func.diff(params, this.state.params)) {//为参数发生改变,从第一页查起           
-                this.onUpdate(url, this.state.pageSize, 1, this.state.sortName, this.state.sortOrder, params);
-            }
-            else {//从当前页查起，就是刷新
-                this.onUpdate(url, this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder, params);
-            }
-
+        else {//传了url 
+            let pageIndex=func.shallowDiff(params, this.state.params)?1:this.state.pageIndex
+            this.onUpdate(url, this.state.pageSize, pageIndex, this.state.sortName, this.state.sortOrder, params);
         }
     },
 
     /**
-     * 导出
+     * todo 导出
      * @param {*} selected 是否只导出选择行
      * @param {*} title 导出标题
      */
@@ -277,7 +272,7 @@ export default {
 
             for (let columnIndex = 0; columnIndex < realTable.children[1].children[rowIndex].children.length; columnIndex++) {
                 let html = realTable.children[1].children[rowIndex].children[columnIndex].outerHTML;
-                if (html.indexOf("wasabi-detail-column") > -1 || html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-check-column") > -1 || html.indexOf("wasabi-noexport") > -1) {//除去序号列与选择列及不需要导出的列
+                if (html.indexOf("wasabi-detail-column") > -1 || html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-select-column") > -1 || html.indexOf("wasabi-noexport") > -1) {//除去序号列与选择列及不需要导出的列
                     continue;
                 }
                 json.headers.push(realTable.children[1].children[rowIndex].children[columnIndex].children[0].innerText);
@@ -290,7 +285,7 @@ export default {
                 let row = [];
                 for (let columnIndex = 0; columnIndex < realTable.children[2].children[value].children.length; columnIndex++) {
                     let html = realTable.children[2].children[value].children[columnIndex].outerHTML;
-                    if (html.indexOf("wasabi-detail-column") > -1 || html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-check-column") > -1 || html.indexOf("wasabi-noexport") > -1) {//除去序号列与选择列及不需要导出的列
+                    if (html.indexOf("wasabi-detail-column") > -1 || html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-select-column") > -1 || html.indexOf("wasabi-noexport") > -1) {//除去序号列与选择列及不需要导出的列
                         continue;
                     }
             
@@ -307,7 +302,7 @@ export default {
                 for (let columnIndex = 0; columnIndex < realTable.children[2].children[rowIndex].children.length; columnIndex++) {
                     if (realTable.children[2].children.length > rowIndex) {
                         let html = realTable.children[2].children[rowIndex].children[columnIndex].outerHTML;
-                        if (html.indexOf("wasabi-detail-column") > -1 || html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-check-column") > -1 || html.indexOf("wasabi-noexport") > -1) {//除去序号列与选择列及不需要导出的列
+                        if (html.indexOf("wasabi-detail-column") > -1 || html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-select-column") > -1 || html.indexOf("wasabi-noexport") > -1) {//除去序号列与选择列及不需要导出的列
                             continue;
                         }
 

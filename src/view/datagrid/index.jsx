@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { DataGrid} from "wasabiD"
-import "wasabiD/lib/index.css"
+import { DataGrid } from "../../component"
 class Page extends React.Component {
     constructor(props) {
         super(props);
@@ -13,7 +12,7 @@ class Page extends React.Component {
             fixedHeaders: [
                 {
                     name: "id",
-                    label: "id",
+                    label: "fixedid",
 
                 },
 
@@ -22,30 +21,35 @@ class Page extends React.Component {
 
                 {
                     name: "label",
-                    label: "省1",
-                    editor:{
-                        type:"select",
-                        options:{
-                            data:[
-                                {text:"test",value:"test"}
+                    label: "省11",
+                    editor: {
+                        type: "select",
+                        options: {
+                            data: [
+                                { text: "test", value: "test" }
                             ]
                         }
                     }
 
                 },
+               
                 {
-                    name: "省2",
+                    name: "label1",
                     label: "省2",
-
-                },
-                {
-                    name: "省3",
-                    label: "省3",
 
                 },
                 {
                     name: "省4",
                     label: "省4",
+                    content:(rowData,rowIndex)=>{
+                      
+                        if(rowIndex%2===1){
+                            return <div>{rowData.label}</div>
+                        }
+                        else{
+                            return <div><button key="1">没有</button><button key="2">ddd</button></div>
+                        }
+                    }
 
                 },
                 {
@@ -54,40 +58,160 @@ class Page extends React.Component {
 
                 },
                 {
-                    name: "省6",
-                    label: "省6",
+                    name: "省5",
+                    label: "省5",
 
                 },
+                {
+                    name: "省5",
+                    label: "省5",
+
+                },
+                {
+                    name: "省5",
+                    label: "省5",
+
+                },
+                {
+                    name: "省5",
+                    label: "省5",
+
+                },
+                {
+                    name: "省5",
+                    label: "省5",
+
+                },
+                {
+                    name: "省5",
+                    label: "省5",
+
+                },{
+                    name: "省5",
+                    label: "省5",
+
+                },{
+                    name: "省5",
+                    label: "省5",
+
+                },{
+                    name: "省5",
+                    label: "省5",
+
+                },{
+                    name: "省5",
+                    label: "省5",
+
+                },{
+                    name: "省5",
+                    label: "省5",
+
+                },{
+                    name: "省5",
+                    label: "省5",
+
+                },{
+                    name: "省5",
+                    label: "省5",
+
+                },{
+                    name: "省5",
+                    label: "省5",
+
+                },{
+                    name: "省5",
+                    label: "省5",
+
+                },
+            
             ],
             data: [
                 {
-                    id: 1, pId: "", name: "good", label: "可以fdfdsfsdfsdfsdfsdfsdfsdfdsssssssss停靠", editor: { type: "date" }, children: [
-                        { id: 11, label: "子节点11", dropAble: true, },
-                        {
-                            id: 12, label: "子节点12", children: [{
-                                id: 111, label: "孙子节点,可移动", draggAble: true,
-                            }, {
-                                id: 112, label: "孙子节点2,可移动", draggAble: true,
-                            }]
-                        }
-                    ]
-                },
+                    id: 1,label: "通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 dataSource 中的数据字段相对应。"     ,   label1:"dd"      },
+                 
                 {
-                    id: 2, pId: "", name: "good1", label: "可以停靠", dropAble: true, editor: { type: "select" }, children: [
-                        { id: 21, pId: 2, label: "移动1", draggAble: true, },
-                        { id: 22, pId: 2, label: "移动2", draggAble: true, }
-                    ]
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
                 },
-                { id: 3, pId: "", name: "good", label: "机构尖3", editor: { type: "date" }, },
-                { id: 4, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, },
-                { id: 5, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, },
-                { id: 6, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, },
-                { id: 7, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, },
-                { id: 8, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, },
-                { id: 9, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, },
-                { id: 10, pId: "", name: "good", label: "机构尖", editor: { type: "date" }, },
-                { id: 100, pId: 1, name: "good", label: "机构尖", editor: { type: "date" }, },
-                { id: 101, pId: "", name: "good", label: "异步", editor: { type: "date" }, isParent: true },
+                  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },  
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },
+               
             ],
             tabs: [{
                 title: "你好"
@@ -98,11 +222,11 @@ class Page extends React.Component {
 
 
     }
-  
+
     render() {
-    
-        return <DataGrid importAble={true} headers={this.state.headers}  data={this.state.data}></DataGrid>
-       
+
+        return <DataGrid style={{ height: 500 }} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></DataGrid>
+
 
     }
 }

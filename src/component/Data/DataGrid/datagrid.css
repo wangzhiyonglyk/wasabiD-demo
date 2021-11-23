@@ -18,7 +18,7 @@ grid
   background-color: var(--background-color);
   width:calc(100% - 2px);
 }
-.wasabi-grid .wasabi-check-column .wasabi-form-group
+.wasabi-grid .wasabi-select-column .wasabi-form-group
 {
   height: 21px;
   min-height: 0px;
@@ -33,49 +33,35 @@ grid
   padding: 0px;
   margin-top: 3px;
 }
-
 /*
 真实表格容器
 */
+.wasabi-grid .wasabi-table-container{
+  position: relative;
+  overflow: auto;
+  background-color: white;
+}
 
+/*
+*真实表格
+*/
 .wasabi-grid .table-realTable {
   width: 100%;
-  overflow: auto;
-  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* 固定表头容器 */
 
 .wasabi-grid .table-fixedth {
-  position: absolute;
+  position: sticky;
   top: 0px;
-  left: 0px;
-  z-index: 1;
-  background-color: white;
+  z-index:1;
+  background-color:var(--background-color);
+}
+.wasabi-grid .table-fixedth th{
+  border-bottom: none;
 }
 
-/* 固定列中的 固定表头容器 */
-
-.wasabi-grid .table-fixed-fixedth {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 3;
-  background-color: white;
-}
-
-/*
-固定列容器
-*/
-
-.wasabi-grid .table-fixed {
-  margin-bottom: 0px;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 2;
-  background-color: white;
-}
 
 /*
 正在加载

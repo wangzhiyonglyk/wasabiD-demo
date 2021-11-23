@@ -17,7 +17,7 @@ border奇怪的现象，出现变粗的现象
   clear: both;
   border-top: 1px solid var(--border-color);
   border-left: 1px solid var(--border-color);
-  width: 100%;
+  /* width: 100%; */
   border-spacing: 0;
   border-collapse:inherit;
   box-sizing: border-box;
@@ -29,12 +29,11 @@ border奇怪的现象，出现变粗的现象
 .wasabi-table th {
   border-bottom: 1px solid var(--border-color);
   border-right: 1px solid var(--border-color);
-  padding: 10px 5px;
+  padding: 0px;
   vertical-align: middle;
   box-sizing: border-box;
   text-align: center;
   overflow: hidden;
-  height: 42px;
   font-weight: normal;
 }
 
@@ -95,6 +94,7 @@ border奇怪的现象，出现变粗的现象
 .wasabi-table-cell {
   width: 100%;
   box-sizing: border-box;
+  padding:10px 5px;
   min-height: 21px;
   line-height: 21px;
   word-break: break-all;

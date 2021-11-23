@@ -4,12 +4,11 @@
 
 .wasabi-pagination
 {
-  font-size: 14px;
+  font-size: var(--font-size);
   color: var(--color);
   position: relative;
   margin-top:5px;
   padding-left: 4px;
-  padding-right: 10px;
   height: 40px;
   line-height: 40px;
 }

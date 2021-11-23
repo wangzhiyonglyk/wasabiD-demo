@@ -260,7 +260,7 @@ let validateHoc = function (InputWidget, inputType = "text") {
         }
 
         shouldComponentUpdate(nextProps, nextState) {
-            if (func.diffOrder(nextProps, this.props)) {
+            if (func.shallowDiff(nextProps, this.props)) {
                 return true;
             }
             if (func.diff(nextState, this.state)) {

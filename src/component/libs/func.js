@@ -303,6 +303,15 @@ func.clone = function (obj) {
     }
     return o;
 }
+/**
+ * 对象的浅复制
+ * @param {*} obj 源对象
+ * @returns 
+ */
+ func.shallowClone = function (obj) {
+   return typeof obj!=="undefined"? JSON.parse(JSON.stringify(obj)):obj;
+}
+
 //获取真正的数据源
 func.getSource = function (data, source = "data") {
     /// <summary>
@@ -416,15 +425,15 @@ func.diff = function (objA = null, objB = null) {//
             }
         }
     }
-    return func.diffOrder(objA, objB)
+    return func.shallowDiff(objA, objB)
 }
 
 /**
- * 判断两个对象是否完全相同并顺序一致
+ * 判断两个对象相同
  * @param {*} objA 
  * @param {*} objB 
  */
-func.diffOrder = function (objA, objB) {
+func.shallowDiff = function (objA, objB) {
 
     try {
         return JSON.stringify(objA) !== JSON.stringify(objB);

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { System } from "wasabiD"
-import "wasabiD/lib/index.css"
+
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -55,10 +55,11 @@ class Index extends React.Component {
          },
          
          {
-          title:"权限配置",
+          title:"数据",
           children:[
             {
-              title:"系统菜单"
+              title:"datagrid",
+              url:"./datagrid.html"
             },
             {
               title:"用户角色"

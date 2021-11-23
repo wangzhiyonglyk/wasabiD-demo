@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Login} from "../../component"
-import "wasabiD/lib/index.css"
+
 class Index extends React.Component {
   constructor(props) {
     super(props);

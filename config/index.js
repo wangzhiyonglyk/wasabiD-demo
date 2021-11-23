@@ -21,7 +21,7 @@ let entry = [
   
   {
     filename: 'login', //文件名，
-    title: 'datagrid组件', // 标题
+    title: 'login', // 标题
     src: './view/login/index.jsx' //脚本路径
   },
   {

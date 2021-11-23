@@ -16,7 +16,6 @@ import func from "../../libs/func";
 import DataGrid from "../DataGrid";
 import propsTran from "../../libs/propsTran";
 import Tree from "../Tree";
-import FetchModel from "../../Model/FetchModel";
 import api from "wasabi-api"
 import "./index.css"
 class TreeGrid extends Component {
@@ -48,7 +47,6 @@ class TreeGrid extends Component {
     }
     static getDerivedStateFromProps(props, state) {
         let newState = {};
-
         if (props.url && props.params &&
             func.diff(props.params, state.rawParams)) {//如果有url
             newState = {
@@ -109,17 +107,17 @@ class TreeGrid extends Component {
     }
     loadData(url, params) {
         if (url) {
-            let type = this.props.httpType ? this.props.httpType : "POST";
-            type = type.toUpperCase();
-            let fetchmodel = new FetchModel(url, this.loadSuccess, params, this.loadError);
-            fetchmodel.headers = this.props.httpHeaders;
-            if (this.props.contentType) {
-                //如果传contentType值则采用传入的械
-                //否则默认
-
-                fetchmodel.contentType = this.props.contentType;
-                fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
+            let fetchmodel =
+            {
+                url: url,
+                data: params,
+                success: this.loadSuccess,
+                error: this.loadError,
+                type: this.props.httpType ? this.props.httpType.toUpperCase() : "POST",
+                headers: this.props.httpHeaders || {},
+                contentType: this.props.contentType || null,
             }
+
             console.log("treegrid-fetch", fetchmodel);
             let wasabi_api = window.api || api;
             wasabi_api.ajax(fetchmodel);

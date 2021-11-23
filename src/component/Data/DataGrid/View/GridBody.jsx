@@ -18,10 +18,8 @@ class GridBody extends React.Component {
         this.onChecked = this.onChecked.bind(this);
         this.tableCellEditHandler = this.tableCellEditHandler.bind(this);
         this.onDetail = this.onDetail.bind(this);
-        this.getRowCellContent = this.getRowCellContent.bind(this);
+        this.getCellContent = this.getCellContent.bind(this);
         this.setOrderAndSelectAndDetailRow = this.setOrderAndSelectAndDetailRow.bind(this);
-        this.renderSingleBody = this.renderSingleBody.bind(this);
-        this.renderComplexBody = this.renderComplexBody.bind(this);
 
     }
 
@@ -94,7 +92,7 @@ class GridBody extends React.Component {
      * @param {*} rowIndex 
      * @returns 
      */
-    getRowCellContent(header, rowData, rowIndex) {
+    getCellContent(header, rowData, rowIndex) {
         //内容
         let content = header.content;
         if (typeof content === 'function') {
@@ -109,7 +107,7 @@ class GridBody extends React.Component {
             //为空时
             content = rowData[header.name];
         }
-        return content;
+        return content === undefined || content === null ? "" : content;
     }
     /**
      * 设置行中的详情，序号，选择列
@@ -118,6 +116,7 @@ class GridBody extends React.Component {
      * @returns 
      */
     setOrderAndSelectAndDetailRow(rowData, rowIndex) {
+        let stickyLeft = 0;
         let control = [];
         let key = this.getKey(rowIndex); //获取这一行的关键值
 
@@ -128,7 +127,7 @@ class GridBody extends React.Component {
                 iconCls = 'icon-arrow-up'; //详情列-展开
             }
             control.push(<TableCell key={'bodydetail-' + rowIndex.toString()}
-                className={" wasabi-detail-column "}>
+                className={" wasabi-detail-column "} style={{ position: "sticky", left: stickyLeft }}>
                 {<i style={{ cursor: "pointer" }} title="详情"
                     className={iconCls} onClick={this.onDetail.bind(this, rowData, rowIndex)}></i>}
             </TableCell>);
@@ -166,7 +165,7 @@ class GridBody extends React.Component {
 
             //是单选还是多选
             control.push(
-                <TableCell key={'bodycheckbox' + rowIndex.toString()} className={'wasabi-check-column'}>
+                <TableCell key={'bodycheckbox' + rowIndex.toString()} className={'wasabi-select-column'}>
                     {rowAllowChecked ? this.props.singleSelect ? <Radio {...props}></Radio> : <CheckBox  {...props}></CheckBox> : null}
                 </TableCell>
             );
@@ -174,154 +173,47 @@ class GridBody extends React.Component {
         }
         return control;
     }
-    /**
-    * 渲染简单的表体
-    */
-    renderSingleBody() {
-        //渲染表体
-        let trArr = [];
-        if (
-            !(this.props.data instanceof Array) ||
-            !(this.props.headers instanceof Array)
-        ) {
-            return;
-        }
-        this.props.data.map((rowData, rowIndex) => {
-            if (rowData.hide) {//隐藏该行,用于treegrid
-                return;
-            }
-            let tds = []; //当前的列集合
-            let key = this.getKey(rowIndex); //获取这一行的关键值
-            //生成数据列
-            let columnIndex = 0;//真正的列序号
-            let headers = this.props.headers;
-            headers.map((header, headerColumnIndex) => {
-                //处理数据单元格
-                let editAble = this.props.editIndex != null && this.props.editIndex === (rowIndex + "-" + columnIndex) && header.editor;
-                tds.push(
-                    <TableCell
-                        onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
-                        onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex, columnIndex)}
-                        key={'cell-' + rowIndex.toString() + "-" + headerColumnIndex + '-' + columnIndex.toString()}
-                        className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-                        style={{ textAlign: header.align }}
-                    >
-                        {
-                            editAble ?
-                                <Input
-                                    {...header.editor.options}
-                                    type={header.editor.type}
-                                    name={header.name}
-                                    value={rowData[header.name]}
-                                    onChange={this.tableCellEditHandler.bind(this, rowIndex, header.editor && header.editor.options && header.editor.options.onChange || null)}
-                                    onSelect={this.tableCellEditHandler.bind(this, rowIndex, header.editor && header.editor.options && header.editor.options.onSelect || null)}
-                                    onPaste={this.inputonPaste.bind(this, rowIndex, columnIndex)}
-                                    label={''}
-                                ></Input> : this.getRowCellContent(header, rowData, rowIndex)}
-                    </TableCell>
-                );
-                columnIndex++;
-            });
-            let trClassName = "";
-            if (this.props.focusIndex === rowIndex) {
-                trClassName += " selected ";
-            }
 
-            trArr.push(
-                <TableRow key={'row' + rowIndex.toString()} className={trClassName} >
-                    {this.setOrderAndSelectAndDetailRow(rowData, rowIndex)}
-                    {tds}
-                </TableRow>
-            );
-            //展示详情面板
 
-            if (this.props.detailIndex == key) {
-                trArr.push(this.props.detailView);
-            }
-        });
-        return <TableBody>{trArr}</TableBody> ;
-    }
     /**
-     *渲染复杂的表体
+     * 生成单元格
+     * @param {*} header 列
+     * @param {*} rowData 行
+     * @param {*} rowIndex 行下标
+     * @param {*} columnIndex 列下标
      * @returns 
      */
-    renderComplexBody() {
-        //渲染表体
-        if (!(this.props.data instanceof Array) || !(this.props.headers instanceof Array)) {
-            return;//格式不正确，直接返回
-        }
-        let trArr = [];//行数据
-        this.props.data.map((rowData, rowIndex) => {
-            if (rowData.hide) {//隐藏该行,用于treegrid
-                return;
-            }
-            let tds = []; //当前的列集合
-            let key = this.getKey(rowIndex); //获取这一行的关键值
-            //生成数据列
-            let columnIndex = 0;//真正的序号列
-            this.props.headers.map((trheader, headerRowIndex) => {
-                if (trheader instanceof Array) {
-                    trheader.map((header, headerColumnIndex) => {
-                        if ((header.colSpan && header.colSpan > 1)) {
-                            //跨几列的不用渲染
-                            return;
-                        }
-                        //处理数据单元格
-                        tds.push(
-                            <TableCell
-                                onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
-                                onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex, columnIndex)}
-                                key={'cell-' + rowIndex.toString() + "-" + headerRowIndex + "-" + headerColumnIndex + '-' + columnIndex.toString()}
-                                className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-                                style={{ textAlign: header.align }}>
-                                {
-                                    this.props.editIndex != null &&
-                                        this.props.editIndex == rowIndex &&
-                                        header.editor ?
-                                        <Input
-                                            {...header.editor.options}
-                                            type={header.editor.type}
-                                            name={header.name}
-                                            value={rowData[header.name]}
-                                            onChange={this.tableCellEditHandler.bind(this, rowIndex, header.editor && header.editor.options && header.editor.options.onChange || null)}
-                                            onSelect={this.tableCellEditHandler.bind(this, rowIndex, header.editor && header.editor.options && header.editor.options.onSelect || null)}
-                                            label={''}
-                                        ></Input> : this.getRowCellContent(header, rowData, rowIndex)}
-                            </TableCell>
-                        );
-                        columnIndex++;
+    setCellComponent(header, rowData, rowIndex, columnIndex) {
+        //处理数据单元格
+        let editAble = this.props.editIndex != null && this.props.editIndex === (rowIndex + "-" + columnIndex) && header.editor;
 
-                    });
-                }
-            });
-            let trClassName = "";
-            if (this.props.focusIndex === rowIndex) {
-                trClassName += " selected ";
-            }
-            if (this.props.editIndex === rowIndex) {
-                trClassName += " edited ";
-            }
-            trArr.push(
-                <TableRow key={'row' + rowIndex.toString()} className={trClassName}  >
-                    {this.setOrderAndSelectAndDetailRow(rowData, rowIndex)}
-                    {tds}
-                </TableRow>
-            );
-            //展示详情面板
+        return <TableCell
+            onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
+            onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex, columnIndex)}
+            key={'cell-' + rowIndex.toString() + '-' + columnIndex.toString()}
+            className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
+            style={{ textAlign: header.align }}
+        >
+            {
+                editAble ?
+                    <Input
+                        {...header.editor.options}
+                        type={header.editor.type}
+                        name={header.name}
+                        value={rowData[header.name]}
+                        onChange={this.tableCellEditHandler.bind(this, rowIndex, header.editor && header.editor.options && header.editor.options.onChange || null)}
+                        onSelect={this.tableCellEditHandler.bind(this, rowIndex, header.editor && header.editor.options && header.editor.options.onSelect || null)}
+                        onPaste={this.inputonPaste.bind(this, rowIndex, columnIndex)}
+                        label={''}
+                    ></Input> : this.getCellContent(header, rowData, rowIndex)}
+        </TableCell>
 
-            if (this.props.detailIndex == key) {
-
-                trArr.push(this.props.detailView);
-            }
-
-        });
-        return <TableBody>{trArr}</TableBody> ;
     }
     shouldComponentUpdate(nextProps, nextState) {
-        if (func.diffOrder(nextProps, this.props)) {
+        if (func.shallowDiff(nextProps, this.props)) {
+
             return true;
         }
-
         return false;
     }
     /**
@@ -329,11 +221,69 @@ class GridBody extends React.Component {
      * @param {*} event 
      */
     inputonPaste(rowIndex, columnIndex, event) {
-       
+
         this.props.onPaste && this.props.onPaste(rowIndex, columnIndex, event);
     }
     render() {
-        return this.props.single ? this.renderSingleBody() : this.renderComplexBody();
+        //渲染表体
+        if (!(this.props.data instanceof Array) || !(this.props.headers instanceof Array)) {
+            return;//格式不正确，直接返回
+        }
+        let trArr = [];//行数据
+        this.props.data.forEach((rowData, rowIndex) => {
+            if (rowData.hide) {//隐藏该行,用于treegrid
+
+            } else {
+                let tds = []; //当前的列集合
+                let key = this.getKey(rowIndex); //获取这一行的关键值
+                //生成数据列
+                let columnIndex = 0;//真正的序号列
+                this.props.headers.forEach((trheader, headerRowIndex) => {
+                    if (trheader instanceof Array) {
+                        trheader.forEach((header, headerColumnIndex) => {
+                            if ((header.colSpan && header.colSpan > 1)) {
+                                //跨几列的不用渲染
+                            }
+                            //处理数据单元格
+                            tds.push(
+                                this.setCellComponent(header, rowData, rowIndex, columnIndex)
+                            );
+                            columnIndex++;
+
+                        });
+                    }
+                    else {
+                        //处理数据单元格
+                        tds.push(
+                            this.setCellComponent(trheader, rowData, rowIndex, columnIndex)
+                        );
+                        columnIndex++;
+                    }
+                });
+                let trClassName = "";
+                if (this.props.focusIndex === rowIndex) {
+                    trClassName += " selected ";
+                }
+                if (this.props.editIndex === rowIndex) {
+                    trClassName += " edited ";
+                }
+                trArr.push(
+                    <TableRow key={'row' + rowIndex.toString()} className={trClassName}  >
+                        {this.setOrderAndSelectAndDetailRow(rowData, rowIndex)}
+                        {tds}
+                    </TableRow>
+                );
+                //展示详情面板
+
+                if (this.props.detailIndex == key) {
+
+                    trArr.push(this.props.detailView);
+                }
+            }
+
+
+        });
+        return <TableBody>{trArr}</TableBody>;
     }
 }
 

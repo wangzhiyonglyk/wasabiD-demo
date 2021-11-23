@@ -85,8 +85,8 @@ export default {
     json2data(json, rowIndex, columnIndex=0) {
         rowIndex=rowIndex===null||rowIndex===undefined?this.state.data.length:rowIndex;
         if (json && json.body) {
-            const headerResult = this.setHeaderEditor();//设置表头
-            const { headers, fixedHeaders } = headerResult;
+            const {headers} = this.setHeaderEditor();//设置表头
+         
             let addData = [];
             let oldData = func.clone(this.state.data);
             let beginRowIndex = rowIndex;//开始的行下标
@@ -145,7 +145,6 @@ export default {
                 }
             }
             this.setState({
-                fixedHeaders: fixedHeaders,
                 headers: headers,
                 data: newData,
                 total: newData.length,

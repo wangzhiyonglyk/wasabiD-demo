@@ -3,18 +3,17 @@
  * edit by wangzhiyong 2020-05-09 修复分页的问题
  * 将DataGrid拆分,基本处理事件存在这里
  */
-import React, { Component } from "react";
+import React from "react";
 import func from "../../../libs/func.js";
-import FetchModel from "../../../Model/FetchModel.js";
 import Msg from "../../../Info/Msg.jsx";
 import api from "wasabi-api"
 export default {
 
     /**
-        * 获取当行的key
-        * @param {*} rowIndex 
-        * @param {*} pageIndex 
-        */
+   * 获取当行的key
+   * @param {*} rowIndex 
+   * @param {*} pageIndex 
+   */
     getKey: function (rowIndex, pageIndex) {//todo 暂时以下标
         let key = "";
         if (!pageIndex) {
@@ -24,13 +23,7 @@ export default {
             console.log(new Error("index 值传错"));
         }
         else {
-            if (this.props.priKey) {
-                key = this.state.data[rowIndex][this.props.priKey];
-            }
-            else {
-                key = pageIndex.toString() + "-" + rowIndex.toString();//默认用序号作为关键字
-            }
-
+            key = this.state.data && this.state.data[rowIndex][this.props.priKey] || pageIndex.toString() + "-" + rowIndex.toString();
         }
         return key + "";
     },
@@ -41,7 +34,6 @@ export default {
      * @param {*} value 
      */
     onChecked: function (index, value) {//选中事件
-
         let checkedData = (this.state.checkedData);//已经选中的行
         let checkedIndex = (this.state.checkedIndex);//已经选中的行的序号，用于导出
         if (this.props.singleSelect == true) {//单选则清空
@@ -98,10 +90,7 @@ export default {
      * @param {*} value 
      */
     checkedAllHandler: function (value) {//全选按钮的单击事件
-        if (this.state.data instanceof Array) {
-
-        }
-        else {
+        if (!(this.state.data instanceof Array)) {
             return;
         }
         let length = this.state.data.length;
@@ -109,8 +98,6 @@ export default {
         let checkedIndex = this.state.checkedIndex;
         for (let i = 0; i < length; i++) {
             let key = this.getKey(i);
-
-
             if (value == "yes") {
                 if (!checkedData.has(key)) {
                     checkedIndex.set(i + "", i);
@@ -134,7 +121,6 @@ export default {
         }
 
     },
-
     /**
      * 单击事件
      * @param {*} rowData 行数据
@@ -168,8 +154,6 @@ export default {
         this.props.onClick && this.props.onClick(rowData, rowIndex, columnIndex);//
 
     },
-
-
     /**
      * 双击事件
      * @param {*} rowData 行数据
@@ -190,7 +174,7 @@ export default {
             if (this.props.rowNumber) { columnIndex++ };
             if (this.props.detailAble) { columnIndex++ };
             if (this.props.selectAble) { columnIndex++ };
-            
+
             let f = document.getElementById(this.state.realTableid).children[2].querySelector(".focus");
             if (f) { f.className = "" };
             document.getElementById(this.state.realTableid).children[2].children[rowIndex].children[columnIndex].className = "focus";
@@ -201,35 +185,6 @@ export default {
         }
 
     },
-    /**
-     * 真实表格的鼠标滚动事件，用于固定列左右移动的时候
-     */
-    onRealTableScoll: function (event) {
-        setTimeout(() => {
-            try {
-                //固定列的表格 纵向
-                if (document.getElementById(this.state.fixedTableContainerid)) {
-                    document.getElementById(this.state.fixedTableContainerid).style.top =
-                        (0 - document.getElementById(this.state.realTableContainerid).scrollTop) + "px";
-
-                }
-
-                //固定表头 横向
-                if (document.getElementById(this.state.fixedthcontainerid)) {
-                    document.getElementById(this.state.fixedthcontainerid).style.left =
-                        (0 - document.getElementById(this.state.realTableContainerid).scrollLeft) + "px";
-                }
-            }
-            catch (e) {
-
-            }
-
-
-        }, 0);
-
-    },
-
-
     /**
      * 页号,与大小改变
      * @param {*} pageIndex 
@@ -243,9 +198,6 @@ export default {
             this.onUpdate(this.state.url, pageSize, pageIndex, this.state.sortName, this.state.sortOrder, this.state.params);
         }
     },
-
-
-
     /**
     * 编辑时设置单元格的编辑样式
     */
@@ -253,44 +205,34 @@ export default {
         //如果没有设置编辑，则设置
         let headers = func.clone(this.state.headers);
         if (headers && headers.length > 0) {
-            if(this.state.single){
+            if (this.state.single) {
                 for (let i = 0; i < headers.length; i++) {
                     headers[i].editor = headers[i].editor ? headers[i].editor : {
                         type: "text"
                     }
                 }
             }
-            else{
-               for(let i=0;i<headers.length;i++){
-                   if(headers[i] instanceof Array &&headers[i].length>0){
-                       for(let j=0;j<headers[i].length;j++){
-                           if(headers[i][j].colSpan&&headers[i][j].colSpan>1){
-                               //跨行的列不设置
-                               continue;
-                           }
-                           else{
-                            headers[i][j].editor =  headers[i][j].editor ? headers[i][j].editor : {
-                                type: "text"
+            else {
+                for (let i = 0; i < headers.length; i++) {
+                    if (headers[i] instanceof Array && headers[i].length > 0) {
+                        for (let j = 0; j < headers[i].length; j++) {
+                            if (headers[i][j].colSpan && headers[i][j].colSpan > 1) {
+                                //跨行的列不设置
+                                continue;
                             }
-                           }
-                       }
-                   }
-               }
-            }
-            
-        }
-        let fixedHeaders = [];
-        if (this.state.fixedHeaders && this.state.fixedHeaders.length > 0) {
-            fixedHeaders = func.clone(this.state.fixedHeaders);
-            for (let i = 0; i < fixedHeaders.length; i++) {
-                fixedHeaders[i].editor = fixedHeaders[i].editor ? fixedHeaders[i].editor : {
-                    type: "text"
+                            else {
+                                headers[i][j].editor = headers[i][j].editor ? headers[i][j].editor : {
+                                    type: "text"
+                                }
+                            }
+                        }
+                    }
                 }
             }
+
         }
         return {
             headers: headers,
-            fixedHeaders: fixedHeaders
         }
     },
     /**
@@ -446,18 +388,14 @@ export default {
      headers可能是后期才传了,见Page组件可知
      所以此处需要详细判断
      */
-
-        url = url || this.state.url;
         if (url) {
             this.setState({
+                urlReloadData: false,
                 loading: true,
                 url: url,//更新,有可能从reload那里直接改变了url
             })
-            let httpParams = typeof params == "object" ? func.clone(params) : {};//本次请求的参数
-            if (this.props.pagination == true) {
-                if (!httpParams) {
-                    httpParams = {};
-                }
+            let httpParams = func.clone(params) || {};//本次请求的参数
+            if (this.props.pagination == true) {//追加这四个参数
                 httpParams.pageSize = pageSize;
                 httpParams.pageIndex = pageIndex;
                 httpParams.sortName = sortName;
@@ -469,43 +407,22 @@ export default {
              而pageSize,pageIndex,sortName,sortOrder,params这些参数在查询成功后再更新
              所以回传
              */
-
-            let type = this.props.httpType ? this.props.httpType : "POST";
-            type = type.toUpperCase();
-            let fetchmodel = new FetchModel(url, this.loadSuccess.bind(this, url, pageSize, pageIndex, sortName, sortOrder, params), httpParams, this.loadError, type, this.props.httpHeaders);
-            fetchmodel.headers = this.props.httpHeaders;
-            if (this.props.contentType) {
-                //如果传contentType值则采用传入的械
-                //否则默认
-
-                fetchmodel.contentType = this.props.contentType;
-                fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
+            let fetchmodel =
+            {
+                url: url,
+                data: httpParams,
+                success: this.loadSuccess.bind(this, url, pageSize, pageIndex, sortName, sortOrder, params),
+                error: this.loadError,
+                type: this.props.httpType ? this.props.httpType.toUpperCase() : "POST",
+                headers: this.props.httpHeaders || {},
+                contentType: this.props.contentType || null,
             }
-
             console.log("datagrid-开始查询:", fetchmodel);
             let wasabi_api = window.api || api;
             wasabi_api.ajax(fetchmodel);
 
         }
-        else {
-            //没有传url,判断用户是否自定义了更新函数
-            if (this.props.onUpdate != null) {
 
-                this.props.onUpdate(pageSize, pageIndex, sortName, sortOrder);
-            }
-            else {
-                if (this.state.rawData.length > (pageIndex * pageSize)) {
-                    //说明父传的数据就是全部的
-                    this.setState({
-                        pageSize: pageSize,
-                        pageIndex: pageIndex,
-                        sortName: sortName,
-                        sortOrder: sortOrder,
-                        data: this.state.rawData.slice((pageIndex - 1) * pageSize, (pageIndex - 1) * pageSize + pageSize - 1)
-                    })
-                }
-            }
-        }
 
     },
     /**
