@@ -19,6 +19,7 @@ desc:checkbox
   list-style-type: none;
   display: flex;
   margin-right: 5px;
+  z-index: 1;
 
 }
 

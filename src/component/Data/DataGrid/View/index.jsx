@@ -13,9 +13,6 @@ class Grid extends React.Component {
         super(props)
         this.state = {
             containerid: func.uuid(),//表格容器
-            fixtableid:func.uuid(),
-            realtableid:func.uuid(),
-           
             divideid: func.uuid(),
         }
         this.onHeaderMouseDown = this.onHeaderMouseDown.bind(this);
@@ -23,13 +20,16 @@ class Grid extends React.Component {
         this.onDivideMouseUp = this.onDivideMouseUp.bind(this);
     }
 
+    componentDidMount(){
+       
+    }
     /**
      * 表头鼠标按下事件
      * @param {*} headerColumnIndex 
      * @param {*} event 
      */
     onHeaderMouseDown(headerColumnIndex, event) {
-        this.headerColumnIndex = headerColumnIndex;
+        this.chosedHeaderColumnIndex = headerColumnIndex;
         let container = document.getElementById(this.state.containerid);
         this.left = container.getBoundingClientRect().left;
         this.beginLeft = event.clientX;
@@ -46,10 +46,9 @@ class Grid extends React.Component {
      * @param {*} event 
      */
     onDivideMouseMove(event) {
-        if (this.headerColumnIndex != null) {
+        if (this.chosedHeaderColumnIndex != null) {
             let divide = document.getElementById(this.state.divideid);
             divide.style.left = (event.clientX - this.left) + "px";//这个位置才是相对容器的位置
-            event.target.style.cursor = "ew-resize";
         }
     }
     /**
@@ -57,32 +56,41 @@ class Grid extends React.Component {
      * @param {*} event 
      */
     onDivideMouseUp(event) {
-        if (this.headerColumnIndex != null) {
-            try {
-                let node=document.getElementById( this.state.realtableid).children[1].children[0].children[1];
-                node.style.width=(node.offsetWidth+event.clientX - this.beginLeft)+"px"
-                
-                // let nodes = document.getElementById(this.state.containerid).querySelectorAll("colgroup");
-                // if (nodes) {
-                //     for (let i = 0; i < nodes.length; i++) {
-                //         let width = nodes[i].children[this.headerColumnIndex].getAttribute("width") * 1 || 0;
-                //         nodes[i].children[this.headerColumnIndex].setAttribute("width", width + event.clientX - this.beginLeft);
-                //     }
-
-                // }
-
-
+        if (this.chosedHeaderColumnIndex != null) {
+            let chosedHeaderColumnIndex=this.chosedHeaderColumnIndex;
+            if (this.props.detailAble) {chosedHeaderColumnIndex++;}
+            if (this.props.rowNumber){chosedHeaderColumnIndex++;}
+            if (this.props.selectAble){chosedHeaderColumnIndex++;}
+            try {         
+                if(document.getElementById(this.props.realTableId)){
+                    let nodes = document.getElementById(this.props.realTableId).children[0].children;
+                    let tableWidth=0;//不能直接拿 【realTableId】表格的宽度，不准
+                    if (nodes) {
+                        for (let i = 0; i < nodes.length; i++) {
+                            tableWidth+= nodes[i].getAttribute("width") * 1 || 0;
+                        }
+                        nodes[chosedHeaderColumnIndex].setAttribute("width", Math.ceil( nodes[chosedHeaderColumnIndex].getAttribute("width") * 1 + event.clientX - this.beginLeft));
+                    }   
+                   document.getElementById(this.props.realTableId).style.width=Math.ceil(tableWidth + event.clientX - this.beginLeft)+"px";
+                   let pagination = document.getElementById(this.props.realTableId).parentNode.parentNode.querySelectorAll(".wasabi-pagination");
+                   if (pagination) {
+                       for (let i = 0; i < pagination.length; i++) {
+                           pagination[i].style.width = Math.min(document.getElementById(this.state.containerid).clientWidth, Math.ceil(tableWidth + event.clientX - this.beginLeft)) + "px";
+                       }
+                   }
+                }
+               
             }
             catch (e) {
-
+                console.log("error",e)
             }
-
-            this.headerColumnIndex = null;
+            this.chosedHeaderColumnIndex = null;
             let divide = document.getElementById(this.state.divideid);
             divide.style.display = "none";
             let container = document.getElementById(this.state.containerid);
             container.style.userSelect = null;
             container.style.cursor = "pointer";
+            event.target.style.cusor="pointer";
             document.removeEventListener("mousemove", this.onDivideMouseMove);
             document.removeEventListener("mouseup", this.onDivideMouseUp);
         }
@@ -95,12 +103,10 @@ class Grid extends React.Component {
      */
     renderColGruop() {
         return <GridColGroup
-        headerWidth={this.props.headerWidth}
-        containerid={this.state.containerid}
-        fixtableid={this.state.fixtableid}
-        realtableid={this.state.realtableid}
-          
-            single={this.props.single}
+            headerWidth={this.props.headerWidth}
+            containerid={this.state.containerid}
+           
+            realTableId={this.props.realTableId}
             headers={this.props.headers}
             selectAble={this.props.selectAble}
             rowNumber={this.props.rowNumber}
@@ -114,8 +120,9 @@ class Grid extends React.Component {
     */
     renderHeader() {
         return <GridHeader
-            single={this.props.single}
             headers={this.props.headers}
+            headerWidth={this.props.headerWidth}
+            borderAble={this.props.borderAble}
             selectAble={this.props.selectAble}
             singleSelect={this.props.singleSelect}
             rowNumber={this.props.rowNumber}
@@ -127,24 +134,19 @@ class Grid extends React.Component {
             onHeaderMouseDown={this.onHeaderMouseDown}
             onSort={this.onSort}>
         </GridHeader>
-
     }
 
     /**
      * 处理表体
      */
-    renderBody() { 
-       
-        if (this.props.adjustWidth) {
-            return null;
-        }
-        let checkedData = func.clone(this.props.checkedData);//todo 此处还要改
+    renderBody() {
         return <GridBody
-           
+             headerWidth={this.props.headerWidth}
             headers={this.props.headers}
             data={this.props.data}
+            borderAble={this.props.borderAble}
             priKey={this.props.priKey}
-            checkedData={checkedData}
+            checkedData={ func.clone(this.props.checkedData)}//这个属性要对比
             pageIndex={this.props.pageIndex}
             pageSize={this.props.pageSize}
             selectAble={this.props.selectAble}
@@ -179,21 +181,22 @@ class Grid extends React.Component {
     /**
      * 真实的表格
      */
-    renderTable() {
+    renderTable(height) {
         let colgroup = this.renderColGruop();
         let headerControl = this.renderHeader();
-        return <div className='wasabi-table-container' key="wasabi-table-container" id={this.state.containerid} style={{ height: this.props.height }}  >
+        return <div className='wasabi-table-container' key="wasabi-table-container" id={this.state.containerid} style={{ height: height }}  >
             {/* 固定表头在有高度的情况下有效  */}
-           
+          
             {/* 真实的表格  */}
             <Table 
                 className={this.props.borderAble ? ' ' : ' table-no-bordered '}
-                id={this.state.realtableid} >
+                id={this.props.realTableId} >
                 {
                     /**colgroup */
                     colgroup
                 }
-  {headerControl}
+                {/* 表头 */}
+                {headerControl}
                 {/* 表体 */}
                 {this.renderBody()}
                 {/* 表尾 todo */}
@@ -209,12 +212,15 @@ class Grid extends React.Component {
      */
     render() {
         let grid = [];
+        let style = func.shallowClone(this.props.style) || {};
+        let height = style.height || null;
+        style.height = null;//清空height
         let pageTotal = this.props.data.length < this.props.total ? this.props.data.length : this.props.total;
         grid.push(this.props.editAble ? <GridTool key="tool" upload={this.props.upload} importAble={this.props.importAble} addAble={this.props.addAble} editAble={this.props.editAble} onAdd={this.props.onAdd} onSave={this.props.onSave}></GridTool> : null)
         /* 头部分页 */
         grid.push(this.props.pagination && (this.props.pagePosition == 'top' || this.props.pagePosition == 'both') ? <Pagination key="p1" reload={this.props.reload} exportAble={this.props.exportAble} export={this.props.export} onChange={this.props.paginationHandler} pageIndex={this.props.pageIndex} pageSize={this.props.pageSize} pageTotal={pageTotal} total={this.props.total}></Pagination> : null)
         {/* 真实表格容器 */ }
-        grid.push(this.renderTable())
+        grid.push(this.renderTable(height))
         {/* 底部分页 */ }
         grid.push(this.props.pagination && (this.props.pagePosition == 'bottom' || this.props.pagePosition == 'both') ? <Pagination key="p2" reload={this.props.reload} exportAble={this.props.exportAble} export={this.props.export} onChange={this.props.paginationHandler} pageIndex={this.props.pageIndex} pageSize={this.props.pageSize} pageTotal={pageTotal} total={this.props.total}></Pagination> : null)
         /* 加载动画 */

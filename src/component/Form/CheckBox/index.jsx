@@ -110,7 +110,7 @@ class CheckBox extends React.Component {
 
     }
     shouldComponentUpdate(nextProps, nextState) {
-        if (func.shallowDiff(nextProps, this.props)) {
+        if (func.diff(nextProps, this.props,false)) {
             return true;
         }
         if (func.diff(nextState, this.state)) {
@@ -126,4 +126,4 @@ class CheckBox extends React.Component {
         return <ul className="wasabi-checkul" ><LiView {...liprops} ></LiView> {this.props.children} </ul>
     }
 }
-export default validateHoc(loadDataHoc(CheckBox, "checkbox"),"checkbox");
+export default validateHoc(validateHoc(CheckBox, "checkbox"),"checkbox");

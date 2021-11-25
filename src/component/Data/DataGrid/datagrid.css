@@ -9,21 +9,20 @@ grid
   color: var(--color);
 }
 
-.wasabi-grid .wasabi-grid-tool{
+.wasabi-grid .wasabi-grid-tool {
   border: 1px solid var(--border-color);
   border-bottom: none;
   height: 40px;
   line-height: 40px;
   padding-left: 20px;
   background-color: var(--background-color);
-  width:calc(100% - 2px);
+  width: calc(100% - 2px);
 }
-.wasabi-grid .wasabi-select-column .wasabi-form-group
-{
-  height: 21px;
-  min-height: 0px;
-  margin-bottom: 0px;
+
+.wasabi-grid .wasabi-select-column .wasabi-form-group {
+  margin-bottom: 0;
   margin-left: 4px;
+  margin-top: -1px;
 }
 
 
@@ -33,10 +32,11 @@ grid
   padding: 0px;
   margin-top: 3px;
 }
+
 /*
 真实表格容器
 */
-.wasabi-grid .wasabi-table-container{
+.wasabi-grid .wasabi-table-container {
   position: relative;
   overflow: auto;
   background-color: white;
@@ -55,11 +55,8 @@ grid
 .wasabi-grid .table-fixedth {
   position: sticky;
   top: 0px;
-  z-index:1;
-  background-color:var(--background-color);
-}
-.wasabi-grid .table-fixedth th{
-  border-bottom: none;
+  z-index: 1;
+  background-color: var(--background-color);
 }
 
 
@@ -94,11 +91,11 @@ grid
 
 .wasabi-grid .wasabi-grid-divide {
   position: absolute;
-  height: 100%;
+  height: 10000px;
   width: 1px;
   z-index: 2;
   top: 0px;
   display: none;
   cursor: ew-resize;
-  background-color:var(--border-color);
+  background-color: var(--border-color);
 }

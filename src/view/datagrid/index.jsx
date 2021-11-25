@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { DataGrid } from "../../component"
+import { DataGrid ,TreeGrid} from "../../component"
 class Page extends React.Component {
     constructor(props) {
         super(props);
@@ -36,7 +36,16 @@ class Page extends React.Component {
                 {
                     name: "label1",
                     label: "省2",
-
+                    editor: {
+                        type: "checkbox",
+                        options: {
+                            data: [
+                                { text: "test", value: "test" },
+                                { text: "test1", value: "test1" },
+                                { text: "test2", value: "test2" }
+                            ]
+                        }
+                    }
                 },
                 {
                     name: "省4",
@@ -52,78 +61,13 @@ class Page extends React.Component {
                     }
 
                 },
-                {
-                    name: "省5",
-                    label: "省5",
-
-                },
-                {
-                    name: "省5",
-                    label: "省5",
-
-                },
-                {
-                    name: "省5",
-                    label: "省5",
-
-                },
-                {
-                    name: "省5",
-                    label: "省5",
-
-                },
-                {
-                    name: "省5",
-                    label: "省5",
-
-                },
-                {
-                    name: "省5",
-                    label: "省5",
-
-                },
-                {
-                    name: "省5",
-                    label: "省5",
-
-                },{
-                    name: "省5",
-                    label: "省5",
-
-                },{
-                    name: "省5",
-                    label: "省5",
-
-                },{
-                    name: "省5",
-                    label: "省5",
-
-                },{
-                    name: "省5",
-                    label: "省5",
-
-                },{
-                    name: "省5",
-                    label: "省5",
-
-                },{
-                    name: "省5",
-                    label: "省5",
-
-                },{
-                    name: "省5",
-                    label: "省5",
-
-                },{
-                    name: "省5",
-                    label: "省5",
-
-                },{
-                    name: "省5",
-                    label: "省5",
-
-                },
             
+                {
+                    name: "label3",
+                    label: "省2",
+                    
+
+                },
             ],
             data: [
                 {
@@ -211,7 +155,43 @@ class Page extends React.Component {
                 {
                     id: 2, label: "可以停靠",label1:"testeste"
                 },
-               
+                {
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },{
+                    id: 2, label: "可以停靠",label1:"testeste"
+                },
             ],
             tabs: [{
                 title: "你好"
@@ -219,15 +199,9 @@ class Page extends React.Component {
                 title: "我好"
             }],
         }
-
-
     }
-
     render() {
-
-        return <DataGrid style={{ height: 500 }} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></DataGrid>
-
-
+        return <DataGrid style={{ height: 500 }} textField="label" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></DataGrid>
     }
 }
 

@@ -20,17 +20,17 @@ class GridColGroup extends React.PureComponent {
         }
         if (this.props.detailAble) {
             colgroup.push(<col key="wasabi-detail-column" name="wasabi-detail-column" width={config.detailWidth}></col>)
-            tableWidth+=config.detailWidth;
+            tableWidth += config.detailWidth;
         }
         //处理序号列的宽度
         if (this.props.rowNumber) {
             colgroup.push(<col key="wasabi-order-column" name="wasabi-order-column" width={config.orderWidth}></col>)
-            tableWidth+=config.orderWidth;
+            tableWidth += config.orderWidth;
         }
         //处理选择列的宽度
         if (this.props.selectAble) {
             colgroup.push(<col key="wasabi-select-column" name="wasabi-select-column" width={config.selectWidth}></col>)
-            tableWidth+=config.selectWidth;
+            tableWidth += config.selectWidth;
         }
         this.props.headers.map((trheader, headerRowIndex) => {
             if (trheader instanceof Array) {
@@ -40,9 +40,7 @@ class GridColGroup extends React.PureComponent {
                         return;
                     }
                     else {
-                        let width = header.width ? header.width : this.props.headerWidth[header.name]||config.minWidth;
-                        width=width<config.minWidth?config.minWidth:width;
-                        width = width > config.maxWidth ? config.maxWidth : width;
+                        let width = header.width ? header.width : this.props.headerWidth[header.name] || config.minWidth;
                         tableWidth += width;
                         colgroup.push(<col
                             key={headerRowIndex + "-" + headerColumnIndex}
@@ -51,9 +49,7 @@ class GridColGroup extends React.PureComponent {
                     }
                 });
             } else {
-                let width = trheader.width ? trheader.width : this.props.headerWidth[trheader.name]||config.minWidth; 
-                width=width<config.minWidth?config.minWidth:width;
-                width = width > config.maxWidth ? config.maxWidth : width;
+                let width = trheader.width ? trheader.width : this.props.headerWidth[trheader.name] || config.minWidth;
                 tableWidth += width;
                 colgroup.push(<col
                     key={headerRowIndex}
@@ -61,34 +57,20 @@ class GridColGroup extends React.PureComponent {
                     width={width}></col>)
             }
         })
-        colgroup.push(<col key="wasabi-gutter-column" name="wasabi-gutter-column" width={0}></col>)
-        let timer;
-        const setTableWidth=()=>{
-            return;
-            if(document.getElementById(this.props.fixtableid)){
-               
-                document.getElementById(this.props.fixtableid).style.width=tableWidth+"px";
-                document.getElementById(this.props.realtableid).style.width=tableWidth+"px";
-                let pagination=document.getElementById(this.props.realtableid).parentNode.parentNode.querySelectorAll(".wasabi-pagination");
-                if(pagination)
-                {
-                    for(let i=0;i<pagination.length;i++){ 
-                        pagination[i].style.width=Math.min(document.getElementById(this.props.containerid).clientWidth, tableWidth)+"px";
-                    }
-                } 
-                clearTimeout(timer);
-            }
-            else{
-               timer= setTimeout(() => {
-                    setTableWidth();
-
-                }, 50);
+        colgroup.push(<col key="wasabi-gutter-column" name="wasabi-gutter-column"></col>)
+        if (document.getElementById(this.props.realTableId)) {
+            document.getElementById(this.props.realTableId).style.width = tableWidth + "px";
+            let pagination = document.getElementById(this.props.realTableId).parentNode.parentNode.querySelectorAll(".wasabi-pagination");
+            if (pagination) {
+                for (let i = 0; i < pagination.length; i++) {
+                    pagination[i].style.width = Math.min(document.getElementById(this.props.containerid).clientWidth, tableWidth) + "px";
+                }
             }
         }
-       setTableWidth();
+
         return <colgroup >
             {
-                // colgroup
+                colgroup
             }
         </colgroup>;
     }

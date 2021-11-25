@@ -6,6 +6,7 @@ import TableCell from '../../Table/TableCell.jsx';
 import TableRow from '../../Table/TableRow.jsx';
 import TableBody from '../../Table/TableBody.jsx';
 import func from "../../../libs/func"
+import config from '../config.js';
 class GridBody extends React.Component {
     constructor(props) {
         super(props)
@@ -26,10 +27,9 @@ class GridBody extends React.Component {
     /**
    * 获取当行的key
    * @param {*} rowIndex 
-   * @param {*} pageIndex 
    */
-    getKey(rowIndex, pageIndex) {
-        return this.props.getKey(rowIndex, pageIndex);
+    getKey(rowIndex) {
+        return this.props.getKey(rowIndex);
     }
     /**
      * 单击事件
@@ -116,7 +116,7 @@ class GridBody extends React.Component {
      * @returns 
      */
     setOrderAndSelectAndDetailRow(rowData, rowIndex) {
-        let stickyLeft = 0;
+        let stickyLeft = 1;//偏移量,表格左边有border
         let control = [];
         let key = this.getKey(rowIndex); //获取这一行的关键值
 
@@ -127,16 +127,17 @@ class GridBody extends React.Component {
                 iconCls = 'icon-arrow-up'; //详情列-展开
             }
             control.push(<TableCell key={'bodydetail-' + rowIndex.toString()}
-                className={" wasabi-detail-column "} style={{ position: "sticky", left: stickyLeft }}>
+                className={" wasabi-detail-column "} style={{ position: "sticky", zIndex: 1, left: this.props.borderAble ? stickyLeft : stickyLeft }}>
                 {<i style={{ cursor: "pointer" }} title="详情"
                     className={iconCls} onClick={this.onDetail.bind(this, rowData, rowIndex)}></i>}
             </TableCell>);
+            stickyLeft += config.detailWidth;
 
         }
         //序号列
         if (this.props.rowNumber) {
             control.push(
-                <TableCell key={'bodyorder' + rowIndex.toString()} className={"wasabi-order-column "}>
+                <TableCell key={'bodyorder' + rowIndex.toString()} className={"wasabi-order-column "} style={{ position: "sticky", zIndex: 1, left: this.props.borderAble ? stickyLeft : stickyLeft }}>
                     {(
                         (this.props.pageIndex - 1) * this.props.pageSize +
                         rowIndex +
@@ -144,6 +145,7 @@ class GridBody extends React.Component {
                     ).toString()}
                 </TableCell>
             );
+            stickyLeft += config.orderWidth;
 
         }
         //选择列
@@ -165,7 +167,7 @@ class GridBody extends React.Component {
 
             //是单选还是多选
             control.push(
-                <TableCell key={'bodycheckbox' + rowIndex.toString()} className={'wasabi-select-column'}>
+                <TableCell key={'bodycheckbox' + rowIndex.toString()} className={'wasabi-select-column'} style={{ position: "sticky", zIndex: 1, left: this.props.borderAble ? stickyLeft : stickyLeft }}>
                     {rowAllowChecked ? this.props.singleSelect ? <Radio {...props}></Radio> : <CheckBox  {...props}></CheckBox> : null}
                 </TableCell>
             );
@@ -181,18 +183,22 @@ class GridBody extends React.Component {
      * @param {*} rowData 行
      * @param {*} rowIndex 行下标
      * @param {*} columnIndex 列下标
+     * @param {*} stickyLeft 固定列偏移量
      * @returns 
      */
-    setCellComponent(header, rowData, rowIndex, columnIndex) {
+    setCellComponent(header, rowData, rowIndex, columnIndex, stickyLeft) {
         //处理数据单元格
         let editAble = this.props.editIndex != null && this.props.editIndex === (rowIndex + "-" + columnIndex) && header.editor;
 
         return <TableCell
+        name={header.name||header.label}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
             onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
             onDoubleClick={this.onDoubleClick.bind(this, rowData, rowIndex, columnIndex)}
             key={'cell-' + rowIndex.toString() + '-' + columnIndex.toString()}
             className={header.export === false ? "wasabi-noexport" : ""}//为了不导出
-            style={{ textAlign: header.align }}
+            style={{ textAlign: header.align, position: header.sticky ? "sticky" : null, zIndex: header.sticky ? 1 : null, left: header.sticky ? this.props.borderAble ? stickyLeft : stickyLeft : null }}
         >
             {
                 editAble ?
@@ -210,7 +216,7 @@ class GridBody extends React.Component {
 
     }
     shouldComponentUpdate(nextProps, nextState) {
-        if (func.shallowDiff(nextProps, this.props)) {
+        if (func.diff(nextProps, this.props, false)) {
 
             return true;
         }
@@ -230,9 +236,15 @@ class GridBody extends React.Component {
             return;//格式不正确，直接返回
         }
         let trArr = [];//行数据
-        this.props.data.forEach((rowData, rowIndex) => {
-            if (rowData.hide) {//隐藏该行,用于treegrid
 
+        let preRowIndex = -1;//上一行下标
+        this.props.data.forEach((rowData, rowIndex) => {
+            let stickyLeft = 1;//偏移量,表格左边有border
+            if (this.props.detailAble) { stickyLeft += config.detailWidth; }
+            if (this.props.rowNumber) { stickyLeft += config.orderWidth; }
+            if (this.props.selectAble) { stickyLeft += config.selectWidth; }
+            if (rowData.hide) {//隐藏该行,用于treegrid
+                preRowIndex++;
             } else {
                 let tds = []; //当前的列集合
                 let key = this.getKey(rowIndex); //获取这一行的关键值
@@ -246,18 +258,32 @@ class GridBody extends React.Component {
                             }
                             //处理数据单元格
                             tds.push(
-                                this.setCellComponent(header, rowData, rowIndex, columnIndex)
+                                this.setCellComponent(header, rowData, rowIndex, columnIndex, stickyLeft)
                             );
-                            columnIndex++;
+                            //处理固定列的left值
+                            if (preRowIndex != rowIndex) {
+                                //第一次跳转到本行
+                                let width = header.width ? header.width : this.props.headerWidth[header.name] || config.minWidth;
+                                stickyLeft += header.sticky ? width : 0;
+                                preRowIndex++;
+                            }
+                            columnIndex++;//列下标
 
                         });
                     }
                     else {
                         //处理数据单元格
                         tds.push(
-                            this.setCellComponent(trheader, rowData, rowIndex, columnIndex)
+                            this.setCellComponent(trheader, rowData, rowIndex, columnIndex, stickyLeft)
                         );
-                        columnIndex++;
+                        //处理固定列的left值
+                        if (preRowIndex != rowIndex) {
+                            //第一次跳转到本行
+                            let width = trheader.width ? trheader.width : this.props.headerWidth[trheader.name] || config.minWidth;
+                            stickyLeft += trheader.sticky ? width : 0;
+                            preRowIndex++;
+                        }
+                        columnIndex++;//列下标
                     }
                 });
                 let trClassName = "";

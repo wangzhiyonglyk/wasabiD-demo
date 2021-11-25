@@ -13,9 +13,9 @@ import propTypes from "../propsConfig/propTypes";
 /**
  * 预处理各类数据
  * @param {*} Widget 组件
- * @param {*} type 类型
+ * @param {*} inputType 类型
  */
-function loadDataHoc(Widget, type = "select") {
+const loadDataHoc=function (Widget, inputType = "select") {
     class loadDataHocCompnent extends React.Component {
         constructor(props) {
             super(props);
@@ -77,8 +77,8 @@ function loadDataHoc(Widget, type = "select") {
                 this.loadData();
             }
             else if (this.state.loadDataStatus === "data") {
-                let idOrValueField = (type == "tree" || type === "treegrid" || type === "treepicker") ? this.props.idField || "id" : this.props.valueField || "value";
-                let tempFormatData = propsTran.formartData(type, this.getValue(), this.state.rawData, idOrValueField, this.props.textField || "text");
+                let idOrValueField = (inputType == "tree" || inputType === "treegrid" || inputType === "treepicker") ? this.props.idField || "id" : this.props.valueField || "value";
+                let tempFormatData = propsTran.formatterData(inputType, this.getValue(), this.state.rawData, idOrValueField, this.props.textField || "text");
 
                 this.setState({
                     data: tempFormatData,
@@ -128,8 +128,8 @@ function loadDataHoc(Widget, type = "select") {
                 res = resData && resData instanceof Array ? resData : res;
             }
             let realData = func.getSource(res, this.props.dataSource || "data");
-            let idOrValueField = (type == "tree" || type === "treegrid" || type === "treepicker") ? this.props.idField : this.props.valueField;
-            let tempFormatData = propsTran.formartData(type, this.getValue(), realData, idOrValueField, this.props.textField);
+            let idOrValueField = (inputType == "tree" || inputType === "treegrid" || inputType === "treepicker") ? this.props.idField : this.props.valueField;
+            let tempFormatData = propsTran.formatterData(inputType, this.getValue(), realData, idOrValueField, this.props.textField);
             this.setState({
                 loadDataStatus: null,
                 rawData: realData,//保存方便对比
@@ -143,14 +143,14 @@ function loadDataHoc(Widget, type = "select") {
          * @param {*} value 
          */
          setValue(value) {
-            this.input.current.setValue && this.input.current.setValue(value);
+            this.input.current&& this.input.current.setValue && this.input.current.setValue(value);
         }
         /**
          * 获取值
          * @returns 
          */
         getValue() {
-            return this.input.current.getValue && this.input.current.getValue();
+            return  this.input.current&&this.input.current.getValue && this.input.current.getValue();
         }
         /**
          * 刷新
@@ -168,17 +168,23 @@ function loadDataHoc(Widget, type = "select") {
         }
 
         shouldComponentUpdate(nextProps, nextState) {
-            if (func.shallowDiff(nextProps, this.props)) {
+             //全部用浅判断
+            if (func.diff(nextProps, this.props,false)) {
                 return true;
             }
-            if (func.diff(nextState, this.state)) {
+            if (func.diff(nextState, this.state,false)) {
                 return true;
             }
             return false;
         }
         render() {
+            let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
+            if (this.props.hide) {
+                style.display = 'none';
+            } else {
+                style.display = 'flex';
+            }
             return <Widget
-                type={type}
                 {...this.props}
                 ref={this.input}
                 reload={this.reload}

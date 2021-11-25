@@ -5,7 +5,7 @@
 import React from "react";
 import func from "../../../libs/func.js";
 import Msg from "../../../Info/Msg"
-// import excel from "../../../libs/excel.js";
+import excel from "../../../libs/excel.js";
 export default {
     /**
     * 专门用于交叉表与树表格
@@ -189,7 +189,7 @@ export default {
         }
 
     },
-   
+
 
     /**
      * 清除脏数据
@@ -243,15 +243,9 @@ export default {
     reload: function (params = null, url = "") {//重新查询数据,
         url = url || this.state.url;//得到旧的url
         params = params || this.state.params;//如果不传则用旧的
-        if (!url) {//没有url,不自行加载，则调用更新事件
-            if (this.props.onUpdate) {//用户自定义了更新事件
-                this.props.onUpdate(this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder);
-            }
-        }
-        else {//传了url 
-            let pageIndex=func.shallowDiff(params, this.state.params)?1:this.state.pageIndex
-            this.onUpdate(url, this.state.pageSize, pageIndex, this.state.sortName, this.state.sortOrder, params);
-        }
+         //查询条件发生，查询第一页
+         let pageIndex = func.diff(params, this.state.params,false) ? 1 : this.state.pageIndex
+         this.onUpdate(url, this.state.pageSize, pageIndex, this.state.sortName, this.state.sortOrder, params);
     },
 
     /**
@@ -260,7 +254,7 @@ export default {
      * @param {*} title 导出标题
      */
     export(selected = false, title = "grid-") {
-        let realTable = document.getElementById(this.state.realTableid);
+        let realTable = document.getElementById(this.state.realTableId);
         title = title + func.dateformat(new Date(), "yyyy-MM-dd");
         let json = {
             headers: [],
@@ -288,7 +282,7 @@ export default {
                     if (html.indexOf("wasabi-detail-column") > -1 || html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-select-column") > -1 || html.indexOf("wasabi-noexport") > -1) {//除去序号列与选择列及不需要导出的列
                         continue;
                     }
-            
+
                     row.push(html)
                 }
                 json.body.push(row);

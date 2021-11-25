@@ -13,7 +13,8 @@
 }
 
 .wasabi-tree .wasabi-form-group {
-  margin: 0px;
+  margin-top: -5px;
+      margin-right: -3px;
 }
 
 .wasabi-tree li.wasabi-tree-li {
@@ -47,8 +48,8 @@
   height: 20px
 }
 .wasabi-tree .wasabi-tree-li-node {
-  line-height: 42px;
-  height: 42px;
+  line-height: 41px;
+  height: 41px;
   box-sizing: border-box;
   display: flex;
   position: relative;

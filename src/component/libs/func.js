@@ -260,25 +260,20 @@ func.charWidth = function (str = "") {
 
 
 /**
- * 对象的复制
+ * 对象的深复制
  * @param {*} obj 源对象
  * @returns 
  */
 func.clone = function (obj) {
     let o;
     switch (typeof obj) {
-        case 'undefined': break;
-        case 'string': o = obj + ''; break;
-        case 'number': o = obj - 0; break;
-        case 'boolean': o = obj; break;
-        case "function": o = obj; break;//todo 
         case 'object':
             if (obj === null) {
                 o = null;
             } else {
                 if (obj instanceof Array) {
                     o = [];
-                    //o= obj.slice(0)， 注意了这里不能直接使用这个复制，如果数组中的元素为对象，复制是不成功的
+                    //o= obj.slice(0)， 注意了这里不能直接使用这个复制，如果数组中的元素为对象
                     for (let i = 0; i < obj.length; i++) {
                         o.push(func.clone(obj[i]));
                     }
@@ -288,8 +283,10 @@ func.clone = function (obj) {
                 else if (obj instanceof Map) {
                     o = new Map(obj);
                 }
-
-                else {//其他对象
+                else if (obj instanceof Set) {
+                    o = new Set(obj);
+                }
+                else {//普通对象
                     o = {};
                     for (let k in obj) {
                         o[k] = func.clone(obj[k]);
@@ -297,7 +294,7 @@ func.clone = function (obj) {
                 }
             }
             break;
-        default:
+        default://其他类型
             o = obj;
             break;
     }
@@ -308,8 +305,35 @@ func.clone = function (obj) {
  * @param {*} obj 源对象
  * @returns 
  */
- func.shallowClone = function (obj) {
-   return typeof obj!=="undefined"? JSON.parse(JSON.stringify(obj)):obj;
+func.shallowClone = function (obj) {
+    let o;
+    switch (typeof obj) {
+        case 'object':
+            if (obj === null) {
+                o = null;
+            } else {
+                if (obj instanceof Array) {
+                    o = obj.slice(0);
+                } else if (obj instanceof Date) {//对日期的复制
+                    o = new Date(obj.valueOf())
+                }
+                else if (obj instanceof Map) {
+                    o = new Map(obj);
+                }
+                else if (obj instanceof Set) {
+                    o = new Set(obj);
+                }
+                else {//普通对象
+                    o = { ...obj };
+                }
+            }
+            break;
+        default://其他类型
+            o = obj;
+            break;
+    }
+    return o;
+
 }
 
 //获取真正的数据源
@@ -390,60 +414,64 @@ func.uuid = function () {
 }
 
 /**
- * 判断两个对象是否完全相同
+ * 判断两个对象是相同
  * @param {*} objA 
  * @param {*} objB  
+ *  @param {bool} deep 是否深层遍历  
  * @returns 
  */
-func.diff = function (objA = null, objB = null) {//
-    if (objA === objB) {
+func.diff = function (objA = null, objB = null, deep = true) {//
+    if (objA === objB) {//直接相等，返回
         return false;
     }
-    if (objA && objB) {
-        if (typeof objA !== typeof objB) {
-            return true;
-        }
-        if (typeof objA !== "object" && typeof objA !== "function") {
-            return objA !== objB;
-        }
-        if (typeof objA === "object") {
-            //先拿所有的属性
+    if (Object.prototype.toString.call(objA) !== Object.prototype.toString.call(objB)) {//类型不同
+        return true;
+    }
+    if (typeof objA === "function") {//函数
+        return objA.toString() === objB.toString();
+    }
+    if (typeof objA === "object") {//对象
+        //先拿所有的属性 
+        try {
+
+            if (Object.prototype.toString.call(objA).indexOf("Map") > -1 || Object.prototype.toString.call(objA).indexOf("Set") > -1) {
+                //如果是Map与Set则直接判断即可，因为两者的无法像普通对象遍历
+                return objA !== objB;
+            }
             let oldProps = Object.getOwnPropertyNames(objA);
             let newProps = Object.getOwnPropertyNames(objB);
             if (oldProps.length !== newProps.length) {
                 return true;//不相同
             }
+
             for (let i = 0; i < oldProps.length; i++) {
                 let propName = oldProps[i];//属性名
                 //值
                 let propA = objA[propName]
                 let propB = objB[propName]
-                if (func.diff(propA, propB)) {
-                    return true;
+                if (deep) {//注意条件不能合并
+                    //深比较
+                    if (func.diff(propA, propB, deep)) {
+                        return true;
+                    }
+                }
+                else {
+                    //浅比较
+                    if (propA !== propB) {
+                        return true;
+                    }
                 }
 
+
             }
+        } catch (e) {
+            console.log(objA, objB)
         }
     }
-    return func.shallowDiff(objA, objB)
+
+    return false;
 }
 
-/**
- * 判断两个对象相同
- * @param {*} objA 
- * @param {*} objB 
- */
-func.shallowDiff = function (objA, objB) {
-
-    try {
-        return JSON.stringify(objA) !== JSON.stringify(objB);
-    }
-    catch (e) {
-
-    }
-    return true;
-
-}
 
 /**
  * component Mixins实现

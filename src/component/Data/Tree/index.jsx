@@ -104,7 +104,7 @@ class Tree extends Component {
                 asyncChildrenData = this.props.onAsync(id, text, row);//得到数据
                 if (asyncChildrenData && asyncChildrenData instanceof Array && asyncChildrenData.length > 0) {
                     //格式化数据
-                    asyncChildrenData = propsTran.formartData("tree", "", asyncChildrenData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
+                    asyncChildrenData = propsTran.formatterData("tree", "", asyncChildrenData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
                     data = treeFunc.appendChildren(data, row, asyncChildrenData);
                     //同时处理保持一致
                     let filter = treeFunc.filter(data, this.state.filterValue);
@@ -181,7 +181,7 @@ class Tree extends Component {
         let realData = func.getSource(res, this.props.dataSource || "data");
         let row = window.sessionStorage.getItem("async-tree-node");
         row = JSON.parse(row);
-        let asyncChildrenData = propsTran.formartData("tree", "", realData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
+        let asyncChildrenData = propsTran.formatterData("tree", "", realData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
         let data = this.state.data;
         nodes = treeFunc.findLeafNodes(data, row_path);
         if (nodes && nodes.length > 0) {
@@ -406,10 +406,11 @@ class Tree extends Component {
         }
     }
     shouldComponentUpdate(nextProps, nextState) {
-        if (func.shallowDiff(nextProps, this.props)) {
+        //全部用浅判断
+        if (func.diff(nextProps, this.props,false)) {
             return true;
         }
-        if (func.diff(nextState, this.state)) {
+        if (func.diff(nextState, this.state,false)) {
             return true;
         }
         return false;

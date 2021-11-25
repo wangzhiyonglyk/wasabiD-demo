@@ -11,14 +11,12 @@ export default {
 
     /**
    * 获取当行的key
-   * @param {*} rowIndex 
-   * @param {*} pageIndex 
+   * @param {*} rowIndex 行，
+   * @param {*} pageIndex 页号
    */
-    getKey: function (rowIndex, pageIndex) {//todo 暂时以下标
+    getKey: function (rowIndex) {
         let key = "";
-        if (!pageIndex) {
-            pageIndex = this.state.pageIndex;
-        }
+        let pageIndex=this.state.pageIndex;
         if (rowIndex == null && rowIndex == undefined) {
             console.log(new Error("index 值传错"));
         }
@@ -66,10 +64,7 @@ export default {
      * 判断当前页是否全部选中
      */
     checkCurrentPageCheckedAll: function () {//
-        if (this.state.data instanceof Array) {
-
-        }
-        else {
+        if (!(this.state.data instanceof Array)) {
             return;
         }
         let length = this.state.data.length;
@@ -175,10 +170,10 @@ export default {
             if (this.props.detailAble) { columnIndex++ };
             if (this.props.selectAble) { columnIndex++ };
 
-            let f = document.getElementById(this.state.realTableid).children[2].querySelector(".focus");
+            let f = document.getElementById(this.state.realTableId).children[2].querySelector(".focus");
             if (f) { f.className = "" };
-            document.getElementById(this.state.realTableid).children[2].children[rowIndex].children[columnIndex].className = "focus";
-            document.getElementById(this.state.realTableid).children[2].children[rowIndex].children[columnIndex].querySelector("input").focus()
+            document.getElementById(this.state.realTableId).children[2].children[rowIndex].children[columnIndex].className = "focus";
+            document.getElementById(this.state.realTableId).children[2].children[rowIndex].children[columnIndex].querySelector("input").focus()
         }
         catch (e) {
 
@@ -205,16 +200,9 @@ export default {
         //如果没有设置编辑，则设置
         let headers = func.clone(this.state.headers);
         if (headers && headers.length > 0) {
-            if (this.state.single) {
+          
                 for (let i = 0; i < headers.length; i++) {
-                    headers[i].editor = headers[i].editor ? headers[i].editor : {
-                        type: "text"
-                    }
-                }
-            }
-            else {
-                for (let i = 0; i < headers.length; i++) {
-                    if (headers[i] instanceof Array && headers[i].length > 0) {
+                    if (headers[i] instanceof Array) {
                         for (let j = 0; j < headers[i].length; j++) {
                             if (headers[i][j].colSpan && headers[i][j].colSpan > 1) {
                                 //跨行的列不设置
@@ -227,8 +215,14 @@ export default {
                             }
                         }
                     }
+                    else{
+                            headers[i].editor = headers[i].editor ? headers[i].editor : {
+                                type: "text"
+                            }
+                        
+                    }
                 }
-            }
+            
 
         }
         return {
@@ -420,6 +414,21 @@ export default {
             console.log("datagrid-开始查询:", fetchmodel);
             let wasabi_api = window.api || api;
             wasabi_api.ajax(fetchmodel);
+
+        } else {
+            if (this.props.onUpdate) {
+                this.props.onUpdate(this.state.pageSize, this.state.pageIndex, this.state.sortName, this.state.sortOrder);
+            } else {
+                //判断传的
+                if (this.state.rawData.length >= (pageSize || 20) *( pageIndex-1)) {
+                    this.setState({
+                        data: this.state.rawData.slice(((pageIndex || 1) - 1) * (pageSize || 20),(pageIndex || 1)  * (pageSize || 20)),
+                        pageIndex: pageIndex,
+                        pageSize: pageSize
+                    })
+                }
+
+            }
 
         }
 

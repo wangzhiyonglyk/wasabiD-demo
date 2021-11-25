@@ -32,7 +32,6 @@ import mixins from '../../Mixins/mixins';
 import eventHandler from './method/eventHandler.js';
 import staticMethod from "./method/staticMethod"
 import pasteExtend from './method/pasteExtend.js';
-import datagridCnfig from "./config"
 import Grid from "./View"
 /**
  * 样式
@@ -41,10 +40,9 @@ import './datagrid.css'
 import './datagridetail.css'
 class DataGrid extends Component {
     constructor(props) {
-        super(props);
-        console.time("datagrid")
-        this.containerWidth = 0;//表格的宽度 
+        super(props);    
         this.state = {
+            realTableId:func.uuid(),//真实table
             url: null,
             rawUrl: null,
             params: null, //参数
@@ -60,7 +58,6 @@ class DataGrid extends Component {
             headers: [], //页面中的headers
             data: [],//当前要渲染的数据
             rawData: null,//原始数据，在自动分页时与判断是否更新有用
-            single: true,//是否简单表头
             /************这几个字段在 getDerivedStateFromProps 处理逻辑，这样提升性能 */
 
             checkedData: new Map(),//勾选的数据
@@ -105,14 +102,14 @@ class DataGrid extends Component {
             }
         }
         //todo 此处理还要仔细研究 当数据量过大时，有问题
-        if (props.data && props.data instanceof Array && func.shallowDiff(props.data, state.rawData)) {
+        if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData,false)) {
             //如果传了死数据
             newState.adjustWidth = true;
             newState.rawData = props.data;
             try {
                 //分页情况下，数据切割
-                newState.data = props.pagination == true ? props.data.length > (state.pageSize || 20)
-                    ? props.data.slice(((state.pageIndex || 1) - 1) * (state.pageSize || 20), state.pageSize || 20)
+                newState.data = props.pagination == true ? props.data.length >(state.pageSize || 20)
+                    ? props.data.slice(((state.pageIndex || 1) - 1) * (state.pageSize || 20), (state.pageIndex || 1) * (state.pageSize || 20))
                     : props.data : props.data;
             }
             catch (e) {
@@ -120,252 +117,97 @@ class DataGrid extends Component {
             }
             newState.total = props.total || props.data.length || 0
         }
-        //todo 处理Headers,因为交叉表的表头是后期传入的 
+        // 处理Headers,因为交叉表的表头是后期传入的 
         {
             let headerChange = false;
             //处理固定列
-            if (func.shallowDiff(props.fixedHeaders, state.rawFixedHeaders)) {
+            if (func.diff(props.fixedHeaders, state.rawFixedHeaders)) {
 
                 //有改变则更新headers等
                 newState.rawFixedHeaders = func.clone(props.fixedHeaders);
                 headerChange = true;
             }
             //处理非固定列
-            if (func.shallowDiff(props.headers, state.rawHeaders)) {
+            if (func.diff(props.headers, state.rawHeaders)) {
                 //有改变则更新headers等
                 newState.rawHeaders = func.clone(props.headers);
                 headerChange = true;
             }
             if (headerChange) {
-                //todo 这里应该有问题
-                newState.single = true;
+
                 newState.adjustWidth = true;
+                //标记固定列
                 newState.headers = [].concat((newState.rawFixedHeaders || []).map((item) => { return { ...item, sticky: true } }), newState.rawHeaders || []);
                 if (newState.headers && newState.headers instanceof Array) {
                     for (let i = 0; i < newState.headers.length; i++) {
                         if (newState.headers[i] instanceof Array) {
-                            newState.single = false;
-
+                           
                         }
                     }
                 }
 
             }
         }
-
-
         return newState;
     }
-
     /**
      * 更新函数
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
         //重新加数据
-        console.timeEnd("datagrid");
         if (this.state.urlReloadData) {//需要请求数据
             this.reload();//调用
         }
-
+        else if (this.state.adjustWidth ) { 
+            //调整宽度
+            this.setColumnWidth();
+        }
     }
     componentDidMount() {
         if (this.state.urlReloadData) {//需要请求数据
             this.reload();
         }
-        // console.timeEnd("datagrid");
-        if (this.state.adjustWidth) {
-            this.setState({
-                adjustWidth:false
-            })
-            // this.setColumnWidth(this.state.headers, this.state.data);
+        else if (this.state.adjustWidth) {//调整宽度
+           this.setColumnWidth();
+        
         }
     }
-
-    /**
-     * 设置第一列的宽度
+     /**
+     * 调整每一列的宽度,方便后期拖动与固定列的效果
      */
-    setColumnWidth(headers, data) {
-        console.time("width")
-        try {
-            let columnData = this.changeToColumnData(headers, data);
-            this.headerWidth = {};//各列的宽度数据
-            let textDiv = document.createElement("div");
-            textDiv.style.position = "absolute";
-            let componentDiv = document.createElement("div");
-            componentDiv.style.position = "absolute";
-            let fragment = document.createDocumentFragment();
-            document.body.appendChild(componentDiv);
-            document.body.appendChild(textDiv);
-            let hasComponentChildren = false;//是否有react组件
-            for (let key in columnData) {
-                if (columnData[key]) {
-                    switch (typeof columnData[key]) {
-                        case "string":
-                        case "number":
-                        case "boolean":
-                        case "bigint":
-                            let info = document.createElement("div");
-                            info.className = "wasabi-table-cell";
-                            info.style.display = "inline-block";
-                            info.style.width = "auto";
-                            info.innerHTML = columnData[key];
-                            info.setAttribute("title", key)
-                            fragment.appendChild(info);
-                            info = null;
-                            break;
-                        case "object":
-                            ReactDOM.render(<React.Fragment>{
-                                columnData[key].map((item, index) => {
-                                    return <div className="wasabi-table-cell" key={key + "-" + index} title={key} style={{width:"auto", display: "inline-block" }}>{item}</div>
-                                })}</React.Fragment>, componentDiv);
-                            hasComponentChildren = true;
-
-                            break;
-                    }
-                }
-            }
-            textDiv.append(fragment);
-            //得到文字列的宽度
-            for (let i = 0; i < textDiv.children.length; i++) {
-                this.headerWidth[textDiv.children[i].getAttribute("title")] = Math.ceil(textDiv.children[i].getBoundingClientRect().width || 0);
-            }
-            document.body.removeChild(textDiv);
-            //得到非文字列的宽度
-            if (hasComponentChildren) {
-                //因为异步的，所以定时器监听
-                let timer, times = 0;
-                const comfunc = () => {
-                    if (componentDiv.children.length > 0) {
-                        for (let i = 0; i < componentDiv.children.length; i++) {
-                            this.headerWidth[componentDiv.children[i].getAttribute("title")]=Math.max(this.headerWidth[componentDiv.children[i].getAttribute("title")]||0,Math.ceil(componentDiv.children[i].getBoundingClientRect().width || 0));
-                            
-                        }
-                       
-                        this.setState({
-                            adjustWidth: false
-                        })
-                        document.body.removeChild(componentDiv);
-                        console.timeEnd("width");
-                        clearTimeout(timer);
-                    } else {
-                        times++;
-                        if(times<6){
-                            timer = setTimeout(() => {
-                                comfunc();
-                            }, 10);
-                        }else{
-                            clearTimeout(timer);
-                        }
-                       
-                    }
-                }
-                comfunc();
-            }
-            else {
-                this.setState({
-                    adjustWidth: false,
-
-                })
-            }
-        }
-        catch (e) {
-
-        }
-
-
-
-
-
-
+      setColumnWidth(){
+        this.headerWidth = {};//各列的宽度数据
+        let columnIndex=0;//列下标
+            if (this.props.detailAble) { columnIndex++; }
+            if (this.props.rowNumber) { columnIndex++; }
+            if (this.props.selectAble) {columnIndex++; }
+          if(  document.getElementById(this.state.realTableId)&& document.getElementById(this.state.realTableId).children.length===3&&document.getElementById(this.state.realTableId).children[2].children.length)
+          {//有数据才调整宽度
+              for(let i=columnIndex;i< document.getElementById(this.state.realTableId).children[2].children[0].children.length;i++)
+              {
+                  let width=Math.ceil( document.getElementById(this.state.realTableId).children[2].children[0].children[i].getBoundingClientRect().width);
+                  let name= document.getElementById(this.state.realTableId).children[2].children[0].children[i].getAttribute("name")
+                  this.headerWidth[name]=width; 
+              }
+              this.setState({
+                  adjustWidth:false
+              })
+              
+            
+          }
+        
+    
     }
-    /**
-     * 将行数据转成列数据，如果是字符串则只保留最大长度的
-     * @param {*} headers 
-     * @param {*} data 
-     */
-    changeToColumnData(headers, data) {
-        if (data && data instanceof Array && data.length > 0 && headers && headers instanceof Array && headers.length > 0) {
-            let newData = data.slice(0, 100);//只取前100条
-            let columnData = {};
-            newData.forEach((rowData, rowIndex) => {
-                headers.forEach((trheader, headerRowIndex) => {
-                    if (trheader instanceof Array) {//多行表头
-                        trheader.forEach((header, headerColumnIndex) => {
-                            this.setColumnCellMaxContent(header, rowData, rowIndex, columnData);//得到本列最大宽度的内容
-                        });
-
-                    }
-                    else {//单行表头
-                        this.setColumnCellMaxContent(trheader, rowData, rowIndex, columnData);
-                    }
-                })
-            })
-            return columnData;
-        }
-        return null;
-
-
-    }
-
-    /**
-     * 设置某一列最长的内容
-     * @param {*} header 
-     * @param {*} rowData 
-     * @param {*} rowIndex 
-     * @param {*} columnData 
-     * @returns 
-     */
-    setColumnCellMaxContent(header, rowData, rowIndex, columnData) {
-        if (header.name && !(header.colSpan && header.colSpan > 1)) {//有对应name属性才设置,跨几列的不用渲染
-            //得到单元格实际内容
-            let content = this.getCellContent(header, rowData, rowIndex);
-            if (typeof content !== "function" && typeof content !== "object" && typeof content !== "symbol") {
-                //取字符最长的,转成字符串比较长度
-                columnData[header.name] = (content || "").length > (columnData[header.name] || "").length ? content : (columnData[header.name]);
-            } else {
-                //组件类型，保留起来，后续判断最大宽度的内容
-                columnData[header.name] = (columnData[header.name] || []).concat([content]);//数组保存起来
-
-            }
-        }
-
-    }
-    /**
-     * 获取单元格内容
-     * @param {*} header 
-     * @param {*} rowData 
-     * @param {*} rowIndex 
-     * @returns 
-     */
-    getCellContent(header, rowData, rowIndex) {
-        //内容
-        let content = header.content;
-        if (typeof content === 'function') {
-            //函数
-            try {
-                content = content(rowData, rowIndex);
-
-            } catch (e) {
-                console.log('生成自定列出错,原因', e.message);
-                content = '';
-            }
-        } else {
-            //为空时,统一转成字符串
-            content = rowData[header.name];
-        }
-
-        return (content === undefined || content === null) ? "" : content;
-    }
-
     componentWillUnmount() {
         this.timeout && clearTimeout(this.timeout)
     }
     render() {
+      
         return <Grid
             {...this.props}
             {...this.state}
             headerWidth={this.headerWidth || {}}
-            data={this.state.adjustWidth ? [] : this.state.data}
+            data={ this.state.data}
             checkedAllHandler={this.checkedAllHandler}
             checkCurrentPageCheckedAll={this.checkCurrentPageCheckedAll}
             getKey={this.getKey}
@@ -395,6 +237,7 @@ DataGrid.propTypes = {
     /**
      * 表格常用属性设置
      */
+  
     style: PropTypes.object,//样式对象
     className: PropTypes.string,//样式
     selectAble: PropTypes.bool, // 是否显示选择，默认值 false
@@ -472,7 +315,6 @@ DataGrid.defaultProps = {
      * 表格常用属性设置
      */
 
-
     selectChecked: false,
     exportAble: true,
     borderAble: true,
@@ -507,7 +349,6 @@ DataGrid.defaultProps = {
     footerSource: 'footer', //页脚数据源
     totalSource: 'total', //
 };
-
 mixins(DataGrid, [eventHandler, staticMethod, pasteExtend]);
 
 export default DataGrid;

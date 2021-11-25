@@ -18,6 +18,7 @@ import propsTran from "../../libs/propsTran";
 import Tree from "../Tree";
 import api from "wasabi-api"
 import "./index.css"
+import config from './config';
 class TreeGrid extends Component {
     constructor(props) {
         super(props);
@@ -59,7 +60,7 @@ class TreeGrid extends Component {
         if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData)) {
             //如果传了死数据
             newState.rawData = props.data;
-            let result = propsTran.formartData("treegrid", "", props.data, props.idField, props.textField);
+            let result = propsTran.formatterData("treegrid", "", props.data, props.idField, props.textField);
             newState.realTreeData =result;
             /**
              *为了保存顺序，要根据树的数据，生成表格的数据 
@@ -135,7 +136,7 @@ class TreeGrid extends Component {
             realData = func.getSource(data, this.props.dataSource);
         }
         //根据value值拿到text
-        let result = propsTran.formartData("tree","", realData, this.props.idField, this.props.textField,this.props.simpleData);
+        let result = propsTran.formatterData("tree","", realData, this.props.idField, this.props.textField,this.props.simpleData);
         /**
             *为了保存顺序，要根据树的数据，生成表格的数据 
             */
@@ -274,15 +275,15 @@ class TreeGrid extends Component {
         let treeTopHeight = 0;
         if (this.state.headers instanceof Array && this.state.headers.length > 0) {
             if (this.state.headers[0] instanceof Array) {
-                treeTopHeight = this.state.headers.length * 42;
+                treeTopHeight = this.state.headers.length * config.topHeight;
             }
             else {
-                treeTopHeight = 42;
+                treeTopHeight = config.topHeight;;
             }
         }
 
         return <div className={"wasabi-treegrid "+(this.props.className||"")} style={this.props.style}>
-            <div className="wasabi-treegrid-left" style={{width:300}}>
+            <div className="wasabi-treegrid-left" style={{width:config.leftWidth}}>
                 <div className="wasabi-treegrid-configuration" style={{ height: treeTopHeight ,lineHeight:treeTopHeight+"px"}}>
                     {this.props.treeHeader}
                 </div>

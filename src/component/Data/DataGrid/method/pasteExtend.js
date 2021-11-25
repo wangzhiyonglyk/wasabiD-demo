@@ -95,12 +95,7 @@ export default {
                 let rowData = {};
                 beginColumnIndex = 0;
                 for (let j = columnIndex || 0; j < headers.length; j++) {
-                    if (this.state.single) {
-                        if (beginColumnIndex < json.body[i].length) {
-                            rowData[headers[j].name] = json.body[i][beginColumnIndex];
-                            beginColumnIndex++;
-                        }
-                    } else {
+                    if (headers[j] instanceof Array) {
                         for (let k = 0; i < headers[j][k].length; k++) {
                             if (headers[j][k].colSpan > 1) {
                                 continue;
@@ -110,6 +105,11 @@ export default {
                                     beginColumnIndex++;
                                 }
                             }
+                        }                 
+                    } else {
+                        if (beginColumnIndex < json.body[i].length) {
+                            rowData[headers[j].name] = json.body[i][beginColumnIndex];
+                            beginColumnIndex++;
                         }
                     }
                 }
