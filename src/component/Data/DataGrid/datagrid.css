@@ -40,6 +40,8 @@ grid
   position: relative;
   overflow: auto;
   background-color: white;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
 }
 
 /*
@@ -55,7 +57,8 @@ grid
 .wasabi-grid .table-fixedth {
   position: sticky;
   top: 0px;
-  z-index: 1;
+  z-index: 2;
+  width:100%;
   background-color: var(--background-color);
 }
 

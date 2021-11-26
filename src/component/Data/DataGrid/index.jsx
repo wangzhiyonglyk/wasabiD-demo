@@ -40,8 +40,10 @@ import './datagrid.css'
 import './datagridetail.css'
 class DataGrid extends Component {
     constructor(props) {
-        super(props);    
+        super(props); 
+        console.time("datagridm");   
         this.state = {
+            fixTableId:func.uuid(),//表头table
             realTableId:func.uuid(),//真实table
             url: null,
             rawUrl: null,
@@ -154,6 +156,7 @@ class DataGrid extends Component {
      * 更新函数
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
+        console.timeEnd("datagridu")
         //重新加数据
         if (this.state.urlReloadData) {//需要请求数据
             this.reload();//调用
@@ -164,6 +167,8 @@ class DataGrid extends Component {
         }
     }
     componentDidMount() {
+        console.timeEnd("datagridm")
+        console.time("datagridu")
         if (this.state.urlReloadData) {//需要请求数据
             this.reload();
         }
@@ -181,12 +186,12 @@ class DataGrid extends Component {
             if (this.props.detailAble) { columnIndex++; }
             if (this.props.rowNumber) { columnIndex++; }
             if (this.props.selectAble) {columnIndex++; }
-          if(  document.getElementById(this.state.realTableId)&& document.getElementById(this.state.realTableId).children.length===3&&document.getElementById(this.state.realTableId).children[2].children.length)
+          if(  document.getElementById(this.state.realTableId)&& document.getElementById(this.state.realTableId).children.length===2&&document.getElementById(this.state.realTableId).children[1].children.length)
           {//有数据才调整宽度
-              for(let i=columnIndex;i< document.getElementById(this.state.realTableId).children[2].children[0].children.length;i++)
+              for(let i=columnIndex;i< document.getElementById(this.state.realTableId).children[1].children[0].children.length;i++)
               {
-                  let width=Math.ceil( document.getElementById(this.state.realTableId).children[2].children[0].children[i].getBoundingClientRect().width);
-                  let name= document.getElementById(this.state.realTableId).children[2].children[0].children[i].getAttribute("name")
+                  let width=Math.ceil( document.getElementById(this.state.realTableId).children[1].children[0].children[i].getBoundingClientRect().width);
+                  let name= document.getElementById(this.state.realTableId).children[1].children[0].children[i].getAttribute("name")
                   this.headerWidth[name]=width; 
               }
               this.setState({

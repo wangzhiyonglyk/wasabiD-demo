@@ -86,8 +86,8 @@ function NodeView(props) {
     //节点元素
     return <li className="wasabi-tree-li" style={{ display: row.hide ? "none" : "block" }} >
         <div id={row.nodeid} className={clickId == row.id ? "wasabi-tree-li-node selected" : "wasabi-tree-li-node"} >
-            <i className={row.open ? "icon-reduce" : "icon-expand"} style={{ opacity: row.isParent ? 1 : 0, transform: "translateY(13px)" }}
-                onClick={ row.isParent?onExpand.bind(this,!row.open,row.id, row.text, row):null}></i>
+           {row.isParent? <i className={row.open ? "wasabi-tree-li-icon  icon-caret-down" : " wasabi-tree-li-icon icon-caret-right"} 
+                onClick={ row.isParent?onExpand.bind(this,!row.open,row.id, row.text, row):null}></i>:null}
             <div className="wasabi-tree-li-node-text" title={title}
                 onDrop={onNodeDrop}
                 onDragOver={onNodeDragOver} onDragLeave={onNodeDragLeave}
@@ -104,7 +104,7 @@ function NodeView(props) {
                             value={row.checked ? row.id : ""} data={[{ value: row.id, text: "" }]}
                             onSelect={onChecked.bind(this, row.id, row.text, row)}></Input>
                         <div key="2" className="wasabi-tree-li-node-text-div" draggable={row.draggAble} onDragEnd={onNodeDragEnd} onDragStart={onNodeDragStart}>
-                            <i key="3" className={iconCls} ></i>
+                            <i key="3" className={iconCls+" wasabi-tree-text-icon"} ></i>
                             <a href={row.href} className="wasabi-tree-txt">{row.text}</a></div>
                     </React.Fragment>
                 }

@@ -12,13 +12,26 @@ let entry = [
     title: '首页', // 标题
     src: './view/index/index.jsx' //脚本路径
   },
-  
+  {
+    filename: 'button', //文件名，
+    title: 'button', // 标题
+    src: './view/button.jsx' //脚本路径
+  },
   {
     filename: 'datagrid', //文件名，
     title: 'datagrid组件', // 标题
     src: './view/datagrid/index.jsx' //脚本路径
   },
-  
+  {
+    filename: 'excel', //文件名，
+    title: 'excel', // 标题
+    src: './view/excel/index.jsx' //脚本路径
+  },
+  {
+    filename: 'treegrid', //文件名，
+    title: 'treegrid组件', // 标题
+    src: './view/treegrid/index.jsx' //脚本路径
+  },
   {
     filename: 'login', //文件名，
     title: 'login', // 标题

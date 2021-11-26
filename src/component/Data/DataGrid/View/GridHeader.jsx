@@ -42,7 +42,7 @@ class GridHeader extends React.PureComponent {
         try {
             let offsetX = event && event.nativeEvent && event.nativeEvent.offsetX;
             let width = event.target.getBoundingClientRect().width;
-            if (width - offsetX <= 4 || offsetX <= 4) {
+            if (width - offsetX <= 4) {
                 event.target.style.cursor = "ew-resize";
             }
             else {
@@ -107,13 +107,13 @@ class GridHeader extends React.PureComponent {
         let control = [];
          //处理详情列
          if (this.props.detailAble) {
-            control.push(<TableCell rowSpan={rowSpan} key='headerdetail'  position="header" className="wasabi-detail-column" style={{position:"sticky", left:this.props.borderAble?stickyLeft:stickyLeft,zIndex:2}}></TableCell>)
+            control.push(<TableCell rowSpan={rowSpan} key='headerdetail'  position="header" className="wasabi-detail-column" style={{position:"sticky", left:this.props.borderAble?stickyLeft:stickyLeft,zIndex:1}}></TableCell>)
             stickyLeft+=config.detailWidth;
         }
            //处理序号列
            if (this.props.rowNumber) {
             control.push(
-                <TableCell rowSpan={rowSpan} key='headerorder'  position="header" className="wasabi-order-column"style={{position:"sticky",left:this.props.borderAble?stickyLeft:stickyLeft,zIndex:2}} >
+                <TableCell rowSpan={rowSpan} key='headerorder'  position="header" className="wasabi-order-column"style={{position:"sticky",left:this.props.borderAble?stickyLeft:stickyLeft,zIndex:1}} >
                    序号
                 </TableCell>
             );
@@ -129,7 +129,7 @@ class GridHeader extends React.PureComponent {
                 name: 'datagrid-check-all'
             };
             control.push(
-                <TableCell rowSpan={rowSpan} key='headercheckbox' position="header" className='wasabi-select-column'  style={{position:"sticky",left:this.props.borderAble?stickyLeft:stickyLeft,zIndex:2}} >
+                <TableCell rowSpan={rowSpan} key='headercheckbox' position="header" className='wasabi-select-column'  style={{position:"sticky",left:this.props.borderAble?stickyLeft:stickyLeft,zIndex:1}} >
                     {this.props.singleSelect ? null :<CheckBox {...props} ></CheckBox>}
                 </TableCell>
            
@@ -158,7 +158,7 @@ class GridHeader extends React.PureComponent {
             key={"header-" + headerRowIndex + "-" + headerColumnIndex.toString()}
             position="header"
             align={header.align}
-            style={{ position: header.sticky?"sticky":null,left:header.sticky?this.props.borderAble?stickyLeft:stickyLeft:null,zIndex:header.sticky?2:null}}
+            style={{ position: header.sticky?"sticky":null,left:header.sticky?this.props.borderAble?stickyLeft:stickyLeft:null,zIndex:header.sticky?1:null}}
             rowSpan={header.rowSpan}
             colSpan={header.colSpan}
             className={props.className || ""}
@@ -218,7 +218,7 @@ class GridHeader extends React.PureComponent {
         }
 
 
-        return <TableHead style={{position:"sticky",top:0,zIndex:2}}>
+        return <TableHead style={{position:"sticky",top:0,zIndex:1}}>
             {
                 headerControl && headerControl.map((tritem, rowindex) => {
                     return <TableRow key={rowindex}>{tritem}</TableRow>

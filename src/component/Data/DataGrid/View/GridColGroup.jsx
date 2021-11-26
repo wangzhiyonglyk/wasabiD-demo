@@ -57,17 +57,14 @@ class GridColGroup extends React.PureComponent {
                     width={width}></col>)
             }
         })
-        colgroup.push(<col key="wasabi-gutter-column" name="wasabi-gutter-column"></col>)
+       
         if (document.getElementById(this.props.realTableId)) {
             document.getElementById(this.props.realTableId).style.width = tableWidth + "px";
-            let pagination = document.getElementById(this.props.realTableId).parentNode.parentNode.querySelectorAll(".wasabi-pagination");
-            if (pagination) {
-                for (let i = 0; i < pagination.length; i++) {
-                    pagination[i].style.width = Math.min(document.getElementById(this.props.containerid).clientWidth, tableWidth) + "px";
-                }
-            }
+          
         }
-
+        if (document.getElementById(this.props.fixTableId)) {
+            document.getElementById(this.props.fixTableId).style.width = tableWidth + "px"; 
+        }
         return <colgroup >
             {
                 colgroup

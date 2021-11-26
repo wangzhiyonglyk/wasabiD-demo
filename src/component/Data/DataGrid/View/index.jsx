@@ -65,19 +65,17 @@ class Grid extends React.Component {
                 if(document.getElementById(this.props.realTableId)){
                     let nodes = document.getElementById(this.props.realTableId).children[0].children;
                     let tableWidth=0;//不能直接拿 【realTableId】表格的宽度，不准
+                    let width=nodes[chosedHeaderColumnIndex].getAttribute("width")*1;
                     if (nodes) {
                         for (let i = 0; i < nodes.length; i++) {
                             tableWidth+= nodes[i].getAttribute("width") * 1 || 0;
                         }
-                        nodes[chosedHeaderColumnIndex].setAttribute("width", Math.ceil( nodes[chosedHeaderColumnIndex].getAttribute("width") * 1 + event.clientX - this.beginLeft));
+                        nodes[chosedHeaderColumnIndex].setAttribute("width", Math.ceil( width + event.clientX - this.beginLeft));
                     }   
                    document.getElementById(this.props.realTableId).style.width=Math.ceil(tableWidth + event.clientX - this.beginLeft)+"px";
-                   let pagination = document.getElementById(this.props.realTableId).parentNode.parentNode.querySelectorAll(".wasabi-pagination");
-                   if (pagination) {
-                       for (let i = 0; i < pagination.length; i++) {
-                           pagination[i].style.width = Math.min(document.getElementById(this.state.containerid).clientWidth, Math.ceil(tableWidth + event.clientX - this.beginLeft)) + "px";
-                       }
-                   }
+                   document.getElementById(this.props.fixTableId).style.width=Math.ceil(tableWidth + event.clientX - this.beginLeft)+"px";
+                   document.getElementById(this.props.fixTableId).children[0].children[chosedHeaderColumnIndex].setAttribute("width", Math.ceil( width  + event.clientX - this.beginLeft));
+               
                 }
                
             }
@@ -107,6 +105,7 @@ class Grid extends React.Component {
             containerid={this.state.containerid}
            
             realTableId={this.props.realTableId}
+            fixTableId={this.props.fixTableId}
             headers={this.props.headers}
             selectAble={this.props.selectAble}
             rowNumber={this.props.rowNumber}
@@ -185,8 +184,19 @@ class Grid extends React.Component {
         let colgroup = this.renderColGruop();
         let headerControl = this.renderHeader();
         return <div className='wasabi-table-container' key="wasabi-table-container" id={this.state.containerid} style={{ height: height }}  >
-            {/* 固定表头在有高度的情况下有效  */}
-          
+            {/* 表头独立是为了在紧凑表格宽度不够时 更好看一点*/}
+            <div className="table-fixedth">
+            <Table 
+                className={this.props.borderAble ? ' ' : ' table-no-bordered '}
+                id={this.props.fixTableId} >
+                     {
+                    /**colgroup */
+                    colgroup
+                }
+                     {/* 表头 */}
+                    {headerControl}
+                    </Table>
+            </div>
             {/* 真实的表格  */}
             <Table 
                 className={this.props.borderAble ? ' ' : ' table-no-bordered '}
@@ -195,8 +205,8 @@ class Grid extends React.Component {
                     /**colgroup */
                     colgroup
                 }
-                {/* 表头 */}
-                {headerControl}
+               
+                {/* {headerControl} */}
                 {/* 表体 */}
                 {this.renderBody()}
                 {/* 表尾 todo */}
