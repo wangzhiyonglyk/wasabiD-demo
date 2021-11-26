@@ -4,6 +4,7 @@
     color: var(--color);
     margin: 0px;
     padding: 0px;
+    --border-color:red;
 }
 
 .wasabi-tree .wasabi-tree-li-node-text {
@@ -22,19 +23,24 @@
     cursor: pointer;
     position: relative;
 }
-
+/**外竖线**/
 .wasabi-tree>li.wasabi-tree-li::before {
     content: "";
-    height: calc(100% - 0px);
+    height: calc(100% - 10px);
     width: 1px;
     border-right-width: 1px;
     box-sizing: border-box;
     border-right-style: dashed;
     border-right-color: var(--border-color);
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 5px;
+    top: 24px;
     z-index: 1;
+}
+
+
+.wasabi-tree>li.wasabi-tree-li:last-child:before {
+    height: calc(100% - 44px);
 }
 
 .wasabi-treegrid .wasabi-tree>li.wasabi-tree-li::before {
@@ -45,13 +51,7 @@
     content: none;
 }
 
-.wasabi-tree>li.wasabi-tree-li:first-child:before {
-    top: 21px;
-}
 
-.wasabi-tree>li.wasabi-tree-li:last-child:before {
-    height: 20px
-}
 
 .wasabi-tree .wasabi-tree-li-node {
     line-height: 41px;
@@ -157,10 +157,11 @@
 }
 
 .wasabi-tree .wasabi-tree-sub {
-    padding-left: 25px;
+    padding-left: 40px;
     position: relative;
 }
 
+/*竖线**/
 .wasabi-tree .wasabi-tree-sub::before {
     content: "";
     height: calc(100% - 10px);
@@ -196,8 +197,8 @@
 }
 
 .wasabi-tree .wasabi-tree-li-icon {
-    font-size: 16px;
-    transform: translateY(12px);
+    font-size: 12px;
+    transform: translateY(14px);
     margin-right: 4px;
 }
 

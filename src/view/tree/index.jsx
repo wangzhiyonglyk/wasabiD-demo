@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { TreeGrid } from "../../component"
+import {  Tree } from "../../component"
 class Page extends React.Component {
     constructor(props) {
         super(props);
@@ -96,7 +96,7 @@ class Page extends React.Component {
         }
     }
     render() {
-        return <TreeGrid style={{ height: 500 }} textField="label" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></TreeGrid>
+        return <Tree style={{ height: 500 }} textField="label" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></Tree>
     }
 }
 

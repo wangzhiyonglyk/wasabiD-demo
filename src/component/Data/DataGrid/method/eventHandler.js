@@ -117,7 +117,7 @@ export default {
 
     },
     /**
-     * 单击事件
+     * 单元格单击事件
      * @param {*} rowData 行数据
      * @param {*} rowIndex 行号
      * @param {*} columnIndex 列号
@@ -170,10 +170,10 @@ export default {
             if (this.props.detailAble) { columnIndex++ };
             if (this.props.selectAble) { columnIndex++ };
 
-            let f = document.getElementById(this.state.realTableId).children[2].querySelector(".focus");
+            let f = document.getElementById(this.state.realTableId).children[1].querySelector(".focus");
             if (f) { f.className = "" };
-            document.getElementById(this.state.realTableId).children[2].children[rowIndex].children[columnIndex].className = "focus";
-            document.getElementById(this.state.realTableId).children[2].children[rowIndex].children[columnIndex].querySelector("input").focus()
+            document.getElementById(this.state.realTableId).children[1].children[rowIndex].children[columnIndex].className = "focus";
+            document.getElementById(this.state.realTableId).children[1].children[rowIndex].children[columnIndex].querySelector("input").focus()
         }
         catch (e) {
 
