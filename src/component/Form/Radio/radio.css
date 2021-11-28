@@ -96,8 +96,8 @@ desc:checkbox
 
 
 .wasabi-radio-btn {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   display: inline-block;
   margin-top: -1px;
   cursor: pointer;
@@ -130,8 +130,8 @@ desc:checkbox
   width: 8px;
   height: 8px;
   position: absolute;
-  left: 4px;
-  top: 4px;
+  left: 3px;
+  top: 3px;
   -webkit-border-radius: 100%;
   -moz-border-radius: 100%;
   border-radius: 100%;

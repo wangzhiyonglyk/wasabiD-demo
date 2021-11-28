@@ -108,7 +108,7 @@ class Page extends React.Component {
         }
     }
     render() {
-        return <Tree style={{ height: 500 }} textField="label" renameAble={true} rowNumber={true} detailAble={true} checkAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></Tree>
+        return <Tree style={{ height: 500 }} textField="label" checkStyle="radio" renameAble={true} rowNumber={true} detailAble={true} checkAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></Tree>
     }
 }
 
