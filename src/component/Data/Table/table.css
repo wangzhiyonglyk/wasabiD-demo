@@ -16,9 +16,7 @@ border奇怪的现象，出现变粗的现象
   box-sizing: border-box;
   table-layout: fixed;
 }
-.wasabi-table tr:hover td{
-  background-color: var(--background-color);
-}
+
 
 .wasabi-table td,
 .wasabi-table th {
@@ -32,10 +30,43 @@ border奇怪的现象，出现变粗的现象
   background-color: white;
 }
 
+
+/*
+背景颜色
+*/
+
+.wasabi-table thead{
+  background-color: var(--background-color);
+}
 .wasabi-table th{
   border-top: 1px solid var(--border-color);
   background-color: var(--background-color);
 }
+.wasabi-table tr:hover td{
+  background-color: var(--background-color);
+}
+
+.wasabi-table>tbody>tr.selected td{
+  background-color: var(--background-color);
+}
+
+/* 树表格与交叉表不显示 */
+.wasabi-treegrid .wasabi-table tr:hover td{
+  background-color: white;
+}
+
+.wasabi-pivot .wasabi-table tr:hover td{
+  background-color: white;
+}
+
+/* 树表格与交叉表选中时显示 */
+.wasabi-treegrid .wasabi-table>tbody>tr.selected:hover td{
+  background-color: var(--background-color);
+}
+.wasabi-pivot .wasabi-table>tbody>tr.selected:hover td{
+  background-color: var(--background-color);
+}
+
 /*
 没有边框的时候
 */
@@ -51,16 +82,7 @@ border奇怪的现象，出现变粗的现象
   border-bottom: 1px solid var(--border-color);
 }
 
-/*
-背景颜色
-*/
 
-.wasabi-table thead{
-  background-color: var(--background-color);
-}
-.wasabi-table>tbody>tr.selected td{
-  background-color: var(--background-color);
-}
 
 /*
 编辑状态下

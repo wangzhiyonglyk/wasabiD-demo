@@ -178,12 +178,6 @@ const loadDataHoc=function (Widget, inputType = "select") {
             return false;
         }
         render() {
-            let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
-            if (this.props.hide) {
-                style.display = 'none';
-            } else {
-                style.display = 'flex';
-            }
             return <Widget
                 {...this.props}
                 ref={this.input}

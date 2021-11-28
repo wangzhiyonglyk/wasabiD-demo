@@ -443,6 +443,9 @@ class Tree extends Component {
                 if (item.isParent == true || (item.children instanceof Array && item.children.length > 0)) {//如果明确规定了，或者子节点不为空，则设置为父节点
                     isParent = true;
                 }
+                
+                  //上一个兄弟节点是否有子节点，用于画虚线
+                let preBroHasChildren=index>0&&data[index-1].children&&data[index-1].children.length>0?true:false;
 
                 //通过输入框的值与自身的勾选情况综合判断
                 nodeControl.push(<TreeNode
@@ -455,8 +458,10 @@ class Tree extends Component {
                     {
                     ...treeEvents
                     }
-
-
+                    preBroHasChildren={preBroHasChildren}
+                    isFirst={index===0?true:false}
+                    isLast={index===data.length-1?true:false}
+                    
                 />);
             });
         }

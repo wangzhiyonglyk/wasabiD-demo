@@ -75,6 +75,7 @@ class CheckBox extends React.Component {
      * @returns 
      */
     onSelect(value = "", text,row) {//选中事件
+        console.log("select",text,value)
         if (this.props.readOnly) {
             return;
         }
@@ -126,4 +127,4 @@ class CheckBox extends React.Component {
         return <ul className="wasabi-checkul" ><LiView {...liprops} ></LiView> {this.props.children} </ul>
     }
 }
-export default validateHoc(validateHoc(CheckBox, "checkbox"),"checkbox");
+export default validateHoc(loadDataHoc(CheckBox, "checkbox"),"checkbox");

@@ -80,12 +80,24 @@ class Page extends React.Component {
                 {
                     id: 3, pId: 1, label: "通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 dataSource 中的数据字段相对应。", label1: "dd"
                 },
+                {
+                    id: 31, pId: 1, label: "通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 dataSource 中的数据字段相对应。", label1: "dd"
+                },
 
                 {
                     id: 4, pId: 2, label: "可以停靠", label1: "testeste"
                 },
                 {
                     id: 5, pId: 2, label: "可以停靠", label1: "testeste"
+                },
+                {
+                    id: 6, pId: 4, label: "可以停靠", label1: "testeste"
+                },
+                {
+                    id: 7, pId: 5, label: "可以停靠", label1: "testeste"
+                },
+                {
+                    id: 8, pId: null, label: "可以停靠", label1: "testeste"
                 },
             ],
             tabs: [{
@@ -96,7 +108,7 @@ class Page extends React.Component {
         }
     }
     render() {
-        return <Tree style={{ height: 500 }} textField="label" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></Tree>
+        return <Tree style={{ height: 500 }} textField="label" renameAble={true} rowNumber={true} detailAble={true} checkAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></Tree>
     }
 }
 

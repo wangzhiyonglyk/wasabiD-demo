@@ -33,6 +33,16 @@ let entry = [
     src: './view/treegrid/index.jsx' //脚本路径
   },
   {
+    filename: 'tree', //文件名，
+    title: 'tree组件', // 标题
+    src: './view/tree/index.jsx' //脚本路径
+  },
+  {
+    filename: 'checkbox', //文件名，
+    title: 'checkbox组件', // 标题
+    src: './view/checkbox/index.jsx' //脚本路径
+  },
+  {
     filename: 'login', //文件名，
     title: 'login', // 标题
     src: './view/login/index.jsx' //脚本路径

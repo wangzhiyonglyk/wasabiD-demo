@@ -234,32 +234,6 @@ func.cookies = {
 }
 
 /**
- * 根据字符计算宽度
- * @param {*} str 字符
- */
-func.charWidth = function (str = "") {
-    let width = 0;
-    try {
-        let strArr = str.split("");
-
-        for (let i = 0; i < strArr.length; i++) {
-            let reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
-            if (reg.test(strArr[i])) {
-                width += 20;//汉字20个像素
-            }
-            else {
-                width += 10;
-            }
-        }
-    } catch (e) {
-
-    }
-
-    return width;
-}
-
-
-/**
  * 对象的深复制
  * @param {*} obj 源对象
  * @returns 
@@ -430,7 +404,7 @@ func.diff = function (objA = null, objB = null, deep = true) {//
     if (typeof objA === "function") {//函数
         return objA.toString() === objB.toString();
     }
-    if (typeof objA === "object") {//对象
+   else if (typeof objA === "object") {//对象
         //先拿所有的属性 
         try {
 
@@ -467,6 +441,8 @@ func.diff = function (objA = null, objB = null, deep = true) {//
         } catch (e) {
             console.log(objA, objB)
         }
+    }else{//其他类型
+        return objA!==objB;
     }
 
     return false;

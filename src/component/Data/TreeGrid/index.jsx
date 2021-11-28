@@ -100,11 +100,7 @@ class TreeGrid extends Component {
         }
     }
     componentDidMount() {
-       setTimeout(() => {
-           //渲染后拿真正的宽度
-          this.grid.current&&this.grid.current.computeHeaderStyleAndColumnWidth()
-       }, 100);
-    
+     
     }
     loadData(url, params) {
         if (url) {

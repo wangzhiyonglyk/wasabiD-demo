@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { TreeGrid } from "../../component"
+import {  CheckBox } from "../../component"
 class Page extends React.Component {
     constructor(props) {
         super(props);
@@ -96,13 +96,6 @@ class Page extends React.Component {
                 {
                     id: 7, pId: 5, label: "可以停靠", label1: "testeste"
                 },
-
-                {
-                    id: 8, pId: 7, label: "可以停靠", label1: "testeste"
-                },
-                {
-                    id: 9, pId:null, label: "可以停靠", label1: "testeste"
-                },
             ],
             tabs: [{
                 title: "你好"
@@ -112,7 +105,7 @@ class Page extends React.Component {
         }
     }
     render() {
-        return <TreeGrid style={{ height: 500 }} textField="label" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></TreeGrid>
+        return <CheckBox label="测试大" textField="label" valueField="id"  data={this.state.data} ></CheckBox>
     }
 }
 
