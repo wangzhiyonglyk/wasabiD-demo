@@ -4,6 +4,7 @@ create by wangzhiyong
 create by wangzhiyong 创建树组件
  edit 2020-10 参照ztree改造
  2021-06-16 重新优化
+ 2021-11-28 完善组件，修复bug，将样式拆分为两种，树的高度小一点，这样好看一点，树表格则与表格对齐,增加连线，调整勾选，图标，文字等样式
  desc:树下拉选择
  */
 import React, { Component } from "react";

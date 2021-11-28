@@ -1,15 +1,11 @@
 /**
  * create by wangzhiyong
  * date:2021-03-30
+ * 2021-11-28 完善组件，修复bug，重新调整样式，完善下划线，文字，图标，勾选，选中样式
  * desc 树型表格
  */
 
-/**
- * create by wangzhiyong
- * date:2020-12-21
- * desc 交叉表
- * desc
- */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import func from "../../libs/func";
