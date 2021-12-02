@@ -11,11 +11,10 @@
  2021-05-28 创建table组件， 重新改造datagrid，将view,event,data分离，组件单一责任原则
  2021-09-06 修复列拖动改变宽度的问题
  固定列，复杂表头仍然有bug，需要检查
-  021-11-28 重新实现紧凑宽度，调整宽度，固定表头，固定列等功能，优化渲染，列不再换行
+  2021-11-28 重新实现紧凑宽度，调整宽度，固定表头，固定列等功能，优化渲染，列不再换行
  */
 
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
 /**
@@ -42,7 +41,7 @@ import './datagridetail.css'
 class DataGrid extends Component {
     constructor(props) {
         super(props); 
-        console.time("datagridm");   
+       
         this.state = {
             fixTableId:func.uuid(),//表头table
             realTableId:func.uuid(),//真实table
@@ -157,7 +156,7 @@ class DataGrid extends Component {
      * 更新函数
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.timeEnd("datagridu")
+        
         //重新加数据
         if (this.state.urlReloadData) {//需要请求数据
             this.reload();//调用
@@ -168,8 +167,7 @@ class DataGrid extends Component {
         }
     }
     componentDidMount() {
-        console.timeEnd("datagridm")
-        console.time("datagridu")
+      
         if (this.state.urlReloadData) {//需要请求数据
             this.reload();
         }
