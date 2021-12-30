@@ -644,7 +644,46 @@ func.arrayNodupMerge = function (arr1 = [], arr2 = [], key = "id") {
     }
     return result;
 }
+/**
+ * 根据字符计算大概宽度
+ * @param {*} str 字符
+ */
+ func.charWidth = function (str = "") {
+    let width = 0;
+    try {
+        let strArr = str.split("");
 
+        for (let i = 0; i < strArr.length; i++) {
+            let reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
+            if (reg.test(strArr[i])) {
+                width += 20;//汉字20个像素
+            }
+            else {
+                width += 10;
+            }
+        }
+    } catch (e) {
+
+    }
+
+    return width;
+}
+
+/**
+ * 节流方案
+ */
+func.throttle=function(fn,wait){
+    let pre = Date.now();
+    return function(){
+        let context = this;
+        let args = arguments;
+        let now = Date.now();
+        if( now - pre >= wait){
+            fn.apply(context,args);
+            pre = Date.now();
+        }
+    }
+}
 /**
  * create by wangzhiyong
  * date:2021-04-22

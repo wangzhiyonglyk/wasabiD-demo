@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { DataGrid ,TreeGrid} from "../../component"
+import { DataGrid} from "../../component"
 class Page extends React.Component {
     constructor(props) {
         super(props);
@@ -62,146 +62,63 @@ class Page extends React.Component {
 
                 },
             
-                {
-                    name: "label3",
-                    label: "省2",
-                    
+                // {
+                //     name: "label3",
+                //     label: "省2",
+                //     content:()=>{
+                //         return <img style={{height:60}} src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/10/29/16e151a59317cae7~tplv-t2oaga2asx-watermark.awebp"></img>
+                //     }
 
-                },
+                // },
             ],
-            data: [
-                {
-                    id: 1,label: "通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 dataSource 中的数据字段相对应。"     ,   label1:"dd"      },
+            data:(()=>{
+                let arr=[]
+             for(let i=0;i<1500;i++)
+             if(i%2==0){
+                 arr.push( {
+                    id: i,label: "通过   dataSource 中的数据字段相对应。"     ,   label1:"dd"      },
                  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },
-                  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },  
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },
-                {
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },{
-                    id: 2, label: "可以停靠",label1:"testeste"
-                },
-            ],
+                  )
+             }
+             else{
+                 arr.push({
+                    id: i, label: "可以停靠",label1:"testeste"
+                })
+             }
+             return arr;
+            })(),
             tabs: [{
                 title: "你好"
             }, {
                 title: "我好"
             }],
+            startIndex:0,
+            endIndex:20
         }
     }
+    onScroll(event){
+       return;
+     let scrollTop=event.target.scrollTop;
+     let index=Math.floor(scrollTop/40);
+     if(index+10<this.state.data.length)
+     {
+        this.setState({
+            startIndex:index,
+            endIndex:index+10
+        })
+     }
+      
+    }
+    componentDidUpdate(){
+        
+    }
+    componentDidMount(){
+        console.timeEnd("d")
+    }
     render() {
-        return <DataGrid style={{ height: 500 }} textField="label" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></DataGrid>
+        console.time("d")
+         return <DataGrid httpType="get" style={{ height: 600,width:1000}} pagination={false} textField="label" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></DataGrid>
+
     }
 }
 

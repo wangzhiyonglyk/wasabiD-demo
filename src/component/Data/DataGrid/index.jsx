@@ -12,6 +12,7 @@
  2021-09-06 修复列拖动改变宽度的问题
  固定列，复杂表头仍然有bug，需要检查
   2021-11-28 重新实现紧凑宽度，调整宽度，固定表头，固定列等功能，优化渲染，列不再换行
+  2021-12-28 增加虚拟列表功能
  */
 
 import React, { Component } from 'react';
@@ -29,6 +30,8 @@ import mixins from '../../Mixins/mixins';
 /**
  * 事件处理
  */
+import loadData from './method/loadData.js';
+import virtualHandler from './method/virtualHandler.js';
 import eventHandler from './method/eventHandler.js';
 import staticMethod from "./method/staticMethod"
 import pasteExtend from './method/pasteExtend.js';
@@ -40,11 +43,14 @@ import './datagrid.css'
 import './datagridetail.css'
 class DataGrid extends Component {
     constructor(props) {
-        super(props); 
+        super(props);
        
         this.state = {
-            fixTableId:func.uuid(),//表头table
-            realTableId:func.uuid(),//真实table
+            containerid: func.uuid(),//表格容器
+            divideid: func.uuid(),//分隔线
+            fixTableId: func.uuid(),//表头table
+            realTableCotainerId: func.uuid(),//真实表格容器id
+            realTableId: func.uuid(),//真实table
             url: null,
             rawUrl: null,
             params: null, //参数
@@ -54,14 +60,14 @@ class DataGrid extends Component {
             sortName: this.props.sortName,//排序名称
             sortOrder: this.props.sortOrder,//排序方式
 
-            /************这几个字段在 getDerivedStateFromProps 处理逻辑，这样提升性能 */
+            /************以下这几个字段在 getDerivedStateFromProps 处理逻辑，这样提升性能 */
             rawFixedHeaders: null,//固定列的表头,保存用于更新
             rawHeaders: null,//原有默认列保存起来，用于更新判断
-            headers: [], //页面中的headers
-            data: [],//当前要渲染的数据
             rawData: null,//原始数据，在自动分页时与判断是否更新有用
-            /************这几个字段在 getDerivedStateFromProps 处理逻辑，这样提升性能 */
-
+            headers: [], //页面中的headers
+            data: [],//当前页的数据
+            visibleData: [],//可见的数据
+            /************以上这几个字段在 getDerivedStateFromProps 处理逻辑，这样提升性能 */
             checkedData: new Map(),//勾选的数据
             checkedIndex: new Map(),//勾选的下标
             detailView: null, //详情行,
@@ -75,12 +81,12 @@ class DataGrid extends Component {
             addData: new Map(), //新增的数据,因为有可能新增一个空的，然后再修改
             updateData: new Map(), //被修改过的数据，因为要判断曾经是否修改
             deleteData: [], //删除的数据
-            urlReloadData: false,//传url时是否重新加载数据
-            adjustWidth: false,//是否需要调整宽度
-
+            urlLoadData: false,//有url并且分页情况下是否需要请求加载数据
+            reInitVirtualConfig: false,//是否需要重置虚拟列表的配置
+            adjust: false,//是否要调整
         };
         //绑定事件
-        let baseCtors = [eventHandler, staticMethod, pasteExtend];
+        let baseCtors = [loadData, virtualHandler, eventHandler, staticMethod, pasteExtend];
         baseCtors.forEach(baseCtor => {
             Object.getOwnPropertyNames(baseCtor).forEach(name => {
                 if (typeof baseCtor[name] == 'function') {
@@ -88,130 +94,110 @@ class DataGrid extends Component {
                 }
             });
         });
-
+       
     }
     static getDerivedStateFromProps(props, state) {
-        let newState = {
-            adjustWidth: false,
-        };//新的状态值
-        if (props.url && (props.url != state.rawUrl || func.diff(props.params, state.rawParams))) {//以url的形式，url或者参数有变
-            newState = {
-                urlReloadData: true,//重新加载数据
-                url: props.url,
-                rawUrl: props.url,
-                rawParams: func.clone(props.params),
-                params: func.clone(props.params),
-            }
-        }
-        //todo 此处理还要仔细研究 当数据量过大时，有问题
-        if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData,false)) {
-            //如果传了死数据
-            newState.adjustWidth = true;
-            newState.rawData = props.data;
-            try {
-                //分页情况下，数据切割
-                newState.data = props.pagination == true ? props.data.length >(state.pageSize || 20)
-                    ? props.data.slice(((state.pageIndex || 1) - 1) * (state.pageSize || 20), (state.pageIndex || 1) * (state.pageSize || 20))
-                    : props.data : props.data;
-            }
-            catch (e) {
-                newState.data = func.shallowClone(props.data);
-            }
-            newState.total = props.total || props.data.length || 0
-        }
+     
+        let newState = {};//新的状态值
         // 处理Headers,因为交叉表的表头是后期传入的 
         {
             let headerChange = false;
             //处理固定列
             if (func.diff(props.fixedHeaders, state.rawFixedHeaders)) {
-
                 //有改变则更新headers等
                 newState.rawFixedHeaders = func.clone(props.fixedHeaders);
+
                 headerChange = true;
             }
             //处理非固定列
             if (func.diff(props.headers, state.rawHeaders)) {
                 //有改变则更新headers等
                 newState.rawHeaders = func.clone(props.headers);
+
                 headerChange = true;
             }
             if (headerChange) {
-
-                newState.adjustWidth = true;
                 //标记固定列
                 newState.headers = [].concat((newState.rawFixedHeaders || []).map((item) => { return { ...item, sticky: true } }), newState.rawHeaders || []);
                 if (newState.headers && newState.headers instanceof Array) {
                     for (let i = 0; i < newState.headers.length; i++) {
                         if (newState.headers[i] instanceof Array) {
-                           
+
                         }
                     }
                 }
 
             }
         }
+
+        if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData, false)) {
+            //如果传了死数据,并且数据改变
+            newState.reInitVirtualConfig = true;
+            newState.rawData = props.data;
+            try {
+                //分页情况下，数据切割
+                newState.data = props.pagination == true ? props.data.length > (state.pageSize || 20)
+                    ? props.data.slice(((state.pageIndex || 1) - 1) * (state.pageSize || 20), (state.pageIndex || 1) * (state.pageSize || 20))
+                    : props.data : props.data;
+
+            }
+            catch (e) {
+                newState.data = func.shallowClone(props.data);
+            }
+            newState.total = props.total || props.data.length || 0
+        }
+        else if (props.url  && (props.url != state.rawUrl || func.diff(props.params, state.rawParams))) {
+            //有url,并且分页,url或者参数有变
+            newState = {
+                urlLoadData: true,//重新加载数据
+                url: props.url,
+                rawUrl: props.url,
+                rawParams: func.clone(props.params),
+                params: func.clone(props.params),
+            }
+        }
+       
         return newState;
     }
     /**
      * 更新函数
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
-        
+        console.log("gridupdate",new Date().getTime())
         //重新加数据
-        if (this.state.urlReloadData) {//需要请求数据
+        if (this.state.urlLoadData) {//需要请求数据
             this.reload();//调用
         }
-        else if (this.state.adjustWidth ) { 
-            //调整宽度
-            this.setColumnWidth();
+        else  if (this.state.reInitVirtualConfig) { 
+                this.initVirtual();//重置虚拟列表,   
         }
+        if (this.adjust) {//调整虚拟列表与表格宽度
+            this.adjustvirtual();
+
+        }
+
     }
     componentDidMount() {
-      
-        if (this.state.urlReloadData) {//需要请求数据
-            this.reload();
+        console.timeEnd("grid")
+        if (this.state.urlLoadData) {//需要请求数据
+            this.reload();//调用
         }
-        else if (this.state.adjustWidth) {//调整宽度
-           this.setColumnWidth();
-        
+        else  if (this.state.reInitVirtualConfig) { 
+                this.initVirtual();//重置虚拟列表,   
         }
-    }
-     /**
-     * 调整每一列的宽度,方便后期拖动与固定列的效果
-     */
-      setColumnWidth(){
-        this.headerWidth = {};//各列的宽度数据
-        let columnIndex=0;//列下标
-            if (this.props.detailAble) { columnIndex++; }
-            if (this.props.rowNumber) { columnIndex++; }
-            if (this.props.selectAble) {columnIndex++; }
-          if(  document.getElementById(this.state.realTableId)&& document.getElementById(this.state.realTableId).children.length===2&&document.getElementById(this.state.realTableId).children[1].children.length)
-          {//有数据才调整宽度
-              for(let i=columnIndex;i< document.getElementById(this.state.realTableId).children[1].children[0].children.length;i++)
-              {
-                  let width=Math.ceil( document.getElementById(this.state.realTableId).children[1].children[0].children[i].getBoundingClientRect().width);
-                  let name= document.getElementById(this.state.realTableId).children[1].children[0].children[i].getAttribute("name")
-                  this.headerWidth[name]=width; 
-              }
-              this.setState({
-                  adjustWidth:false
-              })
-              
-            
-          }
-        
-    
+       
     }
     componentWillUnmount() {
         this.timeout && clearTimeout(this.timeout)
     }
+    
     render() {
-      
+       console.time("grid")
         return <Grid
             {...this.props}
             {...this.state}
-            headerWidth={this.headerWidth || {}}
-            data={ this.state.data}
+            headerWidth={this.headerWidth}
+            data={this.state.data}
             checkedAllHandler={this.checkedAllHandler}
             checkCurrentPageCheckedAll={this.checkCurrentPageCheckedAll}
             getKey={this.getKey}
@@ -226,11 +212,11 @@ class DataGrid extends Component {
             exportAble={this.props.exportAble}
             reload={this.reload}
             export={this.export.bind(this, false, "grid-")}
-            upload={this.upload}
             onAdd={this.onAdd}
             onSave={this.onSave}
             onDrop={this.onDrop}
             onDragOver={this.onDragOver}
+            onVirtualScroll={this.onVirtualScroll}
         ></Grid>
 
     }
@@ -241,7 +227,7 @@ DataGrid.propTypes = {
     /**
      * 表格常用属性设置
      */
-  
+
     style: PropTypes.object,//样式对象
     className: PropTypes.string,//样式
     selectAble: PropTypes.bool, // 是否显示选择，默认值 false
@@ -353,6 +339,6 @@ DataGrid.defaultProps = {
     footerSource: 'footer', //页脚数据源
     totalSource: 'total', //
 };
-mixins(DataGrid, [eventHandler, staticMethod, pasteExtend]);
+mixins(DataGrid, [loadData, virtualHandler, eventHandler, staticMethod, pasteExtend]);
 
 export default DataGrid;

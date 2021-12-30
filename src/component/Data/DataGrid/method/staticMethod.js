@@ -243,9 +243,9 @@ export default {
     reload: function (params = null, url = "") {//重新查询数据,
         url = url || this.state.url;//得到旧的url
         params = params || this.state.params;//如果不传则用旧的
-         //查询条件发生，查询第一页
-         let pageIndex = func.diff(params, this.state.params,false) ? 1 : this.state.pageIndex
-         this.onUpdate(url, this.state.pageSize, pageIndex, this.state.sortName, this.state.sortOrder, params);
+       //查询条件发生，查询第一页
+       let pageIndex = func.diff(params, this.state.params, false) ? 1 : this.state.pageIndex
+       this.loadData(url, this.state.pageSize, pageIndex, this.state.sortName, this.state.sortOrder, params);
     },
 
     /**
@@ -254,6 +254,8 @@ export default {
      * @param {*} title 导出标题
      */
     export(selected = false, title = "grid-") {
+
+        let fixTable = document.getElementsById(this.state.fixTableId);
         let realTable = document.getElementById(this.state.realTableId);
         title = title + func.dateformat(new Date(), "yyyy-MM-dd");
         let json = {
@@ -261,15 +263,14 @@ export default {
             body: [],
         }
         //导出表头
+        for (let rowIndex = 0; rowIndex < fixTable.children[1].children.length; rowIndex++) {
 
-        for (let rowIndex = 0; rowIndex < realTable.children[1].children.length; rowIndex++) {
-
-            for (let columnIndex = 0; columnIndex < realTable.children[1].children[rowIndex].children.length; columnIndex++) {
-                let html = realTable.children[1].children[rowIndex].children[columnIndex].outerHTML;
+            for (let columnIndex = 0; columnIndex < fixTable.children[1].children[rowIndex].children.length; columnIndex++) {
+                let html = fixTable.children[1].children[rowIndex].children[columnIndex].outerHTML;
                 if (html.indexOf("wasabi-detail-column") > -1 || html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-select-column") > -1 || html.indexOf("wasabi-noexport") > -1) {//除去序号列与选择列及不需要导出的列
                     continue;
                 }
-                json.headers.push(realTable.children[1].children[rowIndex].children[columnIndex].children[0].innerText);
+                json.headers.push(fixTable.children[1].children[rowIndex].children[columnIndex].children[0].innerText);
             }
 
         }
@@ -277,8 +278,8 @@ export default {
         if (selected) {//导出选择的行
             for (let value of this.state.checkedIndex.values()) {
                 let row = [];
-                for (let columnIndex = 0; columnIndex < realTable.children[2].children[value].children.length; columnIndex++) {
-                    let html = realTable.children[2].children[value].children[columnIndex].outerHTML;
+                for (let columnIndex = 0; columnIndex < realTable.children[1].children[value].children.length; columnIndex++) {
+                    let html = realTable.children[1].children[value].children[columnIndex].outerHTML;
                     if (html.indexOf("wasabi-detail-column") > -1 || html.indexOf("wasabi-order-column") > -1 || html.indexOf("wasabi-select-column") > -1 || html.indexOf("wasabi-noexport") > -1) {//除去序号列与选择列及不需要导出的列
                         continue;
                     }

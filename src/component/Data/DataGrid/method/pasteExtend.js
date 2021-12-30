@@ -43,25 +43,7 @@ export default {
         }
 
     },
-    /**
-    * 导入
-    */
-    upload(event) {
-        if (event.target.files && event.target.files.length > 0 && this.props.importAble) {
-            if (fileType.filter("excel", event.target.files[0])) {
-                excel.readFile(event.target.files[0]).then((workbook) => {
-                    event.target.value = "";//清空
-                    console.log("workbook",workbook)
-                    let json = excel.workbook2json(workbook);
-                    this.json2data(json,this.state.data.length);
-                })
-            } else {
-                Msg.error("只接受excel文件");
-            }
-        }
-
-
-    },
+  
     //excel粘贴事件
     onPaste: async function (rowIndex, columnIndex, event, oldValue) { //excel粘贴事件  
         try {

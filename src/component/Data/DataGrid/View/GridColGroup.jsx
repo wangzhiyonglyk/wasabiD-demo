@@ -4,7 +4,7 @@
  */
 import React from "react";
 import config from "../config";
-
+import func from "../../../libs/func";
 class GridColGroup extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -12,6 +12,7 @@ class GridColGroup extends React.PureComponent {
 
         }
     }
+
     render() {
         let tableWidth = 0;
         let colgroup = [];
@@ -40,20 +41,20 @@ class GridColGroup extends React.PureComponent {
                         return;
                     }
                     else {
-                        let width = header.width ? header.width : this.props.headerWidth[header.name] || config.minWidth;
+                        let width = header.width ? header.width : this.props?.headerWidth&&this.props?.headerWidth[header.name||trheader.label] || config.minWidth;
                         tableWidth += width;
                         colgroup.push(<col
                             key={headerRowIndex + "-" + headerColumnIndex}
-                            name={header.label}//以label为准，是因为name可能没有设置
+                            name={header.name||header.label}//name可能没有设置
                             width={width}></col>)
                     }
                 });
             } else {
-                let width = trheader.width ? trheader.width : this.props.headerWidth[trheader.name] || config.minWidth;
+                let width = trheader.width ? trheader.width : this.props?.headerWidth&&this.props?.headerWidth[trheader.name||trheader.label] || config.minWidth;
                 tableWidth += width;
                 colgroup.push(<col
                     key={headerRowIndex}
-                    name={trheader.label || ""}
+                    name={trheader.name || trheader.label}
                     width={width}></col>)
             }
         })

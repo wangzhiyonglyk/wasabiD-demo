@@ -12,7 +12,10 @@ class TableCell extends React.PureComponent {
         this.renderTh = this.renderTh.bind(this);
     }
     renderCell() {
-        return <div data-rowindex={this.props.rowIndex} data-columnindex={this.props.columnIndex} colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1} className={"wasabi-table-cell  "}
+        return <div data-rowindex={this.props.rowIndex} data-columnindex={this.props.columnIndex}
+         colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1} 
+          style={this.props.style}
+         className={"wasabi-table-cell  "}
             title={typeof this.props.children === "string" ? this.props.children : ""}>
             {
                 this.props.children
@@ -23,7 +26,7 @@ class TableCell extends React.PureComponent {
      
         return <th   name={this.props.name} className={(this.props.className || "") + (this.props.position !== "body" ? ' nowrap ' : "")}
          align={this.props.align} 
-         style={this.props.style}
+         style={this.props.thStyle}
          colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1} 
             onClick={this.props.onClick} 
             onDoubleClick={this.props.onDoubleClick}
@@ -41,7 +44,7 @@ class TableCell extends React.PureComponent {
         data-columnindex={this.props.columnIndex} 
         align={this.props.align} 
          colSpan={this.props.colSpan || 1} rowSpan={this.props.rowSpan || 1} 
-         style={this.props.style}
+         style={this.props.tdStyle}
          className={(this.props.className || "") + (this.props.position !== "body" ? ' nowrap ' : "")}  
             onClick={this.props.onClick} onDoubleClick={this.props.onDoubleClick}
             onMouseDown={this.props.onMouseDown}

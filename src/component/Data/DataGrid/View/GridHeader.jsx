@@ -19,6 +19,7 @@ import React from "react";
 import { TableCell, TableHead, TableRow } from "../../Table";
 import CheckBox from "../../../Form/CheckBox"
 import config from "../config";
+import func from "../../../libs/func";
 class GridHeader extends React.PureComponent {
     constructor(props) {
         super(props)
@@ -30,7 +31,7 @@ class GridHeader extends React.PureComponent {
         this.getHeaderContent = this.getHeaderContent.bind(this);
         this.setOrderAndSelectAndDetailHeader = this.setOrderAndSelectAndDetailHeader.bind(this);
         this.onSort = this.onSort.bind(this);
-      
+
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
     }
@@ -103,21 +104,23 @@ class GridHeader extends React.PureComponent {
     * 设置表头的详情，序号，选择列
     */
     setOrderAndSelectAndDetailHeader(rowSpan = 1) {
-         let stickyLeft=1;//偏移量,表格左边有border
+        let stickyLeft = 1;//偏移量,表格左边有border
         let control = [];
-         //处理详情列
-         if (this.props.detailAble) {
-            control.push(<TableCell rowSpan={rowSpan} key='headerdetail'  position="header" className="wasabi-detail-column" style={{position:"sticky", left:this.props.borderAble?stickyLeft:stickyLeft,zIndex:1}}></TableCell>)
-            stickyLeft+=config.detailWidth;
+        //处理详情列
+        if (this.props.detailAble) {
+            control.push(<TableCell rowSpan={rowSpan} key='headerdetail' position="header" className="wasabi-detail-column"
+                thStyle={{ position: "sticky", left: this.props.borderAble ? stickyLeft : stickyLeft, zIndex: 1 }}></TableCell>)
+            stickyLeft += config.detailWidth;
         }
-           //处理序号列
-           if (this.props.rowNumber) {
+        //处理序号列
+        if (this.props.rowNumber) {
             control.push(
-                <TableCell rowSpan={rowSpan} key='headerorder'  position="header" className="wasabi-order-column"style={{position:"sticky",left:this.props.borderAble?stickyLeft:stickyLeft,zIndex:1}} >
-                   序号
+                <TableCell rowSpan={rowSpan} key='headerorder' position="header" className="wasabi-order-column"
+                    thStyle={{ position: "sticky", left: this.props.borderAble ? stickyLeft : stickyLeft, zIndex: 1 }} >
+                    序号
                 </TableCell>
             );
-            stickyLeft+=config.orderWidth;
+            stickyLeft += config.orderWidth;
         }
         //处理选择列
         if (this.props.selectAble) {
@@ -129,36 +132,37 @@ class GridHeader extends React.PureComponent {
                 name: 'datagrid-check-all'
             };
             control.push(
-                <TableCell rowSpan={rowSpan} key='headercheckbox' position="header" className='wasabi-select-column'  style={{position:"sticky",left:this.props.borderAble?stickyLeft:stickyLeft,zIndex:1}} >
-                    {this.props.singleSelect ? null :<CheckBox {...props} ></CheckBox>}
+                <TableCell rowSpan={rowSpan} key='headercheckbox' position="header" className='wasabi-select-column'
+                    thStyle={{ position: "sticky", left: this.props.borderAble ? stickyLeft : stickyLeft, zIndex: 1 }} >
+                    {this.props.singleSelect ? null : <CheckBox {...props} ></CheckBox>}
                 </TableCell>
-           
+
             );
-            stickyLeft+=config.selectWidth;
+            stickyLeft += config.selectWidth;
         }
-     
-       
+
+
         return control;
     }
- 
-      /**
-     * 设置表头单元格
-     * @param {*} header 
-     * @param {*} headerRowIndex 
-     * @param {*} headerColumnIndex 
-     * @param {*} props 
-     * @param {*} stickyLeft 
-     * @returns 
-     */
-       setHeaderCell(header, headerRowIndex, headerColumnIndex, props,stickyLeft) {
+
+    /**
+   * 设置表头单元格
+   * @param {*} header 
+   * @param {*} headerRowIndex 
+   * @param {*} headerColumnIndex 
+   * @param {*} props 
+   * @param {*} stickyLeft 
+   * @returns 
+   */
+    setHeaderCell(header, headerRowIndex, headerColumnIndex, props, stickyLeft) {
         return <TableCell
-             rowIndex={headerRowIndex}
-             columnIndex={headerColumnIndex}
-             name={header.name||header.label}
+            rowIndex={headerRowIndex}
+            columnIndex={headerColumnIndex}
+            name={header.name || header.label}
             key={"header-" + headerRowIndex + "-" + headerColumnIndex.toString()}
             position="header"
             align={header.align}
-            style={{ position: header.sticky?"sticky":null,left:header.sticky?this.props.borderAble?stickyLeft:stickyLeft:null,zIndex:header.sticky?1:null}}
+            thStyle={{ position: header.sticky ? "sticky" : null, left: header.sticky ? this.props.borderAble ? stickyLeft : stickyLeft : null, zIndex: header.sticky ? 1 : null }}
             rowSpan={header.rowSpan}
             colSpan={header.colSpan}
             className={props.className || ""}
@@ -178,47 +182,51 @@ class GridHeader extends React.PureComponent {
     onSort(name, sortOrder) {
         this.props.onSort && this.props.onSort(name, sortOrder);
     }
+   
     render() {
+    
+        if (!(this.props.headers instanceof Array) || this.props.headers.length === 0) {
+            //格式不正确，或者数据为空
+            return null;
+        }
         let headerControl = [];
-        let maxRowSpan=1;
-        let trcontrol=[];
-        let stickyLeft=1;//偏移量,表格左边有border
-        if (this.props.detailAble) {stickyLeft+=config.detailWidth;}
-        if (this.props.rowNumber) {stickyLeft+=config.orderWidth;}
-        if (this.props.selectAble) {stickyLeft+=config.selectWidth;}
+        let maxRowSpan = 1;
+        let trcontrol = [];
+        let stickyLeft = 1;//偏移量,表格左边有border
+        if (this.props.detailAble) { stickyLeft += config.detailWidth; }
+        if (this.props.rowNumber) { stickyLeft += config.orderWidth; }
+        if (this.props.selectAble) { stickyLeft += config.selectWidth; }
         //处理表头
         this.props.headers.map((trheader, headerRowIndex) => {
             if (trheader instanceof Array) {
-                maxRowSpan=this.props.headers.length;//多行时
+                maxRowSpan = this.props.headers.length;//多行时
                 trheader.map((header, headerColumnIndex) => {
                     let props = this.getHeaderProps(header);
-                    trcontrol.push(this.setHeaderCell(header, headerRowIndex, headerColumnIndex, props,stickyLeft));
-                    let width = header.width ? header.width : this.props.headerWidth[header.name] || config.minWidth;
-                    stickyLeft+=header.sticky?width:0;
+                    trcontrol.push(this.setHeaderCell(header, headerRowIndex, headerColumnIndex, props, stickyLeft));
+                    let width = header.width ? header.width : this.props?.headerWidth && this.props?.headerWidth[header.name] || config.minWidth;
+                    stickyLeft += header.sticky ? width : 0;
                 })
                 headerControl.push(trcontrol)
                 trcontrol = [];//清空
             }
             else {//只有一行
                 let props = this.getHeaderProps(trheader);
-                trcontrol.push(this.setHeaderCell(trheader, 0, headerRowIndex, props,stickyLeft));
-                let width = trheader.width ? trheader.width : this.props.headerWidth[trheader.name] || config.minWidth;
-                    stickyLeft+=trheader.sticky?width:0;
+                trcontrol.push(this.setHeaderCell(trheader, 0, headerRowIndex, props, stickyLeft));
+                let width = trheader.width ? trheader.width : this.props?.headerWidth && this.props?.headerWidth[trheader.name] || config.minWidth;
+                stickyLeft += trheader.sticky ? width : 0;
             }
         })
-        if(trcontrol.length>0){
+        if (trcontrol.length > 0) {
             headerControl.push(trcontrol);//说明只有一行
         }
         if (this.props.headers && this.props.headers.length > 0) {
             //设置表头的详情，序号，选择列,空白列
-         
+
             let control = this.setOrderAndSelectAndDetailHeader(maxRowSpan);
 
             headerControl[0] = [].concat(control, headerControl[0]);
         }
-
-
-        return <TableHead style={{position:"sticky",top:0,zIndex:1}}>
+        return <TableHead style={{ position: "sticky", top: 0, zIndex: 1 }}>
             {
                 headerControl && headerControl.map((tritem, rowindex) => {
                     return <TableRow key={rowindex}>{tritem}</TableRow>
