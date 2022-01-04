@@ -1,11 +1,11 @@
 /*
-create by wangzhiyong
+create by wangzhiyong 树下拉选择
  date:2016-07
 create by wangzhiyong 创建树组件
  edit 2020-10 参照ztree改造
  2021-06-16 重新优化
  2021-11-28 完善组件，修复bug，将样式拆分为两种，树的高度小一点，这样好看一点，树表格则与表格对齐,增加连线，调整勾选，图标，文字等样式
- desc:树下拉选择
+ 2022-01-04 将树扁平化，增加虚拟列表
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -17,17 +17,22 @@ import treeFunc from "./treeFunc";
 import propsTran from "../../libs/propsTran";
 import api from "wasabi-api"
 import "./tree.css"
+import config from "./config";
 
 class Tree extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            treecontainerid: func.uuid(),
+            treeid: func.uuid(),
             rawData: [],
             data: [],
+            visibleData: [],//可见数据
             filterValue: "",
             filter: [],
             clickId: "",//单击的id
             loadingId: "",//正在异步的节点
+            reVirualConfig: false,
         }
         //单击与双击需要改变样式
         this.onClick = this.onClick.bind(this);
@@ -43,21 +48,25 @@ class Tree extends Component {
         this.loadError = this.loadError.bind(this);
         this.loadSuccess = this.loadSuccess.bind(this);
         this.filter = this.filter.bind(this);
-        this.append = this.append.bind(this)
+        this.append = this.append.bind(this);
+        this.onScroll = this.onScroll.bind(this);
+        this.reload = this.reload.bind(this);
     }
     //todo
     static getDerivedStateFromProps(props, state) {
         let newState = {};
         if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData)) {
-            /**
-             * 因为此组件需要对数据进行增删改
-             * 其他组件统一交由loadDataHoc处理了
-             */
             newState.rawData = (props.data);
+            let flatData = func.treeDataToFlatData(props.data)
             newState.data = func.clone(props.data);
+            newState.flatData = flatData;//数据扁平化
+
+            newState.reVirualConfig = true;
+            return newState;
 
         }
-        return newState;
+        return null;
+
     }
     /**
      * 单击事件
@@ -102,40 +111,25 @@ class Tree extends Component {
         if (this.props.asyncAble && (!row.children || row.children.length == 0)) {//没有数据
             let asyncChildrenData = [];
             if (this.props.onAsync && typeof this.props.onAsync === "function") {//自行处理
+                this.setState({
+                    loadingId: id
+                })
                 asyncChildrenData = this.props.onAsync(id, text, row);//得到数据
                 if (asyncChildrenData && asyncChildrenData instanceof Array && asyncChildrenData.length > 0) {
                     //格式化数据
                     asyncChildrenData = propsTran.formatterData("tree", "", asyncChildrenData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
                     data = treeFunc.appendChildren(data, row, asyncChildrenData);
-                    //同时处理保持一致
-                    let filter = treeFunc.filter(data, this.state.filterValue);
-                    this.setState({
-                        data: data,
-                        filter: filter,
-                        loadingId: id
-                    })
+                    this.handlerLoadData(data);
                 }
-                else {
-                    //没有返回值，可能异步处理了
-                    this.setState({
-                        loadingId: row.id,
-                        data: data
-                    })
-                }
-
             }
             else if (this.props.url) {
+                //没有设置异步函数
                 window.sessionStorage.setItem("async-tree-node", JSON.stringify(row));
                 let params = func.clone(this.props.params) || {};
                 params[this.props.idField || "id"] = id;
                 let fetchmodel = { type: this.props.httpType || "post", url: this.props.url, success: this.loadSuccess, data: this.props.params, error: this.loadError };
                 fetchmodel.headers = this.props.httpHeaders;
-                if (this.props.contentType) {
-                    //如果传contentType值则采用传入的械
-                    //否则默认
-                    fetchmodel.contentType = this.props.contentType;
-                    fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
-                }
+                fetchmodel.contentType = this.props.contentType;
                 let wasabi_api = window.api || api;
                 this.setState({
                     loadingId: id,
@@ -147,12 +141,7 @@ class Tree extends Component {
 
         }
         else {
-            let filter = treeFunc.filter(data, this.state.filterValue);
-            this.setState({
-                data: data,
-                filter: filter,
-
-            })
+            this.handlerLoadData(data);
         }
 
         this.props.onExpand && this.props.onExpand(open, id, text, row);
@@ -184,23 +173,16 @@ class Tree extends Component {
         row = JSON.parse(row);
         let asyncChildrenData = propsTran.formatterData("tree", "", realData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
         let data = this.state.data;
-        nodes = treeFunc.findLeafNodes(data, row_path);
+        nodes = treeFunc.findLeafNodes(data, row._path);
         if (nodes && nodes.length > 0) {
             let leaf = nodes[nodes.length - 1];
             leaf.children = asyncChildrenData;
             //设置节点路径
             treeFunc.setChildrenPath(leaf.id, leaf._path, leaf.children);
         }
-        //同时处理保持一致
-        let filter = treeFunc.filter(data, this.state.filterValue);
+        this.handlerLoadData(data);
 
-        this.setState({
-            data: data,
-            filter: filter,
-            loadingId: ""
-        })
     }
-
     /**
      * 重命名
      * @param {*} id 
@@ -210,12 +192,7 @@ class Tree extends Component {
      */
     onRename(id, text, row, newText) {
         let data = treeFunc.renameNode(this.state.data, row, newText);
-        //同时处理保持一致
-        let filter = treeFunc.filter(data, this.state.filterValue);
-        this.setState({
-            data: data,
-            filter: filter
-        })
+        this.handlerLoadData(data);
         this.props.onRename && this.props.onRename(id, text, row, newText);
     }
     /**
@@ -225,12 +202,7 @@ class Tree extends Component {
     onRemove(id, text, row) {
         Msg.confirm("您确定删除[" + text + "]吗？", () => {
             let data = treeFunc.removeNode(this.state.data, row);
-            //同时处理保持一致
-            let filter = treeFunc.filter(data, this.state.filterValue);
-            this.setState({
-                data: data,
-                filter: filter
-            })
+            this.handlerLoadData(data);
             this.props.onRemove && this.props.onRemove(id, text, row);
         })
 
@@ -259,12 +231,7 @@ class Tree extends Component {
             else if (dragType == "after") {
                 data = treeFunc.moveAterNode(this.state.data, dragNode, dropNode);
             }
-            //同时处理保持一致
-            let filter = treeFunc.filter(data, this.state.filterValue);
-            this.setState({
-                data: data,
-                filter: filter
-            })
+            this.handlerLoadData(data);
         }
 
     }
@@ -284,14 +251,8 @@ class Tree extends Component {
         else {
             data = treeFunc.setRadioChecked(this.state.data, row, checked, this.props.radioType);
         }
-        //同时处理保持一致
-        let filter = treeFunc.filter(data, this.state.filterValue);
-        this.setState({
-            data: data,
-            filter: filter
-        }, () => {
-            this.props.onChecked && this.props.onChecked(checked, id, text, row);
-        })
+        this.handlerLoadData(data);
+        this.props.onChecked && this.props.onChecked(checked, id, text, row);
 
     }
     /**
@@ -305,12 +266,8 @@ class Tree extends Component {
      */
     setChecked(value) {
         if (value) {
-           let data = treeFunc.setSelfChecked(value, this.state.data);
-            let filter = treeFunc.filter(data, this.state.filterValue);
-            this.setState({
-                data: data,
-                filter
-            })
+            let data = treeFunc.setSelfChecked(value, this.state.data);
+            this.handlerLoadData(data);
 
         }
         else {
@@ -337,12 +294,7 @@ class Tree extends Component {
         if (this.props.checkStyle === "checkbox") {
 
             let data = treeFunc.checkedAll(this.state.data);
-            //同时处理保持一致
-            let filter = treeFunc.filter(data, this.state.filterValue);
-            this.setState({
-                data: data,
-                filter: filter,
-            })
+            this.handlerLoadData(data);
             return data;
         }
 
@@ -368,12 +320,7 @@ class Tree extends Component {
     remove(row) {
         if (row && row._path) {
             let data = treeFunc.removeNode(this.state.data, row);
-            //同时处理保持一致
-            let filter = treeFunc.filter(data, this.state.filterValue);
-            this.setState({
-                data: data,
-                filter: filter
-            })
+            this.handlerLoadData(data);
             this.props.onRemove && this.props.onRemove(row.id, row.text, row);
         }
 
@@ -398,20 +345,112 @@ class Tree extends Component {
 
         if (children && children.length > 0) {
             let data = treeFunc.appendChildren(this.state.data, children, node);
-            this.setState({
-                data: data,
-                loadingId: ""
-            }, () => {
-
-            })
+            this.handlerLoadData(data);
         }
+    }
+    /**
+     *  对请求的数据加工
+     * @param {*} data 
+     */
+    handlerLoadData(data) {
+        //同时处理筛选数据保持一致 
+        let filter = treeFunc.filter(data, this.state.filterValue);
+        //数据扁平化
+        let flatData = func.treeDataToFlatData(this.state.filterValue ? filter : data);
+        //切割
+        let sliceData = flatData.slice(this.sliceBeginIndex, this.sliceEndIndex);
+        //设置可见的数据的操作相关属性，因为对数据的checked,open,都是存在data中
+        let visibleData = treeFunc.setVisibleDataProps(sliceData, this.state.data);
+        this.setState({
+            filter: filter,
+            data: data,
+            flatData: flatData,
+            sliceData: sliceData,
+            visibleData: visibleData,
+            loadingId: null
+        })
+    }
+    componentDidMount() {
+    }
+    componentDidUpdate() {
+        if (this.state.reVirualConfig) {
+            this.visibleDataInit();
+        }
+
+    }
+    /**
+     * 可见数据初始化
+     */
+    visibleDataInit() {
+        let height = document.getElementById(this.state.treecontainerid).clientHeight || window.innerHeight;
+        this.visibleDataCount = Math.ceil(height / config.rowDefaultHeight);
+        document.getElementById(this.state.treecontainerid).scrollTop = 0;
+        document.getElementById(this.state.treeid).style.transform = `translate3d(0,0,0)`;
+        this.scrollShowVisibleData(0, this.visibleDataCount);
+    }
+
+    /**
+     * 重新加载
+     */
+    reload() {
+        try {
+            //重新设计高度
+            console.log("dd", this.visibleDataCount)
+            let height = document.getElementById(this.state.treecontainerid).clientHeight || window.innerHeight;
+            this.visibleDataCount = Math.ceil(height / config.rowDefaultHeight);
+            console.log("dd", this.visibleDataCount)
+            this.onScroll();
+        }
+
+        catch (e) {
+            console.log("ee", e)
+        }
+    }
+    /**
+     * 滚动事件，todo要调整
+     */
+    onScroll() {
+        let scrollTop = document.getElementById(this.state.treecontainerid).scrollTop
+        let startIndex = Math.floor(scrollTop / config.rowDefaultHeight);
+        let endIndex = startIndex + config.bufferScale * this.visibleDataCount;
+        let startOffset;
+        if (startIndex >= 1) {
+            //减去上部预留的高度
+            let size = (startIndex + 1) * config.rowDefaultHeight - (startIndex - config.bufferScale * this.visibleDataCount >= 0 ? (startIndex - config.bufferScale * this.visibleDataCount) * config.rowDefaultHeight : 0);
+            startOffset = startIndex * config.rowDefaultHeight - size;
+        } else {
+            startOffset = 0;
+        }
+        document.getElementById(this.state.treeid).style.transform = `translate3d(0,${startOffset}px,0)`;
+        this.scrollShowVisibleData(startIndex, endIndex)
+
+    }
+    /**
+   * 渲染当前可见数据
+   * @param {*} startIndex 
+   * @param {*} endIndex 
+   */
+    scrollShowVisibleData(startIndex, endIndex) {
+        //当前切割的数据开始下标
+        this.sliceBeginIndex = startIndex - config.bufferScale * this.visibleDataCount;
+        this.sliceBeginIndex = this.sliceBeginIndex < 0 ? 0 : this.sliceBeginIndex;
+        // //当前切割的数据结束下标
+        this.sliceEndIndex = endIndex + config.bufferScale * this.visibleDataCount;
+        let sliceData = this.state.flatData.slice(this.sliceBeginIndex, this.sliceEndIndex);
+
+        //对可见的数据设置属性，因为对数据的操作都在data
+        let visibleData = treeFunc.setVisibleDataProps(sliceData, this.state.data);
+        this.setState({
+            visibleData: visibleData,
+            reVirualConfig: false
+        })
     }
     shouldComponentUpdate(nextProps, nextState) {
         //全部用浅判断
-        if (func.diff(nextProps, this.props,false)) {
+        if (func.diff(nextProps, this.props, false)) {
             return true;
         }
-        if (func.diff(nextState, this.state,false)) {
+        if (func.diff(nextState, this.state, false)) {
             return true;
         }
         return false;
@@ -419,9 +458,9 @@ class Tree extends Component {
     render() {
         let nodeControl = [];
         //全局属性
-        const { checkAble, checkStyle, renameAble, removeAble, asyncAble } = this.props;
+        const { selectAble, checkStyle, renameAble, removeAble, asyncAble } = this.props;
         //得到传下去的属性
-        const treeProps = { checkAble, checkStyle, renameAble, removeAble, asyncAble, clickId: this.state.clickId, loadingId: this.state.loadingId };
+        const treeProps = { selectAble, checkStyle, renameAble, removeAble, asyncAble, clickId: this.state.clickId, loadingId: this.state.loadingId };
         //全局事件
         const treeEvents = {
             beforeDrag: this.props.beforeDrag,
@@ -437,20 +476,17 @@ class Tree extends Component {
             onDrop: this.onDrop,
             onDrag: this.props.onDrag
         }
-        let data = this.state.filterValue ? this.state.filter : this.state.data;
+        let data = this.state.filterValue ? this.state.filter : this.state.visibleData;
         if (data instanceof Array && data.length > 0) {
             data.map((item, index) => {
                 let isParent = false;//是否为父节点
                 if (item.isParent == true || (item.children instanceof Array && item.children.length > 0)) {//如果明确规定了，或者子节点不为空，则设置为父节点
                     isParent = true;
                 }
-                
-                  //上一个兄弟节点是否有子节点，用于画虚线
-                let preBroHasChildren=index>0&&data[index-1].children&&data[index-1].children.length>0?true:false;
 
                 //通过输入框的值与自身的勾选情况综合判断
                 nodeControl.push(<TreeNode
-                    key={"treenode-" + item.id + "-" + index}
+                    key={"treenode-" + item.id}
                     {
                     ...treeProps
                     }
@@ -459,16 +495,18 @@ class Tree extends Component {
                     {
                     ...treeEvents
                     }
-                    preBroHasChildren={preBroHasChildren}
-                    isFirst={index===0?true:false}
-                    isLast={index===data.length-1?true:false}
-                    
                 />);
             });
         }
-        return <ul className={"wasabi-tree clearfix " + (this.props.className || "")} style={this.props.style}>
-            {nodeControl}
-        </ul>
+        return <div id={this.state.treecontainerid} onScroll={this.onScroll}
+            className={"wasabi-tree clearfix " + (this.props.className || "")}
+            style={this.props.style}>
+            <ul id={this.state.treeid} >
+                {nodeControl}
+            </ul>
+            <div style={{ left: 0, top: 0, height: this.state.flatData && this.state.flatData.length * config.rowDefaultHeight, position: "absolute", width: 1 }}></div>
+        </div>
+
 
 
     }
@@ -485,7 +523,7 @@ Tree.propTypes = {
     dataSource: PropTypes.string,//ajax的返回的数据源中哪个属性作为数据源,为null时直接后台返回的数据作为数据源
     data: PropTypes.array,//节点数据
     simpleData: PropTypes.bool,//是否使用简单的数据格式
-    checkAble: PropTypes.bool,//是否允许勾选
+    selectAble: PropTypes.bool,//是否允许勾选
     checkStyle: PropTypes.oneOf(["checkbox", "radio"]),//单选还是多选
     checkType: PropTypes.object,//勾选对于父子节点的关联关系
     radioType: PropTypes.oneOf(["level", "all"]),//单选时影响的层级
@@ -523,7 +561,7 @@ Tree.defaultProps = {
     textField: "text",
     dataSource: "data",
     simpleData: true,//默认为真
-    checkAble: true,
+    selectAble: true,
     checkStyle: "checkbox",
     checkType: { "y": "ps", "n": "ps" },//默认勾选/取消勾选都影响父子节点，todo 暂时还没完成
     radioType: "all",//todo 

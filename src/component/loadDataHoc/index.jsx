@@ -1,5 +1,5 @@
 /**
- * Created by zhiyongwang on 2020-11-07
+ * Created by wangzhiyong on 2020-11-07
  * 数据处理基类
  * todo 
  * edit 2021-04-26
@@ -15,7 +15,7 @@ import propTypes from "../propsConfig/propTypes";
  * @param {*} Widget 组件
  * @param {*} inputType 类型
  */
-const loadDataHoc=function (Widget, inputType = "select") {
+const loadDataHoc = function (Widget, inputType = "select") {
     class loadDataHocCompnent extends React.Component {
         constructor(props) {
             super(props);
@@ -42,10 +42,16 @@ const loadDataHoc=function (Widget, inputType = "select") {
             this.loadError = this.loadError.bind(this);
         }
         static getDerivedStateFromProps(props, state) {
-            let newState = {
-
-            };
-            if (props.url && props.url != state.url || func.diff(props.params, state.rawParams)) {
+            let newState = { };       
+            if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData)) {
+                // //如果传了数据，并且发生改变
+                newState = {
+                    loadDataStatus: "data",//通过data加载数据
+                }
+                newState.rawData = props.data;//保留原始数据,用于后期对比       
+            }
+          
+            else if (props.url && props.url != state.url || func.diff(props.params, state.rawParams)) {
                 //传的请求参数发生改变
                 newState = {
                     loadDataStatus: "url",//通过url加载数据
@@ -54,13 +60,7 @@ const loadDataHoc=function (Widget, inputType = "select") {
                     params: func.clone(props.params),
                 }
             }
-            if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData)) {
-                // //如果传了数据，并且发生改变
-                newState = {
-                    loadDataStatus: "data",//通过data加载数据
-                }
-                newState.rawData = props.data;//保留原始数据,用于后期对比              
-            }
+          
             return newState;
         }
         componentDidMount() {
@@ -78,17 +78,15 @@ const loadDataHoc=function (Widget, inputType = "select") {
             }
             else if (this.state.loadDataStatus === "data") {
                 let idOrValueField = (inputType == "tree" || inputType === "treegrid" || inputType === "treepicker") ? this.props.idField || "id" : this.props.valueField || "value";
-                let tempFormatData = propsTran.formatterData(inputType, this.getValue(), this.state.rawData, idOrValueField, this.props.textField || "text");
-
+                let formatData = propsTran.formatterData(inputType, this.getValue(), this.state.rawData, idOrValueField, this.props.textField || "text");
                 this.setState({
-                    data: tempFormatData,
+                    data: formatData,
                     loadDataStatus: null,//处理完成
+                  
                 })
 
             }
         }
-        
-      
         /**
      * 加载数据
      * @param {*} url 
@@ -98,12 +96,7 @@ const loadDataHoc=function (Widget, inputType = "select") {
             if (this.state.url) {
                 let fetchmodel = { type: this.props.httpType || "post", url: this.state.url, success: this.loadSuccess, data: this.state.params, error: this.loadError };
                 fetchmodel.headers = this.props.httpHeaders;
-                if (this.props.contentType) {
-                    //如果传contentType值则采用传入的械
-                    //否则默认
-                    fetchmodel.contentType = this.props.contentType;
-                    fetchmodel.data = fetchmodel.contentType == "application/json" ? fetchmodel.data ? JSON.stringify(fetchmodel.data) : "{}" : fetchmodel.data;
-                }
+                fetchmodel.contentType = this.props.contentType;
                 let wasabi_api = window.api || api;
                 wasabi_api.ajax(fetchmodel);
                 console.log("combobox-fetch", fetchmodel);
@@ -129,11 +122,12 @@ const loadDataHoc=function (Widget, inputType = "select") {
             }
             let realData = func.getSource(res, this.props.dataSource || "data");
             let idOrValueField = (inputType == "tree" || inputType === "treegrid" || inputType === "treepicker") ? this.props.idField : this.props.valueField;
-            let tempFormatData = propsTran.formatterData(inputType, this.getValue(), realData, idOrValueField, this.props.textField);
-            this.setState({
+            let formatData = propsTran.formatterData(inputType, this.getValue(), realData, idOrValueField, this.props.textField);
+             this.setState({
                 loadDataStatus: null,
                 rawData: realData,//保存方便对比
-                data: tempFormatData,
+                data: formatData,
+           
             })
         }
 
@@ -142,15 +136,15 @@ const loadDataHoc=function (Widget, inputType = "select") {
          * 
          * @param {*} value 
          */
-         setValue(value) {
-            this.input.current&& this.input.current.setValue && this.input.current.setValue(value);
+        setValue(value) {
+            this.input.current && this.input.current.setValue && this.input.current.setValue(value);
         }
         /**
          * 获取值
          * @returns 
          */
         getValue() {
-            return  this.input.current&&this.input.current.getValue && this.input.current.getValue();
+            return this.input.current && this.input.current.getValue && this.input.current.getValue();
         }
         /**
          * 刷新
@@ -159,20 +153,26 @@ const loadDataHoc=function (Widget, inputType = "select") {
          */
         reload(params, url) {
 
-            url = url || this.props.url;
-            params = params || this.state.params;
-            this.setState({
-                loadDataStatus: "url",
-                params: params
-            })
+            if(this.input.current.reload){
+                this.input.current.reload();
+            }
+            else{
+                url = url || this.props.url;
+                params = params || this.state.params;
+                this.setState({
+                    loadDataStatus: "url",
+                    params: params
+                })
+            }
+           
         }
 
         shouldComponentUpdate(nextProps, nextState) {
-             //全部用浅判断
-            if (func.diff(nextProps, this.props,false)) {
+            //全部用浅判断
+            if (func.diff(nextProps, this.props, false)) {
                 return true;
             }
-            if (func.diff(nextState, this.state,false)) {
+            if (func.diff(nextState, this.state, false)) {
                 return true;
             }
             return false;

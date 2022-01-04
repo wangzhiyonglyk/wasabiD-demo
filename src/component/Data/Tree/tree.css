@@ -5,6 +5,9 @@
     margin: 0px;
     padding: 0px;
     --dotted-color: var(--border-color);
+    /* height: 100%; */
+    width: 100%;
+    overflow-y: auto;
 }
 
 /* 树表格与交叉表把父子关系的虚线隐藏 */
@@ -29,7 +32,7 @@
     cursor: pointer;
     position: relative;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: flex-start;
 }
 
@@ -40,6 +43,7 @@
     height: 100%;
     position: relative;
     padding-top: 9px;
+ 
 }
 
 .wasabi-tree .wasabi-tree-li-icon.selected {
@@ -59,15 +63,7 @@
     padding-top: 12px;
 }
 
-/* 树的折叠图标前面的虚线 因为折叠线的before用作图标了 */
-.wasabi-tree .wasabi-tree-li-icon-beforeRight::before {
-    content: "";
-    position: absolute;
-    border-left: 1px dotted var(--dotted-color);
-    height: 11px;
-    left: 7px;
-    top: 0px;
-}
+
 
 /* 树的折叠图标右边的虚线 */
 .wasabi-tree .wasabi-tree-li-icon-beforeRight::after {
@@ -79,7 +75,16 @@
     top: 16px;
     width: 10px;
 }
-
+/*树节点向下的虚线*/
+.wasabi-tree .wasabi-tree-li-icon-afterBelow{
+    position: absolute;
+    height: 30px;
+    border-left: 1px dotted var(--dotted-color);
+    left: 7px;
+    top:15px;
+  
+   
+}
 /* 树表格与交叉表的底部分隔线,增加宽度是为了线足够长 */
 .wasabi-treegrid .wasabi-tree .wasabi-tree-li-icon::after {
     content: "";
@@ -113,25 +118,6 @@
 }
 
 
-/* 折叠图标后面的虚线 */
-.wasabi-tree .wasabi-tree-li-icon::after {
-    content: "";
-    position: absolute;
-    border-left: 1px dotted var(--dotted-color);
-    height: 10px;
-    left: 7px;
-    top: 20px;
-}
-
-/**树第一个节点的折叠图标没有前面的虚线**/
-.wasabi-tree>li.wasabi-tree-li:first-child .wasabi-tree-li-icon-beforeRight::before {
-    border-left: none;
-}
-
-/* 同层最后一个节点的折叠图标   没有后面的虚线 */
-.wasabi-tree .wasabi-tree-li-icon.isLast::after {
-    border-left: none;
-}
 
 /* 没有折叠图标的图标占位符 */
 .wasabi-tree .wasabi-tree-li-icon-line {
@@ -159,16 +145,11 @@
 
 /**折叠图标前面的向下虚线**/
 .wasabi-tree .wasabi-tree-li-icon-line::before {
-    content: "";
+    /* content: "";
     border-left: 1px dotted var(--dotted-color);
-    height: 30px;
+    height: 15px;
     position: absolute;
-    left: 7px;
-}
-
-/* 同层最后一个节点，虚线要短一点 */
-.wasabi-tree .wasabi-tree-li-icon-line.isLast::before {
-    height: 16px;
+    left: 7px; */
 }
 
 /* 折叠图标前面的向右虚线 */
@@ -187,10 +168,10 @@
     border-left: none;
     position: absolute;
     border-bottom: 1px solid var(--border-color);
-    left: -1000px;
+    left: -100000px;
     height: 41px;
     top: 0px;
-    width: 1000px;
+    width: 100000px;
 }
 
 .wasabi-pivot .wasabi-tree .wasabi-tree-li-icon-line::before {
@@ -198,10 +179,10 @@
     border-left: none;
     position: absolute;
     border-bottom: 1px solid var(--border-color);
-    left: -1000px;
+    left: -100000px;
     height: 41px;
     top: 0px;
-    width: 1000px;
+    width: 100000px;
 }
 
 .wasabi-treegrid .wasabi-tree .wasabi-tree-li-icon-line.selected::before {
@@ -248,9 +229,9 @@
     content: "";
     position: absolute;
     border-left: 1px dotted var(--dotted-color);
-    height: 6px;
+    height: 20px;
     left: 7px;
-    bottom: 0px;
+    top: 25px;
 }
 
 .wasabi-tree .wasabi-checkul {
@@ -274,7 +255,7 @@
     box-sizing: border-box;
     display: flex;
     position: relative;
-    width: calc(100% - 40px);
+    width: auto;
 }
 .wasabi-tree .wasabi-tree-li-node .wasabi-form-group{
     width: 100%;
@@ -366,10 +347,6 @@
     left: 7px;
 }
 
-/**父节点是最后一个节点， 子节点容器没有虚线**/
-.wasabi-tree .wasabi-tree-sub.parentIsLast::before {
-    border-left: none;
-}
 
 /* 编辑时 */
 .wasabi-tree .wasabi-input {

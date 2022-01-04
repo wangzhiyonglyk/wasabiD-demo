@@ -3,6 +3,25 @@ import func from "../../libs/func";
 const treeFunc = {
 
     /**
+     * 找到节点 
+     * @param {*} data 
+     * @param {*} path 
+     */
+    findNode(data,path){
+        let node;
+        if (data && data.length > 0 && path && path.length > 0) {
+            node = data[path[0]];//节点链表
+            if (path && path.length > 1) {
+                for (let i = 1; i < path.length; i++) {
+                    if (node.children && node.children.length > 0) {
+                        node=node.children[path[i]];
+                    }
+                }
+            }
+        }
+        return node;
+    },
+    /**
      * 找到叶子节点链表
      * @param {*} data 
      * @param {*} path 
@@ -27,7 +46,7 @@ const treeFunc = {
      * @param {*} data 
      */
     setSelfChecked(value, data) {
-        data=func.clone(data);
+      
         if (value) {
             for (let i = 0; i < data.length; i++) {
                 if (("," + value + ",").indexOf("," + data[i].id + ",") > -1) {
@@ -48,13 +67,13 @@ const treeFunc = {
     /**
      * 设置节点及子孙节点的勾选
      * @param {*} data 数据
-     * @param {*} node 节点路径
+     * @param {*} node 节点
      * @param {*} checked 勾选状态
      * @param {*} checkType 勾选方式
      * @returns 
      */
     setChecked(data, node, checked, checkType) {
-        data = func.clone(data);
+       
         try {
             let nodes = this.findLeafNodes(data, node._path);
             if (nodes && nodes.length > 0) {
@@ -104,7 +123,7 @@ const treeFunc = {
                 }
             }
             else if (radioType == "level") {
-                data = func.clone(data);
+             
                 let nodes = this.findLeafNodes(data, node._path);
                 if (nodes && nodes.length >= 2) {
                     //有父节点
@@ -215,7 +234,7 @@ const treeFunc = {
      * @returns 
      */
     clearChecked(data) {
-        data = func.clone(data);
+      
         if (data && data instanceof Array && data.length > 0) {
             for (let i = 0; i < data.length; i++) {
                 data[i].checked = false;
@@ -233,7 +252,7 @@ const treeFunc = {
   * @returns 
   */
     checkedAll(data) {
-        data = func.clone(data);
+      
         if (data && data instanceof Array && data.length > 0) {
             for (let i = 0; i < data.length; i++) {
                 data[i].checked = true;
@@ -251,7 +270,6 @@ const treeFunc = {
      * @param {*} node 
      */
     setOpen(data,node){
-        data=func.clone(data);
         let nodes = this.findLeafNodes(data, node._path);
         if (nodes && nodes.length > 0) {
             let leaf = nodes[nodes.length - 1];//叶子节点，即实际的节点    
@@ -279,7 +297,6 @@ const treeFunc = {
      * @param {*} id 
      */
     removeNode(data, node) {
-        data = func.clone(data);//不影响其他原数据
         let nodes = treeFunc.findLeafNodes(data, node._path);
         if (nodes.length == 1) {
             //根节点
@@ -304,7 +321,6 @@ const treeFunc = {
      * @param {*} dropNode 停靠节点
      */
     moveInNode(data, dragNode, dropNode) {
-        data = func.clone(data);//不影响其他原数据
         //在数据中找到节点
         let dragNodes = treeFunc.findLeafNodes(data, dragNode._path);
         let dropNodes = treeFunc.findLeafNodes(data, dropNode._path);
@@ -352,7 +368,7 @@ const treeFunc = {
      * @returns 
      */
     moveBeforeOrAfterNode(data, dragNode, dropNode, step = 0) {
-        data = func.clone(data);
+     
         try {
             let dragNodes = treeFunc.findLeafNodes(data, dragNode._path);
             let dropNodes = treeFunc.findLeafNodes(data, dropNode._path);
@@ -454,7 +470,6 @@ const treeFunc = {
      */
     appendChildren(data, children, row) {
         //格式化
-        data = func.clone(data);
         if (row && row._path) {
             let nodes = treeFunc.findLeafNodes(data, row._path);
             if (nodes && nodes.length > 0) {
@@ -471,8 +486,30 @@ const treeFunc = {
             data = treeFunc.setChildrenPath("", [], data);
         }
 
+    },
+      /**
+     * 对扁平化的数据设置属性
+     * @param {*} visibleData 
+     * @param {*} data 
+     */
+       setVisibleDataProps(visibleData,data){
+        if(visibleData.length>0){
+            let result=[];
+            visibleData.forEach(item=>{
+                let yuanItem= treeFunc.findNode(data,item._path  );
+                //目前就获取这两个属性
+                result.push(
+                    {
+                        ...item,
+                        checked:yuanItem.checked,
+                        open:yuanItem.open
+                    }
+                );
+            })
+            return result;
+        }
+        return [];
     }
-
 }
 
 export default treeFunc

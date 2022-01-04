@@ -1,9 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import {  Tree } from "../../component"
+import {  Tree ,Button} from "../../component"
+
+let data=[
+    {
+        id: 1, label: "第一个节点"
+    },
+
+    {
+        id: 2, label: "第二个节点"
+    },
+    {
+        id: 31, pId: 1, label: "第31个节点"
+    },
+    {
+        id: 32, pId: 1, label: "第32个节点"
+    },
+
+    {
+        id: 21, pId: 2, label: "第21个节点"
+    },
+    {
+        id: 22, pId: 2, label: "第22个节点"
+    },
+    {
+        id: 221, pId: 22, label: "第221个节点"
+    },
+];
+for(let i=0;i<1000;i++){
+
+    data.push({
+        id:"s"+i,
+        pId:2,
+        label:"第"+i+"节点"
+    })
+}
 class Page extends React.Component {
     constructor(props) {
         super(props);
+        this.tree=React.createRef();
         this.input = React.createRef();
         this.input1 = React.createRef();
         this.form = React.createRef();
@@ -69,37 +104,7 @@ class Page extends React.Component {
 
                 },
             ],
-            data: [
-                {
-                    id: 1, label: "通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 dataSource 中的数据字段相对应。", label1: "dd"
-                },
-
-                {
-                    id: 2, label: "可以停靠", label1: "testeste"
-                },
-                {
-                    id: 3, pId: 1, label: "通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 dataSource 中的数据字段相对应。", label1: "dd"
-                },
-                {
-                    id: 31, pId: 1, label: "通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 dataSource 中的数据字段相对应。", label1: "dd"
-                },
-
-                {
-                    id: 4, pId: 2, label: "可以停靠", label1: "testeste"
-                },
-                {
-                    id: 5, pId: 2, label: "可以停靠", label1: "testeste"
-                },
-                {
-                    id: 6, pId: 4, label: "可以停靠", label1: "testeste"
-                },
-                {
-                    id: 7, pId: 5, label: "可以停靠", label1: "testeste"
-                },
-                {
-                    id: 8, pId: null, label: "可以停靠", label1: "testeste"
-                },
-            ],
+            data: data,
             tabs: [{
                 title: "你好"
             }, {
@@ -107,8 +112,27 @@ class Page extends React.Component {
             }],
         }
     }
+    onClick(){
+this.setState({
+    height:400
+},()=>{
+    console.log(
+        "Test"
+    )
+  this.tree.current.reload();
+}
+)
+    }
     render() {
-        return <Tree style={{ height: 500 }} textField="label" checkStyle="checkbox" renameAble={true} rowNumber={true} detailAble={true} checkAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></Tree>
+        return <div style={{height:"100%",display:"flex",flexDirection:"column"}} >
+            <div key="1" style={{height:100,background:"red"}}>
+                <Button name="good"  onClick={this.onClick.bind(this)}>改变下面</Button>
+            </div>
+             <Tree key="2" ref={this.tree}  style={{flexGrow:1,height:500}} textField="label" checkStyle="checkbox" renameAble={true} rowNumber={true} detailAble={true} checkAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></Tree>
+        <div key="3" style={{height:this.state.height||200,background:"blue"}}>
+
+        </div>
+        </div>
     }
 }
 

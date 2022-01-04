@@ -57,11 +57,11 @@ let propsTran = {
    * @param {*} data 
    */
     processText(value = "", data = []) {
-    
+
         let text = [];//选中的文本值 
         if (data && data instanceof Array && data.length > 0) {
             for (let i = 0; i < data.length; i++) {
-                if (("," + (value) + ",").indexOf("," + ((data[i].value+"")||(data[i].id+""))+ ",") > -1) {
+                if (("," + (value) + ",").indexOf("," + ((data[i].value + "") || (data[i].id + "")) + ",") > -1) {
                     text.push(data[i].text);
                 }
                 if (data[i].children && data[i].children.length > 0) {
@@ -198,35 +198,9 @@ let propsTran = {
         return result;
     },
 
-    /**
-     * 树筛选
-     * @param {*} filterText 
-     * @param {*} data 
-     */
-    treeFilter(filterText, data) {
 
-        let filterResult = [];
-        data && data.forEach((item, index) => {
-            let filterItem = null;
-            if (item.id && item.id.toString().indexOf(filterText) > -1 || item.text.indexOf(filterText) > -1) {
-                filterItem = { ...item, children: [] }
-            }
-            if (item.children && item.children.length > 0) {
-                let result = propsTran.treeFilter(filterText, item.children);
-                if (result.length > 0) {
-                    filterItem = { ...item, children: [] }
-                    filterItem.children = result;
-                }
-
-            }
-            if (filterItem) {
-                filterResult.push(filterItem);
-            }
-        })
-        return filterResult;
-    },
     /**
-     * 表格是否隐藏某行数据,toto,要优化
+     * 表格是否隐藏某行数据,toto,要优化 todo
      * @param {*} data 
      * @param {*} open 
      * @param {*} children 
@@ -289,6 +263,11 @@ let propsTran = {
         labelStyle = func.clone(labelStyle) || {};
         labelStyle.width = labelStyle.width != null && labelStyle.width != undefined ? labelStyle.width : maxWidth;
         return labelStyle;
-    }
+    },
+
+ 
+
+  
+
 }
 export default propsTran;

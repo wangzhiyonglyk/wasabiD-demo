@@ -11,62 +11,20 @@ import PropTypes from "prop-types";
 import Input from "../../Form/Input"
 import func from "../../libs/func";
 import TreeNodeRow from "./TreeNodeRow"
-function ChildrenView(props) {
-
-    let nodeControl = [];
-
-    if (props.children && props.children instanceof Array && props.children.length > 0) {
-        props.children.map((item, index) => {
-            let isParent = false;//是否为父节点
-            if (item.isParent == true || (item.children instanceof Array && item.children.length > 0)) {//如果明确规定了，或者子节点不为空，则设置为父节点
-                isParent = true;
-            }
-            //上一个兄弟节点是否有子节点，用于画虚线
-           let preBroHasChildren=index>0&&props.children[index-1].children&&props.children[index-1].children.length>0?true:false;
-           
-       
-            nodeControl.push(<TreeNode
-                key={index}
-              
-                {...props}
-                {...item}
-                preBroHasChildren={preBroHasChildren}
-                parentIsLast={props.isLast}//父节点是否是最后一个节点,用于取消画虚线
-                isFirst={index===0?true:false}
-                isLast={index===props.children.length-1?true:false}
-                /**
-                 * 不管有没有这个属性，都来自自身
-                 */
-                checked={item.checked || false}
-                half={item.half || false}
-                draggAble={item.draggAble || false}
-                dropAble={item.dropAble || false}
-                isParent={isParent}
-                children={item.children||[]}
-                hide={item.hide||false}
-            />);
-        });
-        return nodeControl;
-    }
-    else {
-        return null;
-    }
-
-}
+import config from "./config"
 function NodeView(props) {
-
     //节点属性
     let row = new TreeNodeRow();//得到无数据
     for (let key in row) {
         row[key] = props[key] != undefined && props[key] != null ? props[key] : row[key];
     }
     //tree的属性
-    const { clickId, loadingId, checkAble, checkStyle, renameAble, removeAble } = props;
+    const { clickId, loadingId, selectAble, checkStyle, renameAble, removeAble } = props;
     //node的属性
-    const { rename } = props;
+    const { rename } = props;//从treeNode那里拿过来的
 
     //tree的事件
-    const { onDoubleClick, onClick, onChecked,onExpand } = props;
+    const { onDoubleClick, onClick, onChecked, onExpand } = props;
     //node的事件
     const { onNodeDragStart, onNodeDragEnd, onNodeDrop, onNodeDragOver, onNodeDragLeave, onBlur, onKeyUp } = props;
     let title = row.title || row.text;//提示信息 
@@ -84,64 +42,65 @@ function NodeView(props) {
         iconCls = "icon-loading tree-loading";
 
     }
-
-    let childrenControl = null;
-    if (row.children && row.children.length > 0) {
-      
-        childrenControl = <ChildrenView {...props}></ChildrenView>
-    }
-    else {
+    let childrenLength = row.open===false?0: row?.children?.length||0;//子节点个数
+    //空白位，表示节点层级
+    let blankControl = [];
+    if (row._path.length > 1) {
+        for (let i = 1; i < row._path.length; i++) {
+            blankControl.push(<span key={i} style={{ width: 20 }}></span>)
+        }
     }
     //节点元素
-    return <li className="wasabi-tree-li"  style={{ display: row.hide ? "none" : "flex" }} >
+    return <li className="wasabi-tree-li" key={row.id} style={{ display: row.hide ? "none" : "flex" }} >
+        {blankControl}
         {/* 折叠节点 */}
-         {row.isParent? <i className={((clickId===row.id?" selected ":""))+(props.isLast?" isLast ":"")+(row.open ? " wasabi-tree-li-icon  icon-caret-down" : " wasabi-tree-li-icon icon-caret-right")} 
-                onClick={ row.isParent?onExpand.bind(this,!row.open,row.id, row.text, row):null}>
-                    {/* span用于前面加虚线及右边，树的第一层第一个节点没有前面的虚线 */}
-                    <span className="wasabi-tree-li-icon-beforeRight"></span></i>
-                    /* 父节点是最后一个节点，虚线要短一点 */
-                    :<i className={ ((clickId===row.id?" selected ":""))+(" wasabi-tree-li-icon-line "+(props.isLast?"isLast":""))}></i>}
-          {/* 勾选 */}
-          
+        {row.isParent ? <i className={((clickId === row.id ? " selected " : "")) + (row.open ? " wasabi-tree-li-icon  icon-caret-down" : " wasabi-tree-li-icon icon-caret-right")}
+            onClick={row.isParent ? onExpand.bind(this, !row.open, row.id, row.text, row) : null}>
+            {/* span用于右边加虚线*/}
+            <span className="wasabi-tree-li-icon-beforeRight"></span>
+            {/* 用于向下加虚线 */}
+            <span className="wasabi-tree-li-icon-afterBelow" style={{ height:( childrenLength+1) * config.rowDefaultHeight +(row.isLast?config.rowDefaultHeight*-1:0)  }}></span>
+        </i>
+            //    不是父节点也要一个占位符
+            : <i className={((clickId === row.id ? " selected " : "")) + (" wasabi-tree-li-icon-line ")}>
+                <span className="wasabi-tree-li-icon-afterBelow" style={{ height: (childrenLength+1)* config.rowDefaultHeight  +(row.isLast?config.rowDefaultHeight*-1:0)  }}></span>
+            </i>}
+        {/* 勾选 */}
 
-           <Input key="1" type={checkStyle || "checkbox"}
-                            hide={checkAble || row.checkAble ? false : true}
-                            half={row.half}
-                            name={"node" + row.id}
-                            /**有子节点有向下的虚线**/
-                            className={(clickId===row.id?" selected ":"")+ (childrenControl?" hasChildren ":"  ")}
-                            value={row.checked ? row.id : ""} data={[{ value: row.id, text: "" }]}
-                            onSelect={onChecked.bind(this, row.id, row.text, row)}></Input>
+
+        <Input key="1" type={checkStyle || "checkbox"}
+            hide={selectAble || row.selectAble ? false : true}
+            half={row.half}
+            name={"node" + row.id}
+            /**有子节点有向下的虚线**/
+            className={(clickId === row.id ? " selected " : "") + (childrenLength > 0 ? " hasChildren " : "  ")}
+            value={row.checked ? row.id : ""} data={[{ value: row.id, text: "" }]}
+            onSelect={onChecked.bind(this, row.id, row.text, row)}></Input>
         {/* 文本节点 */}
-        <div id={row.nodeid} className={clickId ===row.id ? "wasabi-tree-li-node selected" : "wasabi-tree-li-node"} 
-        title={title}
-        onDrop={onNodeDrop}
-        onDragOver={onNodeDragOver} onDragLeave={onNodeDragLeave}
-        onClick={onClick.bind(this, row.id, row.text, row)}
-        onDoubleClick={onDoubleClick.bind(this, row.id, row.text, row)} >
-             {rename ?
-                    <Input type="text" id={row.textid} required={true} onKeyUp={onKeyUp} onBlur={onBlur}
-                        name={"key" + row.id} value={row.text} ></Input> :
-                        <div key="2" className="wasabi-tree-li-node-text-div" draggable={row.draggAble} onDragEnd={onNodeDragEnd} onDragStart={onNodeDragStart}>
-                          {/* 没有勾选功能时并且有子节点时有虚线 */}
-                            <i key="3" className={((!row.checkAble)&&childrenControl?" noCheckhasChildren ":"  ")+iconCls+" wasabi-tree-text-icon"} ></i>
-                            <a href={row.href} className="wasabi-tree-txt">{row.text}</a></div>
-                  
-                }
-                {
-                    !rename && renameAble ? <i key="edit" className={"icon-edit edit"} title="重命名"  onClick={props.beforeNodeRename} ></i> : null
-                }
-                {
-                    !rename && removeAble ? <i key="delete" className={"icon-delete edit"} title="删除"  onClick={props.beforeNodeRemove} ></i> : null
-                }
-            </div>
+        <div id={row.nodeid} className={clickId === row.id ? "wasabi-tree-li-node selected" : "wasabi-tree-li-node"}
+            title={title}
+            onDrop={onNodeDrop}
+            onDragOver={onNodeDragOver} onDragLeave={onNodeDragLeave}
+            onClick={onClick.bind(this, row.id, row.text, row)}
+            onDoubleClick={onDoubleClick.bind(this, row.id, row.text, row)} >
+            {rename ?
+                <Input type="text" id={row.textid} required={true} onKeyUp={onKeyUp} onBlur={onBlur}
+                    name={"key" + row.id} value={row.text} ></Input> :
+                <div key="2" className="wasabi-tree-li-node-text-div" draggable={row.draggAble} onDragEnd={onNodeDragEnd} onDragStart={onNodeDragStart}>
+                    {/* 没有勾选功能时并且有子节点时有虚线 */}
+                    <i key="3" className={((!row.selectAble) && childrenLength ? " noCheckhasChildren " : "  ") + iconCls + " wasabi-tree-text-icon"} ></i>
+                    <a href={row.href} className="wasabi-tree-txt">{row.text}</a></div>
 
-        
-        {
-            childrenControl ? <ul className={ (props.isLast?"parentIsLast ":"")+(row.open ? " wasabi-tree-sub clearfix   show" : " wasabi-tree-sub clearfix  hide ")}>
-                {childrenControl}
-            </ul> : null
-        }
+            }
+            {
+                !rename && renameAble ? <i key="edit" className={"icon-edit edit"} title="重命名" onClick={props.beforeNodeRename} ></i> : null
+            }
+            {
+                !rename && removeAble ? <i key="delete" className={"icon-delete edit"} title="删除" onClick={props.beforeNodeRemove} ></i> : null
+            }
+        </div>
+
+
 
     </li>
 }
@@ -161,7 +120,7 @@ class TreeNode extends Component {
         this.beforeNodeRename = this.beforeNodeRename.bind(this);
         this.beforeNodeRemove = this.beforeNodeRemove.bind(this);
 
-     
+
         this.onNodeDragEnd = this.onNodeDragEnd.bind(this);
         this.onNodeDragLeave = this.onNodeDragLeave.bind(this);
         this.onNodeDragOver = this.onNodeDragOver.bind(this);
@@ -267,7 +226,7 @@ class TreeNode extends Component {
      * 下面是处理拖动的事件
      */
 
-   
+
 
     /**
      * 拖动组件，拖动事件
@@ -301,15 +260,15 @@ class TreeNode extends Component {
         event.preventDefault();
         //在树组件本身内停靠时，这个事件有时候没有响应，原因不详，并用要使用缓存中的，用 event.dataTransfer的，数据不对，原因不详
         //但是拖动到外部的时候，没有问题,先标记
-       
+
         // let drag = JSON.parse(window.localStorage.getItem("wasabi-drag-item"))
-    
+
     }
     /**
      * 容器经过事件,要阻止默认事件，否则浏览默认是搜索
      */
     onNodeDragOver(event) {
-      event.preventDefault();//一定加这句
+        event.preventDefault();//一定加这句
         if (this.props.dropAble) {
             const domClientY = document.getElementById(this.state.nodeid).getBoundingClientRect().top;
             const mouseClientY = event.clientY;
@@ -339,7 +298,7 @@ class TreeNode extends Component {
      * 容器离开事件
      * @param {} event 
      */
-    onNodeDragLeave(event) {    
+    onNodeDragLeave(event) {
         event.preventDefault()
         document.getElementById(this.state.nodeid).style.borderTop = "none";
         document.getElementById(this.state.nodeid).style.borderBottom = "none";
@@ -388,7 +347,7 @@ class TreeNode extends Component {
             onNodeRename={this.onNodeRename}
             beforeNodeRemove={this.beforeNodeRemove}
             onNodeEdit={this.onNodeEdit}
-        
+
             onNodeDragEnd={this.onNodeDragEnd}
             onNodeDragLeave={this.onNodeDragLeave}
             onNodeDragOver={this.onNodeDragOver}
@@ -408,7 +367,7 @@ TreeNode.propTypes = {
     iconOpen: PropTypes.string,//[父节点]打开图标
     open: PropTypes.bool,//是否处于打开状态
     checked: PropTypes.bool,//是否被勾选
-    checkAble: PropTypes.bool,//是否允许勾选
+    selectAble: PropTypes.bool,//是否允许勾选
     draggAble: PropTypes.bool,//是否允许拖动，
     dropAble: PropTypes.bool,//是否允许停靠
     href: PropTypes.string,//节点的链接
@@ -439,12 +398,12 @@ TreeNode.defaultProps = {
     iconCls: "icon-text",
     iconClose: "icon-folder",
     iconOpen: "icon-folder-open",
-    checked:false,
-    checkAble:false,
+    checked: false,
+    selectAble: false,
     open: true,
     half: false,
     draggAble: false,
     dropAble: false,
-    children:[]
+    children: []
 };
 export default TreeNode;

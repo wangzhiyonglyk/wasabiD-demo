@@ -404,7 +404,7 @@ func.diff = function (objA = null, objB = null, deep = true) {//
     if (typeof objA === "function") {//函数
         return objA.toString() === objB.toString();
     }
-   else if (typeof objA === "object") {//对象
+    else if (typeof objA === "object") {//对象
         //先拿所有的属性 
         try {
 
@@ -441,8 +441,8 @@ func.diff = function (objA = null, objB = null, deep = true) {//
         } catch (e) {
             console.log(objA, objB)
         }
-    }else{//其他类型
-        return objA!==objB;
+    } else {//其他类型
+        return objA !== objB;
     }
 
     return false;
@@ -459,7 +459,6 @@ func.componentMixins = function (component, mixinClass = []) {
     try {
         mixinClass.forEach(baseCtor => {
             Object.getOwnPropertyNames(baseCtor).forEach(name => {
-
                 if (typeof baseCtor[name] == "function") {
                     component.prototype[name] = baseCtor[name];
                 }
@@ -481,9 +480,9 @@ func.componentMixins = function (component, mixinClass = []) {
  */
 func.toTreeData = function (data, idField = "id", parentField = "pId", textField = "text") {
     data = func.clone(data);//复制一份
-    let pos = {};
-    let tree = [];//最终数据
-    let count = 0;//
+    let tree = [];//最终树数据
+    let pos = {};//临时节点对象
+    let count = 0;//总次数，防止死循环
     let pId = "";//一级父节点pid值
     let ids = "";//所有id值
     for (let i = 0; i < data.length; i++) {
@@ -495,7 +494,7 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
         }
     }
     let index = 0;
-    while (data.length !== 0 && count < 200000) {
+    while (data.length !== 0 && count < 2000000) {
         count++;
         if (pId.indexOf("," + data[index][parentField] + ",") > -1 || !data[index][parentField]) {
             //一级节点
@@ -506,6 +505,7 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
                 text: data[index][textField],
                 children: []
 
+
             }
             tree.push(item);
             pos[data[index][idField]] = [tree.length - 1];//节点路径
@@ -515,11 +515,12 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
             data.splice(index, 1);
             index--;
         } else {
+            //非一级节点
             let posArr = pos[data[index][parentField]];//拿出父节点的路径
             if (posArr) {
-                let obj = tree[posArr[0]];//找到在树中的位置
+                let currentNode = tree[posArr[0]];//找到在树中的位置
                 for (let j = 1; j < posArr.length; j++) {
-                    obj = obj.children[posArr[j]];
+                    currentNode = currentNode.children[posArr[j]];
                 }
                 let item = {
                     ...data[index],
@@ -528,8 +529,8 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
                     text: data[index][textField],
                     children: data[index].children || [],
                 }
-                obj.children.push(item);
-                pos[data[index][idField]] = posArr.concat([obj.children.length - 1]);
+                currentNode.children.push(item);
+                pos[data[index][idField]] = posArr.concat([currentNode.children.length - 1]);
                 item._path = pos[data[index][idField]];//保存路径
                 //格式化子节点
                 item.children = func.formatTreeDataChildren(data[index].children, item.id, item._path, idField, parentField, textField);
@@ -539,7 +540,7 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
         }
         index++;
         if (index > data.length - 1) {
-            index = 0;
+            index = 0;//归零
         }
     }
     if (data.length > 0) {
@@ -548,6 +549,7 @@ func.toTreeData = function (data, idField = "id", parentField = "pId", textField
     return tree;
 
 }
+
 /**
  * 如果树节点本身包含了子节点，格式化节点
  * @param {*} node 
@@ -557,15 +559,14 @@ func.formatTreeDataChildren = function (children, pId, path, idField = "id", par
     if (children && children instanceof Array && children.length > 0) {
         for (let i = 0; i < children.length; i++) {
             let newPath = [...path, i];
-            let item = {
+            children[i] = {
                 ...children[i],
                 id: children[i][idField],
                 pId: pId,
                 text: children[i][textField],
                 _path: newPath,
                 children: func.formatTreeDataChildren(children[i].children, children[i][idField], newPath, idField, parentField, textField)
-            }
-            children[i] = item;
+            };
         }
         return children;
     }
@@ -573,45 +574,26 @@ func.formatTreeDataChildren = function (children, pId, path, idField = "id", par
 
 
 }
-/**
- * 找到父节点
- * @param {*} data 
- * @param {*} pId 
- */
-func.treeFindParent = function (data, pId) {
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].id === pId) {
-            return data[i];
 
-        }
-        if (data[i].children && data[i].children.length > 0) {
-            let findNode = func.treeFindParent(data[i].children, pId);
-            if (findNode) {
-                return findNode;
+/**
+* 将树型结构的数据扁平化
+* @param {*} data 
+*/
+func.treeDataToFlatData = function (data) {
+    let result = [];
+    if (data && data instanceof Array) {
+        for (let i = 0; i < data.length; i++) {
+            result.push({
+                ...data[i],
+                isLast: i === data.length - 1 ? true : false
+            });
+            if (data[i].children && data[i].children.length > 0&&data[i].open!==false) {
+                result = result.concat(func.treeDataToFlatData(data[i].children));
             }
         }
     }
-    return null;
+    return result;
 }
-
-/**
- * 找到所有祖先节点
- * @param {*} data 
- * @param {*} pId 
- */
-func.treeFindALLParents = function (data, pId) {
-    let parents = [];
-    let parent = func.treeFindParent(data, pId);
-    let count = 0;;//防止死循环
-    while (parent && count < 1000) {
-        count++;
-        parents.push(parent);
-        parent = func.treeFindParent(data, parent.pId);
-
-    }
-    return parents;
-}
-
 /**
  * 深度合并
  * @param {*} targetObj 目标对象
@@ -648,7 +630,7 @@ func.arrayNodupMerge = function (arr1 = [], arr2 = [], key = "id") {
  * 根据字符计算大概宽度
  * @param {*} str 字符
  */
- func.charWidth = function (str = "") {
+func.charWidth = function (str = "") {
     let width = 0;
     try {
         let strArr = str.split("");
@@ -672,14 +654,14 @@ func.arrayNodupMerge = function (arr1 = [], arr2 = [], key = "id") {
 /**
  * 节流方案
  */
-func.throttle=function(fn,wait){
+func.throttle = function (fn, wait) {
     let pre = Date.now();
-    return function(){
+    return function () {
         let context = this;
         let args = arguments;
         let now = Date.now();
-        if( now - pre >= wait){
-            fn.apply(context,args);
+        if (now - pre >= wait) {
+            fn.apply(context, args);
             pre = Date.now();
         }
     }

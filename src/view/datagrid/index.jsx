@@ -97,27 +97,25 @@ class Page extends React.Component {
         }
     }
     onScroll(event){
-       return;
      let scrollTop=event.target.scrollTop;
-     let index=Math.floor(scrollTop/40);
-     if(index+10<this.state.data.length)
-     {
-        this.setState({
-            startIndex:index,
-            endIndex:index+10
-        })
-     }
-      
+    document.getElementById("d").style.height=scrollTop+"px";
+    document.getElementById("d1").style.height=(10000-scrollTop)+"px"
+
     }
     componentDidUpdate(){
         
     }
     componentDidMount(){
-        console.timeEnd("d")
+        
     }
     render() {
-        console.time("d")
+        
          return <DataGrid httpType="get" style={{ height: 600,width:1000}} pagination={false} textField="label" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></DataGrid>
+        // return <div id="e" style={{height:400,overflow:"auto"}} onScroll={this.onScroll.bind(this)}>
+        //     <div id="d"></div>
+        //     <div>你好</div>
+        //     <div id="d1" style={{height:10000,width:100}}></div>
+        // </div>
 
     }
 }
