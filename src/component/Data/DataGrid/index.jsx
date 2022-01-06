@@ -163,7 +163,7 @@ class DataGrid extends Component {
      * 更新函数
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("gridupdate",new Date().getTime())
+       
         //重新加数据
         if (this.state.urlLoadData) {//需要请求数据
             this.reload();//调用
@@ -178,7 +178,7 @@ class DataGrid extends Component {
 
     }
     componentDidMount() {
-        console.timeEnd("grid")
+     
         if (this.state.urlLoadData) {//需要请求数据
             this.reload();//调用
         }
@@ -192,7 +192,7 @@ class DataGrid extends Component {
     }
     
     render() {
-       console.time("grid")
+      
         return <Grid
             {...this.props}
             {...this.state}

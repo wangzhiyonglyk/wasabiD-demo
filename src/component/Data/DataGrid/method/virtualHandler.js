@@ -10,6 +10,7 @@ export default {
      * 初始化虚拟列表参数
      */
     initVirtual() {
+        console.log("test")
         let topReduce = document.getElementById(this.state.fixTableId)?.getBoundingClientRect().height;//表头高度
         let visibleHeight = Math.ceil(document.getElementById(this.state.containerid).clientHeight) - topReduce;//表体可见高度
         let visibleCount = Math.ceil(visibleHeight / config.rowDefaultHeight);

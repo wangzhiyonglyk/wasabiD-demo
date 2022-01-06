@@ -13,9 +13,9 @@ import propTypes from "../propsConfig/propTypes";
 /**
  * 预处理各类数据
  * @param {*} Widget 组件
- * @param {*} inputType 类型
+ * @param {*} componentType 类型
  */
-const loadDataHoc = function (Widget, inputType = "select") {
+const loadDataHoc = function (Widget, componentType = "select") {
     class loadDataHocCompnent extends React.Component {
         constructor(props) {
             super(props);
@@ -77,8 +77,8 @@ const loadDataHoc = function (Widget, inputType = "select") {
                 this.loadData();
             }
             else if (this.state.loadDataStatus === "data") {
-                let idOrValueField = (inputType == "tree" || inputType === "treegrid" || inputType === "treepicker") ? this.props.idField || "id" : this.props.valueField || "value";
-                let formatData = propsTran.formatterData(inputType, this.getValue(), this.state.rawData, idOrValueField, this.props.textField || "text");
+                let idOrValueField = (componentType == "tree" || componentType === "treegrid" || componentType === "treepicker") ? this.props.idField || "id" : this.props.valueField || "value";
+                let formatData = propsTran.formatterData(componentType, this.getValue(), this.state.rawData, idOrValueField, this.props.textField || "text");
                 this.setState({
                     data: formatData,
                     loadDataStatus: null,//处理完成
@@ -121,8 +121,8 @@ const loadDataHoc = function (Widget, inputType = "select") {
                 res = resData && resData instanceof Array ? resData : res;
             }
             let realData = func.getSource(res, this.props.dataSource || "data");
-            let idOrValueField = (inputType == "tree" || inputType === "treegrid" || inputType === "treepicker") ? this.props.idField : this.props.valueField;
-            let formatData = propsTran.formatterData(inputType, this.getValue(), realData, idOrValueField, this.props.textField);
+            let idOrValueField = (componentType == "tree" || componentType === "treegrid" || componentType === "treepicker") ? this.props.idField : this.props.valueField;
+            let formatData = propsTran.formatterData(componentType, this.getValue(), realData, idOrValueField, this.props.textField);
              this.setState({
                 loadDataStatus: null,
                 rawData: realData,//保存方便对比
@@ -166,7 +166,7 @@ const loadDataHoc = function (Widget, inputType = "select") {
             }
            
         }
-
+        
         shouldComponentUpdate(nextProps, nextState) {
             //全部用浅判断
             if (func.diff(nextProps, this.props, false)) {
@@ -180,6 +180,7 @@ const loadDataHoc = function (Widget, inputType = "select") {
         render() {
             return <Widget
                 {...this.props}
+                componentType={componentType}
                 ref={this.input}
                 reload={this.reload}
                 data={this.state.filterText ? this.state.filterData : this.state.data}

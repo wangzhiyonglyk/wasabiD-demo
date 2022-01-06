@@ -1,13 +1,18 @@
-.wasabi-tree {
+.wasabi-tree-parent{
     position: relative;
-    font-size: 14px;
+    font-size: var(--font-size);
     color: var(--color);
     margin: 0px;
     padding: 0px;
-    --dotted-color: var(--border-color);
-    /* height: 100%; */
     width: 100%;
-    overflow-y: auto;
+    overflow: auto;
+}
+.wasabi-tree {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    --dotted-color: var(--border-color);
+    height: 100%;
 }
 
 /* 虚线隐藏 */
@@ -251,7 +256,7 @@
     box-sizing: border-box;
     display: flex;
     position: relative;
-    width: auto;
+    width: calc(100% - 50px);
 }
 .wasabi-tree .wasabi-tree-li-node .wasabi-form-group{
     width: 100%;
