@@ -5,6 +5,9 @@
  edit 2020-10-24 勾选还是有缺陷
  edit 2021-05-11 勾选优化，todo 还要继续优化
  edit 2021-06-19 完善完成
+  2021-11-28 完善组件，修复bug，增加连线，调整勾选，图标，文字等样式
+2022-01-04 将树扁平化，去掉了子节点
+2022-01-06 增加勾选可自定义，前面箭头可以定义等功能
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -42,7 +45,7 @@ function NodeView(props) {
         iconCls = "icon-loading tree-loading";
 
     }
-    let childrenLength = row.open===false?0: row?.children?.length||0;//子节点个数
+    let childrenLength = row.open === false ? 0 : row?.children?.length || 0;//子节点个数
     //空白位，表示节点层级
     let blankControl = [];
     if (row._path.length > 1) {
@@ -50,37 +53,54 @@ function NodeView(props) {
             blankControl.push(<span key={i} style={{ width: 20 }}></span>)
         }
     }
-   let checkNode;
-   if(checkStyle==="checkbox"||checkStyle==="radio"){
-   checkNode= <Input key="1" type={checkStyle || "checkbox"}
-    hide={selectAble || row.selectAble ? false : true}
-    half={row.half}
-    name={"node" + row.id}
-    /**有子节点有向下的虚线**/
-    className={(clickId === row.id ? " selected " : "") + (childrenLength > 0 ? " hasChildren " : "  ")}
-    value={row.checked ? row.id : ""} data={[{ value: row.id, text: "" }]}
-    onSelect={onChecked.bind(this, row.id, row.text, row)}></Input>
-   }
-   else if(typeof checkStyle==="function"){
-       checkNode=checkStyle(row);
-   }
-    //节点元素
-    return <li className="wasabi-tree-li" key={row.id} style={{ display: row.hide ? "none" : "flex" }} >
-        {blankControl}
-        {/* 折叠节点 */}
-        {row.isParent ? <i className={((clickId === row.id ? " selected " : "")) + (row.open ? " wasabi-tree-li-icon  icon-caret-down" : " wasabi-tree-li-icon icon-caret-right")}
+    //节点前面箭头图标
+    let arrowIcon;
+    if (row.open) {
+        if (props.arrowUnFoldIcon) {
+            arrowIcon = <div className={"wasabi-tree-li-icon"} style={{ display: "inline-block" }} onClick={row.isParent ? onExpand.bind(this, !row.open, row.id, row.text, row) : null}>{props.arrowUnFoldIcon}</div>
+
+        }
+    }
+    else {
+        if (props.arrowFoldIcon) {
+            arrowIcon = <div className={"wasabi-tree-li-icon"} style={{ display: "inline-block" }} onClick={row.isParent ? onExpand.bind(this, !row.open, row.id, row.text, row) : null}>{props.arrowFoldIcon}</div>
+
+        }
+    }
+    if (!arrowIcon) {
+        arrowIcon = <i className={((clickId === row.id ? " selected " : "")) + (row.open ? " wasabi-tree-li-icon  icon-caret-down" : " wasabi-tree-li-icon icon-caret-right")}
             onClick={row.isParent ? onExpand.bind(this, !row.open, row.id, row.text, row) : null}>
             {/* span用于右边加虚线*/}
             <span className="wasabi-tree-li-icon-beforeRight"></span>
             {/* 用于向下加虚线 */}
-            <span className="wasabi-tree-li-icon-afterBelow" style={{ height:( childrenLength+1) * config.rowDefaultHeight +(row.isLast?config.rowDefaultHeight*-1:0)  }}></span>
+            <span className="wasabi-tree-li-icon-afterBelow" style={{ height: (childrenLength + 1) * config.rowDefaultHeight + (row.isLast ? config.rowDefaultHeight * -1 : 0) }}></span>
         </i>
+    }
+    let checkNode;//勾选节点
+    if (checkStyle === "checkbox" || checkStyle === "radio") {
+        checkNode = <Input key="1" type={checkStyle || "checkbox"}
+            hide={selectAble || row.selectAble ? false : true}
+            half={row.half}
+            name={"node" + row.id}
+            /**有子节点有向下的虚线**/
+            className={(clickId === row.id ? " selected " : "") + (childrenLength > 0 ? " hasChildren " : "  ")}
+            value={row.checked ? row.id : ""} data={[{ value: row.id, text: "" }]}
+            onSelect={onChecked.bind(this, row.id, row.text, row)}></Input>
+    }
+    else if (typeof checkStyle === "function") {
+        checkNode = checkStyle(row);
+    }
+    //节点元素
+    return <li className="wasabi-tree-li" key={row.id} style={{ display: row.hide ? "none" : "flex" }} >
+        {blankControl}
+        {/* 折叠节点 */}
+        {row.isParent ? arrowIcon
             //    不是父节点也要一个占位符
             : <i className={((clickId === row.id ? " selected " : "")) + (" wasabi-tree-li-icon-line ")}>
-                <span className="wasabi-tree-li-icon-afterBelow" style={{ height: (childrenLength+1)* config.rowDefaultHeight  +(row.isLast?config.rowDefaultHeight*-1:0)  }}></span>
+                <span className="wasabi-tree-li-icon-afterBelow" style={{ height: (childrenLength + 1) * config.rowDefaultHeight + (row.isLast ? config.rowDefaultHeight * -1 : 0) }}></span>
             </i>}
         {/* 勾选 可以是自定义的组件 */}
-             {checkNode}
+        {checkNode}
         {/* 文本节点 */}
         <div id={row.nodeid} className={clickId === row.id ? "wasabi-tree-li-node selected" : "wasabi-tree-li-node"}
             title={title}
@@ -367,6 +387,8 @@ TreeNode.propTypes = {
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,//值
     text: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,//标题
     title: PropTypes.string,//提示信息
+    arrowFoldIcon: PropTypes.node,//折叠图标
+    arrowUnFoldIcon: PropTypes.node,//展开图标
     iconCls: PropTypes.string,//默认图标
     iconClose: PropTypes.string,//[父节点]关闭图标
     iconOpen: PropTypes.string,//[父节点]打开图标

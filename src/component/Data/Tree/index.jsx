@@ -7,6 +7,7 @@ create by wangzhiyong 创建树组件
  2021-11-28 完善组件，修复bug，将样式拆分为两种，树的高度小一点，这样好看一点，树表格则与表格对齐,增加连线，调整勾选，图标，文字等样式
  2022-01-04 将树扁平化，增加虚拟列表
  2022-01-06 增加选中滚动的功能，增加自定义勾选组件，修复onCheck的bug
+ 2022-01-06 增加虚线可配功能
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -43,7 +44,7 @@ class Tree extends Component {
         this.onRename = this.onRename.bind(this);
         this.onRemove = this.onRemove.bind(this);
         this.onDrop = this.onDrop.bind(this);
-
+        this.onScroll=this.onScroll.bind(this)
 
         this.getChecked = this.getChecked.bind(this);
         this.setChecked = this.setChecked.bind(this);
@@ -54,6 +55,7 @@ class Tree extends Component {
         this.filter = this.filter.bind(this);
         this.append = this.append.bind(this);
         this.reload = this.reload.bind(this);
+
 
 
 
@@ -495,7 +497,7 @@ class Tree extends Component {
             beforeRemove: this.props.beforeRemove,
             beforeDrop: this.props.beforeDrop,
             beforeRename: this.props.beforeRename,
-            onClick: this.onClick.bind,
+            onClick: this.onClick,
             onDoubleClick: this.onDoubleClick,
             onChecked: this.onChecked,
             onRemove: this.onRemove,
@@ -527,7 +529,7 @@ class Tree extends Component {
             });
         }
         return <div id={this.state.treecontainerid} onScroll={this.onScroll}
-            className={"wasabi-tree clearfix " + (this.props.className || "")}
+            className={"wasabi-tree clearfix " + (this.props.className || "")+(this.props.dotted===false?" nodotted ":"")}
             style={this.props.style}>
             <ul id={this.state.treeid} >
                 {nodeControl}
@@ -546,7 +548,9 @@ Tree.propTypes = {
     idField: PropTypes.string,//数据字段值名称
     parentField: PropTypes.string,//数据字段父节点名称
     textField: PropTypes.string,//数据字段文本名称
+    dotted:PropTypes.bool,//是否有虚线
     url: PropTypes.string,//后台查询地址
+   
     params: PropTypes.object,//向后台传输的额外参数
     dataSource: PropTypes.string,//ajax的返回的数据源中哪个属性作为数据源,为null时直接后台返回的数据作为数据源
     data: PropTypes.array,//节点数据
@@ -588,6 +592,7 @@ Tree.defaultProps = {
     parentField: "pId",
     textField: "text",
     dataSource: "data",
+    dotted:true,
     simpleData: true,//默认为真
     selectAble: true,
     checkStyle: "checkbox",

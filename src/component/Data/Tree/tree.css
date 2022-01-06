@@ -10,6 +10,10 @@
     overflow-y: auto;
 }
 
+/* 虚线隐藏 */
+.wasabi-treegrid.nodotted {
+    --dotted-color: transparent;
+}
 /* 树表格与交叉表把父子关系的虚线隐藏 */
 .wasabi-treegrid .wasabi-tree {
     --dotted-color: transparent;
@@ -143,14 +147,6 @@
     border-bottom: 1px solid var(--border-color);
 }
 
-/**折叠图标前面的向下虚线**/
-.wasabi-tree .wasabi-tree-li-icon-line::before {
-    /* content: "";
-    border-left: 1px dotted var(--dotted-color);
-    height: 15px;
-    position: absolute;
-    left: 7px; */
-}
 
 /* 折叠图标前面的向右虚线 */
 .wasabi-tree .wasabi-tree-li-icon-line::after {
