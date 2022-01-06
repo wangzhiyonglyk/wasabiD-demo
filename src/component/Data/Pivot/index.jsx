@@ -73,7 +73,7 @@ class Pivot extends Component {
     }
     dataGridClick(rowData, rowIndex) {
         
-        this.tree.current.setClickNode(rowData._id);
+        this.tree.current.setClick(rowData._id);
 
     }
     treeClick(_id) {

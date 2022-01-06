@@ -6,6 +6,7 @@ create by wangzhiyong 创建树组件
  2021-06-16 重新优化
  2021-11-28 完善组件，修复bug，将样式拆分为两种，树的高度小一点，这样好看一点，树表格则与表格对齐,增加连线，调整勾选，图标，文字等样式
  2022-01-04 将树扁平化，增加虚拟列表
+ 2022-01-06 增加选中滚动的功能，增加自定义勾选组件，修复onCheck的bug
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -38,19 +39,27 @@ class Tree extends Component {
         this.onClick = this.onClick.bind(this);
         this.onDoubleClick = this.onDoubleClick.bind(this);
         this.onChecked = this.onChecked.bind(this)
-        this.getChecked = this.getChecked.bind(this);
-        this.clearChecked = this.clearChecked.bind(this);
-        this.setClickNode = this.setClickNode.bind(this);
         this.onExpand = this.onExpand.bind(this)
         this.onRename = this.onRename.bind(this);
         this.onRemove = this.onRemove.bind(this);
         this.onDrop = this.onDrop.bind(this);
-        this.loadError = this.loadError.bind(this);
-        this.loadSuccess = this.loadSuccess.bind(this);
+
+
+        this.getChecked = this.getChecked.bind(this);
+        this.setChecked = this.setChecked.bind(this);
+        this.clearChecked = this.clearChecked.bind(this);
+        this.checkedAll = this.checkedAll.bind(this);
+        this.setClick = this.setClick.bind(this);
+        this.remove = this.remove.bind(this);
         this.filter = this.filter.bind(this);
         this.append = this.append.bind(this);
-        this.onScroll = this.onScroll.bind(this);
         this.reload = this.reload.bind(this);
+
+
+
+
+
+
     }
     //todo
     static getDerivedStateFromProps(props, state) {
@@ -100,6 +109,28 @@ class Tree extends Component {
         this.props.onDoubleClick && this.props.onDoubleClick(id, text, row);
     }
     /**
+       * 节点勾选
+       * @param {*} id 
+       * @param {*} text 
+       * @param {*} row 
+       * @param {*} checkValue 
+       */
+    onChecked(id, text, row, checkValue) {
+        let checked = (id + "") === (checkValue + "");
+        let data = [];
+        if (this.props.checkStyle === "checkbox") {
+            data = treeFunc.setChecked(this.state.data, row, checked, this.props.checkType);
+            this.handlerLoadData(data);
+        }
+        else if (this.props.checkStyle === "radio") {
+            data = treeFunc.setRadioChecked(this.state.data, row, checked, this.props.radioType);
+            this.handlerLoadData(data);
+        }
+
+        this.props.onChecked && this.props.onChecked(checked, id, text, row);
+
+    }
+    /**
      * 树展开与折叠事件
      * @param {*} open 是否展开
      * @param {*} id id,
@@ -147,42 +178,7 @@ class Tree extends Component {
         this.props.onExpand && this.props.onExpand(open, id, text, row);
 
     }
-    /**
-      * 
-      * @param {*} message 
-      */
-    loadError(message) {//查询失败
-        console.log("combobox-error", message);
-        this.setState({
-            loadingId: ""
-        })
-        Msg.error(message);
-    }
-    /**
-     * 数据加载成功
-     * @param {*} data 
-     */
-    loadSuccess(res) {//数据加载成功
-        if (typeof this.props.loadSuccess === "function") {
-            //正确返回
-            let resData = this.props.loadSuccess(res);
-            res = resData && resData instanceof Array ? resData : res;
-        }
-        let realData = func.getSource(res, this.props.dataSource || "data");
-        let row = window.sessionStorage.getItem("async-tree-node");
-        row = JSON.parse(row);
-        let asyncChildrenData = propsTran.formatterData("tree", "", realData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
-        let data = this.state.data;
-        nodes = treeFunc.findLeafNodes(data, row._path);
-        if (nodes && nodes.length > 0) {
-            let leaf = nodes[nodes.length - 1];
-            leaf.children = asyncChildrenData;
-            //设置节点路径
-            treeFunc.setChildrenPath(leaf.id, leaf._path, leaf.children);
-        }
-        this.handlerLoadData(data);
 
-    }
     /**
      * 重命名
      * @param {*} id 
@@ -235,26 +231,8 @@ class Tree extends Component {
         }
 
     }
-    /**
-         * 节点勾选
-         * @param {*} id 
-         * @param {*} text 
-         * @param {*} row 
-         * @param {*} checkValue 
-         */
-    onChecked(id, text, row, checkValue) {
-        let checked = (id + "") === (checkValue + "");
-        let data = [];
-        if (this.props.checkStyle === "checkbox") {
-            data = treeFunc.setChecked(this.state.data, row, checked, this.props.checkType);
-        }
-        else {
-            data = treeFunc.setRadioChecked(this.state.data, row, checked, this.props.radioType);
-        }
-        this.handlerLoadData(data);
-        this.props.onChecked && this.props.onChecked(checked, id, text, row);
 
-    }
+    /********  以下方法是给父组件调用的 **************/
     /**
     * 返回勾选的数据
     */
@@ -264,15 +242,25 @@ class Tree extends Component {
     /**
      * 设置勾选
      */
-    setChecked(value) {
-        if (value) {
-            let data = treeFunc.setSelfChecked(value, this.state.data);
-            this.handlerLoadData(data);
+    setChecked(id, checked) {
+        if (id) {
+            //先找到节点
+            let node = treeFunc.findNodeById(this.state.data, id);
+            if (node)
+                node.checked = checked;
+            {
+                if (this.props.checkStyle === "checkbox") {
+                    data = treeFunc.setChecked(this.state.data, node, checked, this.props.checkType);
+                }
+                else if (this.props.checkStyle === "radio") {
+                    data = treeFunc.setRadioChecked(this.state.data, node, checked, this.props.radioType);
+                }
+                this.handlerLoadData(this.state.data);
+                return node;
+            }
+        }
+        return null;
 
-        }
-        else {
-            this.clearChecked();
-        }
 
     }
     /**
@@ -280,19 +268,14 @@ class Tree extends Component {
     */
     clearChecked() {
         let data = treeFunc.clearChecked(this.state.data);
-        //同时处理保持一致
-        let filter = treeFunc.filter(data, this.state.filterValue);
-        this.setState({
-            data: data,
-            filter: filter,
-        })
+        this.handlerLoadData(data);
+        return data;
     }
     /**
      * 全部勾选
      */
     checkedAll() {
         if (this.props.checkStyle === "checkbox") {
-
             let data = treeFunc.checkedAll(this.state.data);
             this.handlerLoadData(data);
             return data;
@@ -303,7 +286,15 @@ class Tree extends Component {
     * 为了给交叉表与树表格内部使用的单击事件
     * @param {*} id 
      */
-    setClickNode(id) {
+    setClick(id) {
+        let node = treeFunc.findNodeById(this.state.visibleData, id);
+        if (!node) {
+            //没有找到,节点不可见,滚动到可见
+            let index = this.state.flatData.findIndex((item) => {
+                return item.id === id;
+            })
+            this.scrollShowVisibleData(index, index + this.visibleDataCount);
+        }
         this.setState({
             clickId: id,
 
@@ -327,14 +318,10 @@ class Tree extends Component {
     }
     /**
      * 筛选节点
-     * @param {*} key 
+     * @param {*} value 
      */
-    filter(key) {
-        let filter = treeFunc.filter(this.state.data, key);
-        this.setState({
-            filterValue: key.trim(),
-            filter: filter
-        })
+    filter(value) {
+        this.handlerLoadData(this.state.data, value)
     }
     /**
      * 添加节点
@@ -348,13 +335,34 @@ class Tree extends Component {
             this.handlerLoadData(data);
         }
     }
+
     /**
-     *  对请求的数据加工
-     * @param {*} data 
+    * 重新加载
+    */
+    reload() {
+        try {
+            //重新设计高度 
+            let height = document.getElementById(this.state.treecontainerid).clientHeight || window.innerHeight;
+            this.visibleDataCount = Math.ceil(height / config.rowDefaultHeight);
+            this.onScroll();
+        }
+
+        catch (e) {
+            console.log("ee", e)
+        }
+    }
+
+    /********  以上方法是给父组件调用的 **************/
+
+
+    /**
+     * 对请求的数据加工
+     * @param {*} data 加工的数据
+     * @param {*} filterValue 筛选值
      */
-    handlerLoadData(data) {
+    handlerLoadData(data, filterValue) {
         //同时处理筛选数据保持一致 
-        let filter = treeFunc.filter(data, this.state.filterValue);
+        let filter = treeFunc.filter(data, filterValue || this.state.filterValue);
         //数据扁平化
         let flatData = func.treeDataToFlatData(this.state.filterValue ? filter : data);
         //切割
@@ -388,31 +396,59 @@ class Tree extends Component {
         document.getElementById(this.state.treeid).style.transform = `translate3d(0,0,0)`;
         this.scrollShowVisibleData(0, this.visibleDataCount);
     }
-
     /**
-     * 重新加载
-     */
-    reload() {
-        try {
-            //重新设计高度
-            console.log("dd", this.visibleDataCount)
-            let height = document.getElementById(this.state.treecontainerid).clientHeight || window.innerHeight;
-            this.visibleDataCount = Math.ceil(height / config.rowDefaultHeight);
-            console.log("dd", this.visibleDataCount)
-            this.onScroll();
-        }
-
-        catch (e) {
-            console.log("ee", e)
-        }
+      * 
+      * @param {*} message 
+      */
+    loadError(message) {//查询失败
+        console.log("combobox-error", message);
+        this.setState({
+            loadingId: ""
+        })
+        Msg.error(message);
     }
     /**
-     * 滚动事件，todo要调整
+     * 数据加载成功
+     * @param {*} data 
+     */
+    loadSuccess(res) {//数据加载成功
+        if (typeof this.props.loadSuccess === "function") {
+            //正确返回
+            let resData = this.props.loadSuccess(res);
+            res = resData && resData instanceof Array ? resData : res;
+        }
+        let realData = func.getSource(res, this.props.dataSource || "data");
+        let row = window.sessionStorage.getItem("async-tree-node");
+        row = JSON.parse(row);
+        let asyncChildrenData = propsTran.formatterData("tree", "", realData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
+        let data = this.state.data;
+        nodes = treeFunc.findLinkNodesByPath(data, row._path);
+        if (nodes && nodes.length > 0) {
+            let leaf = nodes[nodes.length - 1];
+            leaf.children = asyncChildrenData;
+            //设置节点路径
+            treeFunc.setChildrenPath(leaf.id, leaf._path, leaf.children);
+        }
+        this.handlerLoadData(data);
+
+    }
+    /**
+     * 滚动事件
      */
     onScroll() {
         let scrollTop = document.getElementById(this.state.treecontainerid).scrollTop
         let startIndex = Math.floor(scrollTop / config.rowDefaultHeight);
         let endIndex = startIndex + config.bufferScale * this.visibleDataCount;
+
+        this.scrollShowVisibleData(startIndex, endIndex)
+
+    }
+    /**
+   * 渲染当前可见数据
+   * @param {*} startIndex 可见区数据的开始下标
+   * @param {*} endIndex 可见区数据的结束下标
+   */
+    scrollShowVisibleData(startIndex, endIndex) {
         let startOffset;
         if (startIndex >= 1) {
             //减去上部预留的高度
@@ -422,15 +458,7 @@ class Tree extends Component {
             startOffset = 0;
         }
         document.getElementById(this.state.treeid).style.transform = `translate3d(0,${startOffset}px,0)`;
-        this.scrollShowVisibleData(startIndex, endIndex)
 
-    }
-    /**
-   * 渲染当前可见数据
-   * @param {*} startIndex 
-   * @param {*} endIndex 
-   */
-    scrollShowVisibleData(startIndex, endIndex) {
         //当前切割的数据开始下标
         this.sliceBeginIndex = startIndex - config.bufferScale * this.visibleDataCount;
         this.sliceBeginIndex = this.sliceBeginIndex < 0 ? 0 : this.sliceBeginIndex;
@@ -467,7 +495,7 @@ class Tree extends Component {
             beforeRemove: this.props.beforeRemove,
             beforeDrop: this.props.beforeDrop,
             beforeRename: this.props.beforeRename,
-            onClick: this.onClick,
+            onClick: this.onClick.bind,
             onDoubleClick: this.onDoubleClick,
             onChecked: this.onChecked,
             onRemove: this.onRemove,
@@ -476,7 +504,7 @@ class Tree extends Component {
             onDrop: this.onDrop,
             onDrag: this.props.onDrag
         }
-        let data = this.state.filterValue ? this.state.filter : this.state.visibleData;
+        let data = this.state.visibleData;
         if (data instanceof Array && data.length > 0) {
             data.map((item, index) => {
                 let isParent = false;//是否为父节点
@@ -486,7 +514,7 @@ class Tree extends Component {
 
                 //通过输入框的值与自身的勾选情况综合判断
                 nodeControl.push(<TreeNode
-                    key={"treenode-" + item.id}
+                    key={"treenode-" + item.id || item.text}
                     {
                     ...treeProps
                     }
@@ -524,7 +552,7 @@ Tree.propTypes = {
     data: PropTypes.array,//节点数据
     simpleData: PropTypes.bool,//是否使用简单的数据格式
     selectAble: PropTypes.bool,//是否允许勾选
-    checkStyle: PropTypes.oneOf(["checkbox", "radio"]),//单选还是多选
+    checkStyle: PropTypes.oneOf(["checkbox", "radio", PropTypes.func]),//单选还是多选
     checkType: PropTypes.object,//勾选对于父子节点的关联关系
     radioType: PropTypes.oneOf(["level", "all"]),//单选时影响的层级
     renameAble: PropTypes.bool,//是否允许重命名

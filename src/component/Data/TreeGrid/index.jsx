@@ -168,7 +168,7 @@ class TreeGrid extends Component {
     dataGridClick(rowData, rowIndex) {
 
         try{
-            this.tree.current.input.current.setClickNode(rowData[this.props.idField || "id"]);
+            this.tree.current.input.current.setClick(rowData[this.props.idField || "id"]);
 
         }catch(e){
 

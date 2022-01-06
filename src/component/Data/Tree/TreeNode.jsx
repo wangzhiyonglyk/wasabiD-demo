@@ -50,6 +50,20 @@ function NodeView(props) {
             blankControl.push(<span key={i} style={{ width: 20 }}></span>)
         }
     }
+   let checkNode;
+   if(checkStyle==="checkbox"||checkStyle==="radio"){
+   checkNode= <Input key="1" type={checkStyle || "checkbox"}
+    hide={selectAble || row.selectAble ? false : true}
+    half={row.half}
+    name={"node" + row.id}
+    /**有子节点有向下的虚线**/
+    className={(clickId === row.id ? " selected " : "") + (childrenLength > 0 ? " hasChildren " : "  ")}
+    value={row.checked ? row.id : ""} data={[{ value: row.id, text: "" }]}
+    onSelect={onChecked.bind(this, row.id, row.text, row)}></Input>
+   }
+   else if(typeof checkStyle==="function"){
+       checkNode=checkStyle(row);
+   }
     //节点元素
     return <li className="wasabi-tree-li" key={row.id} style={{ display: row.hide ? "none" : "flex" }} >
         {blankControl}
@@ -65,17 +79,8 @@ function NodeView(props) {
             : <i className={((clickId === row.id ? " selected " : "")) + (" wasabi-tree-li-icon-line ")}>
                 <span className="wasabi-tree-li-icon-afterBelow" style={{ height: (childrenLength+1)* config.rowDefaultHeight  +(row.isLast?config.rowDefaultHeight*-1:0)  }}></span>
             </i>}
-        {/* 勾选 */}
-
-
-        <Input key="1" type={checkStyle || "checkbox"}
-            hide={selectAble || row.selectAble ? false : true}
-            half={row.half}
-            name={"node" + row.id}
-            /**有子节点有向下的虚线**/
-            className={(clickId === row.id ? " selected " : "") + (childrenLength > 0 ? " hasChildren " : "  ")}
-            value={row.checked ? row.id : ""} data={[{ value: row.id, text: "" }]}
-            onSelect={onChecked.bind(this, row.id, row.text, row)}></Input>
+        {/* 勾选 可以是自定义的组件 */}
+             {checkNode}
         {/* 文本节点 */}
         <div id={row.nodeid} className={clickId === row.id ? "wasabi-tree-li-node selected" : "wasabi-tree-li-node"}
             title={title}
