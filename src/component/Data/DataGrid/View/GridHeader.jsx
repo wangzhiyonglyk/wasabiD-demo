@@ -31,7 +31,6 @@ class GridHeader extends React.Component {
         this.getHeaderContent = this.getHeaderContent.bind(this);
         this.setOrderAndSelectAndDetailHeader = this.setOrderAndSelectAndDetailHeader.bind(this);
         this.onSort = this.onSort.bind(this);
-
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
     }
@@ -190,7 +189,6 @@ class GridHeader extends React.Component {
         return false;
     }
     render() {
-      console.log("render header")
         if (!(this.props.headers instanceof Array) || this.props.headers.length === 0) {
             //格式不正确，或者数据为空
             return null;

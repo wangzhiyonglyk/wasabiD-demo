@@ -32,7 +32,7 @@ class Page extends React.Component {
                     }
 
                 },
-               
+
                 {
                     name: "label1",
                     label: "省2",
@@ -50,26 +50,33 @@ class Page extends React.Component {
                 {
                     name: "省4",
                     label: "省4",
-                    content:(rowData,rowIndex)=>{
-                      
-                        if(rowIndex%2===1){
+                    content: (rowData, rowIndex) => {
+
+                        if (rowIndex % 2 === 1) {
                             return <div>{rowData.label}</div>
                         }
-                        else{
+                        else {
                             return <div><button key="1">没有</button><button key="2">ddd</button></div>
                         }
                     }
 
                 },
-            
-                // {
-                //     name: "label3",
-                //     label: "省2",
-                //     content:()=>{
-                //         return <img style={{height:60}} src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/10/29/16e151a59317cae7~tplv-t2oaga2asx-watermark.awebp"></img>
-                //     }
 
-                // },
+                {
+                    name: "label1",
+                    label: "省2",
+                    width: 1200
+
+                },
+                
+                {
+                    name: "label3",
+                    label: "省2",
+                    content:()=>{
+                        return <img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/10/29/16e151a59317cae7~tplv-t2oaga2asx-watermark.awebp"></img>
+                    }
+
+                },
             ],
             data:(()=>{
                 let arr=[]
@@ -110,7 +117,7 @@ class Page extends React.Component {
     }
     render() {
         
-         return <DataGrid httpType="get" style={{ height: 600,width:1000}} pagination={false} textField="label" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></DataGrid>
+         return <DataGrid httpType="get" style={{ height: 600,width:"100%"}} pagination={false} textField="label" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></DataGrid>
         // return <div id="e" style={{height:400,overflow:"auto"}} onScroll={this.onScroll.bind(this)}>
         //     <div id="d"></div>
         //     <div>你好</div>

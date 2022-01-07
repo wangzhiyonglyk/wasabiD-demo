@@ -179,7 +179,7 @@ class Grid extends React.PureComponent {
     renderTable(height) {
         let colgroup = this.renderColGruop();
         let headerControl = this.renderHeader();
-        return <div className='wasabi-table-container' key="wasabi-table-container" id={this.props.containerid} style={{ height: height }}  >
+        return <div className='wasabi-table-container' key="wasabi-table-container" onScroll={this.props.onVirtualScroll} id={this.props.containerid} style={{ height: height }}  >
             {/* 表头独立是为了在紧凑表格宽度不够时 更好看一点*/}
             <div className="table-fixedth">
             <Table 
@@ -193,8 +193,7 @@ class Grid extends React.PureComponent {
                     {headerControl}
                     </Table>
             </div>
-            {/* 真实的表格  */}
-           <div className="wasabi-table-realTable-container" onScroll={this.props.onVirtualScroll} id={this.props.realTableCotainerId}>
+            {/* 真实的表格  */}   
            <Table 
                 className={this.props.borderAble ? ' ' : ' table-no-bordered '}
                 id={this.props.realTableId}  >
@@ -207,11 +206,8 @@ class Grid extends React.PureComponent {
                 {/* 表尾 todo */}
                 {/* <tfoot>{this.renderFooter()}</tfoot> */}
             </Table>
-
             <div className="wasabi-virtual-height" ></div>
-      
-           </div>
-           
+    
             {/* 拖动列时的分隔线  */}
             <div className="wasabi-grid-divide" id={this.props.divideid}></div>
         </div >

@@ -15,6 +15,7 @@
   2021-12-28 增加虚拟列表功能
   2022-01-07 重新设计虚拟列表的实现方式，采用onScroll,配置虚拟列表开关，目前是通过数据量的大小（300），这样可能适应于treegrid,pivot，又可以适应小数据量情况
   2022-01-07 调整表格的宽度与高度等样式bug
+   2022-01-07 解决因虚拟列表导致固定列的效果失败的bug，减少onScroll事件重复渲染的次数
  */
 
 import React, { Component } from 'react';
@@ -52,7 +53,7 @@ class DataGrid extends Component {
             containerid: func.uuid(),//表格容器
             divideid: func.uuid(),//分隔线
             fixTableId: func.uuid(),//表头table
-            realTableCotainerId: func.uuid(),//真实表格容器id
+            // realTableCotainerId: func.uuid(),//真实表格容器id
             realTableId: func.uuid(),//真实table
             url: null,
             rawUrl: null,

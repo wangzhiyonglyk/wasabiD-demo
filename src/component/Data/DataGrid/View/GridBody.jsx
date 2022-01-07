@@ -225,7 +225,6 @@ class GridBody extends React.PureComponent {
     }
    
     render() {
-        console.log("render body")
         //渲染表体
         if (!(this.props.data instanceof Array) || !(this.props.headers instanceof Array)||this.props.data.length===0) {
             return null;//格式不正确，或者数据为空时，不渲染
