@@ -8,7 +8,7 @@ create by wangzhiyong 创建树组件
  2022-01-04 将树扁平化，增加虚拟列表
  2022-01-06 增加选中滚动的功能，增加自定义勾选组件，修复onCheck的bug
  2022-01-06 增加虚线可配功能
-  2022-01-06 拆分业务与视图
+  2022-01-06 拆分业务与视图 将业务容器适用于tree,treegrid,pivot等组件
    2022-01-07 修复树节点中文本节点宽度的bug
  */
  import React, { Component } from "react";
