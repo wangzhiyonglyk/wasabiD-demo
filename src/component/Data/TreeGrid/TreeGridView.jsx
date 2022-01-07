@@ -1,8 +1,7 @@
 /**
- * create by wangzhiyong
- * date:2021-03-30
- * 2021-11-28 完善组件，修复bug，重新调整样式，完善下划线，文字，图标，勾选，选中样式
- * desc 树型表格
+ * create by wangzhiyong 树型表格视图
+ * date:2022-01-06 因为虚拟列表的原因，要容器与视图拆分
+ * 2022-01-06 修复树表格的单击事件的bug
  */
 
 
@@ -13,9 +12,10 @@
  import TreeView from "../Tree/TreeView";
  import "./index.css"
  import config from './config';
- class TreeGrid extends Component {
+ class TreeGrid extends React.PureComponent {
      constructor(props) {
          super(props);
+         this.grid=React.createRef();
          this.state = {
            
          }
@@ -36,22 +36,23 @@
  
      }
     
-   
- 
      /**
-      * 表格的单击事件 todo
+      * 表格的单击事件
       * @param {*} rowData 
       * @param {*} rowIndex 
       */
      dataGridClick(rowData, rowIndex) {
-         this.props.onClick && this.props.onClick(rowData.id);
+         this.props.onClick && this.props.onClick(rowData[this.props.priKey]);
  
      }
-   
-    
-    
+     /**
+      * 设置焦点行
+      * @param {*} id 
+      */
+     setFocus(id){
+         this.grid.current.setFocus(id);
+     }
      render() {
-         console.log("headers",this.props.headers,this.props.visibleData)
          let treeTopHeight = 0;
          if (this.props.headers instanceof Array && this.props.headers.length > 0) {
              if (this.props.headers[0] instanceof Array) {
@@ -75,10 +76,9 @@
                  </div>
              </div>
              <div className="wasabi-treegrid-right">
-                 <DataGrid  pagination={false} rowNumber={false}
+                 <DataGrid ref={this.grid}  pagination={false} rowNumber={false}
                      headers={this.props.headers} data={this.props.visibleData}
-                     isPivot={true}
-                    
+                    onClick={this.dataGridClick}
                    ></DataGrid>
              </div>
          </div>

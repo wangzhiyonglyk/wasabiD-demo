@@ -13,6 +13,7 @@
  固定列，复杂表头仍然有bug，需要检查
   2021-11-28 重新实现紧凑宽度，调整宽度，固定表头，固定列等功能，优化渲染，列不再换行
   2021-12-28 增加虚拟列表功能
+  2022-01-07 重新设计虚拟列表的实现方式，采用onScroll,配置虚拟列表开关，目前是通过数据量的大小（300），这样可能适应于treegrid,pivot，又可以适应小数据量情况
  */
 
 import React, { Component } from 'react';
@@ -41,6 +42,7 @@ import Grid from "./View"
  */
 import './datagrid.css'
 import './datagridetail.css'
+import config from './config.js';
 class DataGrid extends Component {
     constructor(props) {
         super(props);
@@ -82,7 +84,7 @@ class DataGrid extends Component {
             updateData: new Map(), //被修改过的数据，因为要判断曾经是否修改
             deleteData: [], //删除的数据
             urlLoadData: false,//有url并且分页情况下是否需要请求加载数据
-            reInitVirtualConfig: false,//是否需要重置虚拟列表的配置
+            initVirtualConfig: null,//是否需要重置虚拟列表的配置,null标记为没有虚拟列表
             adjust: false,//是否要调整
         };
         //绑定事件
@@ -98,7 +100,9 @@ class DataGrid extends Component {
     }
     static getDerivedStateFromProps(props, state) {
      
-        let newState = {};//新的状态值
+        let newState = {
+
+        };//新的状态值
         // 处理Headers,因为交叉表的表头是后期传入的 
         {
             let headerChange = false;
@@ -132,17 +136,19 @@ class DataGrid extends Component {
 
         if (props.data && props.data instanceof Array && func.diff(props.data, state.rawData, false)) {
             //如果传了死数据,并且数据改变
-            newState.reInitVirtualConfig = true;
+            newState.initVirtualConfig=props.data.length<config.minDataTotal?null:true;//数据比较小则不执行虚拟列表
             newState.rawData = props.data;
             try {
                 //分页情况下，数据切割
                 newState.data = props.pagination == true ? props.data.length > (state.pageSize || 20)
                     ? props.data.slice(((state.pageIndex || 1) - 1) * (state.pageSize || 20), (state.pageIndex || 1) * (state.pageSize || 20))
-                    : props.data : props.data;
-
+                    : props.data : props.data;    
             }
             catch (e) {
                 newState.data = func.shallowClone(props.data);
+            }
+            if(newState.initVirtualConfig===null){
+                newState.visibleData=newState.data;
             }
             newState.total = props.total || props.data.length || 0
         }
@@ -168,10 +174,11 @@ class DataGrid extends Component {
         if (this.state.urlLoadData) {//需要请求数据
             this.reload();//调用
         }
-        else  if (this.state.reInitVirtualConfig) { 
-                this.initVirtual();//重置虚拟列表,   
-        }
-        if (this.adjust) {//调整虚拟列表与表格宽度
+        else  if (this.state.initVirtualConfig&&this.state.data&&this.state.data.length>0) { 
+            this.initVirtual();//重置虚拟列表,   
+    }
+        
+        if ((this.state.initVirtualConfig===null||this.adjust)&&this.state.data&&this.state.data.length>0) {//调整虚拟列表与表格宽度
             this.adjustvirtual();
 
         }
@@ -182,17 +189,19 @@ class DataGrid extends Component {
         if (this.state.urlLoadData) {//需要请求数据
             this.reload();//调用
         }
-        else  if (this.state.reInitVirtualConfig) { 
+        else  if (this.state.initVirtualConfig&&this.state.data&&this.state.data.length>0) { 
                 this.initVirtual();//重置虚拟列表,   
         }
-       
+        if (this.state.initVirtualConfig===null&&this.state.data&&this.state.data.length>0) {///调整虚拟列表与表格宽度
+            this.adjustvirtual();
+
+        }  
     }
     componentWillUnmount() {
         this.timeout && clearTimeout(this.timeout)
-    }
-    
+    }   
     render() {
-      
+  
         return <Grid
             {...this.props}
             {...this.state}
@@ -255,6 +264,7 @@ DataGrid.propTypes = {
     /**
      * 数据设置
      */
+     priKey: PropTypes.string, //key值字段,
     headers: PropTypes.array, //表头设置
     fixedHeaders: PropTypes.array, //固定列设置
     footer: PropTypes.array, //页脚,
@@ -294,11 +304,6 @@ DataGrid.propTypes = {
     onPaste: PropTypes.func, //粘贴成功事件
     onDrop: PropTypes.func,//停靠事件
     loadSuccess: PropTypes.func,//异步加载数据后，对数据进行进一步加工
-
-    /**
-     * pivot 专门为交叉提供的属性
-     */
-    isPivot: PropTypes.bool,//是否是交叉表，需要设置最小宽度
 };
 DataGrid.defaultProps = {
     /**
@@ -322,6 +327,7 @@ DataGrid.defaultProps = {
     /**
    * 数据设置
    */
+     priKey:"id",
     headers: [],
     fixedHeaders: [],
     total: 0,

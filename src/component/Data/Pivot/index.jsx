@@ -94,13 +94,13 @@ class Pivot extends Component {
             <div className="wasabi-pivot-left">
                 <Configuration height={treeTop}></Configuration>
                 <div className="wasabi-pivot-rowsData" >
-                    <Tree checkAble={this.props.checkAble} ref={this.tree} onClick={this.treeClick.bind(this)} isPivot={true} data={this.state.rowsTreeData} simpleData={true} ></Tree>
+                    <Tree checkAble={this.props.checkAble} ref={this.tree} onClick={this.treeClick.bind(this)}  data={this.state.rowsTreeData} simpleData={true} ></Tree>
                 </div>
             </div>
             <div className="wasabi-pivot-right">
                 <DataGrid ref={this.grid} pagination={false} rowNumber={false}
                 selectAble={false} detailAble={false}
-                    headers={this.state.headers} data={this.state.realData} isPivot={true} onClick={this.dataGridClick.bind(this)}></DataGrid>
+                    headers={this.state.headers} data={this.state.realData}  onClick={this.dataGridClick.bind(this)}></DataGrid>
             </div>
         </div>
     }

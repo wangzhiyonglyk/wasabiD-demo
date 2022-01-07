@@ -61,10 +61,13 @@ class GridColGroup extends React.PureComponent {
        
         if (document.getElementById(this.props.realTableId)) {
             document.getElementById(this.props.realTableId).style.width = tableWidth + "px";
+            //设置容器的宽度，因为横向滚动条不在，更上面的容器中
+            document.getElementById(this.props.realTableId).parentNode.style.width = (tableWidth+10) + "px";
           
         }
         if (document.getElementById(this.props.fixTableId)) {
             document.getElementById(this.props.fixTableId).style.width = tableWidth + "px"; 
+          
         }
         return <colgroup >
             {

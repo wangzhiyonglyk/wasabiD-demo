@@ -8,6 +8,7 @@
   2021-11-28 完善组件，修复bug，增加连线，调整勾选，图标，文字等样式
 2022-01-04 将树扁平化，去掉了子节点
 2022-01-06 增加勾选可自定义，前面箭头可以定义等功能
+   2022-01-07 修复树节点中文本节点宽度的bug
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -46,11 +47,13 @@ function NodeView(props) {
 
     }
     let childrenLength = row.open === false ? 0 : row?.children?.length || 0;//子节点个数
+    let textwidthReduce=20;//文本字段减少的宽度
     //空白位，表示节点层级
     let blankControl = [];
     if (row._path.length > 1) {
         for (let i = 1; i < row._path.length; i++) {
             blankControl.push(<span key={i} style={{ width: 20 }}></span>)
+            textwidthReduce+=20;
         }
     }
     //节点前面箭头图标
@@ -90,19 +93,23 @@ function NodeView(props) {
     else if (typeof checkStyle === "function") {
         checkNode = checkStyle(row);
     }
+
+    if(checkNode){
+        textwidthReduce+=20;
+    }
     //节点元素
     return <li className="wasabi-tree-li" key={row.id} style={{ display: row.hide ? "none" : "flex" }} >
         {blankControl}
         {/* 折叠节点 */}
         {row.isParent ? arrowIcon
             //    不是父节点也要一个占位符
-            : <i className={((clickId === row.id ? " selected " : "")) + (" wasabi-tree-li-icon-line ")}>
+            : <i className={((clickId === row.id ? " selected " : "")) + (" wasabi-tree-li-icon-line")}>
                 <span className="wasabi-tree-li-icon-afterBelow" style={{ height: (childrenLength + 1) * config.rowDefaultHeight + (row.isLast ? config.rowDefaultHeight * -1 : 0) }}></span>
             </i>}
         {/* 勾选 可以是自定义的组件 */}
         {checkNode}
         {/* 文本节点 */}
-        <div id={row.nodeid} className={clickId === row.id ? "wasabi-tree-li-node selected" : "wasabi-tree-li-node"}
+        <div id={row.nodeid} style={{width:`calc(100% - ${textwidthReduce}px)`}} className={clickId === row.id ? "wasabi-tree-li-node selected" : "wasabi-tree-li-node"}
             title={title}
             onDrop={onNodeDrop}
             onDragOver={onNodeDragOver} onDragLeave={onNodeDragLeave}

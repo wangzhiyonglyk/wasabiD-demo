@@ -8,12 +8,12 @@ import Msg from "../../../Info/Msg"
 import excel from "../../../libs/excel.js";
 export default {
     /**
-    * 专门用于交叉表与树表格
-    * @param {*} id 
+    * 设置焦点行
+    * @param {*} key 
     */
-    setClick(id) {
+    setFocus(key) {
         for (let i = 0; i < this.state.data.length; i++) {
-            if (this.state.data[i]["id"] == id) {
+            if (this.state.data[i][this.props.priKey||"id"] == key) {
                 this.setState({
                     focusIndex: i
                 })

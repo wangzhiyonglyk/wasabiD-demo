@@ -20,7 +20,7 @@ import { TableCell, TableHead, TableRow } from "../../Table";
 import CheckBox from "../../../Form/CheckBox"
 import config from "../config";
 import func from "../../../libs/func";
-class GridHeader extends React.PureComponent {
+class GridHeader extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -182,9 +182,15 @@ class GridHeader extends React.PureComponent {
     onSort(name, sortOrder) {
         this.props.onSort && this.props.onSort(name, sortOrder);
     }
-   
+    shouldComponentUpdate(nextProps, nextState) {
+        if(func.diff(nextProps,this.props))
+        {
+            return true;
+        }
+        return false;
+    }
     render() {
-    
+      console.log("render header")
         if (!(this.props.headers instanceof Array) || this.props.headers.length === 0) {
             //格式不正确，或者数据为空
             return null;

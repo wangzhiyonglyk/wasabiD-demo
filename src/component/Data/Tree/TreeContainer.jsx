@@ -1,14 +1,13 @@
 /*
 create by wangzhiyong 树组件业务容器
- date:2022-01-06
-
+ 创建 date:2022-01-06 树组件业务容器，用于tree,treegrid,pivot，操作逻辑是一样的
+date :2022-01-07 修复tregrid单击联动的bug
+todo 后期应该改成 render props的形式 目前不熟悉，暂时不动
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Msg from "../../Info/Msg";
-
 import func from "../../libs/func.js";
-import loadDataHoc from "../../loadDataHoc"
 import treeFunc from "./treeFunc";
 import propsTran from "../../libs/propsTran";
 import api from "wasabi-api"
@@ -20,6 +19,8 @@ import PivotView from "../Pivot/PivotView"
 class TreeContainer extends Component {
     constructor(props) {
         super(props);
+        this.treegrid=React.createRef();
+        this.pivot=React.createRef();
         this.state = {
             treecontainerid: func.uuid(),
             treeid: func.uuid(),
@@ -82,19 +83,21 @@ class TreeContainer extends Component {
      * @param {*} row 
      */
     onClick(id, text, row) {
-        if (this.props.type !== "tree") {
-            setTimeout(() => {
-                this.setState({
-                    clickId: id,
-                })
-            }, 20);
-        } else {
+       
+        try{
             this.setState({
                 clickId: id,
             })
-        }
-        this.props.onClick && this.props.onClick(id, text, row);
+            this.treegrid?.current?.grid?.current.setFocus(id);
+            this.pivot?.current?.grid?.current.setFocus(id);
+            this.props.onClick && this.props.onClick(id, text, row);
 
+        }catch(e)
+        {
+
+        }
+       
+    
     }
 
     /**
@@ -299,7 +302,9 @@ class TreeContainer extends Component {
         }, () => {
 
         })
-
+        //如果是树表格或者交叉表
+        this.pivot?.current?.grid?.current.setFocus(id);
+        this.treegrid?.current?.grid?.current.setFocus(id);
 
     }
     /**
@@ -394,42 +399,7 @@ class TreeContainer extends Component {
         document.getElementById(this.state.treeid).style.transform = `translate3d(0,0,0)`;
         this.scrollShowVisibleData(0, this.visibleDataCount);
     }
-    /**
-      * 
-      * @param {*} message 
-      */
-    loadError(message) {//查询失败
-        console.log("combobox-error", message);
-        this.setState({
-            loadingId: ""
-        })
-        Msg.error(message);
-    }
-    /**
-     * 数据加载成功
-     * @param {*} data 
-     */
-    loadSuccess(res) {//数据加载成功
-        if (typeof this.props.loadSuccess === "function") {
-            //正确返回
-            let resData = this.props.loadSuccess(res);
-            res = resData && resData instanceof Array ? resData : res;
-        }
-        let realData = func.getSource(res, this.props.dataSource || "data");
-        let row = window.sessionStorage.getItem("async-tree-node");
-        row = JSON.parse(row);
-        let asyncChildrenData = propsTran.formatterData("tree", "", realData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
-        let data = this.state.data;
-        nodes = treeFunc.findLinkNodesByPath(data, row._path);
-        if (nodes && nodes.length > 0) {
-            let leaf = nodes[nodes.length - 1];
-            leaf.children = asyncChildrenData;
-            //设置节点路径
-            treeFunc.setChildrenPath(leaf.id, leaf._path, leaf.children);
-        }
-        this.handlerLoadData(data);
-
-    }
+ 
     /**
      * 滚动事件
      */
@@ -437,7 +407,6 @@ class TreeContainer extends Component {
         let scrollTop = document.getElementById(this.state.treecontainerid).scrollTop
         let startIndex = Math.floor(scrollTop / config.rowDefaultHeight);
         let endIndex = startIndex + config.bufferScale * this.visibleDataCount;
-
         this.scrollShowVisibleData(startIndex, endIndex)
 
     }
@@ -471,6 +440,42 @@ class TreeContainer extends Component {
             reVirualConfig: false
         })
     }
+       /**
+      * 
+      * @param {*} message 
+      */
+        loadError(message) {//查询失败
+            console.log("combobox-error", message);
+            this.setState({
+                loadingId: ""
+            })
+            Msg.error(message);
+        }
+        /**
+         * 数据加载成功
+         * @param {*} data 
+         */
+        loadSuccess(res) {//数据加载成功
+            if (typeof this.props.loadSuccess === "function") {
+                //正确返回
+                let resData = this.props.loadSuccess(res);
+                res = resData && resData instanceof Array ? resData : res;
+            }
+            let realData = func.getSource(res, this.props.dataSource || "data");
+            let row = window.sessionStorage.getItem("async-tree-node");
+            row = JSON.parse(row);
+            let asyncChildrenData = propsTran.formatterData("tree", "", realData, this.props.idField || "id", this.props.textField || "text", this.props.parentField || "pId", true);
+            let data = this.state.data;
+            nodes = treeFunc.findLinkNodesByPath(data, row._path);
+            if (nodes && nodes.length > 0) {
+                let leaf = nodes[nodes.length - 1];
+                leaf.children = asyncChildrenData;
+                //设置节点路径
+                treeFunc.setChildrenPath(leaf.id, leaf._path, leaf.children);
+            }
+            this.handlerLoadData(data);
+    
+        }
     shouldComponentUpdate(nextProps, nextState) {
         //全部用浅判断
         if (func.diff(nextProps, this.props, false)) {
@@ -498,15 +503,14 @@ class TreeContainer extends Component {
             onDrag: this.props.onDrag
         }
         let control;
-        console.log("treegrid",this.props);
         if (this.props.componentType === "tree") {
             control = <TreeView {...this.props} {...this.state} {...treeEvents} ></TreeView>
         }
         else if (this.props.componentType === "treegrid") {
-            control = <TreeGridView {...this.props} {...this.state} {...treeEvents} ></TreeGridView>
+            control = <TreeGridView ref={this.treegrid} {...this.props} {...this.state} {...treeEvents} ></TreeGridView>
         }
         else {
-            control = <PivotView {...this.props} {...this.state} {...treeEvents} ></PivotView>
+            control = <PivotView ref={this.pivot} {...this.props} {...this.state} {...treeEvents} ></PivotView>
         }
 
         return <div id={this.state.treecontainerid} onScroll={this.onScroll}

@@ -9,6 +9,7 @@
  import func from "../../../libs/func.js";
  import Msg from "../../../Info/Msg.jsx";
  import api from "wasabi-api"
+import config from "../config.js";
  export default {
       /**
      * 分页加载数据
@@ -185,7 +186,7 @@
                 loading: false,
                 detailIndex: null,//重新查询要清空详情
                 detailView: null,
-                reInitVirtualConfig:true,//重新设置虚拟列表
+                initVirtualConfig:dataResult.length<config.minDataTotal?null:true,//小于配置值则不设置，重新设置虚拟列表
             })
 
         }

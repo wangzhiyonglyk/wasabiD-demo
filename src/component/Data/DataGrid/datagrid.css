@@ -20,12 +20,18 @@ grid
   width: calc(100% - 2px);
 }
 
-.wasabi-grid .wasabi-table-realTable-container {
-  position: absolute;
-  top: 41px;
+/*
+表格容器，包括固定表头 纵向滚动条不出现
+*/
+.wasabi-grid .wasabi-table-container {
+  position: relative;
+  overflow-y: hidden;
+  background-color: white;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color);
   width: 100%;
-  overflow-x: auto;
-  overflow-y: auto;
+  height: 100%;
 }
 
 .wasabi-grid .wasabi-select-column .wasabi-form-group {
@@ -42,17 +48,14 @@ grid
   margin-top: 3px;
 }
 
-/*
-表格容器
-*/
-.wasabi-grid .wasabi-table-container {
-  position: relative;
-  overflow: hidden;
-  background-color: white;
-  border-left: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
-  border-top: 1px solid var(--border-color);
+
+/* 真实表格容器  不能有横向滚动条 */
+.wasabi-grid .wasabi-table-realTable-container {
+  position: absolute;
+  top: 41px;
   width: 100%;
+  overflow-x: hidden;
+  height: 100%;
 }
 
 /*

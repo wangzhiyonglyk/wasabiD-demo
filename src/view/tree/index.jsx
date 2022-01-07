@@ -4,27 +4,27 @@ import {  Tree ,Button} from "../../component"
 
 let data=[
     {
-        id: 1, label: "第一个节点"
+        id: 1, label: "第一个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d"
     },
 
     {
-        id: 2, label: "第二个节点"
+        id: 2, label: "第二个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d"
     },
     {
-        id: 31, pId: 1, label: "第31个节点"
+        id: 31, pId: 1, label: "第31个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d"
     },
     {
-        id: 32, pId: 1, label: "第32个节点"
+        id: 32, pId: 1, label: "第32个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d"
     },
 
     {
-        id: 21, pId: 2, label: "第21个节点"
+        id: 21, pId: 2, label: "第21个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d"
     },
     {
-        id: 22, pId: 2, label: "第22个节点"
+        id: 22, pId: 2, label: "第22个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d"
     },
     {
-        id: 221, pId: 22, label: "第221个节点"
+        id: 221, pId: 22, label: "第221个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d"
     },
 ];
 for(let i=0;i<1000;i++){

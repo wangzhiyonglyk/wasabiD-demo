@@ -256,7 +256,6 @@
     box-sizing: border-box;
     display: flex;
     position: relative;
-    width: calc(100% - 50px);
 }
 .wasabi-tree .wasabi-tree-li-node .wasabi-form-group{
     width: 100%;

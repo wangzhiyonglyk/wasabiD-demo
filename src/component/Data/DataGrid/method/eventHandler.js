@@ -302,7 +302,7 @@ export default {
 
                     this.setState({
                         detailIndex: key,
-                        detailView: <tr key={key + "detail"}>
+                        detailView: <tr key={key + "-detail"}>
                             <td colSpan={colSpan}><div className="wasabi-detail" >{detail}</div></td>
                         </tr>,
                     })

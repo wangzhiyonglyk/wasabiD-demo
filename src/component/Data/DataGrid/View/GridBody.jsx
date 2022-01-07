@@ -184,6 +184,7 @@ class GridBody extends React.PureComponent {
      * @returns 
      */
     setCellComponent(header, rowData, rowOrderIndex, columnIndex, stickyLeft) {
+     
         //处理数据单元格
         let editAble = this.props.editIndex != null && this.props.editIndex === (rowOrderIndex + "-" + columnIndex) && header.editor;
 
@@ -224,7 +225,7 @@ class GridBody extends React.PureComponent {
     }
    
     render() {
-    
+        console.log("render body")
         //渲染表体
         if (!(this.props.data instanceof Array) || !(this.props.headers instanceof Array)||this.props.data.length===0) {
             return null;//格式不正确，或者数据为空时，不渲染
@@ -280,14 +281,15 @@ class GridBody extends React.PureComponent {
                     }
                 });
                 let trClassName = "";
-                if (this.props.focusIndex === rowData._orderIndex??rowDataIndex) {
+                if (this.props.focusIndex == (rowData._orderIndex??rowDataIndex)) {
                     trClassName += " selected ";
                 }
-                if (this.props.editIndex === rowData._orderIndex??rowDataIndex) {
+                if (this.props.editIndex === (rowData._orderIndex??rowDataIndex)) {
                     trClassName += " edited ";
                 }
+            
                 trArr.push(
-                    <TableRow key={'row' + rowData._orderIndex??rowDataIndex}  rowIndex={rowData._orderIndex??rowDataIndex}  className={trClassName}  >
+                    <TableRow key={'row-' +(rowData._orderIndex??rowDataIndex)}  rowIndex={rowData._orderIndex??rowDataIndex}  className={trClassName}  >
                         {this.setOrderAndSelectAndDetailRow(rowData, rowData._orderIndex??rowDataIndex)}
                         {tds}
                     </TableRow>
@@ -302,6 +304,7 @@ class GridBody extends React.PureComponent {
 
 
         });
+      
         return <TableBody>{trArr}</TableBody>;
     }
 }

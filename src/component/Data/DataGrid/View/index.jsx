@@ -195,8 +195,6 @@ class Grid extends React.PureComponent {
             </div>
             {/* 真实的表格  */}
            <div className="wasabi-table-realTable-container" onScroll={this.props.onVirtualScroll} id={this.props.realTableCotainerId}>
-          
-         
            <Table 
                 className={this.props.borderAble ? ' ' : ' table-no-bordered '}
                 id={this.props.realTableId}  >
@@ -210,7 +208,7 @@ class Grid extends React.PureComponent {
                 {/* <tfoot>{this.renderFooter()}</tfoot> */}
             </Table>
 
-            <div className="wasabi-virtual-height"></div>
+            <div className="wasabi-virtual-height" ></div>
       
            </div>
            
