@@ -9,6 +9,7 @@
 2022-01-04 将树扁平化，去掉了子节点
 2022-01-06 增加勾选可自定义，前面箭头可以定义等功能
    2022-01-07 修复树节点中文本节点宽度的bug
+   2022-01-07 根据类型折叠图标不同
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -71,7 +72,8 @@ function NodeView(props) {
         }
     }
     if (!arrowIcon) {
-        arrowIcon = <i className={((clickId === row.id ? " selected " : "")) + (row.open ? " wasabi-tree-li-icon  icon-caret-down" : " wasabi-tree-li-icon icon-caret-right")}
+        let icon=props.componentType==="tree"?"icon-caret":"icon-arrow";
+        arrowIcon = <i className={((clickId === row.id ? " selected " : "")) + (row.open ? ` wasabi-tree-li-icon  ${icon}-down ` : ` wasabi-tree-li-icon  ${icon}-right`)}
             onClick={row.isParent ? onExpand.bind(this, !row.open, row.id, row.text, row) : null}>
             {/* span用于右边加虚线*/}
             <span className="wasabi-tree-li-icon-beforeRight"></span>

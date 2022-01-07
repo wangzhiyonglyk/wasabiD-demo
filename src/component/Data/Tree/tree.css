@@ -63,13 +63,13 @@
 .wasabi-treegrid .wasabi-tree .wasabi-tree-li-icon {
     border-bottom: 1px solid var(--border-color);
     height: 41px;
-    padding-top: 12px;
+    padding-top: 14px;
 }
 
 .wasabi-pivot .wasabi-tree .wasabi-tree-li-icon {
     border-bottom: 1px solid var(--border-color);
     height: 41px;
-    padding-top: 12px;
+    padding-top: 14px;
 }
 
 

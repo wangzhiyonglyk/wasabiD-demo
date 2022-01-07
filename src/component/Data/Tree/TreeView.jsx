@@ -8,16 +8,16 @@ create by wangzhiyong 创建树组件
  2022-01-04 将树扁平化，增加虚拟列表
  2022-01-06 增加选中滚动的功能，增加自定义勾选组件，修复onCheck的bug
  2022-01-06 增加虚线可配功能
+ 2022-01-07 增加类型
  */
 import React from "react";
-import config from "./config";
 import TreeNode from "./TreeNode.jsx";
 function TreeView(props) {
     let nodeControl = [];
     //全局属性
-    const { selectAble, checkStyle, renameAble, removeAble, asyncAble } = props;
+    const { componentType,  selectAble, checkStyle, renameAble, removeAble, asyncAble } = props;
     //得到传下去的属性
-    const treeProps = { selectAble, checkStyle, renameAble, removeAble, asyncAble, clickId: props.clickId, loadingId: props.loadingId };
+    const treeProps = { componentType,selectAble, checkStyle, renameAble, removeAble, asyncAble, clickId: props.clickId, loadingId: props.loadingId };
     //全局事件
     const treeEvents = {
         beforeDrag: props.beforeDrag,
