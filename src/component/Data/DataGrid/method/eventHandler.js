@@ -5,7 +5,6 @@
  */
 import React from "react";
 import func from "../../../libs/func.js";
-import Msg from "../../../Info/Msg.jsx";
 export default {
 
     /**
@@ -20,7 +19,8 @@ export default {
             console.log(new Error("index 值传错"));
         }
         else {
-            key = this.state.data && this.state.data[rowIndex] && this.state.data[rowIndex][this.props.priKey] || pageIndex.toString() + "-" + rowIndex.toString();
+            key =( this.state.data && this.state.data[rowIndex] && this.state.data[rowIndex][this.props.priKey])??pageIndex.toString() + "-" + rowIndex.toString()
+            
         }
         return key + "";
     },

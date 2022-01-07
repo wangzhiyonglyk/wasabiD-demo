@@ -1,6 +1,7 @@
 /**
  * 拆分datagrid,表头组件
  * 2021-05-28
+ * 2022-01-08 解决ref报错的bug
  */
 /**
  * :[[
@@ -128,7 +129,8 @@ class GridHeader extends React.Component {
                 value: this.props.isCheckAll == true ? 'yes' : null, //判断当前页是否选中
                 data: [{ value: 'yes', text: '' }],
                 onSelect: this.props.checkedAllHandler,
-                name: 'datagrid-check-all'
+                name: 'datagrid-check-all',
+                rnd:func.uuid()//加个随机数，保证每次重新渲染，否则会报 ref错误，原因不详
             };
             control.push(
                 <TableCell rowSpan={rowSpan} key='headercheckbox' position="header" className='wasabi-select-column'
@@ -181,13 +183,7 @@ class GridHeader extends React.Component {
     onSort(name, sortOrder) {
         this.props.onSort && this.props.onSort(name, sortOrder);
     }
-    shouldComponentUpdate(nextProps, nextState) {
-        if(func.diff(nextProps,this.props))
-        {
-            return true;
-        }
-        return false;
-    }
+   
     render() {
         if (!(this.props.headers instanceof Array) || this.props.headers.length === 0) {
             //格式不正确，或者数据为空

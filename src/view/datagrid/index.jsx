@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { DataGrid} from "../../component"
+import { DataGrid,CheckBox} from "../../component"
 class Page extends React.Component {
     constructor(props) {
         super(props);
+        console.log("page",props)
         this.input = React.createRef();
         this.input1 = React.createRef();
         this.form = React.createRef();
@@ -117,12 +118,10 @@ class Page extends React.Component {
     }
     render() {
         
-         return <DataGrid httpType="get" style={{ height: 600,width:"100%"}} pagination={false} textField="label" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></DataGrid>
-        // return <div id="e" style={{height:400,overflow:"auto"}} onScroll={this.onScroll.bind(this)}>
-        //     <div id="d"></div>
-        //     <div>你好</div>
-        //     <div id="d1" style={{height:10000,width:100}}></div>
-        // </div>
+         return <div>
+             <CheckBox data={ [{ value: '1', text: '1' }]} ></CheckBox>
+            <DataGrid httpType="get" style={{ height: 600,width:"100%"}} pagination={false} textField="label" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></DataGrid>
+         </div>
 
     }
 }
