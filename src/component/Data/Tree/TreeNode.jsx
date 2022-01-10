@@ -10,6 +10,7 @@
 2022-01-06 增加勾选可自定义，前面箭头可以定义等功能
    2022-01-07 修复树节点中文本节点宽度的bug
    2022-01-07 根据类型折叠图标不同
+   2022-01-10 修复选择的bug
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -92,7 +93,7 @@ function NodeView(props) {
             value={row.checked ? row.id : ""} data={[{ value: row.id, text: "" }]}
             onSelect={onChecked.bind(this, row.id, row.text, row)}></Input>
     }
-    else if (typeof checkStyle === "function") {
+    else if (typeof checkStyle === "function"&&row.selectAble) {
         checkNode = checkStyle(row);
     }
 
