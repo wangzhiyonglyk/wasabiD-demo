@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import {  Tree ,Button} from "../../component"
-
+// import {  Tree } from "../../component"
+import {Button} from "wasabiD";
+// import "wasabiD/lib/index.css"
+import Tree from "wasabi-tree";
+// import {  Tree } from "../../component"
+import "wasabi-tree/lib/index.css"
 let data=[
     {
         id: 1, label: "第一个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d"

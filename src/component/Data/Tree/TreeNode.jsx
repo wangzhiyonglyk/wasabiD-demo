@@ -416,7 +416,6 @@ TreeNode.propTypes = {
     onClick: PropTypes.func,//单击的事件
     onDoubleClick: PropTypes.func,//双击事件
     onCheck: PropTypes.func,//勾选/取消勾选事件
-    onCollapse: PropTypes.func,//折叠事件
     onExpand: PropTypes.func,//展开事件
     onRename: PropTypes.func,//重命名事件
     onRemove: PropTypes.func,//删除事件
