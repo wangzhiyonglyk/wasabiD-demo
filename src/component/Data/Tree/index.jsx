@@ -18,6 +18,6 @@ import func from "../../libs/func";
  import TreeContainer from "./TreeContainer";
 
  function Tree (props,ref){
-  return <TreeContainer {...props} componentType={"tree"}></TreeContainer>
+  return <TreeContainer {...props} ref={ref} componentType={"tree"}></TreeContainer>
 }
 export default React.memo(React.forwardRef(Tree), (pre, next) => { return !func.diff(pre, next, false) });

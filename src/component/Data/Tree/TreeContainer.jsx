@@ -14,6 +14,7 @@ import "./tree.css"
 import config from "./config";
 import TreeView from "./TreeView";
 import TreeGridView from "../TreeGrid/TreeGridView";
+import Msg from "../../Info/Msg.jsx";
 
 /**
  * 加工数据
@@ -194,7 +195,6 @@ function TreeContainer(props, ref) {
     const [treecontainerid] = useState(func.uuid());
     const treeid = useState(func.uuid());
     const treegrid = useRef(null);
-    const pivot = useRef(null);
     const [state, dispatch] = useReducer(myReducer, {
         filter: null,//过滤的数据
         data: null,//源数据
@@ -209,9 +209,7 @@ function TreeContainer(props, ref) {
     //定义事件
     const onClick = useCallback((id,text,row) => {
         dispatch({ type: "onClick", payload: id }),
-            //如果是树表格或者交叉表
-            pivot?.current?.grid?.current.setFocus(id);
-        treegrid?.current?.grid?.current.setFocus(id);  //如果是树表格或者交叉表
+        treegrid?.current?.setFocus(id);  //如果是树表格
         props.onClick&&props.onClick(id,text,row);
     }, [state.clickId]);
     const onDoubleClick = useCallback((id,text,row) => { dispatch({ type: "onDoubleClick", payload: id });   props.onDoubleClick&&props.onDoubleClick(id,text,row); }, []);
@@ -226,7 +224,7 @@ function TreeContainer(props, ref) {
         props.onChecked && props.onChecked(checked, id, text, row);
     }, []);
     const onRemove = useCallback((id, text, row) => {
-        if (window.confirm("您确定删除【" + text + "]吗")) {
+        if (Msg.confirm("您确定删除【" + text + "]吗")) {
             dispatch({ type: "onRemove", payload: { id, text, row } })
             props.onRemove && props.onRemove(id, text, row);
         }
@@ -365,8 +363,6 @@ function TreeContainer(props, ref) {
          */
         setClick(id) {
             dispatch({ type: "setClick", payload: id });
-            //如果是树表格或者交叉表
-            pivot?.current?.grid?.current.setFocus(id);
             treegrid?.current?.grid?.current.setFocus(id);  //如果是树表格或者交叉表
 
             onscroll();
@@ -453,7 +449,7 @@ function TreeContainer(props, ref) {
     }
     else if (props.componentType === "treegrid") {
 
-        control = <TreeGridView ref={treegrid} {...this.props} {...state} {...treeEvents} treeid={treeid} ></TreeGridView>
+        control = <TreeGridView ref={treegrid} {...props} {...state} {...treeEvents} treeid={treeid} ></TreeGridView>
     }
     return <div id={treecontainerid} onScroll={onScroll.bind(this, state.data)}
         className={"wasabi-tree-parent " + (props.className || "")}

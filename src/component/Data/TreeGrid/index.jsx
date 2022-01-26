@@ -12,7 +12,7 @@ import func from "../../libs/func";
 import TreeContainer from "../Tree/TreeContainer"
 
 
-function TreeGrid(props) {
-    return <TreeContainer {...props} componentType={"treegrid"}></TreeContainer>
+function TreeGrid(props,ref) {
+    return <TreeContainer {...props}  ref={ref} componentType={"treegrid"}></TreeContainer>
 }
 export default React.memo(React.forwardRef(TreeGrid), (pre, next) => { return !func.diff(pre, next, false) });
