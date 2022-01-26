@@ -67,7 +67,9 @@ function TreeGrid(props, ref) {
         try {
             let offsetX = event && event.nativeEvent && event.nativeEvent.offsetX;
             let width = event.target.getBoundingClientRect().width;
+   
             if (width - offsetX <= 4) {
+                console.log("width",width,event.target)
                 event.target.style.cursor = "ew-resize";
             }
             else {
@@ -85,7 +87,6 @@ function TreeGrid(props, ref) {
         if (event.target.style.cursor === "ew-resize") {
             document.getElementById(divideid).style.left = event.target.getBoundingClientRect().width + "px";
             document.getElementById(divideid).style.display = "block";
-
             document.addEventListener("mousemove", onDivideMouseMove);
             document.addEventListener("mouseup", onDivideMouseUp);
 
@@ -102,8 +103,8 @@ function TreeGrid(props, ref) {
         }
     }))
     return <div className={"wasabi-treegrid "} id={treegridid}>
-        <div className="wasabi-treegrid-left" style={{ width: width }} onMouseMove={onMouseMove} onMouseDown={onMouseDown}>
-            <div className="wasabi-treegrid-configuration"
+        <div className="wasabi-treegrid-left" style={{ width: width }} >
+            <div className="wasabi-treegrid-configuration" onMouseMove={onMouseMove} onMouseDown={onMouseDown}
                 style={{ height: treeTopHeight, lineHeight: treeTopHeight + "px" }}>
                 {props.treeHeader}
             </div>

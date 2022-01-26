@@ -121,7 +121,7 @@ class Page extends React.Component {
         }
     }
     render() {
-        return <TreeGrid style={{ height: 500 }} textField="label" checkStyle="checkbox" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></TreeGrid>
+        return <TreeGrid style={{ height: 500,margin:10 }} textField="label" checkStyle="checkbox" rowNumber={true} detailAble={true} selectAble={true} importAble={true} fixedHeaders={this.state.fixedHeaders} headers={this.state.headers} data={this.state.data} ></TreeGrid>
     }
 }
 
