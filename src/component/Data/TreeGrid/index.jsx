@@ -7,8 +7,12 @@
  */
 
 
- import React, { Component } from "react";
- import TreeContainer from "../Tree/TreeContainer"
- import loadDataHoc from "../../loadDataHoc";
+import React, { Component } from "react";
+import func from "../../libs/func";
+import TreeContainer from "../Tree/TreeContainer"
 
- export default loadDataHoc(TreeContainer, "treegrid");
+
+function TreeGrid(props) {
+    return <TreeContainer {...props} componentType={"treegrid"}></TreeContainer>
+}
+export default React.memo(React.forwardRef(TreeGrid), (pre, next) => { return !func.diff(pre, next, false) });

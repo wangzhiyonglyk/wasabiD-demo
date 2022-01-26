@@ -47,7 +47,7 @@ class Upload extends Component {
 
     }
     onDrop(event) {
-        if (this.props.disabled || this.state.uploadSuccessStatus != -1) {
+        if (this.props.disabled || this.state.uploadSuccessStatus !==-1) {
             return;
         }
       
@@ -236,7 +236,7 @@ class Upload extends Component {
      * 选择文件
      */
     onClick() {
-        if (this.props.disabled || this.state.uploadSuccessStatus != -1) {
+        if (this.props.disabled || this.state.uploadSuccessStatus !==-1) {
             return;
         }
         else {

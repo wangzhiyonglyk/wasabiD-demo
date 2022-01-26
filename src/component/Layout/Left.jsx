@@ -45,7 +45,7 @@ class Left extends React.Component {
        */
     mouseMoveHandler(event) {
         let center = document.getElementById(this.props.centerid);
-        if (this.position != null && center) {
+        if (this.position !==null && center) {
             let target = document.getElementById(this.state.separatorid);
             let left = document.getElementById(this.props.leftid);
             let right = document.getElementById(this.props.rightid);

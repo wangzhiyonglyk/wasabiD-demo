@@ -13,7 +13,10 @@ create by wangzhiyong 创建树组件
    2022-01-11 修复tree的bug，并且独立出去
  */
  import React, { Component } from "react";
+import func from "../../libs/func";
  import TreeContainer from "./TreeContainer";
- import loadDataHoc from "../../loadDataHoc";
 
- export default loadDataHoc(TreeContainer, "tree");
+ function Tree (props,ref){
+  return <TreeContainer {...props} componentType={"tree"}></TreeContainer>
+}
+export default React.memo(React.forwardRef(Tree), (pre, next) => { return !func.diff(pre, next, false) });
