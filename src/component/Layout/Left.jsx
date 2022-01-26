@@ -114,7 +114,7 @@ class Left extends React.Component {
 
 
     render() {
-        return <div className={"wasabi-layout-left  layout-panel " + (this.props.className||"")} id={this.props.leftid}
+        return <div className={"wasabi-layout-left  layout-panel " + (this.props.className??"")} id={this.props.leftid}
             style={{ top: this.props.top, width: this.props.width, height: (this.props.reduceHeight ? "calc(100% - " + (this.props.reduceHeight).toString() + "px" : null) }}>
             {this.props.children}
         </div>

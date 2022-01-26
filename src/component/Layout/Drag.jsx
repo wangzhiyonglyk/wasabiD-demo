@@ -68,7 +68,7 @@ class Drag extends React.Component {
 
   // }
   onDragStart(){
-    window.localStorage.setItem("wasabi-dragItem",JSON.stringify(this.props.data||""));
+    window.localStorage.setItem("wasabi-dragItem",JSON.stringify(this.props.data??""));
         this.props.onDragStart && this.props.onDragStart(this.props.data);
   }
   onDragEnd(){

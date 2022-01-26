@@ -421,11 +421,11 @@ class Select extends Component {
             <ArrowInput
                 ref={this.input}
                 show={this.state.show}
-                value={this.state.inputText||""}
+                value={(this.state.inputText??"")}
                 attachAble={this.props.attachAble}
                 name={this.props.name}
-                title={this.props.title||""}
-                placeholder={this.props.placeholder||""}
+                title={(this.props.title??"")}
+                placeholder={(this.props.placeholder??"")}
                 sortType={this.state.sortType}
                 readOnly={this.props.readOnly}
                 onChange={this.onChange.bind(this)}
