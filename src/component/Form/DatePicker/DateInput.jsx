@@ -19,6 +19,7 @@ class DateInput extends React.Component {
         this.autoForMat = this.autoForMat.bind(this);
         this.inputClick = this.inputClick.bind(this);
         this.inputFocus = this.inputFocus.bind(this);
+        this.inputBlur=this.inputBlur.bind(this);
         this.dateInput = this.dateInput.bind(this);
         this.timeInput = this.timeInput.bind(this);
     }
@@ -296,6 +297,8 @@ class DateInput extends React.Component {
                 break;
 
         }
+        
+       
     }
     /**
      * 得到焦点
@@ -315,6 +318,11 @@ class DateInput extends React.Component {
 
 
         }
+        event.target.parentNode.className=event.target.parentNode.className.replace(" focus","");
+        event.target.parentNode.className+=" focus";
+    }
+    inputBlur(event){
+        event.target.parentNode.className=  event.target.parentNode.className.replace(" focus","");
     }
 
     render() {
@@ -333,6 +341,7 @@ class DateInput extends React.Component {
                 onClick={this.inputClick}
                 onDoubleClick={this.props.showPicker}
                 onFocus={this.inputFocus}
+                onBlur={this.inputBlur}
             />
         </React.Fragment>
 

@@ -13,8 +13,12 @@
   border:1px solid var(--border-color);
   border-radius: 4px;
 }
+
 .daterangeinput:hover {
   border-color: var(--border-hover-color);
+}
+.daterangeinput.focus{
+  border-color: var(--primary-color);
 }
 .wasabi-has-error .daterangeinput {
   border-color: var(--danger-color);

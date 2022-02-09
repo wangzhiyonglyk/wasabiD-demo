@@ -192,17 +192,7 @@ const loadDataHoc = function (Widget, componentType = "select") {
          adjust(){
              return  this.input.current&&this.input.current.adjust();
          }
-        shouldComponentUpdate(nextProps, nextState) {
-            //全部用浅判断
-            if (func.diff(nextProps, this.props, false)) {
-                return true;
-            }
-            if (func.diff(nextState, this.state, false)) {
-                return true;
-            }
-            return false;
-        }
-       
+    
         render() {
             return <Widget
                 {...this.props}

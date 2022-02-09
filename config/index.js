@@ -18,6 +18,11 @@ let entry = [
     src: './view/button.jsx' //脚本路径
   },
   {
+    filename: 'form', //文件名，
+    title: 'form', // 标题
+    src: './view/form/index.jsx' //脚本路径
+  },
+  {
     filename: 'datagrid', //文件名，
     title: 'datagrid组件', // 标题
     src: './view/datagrid/index.jsx' //脚本路径

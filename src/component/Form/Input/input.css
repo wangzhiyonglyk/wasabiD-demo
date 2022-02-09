@@ -68,7 +68,7 @@ textarea.wasabi-input {
 }
 
 .wasabi-input:focus {
-  border-color:var(--border-hover-color);
+  border-color:var(--primary-color);
 }
 
 .wasabi-input[disabled]:hover, .wasabi-input[readOnly]:hover {
