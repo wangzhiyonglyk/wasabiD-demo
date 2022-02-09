@@ -1,42 +1,66 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import Tree from "../../component/Data/Tree"
-
+import Tree from "wasabi-tree"
+import { Input } from "../../component";
 let data = [
     {
-        id: 1, label: "第一个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",dropAble:true,
+        id: 1, label: "第1个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d", dropAble: true,
     },
 
     {
-        id: 2, label: "第二个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",dropAble:true,
+        id: 2, label: "第2个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d", dropAble: true,
     },
     {
-        id: 31, pId: 1, label: "第31个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",dropAble:true,
+        id: "2-1", pId: 1, label: "第1-1个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d", dropAble: true
     },
     {
-        id: 32, pId: 1, label: "第32个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",dropAble:true,
+        id: "2-2", pId: 1, label: "第12个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d", dropAble: true,
     },
 
     {
-        id: 21, pId: 2, label: "第21个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",dropAble:true,
+        id: "2-2-1", pId: "2-2", label: "第2-2-1个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d", dropAble: true,
     },
     {
-        id: 22, pId: 2, label: "第22个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",dropAble:true,
+        id: "3", pId: "", label: "第3个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d", dropAble: true,
     },
     {
-        id: 221, pId: 22, label: "第221个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",dropAble:true,
+        id: "4", pId: "", label: "第4个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d", dropAble: true,
+    },
+    {
+        id: "5", pId: "", label: "第5个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d", dropAble: true,
+    },
+    {
+        id: "6", pId: "", label: "第6个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d", dropAble: true,draggAble:true
     },
 ];
-for (let i = 0; i < 1000; i++) {
+console.time("生成10万数据")
+for (let i = 0; i < 100000; i++) {
+    let pId;
+    if (i < 1000) {
+        pId = 1;
 
+    }
+    else if (i < 5000) {
+        pId = 2;
+    }
+    else if (i < 10000) {
+        pId = 3;
+    }
+    else if (i < 20000) {
+        pId = 4;
+    }
+    else {
+        pId = 5;
+    }
     data.push({
         id: "s" + i,
-        pId: 2,
-        label: "第" + i + "节点",
-        draggAble:true,
-        dropAble:true
+        pId: pId,
+        label: "第s" + i + "节点",
+        draggAble: true,
+        dropAble: true
     })
 }
+console.timeEnd("生成10万数据")
 class Page extends React.Component {
     constructor(props) {
         super(props);
@@ -116,14 +140,15 @@ class Page extends React.Component {
         }
     }
     onClick() {
-       this.tree.current.getChecked()
-        
+        let data = this.tree.current.getChecked()
+        console.log("data")
     }
     render() {
-        return <div style={{ height: "100%", display: "flex", padding:10, flexDirection: "column" }} >
-          <button>test</button>
-            <Tree ref={this.tree} textField="label"  renameAble={true} removeAble={true}  url={"http://127.0.0.1:7001/getData"} httpType="GET"></Tree>
-         </div>
+        return <div style={{ height: "100%", display: "flex", padding: 10, flexDirection: "column" }} >
+            <button onClick={this.onClick.bind(this)}>tst</button>
+            <Input type="select" data={this.state.data} />
+           <div style={{width:200,height:500,overflow:"auto"}}><Tree  textFormatter={(row)=>{return <div style={{background:"red"}}>{ row.text}</div>}} style={{width:500}} ref={this.tree} data={this.state.data}  textField="label" renameAble={true} removeAble={true} httpType="GET"></Tree></div> 
+        </div>
     }
 }
 

@@ -77,8 +77,7 @@ const loadDataHoc = function (Widget, componentType = "select") {
                 this.loadData();
             }
             else if (this.state.loadDataStatus === "data") {
-                let idOrValueField = (componentType == "tree" || componentType === "treegrid" || componentType === "treepicker") ? this.props.idField || "id" : this.props.valueField || "value";
-                let formatData = propsTran.formatterData(componentType, this.getValue(), this.state.rawData, idOrValueField, this.props.textField || "text");
+                let formatData = propsTran.preprocessForm(this.state.rawData,this.props.valueField, this.props.textField );
                 this.setState({
                     data: formatData,
                     loadDataStatus: null,//处理完成
@@ -121,8 +120,7 @@ const loadDataHoc = function (Widget, componentType = "select") {
                 res = resData && resData instanceof Array ? resData : res;
             }
             let realData = func.getSource(res, this.props.dataSource || "data");
-            let idOrValueField = (componentType == "tree" || componentType === "treegrid" || componentType === "treepicker") ? this.props.idField : this.props.valueField;
-            let formatData = propsTran.formatterData(componentType, this.getValue(), realData, idOrValueField, this.props.textField);
+            let formatData =propsTran.preprocessForm(realData,this.props.valueField,this.props.textField );
              this.setState({
                 loadDataStatus: null,
                 rawData: realData,//保存方便对比
@@ -204,6 +202,7 @@ const loadDataHoc = function (Widget, componentType = "select") {
             }
             return false;
         }
+       
         render() {
             return <Widget
                 {...this.props}

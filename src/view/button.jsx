@@ -15,7 +15,7 @@ class Index extends React.Component {
             <Separator key="s1">不同主题-Button</Separator>
             <CheckBox name="user" label="用户" data={[{text:"王志勇",value:1},{text:"田玉红",value:2}]}></CheckBox>
             <div key="d1" style={{ textAlign: "center" }}>
-                <Button key="2" theme="primary">primary</Button>
+                <Button key="2" theme="primary" a="a">primary</Button>
                 <Button key="3" theme="success">succcess</Button>
                 <Button key="4" theme="warning">warning</Button>
                 <Button key="5" theme="danger">danger</Button>

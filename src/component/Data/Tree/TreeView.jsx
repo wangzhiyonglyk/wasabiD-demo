@@ -1,7 +1,6 @@
 /*
-create by wangzhiyong 树下拉选择
- date:2016-07
 create by wangzhiyong 创建树组件
+ date:2016-07
  edit 2020-10 参照ztree改造
  2021-06-16 重新优化
  2021-11-28 完善组件，修复bug，将样式拆分为两种，树的高度小一点，这样好看一点，树表格则与表格对齐,增加连线，调整勾选，图标，文字等样式
@@ -31,19 +30,18 @@ create by wangzhiyong 创建树组件
          onExpand: props.onExpand,
          onRename: props.onRename,
          onDrop: props.onDrop,
-         onDrag: props.onDrag
+         onDrag: props.onDrag,
+         textFormatter:props.textFormatter,
      }
      let data =props.visibleData;
-     if (data instanceof Array && data.length > 0) {
-         data.map((item, index) => {
+     if (Array.isArray(data)) {
+       nodeControl=  data.map((item, index) => {
              let isParent = false;//是否为父节点
-             if (item.isParent == true || (item.children instanceof Array && item.children.length > 0)) {//如果明确规定了，或者子节点不为空，则设置为父节点
+             if (item.isParent === true || (Array.isArray(item.children)&&item.children.length>0)) {//如果明确规定了，或者子节点不为空，则设置为父节点
                  isParent = true;
              }
- 
-             //通过输入框的值与自身的勾选情况综合判断
-             nodeControl.push(<TreeNode
-                 key={"treenode-" + item.id || item.text}
+         return (<TreeNode
+                 key={"treenode-" + item.id}
                  {
                  ...treeProps
                  }
@@ -58,9 +56,6 @@ create by wangzhiyong 创建树组件
      return <ul id={props.treeid} className={"wasabi-tree clearfix " + (props.dotted === false ? " nodotted " : "") }>
              {nodeControl}
           </ul>
-   
- 
- 
  }
  
  export default React.memo(TreeView);

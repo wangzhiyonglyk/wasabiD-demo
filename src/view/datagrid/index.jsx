@@ -73,9 +73,7 @@ class Page extends React.Component {
                 {
                     name: "label3",
                     label: "省2",
-                    content:()=>{
-                        return <img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/10/29/16e151a59317cae7~tplv-t2oaga2asx-watermark.awebp"></img>
-                    }
+                    
 
                 },
             ],

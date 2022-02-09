@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { TreeGrid } from "../../component"
+import {TreeGrid} from "../../component"
 class Page extends React.Component {
     constructor(props) {
         super(props);
