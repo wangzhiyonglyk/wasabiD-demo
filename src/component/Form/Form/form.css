@@ -60,10 +60,16 @@ desc:表单样式
     min-width: 160px;
 }
 
-.wasabi-form.left .wasabi-label,.wasabi-form.top .wasabi-label {
+.wasabi-form.left .wasabi-label {
     text-align: left;
 }
 
+.wasabi-form.top .wasabi-label{
+    text-align: left;
+    height: 30px;
+    line-height: 30px;
+
+}
 .wasabi-form.right .wasabi-label {
     text-align: right;
 }
