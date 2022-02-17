@@ -20,7 +20,7 @@ let propsTran = {
     * @param {*} simpleData 是否简单数据
     * @returns 
     */
-      preprocess(data = [], pId = "", path = [], idField = "id", parentField = "pId", textField = "text", childrenField = "children", simpleData) {
+      preprocess(data = [], pId = "", path = [], idField = "id", parentField = "pId", textField = "text", childrenField = "children", simpleData=false) {
         let result=[];
         if (Array.isArray(data)) {
             data = simpleData ? func.toTreeData(data, idField, parentField, textField) : data;
@@ -35,7 +35,22 @@ let propsTran = {
         }
         return result;
     },
-
+    /**
+     * 预处理某个节点
+     * @param {*} node 节点
+      * @param {*} idField id字段
+    * @param {*} parentField 父节点字段
+    * @param {*} textField 文本字段
+    * @param {*} childrenField 子节点字段
+     */
+    preprocessNode(node,idField = "id", parentField = "pId", textField = "text", childrenField = "children")
+    {
+        node.id=node[idField];
+        node.pId=node[parentField];
+        node.text=node[textField]
+        node.children=(Array.isArray(node[childrenField])&&node[childrenField].length>0)? propsTran.preprocess(node[childrenField], node[idField], [...node._path], idField, parentField, textField, childrenField,false):[];
+        return node;
+    },
 /**
  * 对表单数据进行预处理，方便后期操作 
  * @param {*} data 

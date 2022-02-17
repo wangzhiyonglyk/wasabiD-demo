@@ -7,7 +7,7 @@ date :2022-01-07 修复tregrid单击联动的bug
 import React, { useState, useReducer, useCallback, useEffect, useImperativeHandle, useRef } from "react";
 import PropTypes from "prop-types";
 import func from "../../libs/func.js";
-import { setChecked, setRadioChecked, findNodeById, clearChecked, checkedAll, removeNode, renameNode, moveAterNode, moveBeforeNode, moveInNode, setOpen, appendChildren, getChecked, filter } from "./treeFunc";
+import { setChecked, setRadioChecked, findNodeById, clearChecked, checkedAll, removeNode, renameNode, moveAterNode, moveBeforeNode, moveInNode, setOpen, appendChildren, getChecked, filter,updateNode } from "./treeFunc";
 import propsTran from "../../libs/propsTran";
 import api from "wasabi-api"
 import "./tree.css"
@@ -15,9 +15,8 @@ import config from "./config";
 import TreeView from "./TreeView";
 import TreeGridView from "../TreeGrid/TreeGridView";
 import Msg from "../../Info/Msg.jsx";
-
 const { treeDataToFlatData, getSource, uuid, clone } = func;
-const { preprocess } = propsTran;
+const { preprocess,preprocessNode } = propsTran;
 /**
  * 容器高度
  */
@@ -140,25 +139,34 @@ const handerLoadData = function (res = [], props) {
     return [];
 
 }
+//防止重复执行，原因不详
+let preAction;
+let preState;
 //状态值
 const myReducer = function (state, action) {
     try {
+        if (preAction === action) {
+            return preState;
+        }
+        preAction = action;//防止重复执行
         let data = null;
         let payload = action.payload;
         switch (action.type) {
             //节点加载
             case "loading":
-                return {
+                preState = {
                     ...state,
-                    loadingId: payload
-                }
+                    ...payload
+                };
+                break;
             //单击，双击
             case "onClick":
             case "onDoubleClick":
-                return {
+                preState = {
                     ...state,
                     clickId: payload
-                }
+                };
+                break;
             //勾选
             case "onChecked":
                 let checked = (payload.id + "") === (payload.checkValue + "");
@@ -169,7 +177,8 @@ const myReducer = function (state, action) {
                 else if (payload.checkStyle === "radio") {
                     data = setRadioChecked(state.data, payload.row, checked, payload.radioType);
                 }
-                return handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                break;
             //设置勾选
             case "setChecked":
                 if (payload.id) {
@@ -177,108 +186,123 @@ const myReducer = function (state, action) {
                     let node = findNodeById(state.data, payload.id);
                     if (node) {
                         if (payload.checkStyle === "checkbox") {
-                            data = setChecked(state.data, payload.node, !!payload.checked, payload.checkType);
+                            data = setChecked(state.data, node, !!payload.checked, payload.checkType);
                         }
                         else if (payload.checkStyle === "radio") {
-                            data = setRadioChecked(state.data, payload.node, !!payload.checked, payload.radioType);
+                            data = setRadioChecked(state.data, node, !!payload.checked, payload.radioType);
                         }
-                        return handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                        preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
                     }
+
                 }
+                else {
+                    preState = state;
+                }
+                break;
             //全部清除
             case "clearChecked":
                 data = clearChecked(state.data);
-                return handlerVisibleData(state, state.sliceBeginIndex, sliceEndIndex, data);
+                preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                break;
             //全选
             case "checkedAll":
                 data = checkedAll(state.data);
-                return handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                break;
 
             //重命名
             case "onRename":
                 data = renameNode(state.data, payload.row, payload.newText);
-                return handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                break;
             //移除
             case "onRemove":
                 data = removeNode(state.data, payload.row);
-                return handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
 
+                break;
             //停靠
             case "onDrop":
                 const { dragNode, dropNode, dragType } = payload;
 
                 if (dragNode.id !== dropNode.id) {
                     data = null;
-                    if (dragType == "in") {
+                    if (dragType === "in") {
                         if (dragNode.pId !== dropNode.id) {
-
                             data = moveInNode(state.data, dragNode, dropNode);
                         }
                     }
-                    else if (dragType == "before") {
+                    else if (dragType === "before") {
                         data = moveBeforeNode(state.data, dragNode, dropNode);
                     }
-                    else if (dragType == "after") {
+                    else if (dragType === "after") {
                         data = moveAterNode(state.data, dragNode, dropNode);
                     }
                     if (data) {
-                        return handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                        preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
                     }
                     else {
-                        return state;
+                        preState = state;
                     }
 
+                } else {
+                    preState = state;
                 }
+
+
+                break;
             /**
              * 虚拟列表 todo
              */
             case "showVisibleData":
-                return handlerVisibleData(state, payload.sliceBeginIndex, payload.sliceEndIndex, payload.data, payload.filterValue);
+                preState = handlerVisibleData(state, payload.sliceBeginIndex, payload.sliceEndIndex, payload.data, payload.filterValue);
+                break;
             //设置折叠或展开
             case "setOpen":
-                console.log("setopen", payload)
                 data = setOpen(state.data, payload.row, payload.open);
-                return handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                break;
             case "remove":
-                data = removeNode(state.data, a);
-                return handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                data = removeNode(state.data, payload);
+                preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                break;
             //追加
             case "append":
                 const { children, row } = payload;
                 data = appendChildren(state.data, children, row);
-                return handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                break;
+            //更新
+            case "update":
+                data = updateNode(state.data, payload);
+                preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                break;
             default:
-                return state;
+                preState = state;
+                break;
         }
+        return preState;
     }
     catch (e) {
         console.log("reduce error", e)
     }
-
+    return state;
 }
 function TreeContainer(props, ref) {
     const [treecontainerid] = useState(uuid());
     const [treeid] = useState(uuid());
     const treegrid = useRef(null);
     const [state, dispatch] = useReducer(myReducer, {
-        filterValue: null,//过滤值
-        data: null,//源数据
-        flatData: null,//扁平化数据
-        filterData: null,//过滤的数据
-        visibleData: null,//可见数据
-        sliceBeginIndex: 0,//切割开始下标，
-        sliceEndIndex: 0,//切割结束下标，
-        loadingId: null,//加载的节点id
-        clickId: null//选中的节点id
+
     });
 
     //定义事件
     const onClick = useCallback((id, text, row) => {
-        dispatch({ type: "onClick", payload: id }),
-            treegrid?.current?.setFocus(id);  //如果是树表格或者交叉表
+        dispatch({ type: "onClick", payload: id });
+        treegrid?.current?.setFocus(id);  //如果是树表格或者交叉表
         props.onClick && props.onClick(id, text, row);
-    }, []);
-    const onDoubleClick = useCallback((id, text, row) => { dispatch({ type: "onDoubleClick", payload: id }); props.onDoubleClick && props.onDoubleClick(id, text, row); }, []);
+    }, [treegrid, props]);
+    const onDoubleClick = useCallback((id, text, row) => { dispatch({ type: "onDoubleClick", payload: id }); props.onDoubleClick && props.onDoubleClick(id, text, row); }, [props]);
     const onChecked = useCallback((id, text, row, checkValue) => {
         dispatch(
             {
@@ -288,26 +312,30 @@ function TreeContainer(props, ref) {
         );
         let checked = (id ?? "").toString() === (checkValue ?? "").toString();
         props.onChecked && props.onChecked(checked, id, text, row);
-    }, []);
+    }, [props]);
     const onRemove = useCallback((id, text, row) => {
         Msg.confirm("您确定删除【" + text + "]吗", () => {
             dispatch({ type: "onRemove", payload: { id, text, row } })
             props.onRemove && props.onRemove(id, text, row);
         })
-    }, []);
+    }, [props]);
     const onRename = useCallback((id, text, row, newText) => {
         dispatch({ type: "onRename", payload: { id, text, row, newText } });
         props.onRename && props.onRename(id, text, row, newText);
-    }, []);
+    }, [props]);
     const onDrop = useCallback((dragNode, dropNode, dragType) => { dispatch({ type: "onDrop", payload: { dragNode, dropNode, dragType } }) }, []);
 
     //加载子节点成功
     const loadSuccess = useCallback((res) => {
         try {
-            dispatch({ type: "loading", payload: null });//
-
+            if (state.loadingId !== null && state.loadingId !== undefined) {//如果之前存在，则设置，否则不设置
+                dispatch({
+                    type: "loading", payload: {
+                        loadingId: null,
+                    }
+                });//
+            }
             let asyncChildrenData = handerLoadData(res, props);
-
             //判断是否为父节点请求
             let row = window.sessionStorage.getItem("async-tree-node");
             row = row ? JSON.parse(row) : null;//没有
@@ -320,18 +348,22 @@ function TreeContainer(props, ref) {
             window.sessionStorage.removeItem("async-tree-node");//删除
         }
 
-    }, []);
+    }, [props]);
 
     //加载子节点失败
     const loadError = useCallback(() => {
-        dispatch({ type: "loading", payload: null });//
-    }, []);
+        dispatch({
+            type: "loading", payload: {
+                loadingId: null,
+            }
+        });//
+    }, [props]);
 
     //展开节点
     const onExpand = useCallback((open, id, text, row) => {
         //先设置折叠或者展开
         dispatch({ type: "setOpen", payload: { row, open } });//设置折叠与展开
-        if (props.asyncAble && (!row.children || row.children.length == 0)) {//没有数据
+        if (props.asyncAble && (!row.children || row.children.length === 0)) {//没有数据
             let asyncChildrenData = [];
             if (props.onAsync && typeof props.onAsync === "function") {//自行处理
                 //得到子节点
@@ -345,7 +377,11 @@ function TreeContainer(props, ref) {
             }
             else if (props.url) {
                 //没有设置异步函数
-                dispatch({ type: "loading", payload: id });//
+                dispatch({
+                    type: "loading", payload: {
+                        loadingId: id,
+                    }
+                });//
                 //先保存节点数据
                 window.sessionStorage.setItem("async-tree-node", JSON.stringify(row));
                 //请求数据
@@ -358,20 +394,12 @@ function TreeContainer(props, ref) {
         }
 
         props.onExpand && props.onExpand(open, id, text, row);
-    }, [props.url, props.httpType, props.contentType, props.params, props.headers, props.idField]);//
+    }, [props, loadSuccess, loadError, state.sliceBeginIndex, state.sliceEndIndex]);//
     /**
-     * 滚动事件
-     */
-    const onScroll = useCallback(
-        () => {
-            let visiData = getVisibleCount(treecontainerid);
-            scrollShowVisibleData(visiData.startIndex, visiData.endIndex, visiData.visibleDataCount, state.data)
-        }, []);
-    /**
-   * 渲染当前可见数据
-   * @param {*} startIndex 可见区数据的开始下标
-   * @param {*} endIndex 可见区数据的结束下标
-   */
+  * 渲染当前可见数据
+  * @param {*} startIndex 可见区数据的开始下标
+  * @param {*} endIndex 可见区数据的结束下标
+  */
 
     const scrollShowVisibleData = useCallback(
         (startIndex, endIndex, visibleDataCount, data = null, filterValue = null) => {
@@ -392,8 +420,17 @@ function TreeContainer(props, ref) {
             let sliceEndIndex = endIndex + config.bufferScale * visibleDataCount;
             dispatch({ type: "showVisibleData", payload: { sliceBeginIndex, sliceEndIndex, data: data, filterValue } });
         },
-        [],
+        [treeid],
     )
+    /**
+     * 滚动事件
+     */
+    const onScroll = useCallback(
+        () => {
+            let visiData = getVisibleCount(treecontainerid);
+            scrollShowVisibleData(visiData.startIndex, visiData.endIndex, visiData.visibleDataCount)
+        }, [treecontainerid, scrollShowVisibleData]);
+
     //对外接口
     useImperativeHandle(ref, () => ({
         /**
@@ -428,9 +465,12 @@ function TreeContainer(props, ref) {
          * 单击节点
          */
         setClick(id) {
-            dispatch({ type: "setClick", payload: id });
-            treegrid?.current?.setFocus(id);  //如果是树表格或者交叉表
-            onscroll();
+            if(id&&id!==state.clickId)
+            {
+                dispatch({ type: "setClick", payload: id });
+                treegrid?.current?.setFocus(id);  //如果是树表格或者交叉表
+                onScroll();
+            }
         },
         /**
          * 展开或折叠节点
@@ -467,18 +507,40 @@ function TreeContainer(props, ref) {
                 dispatch({ type: "append", payload: { children: children, row: node } })
             }
         },
+       /**
+        * 更新
+        * @param {*} node 
+        */
+        update(node){
+            if(node){
+                node= preprocessNode(node, props.idField, props.parentField, props.textField, props.childrenField);
+                dispatch({ type: "update", payload:node })
+            }
+        },
         /**
-         * 
+         * 调整容器
          */
         adjust() {
-            onscroll();
+            onScroll();
         }
     }))
     //父组件加载数据
     useEffect(() => {
         if (props.url) {
-            //先记住下标
-            onScroll([]);
+            //初始化，要重新设置切割下标
+            let visiData = getVisibleCount(treecontainerid);
+            //当前切割的数据开始下标
+            let sliceBeginIndex = visiData.startIndex - config.bufferScale * visiData.visibleDataCount;
+            sliceBeginIndex = sliceBeginIndex < 0 ? 0 : sliceBeginIndex;
+            // //当前切割的数据结束下标
+            let sliceEndIndex = visiData.endIndex + config.bufferScale * visiData.visibleDataCount;
+
+            dispatch({
+                type: "loading", payload: {
+                    sliceBeginIndex: sliceBeginIndex,
+                    sliceEndIndex: sliceEndIndex
+                }
+            });
             //再请求数据
             getData(props.url, props.httpType, props.contentType, props.headers, props.params, loadSuccess, loadError)
         }
@@ -489,7 +551,7 @@ function TreeContainer(props, ref) {
             let visiData = getVisibleCount(treecontainerid);
             scrollShowVisibleData(visiData.startIndex, visiData.endIndex, visiData.visibleDataCount, data || []);
         }
-    }, [props.url, props.data])
+    }, [props])
 
 
     //需要下传的事件
@@ -545,6 +607,8 @@ TreeContainer.propTypes = {
     radioType: PropTypes.oneOf(["level", "all"]),//单选时影响的层级
     renameAble: PropTypes.bool,//是否允许重命名
     removeAble: PropTypes.bool,//是否允许移除
+    draggAble: PropTypes.bool,//是否允许拖动，
+    dropAble: PropTypes.bool,//是否允许停靠
     asyncAble: PropTypes.bool,//是否可以异步加载数据
 
     //after事件

@@ -320,7 +320,7 @@ func.shallowClone = function (obj) {
  */
 func.getSource = function (data, source = "data") {
     if (typeof data === "object" && !(Array.isArray(data))) {
-        let sourceArr = new Array();
+        let sourceArr = [];
         let returnData = data;
 
         if (source.indexOf(".") > -1) {

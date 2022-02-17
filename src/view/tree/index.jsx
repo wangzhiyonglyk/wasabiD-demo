@@ -140,14 +140,16 @@ class Page extends React.Component {
         }
     }
     onClick() {
-        let data = this.tree.current.getChecked()
-        console.log("data")
+    this.tree.current.update( {
+            id: 1, label: "更新", dropAble: true,
+        })
+        
     }
     render() {
         return <div style={{ height: "100%", display: "flex", padding: 10, flexDirection: "column" }} >
             <button onClick={this.onClick.bind(this)}>tst</button>
             <Input type="select" data={this.state.data} />
-           <div style={{width:200,height:500,overflow:"auto"}}><Tree  textFormatter={(row)=>{return <div style={{background:"red"}}>{ row.text}</div>}} style={{width:500}} ref={this.tree} data={this.state.data}  textField="label" renameAble={true} removeAble={true} httpType="GET"></Tree></div> 
+           <div ><Tree  textFormatter={(row)=>{return <div>{ row.text}</div>}} style={{width:500}} ref={this.tree} data={this.state.data}  textField="label" renameAble={true} removeAble={true} httpType="GET"></Tree></div> 
         </div>
     }
 }

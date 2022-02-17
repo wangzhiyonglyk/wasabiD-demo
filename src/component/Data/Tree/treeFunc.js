@@ -5,7 +5,7 @@
 /***
  * 通过id找到节点
  */
-export function findNodeById(data, id) {
+ export function findNodeById(data, id) {
     let node;
     if (data && data.length > 0 && id !== null && id !== undefined && id !== "") {
         for (let i = 0; i < data.length; i++) {
@@ -130,13 +130,13 @@ export function setChecked(data, node, checked, checkType) {
  */
 export function setRadioChecked(data, node, checked, radioType) {
     try {
-        if (radioType == "all") {
+        if (radioType ==="all") {
             data = clearChecked(data);
-            let node = findNodeByPath(data, (node._path ?? findNodeById(node.id)._path));
+             node = findNodeByPath(data, (node._path ?? findNodeById(node.id)._path));
             node.checked = checked;
             node.half = false;
         }
-        else if (radioType == "level") {
+        else if (radioType ==="level") {
             let nodes = findLinkNodesByPath(data, node._path ? node._path : findNodeById(node.id)?._path);
             if (nodes && nodes.length >= 2) {
                 //有父节点,去设置兄弟节点
@@ -148,7 +148,7 @@ export function setRadioChecked(data, node, checked, radioType) {
                     }
                 }
             }
-            else if (nodes && nodes.length == 1) {
+            else if (nodes && nodes.length === 1) {
                 //根节点
                 for (let i = 0; i < data.length; i++) {
                     data[i].checked = false;
@@ -210,7 +210,7 @@ export function setNodeParentsChecked(nodes) {
                     nodes[i].checked = true;
                     nodes[i].half = false;
                 }
-                else if (checkedNum > 0 && checkedNum !== nodes[i].children.length || halfNum > 0) {
+                else if ((checkedNum > 0 && checkedNum !== nodes[i].children.length )|| halfNum > 0) {
                     //部分勾选，或者有半选
                     nodes[i].checked = false;
                     nodes[i].half = true;
@@ -315,7 +315,7 @@ export function renameNode(data, node, newText) {
  */
 export function removeNode(data, node) {
     let nodes = findLinkNodesByPath(data, (node._path ?? findNodeById(node.id)._path));
-    if (nodes.length == 1) {
+    if (nodes.length === 1) {
         //根节点
         try {
 
@@ -338,15 +338,42 @@ export function removeNode(data, node) {
 
 }
 /**
+ * 更新节点
+ * @param {*} data 
+ * @param {*} newNode 新节点
+ * @returns 
+ */
+ export function updateNode(data,newNode) {
+    if(Array.isArray(data)&&data.length>0)
+    {
+       let  node = newNode._path?findNodeByPath(data, (newNode._path)): findNodeById(data,newNode.id);
+       if(node){
+          for(let key in newNode){
+              node[key]=newNode[key]
+          }
+          node.children= setChildrenPath(node.id,node._path,newNode.children)
+          return data;
+       }   
+    }
+    else{
+        return [newNode];
+    }
+ 
+    return data;
+
+
+}
+/**
  * 移动到节点中
  * @param {*} data 
  * @param {*} dragNode 移动节点
  * @param {*} dropNode 停靠节点
  */
-export function moveInNode(data, dragNode, dropNode) {
+ export function moveInNode(data, dragNode, dropNode) {
     //在数据中找到节点
     let dragNodes = findLinkNodesByPath(data, dragNode._path);
     let dropNodes = findLinkNodesByPath(data, dropNode._path);
+    
     if (dropNodes) {
         let leafDragNode = dragNodes[dragNodes.length - 1];//在数据中找到移动节点
         let leafDropNode = dropNodes[dropNodes.length - 1];//在数据中找到停靠节点
@@ -397,7 +424,7 @@ export function moveBeforeOrAfterNode(data, dragNode, dropNode, step = 0) {
         if (dragNodes && dropNodes) {
             let leafDragNode = dragNodes[dragNodes.length - 1];//在数据中找到移动节点
             let leafDropNode = dropNodes[dropNodes.length - 1];//在数据中找到停靠节点
-            if (dropNodes.length == 1) {//根节点
+            if (dropNodes.length ===1) {//根节点
                 data = [
                     ...data.slice(0, leafDropNode._path[0] + step),
                     {
@@ -471,7 +498,7 @@ export function filter(flatData, filterValue = "") {
         if (filterValue) {
             for (let i = 0; i < flatData.length; i++) {
                 let item = null;
-                if ((flatData[i].id + "").indexOf(key) > -1 || (flatData[i].text + "").indexOf(key) > -1) {
+                if ((flatData[i].id + "").indexOf(filterValue) > -1 || (flatData[i].text + "").indexOf(filterValue) > -1) {
                     item = flatData[i];
                     item.open = true;
                    filterData.push(item);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
