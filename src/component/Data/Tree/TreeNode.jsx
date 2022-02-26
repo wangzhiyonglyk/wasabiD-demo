@@ -20,7 +20,7 @@ import Text from "../../Form/Text"
 import func from "../../libs/func";
 import TreeNodeFormat from "./TreeNodeFormat"
 import config from "./config"
-const { uuid, diff } = func;
+const { uuid } = func;
 function NodeView(props) {
     //节点属性
     let row = TreeNodeFormat(props);
@@ -77,14 +77,14 @@ function NodeView(props) {
                 {/* span用于右边加虚线*/}
                 <span className="wasabi-tree-li-icon-beforeRight"></span>
                 {/* 用于向下加虚线 */}
-                <span className="wasabi-tree-li-icon-afterBelow" style={{ height: (childrenLength + 1) * config.rowDefaultHeight + (row._isLast ? config.rowDefaultHeight * -1 : 0) }}></span>
+                <span className="wasabi-tree-li-icon-afterBelow" style={{ height: (childrenLength + 1) * (config.rowDefaultHeight+10 )+ (row._isLast ? config.rowDefaultHeight * -1 : 15) }}></span>
             </i>
         }
     }
     else {
         //不是父节点，占位符
         arrowIcon = <i className={((clickId === row.id ? " selected " : "")) + (" wasabi-tree-li-icon-line")}>
-            <span className="wasabi-tree-li-icon-afterBelow" style={{ height: (childrenLength + 1) * config.rowDefaultHeight + (row._isLast ? config.rowDefaultHeight * -1 : 0) }}></span>
+            <span className="wasabi-tree-li-icon-afterBelow" style={{ height: (childrenLength + 1) * (config.rowDefaultHeight+10) + (row._isLast ? config.rowDefaultHeight * -1 : 15) }}></span>
         </i>
     }
 
@@ -120,7 +120,7 @@ function NodeView(props) {
           text=textFormatter(row);
       }
     //节点元素
-    return <li className="wasabi-tree-li" key={row.id} style={{ display: row.hide ? "none" : "flex" }} >
+    return <li className="wasabi-tree-li" key={row.pId+"-"+row.id} style={{ display: row.hide ? "none" : "flex" }} >
         {blankControl}
         {/* 折叠节点 */}
         {/* //  不是父节点也要一个占位符 */}
@@ -450,4 +450,4 @@ TreeNode.defaultProps = {
     children: []
 };
 
-export default React.memo(TreeNode, (pre, next) => { return !diff(pre, next, false) });
+export default React.memo(TreeNode);

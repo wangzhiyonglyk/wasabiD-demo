@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import Tree from "wasabi-tree"
-import { Input } from "../../component";
+// import Tree from "wasabi-tree"
+import { Input ,Tree} from "../../component";
 let data = [
     {
         id: 1, label: "第1个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d", dropAble: true,
@@ -34,7 +34,7 @@ let data = [
     },
 ];
 console.time("生成10万数据")
-for (let i = 0; i < 100000; i++) {
+for (let i = 0; i < 100; i++) {
     let pId;
     if (i < 1000) {
         pId = 1;
@@ -140,16 +140,17 @@ class Page extends React.Component {
         }
     }
     onClick() {
-    this.tree.current.update( {
-            id: 1, label: "更新", dropAble: true,
-        })
-        
+   this.tree.current.checkedAll()
     }
+    onClick1() {
+        this.tree.current.removeAll()
+         }
     render() {
         return <div style={{ height: "100%", display: "flex", padding: 10, flexDirection: "column" }} >
-            <button onClick={this.onClick.bind(this)}>tst</button>
+            <button onClick={this.onClick.bind(this)}>更新</button>
+            <button onClick={this.onClick1.bind(this)}>更新1</button>
             <Input type="select" data={this.state.data} />
-           <div ><Tree  textFormatter={(row)=>{return <div>{ row.text}</div>}} style={{width:500}} ref={this.tree} data={this.state.data}  textField="label" renameAble={true} removeAble={true} httpType="GET"></Tree></div> 
+           <div ><Tree  url="http://127.0.0.1:7001/getData" isSimpleData={true} textFormatter={(row)=>{return <div>{ row.text}</div>}} style={{width:500}} ref={this.tree} data={this.state.data}  textField="label" selectAble={true} renameAble={true} removeAble={true} httpType="GET"></Tree></div> 
         </div>
     }
 }

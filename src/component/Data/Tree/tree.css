@@ -87,10 +87,11 @@
 /*树节点向下的虚线*/
 .wasabi-tree .wasabi-tree-li-icon-afterBelow{
     position: absolute;
-    height: 30px;
+    height: 40px;
     border-left: 1px dotted var(--dotted-color);
     left: 7px;
-    top:15px;
+    top: 10px;
+
   
    
 }

@@ -7,7 +7,7 @@ date :2022-01-07 修复tregrid单击联动的bug
 import React, { useState, useReducer, useCallback, useEffect, useImperativeHandle, useRef } from "react";
 import PropTypes from "prop-types";
 import func from "../../libs/func.js";
-import { setChecked, setRadioChecked, findNodeById, clearChecked, checkedAll, removeNode, renameNode, moveAterNode, moveBeforeNode, moveInNode, setOpen, appendChildren, getChecked, filter,updateNode } from "./treeFunc";
+import { setChecked, setRadioChecked, findNodeById, findLinkNodesByPath,clearChecked, checkedAll, removeNode, renameNode, moveAterNode, moveBeforeNode, moveInNode, setOpen, appendChildren, getChecked, filter, updateNode } from "./treeFunc";
 import propsTran from "../../libs/propsTran";
 import api from "wasabi-api"
 import "./tree.css"
@@ -16,11 +16,12 @@ import TreeView from "./TreeView";
 import TreeGridView from "../TreeGrid/TreeGridView";
 import Msg from "../../Info/Msg.jsx";
 const { treeDataToFlatData, getSource, uuid, clone } = func;
-const { preprocess,preprocessNode } = propsTran;
+const { preprocess, preprocessNode } = propsTran;
 /**
  * 容器高度
  */
 let containerHeight;
+let rowDefaultHeight = config.rowDefaultHeight;
 /**
  * 根据高度得到可见数及初始下标
  * @param {*} containerid 容器id
@@ -30,9 +31,9 @@ const getVisibleCount = function (containerid) {
     if (!containerHeight) {
         containerHeight = document.getElementById(containerid).clientHeight || window.innerHeight;
     }
-    let visibleDataCount = Math.ceil(containerHeight / config.rowDefaultHeight);
+    let visibleDataCount = Math.ceil(containerHeight / rowDefaultHeight);
     let scrollTop = document.getElementById(containerid).scrollTop || 0;
-    let startIndex = Math.floor(scrollTop / config.rowDefaultHeight) || 0;
+    let startIndex = Math.floor(scrollTop / rowDefaultHeight) || 0;
     let endIndex = (startIndex + config.bufferScale * visibleDataCount);
     return {
         visibleDataCount,
@@ -75,7 +76,7 @@ const handlerVisibleData = function (state, sliceBeginIndex, sliceEndIndex, newD
     return {
         ...state,
         filterValue: newFilterValue,
-        data: newData,
+        data: newData||state.data,
         filterData: filterData,
         flatData: flatData,
         visibleData: visibleData,
@@ -131,7 +132,7 @@ const handerLoadData = function (res = [], props) {
 
         }
         //预处理数据
-        return preprocess(realData, row.id, row._path, props.idField, props.parentField, props.textField, props.childrenField, props.simpleData);
+        return preprocess(realData, row.id, row._path, props.idField, props.parentField, props.textField, props.childrenField, props.isSimpleData);
     }
     catch (e) {
         console.error("handerLoadData", e);
@@ -181,6 +182,7 @@ const myReducer = function (state, action) {
                 break;
             //设置勾选
             case "setChecked":
+
                 if (payload.id) {
                     //先找到节点
                     let node = findNodeById(state.data, payload.id);
@@ -263,7 +265,11 @@ const myReducer = function (state, action) {
                 preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
                 break;
             case "remove":
-                data = removeNode(state.data, {id:payload});
+                data = removeNode(state.data, { id: payload });
+                preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
+                break;
+            case "removeAll":
+                data = [];
                 preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
                 break;
             //追加
@@ -289,6 +295,7 @@ const myReducer = function (state, action) {
     return state;
 }
 function TreeContainer(props, ref) {
+    rowDefaultHeight = props.componentType !== "tree" ? config.tableRowDefaultHeight : config.rowDefaultHeight;
     const [treecontainerid] = useState(uuid());
     const [treeid] = useState(uuid());
     const treegrid = useRef(null);
@@ -323,8 +330,7 @@ function TreeContainer(props, ref) {
         dispatch({ type: "onRename", payload: { id, text, row, newText } });
         props.onRename && props.onRename(id, text, row, newText);
     }, [props]);
-    const onDrop = useCallback((dragNode, dropNode, dragType) => { dispatch({ type: "onDrop", payload: { dragNode, dropNode, dragType } }) }, []);
-
+    const onDrop = useCallback((dragNode, dropNode, dragType) => { dispatch({ type: 'onDrop', payload: { dragNode, dropNode, dragType } }); props.onDrop && props.onDrop(dragNode, dropNode, dragType) }, [])
     //加载子节点成功
     const loadSuccess = useCallback((res) => {
         try {
@@ -406,8 +412,8 @@ function TreeContainer(props, ref) {
             let startOffset;
             if (startIndex >= 1) {
                 //减去上部预留的高度
-                let size = (startIndex + 1) * config.rowDefaultHeight - (startIndex - config.bufferScale * visibleDataCount >= 0 ? (startIndex - config.bufferScale * visibleDataCount) * config.rowDefaultHeight : 0);
-                startOffset = startIndex * config.rowDefaultHeight - size;
+                let size = (startIndex + 1) * rowDefaultHeight - (startIndex - config.bufferScale * visibleDataCount >= 0 ? (startIndex - config.bufferScale * visibleDataCount) * rowDefaultHeight : 0);
+                startOffset = startIndex * rowDefaultHeight - size;
             } else {
                 startOffset = 0;
             }
@@ -433,6 +439,30 @@ function TreeContainer(props, ref) {
 
     //对外接口
     useImperativeHandle(ref, () => ({
+          /**
+     * 获取某个节点
+     * @param {*} id 
+     * @returns 
+     */
+           findNode(id) {
+            return findNodeById(state.data,id);
+        },
+        /**
+         * 获取某个节点整个链路树
+         * @param {*} id 
+         */
+        findParents(id){
+            let node=findNodeById(state.data,id);
+            return node&&node._path?findLinkNodesByPath(state.data,node._path):[];
+           
+        },
+        /**
+         * 获取所有数据
+         * @returns 
+         */
+        getData() {
+            return state.data;
+        },
         /**
          * 设置值
          * @param {*} newValue 
@@ -465,11 +495,21 @@ function TreeContainer(props, ref) {
          * 单击节点
          */
         setClick(id) {
-            if(id&&id!==state.clickId)
-            {
-                dispatch({ type: "setClick", payload: id });
+            if (id && id !== state.clickId) {
+                dispatch({ type: "onClick", payload: id });
                 treegrid?.current?.setFocus(id);  //如果是树表格或者交叉表
-                onScroll();
+
+                //设置选中的节点可见
+                const findIndex = state.flatData.findIndex((item, index) => {
+                    return item.id === id
+                })
+                const visibleData = getVisibleCount(treecontainerid)
+                if (findIndex < visibleData.startIndex || findIndex > visibleData.endIndex) {
+                    // 节点不可见
+                    document.getElementById(treecontainerid).scrollTop = (findIndex - 1) * rowDefaultHeight
+                  
+                    onScroll()
+                }
             }
         },
         /**
@@ -478,14 +518,20 @@ function TreeContainer(props, ref) {
          * @param {*} open 
          */
         setOpen(id, open) {
-            dispatch({ type: "setOpen", payload: { row:{id}, open } });
+            dispatch({ type: "setOpen", payload: { row: { id }, open } });
         },
         /**
          * 移除某个节点
          * @param {*} row 
          */
         remove(id) {
-            dispatch({ type: "remove", payload:id });
+            dispatch({ type: "remove", payload: id });
+        },
+        /**
+         * 清除所有
+         */
+        removeAll() {
+            dispatch({ type: "removeAll" });
         },
         /**
          * 筛选
@@ -507,15 +553,25 @@ function TreeContainer(props, ref) {
                 dispatch({ type: "append", payload: { children: children, row: node } })
             }
         },
-       /**
-        * 更新
-        * @param {*} node 
-        */
-        update(node){
-            if(node){
-                node= preprocessNode(node, props.idField, props.parentField, props.textField, props.childrenField);
-                dispatch({ type: "update", payload:node })
+        /**
+         * 更新
+         * @param {*} node 
+         */
+        update(node) {
+            if (node) {
+                node = preprocessNode(node, props.idField, props.parentField, props.textField, props.childrenField);
+                dispatch({ type: "update", payload: node })
             }
+        },
+        /**
+         * 更新所有
+         */
+        updateAll(newData) {
+            //预处理数据
+            let data = preprocess(newData, "", [], props.idField, props.parentField, props.textField, props.childrenField, props.isSimpleData);
+              //重新设置下标，
+            let visiData = getVisibleCount(treecontainerid);
+            scrollShowVisibleData(visiData.startIndex, visiData.endIndex, visiData.visibleDataCount, data || []);
         },
         /**
          * 调整容器
@@ -527,7 +583,7 @@ function TreeContainer(props, ref) {
     //父组件加载数据
     useEffect(() => {
         if (props.url) {
-            //初始化，要重新设置切割下标
+            //第一次初始化，要重新设置切割下标
             let visiData = getVisibleCount(treecontainerid);
             //当前切割的数据开始下标
             let sliceBeginIndex = visiData.startIndex - config.bufferScale * visiData.visibleDataCount;
@@ -546,12 +602,12 @@ function TreeContainer(props, ref) {
         }
         else {//注意了，空数据也可以
             //预处理数据
-            let data = preprocess(props.data, "", [], props.idField, props.parentField, props.textField, props.childrenField, props.simpleData);
-            //显示当前数据
+            let data = preprocess(props.data, "", [], props.idField, props.parentField, props.textField, props.childrenField, props.isSimpleData);
+            //设置第一次的下标，
             let visiData = getVisibleCount(treecontainerid);
             scrollShowVisibleData(visiData.startIndex, visiData.endIndex, visiData.visibleDataCount, data || []);
         }
-    }, [props])
+    }, [props.data,props.url])
 
 
     //需要下传的事件
@@ -581,7 +637,7 @@ function TreeContainer(props, ref) {
         className={"wasabi-tree-parent " + (props.className || "")}
         style={props.style}>
         {control}
-        <div style={{ left: 0, top: 0, height: state.flatData && state.flatData.length * config.rowDefaultHeight, position: "absolute", width: 1 }}></div>
+        <div style={{ left: 0, top: 0, height: state.flatData && state.flatData.length * rowDefaultHeight, position: "absolute", width: 1 }}></div>
     </div>
 
 }
@@ -593,14 +649,14 @@ TreeContainer.propTypes = {
     parentField: PropTypes.string,//数据字段父节点名称
     textField: PropTypes.string,//数据字段文本名称
     childrenField: PropTypes.string,//字节点字段
-    dotted: PropTypes.bool,//是否有虚线
+    dottedAble: PropTypes.bool,//是否有虚线
     url: PropTypes.string,//后台查询地址
 
     params: PropTypes.object,//向后台传输的额外参数
     dataSource: PropTypes.string,//ajax的返回的数据源中哪个属性作为数据源,为null时直接后台返回的数据作为数据源
     headers: PropTypes.array,//表头
     data: PropTypes.array,//节点数据
-    simpleData: PropTypes.bool,//是否使用简单的数据格式
+    isSimpleData: PropTypes.bool,//是否使用简单的数据格式
     selectAble: PropTypes.bool,//是否允许勾选
     checkStyle: PropTypes.oneOf(["checkbox", "radio", PropTypes.func]),//单选还是多选
     checkType: PropTypes.object,//勾选对于父子节点的关联关系
@@ -638,8 +694,8 @@ TreeContainer.defaultProps = {
     textField: "text",
     childrenField: "children",
     dataSource: "data",
-    dotted: true,
-    simpleData: false,//默认为真
+    dottedAble: true,
+    isSimpleData: false,//默认为真
     selectAble: false,
     checkStyle: "checkbox",
     checkType: { "y": "ps", "n": "ps" },//默认勾选/取消勾选都影响父子节点，todo 暂时还没完成

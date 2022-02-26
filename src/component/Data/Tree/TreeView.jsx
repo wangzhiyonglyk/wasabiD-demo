@@ -41,7 +41,7 @@ function TreeView(props) {
                 isParent = true;
             }
         return (<TreeNode
-                key={"treenode-" + item.id}
+                key={"treenode-"+item.pId+"-"+ item.id}
                 {
                 ...treeProps
                 }
@@ -53,7 +53,7 @@ function TreeView(props) {
             />);
         });
     }
-    return <ul id={props.treeid} className={"wasabi-tree clearfix " + (props.dotted === false ? " nodotted " : "") }>
+    return <ul id={props.treeid} className={"wasabi-tree clearfix " + (props.dottedAble === false ? " nodotted " : "") }>
             {nodeControl}
          </ul>
 }

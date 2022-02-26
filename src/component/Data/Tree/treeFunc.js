@@ -94,6 +94,7 @@ export function setSelfChecked(value, data) {
  * @returns 
  */
 export function setChecked(data, node, checked, checkType) {
+    console.log("Test")
     try {
         let nodes = findLinkNodesByPath(data, node._path);
         if (nodes && nodes.length > 0) {
@@ -132,7 +133,7 @@ export function setRadioChecked(data, node, checked, radioType) {
     try {
         if (radioType ==="all") {
             data = clearChecked(data);
-             node = findNodeByPath(data, (node._path ?? findNodeById(data,node.id)._path));
+             node = findNodeByPath(data, (node._path ?? findNodeById(data,node.id)?._path));
             node.checked = checked;
             node.half = false;
         }
@@ -285,7 +286,7 @@ export function checkedAll(data) {
 */
 export function setOpen(data, node, open) {
     try {
-        node = findNodeByPath(data, (node._path ?? findNodeById(data,node.id)._path));
+        node = findNodeByPath(data, (node._path ?? findNodeById(data,node.id)?._path));
         node.open = open;
         return data;
     }
@@ -302,7 +303,7 @@ export function setOpen(data, node, open) {
  */
 export function renameNode(data, node, newText) {
     if (data && data.length > 0) {
-        let nodes = findLinkNodesByPath(data, (node._path ?? findNodeById(data,node.id)._path));
+        let nodes = findLinkNodesByPath(data, (node._path ?? findNodeById(data,node.id)?._path));
         if (nodes) {
             nodes[nodes.length - 1].text = newText;
         }
@@ -314,7 +315,7 @@ export function renameNode(data, node, newText) {
  * @param {*} node 
  */
 export function removeNode(data, node) {
-    let nodes = findLinkNodesByPath(data, (node._path ?? findNodeById(data,node.id)._path));
+    let nodes = findLinkNodesByPath(data, (node._path ?? findNodeById(data,node.id)?._path));
     if (nodes.length === 1) {
         //根节点
         try {
@@ -373,21 +374,29 @@ export function removeNode(data, node) {
     //在数据中找到节点
     let dragNodes = findLinkNodesByPath(data, dragNode._path);
     let dropNodes = findLinkNodesByPath(data, dropNode._path);
-    
+
     if (dropNodes) {
         let leafDragNode = dragNodes[dragNodes.length - 1];//在数据中找到移动节点
         let leafDropNode = dropNodes[dropNodes.length - 1];//在数据中找到停靠节点
-        leafDropNode.open = true;
-        if (!leafDropNode.children) { leafDropNode.children = []; }
-        //先添加到停靠节点上
-        leafDropNode.children.push({
-            ...leafDragNode,
-            pId: leafDropNode.id,
-            _path: [...leafDropNode._path, leafDropNode.children.length],
-            children: setChildrenPath(leafDragNode.id, [...leafDragNode._path, leafDragNode.children.length], leafDragNode.children)
+
+        let findParent = dropNodes.findIndex(item => {
+            return item.id === leafDragNode.id
         })
-        //移动的父节点要删除节点，并且要更改子节点的路径
-        data = removeNode(data, leafDragNode);
+        if (findParent <= -1) {
+            //移动的节点不在停靠节点的链路中
+            leafDropNode.open = true;
+            if (!leafDropNode.children) { leafDropNode.children = []; }
+            //先添加到停靠节点上
+            leafDropNode.children.push({
+                ...leafDragNode,
+                pId: leafDropNode.id,
+                _path: [...leafDropNode._path, leafDropNode.children.length],
+                children: setChildrenPath(leafDragNode.id, [...leafDragNode._path, leafDragNode.children?.length ?? 0], leafDragNode.children)
+            })
+            //移动的父节点要删除节点，并且要更改子节点的路径
+            data = removeNode(data, leafDragNode);
+        }
+
     }
     return data;
 }
@@ -417,41 +426,47 @@ export function moveAterNode(data, dragNode, dropNode) {
  * @param {*} step 移动步数
  * @returns 
  */
-export function moveBeforeOrAfterNode(data, dragNode, dropNode, step = 0) {
+ export function moveBeforeOrAfterNode(data, dragNode, dropNode, step = 0) {
     try {
         let dragNodes = findLinkNodesByPath(data, dragNode._path);
         let dropNodes = findLinkNodesByPath(data, dropNode._path);
         if (dragNodes && dropNodes) {
             let leafDragNode = dragNodes[dragNodes.length - 1];//在数据中找到移动节点
             let leafDropNode = dropNodes[dropNodes.length - 1];//在数据中找到停靠节点
-            if (dropNodes.length ===1) {//根节点
-                data = [
-                    ...data.slice(0, leafDropNode._path[0] + step),
-                    {
-                        ...leafDragNode,
-                        pId: "",
-                        _path: leafDropNode._path,
-                    },
-                    ...data.slice(leafDropNode._path[0] + step, data.length),
-                ]
-                data = setChildrenPath("", [], data);
-            }
-            else {
-                let parentDropNode = dropNodes[dropNodes.length - 2];//找到父节点
-                parentDropNode.children = [
-                    ...parentDropNode.children.slice(0, leafDropNode._path[0] + step),
-                    {
-                        ...leafDragNode,
-                        pId: leafDropNode.pId,
-                        _path: leafDropNode._path,
-                    },
-                    ...parentDropNode.children.slice(leafDropNode._path[0] + step, parentDropNode.children.length)
-                ]
-                parentDropNode.children = setChildrenPath(parentDropNode.id, parentDropNode._path, parentDropNode.children);
+            let findParent = dropNodes.findIndex(item => {
+                return item.id === leafDragNode.id
+            })
+            if (findParent <= -1) {
+                //移动的节点不在停靠节点的链路中
+                if (dropNodes.length === 1) {//根节点
+                    data = [
+                        ...data.slice(0, leafDropNode._path[0] + step),
+                        {
+                            ...leafDragNode,
+                            pId: "",
+                            _path: leafDropNode._path,
+                        },
+                        ...data.slice(leafDropNode._path[0] + step, data.length),
+                    ]
+                    data = setChildrenPath("", [], data);
+                }
+                else {
+                    let parentDropNode = dropNodes[dropNodes.length - 2];//找到父节点
+                    parentDropNode.children = [
+                        ...parentDropNode.children.slice(0, leafDropNode._path[0] + step),
+                        {
+                            ...leafDragNode,
+                            pId: leafDropNode.pId,
+                            _path: leafDropNode._path,
+                        },
+                        ...parentDropNode.children.slice(leafDropNode._path[0] + step, parentDropNode.children.length)
+                    ]
+                    parentDropNode.children = setChildrenPath(parentDropNode.id, parentDropNode._path, parentDropNode.children);
 
+                }
+                //移动的父节点要删除节点，并且要更改子节点的路径
+                data = removeNode(data, leafDragNode);
             }
-            //移动的父节点要删除节点，并且要更改子节点的路径
-            data = removeNode(data, leafDragNode);
         }
     } catch (e) {
 
@@ -471,11 +486,13 @@ export function setChildrenPath(pId, path, children) {
         for (let i = 0; i < children.length; i++) {
             try {
                 children[i]._path = [...path, i];
+                children[i].pId = pId;
+                children[i]._isLast=i===children.length-1;
             }
             catch (e) {
                 console.log("setChildrenPath", i, children, children[i])
             }
-            children[i].pId = pId;
+          
             if (children[i].children && children[i].children.length > 0) {
                 children[i].children = setChildrenPath(children[i].id, [...path, i], children[i].children);
             }
@@ -503,8 +520,6 @@ export function filter(flatData, filterValue = "") {
                     item.open = true;
                    filterData.push(item);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
                 }
-                
-
             }
         }
        
@@ -516,7 +531,7 @@ export function filter(flatData, filterValue = "") {
 /**
  * 添加子节点
  */
-export function appendChildren(data = [], children, row) {
+ export function appendChildren(data = [], children, row) {
     //格式化
     if (row) {
         if (!row._path) {//没有路径
@@ -527,19 +542,28 @@ export function appendChildren(data = [], children, row) {
             //找到了
             let leaf = nodes[nodes.length - 1];
             let oldChildren = leaf.children ?? [];
-            leaf.children = [].concat(oldChildren, children);
+   
+            for(let i=0;i<children.length;i++){//去重
+                if(oldChildren.findIndex(item=>item.id===children[i].id)<=-1){
+                    oldChildren.push(children[i])
+                }
+            }
+            leaf.children =oldChildren;
             //设置节点路径
             leaf.children = setChildrenPath(leaf.id, leaf._path, leaf.children);
         }
         return data;
     }
     else {//根节点
-        data = data.concat(children);
+        for(let i=0;i<children.length;i++){//去重
+            if(data.findIndex(item=>item.id===children[i].id)<=-1){
+                data.push(children[i])
+            }
+        }
         data = setChildrenPath("",[],data);
         return data;
     }
 
 
 }
-
 
