@@ -47,7 +47,7 @@
 
 /*树的折叠图标， 因为checkbox宽度是20px 字体小一点*/
 .wasabi-tree .wasabi-tree-li-icon {
-    font-size: 14px;
+    font-size: inherit;
     width: 20px;
     height: 100%;
     position: relative;
@@ -297,7 +297,7 @@
 
 /*文本图标*/
 .wasabi-tree .wasabi-tree-text-icon {
-    font-size: 16px;
+    font-size: inherit;
     height: 100%;
     padding-top: 7px;
     position: relative;
@@ -368,7 +368,7 @@
 
 /* 编辑，重命名等图标 */
 .wasabi-tree .edit {
-    font-size: 16px;
+    font-size: inherit;
     transform: translateY(8px);
     margin-left: 4px;
 

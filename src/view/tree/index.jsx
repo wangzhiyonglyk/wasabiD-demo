@@ -150,7 +150,7 @@ class Page extends React.Component {
             <button onClick={this.onClick.bind(this)}>更新</button>
             <button onClick={this.onClick1.bind(this)}>更新1</button>
             <Input type="select" data={this.state.data} />
-           <div ><Tree  url="http://127.0.0.1:7001/getData" isSimpleData={true} textFormatter={(row)=>{return <div>{ row.text}</div>}} style={{width:500}} ref={this.tree} data={this.state.data}  textField="label" selectAble={true} renameAble={true} removeAble={true} httpType="GET"></Tree></div> 
+           <div ><Tree  url="http://127.0.0.1:7001/getData"  textFormatter={(row)=>{return <div>{ row.text}</div>}} style={{width:500}} ref={this.tree} data={this.state.data}  textField="label" selectAble={true} renameAble={true} removeAble={true} httpType="GET"></Tree></div> 
         </div>
     }
 }

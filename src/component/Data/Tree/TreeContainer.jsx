@@ -265,7 +265,14 @@ const myReducer = function (state, action) {
                 preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
                 break;
             case "remove":
-                data = removeNode(state.data, { id: payload });
+                newData = state.data
+                if (Array.isArray(payload)) {
+                  payload.forEach(item => {
+                    newData = removeNode(newData, { id: item })
+                  })
+                } else {
+                  newData = removeNode(newData, { id: payload })
+                }
                 preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
                 break;
             case "removeAll":
@@ -318,7 +325,11 @@ function TreeContainer(props, ref) {
             }
         );
         let checked = (id ?? "").toString() === (checkValue ?? "").toString();
-        props.onChecked && props.onChecked(checked, id, text, row);
+        //方便父组件获取所有勾选节点
+        setTimeout(() => {
+            props.onChecked && props.onChecked(checked, id, text, row); 
+        }, 100);
+        
     }, [props]);
     const onRemove = useCallback((id, text, row) => {
         Msg.confirm("您确定删除【" + text + "]吗", () => {
@@ -521,10 +532,10 @@ function TreeContainer(props, ref) {
             dispatch({ type: "setOpen", payload: { row: { id }, open } });
         },
         /**
-         * 移除某个节点
-         * @param {*} row 
+         * 移除节点
+         * @param {*} id 
          */
-        remove(id) {
+         remove(id) {
             dispatch({ type: "remove", payload: id });
         },
         /**

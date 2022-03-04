@@ -94,7 +94,6 @@ export function setSelfChecked(value, data) {
  * @returns 
  */
 export function setChecked(data, node, checked, checkType) {
-    console.log("Test")
     try {
         let nodes = findLinkNodesByPath(data, node._path);
         if (nodes && nodes.length > 0) {
@@ -131,21 +130,21 @@ export function setChecked(data, node, checked, checkType) {
  */
 export function setRadioChecked(data, node, checked, radioType) {
     try {
-        if (radioType ==="all") {
+        if (radioType === "all") {
             data = clearChecked(data);
-             node = findNodeByPath(data, (node._path ?? findNodeById(data,node.id)?._path));
+            node = findNodeByPath(data, (node._path ?? findNodeById(data, node.id)?._path));
             node.checked = checked;
             node.half = false;
         }
-        else if (radioType ==="level") {
-            let nodes = findLinkNodesByPath(data, node._path ? node._path : findNodeById(data,node.id)?._path);
+        else if (radioType === "level") {
+            let nodes = findLinkNodesByPath(data, node._path ? node._path : findNodeById(data, node.id)?._path);
             if (nodes && nodes.length >= 2) {
                 //有父节点,去设置兄弟节点
-                let parentRemoveNode = nodes[nodes.length - 2];
-                if (parentRemoveNode.children && parentRemoveNode.children.length > 0) {
-                    for (let i = 0; i < parentRemoveNode.children.length; i++) {
-                        parentRemoveNode.children[i].checked = false;
-                        parentRemoveNode.children[i].half = false;
+                let parentNode = nodes[nodes.length - 2];
+                if (parentNode.children && parentNode.children.length > 0) {
+                    for (let i = 0; i < parentNode.children.length; i++) {
+                        parentNode.children[i].checked = false;
+                        parentNode.children[i].half = false;
                     }
                 }
             }
@@ -211,7 +210,7 @@ export function setNodeParentsChecked(nodes) {
                     nodes[i].checked = true;
                     nodes[i].half = false;
                 }
-                else if ((checkedNum > 0 && checkedNum !== nodes[i].children.length )|| halfNum > 0) {
+                else if ((checkedNum > 0 && checkedNum !== nodes[i].children.length) || halfNum > 0) {
                     //部分勾选，或者有半选
                     nodes[i].checked = false;
                     nodes[i].half = true;
@@ -286,7 +285,7 @@ export function checkedAll(data) {
 */
 export function setOpen(data, node, open) {
     try {
-        node = findNodeByPath(data, (node._path ?? findNodeById(data,node.id)?._path));
+        node = findNodeByPath(data, (node._path ?? findNodeById(data, node.id)?._path));
         node.open = open;
         return data;
     }
@@ -303,7 +302,7 @@ export function setOpen(data, node, open) {
  */
 export function renameNode(data, node, newText) {
     if (data && data.length > 0) {
-        let nodes = findLinkNodesByPath(data, (node._path ?? findNodeById(data,node.id)?._path));
+        let nodes = findLinkNodesByPath(data, (node._path ?? findNodeById(data, node.id)?._path));
         if (nodes) {
             nodes[nodes.length - 1].text = newText;
         }
@@ -315,13 +314,14 @@ export function renameNode(data, node, newText) {
  * @param {*} node 
  */
 export function removeNode(data, node) {
-    let nodes = findLinkNodesByPath(data, (node._path ?? findNodeById(data,node.id)?._path));
+    node = node._path ? node : findNodeById(data, node.id)
+    let nodes = findLinkNodesByPath(data, (node._path ?? findNodeById(data, node.id)?._path));
     if (nodes.length === 1) {
         //根节点
         try {
 
             data.splice(nodes[0]._path[0], 1);//删除
-            return setChildrenPath("",[],data);
+            return setChildrenPath("", [], data);
 
         }
         catch (e) {
@@ -344,22 +344,21 @@ export function removeNode(data, node) {
  * @param {*} newNode 新节点
  * @returns 
  */
- export function updateNode(data,newNode) {
-    if(Array.isArray(data)&&data.length>0)
-    {
-       let  node = newNode._path?findNodeByPath(data, (newNode._path)): findNodeById(data,newNode.id);
-       if(node){
-          for(let key in newNode){
-              node[key]=newNode[key]
-          }
-          node.children= setChildrenPath(node.id,node._path,newNode.children)
-          return data;
-       }   
+export function updateNode(data, newNode) {
+    if (Array.isArray(data) && data.length > 0) {
+        let node = newNode._path ? findNodeByPath(data, (newNode._path)) : findNodeById(data, newNode.id);
+        if (node) {
+            for (let key in newNode) {
+                node[key] = newNode[key]
+            }
+            node.children = setChildrenPath(node.id, node._path, newNode.children)
+            return data;
+        }
     }
-    else{
+    else {
         return [newNode];
     }
- 
+
     return data;
 
 
@@ -370,7 +369,7 @@ export function removeNode(data, node) {
  * @param {*} dragNode 移动节点
  * @param {*} dropNode 停靠节点
  */
- export function moveInNode(data, dragNode, dropNode) {
+export function moveInNode(data, dragNode, dropNode) {
     //在数据中找到节点
     let dragNodes = findLinkNodesByPath(data, dragNode._path);
     let dropNodes = findLinkNodesByPath(data, dropNode._path);
@@ -378,23 +377,19 @@ export function removeNode(data, node) {
     if (dropNodes) {
         let leafDragNode = dragNodes[dragNodes.length - 1];//在数据中找到移动节点
         let leafDropNode = dropNodes[dropNodes.length - 1];//在数据中找到停靠节点
-
-        let findParent = dropNodes.findIndex(item => {
-            return item.id === leafDragNode.id
-        })
-        if (findParent <= -1) {
-            //移动的节点不在停靠节点的链路中
+        //移动的父节点要删除节点，并且要更改子节点的路径
+        data = removeNode(data, leafDragNode);
+        if (leafDragNode.pId !== leafDropNode.id) {
             leafDropNode.open = true;
             if (!leafDropNode.children) { leafDropNode.children = []; }
             //先添加到停靠节点上
-            leafDropNode.children.push({
-                ...leafDragNode,
-                pId: leafDropNode.id,
-                _path: [...leafDropNode._path, leafDropNode.children.length],
-                children: setChildrenPath(leafDragNode.id, [...leafDragNode._path, leafDragNode.children?.length ?? 0], leafDragNode.children)
-            })
-            //移动的父节点要删除节点，并且要更改子节点的路径
-            data = removeNode(data, leafDragNode);
+            let newPath = [...leafDragNode._path, leafDragNode.children?.length ?? 0]
+            leafDragNode.pId = leafDropNode.id;
+            leafDragNode._path = newPath;
+            //重新设置子节点的路径
+            leafDragNode.children = setChildrenPath(leafDragNode.id, newPath, leafDragNode.children);
+            leafDropNode.children.push(leafDragNode)
+
         }
 
     }
@@ -426,47 +421,36 @@ export function moveAterNode(data, dragNode, dropNode) {
  * @param {*} step 移动步数
  * @returns 
  */
- export function moveBeforeOrAfterNode(data, dragNode, dropNode, step = 0) {
+export function moveBeforeOrAfterNode(data, dragNode, dropNode, step = 0) {
     try {
         let dragNodes = findLinkNodesByPath(data, dragNode._path);
         let dropNodes = findLinkNodesByPath(data, dropNode._path);
         if (dragNodes && dropNodes) {
             let leafDragNode = dragNodes[dragNodes.length - 1];//在数据中找到移动节点
             let leafDropNode = dropNodes[dropNodes.length - 1];//在数据中找到停靠节点
-            let findParent = dropNodes.findIndex(item => {
-                return item.id === leafDragNode.id
-            })
-            if (findParent <= -1) {
-                //移动的节点不在停靠节点的链路中
-                if (dropNodes.length === 1) {//根节点
-                    data = [
-                        ...data.slice(0, leafDropNode._path[0] + step),
-                        {
-                            ...leafDragNode,
-                            pId: "",
-                            _path: leafDropNode._path,
-                        },
-                        ...data.slice(leafDropNode._path[0] + step, data.length),
-                    ]
-                    data = setChildrenPath("", [], data);
-                }
-                else {
-                    let parentDropNode = dropNodes[dropNodes.length - 2];//找到父节点
-                    parentDropNode.children = [
-                        ...parentDropNode.children.slice(0, leafDropNode._path[0] + step),
-                        {
-                            ...leafDragNode,
-                            pId: leafDropNode.pId,
-                            _path: leafDropNode._path,
-                        },
-                        ...parentDropNode.children.slice(leafDropNode._path[0] + step, parentDropNode.children.length)
-                    ]
-                    parentDropNode.children = setChildrenPath(parentDropNode.id, parentDropNode._path, parentDropNode.children);
-
-                }
-                //移动的父节点要删除节点，并且要更改子节点的路径
-                data = removeNode(data, leafDragNode);
+            data = removeNode(data, leafDragNode);//先删除节点
+            if (dropNodes.length === 1) {//第一层节点
+                let leftData = data.slice(0, leafDropNode._path[0] + step);
+                let rightData = data.slice(leafDropNode._path[0] + step, data.length);
+                leafDragNode.pId = "";
+                leafDragNode._path = leafDropNode._path[0] + step;
+                leftData.push(leafDragNode);
+                data = [].concat(leftData, rightData);
+                data = setChildrenPath("", [], data);
             }
+            else {
+                let parentDropNode = dropNodes[dropNodes.length - 2];//找到父节点
+                let leftData = parentDropNode.children.slice(0, leafDropNode._path[0] + step);
+                let rightData = parentDropNode.children.slice(leafDropNode._path[0] + step, parentDropNode.children.length);
+                leafDragNode.pId = "";
+                leafDragNode._path = leafDropNode._path[0] + step;
+                leftData.push(leafDragNode);
+                parentDropNode.children = [].concat(leftData, rightData);
+                parentDropNode.children = setChildrenPath(parentDropNode.id, parentDropNode._path, parentDropNode.children);
+
+            }
+
+
         }
     } catch (e) {
 
@@ -484,17 +468,18 @@ export function moveAterNode(data, dragNode, dropNode) {
 export function setChildrenPath(pId, path, children) {
     if (children && children.length > 0) {
         for (let i = 0; i < children.length; i++) {
+            let newPath = [...path, i];
             try {
-                children[i]._path = [...path, i];
+                children[i]._path = newPath;
                 children[i].pId = pId;
-                children[i]._isLast=i===children.length-1;
+                children[i]._isLast = i === children.length - 1;
             }
             catch (e) {
                 console.log("setChildrenPath", i, children, children[i])
             }
-          
+
             if (children[i].children && children[i].children.length > 0) {
-                children[i].children = setChildrenPath(children[i].id, [...path, i], children[i].children);
+                children[i].children = setChildrenPath(children[i].id, newPath, children[i].children);
             }
         }
         return children;
@@ -510,7 +495,7 @@ export function setChildrenPath(pId, path, children) {
  */
 export function filter(flatData, filterValue = "") {
     let filterData = [];
-    filterValue =(filterValue??"").toString().trim();
+    filterValue = (filterValue ?? "").toString().trim();
     try {
         if (filterValue) {
             for (let i = 0; i < flatData.length; i++) {
@@ -518,11 +503,11 @@ export function filter(flatData, filterValue = "") {
                 if ((flatData[i].id + "").indexOf(filterValue) > -1 || (flatData[i].text + "").indexOf(filterValue) > -1) {
                     item = flatData[i];
                     item.open = true;
-                   filterData.push(item);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                    filterData.push(item);
                 }
             }
         }
-       
+
     }
     catch (e) { }
     return [];
@@ -531,39 +516,31 @@ export function filter(flatData, filterValue = "") {
 /**
  * 添加子节点
  */
- export function appendChildren(data = [], children, row) {
-    //格式化
-    if (row) {
-        if (!row._path) {//没有路径
-            row = findNodeById(data, row.id);
+ export function appendChildren (data = [], children, row) {
+    try {
+      // 格式化
+      if (row) {
+        if (!row._path) { // 没有路径
+          row = findNodeById(data, row.id)
         }
-        let nodes = findLinkNodesByPath(data, row._path);
+        const nodes = findLinkNodesByPath(data, row._path)
         if (nodes && nodes.length > 0) {
-            //找到了
-            let leaf = nodes[nodes.length - 1];
-            let oldChildren = leaf.children ?? [];
-   
-            for(let i=0;i<children.length;i++){//去重
-                if(oldChildren.findIndex(item=>item.id===children[i].id)<=-1){
-                    oldChildren.push(children[i])
-                }
-            }
-            leaf.children =oldChildren;
-            //设置节点路径
-            leaf.children = setChildrenPath(leaf.id, leaf._path, leaf.children);
+          // 找到了
+          const leaf = nodes[nodes.length - 1]
+          leaf.isOpened = true
+          let oldChildren = leaf.children ?? []
+          oldChildren = oldChildren.concat(children)
+          leaf.children = oldChildren
+          // 设置节点路径
+          leaf.children = setChildrenPath(leaf.id, leaf._path, leaf.children)
         }
-        return data;
+        return data
+      } else { // 根节点
+        data = setChildrenPath('', [], children)
+        return data
+      }
+    } catch (e) {
+      console.log('append', e)
     }
-    else {//根节点
-        for(let i=0;i<children.length;i++){//去重
-            if(data.findIndex(item=>item.id===children[i].id)<=-1){
-                data.push(children[i])
-            }
-        }
-        data = setChildrenPath("",[],data);
-        return data;
-    }
-
-
-}
+  }
 

@@ -30,9 +30,9 @@ class TreeNodeRow {
 function formatterTreeNode(props){
     let row = new TreeNodeRow();//得到节点数据，有默认值，并且不包含方法
     for (let key in props) {
-        if(typeof props[key]!=="function")
+        if(typeof props[key]!=="function"&& props[key]!==undefined &&props[key]!==null)
         {
-            row[key] = props[key]??row[key];
+            row[key] = props[key];
         }
        
     }

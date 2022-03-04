@@ -361,17 +361,17 @@ func.isEmptyObject = function (obj) {
     return isempty;
 
 }
-func.download = function (url, title, extend = ".xlsx") {
+func.download = function (blob, title, extend = ".xlsx") {
 
-    if (typeof url == 'object' && url instanceof Blob) {
-        url = URL.createObjectURL(url); // 创建blob地址
+    if (typeof blob === 'object' && blob instanceof Blob) {
+        blob = URL.createObjectURL(blob); // 创建blob地址
     }
     else {
-        extend = url.substr(url.lastIndexOf("."));
+        extend = blob.substr(blob.lastIndexOf("."));
     }
     title = title || func.dateformat(new Date(), "yyyy-MM-dd HH:mm:ss");
     let downloadA = document.createElement("a");
-    downloadA.href = url;
+    downloadA.href = blob;
     downloadA.download = title + extend;
     downloadA.click();
     window.URL.revokeObjectURL(downloadA.href);//释放
