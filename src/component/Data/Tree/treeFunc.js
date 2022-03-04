@@ -5,7 +5,7 @@
 /***
  * 通过id找到节点
  */
- export function findNodeById(data, id) {
+export function findNodeById(data, id) {
     let node;
     if (data && data.length > 0 && id !== null && id !== undefined && id !== "") {
         for (let i = 0; i < data.length; i++) {
@@ -516,31 +516,50 @@ export function filter(flatData, filterValue = "") {
 /**
  * 添加子节点
  */
- export function appendChildren (data = [], children, row) {
+export function appendChildren(data = [], children, row) {
     try {
-      // 格式化
-      if (row) {
+        // 格式化
+        if (row) {
+            if (!row._path) { // 没有路径
+                row = findNodeById(data, row.id)
+            }
+            const nodes = findLinkNodesByPath(data, row._path)
+            if (nodes && nodes.length > 0) {
+                // 找到了
+                const leaf = nodes[nodes.length - 1]
+                leaf.isOpened = true
+                let oldChildren = leaf.children ?? []
+                oldChildren = oldChildren.concat(children)
+                leaf.children = oldChildren
+                // 设置节点路径
+                leaf.children = setChildrenPath(leaf.id, leaf._path, leaf.children)
+            }
+            return data
+        } else { // 根节点
+            data = setChildrenPath('', [], children)
+            return data
+        }
+    } catch (e) {
+        console.log('append', e)
+    }
+}
+
+/**
+ * 设置路径上所有节点都展开
+ * @param {*} data 
+ * @param {*} row 
+ */
+export function setLinkNodeOpen(data = [], row) {
+    if (row) {
         if (!row._path) { // 没有路径
-          row = findNodeById(data, row.id)
+            row = findNodeById(data, row.id)
         }
         const nodes = findLinkNodesByPath(data, row._path)
         if (nodes && nodes.length > 0) {
-          // 找到了
-          const leaf = nodes[nodes.length - 1]
-          leaf.isOpened = true
-          let oldChildren = leaf.children ?? []
-          oldChildren = oldChildren.concat(children)
-          leaf.children = oldChildren
-          // 设置节点路径
-          leaf.children = setChildrenPath(leaf.id, leaf._path, leaf.children)
+            nodes.forEach(item => {
+                item.isOpened = true;
+            })
         }
-        return data
-      } else { // 根节点
-        data = setChildrenPath('', [], children)
-        return data
-      }
-    } catch (e) {
-      console.log('append', e)
     }
-  }
-
+    return data;
+}

@@ -7,7 +7,7 @@ date :2022-01-07 修复tregrid单击联动的bug
 import React, { useState, useReducer, useCallback, useEffect, useImperativeHandle, useRef } from "react";
 import PropTypes from "prop-types";
 import func from "../../libs/func.js";
-import { setChecked, setRadioChecked, findNodeById, findLinkNodesByPath,clearChecked, checkedAll, removeNode, renameNode, moveAterNode, moveBeforeNode, moveInNode, setOpen, appendChildren, getChecked, filter, updateNode } from "./treeFunc";
+import { setChecked, setRadioChecked, findNodeById, findLinkNodesByPath, clearChecked, checkedAll, removeNode, renameNode, moveAterNode, moveBeforeNode, moveInNode, setOpen, appendChildren, getChecked, filter, updateNode, setLinkNodeOpen } from "./treeFunc";
 import propsTran from "../../libs/propsTran";
 import api from "wasabi-api"
 import "./tree.css"
@@ -76,7 +76,7 @@ const handlerVisibleData = function (state, sliceBeginIndex, sliceEndIndex, newD
     return {
         ...state,
         filterValue: newFilterValue,
-        data: newData||state.data,
+        data: newData || state.data,
         filterData: filterData,
         flatData: flatData,
         visibleData: visibleData,
@@ -166,6 +166,20 @@ const myReducer = function (state, action) {
                 preState = {
                     ...state,
                     clickId: payload
+                };
+                break;
+            /**
+             * 设置某个节点选中
+             */
+            case "setClick":
+                data = setLinkNodeOpen(state.data, { id: payload})
+              let flatData=treeDataToFlatData(data);
+                preState = {
+                    ...state,
+                    data:data,
+                    flatData:flatData,
+                    clickId: payload,
+                    scrollIndex:flatData.findIndex(item=>{console.log(item);return item.id===payload})
                 };
                 break;
             //勾选
@@ -258,6 +272,7 @@ const myReducer = function (state, action) {
              */
             case "showVisibleData":
                 preState = handlerVisibleData(state, payload.sliceBeginIndex, payload.sliceEndIndex, payload.data, payload.filterValue);
+                preState.scrollIndex=null;
                 break;
             //设置折叠或展开
             case "setOpen":
@@ -267,11 +282,11 @@ const myReducer = function (state, action) {
             case "remove":
                 newData = state.data
                 if (Array.isArray(payload)) {
-                  payload.forEach(item => {
-                    newData = removeNode(newData, { id: item })
-                  })
+                    payload.forEach(item => {
+                        newData = removeNode(newData, { id: item })
+                    })
                 } else {
-                  newData = removeNode(newData, { id: payload })
+                    newData = removeNode(newData, { id: payload })
                 }
                 preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
                 break;
@@ -327,9 +342,9 @@ function TreeContainer(props, ref) {
         let checked = (id ?? "").toString() === (checkValue ?? "").toString();
         //方便父组件获取所有勾选节点
         setTimeout(() => {
-            props.onChecked && props.onChecked(checked, id, text, row); 
+            props.onChecked && props.onChecked(checked, id, text, row);
         }, 100);
-        
+
     }, [props]);
     const onRemove = useCallback((id, text, row) => {
         Msg.confirm("您确定删除【" + text + "]吗", () => {
@@ -450,22 +465,22 @@ function TreeContainer(props, ref) {
 
     //对外接口
     useImperativeHandle(ref, () => ({
-          /**
-     * 获取某个节点
-     * @param {*} id 
-     * @returns 
-     */
-           findNode(id) {
-            return findNodeById(state.data,id);
+        /**
+   * 获取某个节点
+   * @param {*} id 
+   * @returns 
+   */
+        findNode(id) {
+            return findNodeById(state.data, id);
         },
         /**
          * 获取某个节点整个链路树
          * @param {*} id 
          */
-        findParents(id){
-            let node=findNodeById(state.data,id);
-            return node&&node._path?findLinkNodesByPath(state.data,node._path):[];
-           
+        findParents(id) {
+            let node = findNodeById(state.data, id);
+            return node && node._path ? findLinkNodesByPath(state.data, node._path) : [];
+
         },
         /**
          * 获取所有数据
@@ -507,20 +522,8 @@ function TreeContainer(props, ref) {
          */
         setClick(id) {
             if (id && id !== state.clickId) {
-                dispatch({ type: "onClick", payload: id });
+                dispatch({ type: "setClick", payload: id });
                 treegrid?.current?.setFocus(id);  //如果是树表格或者交叉表
-
-                //设置选中的节点可见
-                const findIndex = state.flatData.findIndex((item, index) => {
-                    return item.id === id
-                })
-                const visibleData = getVisibleCount(treecontainerid)
-                if (findIndex < visibleData.startIndex || findIndex > visibleData.endIndex) {
-                    // 节点不可见
-                    document.getElementById(treecontainerid).scrollTop = (findIndex - 1) * rowDefaultHeight
-                  
-                    onScroll()
-                }
             }
         },
         /**
@@ -535,7 +538,7 @@ function TreeContainer(props, ref) {
          * 移除节点
          * @param {*} id 
          */
-         remove(id) {
+        remove(id) {
             dispatch({ type: "remove", payload: id });
         },
         /**
@@ -580,7 +583,7 @@ function TreeContainer(props, ref) {
         updateAll(newData) {
             //预处理数据
             let data = preprocess(newData, "", [], props.idField, props.parentField, props.textField, props.childrenField, props.isSimpleData);
-              //重新设置下标，
+            //重新设置下标，
             let visiData = getVisibleCount(treecontainerid);
             scrollShowVisibleData(visiData.startIndex, visiData.endIndex, visiData.visibleDataCount, data || []);
         },
@@ -601,7 +604,6 @@ function TreeContainer(props, ref) {
             sliceBeginIndex = sliceBeginIndex < 0 ? 0 : sliceBeginIndex;
             // //当前切割的数据结束下标
             let sliceEndIndex = visiData.endIndex + config.bufferScale * visiData.visibleDataCount;
-
             dispatch({
                 type: "loading", payload: {
                     sliceBeginIndex: sliceBeginIndex,
@@ -618,8 +620,15 @@ function TreeContainer(props, ref) {
             let visiData = getVisibleCount(treecontainerid);
             scrollShowVisibleData(visiData.startIndex, visiData.endIndex, visiData.visibleDataCount, data || []);
         }
-    }, [props.data,props.url])
+    }, [props.data, props.url])
 
+    //有滚动事件
+    useEffect(()=>{
+        if(state.scrollIndex!==null&&state.scrollIndex>=0){
+            document.getElementById(treecontainerid).scrollTop = (state.scrollIndex - 1) * rowDefaultHeight; 
+            onScroll();
+        }         
+    },[state.scrollIndex])
 
     //需要下传的事件
     const treeEvents = {
