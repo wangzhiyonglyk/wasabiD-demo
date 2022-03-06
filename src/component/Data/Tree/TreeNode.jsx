@@ -33,7 +33,7 @@ function NodeView(props) {
     let title = row.title || row.text;//提示信息 
     let iconCls = row.iconCls;//默认图标图标
     if (row.isParent) {//如果是父节点
-        if (row.open) {//打开状态，
+        if (row.isOpened) {//打开状态，
             iconCls = row.iconOpen ? row.iconOpen : row.iconCls;//没有则用默认图标
         }
         else {//关闭状态
@@ -45,7 +45,7 @@ function NodeView(props) {
         iconCls = "icon-loading tree-loading";
 
     }
-    let childrenLength = row.open === false ? 0 : row?.children?.length || 0;//子节点个数
+    let childrenLength = row.isOpened === false ? 0 : row?.children?.length || 0;//子节点个数
     let textwidthReduce = 20;//文本字段减少的宽度
     //空白位，表示节点层级
     let blankControl = [];
@@ -58,7 +58,7 @@ function NodeView(props) {
     //节点前面箭头图标
     let arrowIcon;
     if (row.isParent) {//是父节点才有箭头
-        if (row.open) {
+        if (row.isOpened) {
             if (props.arrowUnFoldIcon) {
                 arrowIcon = <div className={"wasabi-tree-li-icon"} style={{ display: "inline-block" }} onClick={row.isParent ? onExpand : null}>{props.arrowUnFoldIcon}</div>
 
@@ -72,7 +72,7 @@ function NodeView(props) {
         }
         if (!arrowIcon) {
             let icon = props.componentType === "tree" ? "icon-caret" : "icon-arrow";
-            arrowIcon = <i className={((clickId === row.id ? " selected " : "")) + (row.open ? ` wasabi-tree-li-icon  ${icon}-down ` : ` wasabi-tree-li-icon  ${icon}-right`)}
+            arrowIcon = <i className={((clickId === row.id ? " selected " : "")) + (row.isOpened ? ` wasabi-tree-li-icon  ${icon}-down ` : ` wasabi-tree-li-icon  ${icon}-right`)}
                 onClick={row.isParent ? onExpand : null}>
                 {/* span用于右边加虚线*/}
                 <span className="wasabi-tree-li-icon-beforeRight"></span>
@@ -200,8 +200,8 @@ function TreeNode(props) {
      */
     const onExpand = useCallback(() => {
         let row = TreeNodeFormat(props)
-        let open = !!!row.open;
-        props.onExpand && props.onExpand(open, row.id, row.text, row)
+        let isOpened = !!!row.isOpened;
+        props.onExpand && props.onExpand(isOpened, row.id, row.text, row)
     }, [props])
 
     /**
@@ -408,7 +408,7 @@ TreeNode.propTypes = {
     iconCls: PropTypes.string,//默认图标
     iconClose: PropTypes.string,//[父节点]关闭图标
     iconOpen: PropTypes.string,//[父节点]打开图标
-    open: PropTypes.bool,//是否处于打开状态
+    isOpened: PropTypes.bool,//是否处于打开状态
     checked: PropTypes.bool,//是否被勾选
     selectAble: PropTypes.bool,//是否允许勾选
     draggAble: PropTypes.bool,//是否允许拖动，
@@ -443,7 +443,7 @@ TreeNode.defaultProps = {
     iconOpen: "icon-folder-open",
     checked: false,
     selectAble: false,
-    open: false,
+    isOpened: false,
     half: false,
     draggAble: false,
     dropAble: false,

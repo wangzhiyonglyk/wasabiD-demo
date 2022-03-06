@@ -276,7 +276,7 @@ const myReducer = function (state, action) {
                 break;
             //设置折叠或展开
             case "setOpen":
-                data = setOpen(state.data, payload.row, payload.open);
+                data = setOpen(state.data, payload.row, payload.isOpened);
                 preState = handlerVisibleData(state, state.sliceBeginIndex, state.sliceEndIndex, data);
                 break;
             case "remove":
@@ -392,9 +392,9 @@ function TreeContainer(props, ref) {
     }, [props]);
 
     //展开节点
-    const onExpand = useCallback((open, id, text, row) => {
+    const onExpand = useCallback((isOpened, id, text, row) => {
         //先设置折叠或者展开
-        dispatch({ type: "setOpen", payload: { row, open } });//设置折叠与展开
+        dispatch({ type: "setOpen", payload: { row, isOpened } });//设置折叠与展开
         if (props.asyncAble && (!row.children || row.children.length === 0)) {//没有数据
             let asyncChildrenData = [];
             if (props.onAsync && typeof props.onAsync === "function") {//自行处理
@@ -529,10 +529,10 @@ function TreeContainer(props, ref) {
         /**
          * 展开或折叠节点
          * @param {*} id 
-         * @param {*} open 
+         * @param {*} isOpened 
          */
-        setOpen(id, open) {
-            dispatch({ type: "setOpen", payload: { row: { id }, open } });
+        setOpen(id, isOpened) {
+            dispatch({ type: "setOpen", payload: { row: { id }, isOpened } });
         },
         /**
          * 移除节点

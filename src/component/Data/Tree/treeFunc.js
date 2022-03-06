@@ -281,12 +281,13 @@ export function checkedAll(data) {
 * 设置折叠
 * @param {*} data 
 * @param {*} node 
-* @param {*} open
+* @param {*} isOpened
 */
-export function setOpen(data, node, open) {
+export function setOpen(data, node, isOpened) {
+    console.log("test",isOpened)
     try {
         node = findNodeByPath(data, (node._path ?? findNodeById(data, node.id)?._path));
-        node.open = open;
+        node.isOpened = isOpened;
         return data;
     }
     catch (e) {
@@ -380,7 +381,7 @@ export function moveInNode(data, dragNode, dropNode) {
         //移动的父节点要删除节点，并且要更改子节点的路径
         data = removeNode(data, leafDragNode);
         if (leafDragNode.pId !== leafDropNode.id) {
-            leafDropNode.open = true;
+            leafDropNode.isOpened = true;
             if (!leafDropNode.children) { leafDropNode.children = []; }
             //先添加到停靠节点上
             let newPath = [...leafDragNode._path, leafDragNode.children?.length ?? 0]
@@ -502,7 +503,7 @@ export function filter(flatData, filterValue = "") {
                 let item = null;
                 if ((flatData[i].id + "").indexOf(filterValue) > -1 || (flatData[i].text + "").indexOf(filterValue) > -1) {
                     item = flatData[i];
-                    item.open = true;
+                    item.isOpened = true;
                     filterData.push(item);
                 }
             }
