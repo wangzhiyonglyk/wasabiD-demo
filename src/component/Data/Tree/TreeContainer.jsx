@@ -28,9 +28,7 @@ let rowDefaultHeight = config.rowDefaultHeight;
  * @returns 
  */
 const getVisibleCount = function (containerid) {
-    if (!containerHeight) {
-        containerHeight = document.getElementById(containerid).clientHeight || window.innerHeight;
-    }
+    containerHeight = document.getElementById(containerid).clientHeight || window.innerHeight;
     let visibleDataCount = Math.ceil(containerHeight / rowDefaultHeight);
     let scrollTop = document.getElementById(containerid).scrollTop || 0;
     let startIndex = Math.floor(scrollTop / rowDefaultHeight) || 0;
