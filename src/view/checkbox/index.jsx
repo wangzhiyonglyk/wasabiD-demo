@@ -109,4 +109,4 @@ class Page extends React.Component {
     }
 }
 
-ReactDOM.render(<Page />, document.getElementById('root'));
+ReactDOM.render(<Page  data={data}/>, document.getElementById('root'));

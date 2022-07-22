@@ -58,6 +58,7 @@ module.exports = (env, argv) => {
       output: {
         path: path.resolve(__dirname, './dist/'), //路径配置
         filename: 'js/[name]_[hash:8].js', //文件名称
+        chunkFilename: "js/[name].bundle.js", //动态导入 分离bundle 比如lodashjs配合注释import(/* webpackChunkName: "lodash" */ 'lodash') 会打包成lodash.bundle.js
         publicPath: '', // 配置发布打包时js,css资源的url前缀，
         assetModuleFilename: 'images/[name][hash:8][ext][query]',//资源存放地
         clean: true,
