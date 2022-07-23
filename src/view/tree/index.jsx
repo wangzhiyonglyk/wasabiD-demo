@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Tree from "wasabi-tree";
-import { Button } from "../../component";
+// import Tree from "wasabi-tree";
+import { Button, Tree } from "wasabiD";
 let data = [
   {
     id: 1,

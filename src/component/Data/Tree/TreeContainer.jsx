@@ -616,7 +616,6 @@ const TreeContainer = React.forwardRef(function (
      * @param {*} dropId 停靠节点
      */
     moveAfter(dragId, dropId) {
-      alert(1);
       handlerData(
         gobalData,
         {
