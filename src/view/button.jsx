@@ -25,19 +25,10 @@ class Index extends React.Component {
     return (
       <div>
         <div>
-          <Slider direction="left">
+          <Slider direction="right">
             <li style={{ width: 250 }}>Lorem ipsum 1111111</li>
             <li style={{ width: 250 }}>Lorem ipsum 2222222</li>
             <li style={{ width: 250 }}>Lorem ipsum 3333333</li>
-            <li style={{ width: 250 }}>Lorem ipsum 4444444</li>
-            <li style={{ width: 250 }}>Lorem ipsum 5555555</li>
-            <li style={{ width: 250 }}>Lorem ipsum 6666666</li>
-            <li style={{ width: 250 }}>Lorem ipsum 4444444</li>
-            <li style={{ width: 250 }}>Lorem ipsum 5555555</li>
-            <li style={{ width: 250 }}>Lorem ipsum 6666666</li>
-            <li style={{ width: 250 }}>Lorem ipsum 4444444</li>
-            <li style={{ width: 250 }}>Lorem ipsum 5555555</li>
-            <li style={{ width: 250 }}>Lorem ipsum 6666666</li>
             <li style={{ width: 250 }}>Lorem ipsum 4444444</li>
             <li style={{ width: 250 }}>Lorem ipsum 5555555</li>
             <li style={{ width: 250 }}>Lorem ipsum 6666666</li>

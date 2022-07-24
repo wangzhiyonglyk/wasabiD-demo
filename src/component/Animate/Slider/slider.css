@@ -61,6 +61,33 @@
   }
 }
 
+/*****右*****/
+/*
+  逐帧动画
+  */
+@keyframes moveright {
+  0% {
+    transform: translate(
+      calc(var(--scrollNum) * var(--scrollItemStep) * -1px),
+      0
+    );
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/**补间动画**/
+@keyframes itemmoveright {
+  0% {
+    transform: translate(0, 0);
+  }
+  80%,
+  100% {
+    transform: translate(calc(var(--scrollItemStep) * 1px), 0);
+  }
+}
+
 /*****上****/
 
 /*
@@ -85,5 +112,32 @@
   80%,
   100% {
     transform: translate(0, calc(var(--scrollItemStep) * -1px));
+  }
+}
+
+/*****下****/
+
+/*
+  逐帧动画
+  */
+@keyframes movebottom {
+  0% {
+    transform: translate(
+      0,
+      calc(var(--scrollNum) * var(--scrollItemStep) * -1px)
+    );
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+/**补间动画**/
+@keyframes itemmovetop {
+  0% {
+    transform: translate(0, 0);
+  }
+  80%,
+  100% {
+    transform: translate(0, calc(var(--scrollItemStep) * 1px));
   }
 }

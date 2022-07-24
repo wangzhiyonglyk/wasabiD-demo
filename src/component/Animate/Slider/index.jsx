@@ -105,6 +105,9 @@ const Slider = function (props) {
           "--scrollItemAnimation",
           "itemmove" + props.direction
         );
+      document
+        .getElementById(containerParentId)
+        .style.setProperty("--scrollState", "running");
     }
   }, [props.interval, props.childStep, props.direction]);
   useEffect(() => {
@@ -127,15 +130,26 @@ const Slider = function (props) {
         }
         id={containerId}
       >
+        {props.direction === "right" || props.direction === "bottom"
+          ? React.Children.map(props.children, (child, index) => {
+              if (child && index === React.Children.count(props.children) - 1) {
+                return <React.Fragment key={"more"}>{child}</React.Fragment>;
+              } else {
+                return null;
+              }
+            })
+          : null}
         {props.children}
         {/*复制第一节点 */}
-        {React.Children.map(props.children, (child, index) => {
-          if (child && index === 0) {
-            return <React.Fragment key={"more"}>{child}</React.Fragment>;
-          } else {
-            return null;
-          }
-        })}
+        {props.direction === "left" || props.direction === "top"
+          ? React.Children.map(props.children, (child, index) => {
+              if (child && index === 0) {
+                return <React.Fragment key={"more"}>{child}</React.Fragment>;
+              } else {
+                return null;
+              }
+            })
+          : null}
       </div>
     </div>
   );
