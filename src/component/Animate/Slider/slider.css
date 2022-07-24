@@ -1,0 +1,89 @@
+.wasabi-slider {
+  overflow: hidden;
+  /**轮播的个数**/
+
+  /**单个 li 容器的高度/或者宽度**/
+
+  /***单次动画的时长****/
+
+  /**逐帧动画名**/
+
+  /**补间动画名**/
+
+  /***动态状态***/
+  --scrollState: running;
+}
+.wasabi-slider-ul {
+  animation: var(--scrollAnimation) calc(var(--scrollSpeed) * var(--scrollNum))
+    steps(var(--scrollNum)) infinite;
+  animation-play-state: var(--scrollState);
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+.wasabi-slider-ul.row {
+  flex-direction: row;
+}
+.wasabi-slider-ul.column {
+  flex-direction: column;
+}
+.wasabi-slider-ul > * {
+  animation: var(--scrollItemAnimation) var(--scrollSpeed) infinite;
+  animation-play-state: var(--scrollState);
+  flex-grow: 1;
+}
+
+/*****左*****/
+/*
+  逐帧动画
+  */
+@keyframes moveleft {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(
+      calc(var(--scrollNum) * var(--scrollItemStep) * -1px),
+      0
+    );
+  }
+}
+
+/**补间动画**/
+@keyframes itemmoveleft {
+  0% {
+    transform: translate(0, 0);
+  }
+  80%,
+  100% {
+    transform: translate(calc(var(--scrollItemStep) * -1px), 0);
+  }
+}
+
+/*****上****/
+
+/*
+  逐帧动画
+  */
+@keyframes movetop {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(
+      0,
+      calc(var(--scrollNum) * var(--scrollItemStep) * -1px)
+    );
+  }
+}
+/**补间动画**/
+@keyframes itemmovetop {
+  0% {
+    transform: translate(0, 0);
+  }
+  80%,
+  100% {
+    transform: translate(0, calc(var(--scrollItemStep) * -1px));
+  }
+}
