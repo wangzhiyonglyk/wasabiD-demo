@@ -164,7 +164,7 @@ Slider.propTypes = {
   style: PropTypes.object, //
   childStep: PropTypes.number, //子节点移动的像素步长
   interval: PropTypes.number.isRequired, //轮播间隔时间
-  direction: PropTypes.oneOf(["left", "right", "top", "bottom"]), //todo bottom后期再支持
+  direction: PropTypes.oneOf(["left", "right", "top", "bottom"]), //
 };
 
 export default React.memo(Slider);
