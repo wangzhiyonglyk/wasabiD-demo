@@ -25,7 +25,7 @@ const Slider = function (props) {
     document
       .getElementById(containerParentId)
       .style.setProperty("--scrollState", "paused");
-  }, []);
+  }, [containerParentId]);
   /**
    * 鼠标移开
    */
@@ -33,7 +33,7 @@ const Slider = function (props) {
     document
       .getElementById(containerParentId)
       .style.setProperty("--scrollState", "running");
-  }, []);
+  }, [containerParentId]);
 
   const move = useCallback(() => {
     let containerUL = document.getElementById(containerId);
