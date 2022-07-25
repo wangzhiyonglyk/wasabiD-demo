@@ -38,16 +38,14 @@ const Slider = function (props) {
   const move = useCallback(() => {
     let containerUL = document.getElementById(containerId);
     let scrollNum = React.Children.count(props.children); //滚动的个数
-    let stepType = ""; //宽度还是高度
+
     let itemwidth = 0;
     let itemHeight = 0;
     if (scrollNum > 1) {
       itemwidth = containerUL.children[0].getBoundingClientRect().width;
       itemHeight = containerUL.children[0].getBoundingClientRect().height;
       //子节点个数超过1
-
       if (props.direction === "left" || props.direction === "right") {
-        stepType = "width";
         /**
          * 通过将子元素单独放置在一个容器中得到子元素真实的宽度的，以为此来设置容器的宽度及步长
          */
@@ -71,7 +69,6 @@ const Slider = function (props) {
         document.getElementById(containerId).style.width =
           itemwidth * (scrollNum + 1) + "px";
       } else if (props.direction === "top" || props.direction === "bottom") {
-        stepType = "height";
         scrollItemStep.current =
           containerUL.children[0].getBoundingClientRect().height; //以子元素的高度作为值
       }
@@ -109,14 +106,21 @@ const Slider = function (props) {
         .getElementById(containerParentId)
         .style.setProperty("--scrollState", "running");
     }
-  }, [props.interval, props.childStep, props.direction]);
+  }, [
+    props.interval,
+    props.childStep,
+    props.direction,
+    props.children,
+    containerId,
+    containerParentId,
+  ]);
   useEffect(() => {
     move();
-  }, []);
+  }, [move]);
   return (
     <div
       id={containerParentId}
-      className={"wasabi-slider" + " " + props.className}
+      className={"wasabi-slider " + props.className ?? ""}
       style={props.style}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
