@@ -816,6 +816,23 @@ func.getNextHour = function (date, n = 1) {
   return newDate;
 };
 
+1;
+/**
+＊判断元素是否可见
+*@param {0bject} elm
+*/
+export function checkVisible(elm) {
+  let rect = elm.getBoundingClientRect();
+  //获取当前浏览器的视口高度，不包括工具栏和滚动条
+  const result = !(
+    rect.bottom < 0 ||
+    rect.right < 0 ||
+    rect.left > window.innerHeight ||
+    rect.top > window.innerWidth
+  );
+  return result;
+}
+
 import base64 from "./base64.js";
 func.base64 = base64;
 import md5 from "./md5.js";

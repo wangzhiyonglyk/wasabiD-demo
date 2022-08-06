@@ -104,7 +104,7 @@ import PageIn from "./Animate/PageIn.jsx"; //放大弹出组件
 import ProgressChart from "./Animate/ProgressChart"; //线性报表
 
 import Slider from "./Animate/Slider";
-
+import Scroll from "./Animate/Scroll";
 /*****************功能组件******************/
 import Upload from "./Action/Upload/index.jsx"; //上传组件
 import Editor from "./Action/Editor.jsx"; //上传组件
@@ -191,6 +191,7 @@ export {
   PageIn,
   ProgressChart,
   Slider,
+  Scroll,
   Upload,
   Editor,
   Article,

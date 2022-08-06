@@ -8,71 +8,72 @@
  *
  */
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useImperativeHandle,
+} from "react";
 import PropTypes from "prop-types";
 import func from "../../libs/func";
-import "./slider.css";
+import { checkVisible } from "../../libs/func";
+import "./index.css";
+
 const uuid = func.uuid;
-const Slider = function (props) {
+
+const Slider = React.forwardRef(function (props, ref) {
   const [containerParentId] = useState(uuid());
-
   const [containerId] = useState(uuid());
-  const scrollItemStep = useRef(props.childStep); //每次移动的像素
-  /**
-   * 鼠标停靠
-   */
-  const onMouseOver = useCallback(() => {
-    document
-      .getElementById(containerParentId)
-      .style.setProperty("--scrollState", "paused");
-  }, [containerParentId]);
-  /**
-   * 鼠标移开
-   */
-  const onMouseOut = useCallback(() => {
-    document
-      .getElementById(containerParentId)
-      .style.setProperty("--scrollState", "running");
-  }, [containerParentId]);
+  const [containerdot] = useState(uuid());
+  const scrollItemStep = useRef(props.childStep); //每次移动的像素,即步长
+  const chidlrenObj = useRef(null);
+  const childrenIndex = useRef(0); //记录子节点元素
+  const dotObj = useRef(null); //记录点元素
+  const timer = useRef(null); //定时器
 
+  /**
+   * 滑动事件
+   */
   const move = useCallback(() => {
-    let containerUL = document.getElementById(containerId);
+    let containerUL = document.getElementById(containerId); //里面容器
+    chidlrenObj.current = containerUL.children; //子元素
+    dotObj.current = document.getElementById(containerdot).children; //点元素
     let scrollNum = React.Children.count(props.children); //滚动的个数
 
-    let itemwidth = 0;
-    let itemHeight = 0;
+    let itemwidth = 0; //子元素的宽度
+    let itemHeight = 0; //子元素的高度
     if (scrollNum > 1) {
-      itemwidth = containerUL.children[0].getBoundingClientRect().width;
-      itemHeight = containerUL.children[0].getBoundingClientRect().height;
       //子节点个数超过1
+      /**
+       * 通过将子元素单独放置在一个容器中得到子元素真实的宽度与高度的，以为此来设置容器的宽度，高度及步长
+       */
+      {
+        let id = uuid();
+        let info = document.createElement("div");
+        info.className = containerUL.className;
+        info.style = containerUL.style;
+        info.style.opacity = 0;
+        info.id = id;
+        info.innerHTML = containerUL.children[0].outerHTML;
+        document.body.appendChild(info);
+        itemwidth = info.getBoundingClientRect().width;
+        itemHeight = info.getBoundingClientRect().height;
+        document.body.removeChild(info);
+      }
       if (props.direction === "left" || props.direction === "right") {
-        /**
-         * 通过将子元素单独放置在一个容器中得到子元素真实的宽度的，以为此来设置容器的宽度及步长
-         */
-        {
-          let id = uuid();
-          let info = document.createElement("div");
-          info.style.opacity = 0;
-          info.style.display = "inline-block";
-          info.id = id;
-          info.innerHTML = containerUL.children[0].outerHTML;
-          document.body.appendChild(info);
-          itemwidth = document.getElementById(id).getBoundingClientRect().width;
-          document.body.removeChild(info);
-        }
-
         scrollItemStep.current = itemwidth; //以子元素的宽度作为值
-        //因为块级布局原因，横向滚动要设置宽度
-        document.getElementById(containerParentId).style.width =
-          itemwidth + "px";
         //直接容器的宽度足够n+1个
         document.getElementById(containerId).style.width =
           itemwidth * (scrollNum + 1) + "px";
       } else if (props.direction === "top" || props.direction === "bottom") {
-        scrollItemStep.current =
-          containerUL.children[0].getBoundingClientRect().height; //以子元素的高度作为值
+        scrollItemStep.current = itemHeight; //以子元素的宽度作为值
+        //直接容器的高度度足够n+1个
+        document.getElementById(containerId).style.height =
+          itemHeight * (scrollNum + 1) + "px";
       }
-      //设置高度 保证只可见一个
+      //设置滚动容器高度与高度 保证只可见一个
+      document.getElementById(containerParentId).style.width = itemwidth + "px";
       document.getElementById(containerParentId).style.height =
         itemHeight + "px";
 
@@ -80,10 +81,12 @@ const Slider = function (props) {
         //如果设置了固定值，使用固定的值
         scrollItemStep.current = props.childStep;
       }
+      /***设置动画参数 */
+      /***** 动画中的步数 ******/
       document
         .getElementById(containerParentId)
         .style.setProperty("--scrollNum", scrollNum);
-      /***动画移动像素 */
+      /***每次动画移动像素  */
       document
         .getElementById(containerParentId)
         .style.setProperty("--scrollItemStep", scrollItemStep.current);
@@ -94,44 +97,132 @@ const Slider = function (props) {
       /**逐帧动画名 */
       document
         .getElementById(containerParentId)
-        .style.setProperty("--scrollAnimation", "move" + props.direction);
+        .style.setProperty("--scrollAnimation", "slidermove" + props.direction);
       /**补间动画名 */
       document
-        .getElementById(containerId)
+        .getElementById(containerParentId)
         .style.setProperty(
           "--scrollItemAnimation",
-          "itemmove" + props.direction
+          "slideritemmove" + props.direction
         );
-      document
-        .getElementById(containerParentId)
-        .style.setProperty("--scrollState", "running");
+      /**开始动画 */
+      if (props.auto) {
+        //自动播放
+        if (props.delay) {
+          setTimeout(() => {
+            document
+              .getElementById(containerParentId)
+              .style.setProperty("--scrollState", "running");
+            dotChosed();
+          }, props.delay);
+        } else {
+          document
+            .getElementById(containerParentId)
+            .style.setProperty("--scrollState", "running");
+          dotChosed();
+        }
+      }
+
+      dotObj.current[0].className = "wasabi-slider-dot chosed";
     }
   }, [
     props.interval,
     props.childStep,
     props.direction,
     props.children,
+    props.auto,
+    props.delay,
     containerId,
     containerParentId,
   ]);
+  /**
+   * 鼠标停靠
+   */
+  const onMouseOver = useCallback(() => {
+    document
+      .getElementById(containerParentId)
+      .style.setProperty("--scrollState", "paused");
+    clearInterval(timer.current);
+  }, [containerParentId]);
+  /**
+   * 鼠标移开
+   */
+  const onMouseOut = useCallback(() => {
+    document
+      .getElementById(containerParentId)
+      .style.setProperty("--scrollState", "running");
+    dotChosed();
+  }, [containerParentId]);
+  /**
+   * 点点选中事件
+   */
+  const dotChosed = useCallback(() => {
+    timer.current = setInterval(
+      () => {
+        childrenIndex.current++;
+        if (childrenIndex.current === React.Children.count(props.children)) {
+          childrenIndex.current = 0;
+        }
+        for (let i = 0; i < dotObj.current.length; i++) {
+          dotObj.current[i].className = "wasabi-slider-dot";
+        }
+        for (let i = 0; i < chidlrenObj.current.length; i++) {
+          if (
+            checkVisible(chidlrenObj.current[i]) &&
+            i < dotObj.current.length
+          ) {
+            dotObj.current[
+              i + 1 >= dotObj.current.length ? 0 : i + 1
+            ].className = "wasabi-slider-dot chosed";
+            break;
+          }
+        }
+      },
+      //提前300毫秒
+      props.interval > 1000 ? 300 : props.interval - 300
+    );
+  }, [childrenIndex]);
+  /**
+   * 执行动画
+   */
   useEffect(() => {
     move();
   }, [move]);
+  useEffect(() => {
+    return () => {
+      clearInterval(timer.current);
+    };
+  });
+
+  // 对外接口
+  useImperativeHandle(ref, () => ({
+    start: () => {
+      onMouseOut();
+    },
+    /***
+     * 停止
+     */
+    stop: () => {
+      onMouseOver();
+    },
+  }));
+
   return (
     <div
       id={containerParentId}
-      className={"wasabi-slider " + props.className ?? ""}
-      style={props.style}
+      className={"wasabi-slider "}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
       <div
         className={
           "wasabi-slider-ul " +
+          (props.className ?? "") +
           (props.direction === "left" || props.direction === "right"
             ? "row"
             : "column")
         }
+        style={props.style}
         id={containerId}
       >
         {props.direction === "right" || props.direction === "bottom"
@@ -155,19 +246,28 @@ const Slider = function (props) {
             })
           : null}
       </div>
+      <div className={"wasabi-slider-dot-div "} id={containerdot}>
+        {React.Children.map(props.children, (child, index) => {
+          return <div className={"wasabi-slider-dot"}></div>;
+        })}
+      </div>
     </div>
   );
-};
+});
 
 Slider.defaultProps = {
-  interval: 2000,
+  interval: 4000,
   direction: "left",
+  delay: 2000,
+  auto: true,
 };
 Slider.propTypes = {
   className: PropTypes.string, //样式
   style: PropTypes.object, //
+  auto: PropTypes.bool, //是否自播放
   childStep: PropTypes.number, //子节点移动的像素步长
   interval: PropTypes.number.isRequired, //轮播间隔时间
+  delay: PropTypes.number, //延迟时长
   direction: PropTypes.oneOf(["left", "right", "top", "bottom"]), //
 };
 

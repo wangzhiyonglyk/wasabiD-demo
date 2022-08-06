@@ -1,17 +1,7 @@
 .wasabi-slider {
   overflow: hidden;
-  /**轮播的个数**/
-
-  /**单个 li 容器的高度/或者宽度**/
-
-  /***单次动画的时长****/
-
-  /**逐帧动画名**/
-
-  /**补间动画名**/
-
-  /***动态状态***/
-  --scrollState: running;
+  position: relative;
+  --scrollState: paused;
 }
 .wasabi-slider-ul {
   animation: var(--scrollAnimation) calc(var(--scrollSpeed) * var(--scrollNum))
@@ -33,12 +23,32 @@
   animation-play-state: var(--scrollState);
   flex-grow: 1;
 }
-
+.wasabi-slider-dot-div {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 2px;
+  background-color: transparent;
+  z-index: 1;
+  cursor: pointer;
+}
+.wasabi-slider-dot {
+  height: 2px;
+  width: 4px;
+  background: white;
+  margin-left: 2px;
+}
+.wasabi-slider-dot.chosed {
+  width: 8px;
+  background: #ffce00;
+}
 /*****左*****/
 /*
   逐帧动画
   */
-@keyframes moveleft {
+@keyframes slidermoveleft {
   0% {
     transform: translate(0, 0);
   }
@@ -51,11 +61,11 @@
 }
 
 /**补间动画**/
-@keyframes itemmoveleft {
+@keyframes slideritemmoveleft {
   0% {
     transform: translate(0, 0);
   }
-  80%,
+
   100% {
     transform: translate(calc(var(--scrollItemStep) * -1px), 0);
   }
@@ -65,7 +75,7 @@
 /*
   逐帧动画
   */
-@keyframes moveright {
+@keyframes slidermoveright {
   0% {
     transform: translate(
       calc(var(--scrollNum) * var(--scrollItemStep) * -1px),
@@ -78,11 +88,11 @@
 }
 
 /**补间动画**/
-@keyframes itemmoveright {
+@keyframes slideritemmoveright {
   0% {
     transform: translate(0, 0);
   }
-  80%,
+
   100% {
     transform: translate(calc(var(--scrollItemStep) * 1px), 0);
   }
@@ -93,7 +103,7 @@
 /*
   逐帧动画
   */
-@keyframes movetop {
+@keyframes slidermovetop {
   0% {
     transform: translate(0, 0);
   }
@@ -105,11 +115,11 @@
   }
 }
 /**补间动画**/
-@keyframes itemmovetop {
+@keyframes slideritemmovetop {
   0% {
     transform: translate(0, 0);
   }
-  80%,
+
   100% {
     transform: translate(0, calc(var(--scrollItemStep) * -1px));
   }
@@ -120,7 +130,7 @@
 /*
   逐帧动画
   */
-@keyframes movebottom {
+@keyframes slidermovebottom {
   0% {
     transform: translate(
       0,
@@ -132,11 +142,11 @@
   }
 }
 /**补间动画**/
-@keyframes itemmovetop {
+@keyframes slideritemmovetop {
   0% {
     transform: translate(0, 0);
   }
-  80%,
+
   100% {
     transform: translate(0, calc(var(--scrollItemStep) * 1px));
   }

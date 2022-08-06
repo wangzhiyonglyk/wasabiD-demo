@@ -10,6 +10,7 @@ import {
   Badge,
   Toolbar,
   CheckBox,
+  Scroll,
   Slider,
 } from "../component";
 class Index extends React.Component {
@@ -24,16 +25,64 @@ class Index extends React.Component {
   render() {
     return (
       <div>
-        <div>
-          <Slider direction="right">
-            <li style={{ width: 250 }}>Lorem ipsum 1111111</li>
-            <li style={{ width: 250 }}>Lorem ipsum 2222222</li>
-            <li style={{ width: 250 }}>Lorem ipsum 3333333</li>
-            <li style={{ width: 250 }}>Lorem ipsum 4444444</li>
-            <li style={{ width: 250 }}>Lorem ipsum 5555555</li>
-            <li style={{ width: 250 }}>Lorem ipsum 6666666</li>
+        <div style={{ height: 200 }}>
+          <Slider direction="left">
+            <img
+              key="1"
+              style={{ width: 200, height: 200 }}
+              src={require("./img/g1.jpeg")}
+            ></img>
+            <img
+              key="2"
+              style={{ width: 200, height: 200 }}
+              src={require("./img/g2.jpeg")}
+            ></img>
+            <img
+              key="3"
+              style={{ width: 200, height: 200 }}
+              src={require("./img/g3.jpeg")}
+            ></img>
+            <img
+              key="4"
+              style={{ width: 200, height: 200 }}
+              src={require("./img/g4.jpeg")}
+            ></img>
+            <img
+              key="5"
+              style={{ width: 200, height: 200 }}
+              src={require("./img/g5.jpeg")}
+            ></img>
           </Slider>
         </div>
+        {/* <div style={{ height: 200 }}>
+          <Scroll direction="left" step={400} speed={30}>
+            <img
+              key="1"
+              style={{ marginRight: 200, width: 200, height: 200 }}
+              src={require("./img/g1.jpeg")}
+            ></img>
+            <img
+              key="2"
+              style={{ marginRight: 200, width: 200, height: 200 }}
+              src={require("./img/g2.jpeg")}
+            ></img>
+            <img
+              key="3"
+              style={{ marginRight: 200, width: 200, height: 200 }}
+              src={require("./img/g3.jpeg")}
+            ></img>
+            <img
+              key="4"
+              style={{ marginRight: 200, width: 200, height: 200 }}
+              src={require("./img/g4.jpeg")}
+            ></img>
+            <img
+              key="5"
+              style={{ marginRight: 200, width: 200, height: 200 }}
+              src={require("./img/g5.jpeg")}
+            ></img>
+          </Scroll>
+        </div> */}
         <Separator key="s1">不同主题-Button</Separator>
         <CheckBox
           name="user"

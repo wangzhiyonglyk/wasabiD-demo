@@ -1,0 +1,78 @@
+.wasabi-scroll {
+  overflow: hidden;
+  position: relative;
+  --scrollState: paused;
+}
+.wasabi-scroll-ul {
+  user-select: none;
+  animation: var(--scrollAnimation) var(--scrollSpeed) steps(var(--scrollNum))
+    infinite;
+  animation-play-state: var(--scrollState);
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+.wasabi-scroll-ul img {
+  user-select: none;
+}
+.wasabi-scroll-ul.row {
+  flex-direction: row;
+}
+.wasabi-scroll-ul.column {
+  flex-direction: column;
+}
+
+/*****左*****/
+/*
+    逐帧动画
+    */
+@keyframes scrollmoveleft {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(calc(var(--scrollNum) * -1px), 0);
+  }
+}
+
+/*****右*****/
+/*
+    逐帧动画
+    */
+@keyframes scrollmoveright {
+  0% {
+    transform: translate(calc(var(--scrollNum) * -1px), 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/*****上****/
+
+/*
+    逐帧动画
+    */
+@keyframes scrollmovetop {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, calc(var(--scrollNum) * -1px));
+  }
+}
+
+/*****下****/
+
+/*
+    逐帧动画
+    */
+@keyframes scrollmovebottom {
+  0% {
+    transform: translate(0, calc(var(--scrollNum) * -1px));
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
