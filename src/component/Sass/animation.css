@@ -7,48 +7,32 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.nowrap{
+.nowrap {
   overflow: hidden;
   white-space: nowrap;
-  text-overflow:clip; 
+  text-overflow: clip;
 }
-.hide{
+.hide {
   display: none;
 }
-.show{
+.show {
   display: block;
 }
-html{
+html {
   height: 100%;
   width: 100%;
 }
-body{
+body {
   height: 100%;
   width: 100%;
 }
-a{
-  text-decoration:none;
-}
-/*
-自定义滚动条样式
-*/
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+a {
+  text-decoration: none;
 }
 
-::-webkit-scrollbar-track-piece {
-  background-color: #ffffff;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #D1D1D1;
-  border-radius: 5px;
-}
-
-[class^="icon-"], [class*=" icon-"] {
-  font-family: 'iconfont' !important;
+[class^="icon-"],
+[class*=" icon-"] {
+  font-family: "iconfont" !important;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -61,36 +45,37 @@ a{
   cursor: pointer;
 }
 
-[class^="icon-"][disabled], [class*=" icon-"][disabled] {
-  opacity: 0.40;
+[class^="icon-"][disabled],
+[class*=" icon-"][disabled] {
+  opacity: 0.4;
   cursor: not-allowed;
   box-shadow: none;
 }
 /**
 加载动画
 */
-.loading{
+.loading {
   animation: loading 1s linear infinite;
 }
-.tree-loading{
+.tree-loading {
   animation: tree-loading 1s linear infinite;
 }
 
 @keyframes loading {
   0% {
-    transform:rotate(0deg)
-}
-100% {
-    transform: rotate(360deg)
-}
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 @keyframes tree-loading {
   0% {
-    transform:translateY(4px) rotate(0deg)
-}
-100% {
-    transform:translateY(4px) rotate(360deg)
-}
+    transform: translateY(4px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(4px) rotate(360deg);
+  }
 }
 
 /*
@@ -137,11 +122,11 @@ a{
 
 .wasabi-shake {
   animation: shake 1.5s ease-out;
-  ;
 }
 
 @-webkit-keyframes shake {
-  0%, 100% {
+  0%,
+  100% {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
@@ -164,7 +149,8 @@ a{
 }
 
 @keyframes shake {
-  0%, 100% {
+  0%,
+  100% {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
@@ -235,21 +221,21 @@ a{
 @keyframes wasabi-fade-in {
   0% {
     transform: translate3d(0, -20px, 0);
-    opacity: 0
+    opacity: 0;
   }
   to {
     transform: translateZ(0);
-    opacity: 1
+    opacity: 1;
   }
 }
 
 @keyframes wasabi-fade-out {
   0% {
     transform: translateZ(0);
-    opacity: 1
+    opacity: 1;
   }
   to {
     transform: translate3d(0, -20px, 0);
-    opacity: 0
+    opacity: 0;
   }
 }

@@ -432,6 +432,13 @@ func.uuid = function () {
   let uuid = s.join("");
   return uuid;
 };
+/**
+ * 返回随机字符串
+ * @returns
+ */
+func.randomStr = function () {
+  return Math.random().toString(36).slice(2);
+};
 
 /**
  * 判断两个对象是相同
@@ -688,19 +695,21 @@ func.charWidth = function (str = "") {
 
 /**
  * 节流方案
+ * @param {*} method 函数
+ * @param {*} delay 时间差
+ * @returns
  */
-func.throttle = function (fn, wait) {
-  let pre = Date.now();
+export function throttle(method, delay) {
+  let timer = null;
   return function () {
-    let context = this;
-    let args = arguments;
-    let now = Date.now();
-    if (now - pre >= wait) {
-      fn.apply(context, args);
-      pre = Date.now();
-    }
+    let content = this,
+      args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      method.apply(content, args);
+    }, delay);
   };
-};
+}
 /**
  * create by wangzhiyong
  * date:2021-04-22
