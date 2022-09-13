@@ -9,8 +9,10 @@ date:2021-02-06 重新调整
  date: 2021-05-15 去掉控制字体大小，颜色等属性，以方便与其他ui库兼容
  date:2021-05-20 增加变量
  date:2021-06-22 拆分样式，取bootstrap5中的grid,与reboot
+  date:2022-09-13 拆分样式，重新引入bootstrap5中的grid布局方式，用于适配
 */
 @import url("./reboot.css");
+@import url("./grid.css");
 @import url("./animation.css");
 @import url("./font/iconfont.css");
 :root {
@@ -37,4 +39,5 @@ date:2021-02-06 重新调整
   --font-size: 14px;
   --icon-size: 16px;
   --box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+
 }
