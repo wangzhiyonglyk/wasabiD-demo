@@ -1,8 +1,10 @@
 /**
  * Created by wangzhiyong on 2020-11-07
  * 数据处理基类
- * todo 
- * edit 2021-04-26
+ * 
+ * edit 2021-04-26 把datagrid也提取出来了
+ * 树组件没有，因为有太多异步情况
+ * 
  */
 
 import React from "react"
@@ -164,19 +166,42 @@ const loadDataHoc = function (Widget, componentType = "select") {
             }
            
         }
+        /**
+         * 获取勾选的
+         * @returns 
+         */
         getChecked(){
             return  this.input.current&&this.input.current.getChecked();
          }
+         /**
+          * 勾选某一行
+          * @param {*} id 
+          * @param {*} checked 
+          * @returns 
+          */
          setChecked(id,checked){
              return  this.input.current&&this.input.current.setChecked(id,checked);
          }
+         /**
+          * 清除勾选
+          * @returns 
+          */
          clearChecked(){
              return  this.input.current&&this.input.current.clearChecked();
          }
+         /**
+          * 勾选所有
+          * @returns 
+          */
          checkedAll(){
              return  this.input.current&&this.input.current.checkedAll();
          }
-         setClick(id){
+         /**
+          * 
+          * @param {*} id 
+          * @returns 
+          */
+         setFocus(id){
              return  this.input.current&&this.input.current.setClick(id);
          }
          remove(node){
@@ -189,10 +214,7 @@ const loadDataHoc = function (Widget, componentType = "select") {
          {
              return  this.input.current&&this.input.current.filter(value);
          }
-         adjust(){
-             return  this.input.current&&this.input.current.adjust();
-         }
-    
+      
         render() {
             return <Widget
                 {...this.props}

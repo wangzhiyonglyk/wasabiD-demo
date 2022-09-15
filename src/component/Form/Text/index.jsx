@@ -1,7 +1,7 @@
 //creete by wangzhiyong
 //date:2016-08-02
 //edit by wangzhiyong 2020-10-18 todo blur事件要改
-//desc 将输入框从Input中独立出来
+//desc 普通的文本框
 import React, { Component } from "react";
 import propTypes from "../../propsConfig/propTypes.js";
 
@@ -113,15 +113,15 @@ class Text extends Component {
     onChange(event) {
         let value = event.target.value.toString();
         let isvalidate = true;
-        if (this.props.type == "number" || this.props.type == "integer") {
+        if (this.props.type === "number" || this.props.type === "integer") {
             /**
         * 数字与整数要先验证，
         * 验证时，当一个字符是+,或者-是被认为是正确，不能使用正则验证,否则通不过，但失去焦点则可以使用正则
         */
-            isvalidate = (value == "+" || value == "-") || this.props.validate && this.props.validate(value);
+            isvalidate = (value === "+" || value === "-") || this.props.validate && this.props.validate(value);
         }
 
-        if ((this.props.type == "number" || this.props.type == "integer")) {
+        if ((this.props.type === "number" || this.props.type === "integer")) {
             if (isvalidate) {
 
                 this.cellHandler(event);
@@ -204,6 +204,7 @@ class Text extends Component {
                 id={this.props.id}
                 type={this.props.type}
                 name={this.props.name}
+                title={this.props.title}
                 readOnly={this.props.readOnly}
                 className={"wasabi-input "}
                 onChange={this.onChange}
@@ -212,7 +213,7 @@ class Text extends Component {
                 value={this.state.value || ""}
                 onPaste={this.onPaste.bind(this)}
             ></TextInput>
-            {(this.props.url || this.props.onSearch) ? <Icon disabled={this.props.disabled} onSearch={this.onSearch}></Icon> : null}
+            { this.props.onSearch ? <Icon disabled={this.props.disabled} onSearch={this.onSearch}></Icon> : null}
             {this.props.children}
             <DataList
                 data={this.props.data}
@@ -224,4 +225,4 @@ class Text extends Component {
 }
 
 Text.propTypes = propTypes;
-export default validateHoc(loadDataHoc(Text, "text"), "text");
+export default validateHoc(Text, "text");

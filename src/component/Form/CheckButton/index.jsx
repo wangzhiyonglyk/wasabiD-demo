@@ -101,7 +101,7 @@ class CheckButton extends React.Component {
             this.props.validate && this.props.validate(newValue.join(","));
             this.props.onSelect && this.props.onSelect(newValue.join(","), newText.join(","), this.props.name, row);
         } else {
-            Msg.info("值是空值");
+            Msg.alert("值是空值");
         }
 
 

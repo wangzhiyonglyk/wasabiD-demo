@@ -4,7 +4,6 @@
  */
 import React from "react";
 import func from "../../../libs/func.js";
-import Msg from "../../../Info/Msg";
 export default {
   /**
    * 设置焦点行
@@ -71,53 +70,21 @@ export default {
   /**
    * 设置勾选的值
    */
-  setChecked: function (checkedRowData = []) {
-    if (checkedRowData instanceof Array && checkedRowData.length > 0) {
-      if (this.props.priKey) {
-        let data = this.state.data;
-        let checkedData = new Map();
-        let checkedIndex = new Map();
-        for (let i = 0; i < checkedRowData.length; i++) {
-          let findIndex = data.findIndex((rowData, index) => {
-            return (
-              rowData[this.props.priKey] == checkedRowData[i][this.props.priKey]
-            );
-          });
-          if (findIndex > -1) {
-            checkedIndex.set(findIndex + "", findIndex);
-            let key = this.getKey(findIndex); //获取关键字
-            checkedData.set(key + "", data[findIndex]);
-          }
-        }
-        this.setState({
-          checkedData,
-          checkedIndex,
-        });
-      } else {
-        Msg.error("没有设置主键,无法自定义勾选");
+  setChecked: function (key, checked) {
+    let rowIndex;
+    for (let i = 0; i < this.state.data.length; i++) {
+      if (this.state.data[i][this.props.priKey || "id"] == key) {
+       rowIndex=i;
+        break;
       }
     }
-  },
-  /**
-   * 通过行号来设置勾选
-   * @param {*} rowIndexs 行号集合
-   */
-  setCheckedByIndex: function (rowIndexs = []) {
-    let checkedData = new Map();
-    let checkedIndex = new Map();
-    for (let i = 0; i < rowIndexs.length; i++) {
-      if (rowIndexs[i] * 1 > -1 && rowIndexs[i] * 1 < this.data.length) {
-        //合格
-        checkedIndex.set(rowIndexs[i] + "", rowIndexs[i] * 1);
-        let key = this.getKey(rowIndexs[i] * 1); //获取关键字
-        checkedData.set(key + "", this.state.data[findIndex]);
-      }
+    if (checked) {
+      this.onChecked(rowIndex,key); //勾选，
+    } else {
+      this.onChecked(rowIndex,null); //取消勾选
     }
-    this.setState({
-      checkedData,
-      checkedIndex,
-    });
   },
+
   /**
    * 清除勾选
    */

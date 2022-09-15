@@ -247,22 +247,22 @@ todo
 }
 
 .wasabi-excel-sheet-selection.left {
-    width: 2px;
+    width: 1px;
 
 }
 
 .wasabi-excel-sheet-selection.right {
-    width: 2px;
+    width: 1px;
 
 }
 
 .wasabi-excel-sheet-selection.top {
-    height: 2px;
+    height: 1px;
 
 }
 
 .wasabi-excel-sheet-selection.bottom {
-    height: 2px;
+    height: 1px;
 
 }
 

@@ -72,7 +72,7 @@ export default {
         params: PropTypes.object,//查询参数
         dataSource: PropTypes.string,//ajax的返回的数据源中哪个属性作为数据源,为null时直接后台返回的数据作为数据源
         data: PropTypes.array,//自定义数据源
-        // extraData:PropTypes.array,//额外的数据,对url有效
+       
         onSelect: PropTypes.func,//选中后的事件，回传，value,与text,data
         attachAble: PropTypes.bool,//select是否可以添加数据
         //其他属性 picker

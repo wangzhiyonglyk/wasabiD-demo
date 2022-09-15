@@ -63,7 +63,7 @@ class Upload extends Component {
      */
     setFile(targetFiles = []) {
         if (!this.props.uploadurl) {
-            Msg.info('您没有设置上传的服务器地址');
+            Msg.alert('您没有设置上传的服务器地址');
             return;
         }
         if (targetFiles.length > 0 && this.validateType(targetFiles)) {
@@ -184,11 +184,11 @@ class Upload extends Component {
 
 
             } else {
-                Msg.info('您没有设置上传的服务器地址');
+                Msg.alert('您没有设置上传的服务器地址');
                 this.clear();//清除
             }
         } else {
-            Msg.info('请选择文件');
+            Msg.alert('请选择文件');
         }
     }
     //上传进度

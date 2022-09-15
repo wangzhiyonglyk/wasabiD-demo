@@ -131,7 +131,7 @@ export default {
           endIndex + config.bufferScale * this.virtualConfig.visibleCount;
         let visibleData = this.state.data.slice(sliceBeginIndex, sliceEndIndex);
         visibleData = visibleData.map((item, index) => {
-          item._orderIndex = startIndex + index;
+          item._orderRowIndex = startIndex + index;//注意了这里是虚拟列表的行号
           return item;
         });
         this.adjust = true; //需要调整宽与高，但不是状态值

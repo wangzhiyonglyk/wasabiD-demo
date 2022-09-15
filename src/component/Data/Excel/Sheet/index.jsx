@@ -379,7 +379,7 @@ class Sheet extends React.Component {
         let topStyle = {
             left: selection.x,
             top: selection.y,
-            width: selection.width + 2
+            width: selection.width + 1
         };
         let leftStyle = {
             left: selection.x,
@@ -387,14 +387,14 @@ class Sheet extends React.Component {
             height: selection.height
         }
         let rightStyle = {
-            left: selection.x + selection.width + 2,
+            left: selection.x + selection.width + 1,
             top: selection.y,
             height: selection.height
         }
         let bottomStyle = {
             left: selection.x,
             top: selection.y + selection.height,
-            width: selection.width + 2
+            width: selection.width + 1
         }
         let dotStyle = {
             width: selection.width ? 6 : 0,

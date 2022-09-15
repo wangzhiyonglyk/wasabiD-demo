@@ -53,6 +53,9 @@ border奇怪的现象，出现变粗的现象
   background-color: white;
 }
 
+.wasabi-table-realTable .wasabi-table tr:hover td {
+  background-color: white;
+}
 /* 树表格与交叉表选中时显示 */
 .wasabi-treegrid .wasabi-table > tbody > tr.selected:hover td {
   background-color: var(--background-color);
@@ -81,7 +84,7 @@ border奇怪的现象，出现变粗的现象
 
 .wasabi-table td.focus .wasabi-table-cell {
   padding: 0px;
-  border: 1px solid var(--primary-color);
+  
   overflow: visible;
   left: 1px;
 }
@@ -91,9 +94,10 @@ border奇怪的现象，出现变粗的现象
   position: absolute;
   width: 100%;
   height: 100%;
+
 }
 .wasabi-table td.focus .wasabi-input {
-  border: none;
+border: 1px solid var(--primary-color);
   text-align: inherit;
 }
 

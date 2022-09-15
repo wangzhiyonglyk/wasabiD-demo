@@ -166,7 +166,7 @@ class Upload extends Component {
                 Msg.alert('您没有设置上传路径');
             }
         } else {
-            Msg.info('请选择文件');
+            Msg.alert('请选择文件');
         }
     }
     //上传进度

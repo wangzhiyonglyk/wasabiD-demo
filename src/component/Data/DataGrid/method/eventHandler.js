@@ -6,33 +6,35 @@
 import React from "react";
 import func from "../../../libs/func.js";
 export default {
-  /**
-   * 获取当行的key
-   * @param {*} rowIndex 行，
-   * @param {*} pageIndex 页号
-   */
+ /**
+  * 获取当行的key
+  * @param {*} rowIndex 行号
+  */
   getKey: function (rowIndex) {
-    let key = "";
     let pageIndex = this.state.pageIndex;
     if (rowIndex == null && rowIndex == undefined) {
-      console.log(new Error("index 值传错"));
+      console.log(new Error("rowIndex 值传错"));
     } else {
       key =
         (this.state.data &&
           this.state.data[rowIndex] &&
-          this.state.data[rowIndex][this.props.priKey]) ??
+          this.state.data[rowIndex][this.props.priKey||"id"]) ??
         pageIndex.toString() + "-" + rowIndex.toString();
     }
     return key + "";
+   
   },
 
   /**
    * 勾选事件
-   * @param {*} index
-   * @param {*} value
+   * @param {*} rowIndex 行号
+   * @param {*} value 勾选框的值
+   * @param {*} key key值，这个是为了setChecked调用而加的参数，暂时这么设计
+   * @
    */
-  onChecked: function (index, value) {
+  onChecked: function (rowIndex, value) {
     //选中事件
+    let  key =this.getKey(rowIndex);//拿key值，防止0为值的情况
     let checkedData = this.state.checkedData; //已经选中的行
     let checkedIndex = this.state.checkedIndex; //已经选中的行的序号，用于导出
     if (this.props.singleSelect == true) {
@@ -40,13 +42,13 @@ export default {
       checkedData = new Map(); //单选先清空之前的选择
       checkedIndex = new Map();
     }
-    let key = this.getKey(index); //获取关键字
-    if (value && value !== "") {
-      checkedData.set(key, this.state.data[index]);
-      checkedIndex.set(index + "", index);
+    if ((value??""+"")) {
+      //防止value为0这种情况
+      checkedData.set(key, this.state.data[rowIndex]);
+      checkedIndex.set(rowIndex + "", rowIndex);
     } else {
       checkedData.delete(key);
-      checkedIndex.delete(index + "");
+      checkedIndex.delete(rowIndex + "");
     }
 
     this.setState({

@@ -229,7 +229,7 @@ const validateHoc = function (Widget, componentType = "text") {
         }
 
         /**
-         * 刷新
+         * 刷新,因为下拉框类型组件需要
          * @param {*} params 
         * @param {*} url 
          */

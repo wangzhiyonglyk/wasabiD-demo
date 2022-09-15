@@ -25,7 +25,7 @@ class Search extends React.Component {
                     this.props.onSearch(event.target.value, this.props.name);
                 }
                 else {
-                    Msg.info("请设置搜索事件")
+                    Msg.alert("请设置搜索事件")
                 }
             }
 
@@ -39,7 +39,7 @@ class Search extends React.Component {
                 this.props.onSearch(event.target.value, this.props.name);
             }
             else {
-                Msg.info("请设置搜索事件")
+                Msg.alert("请设置搜索事件")
             }
 
         }

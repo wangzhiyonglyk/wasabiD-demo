@@ -85,7 +85,7 @@ class Radio extends Component {
             this.props.onSelect && this.props.onSelect(value + "", text, name, row);
         }
         else {
-            Msg.info("值是空值");
+            Msg.alert("值是空值");
         }
 
     }

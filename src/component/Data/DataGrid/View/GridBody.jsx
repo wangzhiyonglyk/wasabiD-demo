@@ -160,7 +160,7 @@ class GridBody extends React.PureComponent {
         >
           {(
             (this.props.pageIndex - 1) * this.props.pageSize +
-            ((rowData._orderIndex ?? rowIndex) + 1)
+            ((rowData._orderRowIndex ?? rowIndex) + 1)
           ).toString()}
         </TableCell>
       );
@@ -323,7 +323,7 @@ class GridBody extends React.PureComponent {
                 this.setCellComponent(
                   header,
                   rowData,
-                  rowData._orderIndex ?? rowDataIndex,
+                  rowData._orderRowIndex ?? rowDataIndex,
                   columnIndex,
                   stickyLeft
                 )
@@ -347,7 +347,7 @@ class GridBody extends React.PureComponent {
               this.setCellComponent(
                 trheader,
                 rowData,
-                rowData._orderIndex ?? rowDataIndex,
+                rowData._orderRowIndex ?? rowDataIndex,
                 columnIndex,
                 stickyLeft
               )
@@ -367,22 +367,22 @@ class GridBody extends React.PureComponent {
           }
         });
         let trClassName = "";
-        if (this.props.focusIndex == (rowData._orderIndex ?? rowDataIndex)) {
+        if (this.props.focusIndex == (rowData._orderRowIndex ?? rowDataIndex)) {
           trClassName += " selected ";
         }
-        if (this.props.editIndex === (rowData._orderIndex ?? rowDataIndex)) {
+        if (this.props.editIndex === (rowData._orderRowIndex ?? rowDataIndex)) {
           trClassName += " edited ";
         }
 
         trArr.push(
           <TableRow
-            key={"row-" + (rowData._orderIndex ?? rowDataIndex)}
-            rowIndex={rowData._orderIndex ?? rowDataIndex}
+            key={"row-" + (rowData._orderRowIndex ?? rowDataIndex)}
+            rowIndex={rowData._orderRowIndex ?? rowDataIndex}
             className={trClassName}
           >
             {this.setOrderAndSelectAndDetailRow(
               rowData,
-              rowData._orderIndex ?? rowDataIndex
+              rowData._orderRowIndex ?? rowDataIndex
             )}
             {tds}
           </TableRow>
