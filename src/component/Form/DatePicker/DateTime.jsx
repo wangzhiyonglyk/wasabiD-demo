@@ -73,15 +73,7 @@ class DateTime extends Component {
         })
 
     }
-    shouldComponentUpdate(nextProps, nextState) {
-        if (func.diff(nextProps, this.props,false)) {
-            return true;
-        }
-        if (func.diff(nextState, this.state)) {
-            return true;
-        }
-        return false;
-    }
+
     render() {
         return (
             <React.Fragment>

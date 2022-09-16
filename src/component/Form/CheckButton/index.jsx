@@ -106,15 +106,7 @@ class CheckButton extends React.Component {
 
 
     }
-    shouldComponentUpdate(nextProps, nextState) {
-        if (func.diff(nextProps, this.props, false)) {
-            return true;
-        }
-        if (func.diff(nextState, this.state)) {
-            return true;
-        }
-        return false;
-    }
+   
 
     render() {
         const { data, half, readOnly } = this.props;

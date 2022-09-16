@@ -7,7 +7,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import lang from "../../Lang/language.js";
-import utils from "../../libs/func";
+
 import "./calendar.css"
 
 function CalendarHeader({ year, month, choseYear, choseMonth }) {
@@ -23,7 +23,7 @@ function YearView({ year, tempyear, showChangeYear, yearInputClick, yearonBlur, 
     let yearControl = [];
     for (let index = year * 1 - 7; index <= year * 1 + 7; index++) {
         let className = index === year * 1 ? "yearspan chosed" : "yearspan";
-        yearControl.push(<div key={index} className={className} onClick={changeYearHandler.bind(this, index)} key={"year" + index}>{index}</div>);
+        yearControl.push(<div key={index} className={className} onClick={changeYearHandler.bind(this, index)}>{index}</div>);
     }
     return <div className="wasabi-datetime-year" style={{ display: showChangeYear ? "flex" : "none" }}>
         <div style={{ display: "block", textAlign: "center", marginBottom: 10 ,width:"100%"}}>
@@ -259,17 +259,6 @@ class Calendar extends Component {
             this.props.onSelect(value, value, this.props.name);
         }
 
-    }
-
-
-    shouldComponentUpdate(nextProps, nextState) {
-        if (utils.diff(nextProps, this.props,false)) {
-            return true;
-        }
-        if (utils.diff(nextState, this.state)) {
-            return true;
-        }
-        return false;
     }
 
     /**

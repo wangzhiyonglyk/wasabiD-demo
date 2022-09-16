@@ -258,18 +258,6 @@ const validateHoc = function (Widget, componentType = "text") {
                 }
             }
         }
-
-        shouldComponentUpdate(nextProps, nextState) {
-             //全部用浅判断
-            if (func.diff(nextProps, this.props,false)) {
-                return true;
-            }
-            if (func.diff(nextState, this.state,false)) {
-                return true;
-            }
-            return false;
-        }
-
         render() {
             let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
             if (this.props.hide) {

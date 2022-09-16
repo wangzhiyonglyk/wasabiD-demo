@@ -237,16 +237,7 @@ class Grid extends React.Component {
       </div>
     );
   }
-  shouldComponentUpdate(nextProps) {
-    console.log("nextprops", nextProps, this.props);
-    for (let key in nextProps) {
-      if (this.props[key] !== nextProps[key]) {
-        console.log("key", key, this.props[key]);
-        break;
-      }
-    }
-    return true;
-  }
+
   /**
    * 渲染全部网格组件
    */

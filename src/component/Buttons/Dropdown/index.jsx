@@ -60,15 +60,7 @@ class Dropdown extends Component {
 
 
     }
-    shouldComponentUpdate(nextProps, nextState) {
-        if (func.diff(nextProps, this.props,false)) {
-            return true;
-        }
-        if (func.diff(nextState, this.state)) {
-            return true;
-        }
-        return false;
-    }
+  
     render() {
         let props = {
             className:
@@ -81,7 +73,7 @@ class Dropdown extends Component {
             title: this.props.title
         };
         return <div ref={this.wasabidropdown}  {...props} id={this.state.containerid} >
-            <LinkButton disabled={this.props.disabled} key={1} disabled={this.props.disabled} iconCls={this.props.iconCls}
+            <LinkButton disabled={this.props.disabled}  iconCls={this.props.iconCls}
              iconAlign={this.props.iconAlign} name={this.props.name}
              iconColor={this.props.iconColor}
               onClick={this.showMenu} 
