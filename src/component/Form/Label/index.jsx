@@ -25,14 +25,13 @@ class Label extends React.PureComponent {
     }
 
     render() {
-        let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
-        style.display = this.props.children ? "inline-block" : "none";
-        return <div id={this.state.controlid}
+       
+        return this.props.children?<div id={this.state.controlid}
             title={this.props.title}
             className={"wasabi-label " + (this.props.className || "")}
-            style={style}>
-            {this.props.required ? <span style={{ color: "red" }}>*</span> : null} {this.props.children}
-        </div>
+            style={ this.props.style}>
+            {this.props.required ? <span style={{ color: "var(--danger-color)" ,transform:"translateY(2px)",display:"inline-block"}}>*</span> : null} {this.props.children}
+        </div>:null
 
 
     }

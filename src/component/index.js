@@ -50,7 +50,6 @@ import SearchBar from "./Form/SearchBar/index.jsx"; //表单查询组件
 import Form from "./Form/Form/index.jsx"; //表单提交组件
 import Input from "./Form/Input/index.jsx"; //通用表单组件
 
-import BaseInput from "./Form/BaseInput/index.jsx"; //原生输入框
 import Text from "./Form/Text/index.jsx"; //文本
 import Rate from "./Form/Rate/index.jsx"; //评分
 import Select from "./Form/Select/index.jsx"; //下拉框
@@ -150,7 +149,6 @@ export {
   Input,
   Form,
   SearchBar,
-  BaseInput,
   Text,
   Rate,
   Select,

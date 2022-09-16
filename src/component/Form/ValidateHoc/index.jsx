@@ -259,16 +259,10 @@ const validateHoc = function (Widget, componentType = "text") {
             }
         }
         render() {
-            let style = this.props.style ? JSON.parse(JSON.stringify(this.props.style)) : {};
-            if (this.props.hide) {
-                style.display = 'none';
-            } else {
-                style.display = 'flex';
-            }
             return <div id={this.state.containerid}
                 className={"wasabi-form-group " + (this.props.className || "") + " " + this.state.validateClass}
-                style={style}>
-                <Label readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>
+                style={this.props.style }>
+                {this.props.hide?null:<Label readOnly={this.props.readOnly || this.props.disabled} style={this.props.labelStyle} required={this.props.required}>{this.props.label}</Label>}
                 <div className={'wasabi-form-group-body' + (this.props.readOnly || this.props.disabled ? " readOnly" : "")}>
                     <Widget  {...this.props} ref={this.input} containerid={this.state.containerid} validate={this.validate}></Widget>
                     <small className={'wasabi-help-block '} style={{ display: this.state.inValidateText ? "block" : 'none' }}>

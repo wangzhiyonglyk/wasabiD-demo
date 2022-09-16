@@ -25,7 +25,7 @@ class Home extends React.Component {
                 <Form style={{width:800}} cols={1} labelPosition={"top"}>
                 <Button onClick={this.onClick}>改变数据 </Button>
                 <Input type="text" label="文本框" required={true} ></Input>
-                 <Input type="select" label="下拉框" multiple={true} data={this.state.data}></Input>
+                 <Input type="select" placeholder="下拉框" multiple={true} data={this.state.data}></Input>
                 {/* <Input type="checkbox" label="复选框" multiple={true} data={[{text:"选择1",value:1},{text:"选择2",value:2}]}></Input>
                 <Input type="radio" label="单选框" multiple={true} data={[{text:"选择1",value:1},{text:"选择2",value:2}]}></Input>
                 <Input type="switch" label="开关" multiple={true} data={[{text:"选择1",value:1},{text:"选择2",value:2}]}></Input>

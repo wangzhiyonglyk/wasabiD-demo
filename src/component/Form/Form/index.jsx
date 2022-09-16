@@ -5,10 +5,7 @@
 //desc:表单组件
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
 import Button from "../../Buttons/Button";
-import propsTran from "../../libs/propsTran"
-import func from "../../libs/func"
 import "./form.css"
 class Form extends Component {
     constructor(props) {
