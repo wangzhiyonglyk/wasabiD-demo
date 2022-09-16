@@ -22,7 +22,7 @@ const loadDataHoc = function (Widget, componentType = "select") {
             this.state = {
                 url: null,
                 params: null,//参数 
-                rawParams: null,
+                rawParams: null,//原始的参数
                 rawData: [],//原始数据,用于判断是否通过父组件强制更新数据源         
                 data: [],//处理后的数据
                 loadDataStatus: null,//标记如何加载数据
@@ -33,7 +33,6 @@ const loadDataHoc = function (Widget, componentType = "select") {
             this.handlerData = this.handlerData.bind(this);
             this.getValue = this.getValue.bind(this);
             this.setValue = this.setValue.bind(this);
-            this.reload = this.reload.bind(this);
             this.loadData = this.loadData.bind(this);
             this.loadSuccess = this.loadSuccess.bind(this);
             this.loadError = this.loadError.bind(this);
