@@ -6,13 +6,13 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import utils from "../../libs/func"
+import func from "../../libs/func"
 import "./Label.css"
 class Label extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            controlid: utils.uuid(),
+            controlid: func.uuid(),
         }
         this.onClick = this.onClick.bind(this)
     }
