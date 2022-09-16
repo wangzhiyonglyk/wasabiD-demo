@@ -39,7 +39,7 @@ import Pagination from "./Data/Pagination/index.jsx"; //分页控件
 import ContentMenu from "./Data/ContentMenu/index.jsx"; //右键菜单
 import Color from "./Data/Color/index.jsx"; //调色板
 import GlobalSearch from "./Data/GlobalSearch/index.jsx"; //全局搜索
-// import Excel from "./Data/Excel";//Excel
+import Excel from "./Data/Excel";//Excel
 /*******************表格组件*************************/
 import { Table, TableBody, TableCell, TableHead, TableRow } from "./Data/Table";
 
@@ -140,6 +140,7 @@ export {
   ContentMenu,
   Color,
   GlobalSearch,
+  Excel,
   Track,
   Table,
   TableBody,

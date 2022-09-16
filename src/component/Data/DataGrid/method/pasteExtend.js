@@ -1,58 +1,59 @@
 /**
- * Created by wangzhiyong on 2016/11/8.
+ * create by wangzhiyong 2020-12-20
  * 将复制粘贴功能独立出来
+ * edit 2022-09-16 调整重新开发此功能
  */
 
-// import Msg from "../../../Info/Msg";
-// import excel from "../../../libs/excel";
-// import fileType from "../../../libs/fileType";
+import Msg from "../../../Info/Msg";
+import excel from "../../../libs/excel";
+import fileType from "../../../libs/fileType";
 import func from "../../../libs/func";
 import pageSizeList from "../../Pagination/pageSizeList.js";
 export default {
-  //   /**
-  //    * 停靠
-  //    * @param {*} event
-  //    */
-  //   onDragOver(event) {
-  //     //在ondragover中一定要执行preventDefault()，否则ondrop事件不会被触发
-  //     event.preventDefault();
-  //   },
-  //   /**
-  //    * 文件拖动
-  //    * @param {*} event
-  //    */
-  //   onDrop(event) {
-  //     event.preventDefault();
-  //     if (
-  //       event.dataTransfer.files &&
-  //       event.dataTransfer.files.length > 0 &&
-  //       this.props.importAble
-  //     ) {
-  //       try {
-  //         if (fileType.filter("excel", event.dataTransfer.files[0])) {
-  //           excel.readFile(event.dataTransfer.files[0]).then((workbook) => {
-  //             let json = excel.workbook2json(workbook);
-  //             this.json2data(json, this.state.data.length);
-  //           });
-  //         } else {
-  //           Msg.error("只接受excel文件");
-  //         }
-  //       } catch (e) {}
-  //     }
-  //   },
+    /**
+     * 停靠
+     * @param {*} event
+     */
+    onDragOver(event) {
+      //在ondragover中一定要执行preventDefault()，否则ondrop事件不会被触发
+      event.preventDefault();
+    },
+    /**
+     * 文件拖动
+     * @param {*} event
+     */
+    onDrop(event) {
+      event.preventDefault();
+      if (
+        event.dataTransfer.files &&
+        event.dataTransfer.files.length > 0 &&
+        this.props.importAble
+      ) {
+        try {
+          if (fileType.filter("excel", event.dataTransfer.files[0])) {
+            excel.readFile(event.dataTransfer.files[0]).then((workbook) => {
+              let json = excel.workbook2json(workbook);
+              this.json2data(json, this.state.data.length);
+            });
+          } else {
+            Msg.error("只接受excel文件");
+          }
+        } catch (e) {}
+      }
+    },
 
-  //   //excel粘贴事件
-  //   onPaste: async function (rowIndex, columnIndex, event, oldValue) {
-  //     //excel粘贴事件
-  //     try {
-  //       let text = await window.navigator.clipboard.readText();
-  //       if (text.indexOf("\t") > -1 || text.indexOf("\n") > -1) {
-  //         text = text.replace(/\r\n/g, "\n").replace(/\t/g, ","); //转成xlsx脚本的可操作的csv格式
-  //         //说明是csv数据，不包含头部
-  //         this.json2data(excel.csv2json(text, false), rowIndex, columnIndex);
-  //       }
-  //     } catch (e) {}
-  //   },
+    //excel粘贴事件
+    onPaste: async function (rowIndex, columnIndex, event, oldValue) {
+      //excel粘贴事件
+      try {
+        let text = await window.navigator.clipboard.readText();
+        if (text.indexOf("\t") > -1 || text.indexOf("\n") > -1) {
+          text = text.replace(/\r\n/g, "\n").replace(/\t/g, ","); //转成xlsx脚本的可操作的csv格式
+          //说明是csv数据，不包含头部
+          this.json2data(excel.csv2json(text, false), rowIndex, columnIndex);
+        }
+      } catch (e) {}
+    },
   /**
    *
    * @param {*} json
@@ -68,7 +69,7 @@ export default {
       const { headers } = this.setHeaderEditor(); //设置表头
 
       let addData = [];
-      let oldData = func.clone(this.state.data);
+      let oldData = func.clone(this.state.data,false);
       let beginRowIndex = rowIndex; //开始的行下标
       let beginColumnIndex = 0; //开始的列下标
       for (let i = 0; i < json.body.length; i++) {
