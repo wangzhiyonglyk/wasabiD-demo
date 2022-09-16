@@ -284,12 +284,12 @@ func.cookies = {
 };
 
 /**
- * 对象的深复制
+ * 对象的复制
  * @param {*} obj 源对象
  * @returns
  */
 
-func.clone = function (obj) {
+func.clone = function (obj, deep = true) {
   let o;
   switch (typeof obj) {
     case "object":
@@ -298,9 +298,12 @@ func.clone = function (obj) {
       } else {
         if (obj instanceof Array) {
           o = [];
-          //o= obj.slice(0)， 注意了这里不能直接使用这个复制，如果数组中的元素为对象
-          for (let i = 0; i < obj.length; i++) {
-            o.push(func.clone(obj[i]));
+          if (deep) {
+            for (let i = 0; i < obj.length; i++) {
+              o.push(func.clone(obj[i]));
+            }
+          } else {
+            o = obj.slice(0);
           }
         } else if (obj instanceof Date) {
           //对日期的复制
@@ -309,54 +312,30 @@ func.clone = function (obj) {
           o = new Map(obj);
         } else if (obj instanceof Set) {
           o = new Set(obj);
+        } else if (obj instanceof RegExp) {
+          o = new RegExp(obj);
         } else {
           //普通对象
           o = {};
-          for (let k in obj) {
-            o[k] = func.clone(obj[k]);
+          if(deep){
+            for (let k in obj) {
+              o[k] = func.clone(obj[k]);
+            }
           }
+          else{
+            o = { ...obj };
+          }
+       
         }
       }
       break;
-    default: //其他类型
+    default: //其他类型,包括函数
       o = obj;
       break;
   }
   return o;
 };
-/**
- * 对象的浅复制
- * @param {*} obj 源对象
- * @returns
- */
-func.shallowClone = function (obj) {
-  let o;
-  switch (typeof obj) {
-    case "object":
-      if (obj === null) {
-        o = null;
-      } else {
-        if (obj instanceof Array) {
-          o = obj.slice(0);
-        } else if (obj instanceof Date) {
-          //对日期的复制
-          o = new Date(obj.valueOf());
-        } else if (obj instanceof Map) {
-          o = new Map(obj);
-        } else if (obj instanceof Set) {
-          o = new Set(obj);
-        } else {
-          //普通对象
-          o = { ...obj };
-        }
-      }
-      break;
-    default: //其他类型
-      o = obj;
-      break;
-  }
-  return o;
-};
+
 
 /**
  * 获取真正的数据源

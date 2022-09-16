@@ -243,7 +243,7 @@ class Grid extends React.Component {
    */
   render() {
     let grid = [];
-    let style = func.shallowClone(this.props.style) || {};
+    let style = func.clone(this.props.style) || {};
     let height = style.height || null;
 
     style.height = null; //清空height,因为height是用设置表格的高度
