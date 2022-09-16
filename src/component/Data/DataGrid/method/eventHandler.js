@@ -188,11 +188,11 @@ export default {
     }
   },
   /**
-   * 编辑时设置单元格的编辑样式
+   * 编辑时设置单元格的编辑样式,防止没有
    */
   setHeaderEditor() {
     //如果没有设置编辑，则设置
-    let headers = func.clone(this.state.headers);
+    let headers =this.state.headers;
     if (headers && headers.length > 0) {
       for (let i = 0; i < headers.length; i++) {
         if (headers[i] instanceof Array) {
@@ -331,7 +331,7 @@ export default {
         this.state.data[rowIndex]
       );
     }
-    let data = func.clone(this.state.data);
+    let data =this.state.data
     data[rowIndex][name] = value;
     this.setState({
       data: data,

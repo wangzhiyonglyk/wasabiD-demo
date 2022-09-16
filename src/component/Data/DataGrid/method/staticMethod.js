@@ -1,6 +1,7 @@
 /**
  * create by wangzhiyong
  * date:2020-12-20
+ * desc 加了虚拟列表后，通过key来反查rowIndex方式效率太低了，todo ，暂时不处理
  */
 import React from "react";
 import func from "../../../libs/func.js";
@@ -11,7 +12,7 @@ export default {
    */
   setFocus(key) {
     for (let i = 0; i < this.state.data.length; i++) {
-      if (this.state.data[i][this.props.priKey || "id"] == key) {
+      if (this.state.data[i][this.props.priKey || "id"] === key) {
         this.setState({
           focusIndex: i,
         });
@@ -98,9 +99,9 @@ export default {
    */
   addRow: function (rowData = {}, editAble = false) {
     //
-    let newData = func.clone(this.state.data);
+    let newData = this.state.data;
     newData.push(rowData || {});
-    let addData = func.clone(this.state.addData) || [];
+    let addData =this.state.addData || [];
     this.state.addData.set(this.getKey(newData.length - 1), rowData); //添加到脏数据里
     this.setState(
       {
@@ -125,8 +126,7 @@ export default {
   deleteRow: function (rowIndex) {
     //删除指定行数据
     //todo这里没处理当前页全部删除的情况
-    let data = func.clone(this.state.data);
-    let deleteData = func.clone(this.stat.deleteData) || [];
+    let deleteData =this.stat.deleteData || [];
     deleteData.push(data.splice(rowIndex, 1));
     this.setState({
       data: data,
@@ -144,7 +144,7 @@ export default {
     if (rowData && typeof rowData === "object") {
       this.state.updateData.set(this.getKey(rowIndex), rowData); //更新某一行
       if (rowIndex >= 0 && rowIndex < this.state.data.length) {
-        let newData = func.clone(this.state.data);
+        let newData =this.state.newData;
         if (rowData && typeof rowData === "object") {
           //如果有值，则取新值
           newData[rowIndex] = rowData;

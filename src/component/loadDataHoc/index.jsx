@@ -1,10 +1,7 @@
 /**
  * Created by wangzhiyong on 2020-11-07
  * 数据处理基类
- * 
- * edit 2021-04-26 把datagrid也提取出来了
- * 树组件没有，因为有太多异步情况
- * 
+ * edit  2022-09-16 重新简化了的，去掉了之前兼容tree组件的
  */
 
 import React from "react"
@@ -28,8 +25,6 @@ const loadDataHoc = function (Widget, componentType = "select") {
                 rawParams: null,
                 rawData: [],//原始数据,用于判断是否通过父组件强制更新数据源         
                 data: [],//处理后的数据
-                filterText: "",//筛选文本
-                filterData: [],//筛选的数据
                 loadDataStatus: null,//标记如何加载数据
                 idField: this.props.idField,//for tree treepicker
                 valueField: this.props.valueField,
@@ -146,82 +141,14 @@ const loadDataHoc = function (Widget, componentType = "select") {
         getValue() {
             return this.input.current && this.input.current.getValue && this.input.current.getValue();
         }
-        /**
-         * 刷新
-         * @param {*} params 
-        * @param {*} url 
-         */
-        reload(params, url) {
-
-            if(this.input.current.reload){
-                this.input.current.reload();
-            }
-            else{
-                url = url || this.props.url;
-                params = params || this.state.params;
-                this.setState({
-                    loadDataStatus: "url",
-                    params: params
-                })
-            }
-           
-        }
-        /**
-         * 获取勾选的
-         * @returns 
-         */
-        getChecked(){
-            return  this.input.current&&this.input.current.getChecked();
-         }
-         /**
-          * 勾选某一行
-          * @param {*} id 
-          * @param {*} checked 
-          * @returns 
-          */
-         setChecked(id,checked){
-             return  this.input.current&&this.input.current.setChecked(id,checked);
-         }
-         /**
-          * 清除勾选
-          * @returns 
-          */
-         clearChecked(){
-             return  this.input.current&&this.input.current.clearChecked();
-         }
-         /**
-          * 勾选所有
-          * @returns 
-          */
-         checkedAll(){
-             return  this.input.current&&this.input.current.checkedAll();
-         }
-         /**
-          * 
-          * @param {*} id 
-          * @returns 
-          */
-         setFocus(id){
-             return  this.input.current&&this.input.current.setClick(id);
-         }
-         remove(node){
-             return  this.input.current&&this.input.current.remove(node);
-         }
-         append(children,node){
-             return  this.input.current&&this.input.current.append(children,node);
-         }
-         filter(value)
-         {
-             return  this.input.current&&this.input.current.filter(value);
-         }
+    
       
         render() {
             return <Widget
                 {...this.props}
                 componentType={componentType}
                 ref={this.input}
-                reload={this.reload}
-                data={this.state.filterText ? this.state.filterData : this.state.data}
+                data={this.state.data}
             ></Widget>
         }
     }

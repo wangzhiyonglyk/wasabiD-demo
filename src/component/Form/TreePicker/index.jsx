@@ -228,7 +228,4 @@ class TreePicker extends Component {
 }
 TreePicker.propTypes = props;
 TreePicker.defaultProps = { type: "treepicker", checkStyle: "checkbox" }
-/**
- *不用使用 loadDataHoc处理数据，在Tree处理了
- */
 export default validateHoc(TreePicker, "treepicker");
