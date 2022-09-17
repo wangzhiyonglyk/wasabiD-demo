@@ -1,19 +1,20 @@
 /**
  * Created by zhiyongwang on 2016-04-05以后.
- * 2020-11-08
+ * edit 2020-11-08
+ * edit 2022-09-17  完善组件，尤其是半选状态
  * 复选框组件
  */
 import React from "react";
-import loadDataHoc from "../../loadDataHoc";
+import loadDataHoc from "../loadDataHoc";
 import validateHoc from "../validateHoc";
-import func from "../../libs/func"
+import propTypes from "../../propsConfig/propTypes.js";
 import propsTran from "../../libs/propsTran"
 import "../Radio/radio.css"
 import Msg from "../../Info/Msg";
 
 function LiView(props) {
     //half,是从tree那里来的
-    let { data, value = "", half, readOnly, onSelect } = props;
+    let { data, value = "", half, readOnly,disabled, onSelect } = props;
     let control = null;
     const isChecked = (child) => {
         let checked = false;
@@ -27,8 +28,8 @@ function LiView(props) {
             let checked = isChecked(child);
             return <li key={index} onClick={onSelect.bind(this, (child.value ?? ""), child.text, child)}  >
 
-                <label className={("checkbox-label ") + (checked ? " checked " : " ") + (half ? " halfcheck " : "")} readOnly={readOnly} ></label>
-                <div className={"checktext " + (checked ? " checked" : "")} readOnly={readOnly} >{child.text}</div>
+                <label className={("checkbox-label ") + (checked ? " checked " : " ") + (half ? " halfcheck " : "")} disabled={disabled} readOnly={readOnly} ></label>
+                <div className={"checktext "  + (checked ? " checked " : " ") + (half ? " halfcheck " : "")} disabled={disabled} readOnly={readOnly} >{child.text}</div>
             </li >
         })
     }
@@ -83,7 +84,7 @@ class CheckBox extends React.Component {
      * @returns 
      */
     onSelect(value = "", text, row) {//选中事件
-        if (this.props.readOnly) {
+        if (this.props.readOnly||this.props.disabled) {
             return;
         }
         if ((value ?? "") !== "") {//0是有效值
@@ -119,10 +120,12 @@ class CheckBox extends React.Component {
     }
    
     render() {
-        const { data, half, readOnly } = this.props;
+        const { data, half, readOnly,disabled } = this.props;
 
-        const liprops = { data, half, readOnly, onSelect: this.onSelect, value: this.state.value };
+        const liprops = { data, half, readOnly,disabled, onSelect: this.onSelect, value: this.state.value };
         return <ul className="wasabi-checkul" ><LiView {...liprops} ></LiView> {this.props.children} </ul>
     }
 }
-export default validateHoc(loadDataHoc(CheckBox, "checkbox"), "checkbox");
+CheckBox.propTypes = propTypes;
+CheckBox.defaultProps={type:"checkbox"}
+export default validateHoc(loadDataHoc(CheckBox));

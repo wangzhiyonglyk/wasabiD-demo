@@ -58,6 +58,7 @@ desc:表单样式
     flex-direction: column;
     justify-content: flex-start;
     min-width: 160px;
+    align-self: flex-end;
 }
 
 .wasabi-form.left .wasabi-label {

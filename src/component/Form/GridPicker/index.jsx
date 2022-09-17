@@ -6,11 +6,11 @@
  */
 import React, { Component } from "react";
 import DataGrid from "../../Data/DataGrid/index.jsx";
-import props from "../../propsConfig/propTypes.js";
+import propTypes from "../../propsConfig/propTypes.js";
 import validateHoc from "../validateHoc";
 import func from "../../libs/func";
 import dom from "../../libs/dom";
-import loadDataHoc from "../../loadDataHoc/index.jsx";
+import loadDataHoc from "../loadDataHoc";
 import Msg from "../../Info/Msg.jsx";
 class GridPicker extends Component {
     constructor(props) {
@@ -200,7 +200,7 @@ class GridPicker extends Component {
 
     }
 }
-GridPicker.propTypes = props;
+GridPicker.propTypes = propTypes;
 GridPicker.defaultProps = { type: "gridpicker" }
 
-export default validateHoc(loadDataHoc(GridPicker, "gridpicker", "gridpicker"));
+export default validateHoc(loadDataHoc(GridPicker));

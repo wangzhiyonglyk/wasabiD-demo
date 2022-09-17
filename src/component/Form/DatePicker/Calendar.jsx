@@ -99,7 +99,7 @@ function DayView({ year, month, day, visible, isRange, rangeBegin, rangeEnd, day
         }
         return control;
     })
-    return <div className="dayul" style={{ display: visible ? "block" : "none" }}>{preMonthWeekDaysNodes} {thisMonthDaysNodes}</div>
+    return <div className="dayul" style={{ display: visible ? "flex" : "none" }}>{preMonthWeekDaysNodes} {thisMonthDaysNodes}</div>
 }
 class Calendar extends Component {
     constructor(props) {

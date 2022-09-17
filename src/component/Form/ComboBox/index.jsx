@@ -1,16 +1,14 @@
 /**
  * Created by zhiyongwang on 2016-04-26
  * desc:下拉框容器
- *
+ ** edit 2022-09-17  完善组件
  */
-import React, { Component } from "react";
+import React from "react";
 import DatePicker from "../DatePicker";
 import Picker from "../Picker";
 import Select from "../Select";
 import TreePicker from "../TreePicker";
 import GridPicker from "../GridPicker";
-import propTypes from "../../propsConfig/propTypes.js";
-
 import "./combobox.css"
 class ComboBox extends React.PureComponent {
     constructor(props) {
@@ -21,13 +19,13 @@ class ComboBox extends React.PureComponent {
         }
     }
     validate() {//用于Form调用验证
-        return this.combobox.current.validate();
+        return this.combobox.current.validate && this.combobox.current.validate();
     }
     getValue() {//用于调用获取值
-        return this.combobox.current.getValue();
+        return this.combobox.current.getValue && this.combobox.current.getValue()||""
     }
-    setValue(value) {//用于调用设置值
-        this.combobox.current.setValue(value);
+    setValue(value) {//用于设置值
+        this.combobox.current.setValue && this.combobox.current.setValue(value);
     }
     /**
     * 重新查询数据
@@ -70,21 +68,11 @@ class ComboBox extends React.PureComponent {
             case "gridpicker":
                 control = this.renderGridPicker();
                 break;
-            case "date":
-                control = this.renderDatePicker();
-                break;
+            case "date":      
             case "timerange":
-                control = this.renderDatePicker();
-                break;
             case "time":
-                control = this.renderDatePicker();
-                break;
             case "datetime":
-                control = this.renderDatePicker();
-                break;
             case "daterange":
-                control = this.renderDatePicker();
-                break;
             case "datetimerange":
                 control = this.renderDatePicker();
                 break;
@@ -93,7 +81,7 @@ class ComboBox extends React.PureComponent {
         return control;
     }
 }
-
-ComboBox.propTypes = propTypes;
-ComboBox.defaultProps = { type: "select" }
+ComboBox.defaultProps={
+    type:"select"
+}
 export default ComboBox;

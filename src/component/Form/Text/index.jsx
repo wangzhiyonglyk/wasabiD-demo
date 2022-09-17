@@ -4,10 +4,8 @@
 //desc 普通的文本框
 import React, { Component } from "react";
 import propTypes from "../../propsConfig/propTypes.js";
-
+import BaseInput from "../BaseInput/index.jsx";
 import SelectbleList from "../Select/SelectbleList"
-//hoc
-import loadDataHoc from "../../loadDataHoc";
 import validateHoc from "../validateHoc"
 import dom from "../../libs/dom"
 import "../Select/select.css"
@@ -46,11 +44,10 @@ function DataList(props) {
 function TextInput(props) {
     if (props.type !== "textarea") {
 
-        return <input {...props} autoComplete="off"></input>
+        return  <BaseInput {...props}  ></BaseInput>
     }
     else {
-        let style
-        return <textarea {...props} autoComplete="off" ></textarea>;
+        return <textarea {...props}  ></textarea>;
     }
 }
 
@@ -138,27 +135,14 @@ class Text extends Component {
 
     keyUpHandler(event) {
         setTimeout(() => {
-            if (this.state.value.trim() == event.target.value.trim()) {
-                this.onSearch();
-            }
+            this.onSearch();
         }, 300);
         if (this.props.onKeyUp) {
             this.props.onKeyUp(event);
         }
     }
     onSearch() {
-        if (this.props.url && (this.props.priKey || this.props.name)) {
-            let params = {};
-            params[this.props.priKey || this.props.name] = this.state.value;
-            this.props.reload && this.props.reload(params)
-            this.setState({
-                show: true
-            })
-            document.addEventListener("click", this.hidePicker)
-        }
-        else {
-            this.props.onSearch && this.props.onSearch(this.state.value);
-        }
+        this.props.onSearch && this.props.onSearch(this.state.value);
 
     }
     blurHandler(event) {
@@ -223,6 +207,6 @@ class Text extends Component {
         </React.Fragment>
     }
 }
-
 Text.propTypes = propTypes;
-export default validateHoc(Text, "text");
+Text.defaultProps={type:"text"}
+export default validateHoc(Text);

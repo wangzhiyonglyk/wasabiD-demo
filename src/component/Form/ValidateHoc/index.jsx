@@ -9,7 +9,7 @@ import dom from "../../libs/dom"
  * @param {*} Widget 表单组件
  * @returns 
  */
-const validateHoc = function (Widget, componentType = "text") {
+const validateHoc = function (Widget) {
     class ValidateComponent extends React.Component {
         constructor(props) {
             super(props);
@@ -27,7 +27,7 @@ const validateHoc = function (Widget, componentType = "text") {
          * @returns 
          */
         validate(value) {
-            let type = this.props.type || componentType;
+            let type = this.props.type ;
             value = (value == null || value == undefined) ? this.input.current.getValue() : value;//如果没有传值，则取文本框值
 
             let isvalidate = true;//默认是有效的

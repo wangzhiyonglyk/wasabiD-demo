@@ -1,13 +1,13 @@
 /**
  * Created by zhiyongwang on 2020-11-06
  * 添加类型按钮的筛选框
- * 
+* edit 2022-09-17  完善组件
  */
 import React from "react";
 import Button from "../../Buttons/Button"
-import loadDataHoc from "../../loadDataHoc";
+import loadDataHoc from "../loadDataHoc";
 import validateHoc from "../validateHoc";
-import func from "../../libs/func";
+import propTypes from "../../propsConfig/propTypes.js";
 import propsTran from "../../libs/propsTran";
 import Msg from "../../Info/Msg";
 
@@ -114,4 +114,6 @@ class CheckButton extends React.Component {
         return <ul className="wasabi-checkul" style={{ marginTop: 6 }}><LiView {...liprops}></LiView> {this.props.children} </ul>
     }
 }
-export default validateHoc(loadDataHoc(CheckButton, "checkbox"), "checkbox");
+CheckButton.propTypes = propTypes;
+CheckButton.defaultProps={type:"checkbotton"}
+export default validateHoc(loadDataHoc(CheckButton));

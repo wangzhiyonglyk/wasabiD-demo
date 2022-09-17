@@ -6,15 +6,14 @@
  * 下拉框
  */
 import React, { Component } from 'react';
-import PropTypes from "prop-types";
 //libs
 import func from "../../libs/func.js";
 import propsTran from "../../libs/propsTran"
 import dom from "../../libs/dom"
 //hoc
-import loadDataHoc from "../../loadDataHoc";
+import loadDataHoc from "../loadDataHoc";
 import validateHoc from "../validateHoc";
-
+import propTypes from "../../propsConfig/propTypes.js";
 import ArrowInput from "./ArrowInput";
 import SelectbleList from "./SelectbleList";
 import Msg from "../../Info/Msg"
@@ -446,7 +445,8 @@ class Select extends Component {
     }
 
 }
-
-export default validateHoc(loadDataHoc(Select, "select"),"select");
+Select.propTypes=propTypes
+Select.defaultProps={type:"select"}
+export default validateHoc(loadDataHoc(Select));
 
 

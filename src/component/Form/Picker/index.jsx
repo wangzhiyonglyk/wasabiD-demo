@@ -9,10 +9,10 @@ import React, { Component } from "react";
 import func from "../../libs/func.js";
 import propsTran from "../../libs/propsTran"
 import dom from "../../libs/dom"
-import loadDataHoc from "../../loadDataHoc";
+import loadDataHoc from "../loadDataHoc";
 import validateHoc from "../validateHoc";
 import PickerInput from "./PickerInput";
-import propType from "../../propsConfig/propTypes.js";
+import propTypes from "../../propsConfig/propTypes.js";
 import api from "wasabi-api"
 import "./picker.css"
 /**
@@ -564,6 +564,6 @@ class Picker extends Component {
 
     }
 }
-Picker.propTypes = propType;
+Picker.propTypes = propTypes;
 Picker.defaultProps = { type: "picker" }
-export default validateHoc(loadDataHoc(Picker, "picker"), "picker");
+export default validateHoc(loadDataHoc(Picker));

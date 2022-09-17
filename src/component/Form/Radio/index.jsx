@@ -4,9 +4,10 @@
  * 单选框集合组件
  */
 import React, { Component } from "react";
-import loadDataHoc from "../../loadDataHoc";
+import loadDataHoc from "../loadDataHoc";
 import validateHoc from "../validateHoc";
 import propsTran from "../../libs/propsTran"
+import propTypes from "../../propsConfig/propTypes.js";
 import "./radio.css";
 import Msg from "../../Info/Msg";
 
@@ -95,5 +96,6 @@ class Radio extends Component {
         return <ul className="wasabi-checkul"> <LiView {...liProps} onSelect={this.onSelect.bind(this)}></LiView> {this.props.children}</ul>
     }
 }
-
-export default validateHoc(loadDataHoc(Radio, "radio"), "radio");
+Radio.propTypes = propTypes;
+Radio.defaultProps = { type: "radio" }
+export default validateHoc(loadDataHoc(Radio));

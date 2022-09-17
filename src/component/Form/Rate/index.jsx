@@ -158,6 +158,7 @@ Rate.propTypes = {
     name: PropTypes.string.isRequired,//name
 }
 Rate.defaultProps = {
+    type:"rate",
     colors: "rgb(247, 186, 42)",
     starSize: 18,
     percent: 2,
@@ -166,4 +167,5 @@ Rate.defaultProps = {
     textColor: "var(--color)",
     value: 0,
 }
-export default validateHoc(Rate,"rate")
+
+export default validateHoc(Rate)

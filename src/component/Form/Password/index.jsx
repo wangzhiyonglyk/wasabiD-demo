@@ -1,7 +1,7 @@
 import React from "react";
 import BaseInput from "../BaseInput"
 import validateHoc from "../validateHoc";
-import propType from "../../propsConfig/propTypes.js";
+import propTypes from "../../propsConfig/propTypes.js";
 
 class Password extends React.Component {
     constructor(props) {
@@ -108,6 +108,6 @@ class Password extends React.Component {
             {this.props.children} </React.Fragment>
     }
 }
-Password.propTypes = propType;
+Password.propTypes = propTypes;
 Password.defaultProps = { type: "password" }
-export default validateHoc(Password,"password");
+export default validateHoc(Password);
