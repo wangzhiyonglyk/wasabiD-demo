@@ -130,18 +130,14 @@ module.exports = (env, argv) => {
       module: {
         // 加载器配置
         rules: [
-          // // .js 文件使用babel 来编译处理,react 需要几个插件
+          // // ts,js 文件使用babel 来编译处理,react 需要几个插件
           {
-            test: /\.js[x]?$/,
+            test: /\.(t|j)sx?$/,
             use: [
               {
                 loader: "babel-loader",
               },
             ],
-          },
-          {
-            test: /\.ts[x]?$/,
-            use: [{ loader: "ts-loader" }],
           },
           //.css 文件使用 style-loader 和 css-loader 来处理,注意这里可以使用要引用MiniCssExtractPlugin,独立出来
           {
