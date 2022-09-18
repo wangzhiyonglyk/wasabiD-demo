@@ -212,7 +212,7 @@ module.exports = (env, argv) => {
         //分离js中的css,独立打包
         new MiniCssExtractPlugin({
           ignoreOrder: true, //忽略警告
-          filename: "css/[name]-[hash:8].css", //对应于entry里面生成出来的文件名
+          filename: "css/[name]-[contenthash:8].css", //对应于entry里面生成出来的文件名
           chunkFilename: "css/[id].css", //未被列在entry中，却又需要被打包出来的文件命名配置，是一些公共代码
         }),
 
