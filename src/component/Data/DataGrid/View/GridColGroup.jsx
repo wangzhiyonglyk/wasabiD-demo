@@ -41,7 +41,7 @@ class GridColGroup extends React.PureComponent {
                         return;
                     }
                     else {
-                        let width = header.width ? header.width : this.props?.headerWidth&&this.props?.headerWidth[header.name||trheader.label] || config.minWidth;
+                        let width = header.width ? header.width : this.props.headerWidth&&this.props.headerWidth[header.name||trheader.label] || config.minWidth;
                         tableWidth += width;
                         colgroup.push(<col
                             key={headerRowIndex + "-" + headerColumnIndex}
@@ -50,7 +50,7 @@ class GridColGroup extends React.PureComponent {
                     }
                 });
             } else {
-                let width = trheader.width ? trheader.width : this.props?.headerWidth&&this.props?.headerWidth[trheader.name||trheader.label] || config.minWidth;
+                let width = trheader.width ? trheader.width : this.props.headerWidth&&this.props.headerWidth[trheader.name||trheader.label] || config.minWidth;
                 tableWidth += width;
                 colgroup.push(<col
                     key={headerRowIndex}

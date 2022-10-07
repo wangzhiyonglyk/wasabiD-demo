@@ -51,7 +51,7 @@ const validateHoc = function (Widget) {
                         inValidateText = isvalidate ? "" : this.props.invalidTip || validation["invalidTip"];
                     }
                     else {//没有正则表达式，则验证默认正则
-
+                    
                         if (regexp[type]) {//系统存在这个类型
                             if (type === "daterange") {
                                 //日期可以包含时间，

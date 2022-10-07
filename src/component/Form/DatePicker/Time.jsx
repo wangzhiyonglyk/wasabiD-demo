@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import func from "../../libs/func";
 import regs from "../../libs/regs"
-import "./calendar.css"
-import Values from "../../Data/Pivot/Configuration/Values";
+import "./Calendar/calendar.css"
+
 class Time extends React.Component {
     constructor(props) {
         super(props);
@@ -33,7 +33,6 @@ class Time extends React.Component {
         }
         this.getValue = this.getValue.bind(this);
         this.setValue = this.setValue.bind(this);
-
         this.hourVisibleHandler = this.hourVisibleHandler.bind(this);
         this.hourClick = this.hourClick.bind(this);
         this.minuteClick = this.minuteClick.bind(this);
@@ -45,12 +44,12 @@ class Time extends React.Component {
     static getDerivedStateFromProps(props, state) {
         if (func.diff((props.hour || "") + "-" + (props.minute || ""), state.oldPropsValue)) {
             let date = new Date();
-            let hour = props.hour !==null && props.hour !==undefined ? props.hour : date.getHours();
-            let minute = props.hour !==null && props.hour !==undefined ? props.minute : date.getMinutes();
+            let hour = props.hour??date.getHours();
+            let minute =props.minute??date.getMinutes();
             return {
                 oldPropsValue: (props.hour || "") + "-" + (props.minute || ""),
-                hour: hour,
-                minute: minute
+                hour: hour*1<10?"0"+hour:hour,
+                minute:  minute*1<10?"0"+minute:minute,
             }
         }
 
@@ -84,10 +83,14 @@ class Time extends React.Component {
 
     hourClick(value) {
         this.setState({
-            hour: value * 1,
+            hour: value<10?"0"+value:value,
             hourVisible: false,
         })
     }
+    /**
+     *输入框不处理位数问题
+     * @param {*} event 
+     */
     hourChange(event) {
         let value = event.target.value.toString();
         if ((value + "").length > 2) {
@@ -98,13 +101,11 @@ class Time extends React.Component {
                 hour: value,
                 hourVisible: true,
             })
-            if (!value || value && regs.number.test(value) && value > 23) {//重新选择
+            if (!value || value && regs.number.test(value) && value*1 > 23) {//重新选择
                 event.target.selectionStart = 0;
                 event.target.selectionEnd = (value + "").length;
             }
-            else{
-                
-            }
+           
         }
 
 
@@ -115,7 +116,7 @@ class Time extends React.Component {
     }
     minuteClick(value) {
         this.setState({
-            minute: value * 1,
+            minute:value<10?"0"+value:value,
             hourVisible: true,
         }, () => {
           
@@ -151,7 +152,7 @@ class Time extends React.Component {
     }
     onClick() {
         let value = this.getValue();
-        this.props.onSelect && this.props.onSelect(value, value, this.props.name, value);
+        this.props.onSelect && this.props.onSelect(value, value, this.props.name);
     }
     render() {
         let arotate = -90;//角度

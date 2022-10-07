@@ -1,6 +1,6 @@
 /*
  create by wangzhiyong
- date:2016-04-05后开始独立改造
+ date:2016-03-02 从linkbutton中独立出来 
  edit 2019-12-18
  desc:按钮组件,从linkbutton独立出来
  */

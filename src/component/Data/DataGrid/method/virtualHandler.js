@@ -28,7 +28,7 @@ export default {
       aboveCount: 0, //上面预留数，用于计算滚动位置
       visibleCount: visibleCount, //可见数
       //初始化列表位置，为了调整高度，及分隔线位置
-      positions: this.state?.data.map((item, index) => {
+      positions: this.state.data?.map((item, index) => {
         return {
           index: index,
           height: config.rowDefaultHeight, //当前行的高度，后期会动态调整,

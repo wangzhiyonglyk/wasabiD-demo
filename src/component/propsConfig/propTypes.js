@@ -7,7 +7,6 @@
 import PropTypes from "prop-types";
 export default {
         type: PropTypes.oneOf([
-                "none",//空的占位符
                 "rate",//评分
                 "text",//普通输入框
                 "password",//密码
@@ -15,10 +14,13 @@ export default {
                 "url",//网址
                 "mobile",//手机
                 "idcard",//身份证
+                "year",//年份
+                "month",//年月
                 "date",//日期
                 "time",//时间
                 "timerange",//时间范围
                 "datetime",//日期时间
+                "monthrange",//年月范围
                 "daterange",//日期范围
                 "datetimerange",//日期时间范围
                 "alpha",//英文字母
@@ -89,8 +91,6 @@ export default {
         isSimpleData: PropTypes.bool,//树组件/picker 是否启用简单数据格式
         attachTime: PropTypes.bool,//日期组件时是否附带时间
         attachSecond: PropTypes.bool,//时间组件是否附带秒
-        allMinute: PropTypes.bool,//时间组件是否显示全部分钟
-
         priKey:PropTypes.array,//主键
         headers: PropTypes.array,//表头
 }

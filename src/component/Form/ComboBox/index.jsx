@@ -2,6 +2,7 @@
  * Created by zhiyongwang on 2016-04-26
  * desc:下拉框容器
  ** edit 2022-09-17  完善组件
+ 2022-09-20 追加几个日期相关组件
  */
 import React from "react";
 import DatePicker from "../DatePicker";
@@ -68,14 +69,9 @@ class ComboBox extends React.PureComponent {
             case "gridpicker":
                 control = this.renderGridPicker();
                 break;
-            case "date":      
-            case "timerange":
-            case "time":
-            case "datetime":
-            case "daterange":
-            case "datetimerange":
-                control = this.renderDatePicker();
-                break;
+                default://剩下的都是日期相关的
+                    control = this.renderDatePicker();
+                    break;
 
         }
         return control;

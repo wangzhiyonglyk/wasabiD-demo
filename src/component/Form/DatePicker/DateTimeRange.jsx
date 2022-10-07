@@ -5,7 +5,7 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Calendar from "./Calendar";
+import CalendarView from "./Calendar/CalendarView";
 import Time from "./Time.jsx";
 import DateRangeHoc from "./DateRangeHoc"
 import func from "../../libs/func"
@@ -39,17 +39,17 @@ class DateTimeRange extends Component {
     onSelectHandler() {
         let firstDate, secondDate;
         if (this.state.first_min !=="") {
-            firstDate = this.props.first_year + "-" + (this.state.first_month.toString().length == 1 ? "0" + this.props.first_month : this.props.first_month) + "-" + (this.state.first_min.toString().length == 1 ? "0" + this.props.first_min : this.props.first_min);
+            firstDate = this.props.firstYear + "-" + (this.state.firstMonth.toString().length == 1 ? "0" + this.props.firstMonth : this.props.firstMonth) + "-" + (this.state.first_min.toString().length == 1 ? "0" + this.props.first_min : this.props.first_min);
         }
         else if (this.state.second_min !=="") {
-            firstDate = this.props.second_year + "-" + (this.state.second_month.toString().length == 1 ? "0" + this.props.second_month : this.props.second_month) + "-" + (this.state.second_min.toString().length == 1 ? "0" + this.props.second_min : this.props.second_min);
+            firstDate = this.props.secondYear + "-" + (this.state.secondMonth.toString().length == 1 ? "0" + this.props.secondMonth : this.props.secondMonth) + "-" + (this.state.second_min.toString().length == 1 ? "0" + this.props.second_min : this.props.second_min);
         }
 
         if (this.state.second_max !=="") {
-            secondDate = this.props.second_year + "-" + (this.state.second_month.toString().length == 1 ? "0" + this.props.second_month : this.props.second_month) + "-" + (this.state.second_max.toString().length == 1 ? "0" + this.props.second_max : this.props.second_max);
+            secondDate = this.props.secondYear + "-" + (this.state.secondMonth.toString().length == 1 ? "0" + this.props.secondMonth : this.props.secondMonth) + "-" + (this.state.second_max.toString().length == 1 ? "0" + this.props.second_max : this.props.second_max);
         }
         else if (this.state.first_max !=="") {
-            secondDate = this.props.first_year + "-" + (this.state.first_month.toString().length == 1 ? "0" + this.props.first_month : this.props.first_month) + "-" + (this.state.first_max.toString().length == 1 ? "0" + this.props.first_max : this.props.first_max);
+            secondDate = this.props.firstYear + "-" + (this.state.firstMonth.toString().length == 1 ? "0" + this.props.firstMonth : this.props.firstMonth) + "-" + (this.state.first_max.toString().length == 1 ? "0" + this.props.first_max : this.props.first_max);
         }
         if (firstDate && secondDate) {
             if (this.props.onSelect) {
@@ -106,7 +106,8 @@ class DateTimeRange extends Component {
                 break;
         }
     
-        this.props.onSelect&&this.props.onSelect(func.dateformat(firstDate,"yyyy-MM-dd")+" "+this.state.firstTime+","+func.dateformat(secondDate,"yyyy-MM-dd")+" "+this.state.secondTime)
+        let value=func.dateformat(firstDate,"yyyy-MM-dd")+" "+this.state.firstTime+","+func.dateformat(secondDate,"yyyy-MM-dd")+" "+this.state.secondTime;
+        this.props.onSelect&&this.props.onSelect(value,value,this.props.name)
     }
     render() {
 
@@ -118,16 +119,15 @@ class DateTimeRange extends Component {
                 <a key="4" onClick={this.onClick.bind(this, 4)}>最近三个月</a>
                 <a key="5" onClick={this.onClick.bind(this, 5)}> 最近一年</a>
             </div>
-            <div>
             <div className="ok" style={{height:40}}>
-                <div style={{ position: "absolute", width: 250,zIndex:3}}>
+                <div style={{ position: "absolute", width: 290,zIndex:3}}>
                     <input className=" wasabi-input timeinput"
                         value={this.state.firstTime} onClick={this.firstTimeShowHandler.bind(this)} onChange={() => { }}></input>
 
                     <div style={{ display: this.state.showfirstTime ? "inline-block" : "none" }}><Time
                         name="begin" type="time" key="begin"
-                        onSelect={this.beginTimeHandler.bind(this)} attachSecond={this.props.attachSecond} allMinute={this.props.allMinute}
-                        type="time" key="end" value={this.state.firstTime} ></Time>
+                        onSelect={this.beginTimeHandler.bind(this)} attachSecond={this.props.attachSecond} 
+                       value={this.state.firstTime} ></Time>
                     </div>
                 </div>
                 <div style={{ position: "absolute", right: 0 ,zIndex:3}}>
@@ -135,26 +135,24 @@ class DateTimeRange extends Component {
                         value={this.state.secondTime} onClick={this.secondTimeShowHandler.bind(this)} onChange={() => { }}></input>
 
                     <div style={{ display: this.state.showsecondTime ? "inline-block" : "none" }}><Time
-                        name="begin" type="time" key="begin"
-                        onSelect={this.endTimeHandler.bind(this)} attachSecond={this.props.attachSecond} allMinute={this.props.allMinute}
-                        type="time" key="end" value={this.state.secondTime} secondRange={true} ></Time>
+                        name="end" type="time" key="end"
+                        onSelect={this.endTimeHandler.bind(this)} attachSecond={this.props.attachSecond} 
+                    value={this.state.secondTime} secondRange={true} ></Time>
                     </div>
                 </div>
 
             </div>
-            <Calendar isRange={true} year={this.props.first_year} month={this.props.first_month} day={this.props.first_day}
-                rangeBegin={this.props.first_rangeBegin} rangeEnd={this.props.first_rangeEnd}
+            <CalendarView isRange={true} year={this.props.firstYear} month={this.props.firstMonth} day={this.props.firstDay}
+                rangeBegin={this.props.firstRangeBegin} rangeEnd={this.props.firstRangeEnd}
                 onSelect={this.props.firstHandler}
                 updateYearAndMonth={this.props.firstMonthHandler}
-            ></Calendar>
+            ></CalendarView>
           
-            <Calendar isRange={true} year={this.props.second_year} month={this.props.second_month} day={this.props.second_day}
-                rangeBegin={this.props.second_rangeBegin} rangeEnd={this.props.second_rangeEnd}
+            <CalendarView isRange={true} year={this.props.secondYear} month={this.props.secondMonth} day={this.props.secondDay}
+                rangeBegin={this.props.secondRangeBegin} rangeEnd={this.props.secondRangeEnd}
                 onSelect={this.props.secondHandler}
                 updateYearAndMonth={this.props.secondMonthHandler}
-            ></Calendar>
-            </div>
-          
+            ></CalendarView>
         </React.Fragment>)
     }
 }
@@ -165,7 +163,7 @@ DateTimeRange.propTypes = {
     secondDate: PropTypes.string,//第二个日期
     secondTime: PropTypes.string,//第二个时间
     attachSecond: PropTypes.bool,//是否带上秒
-    allMinute: PropTypes.bool,//是否显示全部分钟
+   
     onSelect: PropTypes.func,//确定事件
 };
 DateTimeRange.defaultProps =

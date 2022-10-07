@@ -75,6 +75,7 @@ desc:日期选择样式
   background-color: white;
   margin: 5px 0;
   width: 100%;
+  justify-content: space-between;
 }
 .dropcontainter::before {
   border-color: transparent transparent #ffffff;
@@ -108,11 +109,16 @@ desc:日期选择样式
 
 .combobox .time {
   width: 220px;
-  height: 220px;
+ 
+}
+
+.combobox .monthrange {
+  width: 586px;
+ 
 }
 .combobox .datetime {
   width: 294px;
-  height: 346px;
+ 
 }
 .combobox  .datetime .wasabi-datetime{
   border:none;
@@ -122,12 +128,11 @@ desc:日期选择样式
 }
 .combobox .daterange {
   width: 686px;
-  height: 304px;
 }
 
 .combobox  .datetimerange {
   width: 686px;
-  height: 346px;
+ 
 }
 
 
@@ -153,16 +158,13 @@ desc:日期选择样式
 }
 
 .combobox .timeinput {
-  width: 120px;
-  height: 34px;
+  width: 70px;
+  height: 30px;
   top: 2px;
   position: absolute;
-  margin-left: 15px;
   border-radius: 4px;
   outline: none;
-  border: 1px solid #dddddd;
-  right: 5px;
-  padding-right: 6px;
+  right: 2px;
 }
 
 /**

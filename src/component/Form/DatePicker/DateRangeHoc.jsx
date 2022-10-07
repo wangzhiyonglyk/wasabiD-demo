@@ -1,15 +1,17 @@
 /*
 create by wangzhiyong
 date:2016-05-20
-desc:日期范围/[日期时间范围]选择控件 todo 这里要改
+desc:日期范围/[日期时间范围]选择控件 todo 这里要改,太复杂了
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import propsTran from "../../libs/propsTran";
 export default function (WrappedComponent) {
     class DateRangeHoc extends Component {
+        
         constructor(props) {
             super(props)
+          
             this.state = propsTran.setDateRangeDefaultState(props);//初始化状态值
             this.firstMonthHandler = this.firstMonthHandler.bind(this);
             this.secondMonthHandler = this.secondMonthHandler.bind(this);
@@ -28,6 +30,9 @@ export default function (WrappedComponent) {
             return null;
 
         }
+
+       
+        
         /**
          * 第一个日期的年与月选择事件
          * @param {*} year 
@@ -35,21 +40,21 @@ export default function (WrappedComponent) {
          */
         firstMonthHandler(year, month) {
             let newDate = new Date(year, month, 1);
-            let oldDate = new Date(this.state.second_year, this.state.second_month - 1, 1);
+            let oldDate = new Date(this.state.secondYear, this.state.secondMonth - 1, 1);
             if (oldDate > newDate) {
                 newDate = oldDate;
             }
             this.setState({
-                first_year: year,
-                first_month: month,
-                second_year: newDate.getFullYear(),
-                second_month: newDate.getMonth() + 1,
-                first_day: null,
-                second_day: null,
-                first_rangeBegin: null,
-                first_rangeEnd: null,
-                second_rangeBegin: null,
-                second_rangeEnd: null,
+                firstYear: year,
+                firstMonth: month,
+                secondYear: newDate.getFullYear(),
+                secondMonth: newDate.getMonth() + 1,
+                firstDay: null,
+                secondDay: null,
+                firstRangeBegin: null,
+                firstRangeEnd: null,
+                secondRangeBegin: null,
+                secondRangeEnd: null,
             })
         }
         /**
@@ -59,22 +64,22 @@ export default function (WrappedComponent) {
          */
         secondMonthHandler(year, month) {
             let newDate = new Date(year, month - 2, 1);
-            let oldDate = new Date(this.state.first_year, this.state.first_month - 1, 1)
+            let oldDate = new Date(this.state.firstYear, this.state.firstMonth - 1, 1)
             if (oldDate < newDate) {
                 newDate = oldDate;
             }
 
             this.setState({
-                first_year: newDate.getFullYear(),
-                first_month: newDate.getMonth() + 1,
-                second_year: year,
-                second_month: month,
-                first_day: null,
-                second_day: null,
-                first_rangeBegin: null,
-                first_rangeEnd: null,
-                second_rangeBegin: null,
-                second_rangeEnd: null,
+                firstYear: newDate.getFullYear(),
+                firstMonth: newDate.getMonth() + 1,
+                secondYear: year,
+                secondMonth: month,
+                firstDay: null,
+                secondDay: null,
+                firstRangeBegin: null,
+                firstRangeEnd: null,
+                secondRangeBegin: null,
+                secondRangeEnd: null,
             })
         }
         /**
@@ -86,45 +91,45 @@ export default function (WrappedComponent) {
                 value = value.split(" ")[0];
             }
             let newState = {
-                first_year: value.split("-")[0] * 1,
-                first_month: value.split("-")[1] * 1,
-                first_day: value.split("-")[2] * 1,
+                firstYear: value.split("-")[0] * 1,
+                firstMonth: value.split("-")[1] * 1,
+                firstDay: value.split("-")[2] * 1,
             };
-            let first_rangeBegin = this.state.first_rangeBegin;
-            let first_rangeEnd = this.state.first_rangeEnd;
-            let second_rangeBegin = this.state.second_rangeBegin;
-            let second_rangeEnd = this.state.second_rangeEnd;
-            if (!first_rangeBegin) {//第一个日期的开始日期日期为空
-                newState.first_rangeBegin = newState.first_day;
-                if (second_rangeBegin && second_rangeEnd) {//第二个日期的日期不为空
+            let firstRangeBegin = this.state.firstRangeBegin;
+            let firstRangeEnd = this.state.firstRangeEnd;
+            let secondRangeBegin = this.state.secondRangeBegin;
+            let secondRangeEnd = this.state.secondRangeEnd;
+            if (!firstRangeBegin) {//第一个日期的开始日期日期为空
+                newState.firstRangeBegin = newState.firstDay;
+                if (secondRangeBegin && secondRangeEnd) {//第二个日期的日期不为空
                     //清空
-                    newState.second_rangeBegin = null;
-                    newState.second_rangeEnd = null;
-                    newState.second_day = null;
+                    newState.secondRangeBegin = null;
+                    newState.secondRangeEnd = null;
+                    newState.secondDay = null;
                 }
-                else if (second_rangeBegin) {//第二个日期的开始日期不为空
-                    newState.first_rangeEnd = 32;
-                    newState.second_rangeEnd = second_rangeBegin;
-                    newState.second_rangeBegin = -1;
+                else if (secondRangeBegin) {//第二个日期的开始日期不为空
+                    newState.firstRangeEnd = 32;
+                    newState.secondRangeEnd = secondRangeBegin;
+                    newState.secondRangeBegin = -1;
                 }
             }
             else {//不为空
                 //清空第二个日期
-                newState.second_rangeBegin = null;
-                newState.second_rangeEnd = null;
-                newState.second_day = null;
-                if (first_rangeEnd) {//第一个日期的结束日期也不为空或者第二个日期的开始日期不为空，初始化开始日期
-                    newState.first_rangeBegin = newState.first_day;
-                    newState.first_rangeEnd = null;
+                newState.secondRangeBegin = null;
+                newState.secondRangeEnd = null;
+                newState.secondDay = null;
+                if (firstRangeEnd) {//第一个日期的结束日期也不为空或者第二个日期的开始日期不为空，初始化开始日期
+                    newState.firstRangeBegin = newState.firstDay;
+                    newState.firstRangeEnd = null;
                 }
                 else {
 
-                    if (newState.first_day * 1 < first_rangeBegin * 1) {//选择的日期比第二个日期的开始日期还要小，对换
-                        newState.first_rangeBegin = newState.first_day;
-                        newState.first_rangeEnd = first_rangeBegin;
+                    if (newState.firstDay * 1 < firstRangeBegin * 1) {//选择的日期比第二个日期的开始日期还要小，对换
+                        newState.firstRangeBegin = newState.firstDay;
+                        newState.firstRangeEnd = firstRangeBegin;
                     }
                     else {
-                        newState.first_rangeEnd = newState.first_day; //第二次点击
+                        newState.firstRangeEnd = newState.firstDay; //第二次点击
                     }
 
                 }
@@ -133,7 +138,7 @@ export default function (WrappedComponent) {
 
             /*判断与后面一个的复合情况*/
             this.setState(newState, () => {
-                this.onSelect(this.props.type == "daterange" ? true : false);
+                this.onSelect();
             });
         }
         /**
@@ -145,44 +150,44 @@ export default function (WrappedComponent) {
                 value = value.split(" ")[0];
             }
             let newState = {
-                second_year: value.split("-")[0] * 1,
-                second_month: value.split("-")[1] * 1,
-                second_day: value.split("-")[2] * 1,
+                secondYear: value.split("-")[0] * 1,
+                secondMonth: value.split("-")[1] * 1,
+                secondDay: value.split("-")[2] * 1,
             };
-            let first_rangeBegin = this.state.first_rangeBegin;
-            let first_rangeEnd = this.state.first_rangeEnd;
-            let second_rangeBegin = this.state.second_rangeBegin;
-            let second_rangeEnd = this.state.second_rangeEnd;
-            if (!second_rangeBegin) {//第二个日期的开始日期为空
-                newState.second_rangeBegin = newState.second_day;
-                if (first_rangeBegin && first_rangeEnd) {  //第一日期的结束日期不为空
-                    newState.first_rangeBegin = null;
-                    newState.first_rangeEnd = null;
-                    newState.first_day = null;
+            let firstRangeBegin = this.state.firstRangeBegin;
+            let firstRangeEnd = this.state.firstRangeEnd;
+            let secondRangeBegin = this.state.secondRangeBegin;
+            let secondRangeEnd = this.state.secondRangeEnd;
+            if (!secondRangeBegin) {//第二个日期的开始日期为空
+                newState.secondRangeBegin = newState.secondDay;
+                if (firstRangeBegin && firstRangeEnd) {  //第一日期的结束日期不为空
+                    newState.firstRangeBegin = null;
+                    newState.firstRangeEnd = null;
+                    newState.firstDay = null;
                 }
-                else if (first_rangeBegin) {
+                else if (firstRangeBegin) {
                     //第一个日期的开始日期不为空
-                    newState.first_rangeEnd = 32;
-                    newState.second_rangeBegin = -1;
-                    newState.second_rangeEnd = newState.second_day;
+                    newState.firstRangeEnd = 32;
+                    newState.secondRangeBegin = -1;
+                    newState.secondRangeEnd = newState.secondDay;
                 }
             }
             else {
                 //清空第一个日期
-                newState.first_rangeBegin = null;
-                newState.first_rangeEnd = null;
-                newState.first_day = null;
-                if (second_rangeEnd) {//第二个日期的结束日期不为空
-                    newState.second_rangeBegin = newState.second_day;
-                    newState.second_rangeEnd = null;
+                newState.firstRangeBegin = null;
+                newState.firstRangeEnd = null;
+                newState.firstDay = null;
+                if (secondRangeEnd) {//第二个日期的结束日期不为空
+                    newState.secondRangeBegin = newState.secondDay;
+                    newState.secondRangeEnd = null;
                 }
                 else {
-                    if (newState.second_day * 1 < second_rangeBegin * 1) {//选择的日期比第二个日期的开始日期还要小，对换
-                        newState.second_rangeBegin = newState.second_day;
-                        newState.second_rangeEnd = second_rangeBegin;
+                    if (newState.secondDay * 1 < secondRangeBegin * 1) {//选择的日期比第二个日期的开始日期还要小，对换
+                        newState.secondRangeBegin = newState.secondDay;
+                        newState.secondRangeEnd = secondRangeBegin;
                     }
                     else {
-                        newState.second_rangeEnd = newState.second_day;;
+                        newState.secondRangeEnd = newState.secondDay;;
                     }
 
                 }
@@ -201,7 +206,7 @@ export default function (WrappedComponent) {
                 firstTime: time,
 
             }, () => {
-                this.onSelect(false);
+                this.onSelect();
             })
 
         }
@@ -215,32 +220,32 @@ export default function (WrappedComponent) {
                 secondTime: time,
 
             }, () => {
-                this.onSelect(true);
+                this.onSelect();
             })
 
         }
         /**
          * 值确认事件
          */
-        onSelect() {
+        onSelect(hide) {
             let firstDate, secondDate;
-            if (this.state.first_rangeBegin) {
-                firstDate = this.state.first_year + "-" + (this.state.first_month.toString().length == 1 ? "0" + this.state.first_month : this.state.first_month) + "-" + (this.state.first_rangeBegin.toString().length == 1 ? "0" + this.state.first_rangeBegin : this.state.first_rangeBegin);
+            if (this.state.firstRangeBegin) {
+                firstDate = this.state.firstYear + "-" + (this.state.firstMonth.toString().length == 1 ? "0" + this.state.firstMonth : this.state.firstMonth) + "-" + (this.state.firstRangeBegin.toString().length == 1 ? "0" + this.state.firstRangeBegin : this.state.firstRangeBegin);
             }
-            else if (this.state.second_rangeBegin) {
-                firstDate = this.state.second_year + "-" + (this.state.second_month.toString().length == 1 ? "0" + this.state.second_month : this.state.second_month) + "-" + (this.state.second_rangeBegin.toString().length == 1 ? "0" + this.state.second_rangeBegin : this.state.second_rangeBegin);
+            else if (this.state.secondRangeBegin) {
+                firstDate = this.state.secondYear + "-" + (this.state.secondMonth.toString().length == 1 ? "0" + this.state.secondMonth : this.state.secondMonth) + "-" + (this.state.secondRangeBegin.toString().length == 1 ? "0" + this.state.secondRangeBegin : this.state.secondRangeBegin);
             }
-            if (this.state.second_rangeEnd) {
-                secondDate = this.state.second_year + "-" + (this.state.second_month.toString().length == 1 ? "0" + this.state.second_month : this.state.second_month) + "-" + (this.state.second_rangeEnd.toString().length == 1 ? "0" + this.state.second_rangeEnd : this.state.second_rangeEnd);
+            if (this.state.secondRangeEnd) {
+                secondDate = this.state.secondYear + "-" + (this.state.secondMonth.toString().length == 1 ? "0" + this.state.secondMonth : this.state.secondMonth) + "-" + (this.state.secondRangeEnd.toString().length == 1 ? "0" + this.state.secondRangeEnd : this.state.secondRangeEnd);
             }
-            else if (this.state.first_rangeEnd) {
-                secondDate = this.state.first_year + "-" + (this.state.first_month.toString().length == 1 ? "0" + this.state.first_month : this.state.first_month) + "-" + (this.state.first_rangeEnd.toString().length == 1 ? "0" + this.state.first_rangeEnd : this.state.first_rangeEnd);
+            else if (this.state.firstRangeEnd) {
+                secondDate = this.state.firstYear + "-" + (this.state.firstMonth.toString().length == 1 ? "0" + this.state.firstMonth : this.state.firstMonth) + "-" + (this.state.firstRangeEnd.toString().length == 1 ? "0" + this.state.firstRangeEnd : this.state.firstRangeEnd);
             }
             if (this.props.onSelect) {
                 if (firstDate && secondDate) {
                     firstDate = firstDate + (this.state.firstTime ? " " + this.state.firstTime : "");
                     secondDate = secondDate + (this.state.secondTime ? " " + this.state.secondTime : "");
-                    this.props.onSelect(firstDate + "," + secondDate, firstDate + "," + secondDate, this.props.name);
+                    this.props.onSelect(firstDate + "," + secondDate, firstDate + "," + secondDate, this.props.name,hide);
                 }
             }
         }
@@ -248,13 +253,11 @@ export default function (WrappedComponent) {
         render() {
             return <WrappedComponent {...this.props} {...this.state}
                 firstHandler={this.firstHandler}
-                secondHandler={this.secondHandler}
+                secondHandler={this.secondHandler}          
                 firstMonthHandler={this.firstMonthHandler}
                 secondMonthHandler={this.secondMonthHandler}
                 beginTimeHandler={this.beginTimeHandler}
                 endTimeHandler={this.endTimeHandler}
-
-                // onSelect={this.props.onSelect}
             ></WrappedComponent>
         }
     }

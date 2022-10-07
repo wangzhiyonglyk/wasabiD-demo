@@ -1,6 +1,6 @@
 //create by wangzhiyong
 //date:2016-03-22
-//desc:模态窗口
+//desc:可以变大小窗口
 import React from "react";
 import PropTypes from "prop-types";
 import func from "../libs/func"

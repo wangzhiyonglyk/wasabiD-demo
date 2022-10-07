@@ -119,7 +119,7 @@ let propsTran = {
 
     },
     /**
-   * 时间范围组件
+   * 时间范围组件 todo 这里有点复杂
    * @param {*} props 
    */
     setDateRangeDefaultState(props) {
@@ -127,14 +127,14 @@ let propsTran = {
         let newDate = new Date();
         //设置第一日期的值
         let firstDate = regs.date.test(props.firstDate) ? props.firstDate : regs.datetime.test(props.firstDate) ? props.firstDate.split(" ")[0] : "";//给的第一个值
-        let firstTime = props.type == "daterange" ? "" : props.firstTime || func.dateformat(newDate, "HH:mm:") + "00";
+        let firstTime = props.type === "daterange" ? "" : props.firstTime || func.dateformat(newDate, "HH:mm:") + "00";
         //先设置默认值
-        let first_year = newDate.getFullYear();
-        let first_month = newDate.getMonth() + 1;
+        let firstYear = newDate.getFullYear();
+        let firstMonth = newDate.getMonth() + 1;
 
-        let first_day = "";
-        let first_rangeBegin = "";
-        let first_rangeEnd = "";
+        let firstDay = "";
+        let firstRangeBegin = "";
+        let firstRangeEnd = "";
 
         //格式化第一个值
         if (firstDate && firstDate.indexOf(" ") > -1 && regs.datetime.test(firstDate)) {//有时间
@@ -148,9 +148,9 @@ let propsTran = {
 
         }
         if (firstDate) {//第一个日期有值，设置
-            first_year = firstDate.split("-")[0] * 1;
-            first_month = firstDate.split("-")[1] * 1;
-            first_day = firstDate.split("-")[2] * 1;
+            firstYear = firstDate.split("-")[0] * 1;
+            firstMonth = firstDate.split("-")[1] * 1;
+            firstDay = firstDate.split("-")[2] * 1;
         }
 
 
@@ -158,15 +158,15 @@ let propsTran = {
         let secondDate = props.secondDate;//给的第二日期值，字符串
         let secondTime = props.type == "daterange" ? "" : props.secondTime || func.dateformat(newDate, "HH:mm:") + "59";
         //先设置默认值
-        let second_year = first_year; //默认与第一个同年
-        let second_month;
-        let second_day = null;
-        let second_rangeBegin = null;
-        let second_rangeEnd = null;
-        second_month = parseInt(first_month) + 1;//加一个月
-        if (second_month > 12) {
-            second_year++;
-            second_month = 1;
+        let secondYear = firstYear; //默认与第一个同年
+        let secondMonth;
+        let secondDay = null;
+        let secondRangeBegin = null;
+        let secondRangeEnd = null;
+        secondMonth = parseInt(firstMonth) + 1;//加一个月
+        if (secondMonth > 12) {//跨年了
+            secondYear++;
+            secondMonth = 1;
         }
 
         //格式化第二个值
@@ -179,40 +179,40 @@ let propsTran = {
             secondDate = "";
         }
         if (secondDate) {//第二个输入了值
-            if (secondDate.split("-")[0] == first_year && secondDate.split("-")[1] * 1 == first_month) {//第二个日期与第一日期在同一个月
-                first_rangeEnd = secondDate.split("-")[2] * 1 > first_day ? secondDate.split("-")[2] * 1 : first_day;
-                first_rangeBegin = first_day;
+            if (secondDate.split("-")[0] == firstYear && secondDate.split("-")[1] * 1 == firstMonth) {//第二个日期与第一日期在同一个月
+                firstRangeEnd = secondDate.split("-")[2] * 1 > firstDay ? secondDate.split("-")[2] * 1 : firstDay;
+                firstRangeBegin = firstDay;
 
             }
-            else if (secondDate.split("-")[0] < first_year && secondDate.split("-")[1] * 1 < first_month) {//第二个日期小于第一日期
+            else if (secondDate.split("-")[0] < firstYear && secondDate.split("-")[1] * 1 < firstMonth) {//第二个日期小于第一日期
                 console.log("日期范围格式不正确");
             }
             else {//其他情况。tooo 小于的情况没有考虑，暂时不处理
-                second_year = secondDate.split("-")[0] * 1;
-                second_month = secondDate.split("-")[1] * 1;
-                second_rangeEnd = second_day = secondDate.split("-")[2] * 1;
-                second_rangeBegin = -1;//第二个的开始就是第一天
+                secondYear = secondDate.split("-")[0] * 1;
+                secondMonth = secondDate.split("-")[1] * 1;
+                secondRangeEnd = secondDay = secondDate.split("-")[2] * 1;
+                secondRangeBegin = -1;//第二个的开始就是第一天
                 //第一个日期的开始就是 选中，结束是最大的
-                first_rangeBegin = first_day;
-                first_rangeEnd = 32;
+                firstRangeBegin = firstDay;
+                firstRangeEnd = 32;//设置最大值，保证全部选择上
             }
         }
         else {//第二日期没有值
-            first_rangeBegin = first_rangeEnd = first_day;
+            firstRangeBegin = firstRangeEnd = firstDay;
         }
         let result = {
             oldPropsValue: (props.firstDate || "") + (props.firstTime || "") + (props.secondDate || "") + (props.secondTime || ""),//保存旧值，用于更新
-            first_year: first_year,
-            first_month: first_month,
-            first_day: first_day,
-            first_rangeBegin: first_rangeBegin,
-            first_rangeEnd: first_rangeEnd,
+            firstYear: firstYear,
+            firstMonth: firstMonth,
+            firstDay: firstDay,
+            firstRangeBegin: firstRangeBegin,
+            firstRangeEnd: firstRangeEnd,
             firstTime: firstTime,
-            second_year: second_year,
-            second_month: second_month,
-            second_day: second_day,
-            second_rangeBegin: second_rangeBegin,
-            second_rangeEnd: second_rangeEnd,
+            secondYear: secondYear,
+            secondMonth: secondMonth,
+            secondDay: secondDay,
+            secondRangeBegin: secondRangeBegin,
+            secondRangeEnd: secondRangeEnd,
             secondTime: secondTime,
         }
         return result;

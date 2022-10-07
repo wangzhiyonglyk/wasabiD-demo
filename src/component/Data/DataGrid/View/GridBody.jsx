@@ -333,8 +333,8 @@ class GridBody extends React.PureComponent {
                 //第一次跳转到本行
                 let width = header.width
                   ? header.width
-                  : (this.props?.headerWidth &&
-                      this.props?.headerWidth[header.name]) ||
+                  : (this.props.headerWidth &&
+                      this.props.headerWidth[header.name]) ||
                     config.minWidth;
                 stickyLeft += header.sticky ? width : 0;
                 preRowDataIndex++;
@@ -357,8 +357,8 @@ class GridBody extends React.PureComponent {
               //第一次跳转到本行
               let width = trheader.width
                 ? trheader.width
-                : (this.props?.headerWidth &&
-                    this.props?.headerWidth[trheader.name]) ||
+                : (this.props.headerWidth &&
+                    this.props.headerWidth[trheader.name]) ||
                   config.minWidth;
               stickyLeft += trheader.sticky ? width : 0;
               preRowDataIndex++;

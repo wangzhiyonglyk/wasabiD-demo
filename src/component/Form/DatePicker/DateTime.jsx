@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import Time from "./Time.jsx";
 import Msg from '../../Info/Msg'
 import func from '../../libs/func'
-import Calendar from "./Calendar";
+import CalendarView from "./Calendar/CalendarView";
 class DateTime extends Component {
     constructor(props) {
         super(props);
@@ -37,22 +37,22 @@ class DateTime extends Component {
         }
         return null;
     }
-    dateChange(value) {
+    dateChange(value,text,name) {
         value = value.split("-");
         this.setState({
             year: value[0] * 1,
             month: value[1] * 1,
             day: value[2] * 1
         }, () => {
-            this.onSelect(false);
+            this.onSelect();
         })
     }
 
-    onSelect(hide) {
+    onSelect() {
         if (this.state.year && this.state.month && this.state.day) {
             let value = this.state.year + "-" + (this.state.month.toString().length == 1 ? "0" + this.state.month.toString() : this.state.month)
                 + "-" + (this.state.day < 10 ? "0" + this.state.day.toString() : this.state.day.toString());
-            this.props.onSelect && this.props.onSelect(value + " " + this.state.time, value + " " + this.state.time, this.props.name, hide)
+            this.props.onSelect && this.props.onSelect(value + " " + this.state.time, value + " " + this.state.time, this.props.name)
         } else {
             Msg.alert("请选择日期");
         }
@@ -69,7 +69,7 @@ class DateTime extends Component {
             time: value,
             showTime: false
         }, () => {
-            this.onSelect(true);
+            this.onSelect();
         })
 
     }
@@ -77,7 +77,7 @@ class DateTime extends Component {
     render() {
         return (
             <React.Fragment>
-                <div style={{ height: 40 ,width:"100%"}}>
+                <div >
                     <input className=" wasabi-input timeinput"
                         value={this.state.time} onClick={this.timeHandler.bind(this)} onChange={() => { }}></input>
                     <div style={{ display: this.state.showTime ? "inline-block" : "none", zIndex: 1 }}>
@@ -87,9 +87,9 @@ class DateTime extends Component {
                             value={this.state.time} attachSecond={this.props.attachSecond}
                         ></Time></div>
                 </div>
-                <Calendar year={this.state.year}
+                <CalendarView year={this.state.year}
                     month={this.state.month}
-                    day={this.state.day} onSelect={this.dateChange} ></Calendar>
+                    day={this.state.day} onSelect={this.dateChange} ></CalendarView>
             </React.Fragment>
 
 
@@ -103,8 +103,6 @@ DateTime.propTypes = {
     day: PropTypes.number,//日
     time: PropTypes.string,//时间
     attachSecond: PropTypes.bool,//是否带上秒
-    allMinute: PropTypes.bool,//是否显示全部分钟
     onSelect: PropTypes.func,//选择后的事件
-
 }
 export default DateTime

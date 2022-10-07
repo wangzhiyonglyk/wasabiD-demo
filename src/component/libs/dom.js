@@ -27,7 +27,7 @@ let dom = {
     /**
      * 找到某个css类的祖先节点
      */
-    ancestorByClass(node, className) {
+    findAncestorByClasss(node, className) {
         while (node !== null) {
             if (node.className && node.className.indexOf(className) > -1) {
                 return node;

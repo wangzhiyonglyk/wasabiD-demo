@@ -820,9 +820,4 @@ export function checkVisible(elm) {
   );
   return result;
 }
-
-import base64 from "./base64.js";
-func.base64 = base64;
-import md5 from "./md5.js";
-func.md5 = md5;
 export default func;

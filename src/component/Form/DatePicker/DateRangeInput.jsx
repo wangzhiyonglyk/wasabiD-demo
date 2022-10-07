@@ -19,10 +19,7 @@ class DateRangeInput extends React.Component {
       oldPropsValue: null,
     }
 
-    this.setValue = this.setValue.bind(this);
-    this.validate = this.validate.bind(this);
-
-
+    this.onChange = this.onChange.bind(this);
   }
   static getDerivedStateFromProps(props, state) {
     if (props.value !==state.oldPropsValue) {//父组件强行更新了            
@@ -34,20 +31,23 @@ class DateRangeInput extends React.Component {
     return null;
   }
   /**
-   * 重构设置值
+   * 输入的框改变
    * @param {*} index 
    * @param {*} value 
    */
-  setValue(index, value) {
-    const type = this.props.type === "daterange" ? "date" : this.props.type === "timerange" ? "time" : "datetime";
-    if (index == 1) {
+  onChange(index, value,event) {
+    const type = (this.props.type??"").replace("range","")
+  
+    if (index === 1) {//第一个输入框
       this.firstValue = value;
-      if(regs[type].test(this.firstValue)){
+      if(regs[type].test(this.firstValue)&&value.length == event.target.selectionStart){
+        //合法的值，并且光标在最后
         try{
-          this.secondinput.current.input.current.focus();
+    
+          this.secondinput.current.input.current.focus();//第二输入框获取得焦点
         }
         catch(e){
-          console.log(e)
+          console.log("secondinput",e)
         }
         
       }
@@ -55,25 +55,21 @@ class DateRangeInput extends React.Component {
     else {
       (this.secondValue = value)
     }
-    if (this.props.validate && this.props.validate(this.firstValue + "," + this.secondValue)) {
-      this.props.setValue && this.props.setValue(this.firstValue + "," + this.secondValue);
-    }
+    this.props.onChange && this.props.onChange(this.firstValue + "," + this.secondValue);
   }
-  /**
-   * 重构验证
-   */
-  validate() {
-    this.props.validate && this.props.validate(this.firstValue + "," + this.secondValue)
+
+  changeFocus(){
+    this.secondinput.current.input.current.focus();//第二输入框获取得焦点
   }
- 
+  
+
   render() {
-    const width = this.props.type === "datetimerange" ? 380 : 290;
     const { value } = this.props; const valueArr = value ? value.split(",") : ["", ""];
-    const type = this.props.type === "daterange" ? "date" : this.props.type === "timerange" ? "time" : "datetime";
-    return <div style={{ position:"relative", display: "flex", width: width }} className="daterangeinput">
-      <DateInput ref={this.fristinput} key="1" {...this.props} value={valueArr[0]} type={type} validate={this.validate} setValue={this.setValue.bind(this, 1)}></DateInput>
+    
+    return <div style={{ position:"relative", display: "flex" }} className="daterangeinput">
+      <DateInput ref={this.fristinput} key="1"  {...this.props} type={(this.props.type??"").replace("range","")} value={valueArr[0]} onChange={this.onChange.bind(this, 1)}></DateInput>
       <span style={{ lineHeight: "40px", marginRight: 10 }}>至</span>
-      <DateInput ref={this.secondinput} key="2" {...this.props} value={valueArr[1]} type={type} validate={this.validate} setValue={this.setValue.bind(this, 2)}></DateInput>
+      <DateInput ref={this.secondinput} key="2"   {...this.props} type={(this.props.type??"").replace("range","")} value={valueArr[1]}   onChange={this.onChange.bind(this, 2)}></DateInput>
     </div>
 
   }

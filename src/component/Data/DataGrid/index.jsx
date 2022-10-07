@@ -1,5 +1,5 @@
 /**
- *Created by wangzhiyong on 2016-04-05
+ *Created by wangzhiyong on 2016-03-02
  * desc:列表组件,由此组件开始独立重构所有组件,不再依赖
  * wasabi框架的第一个组件
  * 2016-06-09后开始调整整个样式
@@ -192,7 +192,7 @@ class DataGrid extends Component {
     if (this.state.urlLoadData) {
       //需要请求数据
       this.reload(); //调用
-    } else if (this.state.initVirtualConfig && this.state?.data?.length > 0) {
+    } else if (this.state.initVirtualConfig && this.state.data?.length > 0) {
       this.initVirtual(); //重置虚拟列表,
     }
     if (this.adjust) {
@@ -206,7 +206,7 @@ class DataGrid extends Component {
     if (this.state.urlLoadData) {
       //需要请求数据
       this.reload(); //调用
-    } else if (this.state.initVirtualConfig && this.state?.data?.length > 0) {
+    } else if (this.state.initVirtualConfig && this.state.data?.length > 0) {
       this.initVirtual(); //重置虚拟列表,
     } else {
       this.adjustColumnWidth(); //

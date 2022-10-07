@@ -1,7 +1,7 @@
 /*
 滑动菜单
 create by wangzhiyong
-date:2016-04-05
+date:2016-03-02
 desc:从原来的滑动面板而来
 */
 import React from "react";

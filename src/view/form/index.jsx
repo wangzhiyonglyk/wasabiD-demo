@@ -24,17 +24,19 @@ class Home extends React.Component {
              <Button onClick={this.onClick}>改变数据 </Button>
                 <Form style={{width:800}} cols={1} labelPosition={"top"}>
                
-                <Text type="email" label="文本框" required={true} ></Text>
-                 <Select type="select" placeholder="下拉框" multiple={true} data={this.state.data}></Select>
-                 <Input type="checkbox" half={true} label="复选框" multiple={true} data={[{text:"选择1",value:1},{text:"选择2",value:2}]}></Input>
-             
-                <Input type="radio" label="单选框" multiple={true} data={[{text:"选择1",value:1},{text:"选择2",value:2}]}></Input>
-                <Input type="switch" label="开关" multiple={true} data={[{text:"选择1",value:1},{text:"选择2",value:2}]}></Input>
-                <Input type="picker" label="级联选择" multiple={true} data={[{text:"选择1",value:1},{text:"选择2",value:2}]}></Input>
-                <Input type="date" label="日期" multiple={true} data={[{text:"选择1",value:1},{text:"选择2",value:2}]}></Input>
-                 <Input type="datetime" label="日期时间" multiple={true} data={[{text:"选择1",value:1},{text:"选择2",value:2}]}></Input>
-                <Input type="daterange" label="日期范围" multiple={true} data={[{text:"选择1",value:1},{text:"选择2",value:2}]}></Input>
-                <Input type="datetimerange" style={{width:500}} label="日期时间范围" multiple={true} data={[{text:"选择1",value:1},{text:"选择2",value:2}]}></Input>  
+                <Input type="year" name="year" label="year" value="test"></Input> 
+                <Input type="month" name="month" label="month" value="test"></Input>
+                <Input type="time" name="time" label="time" value="test"></Input>
+                <Input type="date" name="date" label="date" value="test"></Input>
+                <Input type="datetime" name="datetime" label="datetime" value="test"></Input> 
+                <Input type="yearrange" name="yearrange" label="yearrange" value="2015,2024"></Input>
+                <Input type="monthrange" name="monthrange"  label="monthrange"></Input>
+                <Input type="daterange"  name="daterange"  label="daterange"></Input>
+                 <Input type="monthrange" name="monthrange"  label="monthrange"></Input>
+                <Input type="timerange" name="timerange"  label="timerange"></Input>
+                <Input type="daterange"  name="daterange"  label="daterange"></Input>
+                <Input type="datetimerange" name="datetimerange" label="datetimerange" value="test"></Input> */
+               
                 </Form>
                 {/* <Modal ref="modal"></Modal> */}
         </div>

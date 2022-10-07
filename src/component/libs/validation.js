@@ -1,6 +1,7 @@
 /**
  * Created by zhiyongwang on 2016-03-24.
  * edit:2021-02-01
+ *  edit:2021-00-20
  */
 
 
@@ -16,10 +17,15 @@ let  validation= {
     invalidTip:"输入格式无效",
     time:"00:00[:00]",
     timerange:"00:00[:00]",
-    date:" 0000-00-00",
-    daterange:"0000-00-00",
-    datetime:"0000-00-00 00:00[:00]",
-    datetimerange:"0000-00-00 00:00[:00]",
+    year:"年份:0000",
+    month:"年月:0000-00",
+    date:"日期:0000-00-00",
+    datetime:"日期时间:0000-00-00 00:00[:00]",
+    yearrange:"年:0000",
+    monthrange:"年月:0000-00",
+    daterange:"日期:0000-00-00",
+    datetimerange:"日期时间:0000-00-00 00:00[:00]",
+    timerange:"时间:00:00[:00]",
     max: {
         array: '最多选择 {0} 个选项',
         number: '不能大于 {0}',

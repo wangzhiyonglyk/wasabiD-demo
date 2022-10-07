@@ -2,17 +2,14 @@
 create by wangzhiyong
 date:2016-05-20
 desc:日期范围选择控件
+edit 20-22-09-22 改成hook
  */
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Calendar from "./Calendar";
+import React, {  memo, useCallback} from "react";
+import CalendarView from "./Calendar/CalendarView";
 import DateRangeHoc from "./DateRangeHoc";
 import func from "../../libs/func"
-class DateRange extends React.PureComponent {
-    constructor(props) {
-        super(props)
-    }
-    onClick(type) {
+function DateRange (props) { 
+   const  onClick=useCallback((type) =>{
         let secondDate = new Date();
         let firstDate;
         switch (type) {
@@ -34,36 +31,28 @@ class DateRange extends React.PureComponent {
             default:
                 break;
         }
-        this.props.onSelect&&this.props.onSelect(func.dateformat(firstDate,"yyyy-MM-dd")+","+func.dateformat(secondDate,"yyyy-MM-dd"))
-    }
-    render() {
-        return (<React.Fragment >
-            <div className="wasabi-date-qick">
-                <a key="1" onClick={this.onClick.bind(this, 1)}>最近一天</a>
-                <a key="2" onClick={this.onClick.bind(this, 2)}>最近一周</a>
-                <a key="3" onClick={this.onClick.bind(this, 3)}>最近一月</a>
-                <a key="4" onClick={this.onClick.bind(this, 4)}>最近三个月</a>
-                <a key="5" onClick={this.onClick.bind(this, 5)}> 最近一年</a>
-            </div>
-            <Calendar isRange={true} year={this.props.first_year} month={this.props.first_month} day={this.props.first_day}
-                rangeBegin={this.props.first_rangeBegin} rangeEnd={this.props.first_rangeEnd}
-                onSelect={this.props.firstHandler}
-                updateYearAndMonth={this.props.firstMonthHandler}
-            ></Calendar>
-            <Calendar isRange={true} year={this.props.second_year} month={this.props.second_month} day={this.props.second_day}
-                rangeBegin={this.props.second_rangeBegin} rangeEnd={this.props.second_rangeEnd}
-                onSelect={this.props.secondHandler}
-                updateYearAndMonth={this.props.secondMonthHandler}
-            ></Calendar>
+        let value=func.dateformat(firstDate,"yyyy-MM-dd")+","+func.dateformat(secondDate,"yyyy-MM-dd");
+        props.onSelect&&props.onSelect(value,value,props.name)
+    },[]);
+    return (<React.Fragment >
+        <div className="wasabi-date-qick">
+            <a key="1" onClick={onClick.bind(this, 1)}>最近一天</a>
+            <a key="2" onClick={onClick.bind(this, 2)}>最近一周</a>
+            <a key="3" onClick={onClick.bind(this, 3)}>最近一月</a>
+            <a key="4" onClick={onClick.bind(this, 4)}>最近三个月</a>
+            <a key="5" onClick={onClick.bind(this, 5)}> 最近一年</a>
+        </div>
+        <CalendarView isRange={true} year={props.firstYear} month={props.firstMonth} day={props.firstDay}
+            rangeBegin={props.firstRangeBegin} rangeEnd={props.firstRangeEnd}
+            onSelect={props.firstHandler}
+            updateYearAndMonth={props.firstMonthHandler}
+        ></CalendarView>
+        <CalendarView isRange={true} year={props.secondYear} month={props.secondMonth} day={props.secondDay}
+            rangeBegin={props.secondRangeBegin} rangeEnd={props.secondRangeEnd}
+            onSelect={props.secondHandler}
+            updateYearAndMonth={props.secondMonthHandler}
+        ></CalendarView>
 
-        </React.Fragment>)
-    }
+    </React.Fragment>)
 }
-DateRange.propTypes = {
-    name: PropTypes.string,//名称
-    firstDate: PropTypes.string,//第一个日期
-    secondDate: PropTypes.string,//第二个日期
-    onSelect: PropTypes.func,//确定事件
-};
-
-export default DateRangeHoc(DateRange);
+export default DateRangeHoc(memo(DateRange));

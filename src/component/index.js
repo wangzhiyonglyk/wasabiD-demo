@@ -1,9 +1,9 @@
 /**
  * create by wangzhiyong
- * 本项目在2015开始写组件，2016-04-05开始独立为了UI框架
+ * 本项目在2015开始写组件，2016-03-02开始独立为了UI框架
  * date:2017-08-14 进行大改版
  * date 2020-11-20 调整组件，去掉不需要的组件
- * desc 2021-05-20 大改
+ * desc 2021-05-20 大改 主要数据这一块
  * date:2022-09-15 大改，着重于布局，表单，数据
  * desc:框架入口
  */
@@ -65,7 +65,7 @@ import Password from "./Form/Password/index.jsx"; //强密码
 import Search from "./Form/Search/index.jsx"; //搜索栏组件
 
 /*****************日历组件******************/
-import Calendar from "./Form/DatePicker/Calendar.jsx"; //日历组件
+import Calendar from "./Form/DatePicker/Calendar/index.jsx"; //日历组件
 
 /*****************布局组件******************/
 import Separator from "./Layout/Separator/index.jsx"; //分隔线

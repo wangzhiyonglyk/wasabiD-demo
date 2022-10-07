@@ -165,7 +165,7 @@ class Text extends Component {
      * 为excel单元格粘贴复制做特殊处理
      */
     cellHandler(event) {
-        const ancestorNode = dom.ancestorByClass(event.target, "wasabi-table-cell");
+        const ancestorNode = dom.findAncestorByClasss(event.target, "wasabi-table-cell");
         let value = event.target.value;
         if (ancestorNode) {
             //是单元格中的输入框

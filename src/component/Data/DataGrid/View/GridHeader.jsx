@@ -204,7 +204,7 @@ class GridHeader extends React.Component {
                 trheader.map((header, headerColumnIndex) => {
                     let props = this.getHeaderProps(header);
                     trcontrol.push(this.setHeaderCell(header, headerRowIndex, headerColumnIndex, props, stickyLeft));
-                    let width = header.width ? header.width : this.props?.headerWidth && this.props?.headerWidth[header.name] || config.minWidth;
+                    let width = header.width ? header.width : this.props.headerWidth && this.props.headerWidth[header.name] || config.minWidth;
                     stickyLeft += header.sticky ? width : 0;
                 })
                 headerControl.push(trcontrol)
@@ -213,7 +213,7 @@ class GridHeader extends React.Component {
             else {//只有一行
                 let props = this.getHeaderProps(trheader);
                 trcontrol.push(this.setHeaderCell(trheader, 0, headerRowIndex, props, stickyLeft));
-                let width = trheader.width ? trheader.width : this.props?.headerWidth && this.props?.headerWidth[trheader.name] || config.minWidth;
+                let width = trheader.width ? trheader.width : this.props.headerWidth && this.props.headerWidth[trheader.name] || config.minWidth;
                 stickyLeft += trheader.sticky ? width : 0;
             }
         })

@@ -1,6 +1,6 @@
 /**
  * Created by zhiyongwang
- * date:2016-04-05后开始独立改造
+ * date:2016-03-02后开始独立改造
  * 单选框集合组件
  */
 import React, { Component } from "react";
