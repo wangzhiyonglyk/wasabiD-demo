@@ -55,12 +55,24 @@ let dom = {
      * @returns 
      */
     overView: function (el, parent = null, pad = 0) {
-        let height = parent ? parent.getBoundingClientRect().bottom : window.innerHeight || document.documentElement.clientHeight;
-        let bottom = el.getBoundingClientRect().bottom + pad;
-        return bottom > height;
+        let viewWidth = parent ? parent.getBoundingClientRect().right : window.innerWidth || document.documentElement.clientWidth;
+        let viewHeight = parent ? parent.getBoundingClientRect().bottom : window.innerHeight || document.documentElement.clientHeight;
+        const {
+            top,
+            right,
+            bottom,
+            left,
+        } = el.getBoundingClientRect();
+
+        return !(
+            top >= 0 &&
+            left >= 0 &&
+            right <= viewWidth &&
+            bottom <= viewHeight
+        );
     },
 
-   
+
     /**
      * 获取元素样式
      * @param {*} el 元素节点
@@ -85,9 +97,9 @@ let dom = {
     scrollParent(el) {
         let node = el.parentNode;
 
-        while (node !== null && node !==document.documentElement) {
+        while (node !== null && node !== document.documentElement) {
             let overflow = this.computedStyle(node, "overflow");
-            if (node.scrollHeight > node.offsetHeight && overflow !=="visible" && overflow !=="hidden") {
+            if (node.scrollHeight > node.offsetHeight && overflow !== "visible" && overflow !== "hidden") {
                 return node;
             } else {
                 node = node.parentNode;
@@ -103,7 +115,7 @@ let dom = {
     scrollVisible(el, pad = 0) {
         let scrollParent = dom.scrollParent(el);
         if (el && scrollParent && dom.overView(el, scrollParent, pad)) { //判断是否不可见
-            if (scrollParent && scrollParent !==window) {
+            if (scrollParent && scrollParent !== window) {
                 scrollParent.scrollTop = (scrollParent.scrollHeight - scrollParent.offsetHeight)
             }
         }

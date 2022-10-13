@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { System } from "../../component"
+import func from "../../component/libs/func";
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -10,6 +11,14 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
+   let d= func.diff({
+      good:"1"
+    },{
+      good:"2"
+    })
+    console.log(d)
+
+    console.log("dd",func.dealNumToEnglishFormat(333333.41234))
   }
 
   render() {

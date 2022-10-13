@@ -156,22 +156,15 @@ func.isMobile = function () {
  * @param {*} num 数字
  * @returns
  */
-func.dealNumToEnglishFormat = function (num) {
-  if (isNaN(num)) {
-    return num;
+func.dealNumToEnglishFormat = function(num,fixed=2) {
+  if((num??"").toString()){
+    let number =((num*1).toFixed(fixed)*1).toString();
+     number=number.split(".");
+    var regex = /(?!^)(?=(\d{3})+$)/g;
+     return (number[0].replace(regex, ',')+"."+number[1].replace(regex, ','))
   }
-
-  let number = num.toString();
-  return number
-    .split("")
-    .reverse()
-    .join("")
-    .replace(/(.{3})/g, "$1,")
-    .split("")
-    .reverse()
-    .join("")
-    .replace(/^,/, "");
-};
+  return num;
+}
 
 /**
  * 日期格式化为字符串
@@ -247,10 +240,6 @@ func.dateformat = function (date = new Date(), format = "yyyy-MM-dd HH:mm:ss") {
  * @returns
  */
 func.stringToDate = function (strDate) {
-  /// <summary>
-  /// 字符转日期
-  /// </summary>
-  /// <param name="strDate" type="string">日期字符格式</param>
   let date = new Date(Date.parse(strDate.replace(/-/g, "/"))); //转换成Date();
   return date;
 };
@@ -259,13 +248,9 @@ func.stringToDate = function (strDate) {
  * cookie操作
  */
 func.cookies = {
-  /// <summary>
-  /// cookies设置
-  /// </summary>
-  set: function (key, val) {
-    let Days = 7;
+  set: function (key, val,days=7) {
     let exp = new Date();
-    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+    exp.setTime(exp.getTime() + days * 24 * 60 * 60 * 1000);
     document.cookie = key + "=" + val + ";path=/;expires=" + exp.toGMTString();
   },
   get: function (key) {
@@ -447,8 +432,10 @@ func.diff = function (objA = null, objB = null, deep = true) {
     //先拿所有的属性
     try {
       if (
-        Object.prototype.toString.call(objA).indexOf("Map") > -1 ||
-        Object.prototype.toString.call(objA).indexOf("Set") > -1
+        Object.prototype.toString.call(objA).indexOf('Map') > -1 ||
+        Object.prototype.toString.call(objA).indexOf('Set') > -1||
+        Object.prototype.toString.call(objA).indexOf('Date') > -1||
+        Object.prototype.toString.call(objA).indexOf('RegExp') > -1
       ) {
         //如果是Map与Set则直接判断即可，因为两者的无法像普通对象遍历
         return objA !== objB;
@@ -804,20 +791,4 @@ func.getNextHour = function (date, n = 1) {
   return newDate;
 };
 
-1;
-/**
-＊判断元素是否可见
-*@param {0bject} elm
-*/
-export function checkVisible(elm) {
-  let rect = elm.getBoundingClientRect();
-  //获取当前浏览器的视口高度，不包括工具栏和滚动条
-  const result = !(
-    rect.bottom < 0 ||
-    rect.right < 0 ||
-    rect.left > window.innerHeight ||
-    rect.top > window.innerWidth
-  );
-  return result;
-}
 export default func;
