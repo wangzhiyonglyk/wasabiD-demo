@@ -13,7 +13,7 @@ import dom from "../../libs/dom"
 //hoc
 import loadDataHoc from "../loadDataHoc";
 import validateHoc from "../validateHoc";
-import propTypes from "../../propsConfig/propTypes.js";
+import propTypes from "../propsConfig/propTypes.js";
 import ArrowInput from "./ArrowInput";
 import SelectbleList from "./SelectbleList";
 import Msg from "../../Info/Msg"

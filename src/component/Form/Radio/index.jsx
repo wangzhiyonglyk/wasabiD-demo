@@ -7,7 +7,7 @@ import React, { Component } from "react";
 import loadDataHoc from "../loadDataHoc";
 import validateHoc from "../validateHoc";
 import propsTran from "../../libs/propsTran"
-import propTypes from "../../propsConfig/propTypes.js";
+import propTypes from "../propsConfig/propTypes.js";
 import "./radio.css";
 import Msg from "../../Info/Msg";
 

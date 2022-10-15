@@ -19,14 +19,14 @@ import TimeRange from "./TimeRange";
 import regs from "../../libs/regs.js";
 import validateHoc from "../validateHoc";
 import func from "../../libs/func";
-import propTypes from "../../propsConfig/propTypes.js";
+import propTypes from "../propsConfig/propTypes.js";
 import dom from "../../libs/dom";
 import react from "react";
 
 class DatePicker extends Component {
   constructor(props) {
     super(props);
-   this.rangeinput=React.createRef();
+    this.rangeinput = React.createRef();
     this.state = {
       pickerid: func.uuid(),
       oldPropsValue: null, //保留原来的值
@@ -122,14 +122,14 @@ class DatePicker extends Component {
     });
     this.props.validate && this.props.validate(value);
   }
- /**
-  * 
-  * @param {*} value 值
-  * @param {*} text 文本值 
-  * @param {*} name 名称
-  * @param {*} hide 多余的参数是否隐藏
-  */
-  onSelect(value,text,name,hide=true) {
+  /**
+   *
+   * @param {*} value 值
+   * @param {*} text 文本值
+   * @param {*} name 名称
+   * @param {*} hide 多余的参数是否隐藏
+   */
+  onSelect(value, text, name, hide = true) {
     //选中事件
     //防止异步取值时，出问题，
     this.state.value = value.toString();
@@ -139,8 +139,8 @@ class DatePicker extends Component {
       text: value.toString(),
     });
     value = this.getValue(); //用于添加附加时间
-    this.props.onSelect &&
-      this.props.onSelect(value, text, this.props.name);
+    this.props.validate && this.props.validate(value);
+    this.props.onSelect && this.props.onSelect(value, text, this.props.name);
   }
   /**
    *清除数据
@@ -196,7 +196,7 @@ class DatePicker extends Component {
    */
   showPicker(e) {
     //显示选择
-    if (this.props.readOnly||this.state.show) {
+    if (this.props.readOnly || this.state.show) {
       //只读不显示
       return;
     } else {
@@ -212,7 +212,7 @@ class DatePicker extends Component {
    * @param {*} event
    */
   hidePicker(event) {
-    if (this.props.readOnly||!this.state.show) {
+    if (this.props.readOnly || !this.state.show) {
       //只读不显示
       return;
     }
@@ -336,10 +336,10 @@ class DatePicker extends Component {
    * 渲染年份范围
    */
   renderYearRange() {
-    let arr= this.state.value.split(",");
-    let firstYear = regs.year.test(arr[0])?arr[0]:null;
-    let secondYear =arr.length===2&&regs.year.test(arr[1])?arr[1]: null;
- 
+    let arr = this.state.value.split(",");
+    let firstYear = regs.year.test(arr[0]) ? arr[0] : null;
+    let secondYear = arr.length === 2 && regs.year.test(arr[1]) ? arr[1] : null;
+
     return (
       <YearRange
         name={this.props.name}
@@ -357,13 +357,13 @@ class DatePicker extends Component {
     let secondYear = null;
     let firstMonth = null;
     let secondMonth = null;
-    let value=this.state.value??"";
-    let firstDate =value.split(",")[0]||"";
-    let secondDate= value.split(",")[1]||"";
+    let value = this.state.value ?? "";
+    let firstDate = value.split(",")[0] || "";
+    let secondDate = value.split(",")[1] || "";
     firstYear = firstDate.split("-")[0];
-    firstMonth = firstDate.split("-")[1]||"";
+    firstMonth = firstDate.split("-")[1] || "";
     secondYear = secondDate.split("-")[0];
-    secondMonth = secondDate.split("-")[1]||"";
+    secondMonth = secondDate.split("-")[1] || "";
     return (
       <MonthRange
         name={this.props.name}
@@ -388,7 +388,6 @@ class DatePicker extends Component {
     }
     return (
       <TimeRange
-     
         name={this.props.name}
         firstTime={firstTime}
         secondTime={secondTime}
@@ -417,11 +416,13 @@ class DatePicker extends Component {
     }
     return (
       <DateRange
-      
         type={this.props.type}
         name={this.props.name}
         firstDate={firstDate}
         secondDate={secondDate}
+        min={this.props.min}
+        max={this.props.max}
+        range={this.props.range}
         onSelect={this.onSelect}
       ></DateRange>
     );
@@ -459,7 +460,6 @@ class DatePicker extends Component {
     }
     return (
       <DateTimeRange
-      
         type={this.props.type}
         name={this.props.name}
         firstDate={firstDate}
@@ -551,7 +551,7 @@ class DatePicker extends Component {
         {type.indexOf("range") > -1 ? (
           <DateRangeInput {...inputprops} rf={this.rangeinput}></DateRangeInput>
         ) : (
-          <DateInput {...inputprops} > </DateInput>
+          <DateInput {...inputprops}> </DateInput>
         )}
         <div
           id={this.state.pickerid}

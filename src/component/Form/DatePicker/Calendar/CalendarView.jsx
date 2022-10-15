@@ -37,10 +37,11 @@ function YearView({
   yearArr.forEach((item) => {
     let className;
     if (isRange) {
-      className ="yearspan"+
-      (item === rangeBegin*1 ? " begin" : "") +
-      (item=== rangeEnd*1 ? " end" : "") +
-      (item > rangeBegin*1 && item < rangeEnd*1 ? " rangespan" : "");
+      className =
+        "yearspan" +
+        (item === rangeBegin * 1 ? " begin" : "") +
+        (item === rangeEnd * 1 ? " end" : "") +
+        (item > rangeBegin * 1 && item < rangeEnd * 1 ? " rangespan" : "");
     } else {
       className = item === year * 1 ? "yearspan chosed" : "yearspan";
     }
@@ -111,9 +112,9 @@ function MonthView({
     if (isRange) {
       className =
         "monthspan " +
-        (i === rangeBegin*1 ? " begin" : "") +
-        (i === rangeEnd*1 ? " end" : "") +
-        (i > rangeBegin*1 && i < rangeEnd*1 ? " rangespan" : "");
+        (i === rangeBegin * 1 ? " begin" : "") +
+        (i === rangeEnd * 1 ? " end" : "") +
+        (i > rangeBegin * 1 && i < rangeEnd * 1 ? " rangespan" : "");
     } else {
       className = "monthspan " + (month === i ? "chosed" : "");
     }
@@ -178,6 +179,8 @@ function DayView({
   year,
   month,
   day,
+  max,
+  min,
   visible,
   isRange,
   rangeBegin,
@@ -209,41 +212,29 @@ function DayView({
     } else if (day === item) {
       chosed = true;
     }
-    let control = null;
+    let dayClassName = "datespan";
     if (item === rangeBegin && item !== rangeEnd) {
-      control = (
-        <div
-          className={"datespan begin rangespan"}
-          key={"dateitem" + index}
-          onClick={dayHandler.bind(this, item)}
-        >
-          <div className="radius">{item}</div>
-        </div>
-      );
+      dayClassName = "datespan begin rangespan";
     } else if (item !== rangeBegin && item === rangeEnd) {
-      control = (
-        <div
-          className={"datespan end rangespan"}
-          key={"dateitem" + index}
-          onClick={dayHandler.bind(this, item)}
-        >
-          <div className="radius">{item}</div>
-        </div>
-      );
+      dayClassName = "datespan end rangespan";
     } else {
-      control = (
-        <div
-          className={"datespan  " + (chosed && isRange ? "rangespan" : "")}
-          key={"dateitem" + index}
-          onClick={dayHandler.bind(this, item)}
-        >
-          <div className={"radius " + (chosed && !isRange ? "chosed" : "")}>
-            {item}
-          </div>
-        </div>
-      );
+      dayClassName = "datespan  " + (chosed && isRange ? "rangespan" : "");
     }
-    return control;
+    let date = func.dateformat(
+      new Date(year + "/" + month + "/" + item),
+      "yyyy-MM-dd"
+    );
+    return (
+      <div
+        className={dayClassName + (date < min || date > max ? " disabled" : "")}
+        key={"dateitem" + index}
+        onClick={date < min || date > max ? null : dayHandler.bind(this, item)}
+      >
+        <div className={"radius " + (chosed && !isRange ? "chosed" : "")}>
+          {item}
+        </div>
+      </div>
+    );
   });
   return (
     <div className="dayul" style={{ display: visible ? "flex" : "none" }}>
@@ -568,6 +559,8 @@ class CalendarView extends Component {
         year: this.state.year,
         month: this.state.month,
         day: this.state.day,
+        min: this.props.min,
+        max: this.props.max,
         visible: dayViewVisible,
         isRange: this.props.isRange,
         rangeBegin: this.props.rangeBegin,

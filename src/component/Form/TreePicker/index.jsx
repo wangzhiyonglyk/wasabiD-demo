@@ -6,7 +6,7 @@
  */
 import React, { Component } from "react";
 import Tree from "../../Data/Tree/index.jsx";
-import propTypes from "../../propsConfig/propTypes.js";
+import propTypes from "../propsConfig/propTypes.js";
 import CheckBox from "../CheckBox/index.jsx";
 import propsTran from "../../libs/propsTran.js";
 import validateHoc from "../validateHoc";

@@ -7,7 +7,7 @@ import React from "react";
 import Button from "../../Buttons/Button"
 import loadDataHoc from "../loadDataHoc";
 import validateHoc from "../validateHoc";
-import propTypes from "../../propsConfig/propTypes.js";
+import propTypes from "../propsConfig/propTypes.js";
 import propsTran from "../../libs/propsTran";
 import Msg from "../../Info/Msg";
 

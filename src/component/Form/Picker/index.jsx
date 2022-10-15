@@ -12,7 +12,7 @@ import dom from "../../libs/dom"
 import loadDataHoc from "../loadDataHoc";
 import validateHoc from "../validateHoc";
 import PickerInput from "./PickerInput";
-import propTypes from "../../propsConfig/propTypes.js";
+import propTypes from "../propsConfig/propTypes.js";
 import api from "wasabi-api"
 import "./picker.css"
 /**
