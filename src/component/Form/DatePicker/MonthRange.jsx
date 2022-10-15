@@ -18,7 +18,7 @@ import regs from "../../libs/regs";
  * @param {*} secondYear 第二个年
  * @param {*} secondMonth 第二个月
  */
-function getRangeMonth(firstYear, firstMonth, secondYear, secondMonth) {
+function getRangeMonth(firstYear, firstMonth, secondYear, secondMonth,oldMonthRangeObj) {
   firstYear=firstYear||new Date().getFullYear();
   secondYear=secondYear||new Date().getFullYear();
   let result = {
@@ -72,7 +72,7 @@ function getRangeMonth(firstYear, firstMonth, secondYear, secondMonth) {
 function getNewRangeMonth(type, oldMonthRangeObj, newValue) {
   let arr = oldMonthRangeObj?.value.split(",") || "";
   let firstRangeValue = arr.length > 0 && arr[0]|| "";
-  let secondRangeValue = arr.length > 1 && arr[1] * 1|| "";
+  let secondRangeValue = arr.length > 1 && arr[1]|| "";
   if (
     regs.monthrange.test(oldMonthRangeObj.value) ||
     (!regs.month.test(firstRangeValue) && !regs.month.test(secondRangeValue))
@@ -92,9 +92,11 @@ function getNewRangeMonth(type, oldMonthRangeObj, newValue) {
     };
   } else {
     //先归正大小
-    firstRangeValue = firstRangeValue > newValue ? newValue : firstRangeValue;
-    secondRangeValue =
-      secondRangeValue < newValue ? newValue : secondRangeValue;
+  
+      let newArr=[firstRangeValue||secondRangeValue,newValue];
+      newArr.sort();
+      firstRangeValue=newArr[0];
+      secondRangeValue=newArr[1];
       let firstYear = firstRangeValue.split("-")[0] || null;
       let firstMonth = firstRangeValue.split("-")[1] || null;
       let secondYear = secondRangeValue.split("-")[0] || null;
@@ -117,6 +119,7 @@ function MonthRange(props) {
   const onFirstSelect = useCallback(
     (value) => {
       let newmonthRangeObj = getNewRangeMonth(1, monthRangeObj, value);
+        console.log("onFirstSelect",newmonthRangeObj.value)
       if (regs.monthrange.test(newmonthRangeObj.value)) {//如果值正确
         if (typeof props.onSelect === "function") {
           props.onSelect(newmonthRangeObj.value, newmonthRangeObj.value);
@@ -132,7 +135,8 @@ function MonthRange(props) {
 
   const onSecondSelect = useCallback(
     (value) => {
-      let newmonthRangeObj = getNewRangeMonth(2, monthRangeObj, value);
+      let newmonthRangeObj = getNewRangeMonth(2, monthRangeObj, value)
+      console.log("onSecondSelect",newmonthRangeObj.value)
       if (regs.monthrange.test(newmonthRangeObj.value)) {//如果值正确
         if (typeof props.onSelect === "function") {
           props.onSelect(newmonthRangeObj.value, newmonthRangeObj.value);
@@ -140,6 +144,7 @@ function MonthRange(props) {
           setmonthRangeObj(newmonthRangeObj);
         }
       } else {
+
         setmonthRangeObj(newmonthRangeObj);
       }
     },
@@ -150,7 +155,8 @@ function MonthRange(props) {
       props.firstYear,
       props.firstMonth,
       props.secondYear,
-      props.secondMonth
+      props.secondMonth,
+      monthRangeObj
     );
     setmonthRangeObj(monthRangeObj);
   }, [props.firstYear, props.secondYear]);
