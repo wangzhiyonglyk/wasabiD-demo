@@ -18,7 +18,7 @@ import regs from "../../libs/regs";
  * @param {*} secondYear 第二个年
  * @param {*} secondMonth 第二个月
  */
-function getRangeMonth(firstYear, firstMonth, secondYear, secondMonth,oldMonthRangeObj) {
+function getRangeMonth(firstYear, firstMonth, secondYear, secondMonth) {
   firstYear=firstYear||new Date().getFullYear();
   secondYear=secondYear||new Date().getFullYear();
   let result = {
@@ -86,8 +86,8 @@ function getNewRangeMonth(type, oldMonthRangeObj, newValue) {
       secondPanelYear: type === 2 ? newYear : oldMonthRangeObj.secondPanelYear,
       firstRangeBegin: type === 1 ? newMonth : null,
       firstRangeEnd: null,
-      secondRangeBegin: type === 2 ? newMonth : null,
-      secondRangeEnd: null,
+      secondRangeBegin: type === 2 ? 0 : null,
+      secondRangeEnd: type === 2 ? newMonth : null,
       value: type === 1 ? newValue + "," : "," + newValue,
     };
   } else {
@@ -156,10 +156,9 @@ function MonthRange(props) {
       props.firstMonth,
       props.secondYear,
       props.secondMonth,
-      monthRangeObj
     );
     setmonthRangeObj(monthRangeObj);
-  }, [props.firstYear, props.secondYear]);
+  }, [props.firstYear, props.secondYear, props.firstMonth, props.secondMonth]);
 
   return (
     <React.Fragment>
