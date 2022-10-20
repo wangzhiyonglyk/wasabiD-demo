@@ -54,8 +54,8 @@ class Modal extends React.Component {
         window.modalZindex = window.modalZindex || 10;
         window.modalZinde -= 1;
         this.setState({ visible: false });
-        if (this.props.close !==null) {
-            this.props.close();
+        if (this.props.onClose !==null) {
+            this.props.onClose();
         }
     }
 
@@ -175,9 +175,9 @@ Modal.propTypes = {
     style: PropTypes.object,
     resize: PropTypes.bool,//是否可以改变大小
     destroy: PropTypes.bool,//是否销毁
-    close: PropTypes.func,//关闭事件
+    onClose: PropTypes.func,//关闭事件
     OKHandler: PropTypes.func,//确定事件
-    cancelHandler: PropTypes.func,
+    cancelHandler: PropTypes.func,//取消事件
 }
 
 Modal.defaultProps = {
@@ -185,9 +185,9 @@ Modal.defaultProps = {
     style: {},
     resize: false,//是否可以改变大小
     destroy: false,
-    close: null,
+    onClose: null,
     OKHandler: null,//确定按钮的事件,
-    cancelHandler: null,
+    cancelHandler: null,//取消事件
 }
 
 export default Modal;

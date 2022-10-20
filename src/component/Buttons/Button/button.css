@@ -10,7 +10,6 @@
   border: 1px solid var(--border-color);
   font-size: 14px;
   color: var(--color);
-  -webkit-appearance: none;
   text-align: center;
   box-sizing: border-box;
   outline: none;
