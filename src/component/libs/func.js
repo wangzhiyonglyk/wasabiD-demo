@@ -156,15 +156,15 @@ func.isMobile = function () {
  * @param {*} num 数字
  * @returns
  */
-func.dealNumToEnglishFormat = function(num,fixed=2) {
-  if((num??"").toString()){
-    let number =((num*1).toFixed(fixed)*1).toString();
-     number=number.split(".");
+func.dealNumToEnglishFormat = function (num, fixed = 2) {
+  if ((num ?? "").toString()) {
+    let number = ((num * 1).toFixed(fixed) * 1).toString();
+    number = number.split(".");
     var regex = /(?!^)(?=(\d{3})+$)/g;
-     return (number[0].replace(regex, ',')+"."+number[1].replace(regex, ','))
+    return number[0].replace(regex, ",") + "." + number[1].replace(regex, ",");
   }
   return num;
-}
+};
 
 /**
  * 日期格式化为字符串
@@ -248,7 +248,7 @@ func.stringToDate = function (strDate) {
  * cookie操作
  */
 func.cookies = {
-  set: function (key, val,days=7) {
+  set: function (key, val, days = 7) {
     let exp = new Date();
     exp.setTime(exp.getTime() + days * 24 * 60 * 60 * 1000);
     document.cookie = key + "=" + val + ";path=/;expires=" + exp.toGMTString();
@@ -302,15 +302,13 @@ func.clone = function (obj, deep = true) {
         } else {
           //普通对象
           o = {};
-          if(deep){
+          if (deep) {
             for (let k in obj) {
               o[k] = func.clone(obj[k]);
             }
-          }
-          else{
+          } else {
             o = { ...obj };
           }
-       
         }
       }
       break;
@@ -320,7 +318,6 @@ func.clone = function (obj, deep = true) {
   }
   return o;
 };
-
 
 /**
  * 获取真正的数据源
@@ -432,10 +429,10 @@ func.diff = function (objA = null, objB = null, deep = true) {
     //先拿所有的属性
     try {
       if (
-        Object.prototype.toString.call(objA).indexOf('Map') > -1 ||
-        Object.prototype.toString.call(objA).indexOf('Set') > -1||
-        Object.prototype.toString.call(objA).indexOf('Date') > -1||
-        Object.prototype.toString.call(objA).indexOf('RegExp') > -1
+        Object.prototype.toString.call(objA).indexOf("Map") > -1 ||
+        Object.prototype.toString.call(objA).indexOf("Set") > -1 ||
+        Object.prototype.toString.call(objA).indexOf("Date") > -1 ||
+        Object.prototype.toString.call(objA).indexOf("RegExp") > -1
       ) {
         //如果是Map与Set则直接判断即可，因为两者的无法像普通对象遍历
         return objA !== objB;

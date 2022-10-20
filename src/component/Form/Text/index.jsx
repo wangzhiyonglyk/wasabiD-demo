@@ -3,7 +3,7 @@
 //edit by wangzhiyong 2020-10-18 todo blur事件要改
 //desc 普通的文本框
 import React, { Component } from "react";
-import propTypes from "../../propsConfig/propTypes.js";
+import propTypes from "../propsConfig/propTypes.js";
 import BaseInput from "../BaseInput/index.jsx";
 import SelectbleList from "../Select/SelectbleList"
 import validateHoc from "../validateHoc"

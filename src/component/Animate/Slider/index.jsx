@@ -17,7 +17,7 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import func from "../../libs/func";
-import { checkVisible } from "../../libs/func";
+import dom from "../../libs/dom"
 import "./index.css";
 
 const uuid = func.uuid;
@@ -168,7 +168,7 @@ const Slider = React.forwardRef(function (props, ref) {
         }
         for (let i = 0; i < chidlrenObj.current.length; i++) {
           if (
-            checkVisible(chidlrenObj.current[i]) &&
+            dom.overView(chidlrenObj.current[i]) &&
             i < dotObj.current.length
           ) {
             dotObj.current[

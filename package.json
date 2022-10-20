@@ -5,7 +5,7 @@
   "main": "no",
   "homepage": "./",
   "scripts": {
-    "dev": "   webpack serve   --env mode=development type=dev ",
+    "start": "   webpack serve   --env mode=development type=dev ",
     "test": " webpack  --env mode=production type=test",
     "build": " webpack  --env mode=production type=pro"
   },
