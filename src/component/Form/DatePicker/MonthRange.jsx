@@ -19,8 +19,8 @@ import regs from "../../libs/regs";
  * @param {*} secondMonth 第二个月
  */
 function getRangeMonth(firstYear, firstMonth, secondYear, secondMonth) {
-  firstYear=firstYear||new Date().getFullYear();
-  secondYear=secondYear||new Date().getFullYear();
+  firstYear = firstYear || new Date().getFullYear();
+  secondYear = secondYear || new Date().getFullYear();
   let result = {
     firstRangeBegin: null,
     firstRangeEnd: null,
@@ -52,11 +52,12 @@ function getRangeMonth(firstYear, firstMonth, secondYear, secondMonth) {
     result.firstRangeEnd = 13;
     result.secondRangeBegin = 0;
     result.secondRangeEnd = secondMonth * 1;
-  } else if (firstYear * 1 === secondYear * 1) {//同一年
-    result.firstPanelYear = firstYear &&firstYear * 1;
-    result.secondPanelYear = secondYear&&secondYear *1 +1; //加一年就行了
-    result.firstRangeBegin = firstMonth&&firstMonth * 1||null;
-    result.firstRangeEnd = secondMonth&&secondMonth*1||null;
+  } else if (firstYear * 1 === secondYear * 1) {
+    //同一年
+    result.firstPanelYear = firstYear && firstYear * 1;
+    result.secondPanelYear = secondYear && secondYear * 1 + 1; //加一年就行了
+    result.firstRangeBegin = (firstMonth && firstMonth * 1) || null;
+    result.firstRangeEnd = (secondMonth && secondMonth * 1) || null;
     result.secondRangeBegin = null;
     result.secondRangeEnd = null;
   }
@@ -71,8 +72,8 @@ function getRangeMonth(firstYear, firstMonth, secondYear, secondMonth) {
  */
 function getNewRangeMonth(type, oldMonthRangeObj, newValue) {
   let arr = oldMonthRangeObj?.value.split(",") || "";
-  let firstRangeValue = arr.length > 0 && arr[0]|| "";
-  let secondRangeValue = arr.length > 1 && arr[1]|| "";
+  let firstRangeValue = (arr.length > 0 && arr[0]) || "";
+  let secondRangeValue = (arr.length > 1 && arr[1]) || "";
   if (
     regs.monthrange.test(oldMonthRangeObj.value) ||
     (!regs.month.test(firstRangeValue) && !regs.month.test(secondRangeValue))
@@ -92,16 +93,21 @@ function getNewRangeMonth(type, oldMonthRangeObj, newValue) {
     };
   } else {
     //先归正大小
-  
-      let newArr=[firstRangeValue||secondRangeValue,newValue];
-      newArr.sort();
-      firstRangeValue=newArr[0];
-      secondRangeValue=newArr[1];
-      let firstYear = firstRangeValue.split("-")[0] || null;
-      let firstMonth = firstRangeValue.split("-")[1] || null;
-      let secondYear = secondRangeValue.split("-")[0] || null;
-      let secondMonth = secondRangeValue.split("-")[1] || null;
-    oldMonthRangeObj =  getRangeMonth(firstYear, firstMonth, secondYear, secondMonth)
+
+    let newArr = [firstRangeValue || secondRangeValue, newValue];
+    newArr.sort();
+    firstRangeValue = newArr[0];
+    secondRangeValue = newArr[1];
+    let firstYear = firstRangeValue.split("-")[0] || null;
+    let firstMonth = firstRangeValue.split("-")[1] || null;
+    let secondYear = secondRangeValue.split("-")[0] || null;
+    let secondMonth = secondRangeValue.split("-")[1] || null;
+    oldMonthRangeObj = getRangeMonth(
+      firstYear,
+      firstMonth,
+      secondYear,
+      secondMonth
+    );
   }
   return oldMonthRangeObj;
 }
@@ -119,8 +125,8 @@ function MonthRange(props) {
   const onFirstSelect = useCallback(
     (value) => {
       let newmonthRangeObj = getNewRangeMonth(1, monthRangeObj, value);
-        console.log("onFirstSelect",newmonthRangeObj.value)
-      if (regs.monthrange.test(newmonthRangeObj.value)) {//如果值正确
+      if (regs.monthrange.test(newmonthRangeObj.value)) {
+        //如果值正确
         if (typeof props.onSelect === "function") {
           props.onSelect(newmonthRangeObj.value, newmonthRangeObj.value);
         } else {
@@ -135,16 +141,15 @@ function MonthRange(props) {
 
   const onSecondSelect = useCallback(
     (value) => {
-      let newmonthRangeObj = getNewRangeMonth(2, monthRangeObj, value)
-      console.log("onSecondSelect",newmonthRangeObj.value)
-      if (regs.monthrange.test(newmonthRangeObj.value)) {//如果值正确
+      let newmonthRangeObj = getNewRangeMonth(2, monthRangeObj, value);
+      if (regs.monthrange.test(newmonthRangeObj.value)) {
+        //如果值正确
         if (typeof props.onSelect === "function") {
           props.onSelect(newmonthRangeObj.value, newmonthRangeObj.value);
         } else {
           setmonthRangeObj(newmonthRangeObj);
         }
       } else {
-
         setmonthRangeObj(newmonthRangeObj);
       }
     },
@@ -155,7 +160,7 @@ function MonthRange(props) {
       props.firstYear,
       props.firstMonth,
       props.secondYear,
-      props.secondMonth,
+      props.secondMonth
     );
     setmonthRangeObj(monthRangeObj);
   }, [props.firstYear, props.secondYear, props.firstMonth, props.secondMonth]);
