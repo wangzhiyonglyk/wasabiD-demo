@@ -18,6 +18,12 @@
 .show {
   display: block;
 }
+.clearfix:after {
+  content: " ";
+  display: block;
+  clear: both;
+  height: 0;
+}
 html {
   height: 100%;
   width: 100%;
@@ -30,10 +36,10 @@ body {
   margin: 0px;
   padding: 0px;
 }
-body>div{
+body > div {
   height: 100%;
   width: 100%;
-  padding:0px;
+  padding: 0px;
   margin: 0px;
 }
 a {

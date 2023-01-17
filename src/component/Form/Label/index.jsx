@@ -41,7 +41,7 @@ Label.propTypes = {
     style: PropTypes.object,
     className: PropTypes.string,
     required: PropTypes.bool,
-    title: PropTypes.oneOfType([PropTypes.string]),//标题
+    title: PropTypes.oneOfType([PropTypes.string,PropTypes.element,PropTypes.node]),//标题
 };
 
 

@@ -87,7 +87,6 @@ class Password extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {" "}
         <BaseInput
           title={this.props.title}
           name={this.props.name}
