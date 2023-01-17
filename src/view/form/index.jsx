@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Form, Text, Select, Input, Button } from "../../component";
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -12,9 +13,7 @@ class Home extends React.Component {
     };
     this.onClick = this.onClick.bind(this);
   }
-  componentDidMount() {
-    // this.refs.modal.open();
-  }
+  componentDidMount() {}
   onClick() {
     this.setState({
       data: this.state.data.concat([{ text: "测试1", value: Math.random(1) }]),
@@ -26,7 +25,8 @@ class Home extends React.Component {
       <div>
         <Button onClick={this.onClick}>改变数据 </Button>
         <Form style={{ width: 800 }} cols={1} labelPosition={"top"}>
-          <Input type="year" name="year" label="year" value="test"></Input>
+          <Input type="timerange" name="timerange" label="timerange"></Input>
+          {/* <Input type="year" name="year" label="year" value="test"></Input>
           <Input type="month" name="month" label="month" value="test"></Input>
           <Input type="time" name="time" label="time" value="test"></Input>
           <Input type="date" name="date" label="date" value="test"></Input>
@@ -58,8 +58,7 @@ class Home extends React.Component {
             name="datetimerange"
             label="datetimerange"
             value="test"
-          ></Input>
-          */
+          ></Input> */}
         </Form>
         {/* <Modal ref="modal"></Modal> */}
       </div>

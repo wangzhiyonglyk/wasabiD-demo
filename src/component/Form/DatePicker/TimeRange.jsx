@@ -8,7 +8,7 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import Time from "./Time";
-const formartterState =(firstTime, secondTime) => {
+const formartterState = (firstTime, secondTime) => {
   //设置值
   let result = {};
 
@@ -25,7 +25,7 @@ const formartterState =(firstTime, secondTime) => {
     result.second_minute = minute;
   }
   return result;
-}
+};
 function TimeRange(props) {
   /**
    * 开始时间
@@ -33,7 +33,6 @@ function TimeRange(props) {
    */
   const firstHandler = useCallback(
     (value) => {
-      value = props.attachSecond ? value + ":00" : value; //开始时间如果带上秒一定是00
       props.onSelect &&
         props.onSelect(
           value + "," + props.secondTime,
@@ -41,7 +40,7 @@ function TimeRange(props) {
           props.name
         );
     },
-    [ props.secondTime,props.attachSecond, props.onSelect]
+    [props.secondTime, props.onSelect]
   );
   /**
    * 结束时间
@@ -49,7 +48,6 @@ function TimeRange(props) {
    */
   const secondHandler = useCallback(
     (value) => {
-      value = props.attachSecond ? value + ":00" : value; //开始时间如果带上秒一定是00
       props.onSelect &&
         props.onSelect(
           props.firstTime + "," + value,
@@ -57,7 +55,7 @@ function TimeRange(props) {
           props.name
         );
     },
-    [ props.firstTime,props.attachSecond, props.onSelect]
+    [props.firstTime, props.attachSecond, props.onSelect]
   );
 
   let result = formartterState(props.firstTime, props.secondTime);
