@@ -363,7 +363,14 @@ func.isEmptyObject = function (obj) {
   }
   return isempty;
 };
-func.download = function (blob, title, extend = ".xlsx") {
+
+/**
+ * 下载
+ * @param {*} blob blob
+ * @param {*} title 标题
+ * @param {*} extend 扩展名
+ */
+func.download = function (blob, title, extend = ".xls") {
   if (typeof blob === "object" && blob instanceof Blob) {
     blob = URL.createObjectURL(blob); // 创建blob地址
   } else {

@@ -245,7 +245,7 @@ export default {
     let realTable = document.getElementById(this.state.realTableId);
     title = title + func.dateformat(new Date(), "yyyy-MM-dd");
     //导出表头
-    let tableHtml = "<table><tbody><thead>";
+    let tableHtml = "<table><thead>";
     for (
       let rowIndex = 0;
       rowIndex < fixTable.children[1].children.length;
@@ -342,6 +342,6 @@ export default {
     html = html.replace(/export=\"1\"/g, "style=\"mso-number-format:'@';\"");
     // 创建一个Blob对象，第一个参数是文件的数据，第二个参数是文件类型属性对象
     var blob = new Blob([html], { type: "application/vnd.ms-excel" });
-    func.download(blob, title);
+    func.download(blob, title,".xls");
   },
 };

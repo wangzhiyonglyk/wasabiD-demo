@@ -3,7 +3,6 @@ import func from "../../libs/func";
 import validation from "../../libs/validation";
 import Label from "../Label";
 import regexp from "../../libs/regs";
-import dom from "../../libs/dom";
 /**
  * 验证组件
  * @param {*} Widget 表单组件
@@ -20,7 +19,7 @@ const validateHoc = function (Widget) {
         inValidateText: "", //失败的文字
       };
       this.validate = this.validate.bind(this);
-      this.hideSuccess = this.hideSuccess.bind(this);
+     
     }
     /**
      * 验证有效性
@@ -255,27 +254,7 @@ const validateHoc = function (Widget) {
         this.input.current.loadData(url, params);
     }
 
-    /**
-     * 失去焦点后，如果验证成功，则去掉成功样式
-     * @param {*} event
-     */
-    hideSuccess(event) {
-      if (
-        event.target &&
-        this.state.validateClass === "wasabi-has-success" &&
-        !dom.isDescendant(
-          document.getElementById(this.state.containerid),
-          event.target
-        )
-      ) {
-        this.setState({
-          validateClass: "",
-        });
-        try {
-          document.removeEventListener("click", this.hideSuccess);
-        } catch (e) {}
-      }
-    }
+   
     render() {
       return (
         <div
