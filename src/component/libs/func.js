@@ -147,7 +147,7 @@ func.isMobile = function () {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     );
-  } catch (e) {}
+  } catch (e) { }
   return false;
 };
 
@@ -421,10 +421,7 @@ func.diff = function (objA = null, objB = null, deep = true) {
     //直接相等，返回
     return false;
   }
-  if (
-    Object.prototype.toString.call(objA) !==
-    Object.prototype.toString.call(objB)
-  ) {
+  if (Object.prototype.toString.call(objA) !== Object.prototype.toString.call(objB)) {
     //类型不同
     return true;
   }
@@ -499,7 +496,7 @@ func.componentMixins = function (component, mixinClass = []) {
         }
       });
     });
-  } catch (e) {}
+  } catch (e) { }
 
   return component;
 };
@@ -658,7 +655,7 @@ func.charWidth = function (str = "") {
         width += 10;
       }
     }
-  } catch (e) {}
+  } catch (e) { }
 
   return width;
 };
@@ -669,7 +666,7 @@ func.charWidth = function (str = "") {
  * @param {*} delay 时间差
  * @returns
  */
-export function throttle(method, delay) {
+ func.throttle=function(method, delay) {
   let timer = null;
   return function () {
     let content = this,
