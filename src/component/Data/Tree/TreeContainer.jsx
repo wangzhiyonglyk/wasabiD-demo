@@ -23,7 +23,7 @@ import {
   getChecked,
   setChildrenPath,
 } from "./treeFunc";
-import { myReducer, handlerData, treeScrollTop } from "./handlerData";
+import { myReducer, handlerData } from "./handlerData";
 import config from "./config";
 import TreeView from "./TreeView";
 const uuid = func.uuid;

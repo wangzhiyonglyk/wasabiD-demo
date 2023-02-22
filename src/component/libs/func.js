@@ -147,7 +147,7 @@ func.isMobile = function () {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     );
-  } catch (e) { }
+  } catch (e) {}
   return false;
 };
 
@@ -421,7 +421,10 @@ func.diff = function (objA = null, objB = null, deep = true) {
     //直接相等，返回
     return false;
   }
-  if (Object.prototype.toString.call(objA) !== Object.prototype.toString.call(objB)) {
+  if (
+    Object.prototype.toString.call(objA) !==
+    Object.prototype.toString.call(objB)
+  ) {
     //类型不同
     return true;
   }
@@ -496,7 +499,7 @@ func.componentMixins = function (component, mixinClass = []) {
         }
       });
     });
-  } catch (e) { }
+  } catch (e) {}
 
   return component;
 };
@@ -540,7 +543,7 @@ func.toTreeData = function (
         ...data[index],
         id: data[index][idField] ?? "",
         pId: data[index][parentField] ?? "",
-        text: data[index][textField],
+        text: data[index][textField] ?? "",
         children: data[index]?.children ?? [], //保留原来的
       };
       tree.push(item);
@@ -655,7 +658,7 @@ func.charWidth = function (str = "") {
         width += 10;
       }
     }
-  } catch (e) { }
+  } catch (e) {}
 
   return width;
 };
@@ -666,7 +669,7 @@ func.charWidth = function (str = "") {
  * @param {*} delay 时间差
  * @returns
  */
- func.throttle=function(method, delay) {
+func.throttle = function (method, delay) {
   let timer = null;
   return function () {
     let content = this,
@@ -676,7 +679,7 @@ func.charWidth = function (str = "") {
       method.apply(content, args);
     }, delay);
   };
-}
+};
 /**
  * create by wangzhiyong
  * date:2021-04-22
