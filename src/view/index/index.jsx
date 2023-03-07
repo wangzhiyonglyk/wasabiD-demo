@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { System } from "../../component";
 import func from "../../component/libs/func";
 
@@ -126,4 +126,6 @@ class Index extends React.Component {
     );
   }
 }
-ReactDOM.render(<Index />, document.getElementById("root"));
+
+const rootElement = document.getElementById("root");
+createRoot(rootElement).render(<Index />);

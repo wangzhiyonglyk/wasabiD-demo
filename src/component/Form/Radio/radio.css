@@ -30,8 +30,7 @@ desc:checkbox
 }
 
 .wasabi-checkul .checktext[readOnly],
-.wasabi-checkul .checktext[disabled]
-{
+.wasabi-checkul .checktext[disabled] {
   cursor: not-allowed;
   opacity: 0.5;
 }
@@ -70,6 +69,7 @@ desc:checkbox
   content: "\ea38";
   position: absolute;
   left: 1px;
+  top: 1px;
   font-size: var(--font-size);
   background-repeat: no-repeat;
   color: transparent;
@@ -92,7 +92,6 @@ desc:checkbox
   background-color: var(--primary-color);
   background-size: 12px 12px;
   background-repeat: no-repeat;
-
 }
 
 /*radio*/

@@ -6,7 +6,7 @@
  */
 import React from "react";
 import loadDataHoc from "../loadDataHoc";
-import validateHoc from "../validateHoc";
+import ValidateHoc from "../ValidateHoc";
 import propTypes from "../propsConfig/propTypes.js";
 import propsTran from "../../libs/propsTran";
 import "../Radio/radio.css";
@@ -166,4 +166,4 @@ class CheckBox extends React.Component {
 }
 CheckBox.propTypes = propTypes;
 CheckBox.defaultProps = { type: "checkbox" };
-export default validateHoc(loadDataHoc(CheckBox));
+export default ValidateHoc(loadDataHoc(CheckBox));

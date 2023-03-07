@@ -7,7 +7,7 @@
 import React, { Component } from "react";
 import DataGrid from "../../Data/DataGrid/index.jsx";
 import propTypes from "../propsConfig/propTypes.js";
-import validateHoc from "../validateHoc";
+import ValidateHoc from "../ValidateHoc";
 import func from "../../libs/func";
 import dom from "../../libs/dom";
 import loadDataHoc from "../loadDataHoc";
@@ -229,4 +229,4 @@ class GridPicker extends Component {
 GridPicker.propTypes = propTypes;
 GridPicker.defaultProps = { type: "gridpicker" };
 
-export default validateHoc(loadDataHoc(GridPicker));
+export default ValidateHoc(loadDataHoc(GridPicker));

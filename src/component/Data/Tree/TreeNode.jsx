@@ -109,7 +109,7 @@ function NodeView(props) {
         <i
           className={
             (clickId === row.id ? " selected " : "") +
-            (row.open
+            (row.isOpened
               ? ` wasabi-tree-li-icon  ${icon}-down `
               : ` wasabi-tree-li-icon  ${icon}-right`)
           }

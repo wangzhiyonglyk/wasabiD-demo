@@ -10,7 +10,7 @@ import func from "../../libs/func.js";
 import propsTran from "../../libs/propsTran";
 import dom from "../../libs/dom";
 import loadDataHoc from "../loadDataHoc";
-import validateHoc from "../validateHoc";
+import ValidateHoc from "../ValidateHoc";
 import PickerInput from "./PickerInput";
 import propTypes from "../propsConfig/propTypes.js";
 import api from "wasabi-api";
@@ -774,4 +774,4 @@ class Picker extends Component {
 }
 Picker.propTypes = propTypes;
 Picker.defaultProps = { type: "picker" };
-export default validateHoc(loadDataHoc(Picker));
+export default ValidateHoc(loadDataHoc(Picker));

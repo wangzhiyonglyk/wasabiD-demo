@@ -8,7 +8,7 @@ import regexp from "../../libs/regs";
  * @param {*} Widget 表单组件
  * @returns
  */
-const validateHoc = function (Widget) {
+const ValidateHoc = function (Widget) {
   class ValidateComponent extends React.Component {
     constructor(props) {
       super(props);
@@ -19,7 +19,6 @@ const validateHoc = function (Widget) {
         inValidateText: "", //失败的文字
       };
       this.validate = this.validate.bind(this);
-     
     }
     /**
      * 验证有效性
@@ -182,7 +181,7 @@ const validateHoc = function (Widget) {
                 }
               }
             }
-            if (isvalidate && type.indexOf("range") > -1) {
+            if (isvalidate && type?.indexOf("range") > -1) {
               valueArr = value.toString().split(",");
               if (valueArr.length < 2) {
                 isvalidate = false;
@@ -254,7 +253,6 @@ const validateHoc = function (Widget) {
         this.input.current.loadData(url, params);
     }
 
-   
     render() {
       return (
         <div
@@ -301,4 +299,4 @@ const validateHoc = function (Widget) {
   }
   return ValidateComponent;
 };
-export default validateHoc;
+export default ValidateHoc;

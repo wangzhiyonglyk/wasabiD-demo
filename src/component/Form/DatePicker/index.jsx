@@ -17,11 +17,10 @@ import DateTimeRange from "./DateTimeRange.jsx";
 import Time from "./Time";
 import TimeRange from "./TimeRange";
 import regs from "../../libs/regs.js";
-import validateHoc from "../validateHoc";
+import ValidateHoc from "../ValidateHoc";
 import func from "../../libs/func";
 import propTypes from "../propsConfig/propTypes.js";
 import dom from "../../libs/dom";
-import react from "react";
 
 class DatePicker extends Component {
   constructor(props) {
@@ -568,17 +567,5 @@ class DatePicker extends Component {
   }
 }
 DatePicker.propTypes = propTypes;
-DatePicker.propTypes.type = PropTypes.oneOf([
-  "year",
-  "month",
-  "date",
-  "time",
-  "datetime",
-  "yearrange",
-  "monthrange",
-  "daterange",
-  "timerange",
-  "datetimerange",
-]);
 DatePicker.defaultProps = { type: "date" };
-export default validateHoc(DatePicker);
+export default ValidateHoc(DatePicker);

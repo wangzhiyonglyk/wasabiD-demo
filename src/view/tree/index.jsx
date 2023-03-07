@@ -1,7 +1,7 @@
 import React from "react";
-import ReactDOM from "react-dom";
-// import Tree from "wasabi-tree";
-import { Button, Tree } from "wasabiD";
+import { createRoot } from "react-dom/client";
+import Tree from "wasabi-tree";
+import "wasabi-tree/lib/index.css";
 let data = [
   {
     id: 1,
@@ -91,119 +91,32 @@ for (let i = 0; i < 1000; i++) {
   });
 }
 console.timeEnd("生成10万数据");
-class Page extends React.Component {
-  constructor(props) {
-    super(props);
-    this.tree = React.createRef();
-    this.radio = React.createRef();
-    this.input1 = React.createRef();
-    this.form = React.createRef();
-    this.state = {
-      value: 1,
-      dropData: [],
-      fixedHeaders: [
-        {
-          name: "id",
-          label: "fixedid",
-        },
-      ],
-      headers: [
-        {
-          name: "label",
-          label: "省11",
-          editor: {
-            type: "select",
-            options: {
-              data: [{ text: "test", value: "test" }],
-            },
-          },
-        },
-
-        {
-          name: "label1",
-          label: "省2",
-          editor: {
-            type: "checkbox",
-            options: {
-              data: [
-                { text: "test", value: "test" },
-                { text: "test1", value: "test1" },
-                { text: "test2", value: "test2" },
-              ],
-            },
-          },
-        },
-        {
-          name: "省4",
-          label: "省4",
-          content: (rowData, rowIndex) => {
-            if (rowIndex % 2 === 1) {
-              return <div>{rowData.label}</div>;
-            } else {
-              return (
-                <div>
-                  <button key="1">没有</button>
-                  <button key="2">ddd</button>
-                </div>
-              );
-            }
-          },
-        },
-
-        {
-          name: "label1",
-          label: "省2",
-          width: 1200,
-        },
-      ],
-      data: data,
-      tabs: [
-        {
-          title: "你好",
-        },
-        {
-          title: "我好",
-        },
-      ],
-    };
-  }
-  onClick() {
-    this.tree.current.moveIn(1, 2);
-  }
-  onClick1() {
-    this.tree.current.moveAfter(3, 4);
-  }
-  render() {
-    return (
-      <div
-        style={{
-          height: "100%",
-          display: "flex",
-          padding: 10,
-          flexDirection: "column",
+function Page() {
+  return (
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        padding: 10,
+        flexDirection: "column",
+      }}
+    >
+      <Tree
+        isSimpleData={true}
+        textFormatter={(row) => {
+          return <div>{row.text}</div>;
         }}
-      >
-        <div>
-          <Button onClick={this.onClick.bind(this)}>获取</Button>
-          <Button onClick={this.onClick1.bind(this)}>设置</Button>
-        </div>
-        <Tree
-          isSimpleData={true}
-          textFormatter={(row) => {
-            return <div>{row.text}</div>;
-          }}
-          style={{ width: 500 }}
-          ref={this.tree}
-          data={this.state.data}
-          textField="label"
-          selectAble={true}
-          renameAble={true}
-          removeAble={true}
-          httpType="GET"
-        ></Tree>
-      </div>
-    );
-  }
+        style={{ width: 500 }}
+        data={data}
+        textField="label"
+        selectAble={true}
+        renameAble={true}
+        removeAble={true}
+        httpType="GET"
+      ></Tree>
+    </div>
+  );
 }
 
-ReactDOM.render(<Page />, document.getElementById("root"));
+const rootElement = document.getElementById("root");
+createRoot(rootElement).render(<Page />);
