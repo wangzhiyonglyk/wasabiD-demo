@@ -278,8 +278,8 @@ class Grid extends React.Component {
     }
     grid.push(
       this.props.pagination &&
-        (this.props.pagePosition == "bottom" ||
-          this.props.pagePosition == "both") ? (
+        (this.props.pagePosition === "bottom" ||
+          this.props.pagePosition === "both") ? (
         <Pagination
           key="p2"
           reload={this.props.reload}
@@ -300,7 +300,13 @@ class Grid extends React.Component {
 
     return (
       <div
-        className={"wasabi-grid" + (this.props.className || "")}
+        className={
+          "wasabi-grid " +
+          (this.props.pagination && this.props.pagePosition === "bottom"
+            ? " pagination"
+            : "") +
+          (this.props.className || "")
+        }
         style={style}
       >
         {grid}

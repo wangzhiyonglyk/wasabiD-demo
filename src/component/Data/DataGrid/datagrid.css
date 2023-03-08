@@ -31,7 +31,9 @@ grid
   width: 100%;
   height: 100%;
 }
-
+.wasabi-grid.pagination .wasabi-table-container {
+  border-bottom: none;
+}
 .wasabi-treegrid .wasabi-grid .wasabi-table-container {
   overflow-y: hidden;
 }

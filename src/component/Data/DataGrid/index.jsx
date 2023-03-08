@@ -187,8 +187,9 @@ class DataGrid extends Component {
   /**
    * 更新函数
    */
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate() {
     //重新加数据
+
     if (this.state.urlLoadData) {
       //需要请求数据
       this.reload(); //调用
@@ -198,8 +199,6 @@ class DataGrid extends Component {
     if (this.adjust) {
       //调整虚拟列表与表格宽度
       this.adjustvirtual();
-    } else {
-      this.adjustColumnWidth();
     }
   }
   componentDidMount() {
@@ -221,7 +220,6 @@ class DataGrid extends Component {
         {...this.props}
         {...this.state}
         headerWidth={this.headerWidth}
-        data={this.state.data}
         checkedAllHandler={this.checkedAllHandler}
         checkCurrentPageCheckedAll={this.checkCurrentPageCheckedAll}
         getKey={this.getKey}

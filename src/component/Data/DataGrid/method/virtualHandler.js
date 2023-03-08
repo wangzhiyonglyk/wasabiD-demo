@@ -131,7 +131,7 @@ export default {
           endIndex + config.bufferScale * this.virtualConfig.visibleCount;
         let visibleData = this.state.data.slice(sliceBeginIndex, sliceEndIndex);
         visibleData = visibleData.map((item, index) => {
-          item._orderRowIndex = startIndex + index;//注意了这里是虚拟列表的行号
+          item._orderRowIndex = startIndex + index; //注意了这里是虚拟列表的行号
           return item;
         });
         this.adjust = true; //需要调整宽与高，但不是状态值
@@ -218,7 +218,7 @@ export default {
         !this.virtualConfig &&
         !document.getElementById(this.state.realTableId).style.transform
       ) {
-        //没有虚拟列表的时候，也要设置一下表体的上部的位置
+        //没有虚拟列表的时候，也要设置一下表体的上部的位置,因为表头的高度是计算出来的
         let topReduce = document
           .getElementById(this.state.fixTableId)
           ?.getBoundingClientRect().height; //表头高度

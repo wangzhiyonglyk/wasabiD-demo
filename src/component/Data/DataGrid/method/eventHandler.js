@@ -6,11 +6,12 @@
 import React from "react";
 import func from "../../../libs/func.js";
 export default {
- /**
-  * 获取当行的key
-  * @param {*} rowIndex 行号
-  */
+  /**
+   * 获取当行的key
+   * @param {*} rowIndex 行号
+   */
   getKey: function (rowIndex) {
+    let key;
     let pageIndex = this.state.pageIndex;
     if (rowIndex == null && rowIndex == undefined) {
       console.log(new Error("rowIndex 值传错"));
@@ -18,11 +19,10 @@ export default {
       key =
         (this.state.data &&
           this.state.data[rowIndex] &&
-          this.state.data[rowIndex][this.props.priKey||"id"]) ??
+          this.state.data[rowIndex][this.props.priKey || "id"]) ??
         pageIndex.toString() + "-" + rowIndex.toString();
     }
     return key + "";
-   
   },
 
   /**
@@ -34,7 +34,7 @@ export default {
    */
   onChecked: function (rowIndex, value) {
     //选中事件
-    let  key =this.getKey(rowIndex);//拿key值，防止0为值的情况
+    let key = this.getKey(rowIndex); //拿key值，防止0为值的情况
     let checkedData = this.state.checkedData; //已经选中的行
     let checkedIndex = this.state.checkedIndex; //已经选中的行的序号，用于导出
     if (this.props.singleSelect == true) {
@@ -42,7 +42,7 @@ export default {
       checkedData = new Map(); //单选先清空之前的选择
       checkedIndex = new Map();
     }
-    if ((value??""+"")) {
+    if (value ?? "" + "") {
       //防止value为0这种情况
       checkedData.set(key, this.state.data[rowIndex]);
       checkedIndex.set(rowIndex + "", rowIndex);
@@ -192,7 +192,7 @@ export default {
    */
   setHeaderEditor() {
     //如果没有设置编辑，则设置
-    let headers =this.state.headers;
+    let headers = this.state.headers;
     if (headers && headers.length > 0) {
       for (let i = 0; i < headers.length; i++) {
         if (headers[i] instanceof Array) {
@@ -331,7 +331,7 @@ export default {
         this.state.data[rowIndex]
       );
     }
-    let data =this.state.data
+    let data = this.state.data;
     data[rowIndex][name] = value;
     this.setState({
       data: data,

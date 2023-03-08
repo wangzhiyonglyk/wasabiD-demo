@@ -7,7 +7,7 @@ import TableRow from "../../Table/TableRow.jsx";
 import TableBody from "../../Table/TableBody.jsx";
 import func from "../../../libs/func";
 import config from "../config.js";
-class GridBody extends React.PureComponent {
+class GridBody extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -282,7 +282,6 @@ class GridBody extends React.PureComponent {
     );
   }
   render() {
-    console.log("body");
     //渲染表体
     if (
       !(this.props.data instanceof Array) ||
