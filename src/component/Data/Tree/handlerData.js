@@ -1,3 +1,4 @@
+import React from "react";
 import func from "../../libs/func";
 import {
   setChecked,
@@ -17,8 +18,6 @@ import {
   setLinkNodeOpen,
 } from "./treeFunc";
 import config from "./config";
-const toTreeData = func.toTreeData;
-const treeDataToFlatData = func.treeDataToFlatData;
 /***************以下是处理数据的代码************************/
 
 /**
@@ -62,7 +61,6 @@ export function handlerData(gobalData, action, dispatch) {
         payload.newText,
         payload.options
       );
-
       break;
     // 移除
     case "onRemove":
@@ -72,7 +70,7 @@ export function handlerData(gobalData, action, dispatch) {
         payload.id,
         payload.options
       );
-      current.flatData = treeDataToFlatData(current.data);
+      current.flatData = func.treeDataToFlatData(current.data);
       break;
     // 停靠
     case "onDrop":
@@ -101,7 +99,7 @@ export function handlerData(gobalData, action, dispatch) {
           payload.options
         );
       }
-      current.flatData = treeDataToFlatData(current.data);
+      current.flatData = func.treeDataToFlatData(current.data);
       break;
     /**
      * 以下父组件调用的
@@ -122,7 +120,7 @@ export function handlerData(gobalData, action, dispatch) {
         payload.isOpened,
         payload.foldBroAble
       );
-      current.flatData = treeDataToFlatData(current.data);
+      current.flatData = func.treeDataToFlatData(current.data);
       break;
     //设置勾选
     case "setChecked":
@@ -150,8 +148,6 @@ export function handlerData(gobalData, action, dispatch) {
     case "clearChecked":
       current.data = clearChecked(current.data);
       break;
-      //全选
-      I;
     case "checkedAll":
       current.data = checkedAll(current.data);
       break;
@@ -164,7 +160,7 @@ export function handlerData(gobalData, action, dispatch) {
         payload.children,
         payload.options
       );
-      current.flatData = treeDataToFlatData(current.data);
+      current.flatData = func.treeDataToFlatData(current.data);
       break;
     //删除节点
     case "remove":
@@ -185,7 +181,7 @@ export function handlerData(gobalData, action, dispatch) {
           payload.options
         );
       }
-      current.flatData = treeDataToFlatData(current.data);
+      current.flatData = func.treeDataToFlatData(current.data);
       break;
     //删除所有
     case "removeAll":
@@ -213,14 +209,14 @@ export function handlerData(gobalData, action, dispatch) {
           payload.options
         );
       }
-      current.flatData = treeDataToFlatData(current.data);
+      current.flatData = func.treeDataToFlatData(current.data);
       break;
     //更新所有
     case "updateAll":
       current.hashData = new Map(); //先清空hash表
       //如果是简单数据，则转成树结构
       current.data = payload.options.isSimpleData
-        ? toTreeData(
+        ? func.toTreeData(
             payload.data,
             payload.options.idField,
             payload.options.parentField,
@@ -235,7 +231,7 @@ export function handlerData(gobalData, action, dispatch) {
         current.data,
         payload.options
       ); //设置路径等信息
-      current.flatData = treeDataToFlatData(current.data);
+      current.flatData = func.treeDataToFlatData(current.data);
       break;
     //移动节点到内部
     case "moveIn":
@@ -246,7 +242,7 @@ export function handlerData(gobalData, action, dispatch) {
         { id: payload.dropId },
         payload.options
       );
-      current.flatData = treeDataToFlatData(current.data);
+      current.flatData = func.treeDataToFlatData(current.data);
       break;
     //移动节点到前面
     case "moveBefore":
@@ -257,7 +253,7 @@ export function handlerData(gobalData, action, dispatch) {
         { id: payload.dropId },
         payload.options
       );
-      current.flatData = treeDataToFlatData(current.data);
+      current.flatData = func.treeDataToFlatData(current.data);
       break;
     //移动节点到后面
     case "moveAfter":
@@ -268,13 +264,13 @@ export function handlerData(gobalData, action, dispatch) {
         { id: payload.dropId },
         payload.options
       );
-      current.flatData = treeDataToFlatData(current.data);
+      current.flatData = func.treeDataToFlatData(current.data);
       break;
     //展开所有父节点
     case "setLinkOpen":
       dispatch({ type: "update", payload: { gobalData } });
       current.data = setLinkNodeOpen(current.hashData, current.data, payload);
-      current.flatData = treeDataToFlatData(current.data);
+      current.flatData = func.treeDataToFlatData(current.data);
       break;
     default:
       break;
@@ -346,12 +342,19 @@ export function treeScrollTop(
   }
   document.getElementById(
     treeid
-  ).style.transform = `translate3d(θ,${startOffset}px,0)`;
+  ).style.transform = `translate3d(0,${startOffset}px,0)`;
 }
 
 /** 
-注意了选中某个节点，与滚动事件是单独处理 因为这里只是切割数据，不用数据加工
+注意了设置某个节点选中时，滚动事件是单独处理 因为这里只是切割数据，不用数据加工
 */
+/**
+ * state中包含的字段：
+ * clickId：选中的节点
+ * loadingId：异步加载的节点
+ * visibleData：当前可见的数据
+ * scrollIndex：要滚动指定节点的数据下标
+ */
 //防止重复执行，原因不详
 let preAction;
 let preState; //状态值
@@ -395,13 +398,13 @@ export function myReducer(state, action) {
       case "selectNode":
         preState = {
           ...state,
-          clickId: payload.id,
+          clickId: payload.id, //设置选中
           //判断是否要滚动
           scrollIndex: {
             index: current.flatData.findIndex((item) => {
               return item.id === payload.id;
             }),
-          }, // 设为对象，方便判断刷新
+          }, // 设为对象，方便判断字段更新了
         };
         break;
       /*
@@ -423,3 +426,6 @@ export function myReducer(state, action) {
   return state;
 }
 /***下面是reduce的代码******************/
+
+/****树组件的上下文****/
+export const ShareContext = React.createContext({});

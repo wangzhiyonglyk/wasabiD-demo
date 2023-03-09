@@ -8,17 +8,19 @@
   overflow: auto;
   height: 100%;
 }
+
 .wasabi-tree {
+  position: relative;
   margin: 0px;
   padding: 0px;
   --dotted-color: var(--border-color);
-  font-size: var(--font-size);
 }
 
 /* 虚线隐藏 */
 .wasabi-treegrid.nodotted {
   --dotted-color: transparent;
 }
+
 /* 树表格与交叉表把父子关系的虚线隐藏 */
 .wasabi-treegrid .wasabi-tree {
   --dotted-color: transparent;
@@ -35,7 +37,7 @@
 }
 
 /*树节点*/
-.wasabi-tree li.wasabi-tree-li {
+.wasabi-tree li.wasabi-tree-li-container {
   list-style: none;
   cursor: pointer;
   position: relative;
@@ -80,6 +82,7 @@
   top: 16px;
   width: 10px;
 }
+
 /*树节点向下的虚线*/
 .wasabi-tree .wasabi-tree-li-icon-afterBelow {
   position: absolute;
@@ -88,6 +91,7 @@
   left: 7px;
   top: 10px;
 }
+
 /* 树表格与交叉表的底部分隔线,增加宽度是为了线足够长 */
 .wasabi-treegrid .wasabi-tree .wasabi-tree-li-icon::after {
   content: "";
@@ -187,7 +191,7 @@
   margin-left: 0px;
   margin-right: 0px;
   padding-right: 4px;
-  margin-top: 0px;
+  margin-top: -1px;
   height: 30px;
   margin-bottom: 0px;
   width: 20px;
@@ -243,6 +247,7 @@
   position: relative;
   padding-top: 3px;
 }
+
 .wasabi-tree .wasabi-tree-li-node .wasabi-form-group {
   width: 100%;
 }
@@ -282,7 +287,7 @@
 .wasabi-tree .wasabi-tree-text-icon {
   font-size: inherit;
   height: 100%;
-  padding-top: 7px;
+  padding-top: 8px;
   position: relative;
   padding-right: 4px;
 }

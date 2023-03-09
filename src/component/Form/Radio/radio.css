@@ -1,5 +1,6 @@
 /*create by wangzhiyong
 date:2016-04-01
+edit 2023-03-09
 desc:checkbox
 */
 .wasabi-checkul {
@@ -29,15 +30,14 @@ desc:checkbox
   margin-left: 4px;
 }
 
-.wasabi-checkul .checktext[readOnly],
-.wasabi-checkul .checktext[disabled] {
+.wasabi-checkul .checktext[readOnly] {
   cursor: not-allowed;
   opacity: 0.5;
 }
 
 .wasabi-checkul .checkbox-label {
   font-family: "iconfont" !important;
-  width: 16px;
+  width: 17px;
   height: 16px;
   border: 1px solid var(--border-color);
   border-radius: 2px;
@@ -57,29 +57,17 @@ desc:checkbox
 .wasabi-checkul .checktext.checked {
   color: var(--primary-color);
 }
-.wasabi-checkul .checktext.halfcheck {
-  color: var(--primary-color);
-}
+
 .wasabi-checkul .checkbox-label.checked {
   border: 1px solid transparent;
   background-color: var(--primary-color);
+  color: white;
+  padding-top: 1px;
 }
 
-.wasabi-checkul .checkbox-label::after {
-  content: "\ea38";
-  position: absolute;
-  left: 1px;
-  top: 1px;
-  font-size: var(--font-size);
-  background-repeat: no-repeat;
-  color: transparent;
-}
-.wasabi-checkul .checkbox-label.checked::after {
-  color: white;
-}
 .wasabi-checkul .checkbox-label.halfcheck {
-  border: 1px solid var(--primary-color);
   background-color: white;
+  border-color: var(--primary-color);
 }
 
 .wasabi-checkul .checkbox-label.halfcheck::after {
@@ -90,8 +78,8 @@ desc:checkbox
   left: 4px;
   top: 4px;
   background-color: var(--primary-color);
-  background-size: 12px 12px;
   background-repeat: no-repeat;
+  color: white;
 }
 
 /*radio*/

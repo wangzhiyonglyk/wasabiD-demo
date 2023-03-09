@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2563689 */
-  src: url('iconfont.woff?t=1630652279152') format('woff'),
-       url('iconfont.ttf?t=1630652279152') format('truetype'),
-       url('iconfont.svg?t=1630652279152#iconfont') format('svg');
+  src: url('iconfont.woff?t=1678340654400') format('woff'),
+       url('iconfont.ttf?t=1678340654400') format('truetype'),
+       url('iconfont.svg?t=1678340654400#iconfont') format('svg');
 }
 
 .iconfont {
@@ -11,6 +11,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-text:before {
+  content: "\e60c";
+}
+
+.icon-check:before {
+  content: "\e605";
 }
 
 .icon-question:before {
@@ -269,10 +277,6 @@
   content: "\e72a";
 }
 
-.icon-txt:before {
-  content: "\e609";
-}
-
 .icon-woman:before {
   content: "\e67f";
 }
@@ -411,10 +415,6 @@
 
 .icon-archive:before {
   content: "\eaad";
-}
-
-.icon-text:before {
-  content: "\eabc";
 }
 
 .icon-word:before {
@@ -649,7 +649,7 @@
   content: "\ea29";
 }
 
-.icon-check:before {
+.icon-checkbold:before {
   content: "\ea38";
 }
 

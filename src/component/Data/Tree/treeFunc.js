@@ -509,6 +509,7 @@ export function moveInNode(hashData, data, dragNode, dropNode, options) {
   try {
     dragNode = findNodeById(hashData, data, dragNode?.id);
     dropNode = findNodeById(hashData, data, dropNode?.id);
+
     let dropNodes = findLinkNodesByPath(data, dropNode._path); //停靠节点链表
     if (
       dragNode &&
@@ -585,8 +586,8 @@ function moveBeforeOrAfterNode(
 ) {
   try {
     //在数据中找到节点，重新查找节点，这样才能保证节点在数据上
-    dragNode = findNodeById(hashData, data, dragNode?.id);
-    dropNode = findNodeById(hashData, data, dropNode?.id);
+    dragNode = findNodeById(hashData, data, dragNode?.id); //移动的节点
+    dropNode = findNodeById(hashData, data, dropNode?.id); //停靠的节点
     let dropNodes = findLinkNodesByPath(data, dropNode._path); //停靠节点链表
     if (
       dragNode &&
@@ -611,16 +612,18 @@ function moveBeforeOrAfterNode(
         data = setChildrenPath(hashData, "", [], data, options);
       } else {
         let parentDropNode = dropNodes[dropNodes.length - 2]; //找到停靠节点的父节点
+        //前面的节点
         let leftData = parentDropNode.children.slice(
           0,
-          leafDropNode._path[0] + step
+          dropNode._path[0] + step
         );
+        //后面的节点
         let rightData = parentDropNode.children.slice(
-          leafDropNode._path[0] + step,
+          dropNode._path[0] + step,
           parentDropNode.children.length
         );
         dragNode.pId = "";
-        dragNode._path = leafDropNode._path[0] + step;
+        dragNode._path = dropNode._path[0] + step;
         leftData.push(dragNode);
         parentDropNode.children = [].concat(leftData, rightData);
         parentDropNode.children = setChildrenPath(

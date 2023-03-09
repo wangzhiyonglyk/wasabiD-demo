@@ -13,11 +13,15 @@ create by wangzhiyong 创建树组件
    2022-01-11 将tree组件独立出来
    2022-01-18 将tree组件全部改为hook
    2022-01-27 优化代码
+   2023-03-09 1. 添加新增与右键等功能，调整样式
+   2.使用上下文，调整数据流方式
  */
 import React from "react";
 import TreeContainer from "./TreeContainer";
 
 function Tree(props, ref) {
-  return <TreeContainer {...props} ref={ref} componentType={"tree"}></TreeContainer>
+  return (
+    <TreeContainer {...props} ref={ref} componentType={"tree"}></TreeContainer>
+  );
 }
 export default React.memo(React.forwardRef(Tree));

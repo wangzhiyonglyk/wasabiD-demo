@@ -12,43 +12,51 @@
    2022-01-07 根据类型折叠图标不同
    2022-01-10 修复选择的bug
  */
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import PropTypes from "prop-types";
 import CheckBox from "../../Form/CheckBox";
 import Radio from "../../Form/Radio";
 import Text from "../../Form/Text";
 import func from "../../libs/func";
-import TreeNodeFormat from "./TreeNodeFormat";
 import config from "./config";
-function NodeView(props) {
-  //节点属性
-  let row = TreeNodeFormat(props);
-  //从node的属性
+import { ShareContext } from "./handlerData.js";
+function NodeView({ row, nodeEvents }) {
+  const { treeProps } = useContext(ShareContext);
+  const { clickId, loadingId, checkStyle, textFormatter, componentType } =
+    treeProps;
+
+  //节点操作权限，如果树组件本身禁用，则禁用，否则取节点本身（默认是可以的）
+  const selectAble = treeProps.selectAble || (row.selectAble ?? true);
+
+  const renameIconAble =
+    treeProps.renameIconAble || (row.renameIconAble ?? true);
+  const renameAble = treeProps.renameAble || (row.renameAble ?? true);
+  const removeAble = treeProps.removeAble || (row.removeAble ?? true);
+  const removeIconAble =
+    treeProps.removeIconAble || (row.removeIconAble ?? true);
+  const draggAble = treeProps.draggAble || (row.draggAble ?? true);
+
+  //TreeNode传下来的的属性
   const {
-    clickId,
-    loadingId,
-    selectAble,
-    checkStyle,
-    renameAble,
-    removeAble,
     rename,
-  } = props;
-  //tree的事件
-  const { onDoubleClick, onClick, onChecked, onExpand } = props;
-  //node的事件
-  const {
-    onNodeDragStart,
-    onNodeDragEnd,
-    onNodeDrop,
-    onNodeDragOver,
-    onNodeDragLeave,
+    textid,
+    nodeid,
+    onClick,
+    onDoubleClick,
+    onChecked,
+    onExpand,
     onBlur,
     onKeyUp,
     beforeNodeRename,
     beforeNodeRemove,
-    textFormatter,
-  } = props;
-  let title = row.title || row.text; //提示信息
+    onNodeDragEnd,
+    onNodeDragLeave,
+    onNodeDragOver,
+    onNodeDragStart,
+    onNodeDrop,
+    onNodeContextMenu,
+  } = nodeEvents;
+
   let iconCls = row.iconCls; //默认图标图标
   if (row.isParent) {
     //如果是父节点
@@ -79,32 +87,32 @@ function NodeView(props) {
   if (row.isParent) {
     //是父节点才有箭头
     if (row.isOpened) {
-      if (props.arrowUnFoldIcon) {
+      if (row.arrowUnFoldIcon) {
         arrowIcon = (
           <div
             className={"wasabi-tree-li-icon"}
             style={{ display: "inline-block" }}
             onClick={row.isParent ? onExpand : null}
           >
-            {props.arrowUnFoldIcon}
+            {row.arrowUnFoldIcon}
           </div>
         );
       }
     } else {
-      if (props.arrowFoldIcon) {
+      if (row.arrowFoldIcon) {
         arrowIcon = (
           <div
             className={"wasabi-tree-li-icon"}
             style={{ display: "inline-block" }}
             onClick={row.isParent ? onExpand : null}
           >
-            {props.arrowFoldIcon}
+            {row.arrowFoldIcon}
           </div>
         );
       }
     }
     if (!arrowIcon) {
-      let icon = props.componentType === "tree" ? "icon-caret" : "icon-arrow";
+      let icon = componentType === "tree" ? "icon-caret" : "icon-arrow";
       arrowIcon = (
         <i
           className={
@@ -150,7 +158,7 @@ function NodeView(props) {
   }
 
   let checkNode; //勾选节点
-  if (checkStyle === "checkbox" && (selectAble || row.selectAble)) {
+  if (checkStyle === "checkbox" && selectAble) {
     checkNode = (
       <CheckBox
         half={row.half}
@@ -165,7 +173,7 @@ function NodeView(props) {
         onSelect={onChecked}
       ></CheckBox>
     );
-  } else if (checkStyle === "radio" && (selectAble || row.selectAble)) {
+  } else if (checkStyle === "radio" && selectAble) {
     checkNode = (
       <Radio
         type="radio"
@@ -181,7 +189,7 @@ function NodeView(props) {
         onSelect={onChecked}
       ></Radio>
     );
-  } else if (typeof checkStyle === "function" && row.selectAble) {
+  } else if (typeof checkStyle === "function" && selectAble) {
     checkNode = checkStyle(row);
   }
 
@@ -197,8 +205,9 @@ function NodeView(props) {
   //节点元素
   return (
     <li
-      className="wasabi-tree-li"
+      className="wasabi-tree-li-container"
       key={row.pId + "-" + row.id}
+      data-id={row.id}
       style={{ display: row.hide ? "none" : "flex" }}
     >
       {blankControl}
@@ -209,14 +218,15 @@ function NodeView(props) {
       {checkNode}
       {/* 文本节点 */}
       <div
-        id={row.nodeid}
+        onContextMenu={onNodeContextMenu}
+        id={nodeid}
         style={{ width: `calc(100% - ${textwidthReduce}px)` }}
         className={
           clickId === row.id
             ? "wasabi-tree-li-node selected"
             : "wasabi-tree-li-node"
         }
-        title={title}
+        title={row.title || row.text}
         onDrop={onNodeDrop}
         onDragOver={onNodeDragOver}
         onDragLeave={onNodeDragLeave}
@@ -225,7 +235,7 @@ function NodeView(props) {
       >
         {rename ? (
           <Text
-            id={row.textid}
+            id={textid}
             required={true}
             onKeyUp={onKeyUp}
             onBlur={onBlur}
@@ -236,7 +246,7 @@ function NodeView(props) {
           <div
             key="2"
             className="wasabi-tree-li-node-text-div"
-            draggable={row.draggAble}
+            draggable={draggAble}
             onDragEnd={onNodeDragEnd}
             onDragStart={onNodeDragStart}
           >
@@ -244,7 +254,7 @@ function NodeView(props) {
             <i
               key="3"
               className={
-                (!row.selectAble && childrenLength
+                (!selectAble && childrenLength
                   ? " noCheckhasChildren "
                   : "  ") +
                 iconCls +
@@ -256,7 +266,7 @@ function NodeView(props) {
             </a>
           </div>
         )}
-        {!rename && renameAble ? (
+        {!rename && renameAble && renameIconAble ? (
           <i
             key="edit"
             className={"icon-edit edit"}
@@ -264,7 +274,7 @@ function NodeView(props) {
             onClick={beforeNodeRename}
           ></i>
         ) : null}
-        {!rename && removeAble ? (
+        {!rename && removeAble && removeIconAble ? (
           <i
             key="delete"
             className={"icon-delete edit"}
@@ -277,10 +287,23 @@ function NodeView(props) {
   );
 }
 NodeView = React.memo(NodeView);
-function TreeNode(props) {
-  const [rename, setRename] = useState(false);
-  const [textid] = useState(func.uuid());
-  const [nodeid] = useState(func.uuid());
+
+function TreeNode(row) {
+  const [rename, setRename] = useState(false); //重命名时输入框状态
+  const [textid] = useState(func.uuid()); //输入框id
+  const [nodeid] = useState(func.uuid()); //节点本身的id
+  const { treeEvents } = useContext(ShareContext);
+  const { treeProps } = useContext(ShareContext);
+
+  const { dropType } = treeProps; //拖动方式
+  //节点操作权限，如果树组件本身禁用，则禁用，否则取节点本身（默认是可以的）
+  const contextMenuAble =
+    treeProps.contextMenuAble || (row.contextMenuAble ?? true);
+  const addAble = treeProps.addAble || (row.addAble ?? true);
+  const renameAble = treeProps.renameAble || (row.renameAble ?? true);
+  const removeAble = treeProps.removeAble || (row.removeAble ?? true);
+  const draggAble = treeProps.draggAble || (row.draggAble ?? true);
+  const dropAble = treeProps.dropAble || (row.dropAble ?? true);
   useEffect(() => {
     if (rename) {
       let input = document.getElementById(textid);
@@ -288,47 +311,38 @@ function TreeNode(props) {
         input.focus();
       }
     }
-  }, [rename, textid]);
-
-  /***
-   * 注意此处所有的方法
-   * 将节点数据row传回来，保证属性都是最新的
-   * 方法中的props则只用于调用函数，因为函数不会变
-   */
-
+  }, [rename]);
   /**
    * 单击事件
    */
   const onClick = useCallback(() => {
-    let row = TreeNodeFormat(props);
-    props.onClick && props.onClick(row.id, row.text, row);
-  }, [props]);
+    treeEvents.onClick && treeEvents.onClick(row.id, row.text, row);
+  }, [row, treeEvents.onClick]);
 
   /**
    * 双击事件
    */
   const onDoubleClick = useCallback(() => {
-    let row = TreeNodeFormat(props);
-    props.onDoubleClick && props.onDoubleClick(row.id, row.text, row);
-  }, [props]);
+    beforeNodeRename(); //处理双击编辑的功能
+    treeEvents.onDoubleClick && treeEvents.onDoubleClick(row.id, row.text, row);
+  }, [row, beforeNodeRename, treeEvents.onDoubleClick]);
   /**
    * 勾选
    */
   const onChecked = useCallback(
     (checkValue) => {
-      let row = TreeNodeFormat(props);
-      props.onChecked && props.onChecked(row.id, row.text, row, checkValue);
+      treeEvents.onChecked &&
+        treeEvents.onChecked(row.id, row.text, row, checkValue);
     },
-    [props]
+    [row, treeEvents.onChecked]
   );
   /**
    * 节点展开/折叠
    */
   const onExpand = useCallback(() => {
-    let row = TreeNodeFormat(props);
     let isOpened = !!!row.isOpened;
-    props.onExpand && props.onExpand(isOpened, row.id, row.text, row);
-  }, [props]);
+    treeEvents.onExpand && treeEvents.onExpand(isOpened, row.id, row.text, row);
+  }, [row, treeEvents.onExpand]);
 
   /**
    * 重命名
@@ -336,57 +350,62 @@ function TreeNode(props) {
   const onNodeRename = useCallback(
     (id, text, row, value) => {
       setRename(false);
-      props.onRename && props.onRename(id, text, row, value);
+      treeEvents.onRename && treeEvents.onRename(id, text, row, value);
     },
-    [props]
+    [row, treeEvents.onRename]
   );
 
   /**
    * 重命名之前
    */
   const beforeNodeRename = useCallback(() => {
-    let rename = true; //默认允许
-    if (props.beforeRename) {
-      let row = TreeNodeFormat(props);
-      rename = props.beforeRename(row.id, row.text, row);
+    if (renameAble) {
+      //先判断是否允许重命名
+      let isAble = true; //默认允许
+      if (treeEvents.beforeRename) {
+        isAble = treeEvents.beforeRename(row.id, row.text, row);
+      }
+      setRename(isAble);
     }
-    setRename(rename);
-  }, [props]);
+  }, [row, treeEvents.beforeRename]);
   /**
    * 失去焦点
    */
   const onBlur = useCallback(
     (value) => {
-      let row = TreeNodeFormat(props);
-      onNodeRename(row.id, row.text, row, value);
+      if (rename) {
+        //处理编辑状态才处理
+        onNodeRename(row.id, row.text, row, value);
+      }
     },
-    [props, onNodeRename]
+    [row, rename, onNodeRename]
   );
   /**
    * 回车
    */
   const onKeyUp = useCallback(
     (event) => {
-      if (event.keyCode === 13) {
-        let row = TreeNodeFormat(props);
+      if (rename && event.keyCode === 13) {
         onNodeRename(row.id, row.text, row, event.target.value.trim());
       }
     },
-    [props, onNodeRename]
+    [row, rename, onNodeRename]
   );
   /**
    * 删除之前
    */
   const beforeNodeRemove = useCallback(() => {
-    let row = TreeNodeFormat(props);
-    let remove = true;
-    if (props.beforeRemove) {
-      remove = props.beforeRemove(row.id, row.text, row);
+    if (removeAble) {
+      let isAble = true;
+      if (treeEvents.beforeRemove) {
+        isAble = treeEvents.beforeRemove(row.id, row.text, row);
+      }
+      if (isAble) {
+        //允许才调用树组件的
+        treeEvents.onRemove && treeEvents.onRemove(row.id, row.text, row);
+      }
     }
-    if (remove) {
-      props.onRemove && props.onRemove(row.id, row.text, row);
-    }
-  }, [props]);
+  }, [row, treeEvents.beforeRemove, treeEvents.onRemove]);
 
   /**
    *
@@ -394,21 +413,20 @@ function TreeNode(props) {
    */
   const onNodeDragStart = useCallback(
     (event) => {
-      let row = TreeNodeFormat(props);
-      row.children = null; //注意了不传children下去
-      if (row.draggAble) {
-        let draggAble = true;
-        if (props.beforeDrag) {
-          draggAble = props.beforeDrag((row.id, row.text, row));
+      if (draggAble) {
+        //允许拖动，再通过函数判断
+        let isable = true; //默认允许
+        if (treeEvents.beforeDrag) {
+          isable = treeEvents.beforeDrag((row.id, row.text, row));
         }
-        if (draggAble) {
-          event.dataTransfer.setData("drag", JSON.stringify(row)); //保存起来
+        if (isable) {
+          event.dataTransfer.setData("dragItem", JSON.stringify(row)); //保存起来
           window.localStorage.setItem("wasabi-drag-item", JSON.stringify(row)); //保存起来给别的地方使用
-          props.onDrag && props.onDrag(row.id, row.text, row);
+          treeEvents.onDrag && treeEvents.onDrag(row.id, row.text, row);
         }
       }
     },
-    [props]
+    [row, treeEvents.beforeDrag, treeEvents.onDrag]
   );
   /**
    * 拖动组件，拖动结束
@@ -426,15 +444,14 @@ function TreeNode(props) {
   const onNodeDragOver = useCallback(
     (event) => {
       event.preventDefault(); //一定加这句,否则无法停靠
-      let row = TreeNodeFormat(props);
-      if (row.dropAble) {
+
+      if (dropAble) {
         const domClientY = document
           .getElementById(nodeid)
           .getBoundingClientRect().top;
         const mouseClientY = event.clientY;
         if (
-          (!row.dropType ||
-            (row.dropType && row.dropType.inddexOf("before") > -1)) &&
+          (!dropType || (dropType && dropType.inddexOf("before") > -1)) &&
           mouseClientY - domClientY < 10
         ) {
           //前插入
@@ -443,10 +460,10 @@ function TreeNode(props) {
           document.getElementById(nodeid).style.borderBottom = "none";
           document.getElementById(nodeid).style.backgroundColor =
             "var(--background-color)";
+          //当前拖动方式
           window.localStorage.setItem("wasabi-drag-type", "before");
         } else if (
-          (!row.dropType ||
-            (row.dropType && row.dropType.inddexOf("in") > -1)) &&
+          (!dropType || (dropType && dropType.inddexOf("in") > -1)) &&
           mouseClientY - domClientY < 30
         ) {
           //包含
@@ -454,98 +471,124 @@ function TreeNode(props) {
           document.getElementById(nodeid).style.borderBottom = "none";
           document.getElementById(nodeid).style.backgroundColor =
             "var(--background-color)";
+          //当前拖动方式
           window.localStorage.setItem("wasabi-drag-type", "in");
-        } else if (
-          !row.dropType ||
-          (row.dropType && row.dropType.inddexOf("after") > -1)
-        ) {
+        } else if (!dropType || (dropType && dropType.inddexOf("after") > -1)) {
           //后插入
           document.getElementById(nodeid).style.borderTop = "none";
           document.getElementById(nodeid).style.borderBottom =
             "1px solid var(--primary-color)";
           document.getElementById(nodeid).style.backgroundColor =
             "var(--background-color)";
+          //当前拖动方式
           window.localStorage.setItem("wasabi-drag-type", "after");
         }
       }
     },
-    [props, nodeid]
+    [row]
   );
   /**
    * 容器离开事件
    * @param {} event
    */
-  const onNodeDragLeave = useCallback(
-    (event) => {
-      event.preventDefault();
-      document.getElementById(nodeid).style.borderTop = "none";
-      document.getElementById(nodeid).style.borderBottom = "none";
-      document.getElementById(nodeid).style.backgroundColor = null;
-    },
-    [nodeid]
-  );
+  const onNodeDragLeave = useCallback((event) => {
+    event.preventDefault();
+    document.getElementById(nodeid).style.borderTop = "none";
+    document.getElementById(nodeid).style.borderBottom = "none";
+    document.getElementById(nodeid).style.backgroundColor = null;
+  }, []);
   /**
    * 容器组件的停靠事件
    */
   const onNodeDrop = useCallback(
     (event) => {
       event.preventDefault();
-      let row = TreeNodeFormat(props);
-      document.getElementById(nodeid).style.borderTop = "none";
-      document.getElementById(nodeid).style.borderBottom = "none";
-      document.getElementById(nodeid).style.backgroundColor = null;
-      let drag = JSON.parse(event.dataTransfer.getData("drag"));
-      if (!drag) {
-        drag = JSON.parse(window.localStorage.getItem("wasabi-drag-item"));
-      }
-      let dragType = window.localStorage.getItem("wasabi-drag-type");
-      if (!drag) {
-        return;
-      }
-      if (row.dropAble) {
+      if (dropAble) {
         //允许停靠
-
-        let dropAble = true; //可以停靠
-        if (props.beforeDrop) {
-          dropAble = props.beforeDrop(drag, row, dragType); //存在并且返回
+        let isAble = true; //可以停靠
+        if (treeEvents.beforeDrop) {
+          isAble = treeEvents.beforeDrop(drag, row, dragType); //存在并且返回
         }
-        if (dropAble) {
+        if (isAble) {
+          document.getElementById(nodeid).style.borderTop = "none";
+          document.getElementById(nodeid).style.borderBottom = "none";
+          document.getElementById(nodeid).style.backgroundColor = null;
+          let dragItem = JSON.parse(event.dataTransfer.getData("dragItem"));
+          if (!dragItem) {
+            //拿不到就从缓存中拿
+            dragItem = JSON.parse(
+              window.localStorage.getItem("wasabi-drag-item")
+            );
+          }
+          //当前拖动方式
+          let dragType = window.localStorage.getItem("wasabi-drag-type");
+          if (!dragItem) {
+            return;
+          }
+          //移除当前拖动方式
           window.localStorage.removeItem("wasabi-drag-type");
-          props.onDrop && props.onDrop(drag, row, dragType);
+          treeEvents.onDrop && treeEvents.onDrop(dragItem, row, dragType);
         }
       }
     },
-    [props, nodeid]
+    [row, treeEvents.beforeDrop, treeEvents.onDrop]
   );
 
-  return (
-    <NodeView
-      {...props}
-      rename={rename}
-      textid={textid}
-      nodeid={nodeid}
-      onClick={onClick}
-      onDoubleClick={onDoubleClick}
-      onChecked={onChecked}
-      onExpand={onExpand}
-      onBlur={onBlur}
-      onKeyUp={onKeyUp}
-      beforeNodeRename={beforeNodeRename}
-      beforeNodeRemove={beforeNodeRemove}
-      onNodeDragEnd={onNodeDragEnd}
-      onNodeDragLeave={onNodeDragLeave}
-      onNodeDragOver={onNodeDragOver}
-      onNodeDragStart={onNodeDragStart}
-      onNodeDrop={onNodeDrop}
-    ></NodeView>
+  /**
+   * 节点的右键功能
+   */
+  const onNodeContextMenu = useCallback(
+    (event) => {
+      if (contextMenuAble) {
+        let isAble = true;
+        isAble =
+          treeEvents.beforeContextMenu &&
+          treeEvents.beforeContextMenu(row?.id, row?.text, row, event);
+        if (isable) {
+          treeEvents.onContextMenu &&
+            treeEvents.onContextMenu(
+              row?.id,
+              row?.text,
+              row,
+              {
+                addAble,
+                removeAble,
+                removeAble,
+              },
+              event
+            );
+        }
+      }
+    },
+    [contextMenuAble, row, treeEvents.onContextMenu]
   );
+  const nodeEvents = {
+    rename,
+    textid,
+    nodeid,
+    onClick,
+    onDoubleClick,
+    onChecked,
+    onExpand,
+    onBlur,
+    onKeyUp,
+    beforeNodeRename,
+    beforeNodeRemove,
+    onNodeDragEnd,
+    onNodeDragLeave,
+    onNodeDragOver,
+    onNodeDragStart,
+    onNodeDrop,
+    onNodeContextMenu,
+  };
+  return <NodeView row={row} nodeEvents={nodeEvents}></NodeView>;
 }
 
 TreeNode.propTypes = {
   isParent: PropTypes.bool, //是否是父节点
-  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired, //值
-  pId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired, //父节值
-  text: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired, //标题
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), //值
+  pId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), //父节值
+  text: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), //标题
   title: PropTypes.string, //提示信息
   arrowFoldIcon: PropTypes.node, //折叠图标
   arrowUnFoldIcon: PropTypes.node, //展开图标
@@ -555,30 +598,20 @@ TreeNode.propTypes = {
   isOpened: PropTypes.bool, //是否处于打开状态
   isChecked: PropTypes.bool, //是否被勾选
   selectAble: PropTypes.bool, //是否允许勾选
+  addAble: PropTypes.bool, //是否允许新增
+  renameAble: PropTypes.bool, //是否允许重命名
+  renameIconAble: PropTypes.bool, //是否允许重命名图标
+  removeAble: PropTypes.bool, //是否允许移除
+  removeIconAble: PropTypes.bool, //是否允许移除图标
   draggAble: PropTypes.bool, //是否允许拖动，
   dropAble: PropTypes.bool, //是否允许停靠
-  dropType: PropTypes.array, //停靠的模式["before","in","after"]
   href: PropTypes.string, //节点的链接
   hide: PropTypes.bool, //是否隐藏
   children: PropTypes.array, //子节点
 
-  /**事件都是通过父组件传下来的 */
-  //after事件
-  onClick: PropTypes.func, //单击的事件
-  onDoubleClick: PropTypes.func, //双击事件
-  onCheck: PropTypes.func, //勾选/取消勾选事件
-  onExpand: PropTypes.func, //展开事件
-  onRename: PropTypes.func, //重命名事件
-  onRemove: PropTypes.func, //删除事件
-  onRightClick: PropTypes.func, //右键菜单
-  onDrag: PropTypes.func, //拖动事件
-  onDrop: PropTypes.func, //停靠事件
-  //before 事件
-  beforeDrag: PropTypes.func, //拖动前事件
-  beforeDrop: PropTypes.func, //停靠前事件
-  beforeRemove: PropTypes.func, //删除前事件
-  beforeRename: PropTypes.func, //重命名前事件
-  beforeRightClick: PropTypes.func, //鼠标右键前事件
+  //这两个树组件内部传的
+  _isLast: PropTypes.bool, //是否为父节点的最后一个节点
+  _path: PropTypes.array, //节点的路径
 };
 TreeNode.defaultProps = {
   iconCls: "icon-text",

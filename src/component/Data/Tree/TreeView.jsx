@@ -9,81 +9,30 @@ create by wangzhiyong 创建树组件
  2022-01-06 增加虚线可配功能
  2022-01-07 增加类型
  */
-import React from "react";
+import React, { useContext } from "react";
+import { ShareContext } from "./handlerData.js";
 import TreeNode from "./TreeNode.jsx";
-function TreeView(props) {
+function TreeView() {
   let nodeControl = [];
-  //得到传下去的属性
-  const {
-    componentType,
-    selectAble,
-    checkStyle,
-    renameAble,
-    removeAble,
-    draggAble,
-    dropAble,
-    dropType,
-    clickId,
-    loadingId,
-  } = props;
-
-  const treeProps = {
-    componentType,
-    selectAble,
-    checkStyle,
-    renameAble,
-    removeAble,
-    draggAble,
-    dropAble,
-    dropType,
-
-    clickId,
-    loadingId,
-  };
-  //全局事件
-  const treeEvents = {
-    beforeDrag: props.beforeDrag,
-    beforeRemove: props.beforeRemove,
-    beforeDrop: props.beforeDrop,
-    beforeRename: props.beforeRename,
-    onClick: props.onClick,
-    onDoubleClick: props.onDoubleClick,
-    onChecked: props.onChecked,
-    onRemove: props.onRemove,
-    onExpand: props.onExpand,
-    onRename: props.onRename,
-    onDrop: props.onDrop,
-    onDrag: props.onDrag,
-    textFormatter: props.textFormatter,
-  };
-  let data = props.visibleData;
-  if (Array.isArray(data)) {
-    nodeControl = data.map((item, index) => {
-      let isParent = false; //是否为父节点
+  const { visibleData, treeProps } = useContext(ShareContext);
+  if (Array.isArray(visibleData)) {
+    nodeControl = visibleData.map((row) => {
       if (
-        item.isParent === true ||
-        (Array.isArray(item.children) && item.children.length > 0)
+        row.isParent === true ||
+        (Array.isArray(row.children) && row.children.length > 0)
       ) {
         //如果明确规定了，或者子节点不为空，则设置为父节点
-        isParent = true;
+        row.isParent = true;
       }
-      return (
-        <TreeNode
-          key={"treenode-" + item.pId + "-" + item.id}
-          {...treeProps}
-          {...item}
-          isParent={isParent}
-          {...treeEvents}
-        />
-      );
+      return <TreeNode key={"treenode-" + row.pId + "-" + row.id} {...row} />;
     });
   }
   return (
     <ul
-      id={props.treeid}
+      id={treeProps.treeid}
       className={
         "wasabi-tree clearfix " +
-        (props.dottedAble === false ? " nodotted " : "")
+        (treeProps.dottedAble === false ? " nodotted " : "")
       }
     >
       {nodeControl}

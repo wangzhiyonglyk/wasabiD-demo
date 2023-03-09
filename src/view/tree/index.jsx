@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import Tree from "wasabi-tree";
-import "wasabi-tree/lib/index.css";
+import { Tree } from "../../component";
+import Tree1 from "wasabi-tree";
 let data = [
   {
     id: 1,

@@ -8,7 +8,7 @@ import LinkButton from "../../../../Buttons/LinkButton";
 let Format = function (props) {
     return <div className="wasabi-execel-tool-group">
         <div style={{ display: "flex" }}>
-            <div  key="1" className="wasabi-excel-tool-button" title="文本"> <LinkButton onClick={props.onClick.bind(this,"format_text")} theme="info" iconCls="icon-text" title="文本"></LinkButton></div>
+            <div  key="1" className="wasabi-excel-tool-button" title="文本"> <LinkButton onClick={props.onClick.bind(this,"format_text")} theme="info" iconCls="icon-txt" title="文本"></LinkButton></div>
             <div  key="2" className="wasabi-excel-tool-button" title="数字">  <LinkButton onClick={props.onClick.bind(this,"format_number")}  theme="info" iconCls="icon-number" title="数字"></LinkButton></div>
             <div  key="3" className="wasabi-excel-tool-button" title="选择">  <LinkButton onClick={props.onClick.bind(this,"format_select")}  theme="info" iconCls="icon-select" title="选择"></LinkButton></div>
             <div  key="4" className="wasabi-excel-tool-button" title="日期">  <LinkButton onClick={props.onClick.bind(this,"format_date")}  theme="info" iconCls="icon-date" title="日期"></LinkButton></div>

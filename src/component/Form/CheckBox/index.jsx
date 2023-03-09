@@ -37,7 +37,7 @@ function LiView(props) {
           <label
             className={
               "checkbox-label " +
-              (checked ? " checked " : " ") +
+              (checked ? " icon-check checked " : " ") +
               (half ? " halfcheck " : "")
             }
             disabled={disabled}
