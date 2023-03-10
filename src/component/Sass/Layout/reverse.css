@@ -1,11 +1,10 @@
 /*
-create by wangzhiyong
+create by 王志勇
 data：2016-04-14
 desc：div翻转样式
 */
 
-.reverse
-{
+.reverse {
   display: inline;
   font-size: 14px;
   color: var(--color);
@@ -23,20 +22,36 @@ desc：div翻转样式
   animation-duration: 225ms;
 }
 @-webkit-keyframes fadein {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 @keyframes fadein {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 @-webkit-keyframes fadeout {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 @keyframes fadeout {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 .fade.out {
   opacity: 0;
@@ -77,14 +92,14 @@ desc：div翻转样式
   animation-name: fadein;
 }
 .reverse-pop.out.reverse {
-  -webkit-transform: scale(.8);
+  -webkit-transform: scale(0.8);
   -webkit-animation-name: popout;
-  transform: scale(.8);
+  transform: scale(0.8);
   animation-name: popout;
 }
 @-webkit-keyframes popin {
   from {
-    -webkit-transform: scale(.8);
+    -webkit-transform: scale(0.8);
     opacity: 0;
   }
   to {
@@ -94,7 +109,7 @@ desc：div翻转样式
 }
 @keyframes popin {
   from {
-    transform: scale(.8);
+    transform: scale(0.8);
     opacity: 0;
   }
   to {
@@ -108,7 +123,7 @@ desc：div翻转样式
     opacity: 1;
   }
   to {
-    -webkit-transform: scale(.8);
+    -webkit-transform: scale(0.8);
     opacity: 0;
   }
 }
@@ -118,70 +133,103 @@ desc：div翻转样式
     opacity: 1;
   }
   to {
-    transform: scale(.8);
+    transform: scale(0.8);
     opacity: 0;
   }
 }
 /* keyframes for slidein from sides */
 @-webkit-keyframes slideinfromright {
-  from { -webkit-transform: translate3d(100%,0,0); }
-  to { -webkit-transform: translate3d(0,0,0); }
+  from {
+    -webkit-transform: translate3d(100%, 0, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+  }
 }
 @keyframes slideinfromright {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 @-webkit-keyframes slideinfromleft {
-  from { -webkit-transform: translate3d(-100%,0,0); }
-  to { -webkit-transform: translate3d(0,0,0); }
+  from {
+    -webkit-transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+  }
 }
 @keyframes slideinfromleft {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 /* keyframes for slideout to sides */
 @-webkit-keyframes slideouttoleft {
-  from { -webkit-transform: translate3d(0,0,0); }
-  to { -webkit-transform: translate3d(-100%,0,0); }
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+  to {
+    -webkit-transform: translate3d(-100%, 0, 0);
+  }
 }
 @keyframes slideouttoleft {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
 @-webkit-keyframes slideouttoright {
-  from { -webkit-transform: translate3d(0,0,0); }
-  to { -webkit-transform: translate3d(100%,0,0); }
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+  to {
+    -webkit-transform: translate3d(100%, 0, 0);
+  }
 }
 @keyframes slideouttoright {
-  from { transform: translateX(0); }
-  to { transform: translateX(100%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }
-.slide.out, .slide.in {
+.slide.out,
+.slide.in {
   -webkit-animation-timing-function: ease-out;
   -webkit-animation-duration: 350ms;
   animation-timing-function: ease-out;
   animation-duration: 350ms;
 }
 .slide.out {
-  -webkit-transform: translate3d(-100%,0,0);
+  -webkit-transform: translate3d(-100%, 0, 0);
   -webkit-animation-name: slideouttoleft;
   transform: translateX(-100%);
   animation-name: slideouttoleft;
 }
 .slide.in {
-  -webkit-transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0, 0, 0);
   -webkit-animation-name: slideinfromright;
   transform: translateX(0);
   animation-name: slideinfromright;
 }
 .slide.out.reverse {
-  -webkit-transform: translate3d(100%,0,0);
+  -webkit-transform: translate3d(100%, 0, 0);
   -webkit-animation-name: slideouttoright;
   transform: translateX(100%);
   animation-name: slideouttoright;
 }
 .slide.in.reverse {
-  -webkit-transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0, 0, 0);
   -webkit-animation-name: slideinfromleft;
   transform: translateX(0);
   animation-name: slideinfromleft;
@@ -248,20 +296,36 @@ desc：div翻转样式
   animation-duration: 200ms;
 }
 @-webkit-keyframes slideinfromtop {
-  from { -webkit-transform: translateY(-100%); }
-  to { -webkit-transform: translateY(0); }
+  from {
+    -webkit-transform: translateY(-100%);
+  }
+  to {
+    -webkit-transform: translateY(0);
+  }
 }
 @keyframes slideinfromtop {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(0); }
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 @-webkit-keyframes slideouttotop {
-  from { -webkit-transform: translateY(0); }
-  to { -webkit-transform: translateY(-100%); }
+  from {
+    -webkit-transform: translateY(0);
+  }
+  to {
+    -webkit-transform: translateY(-100%);
+  }
 }
 @keyframes slideouttotop {
-  from { transform: translateY(0); }
-  to { transform: translateY(-100%); }
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
 }
 /* slide up */
 .slideup.out {
@@ -293,20 +357,36 @@ desc：div翻转样式
   animation-duration: 200ms;
 }
 @-webkit-keyframes slideinfrombottom {
-  from { -webkit-transform: translateY(100%); }
-  to { -webkit-transform: translateY(0); }
+  from {
+    -webkit-transform: translateY(100%);
+  }
+  to {
+    -webkit-transform: translateY(0);
+  }
 }
 @keyframes slideinfrombottom {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 @-webkit-keyframes slideouttobottom {
-  from { -webkit-transform: translateY(0); }
-  to { -webkit-transform: translateY(100%); }
+  from {
+    -webkit-transform: translateY(0);
+  }
+  to {
+    -webkit-transform: translateY(100%);
+  }
 }
 @keyframes slideouttobottom {
-  from { transform: translateY(0); }
-  to { transform: translateY(100%); }
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
 }
 /* The properties in this rule are only necessary for the 'flip' transition.
  * We need specify the perspective to create a projection matrix. This will add
@@ -321,15 +401,17 @@ desc：div翻转样式
 }
 .flip {
   -webkit-backface-visibility: hidden;
-  -webkit-transform: translateX(0); /* Needed to work around an iOS 3.1 bug that causes listview thumbs to disappear when -webkit-visibility:hidden is used. */
+  -webkit-transform: translateX(
+    0
+  ); /* Needed to work around an iOS 3.1 bug that causes listview thumbs to disappear when -webkit-visibility:hidden is used. */
   backface-visibility: hidden;
   transform: translateX(0);
 }
 .flip.out {
-  -webkit-transform: rotateY(-90deg) scale(.9);
+  -webkit-transform: rotateY(-90deg) scale(0.9);
   -webkit-animation-name: flipouttoleft;
   -webkit-animation-duration: 175ms;
-  transform: rotateY(-90deg) scale(.9);
+  transform: rotateY(-90deg) scale(0.9);
   animation-name: flipouttoleft;
   animation-duration: 175ms;
 }
@@ -340,9 +422,9 @@ desc：div翻转样式
   animation-duration: 225ms;
 }
 .flip.out.reverse {
-  -webkit-transform: rotateY(90deg) scale(.9);
+  -webkit-transform: rotateY(90deg) scale(0.9);
   -webkit-animation-name: flipouttoright;
-  transform: rotateY(90deg) scale(.9);
+  transform: rotateY(90deg) scale(0.9);
   animation-name: flipouttoright;
 }
 .flip.in.reverse {
@@ -350,36 +432,68 @@ desc：div翻转样式
   animation-name: flipintoleft;
 }
 @-webkit-keyframes flipouttoleft {
-  from { -webkit-transform: rotateY(0); }
-  to { -webkit-transform: rotateY(-90deg) scale(.9); }
+  from {
+    -webkit-transform: rotateY(0);
+  }
+  to {
+    -webkit-transform: rotateY(-90deg) scale(0.9);
+  }
 }
 @keyframes flipouttoleft {
-  from { transform: rotateY(0); }
-  to { transform: rotateY(-90deg) scale(.9); }
+  from {
+    transform: rotateY(0);
+  }
+  to {
+    transform: rotateY(-90deg) scale(0.9);
+  }
 }
 @-webkit-keyframes flipouttoright {
-  from { -webkit-transform: rotateY(0) ; }
-  to { -webkit-transform: rotateY(90deg) scale(.9); }
+  from {
+    -webkit-transform: rotateY(0);
+  }
+  to {
+    -webkit-transform: rotateY(90deg) scale(0.9);
+  }
 }
 @keyframes flipouttoright {
-  from { transform: rotateY(0); }
-  to { transform: rotateY(90deg) scale(.9); }
+  from {
+    transform: rotateY(0);
+  }
+  to {
+    transform: rotateY(90deg) scale(0.9);
+  }
 }
 @-webkit-keyframes flipintoleft {
-  from { -webkit-transform: rotateY(-90deg) scale(.9); }
-  to { -webkit-transform: rotateY(0); }
+  from {
+    -webkit-transform: rotateY(-90deg) scale(0.9);
+  }
+  to {
+    -webkit-transform: rotateY(0);
+  }
 }
 @keyframes flipintoleft {
-  from { transform: rotateY(-90deg) scale(.9); }
-  to { transform: rotateY(0); }
+  from {
+    transform: rotateY(-90deg) scale(0.9);
+  }
+  to {
+    transform: rotateY(0);
+  }
 }
 @-webkit-keyframes flipintoright {
-  from { -webkit-transform: rotateY(90deg) scale(.9); }
-  to { -webkit-transform: rotateY(0); }
+  from {
+    -webkit-transform: rotateY(90deg) scale(0.9);
+  }
+  to {
+    -webkit-transform: rotateY(0);
+  }
 }
 @keyframes flipintoright {
-  from { transform: rotateY(90deg) scale(.9); }
-  to { transform: rotateY(0); }
+  from {
+    transform: rotateY(90deg) scale(0.9);
+  }
+  to {
+    transform: rotateY(0);
+  }
 }
 /* The properties in this rule are only necessary for the 'flip' transition.
  * We need specify the perspective to create a projection matrix. This will add
@@ -394,19 +508,21 @@ desc：div翻转样式
 }
 .turn {
   -webkit-backface-visibility: hidden;
-  -webkit-transform: translateX(0); /* Needed to work around an iOS 3.1 bug that causes listview thumbs to disappear when -webkit-visibility:hidden is used. */
+  -webkit-transform: translateX(
+    0
+  ); /* Needed to work around an iOS 3.1 bug that causes listview thumbs to disappear when -webkit-visibility:hidden is used. */
   -webkit-transform-origin: 0;
 
-  backface-visibility :hidden;
+  backface-visibility: hidden;
   transform: translateX(0);
   transform-origin: 0;
 }
 .turn.out {
-  -webkit-transform: rotateY(-90deg) scale(.9);
+  -webkit-transform: rotateY(-90deg) scale(0.9);
   -webkit-animation-name: flipouttoleft;
   -webkit-animation-duration: 125ms;
 
-  transform: rotateY(-90deg) scale(.9);
+  transform: rotateY(-90deg) scale(0.9);
   animation-name: flipouttoleft;
   animation-duration: 125ms;
 }
@@ -415,12 +531,11 @@ desc：div翻转样式
   -webkit-animation-duration: 250ms;
   animation-name: flipintoright;
   animation-duration: 250ms;
-
 }
 .turn.out.reverse {
-  -webkit-transform: rotateY(90deg) scale(.9);
+  -webkit-transform: rotateY(90deg) scale(0.9);
   -webkit-animation-name: flipouttoright;
-  transform: rotateY(90deg) scale(.9);
+  transform: rotateY(90deg) scale(0.9);
   animation-name: flipouttoright;
 }
 .turn.in.reverse {
@@ -428,36 +543,68 @@ desc：div翻转样式
   animation-name: flipintoleft;
 }
 @-webkit-keyframes flipouttoleft {
-  from { -webkit-transform: rotateY(0); }
-  to { -webkit-transform: rotateY(-90deg) scale(.9); }
+  from {
+    -webkit-transform: rotateY(0);
+  }
+  to {
+    -webkit-transform: rotateY(-90deg) scale(0.9);
+  }
 }
 @keyframes flipouttoleft {
-  from { transform: rotateY(0); }
-  to { transform: rotateY(-90deg) scale(.9); }
+  from {
+    transform: rotateY(0);
+  }
+  to {
+    transform: rotateY(-90deg) scale(0.9);
+  }
 }
 @-webkit-keyframes flipouttoright {
-  from { -webkit-transform: rotateY(0) ; }
-  to { -webkit-transform: rotateY(90deg) scale(.9); }
+  from {
+    -webkit-transform: rotateY(0);
+  }
+  to {
+    -webkit-transform: rotateY(90deg) scale(0.9);
+  }
 }
 @keyframes flipouttoright {
-  from { transform: rotateY(0); }
-  to { transform: rotateY(90deg) scale(.9); }
+  from {
+    transform: rotateY(0);
+  }
+  to {
+    transform: rotateY(90deg) scale(0.9);
+  }
 }
 @-webkit-keyframes flipintoleft {
-  from { -webkit-transform: rotateY(-90deg) scale(.9); }
-  to { -webkit-transform: rotateY(0); }
+  from {
+    -webkit-transform: rotateY(-90deg) scale(0.9);
+  }
+  to {
+    -webkit-transform: rotateY(0);
+  }
 }
 @keyframes flipintoleft {
-  from { transform: rotateY(-90deg) scale(.9); }
-  to { transform: rotateY(0); }
+  from {
+    transform: rotateY(-90deg) scale(0.9);
+  }
+  to {
+    transform: rotateY(0);
+  }
 }
 @-webkit-keyframes flipintoright {
-  from { -webkit-transform: rotateY(90deg) scale(.9); }
-  to { -webkit-transform: rotateY(0); }
+  from {
+    -webkit-transform: rotateY(90deg) scale(0.9);
+  }
+  to {
+    -webkit-transform: rotateY(0);
+  }
 }
 @keyframes flipintoright {
-  from { transform: rotateY(90deg) scale(.9); }
-  to { transform: rotateY(0); }
+  from {
+    transform: rotateY(90deg) scale(0.9);
+  }
+  to {
+    transform: rotateY(0);
+  }
 }
 /* flow transition */
 .flow {
@@ -465,11 +612,11 @@ desc：div翻转样式
   transform-origin: 50% 30%;
 }
 .flow.out {
-  -webkit-transform: translateX(-100%) scale(.7);
+  -webkit-transform: translateX(-100%) scale(0.7);
   -webkit-animation-name: flowouttoleft;
   -webkit-animation-timing-function: ease;
   -webkit-animation-duration: 350ms;
-  transform: translateX(-100%) scale(.7);
+  transform: translateX(-100%) scale(0.7);
   animation-name: flowouttoleft;
   animation-timing-function: ease;
   animation-duration: 350ms;
@@ -495,42 +642,98 @@ desc：div翻转样式
   animation-name: flowinfromleft;
 }
 @-webkit-keyframes flowouttoleft {
-  0% { -webkit-transform: translateX(0) scale(1); }
-  60%, 70% { -webkit-transform: translateX(0) scale(.7); }
-  100% { -webkit-transform: translateX(-100%) scale(.7); }
+  0% {
+    -webkit-transform: translateX(0) scale(1);
+  }
+  60%,
+  70% {
+    -webkit-transform: translateX(0) scale(0.7);
+  }
+  100% {
+    -webkit-transform: translateX(-100%) scale(0.7);
+  }
 }
 @keyframes flowouttoleft {
-  0% { transform: translateX(0) scale(1); }
-  60%, 70% { transform: translateX(0) scale(.7); }
-  100% { transform:  translateX(-100%) scale(.7); }
+  0% {
+    transform: translateX(0) scale(1);
+  }
+  60%,
+  70% {
+    transform: translateX(0) scale(0.7);
+  }
+  100% {
+    transform: translateX(-100%) scale(0.7);
+  }
 }
 @-webkit-keyframes flowouttoright {
-  0% { -webkit-transform: translateX(0) scale(1); }
-  60%, 70% { -webkit-transform: translateX(0) scale(.7); }
-  100% { -webkit-transform:  translateX(100%) scale(.7); }
+  0% {
+    -webkit-transform: translateX(0) scale(1);
+  }
+  60%,
+  70% {
+    -webkit-transform: translateX(0) scale(0.7);
+  }
+  100% {
+    -webkit-transform: translateX(100%) scale(0.7);
+  }
 }
 @keyframes flowouttoright {
-  0% { transform: translateX(0) scale(1); }
-  60%, 70% { transform: translateX(0) scale(.7); }
-  100% { transform:  translateX(100%) scale(.7); }
+  0% {
+    transform: translateX(0) scale(1);
+  }
+  60%,
+  70% {
+    transform: translateX(0) scale(0.7);
+  }
+  100% {
+    transform: translateX(100%) scale(0.7);
+  }
 }
 @-webkit-keyframes flowinfromleft {
-  0% { -webkit-transform: translateX(-100%) scale(.7); }
-  30%, 40% { -webkit-transform: translateX(0) scale(.7); }
-  100% { -webkit-transform: translateX(0) scale(1); }
+  0% {
+    -webkit-transform: translateX(-100%) scale(0.7);
+  }
+  30%,
+  40% {
+    -webkit-transform: translateX(0) scale(0.7);
+  }
+  100% {
+    -webkit-transform: translateX(0) scale(1);
+  }
 }
 @keyframes flowinfromleft {
-  0% { transform: translateX(-100%) scale(.7); }
-  30%, 40% { transform: translateX(0) scale(.7); }
-  100% { transform: translateX(0) scale(1); }
+  0% {
+    transform: translateX(-100%) scale(0.7);
+  }
+  30%,
+  40% {
+    transform: translateX(0) scale(0.7);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
 }
 @-webkit-keyframes flowinfromright {
-  0% { -webkit-transform: translateX(100%) scale(.7); }
-  30%, 40% { -webkit-transform: translateX(0) scale(.7); }
-  100% { -webkit-transform: translateX(0) scale(1); }
+  0% {
+    -webkit-transform: translateX(100%) scale(0.7);
+  }
+  30%,
+  40% {
+    -webkit-transform: translateX(0) scale(0.7);
+  }
+  100% {
+    -webkit-transform: translateX(0) scale(1);
+  }
 }
 @keyframes flowinfromright {
-  0% { transform: translateX(100%) scale(.7); }
-  30%, 40% { transform: translateX(0) scale(.7); }
-  100% { transform: translateX(0) scale(1); }
+  0% {
+    transform: translateX(100%) scale(0.7);
+  }
+  30%,
+  40% {
+    transform: translateX(0) scale(0.7);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
 }

@@ -1,4 +1,4 @@
-/*create by wangzhiyong
+/*create by 王志勇
 date:2016-04-01
 edit 2023-03-09
 desc:checkbox
@@ -37,10 +37,11 @@ desc:checkbox
 
 .wasabi-checkul .checkbox-label {
   font-family: "iconfont" !important;
-  width: 17px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border: 1px solid var(--border-color);
   border-radius: 2px;
+  position: relative;
 }
 
 .wasabi-checkul .checkbox-label[readOnly],
@@ -53,7 +54,10 @@ desc:checkbox
 .wasabi-checkul .checkbox-label:hover {
   border: 1px solid var(--primary-color);
 }
-
+.wasabi-checkul .checkbox-label::before {
+  position: absolute;
+  top: -1px;
+}
 .wasabi-checkul .checktext.checked {
   color: var(--primary-color);
 }
@@ -70,13 +74,13 @@ desc:checkbox
   border-color: var(--primary-color);
 }
 
-.wasabi-checkul .checkbox-label.halfcheck::after {
+.wasabi-checkul .checkbox-label.halfcheck::before {
   content: "";
   height: 8px;
   width: 8px;
   position: absolute;
-  left: 4px;
-  top: 4px;
+  left: 2px;
+  top: 2px;
   background-color: var(--primary-color);
   background-repeat: no-repeat;
   color: white;

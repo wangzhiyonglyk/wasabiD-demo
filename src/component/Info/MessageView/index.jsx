@@ -36,17 +36,15 @@ class MessageView extends Component {
     this.setState({
       visible: false,
     });
-    if (this.props.OKHandler !== null) {
-      this.props.OKHandler();
-    }
+
+    this.props.OKHandler && this.props.OKHandler();
   }
   cancelHandler() {
     this.setState({
       visible: false,
     });
-    if (this.props.cancelHandler !== null) {
-      this.props.cancelHandler();
-    }
+
+    this.props.cancelHandler && this.props.cancelHandler();
   }
   close() {
     this.setState({

@@ -1,5 +1,5 @@
 /*
-create by wangzhiyong
+create by 王志勇
 date:2022-09-20
 desc:年范围选择控件
  */
@@ -16,11 +16,11 @@ import regs from "../../libs/regs";
  * @param {*} secondYear 第二年
  */
 function getRangeYear(firstYear, secondYear) {
-   firstYear = 1 * (firstYear ?? new Date().getFullYear());
-   secondYear = 1 * (secondYear ?? new Date().getFullYear());
+  firstYear = 1 * (firstYear ?? new Date().getFullYear());
+  secondYear = 1 * (secondYear ?? new Date().getFullYear());
   let firstYearArr = [],
     secondYearArr = [];
-    //先得到年份数组
+  //先得到年份数组
   if (secondYear - firstYear > 15) {
     //没有重叠，两个值年份相差太大
     for (let i = firstYear - 8; i < firstYear + 7; i++) {
@@ -64,7 +64,6 @@ function getRangeYear(firstYear, secondYear) {
   return result;
 }
 
-
 /**
  * 得到两个新的值
  * @param {*} type 面板类型，是第一个年份面板，还是第二个
@@ -74,30 +73,33 @@ function getRangeYear(firstYear, secondYear) {
 function getNewRangeYearObj(type, oldYearRangeObj, newValue) {
   let firstYear = oldYearRangeObj.value.split(",")[0];
   let secondYear = oldYearRangeObj.value.split(",")[1];
-  if (regs.yearrange.test(oldYearRangeObj.value)||(!firstYear && !secondYear)) {
+  if (
+    regs.yearrange.test(oldYearRangeObj.value) ||
+    (!firstYear && !secondYear)
+  ) {
     //旧值正常，或者原来是空值 ，相当于重新重新选择,
     oldYearRangeObj = {
       ...oldYearRangeObj,
       firstRangeBegin: type === 1 ? newValue : null,
       firstRangeEnd: null,
       secondRangeBegin: null,
-      secondRangeEnd:type === 2 ? newValue : null,
+      secondRangeEnd: type === 2 ? newValue : null,
       value: type === 1 ? (newValue ?? "") + "," : "," + (newValue ?? ""),
     };
-  } else {   
-      //有一个有值,归正大小
-      secondYear = Math.max((firstYear || secondYear) * 1, newValue * 1);
-      firstYear = Math.min((firstYear || secondYear) * 1, newValue * 1);
-     oldYearRangeObj= getRangeYear(firstYear||null,secondYear||null);
-    };
-  
+  } else {
+    //有一个有值,归正大小
+    secondYear = Math.max((firstYear || secondYear) * 1, newValue * 1);
+    firstYear = Math.min((firstYear || secondYear) * 1, newValue * 1);
+    oldYearRangeObj = getRangeYear(firstYear || null, secondYear || null);
+  }
+
   return oldYearRangeObj;
 }
 
 function YearRange(props) {
   const [yearRangeObj, setyearRangeObj] = useState({
-    firstYearArr:[],
-    secondYearArr:[],
+    firstYearArr: [],
+    secondYearArr: [],
     firstRangeBegin: null,
     firstRangeEnd: null,
     secondRangeBegin: null,
@@ -108,13 +110,11 @@ function YearRange(props) {
     (value) => {
       let newYearRangeObj = getNewRangeYearObj(1, yearRangeObj, value);
       if (regs.yearrange.test(newYearRangeObj.value)) {
-        if(props.onSelect ){
+        if (props.onSelect) {
           props.onSelect(newYearRangeObj.value, newYearRangeObj.value);
-        }else{
+        } else {
           setyearRangeObj(newYearRangeObj);
-          
         }
-       
       } else {
         setyearRangeObj(newYearRangeObj);
       }
@@ -126,13 +126,10 @@ function YearRange(props) {
     (value) => {
       let newYearRangeObj = getNewRangeYearObj(2, yearRangeObj, value);
       if (regs.yearrange.test(newYearRangeObj.value)) {
-        if(props.onSelect ){
+        if (props.onSelect) {
           props.onSelect(newYearRangeObj.value);
+        } else {
         }
-        else{
-         
-        }
-        
       } else {
         //更新本地值
         setyearRangeObj(newYearRangeObj);
@@ -141,10 +138,7 @@ function YearRange(props) {
     [props, yearRangeObj]
   );
   useEffect(() => {
-    let yearRangeObj = getRangeYear(
-      props.firstYear,
-      props.secondYear
-    );
+    let yearRangeObj = getRangeYear(props.firstYear, props.secondYear);
     setyearRangeObj(yearRangeObj);
   }, [props.firstYear, props.secondYear]);
 

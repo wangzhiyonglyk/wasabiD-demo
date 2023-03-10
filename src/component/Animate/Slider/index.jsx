@@ -1,5 +1,5 @@
 /**
- * create by wangzhiyong
+ * create by 王志勇
  * desc 普通轮播组件
  * date:2020-07-15
  * todo 还有bug
@@ -17,7 +17,7 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import func from "../../libs/func";
-import dom from "../../libs/dom"
+import dom from "../../libs/dom";
 import "./index.css";
 
 const uuid = func.uuid;

@@ -1,5 +1,5 @@
 /**
- * Created by zhiyongwang on 2016-04-26
+ * Created by 王志勇 on 2016-04-26
  * desc:下拉框容器
  ** edit 2022-09-17  完善组件
  2022-09-20 追加几个日期相关组件
@@ -10,74 +10,77 @@ import Picker from "../Picker";
 import Select from "../Select";
 import TreePicker from "../TreePicker";
 import GridPicker from "../GridPicker";
-import "./combobox.css"
+import "./combobox.css";
 class ComboBox extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.combobox = React.createRef();
-        this.state = {
+  constructor(props) {
+    super(props);
+    this.combobox = React.createRef();
+    this.state = {};
+  }
+  validate() {
+    //用于Form调用验证
+    return this.combobox.current.validate && this.combobox.current.validate();
+  }
+  getValue() {
+    //用于调用获取值
+    return (
+      (this.combobox.current.getValue && this.combobox.current.getValue()) || ""
+    );
+  }
+  setValue(value) {
+    //用于设置值
+    this.combobox.current.setValue && this.combobox.current.setValue(value);
+  }
+  /**
+   * 重新查询数据
+   * @param {*} params
+   * @param {*} url
+   */
+  reload(params, url) {
+    this.combobox.current.reload && this.combobox.current.reload(params, url);
+  }
 
-        }
-    }
-    validate() {//用于Form调用验证
-        return this.combobox.current.validate && this.combobox.current.validate();
-    }
-    getValue() {//用于调用获取值
-        return this.combobox.current.getValue && this.combobox.current.getValue()||""
-    }
-    setValue(value) {//用于设置值
-        this.combobox.current.setValue && this.combobox.current.setValue(value);
-    }
-    /**
-    * 重新查询数据
-    * @param {*} params 
-    * @param {*} url 
-    */
-    reload(params, url) {
-        this.combobox.current.reload && this.combobox.current.reload(params, url);
-    }
+  renderSelect() {
+    //普通下拉框
+    return <Select ref={this.combobox} {...this.props}></Select>;
+  }
+  renderPicker() {
+    //下拉面板
+    return <Picker ref={this.combobox} {...this.props}></Picker>;
+  }
+  renderDatePicker() {
+    return <DatePicker ref={this.combobox} {...this.props}></DatePicker>;
+  }
+  renderTreePicker() {
+    return <TreePicker ref={this.combobox} {...this.props}></TreePicker>;
+  }
+  renderGridPicker() {
+    return <GridPicker ref={this.combobox} {...this.props}></GridPicker>;
+  }
 
-    renderSelect() {//普通下拉框        
-        return <Select ref={this.combobox} {...this.props}  ></Select>
+  render() {
+    let control = null;
+    switch (this.props.type) {
+      case "select":
+        control = this.renderSelect();
+        break;
+      case "picker":
+        control = this.renderPicker();
+        break;
+      case "treepicker":
+        control = this.renderTreePicker();
+        break;
+      case "gridpicker":
+        control = this.renderGridPicker();
+        break;
+      default: //剩下的都是日期相关的
+        control = this.renderDatePicker();
+        break;
     }
-    renderPicker() {//下拉面板
-        return <Picker ref={this.combobox} {...this.props}></Picker>
-    }
-    renderDatePicker() {
-        return <DatePicker ref={this.combobox} {...this.props}></DatePicker>
-    }
-    renderTreePicker() {
-        return <TreePicker ref={this.combobox} {...this.props}></TreePicker>;
-    }
-    renderGridPicker() {
-        return <GridPicker ref={this.combobox} {...this.props}></GridPicker>;
-    }
-
-    render() {
-
-        let control = null;
-        switch (this.props.type) {
-            case "select":
-                control = this.renderSelect();
-                break;
-            case "picker":
-                control = this.renderPicker();
-                break;
-            case "treepicker":
-                control = this.renderTreePicker();
-                break;
-            case "gridpicker":
-                control = this.renderGridPicker();
-                break;
-                default://剩下的都是日期相关的
-                    control = this.renderDatePicker();
-                    break;
-
-        }
-        return control;
-    }
+    return control;
+  }
 }
-ComboBox.defaultProps={
-    type:"select"
-}
+ComboBox.defaultProps = {
+  type: "select",
+};
 export default ComboBox;

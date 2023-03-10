@@ -13,7 +13,7 @@
     "wasabi",
     "react"
   ],
-  "author": "wangzhiyong",
+  "author": "王志勇",
   "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.6",

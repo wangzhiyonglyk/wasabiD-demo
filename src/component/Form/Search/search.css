@@ -1,20 +1,18 @@
-/*create by wangzhiyong
+/*create by 王志勇
 //date:2016-07-22
 //desc:筛选框
 /*
 筛选框
 */
-.wasabi-searchbox
-{
+.wasabi-searchbox {
   position: relative;
   text-align: center;
   padding-right: 10px;
   padding-bottom: 10px;
   display: flex;
   font-size: var(--font-size);
-  color:var(--color);
-  width:100%;
- 
+  color: var(--color);
+  width: 100%;
 }
 .wasabi-searchbox input {
   width: 100%;
@@ -31,6 +29,6 @@
   position: absolute;
   right: 25px;
   top: 14px;
-  font-size:var(--icon-size);
-  color:var(--primary-color);
+  font-size: var(--icon-size);
+  color: var(--primary-color);
 }

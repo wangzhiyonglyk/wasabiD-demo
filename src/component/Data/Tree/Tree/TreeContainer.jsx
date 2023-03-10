@@ -18,7 +18,7 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import api from "wasabi-api";
-import func from "../../libs/func";
+import { uuid, clone, treeDataToFlatData } from "../libs/func";
 import {
   findNodeById,
   findLinkNodesByPath,
@@ -33,13 +33,14 @@ import "./tree.css";
 /**
  * 根据高度得到可见数及初始下标
  * @param {*} containerid 容器id
+ * @param {*} rowDefaultHeight 高度
  * @returns
  */
-const getVisibleCount = function (containerid) {
+const getVisibleCount = function (containerid, rowDefaultHeight) {
   let containerHeight = document.getElementById(containerid).clientHeight;
-  let visibleDataCount = Math.ceil(containerHeight / config.rowDefaultHeight);
+  let visibleDataCount = Math.ceil(containerHeight / rowDefaultHeight);
   let scrollTop = document.getElementById(containerid).scrollTop || 0;
-  let startIndex = Math.floor(scrollTop / config.rowDefaultHeight) || 0;
+  let startIndex = Math.floor(scrollTop / rowDefaultHeight) || 0;
   let endIndex = startIndex + config.bufferScale * visibleDataCount;
 
   return {
@@ -109,15 +110,15 @@ const handerLoadData = function (res, dataSource, loadSuccess) {
 /*
   注意了默认值不能给对象,否则在useeffect在父组件没传值时每次都认为是最新的
   */
-const TreeContainer = React.forwardRef(function (
-  {
+const TreeContainer = React.forwardRef(function (props, ref) {
+  const {
     componentType = "tree",
     style,
     className,
     url,
+    httpHeaders,
     httpType,
     contentType,
-    headers,
     params,
     data = null,
     dataSource = "data",
@@ -159,14 +160,17 @@ const TreeContainer = React.forwardRef(function (
     beforeRemove,
     beforeDrop,
     beforeRename,
-  },
-  ref
-) {
+  } = props;
+  const rowDefaultHeight =
+    componentType === "tree"
+      ? config.rowDefaultHeight
+      : config.gridRowDefaultHeight;
+  const treegridRef = useRef(null); //树表格
   const menuRef = useRef(null); //右键菜单
-  const menuNode = useRef(null); //右键菜单节点
+  const menuNodeRef = useRef(null); //右键菜单节点
   // 节点在树的位置映射
-  const [treecontainerid] = useState(func.uuid());
-  const [treeid] = useState(func.uuid());
+  const [treecontainerid] = useState(uuid());
+  const [treeid] = useState(uuid());
   const [state, dispatch] = useReducer(myReducer, {});
   const [options] = useState({
     idField,
@@ -208,7 +212,7 @@ const TreeContainer = React.forwardRef(function (
    */
   const onTreeMenuClick = useCallback(
     (name) => {
-      let id = menuNode.current?.getAttribute("data-id");
+      let id = menuNodeRef.current?.getAttribute("data-id");
       if (/^[-+]?[0-9]+$/.test(id)) {
         id = +id;
       }
@@ -243,6 +247,13 @@ const TreeContainer = React.forwardRef(function (
    */
   const onTreeClick = useCallback(
     (id, text, node) => {
+      if (componentType === "treegrid") {
+        try {
+          treegridRef.current?.setFocus();
+        } catch (e) {
+          console.log("treegrid error", e);
+        }
+      }
       dispatch({ type: "onClick", payload: id }); //延迟响应，方便获取所有勾选节点
       setTimeout(() => {
         onClick && onClick(id, text, node);
@@ -255,6 +266,13 @@ const TreeContainer = React.forwardRef(function (
    */
   const onTreeDoubleclick = useCallback(
     (id, text, node) => {
+      if (componentType === "treegrid") {
+        try {
+          treegridRef.current?.setFocus();
+        } catch (e) {
+          console.log("treegrid error", e);
+        }
+      }
       dispatch({ type: "onDoubleClick", payload: id });
       onDoubleClick && onDoubleClick(id, text, node);
     },
@@ -401,9 +419,9 @@ const TreeContainer = React.forwardRef(function (
             JSON.stringify(node)
           );
           //请求数据
-          let newParams = func.clone(params) || {};
+          let newParams = clone(params) || {};
           newParams[idField || "id"] = id;
-          getData(url, httpType, contentType, headers, newParams, (res) => {
+          getData(url, httpType, contentType, httpHeaders, newParams, (res) => {
             asyncChildrenData = onAsync(id, text, node); //得到数据
             if (Array.isArray(asyncChildrenData)) {
               handlerData(
@@ -424,20 +442,20 @@ const TreeContainer = React.forwardRef(function (
     [idField, parentField, textField, childrenField, isSimpleData, onExpand]
   );
   /** 
-  滚动事件
-  */
+    滚动事件
+    */
   const onScroll = useCallback(() => {
-    const vis = getVisibleCount(treecontainerid);
+    const vis = getVisibleCount(treecontainerid, rowDefaultHeight);
 
     showVisibleData(vis.startIndex, vis.endIndex, vis.visibleDataCount);
   }, [treecontainerid]);
 
   /**
-   * 渲染当前可见数据
-   @param {*} startIndex 可见区数据的开始下标
-   @param {*} endIndex 可见区数据的结束下标
-   @param {*} visibleDataCount 可见区数据的数量
-   */
+     * 渲染当前可见数据
+     @param {*} startIndex 可见区数据的开始下标
+     @param {*} endIndex 可见区数据的结束下标
+     @param {*} visibleDataCount 可见区数据的数量
+     */
   const showVisibleData = useCallback(
     (startIndex, endIndex, visibleDataCount) => {
       //这里的滚动不能单独弄成函数调整，原因不清楚
@@ -445,22 +463,21 @@ const TreeContainer = React.forwardRef(function (
       //   treeid,
       //   startIndex,
       //   visibleDataCount,
-      //   config.rowDefaultHeight
+      //   rowDefaultHeight
       // );
       let startOffset;
       if (startIndex >= 1) {
         // 减去上部预留的高度
         const size =
-          startIndex * config.rowDefaultHeight -
+          startIndex * rowDefaultHeight -
           (startIndex - config.bufferScale * visibleDataCount >= 0
             ? (startIndex - config.bufferScale * visibleDataCount) *
-              config.rowDefaultHeight
+              rowDefaultHeight
             : 0);
-        startOffset = startIndex * config.rowDefaultHeight - size;
+        startOffset = startIndex * rowDefaultHeight - size;
       } else {
         startOffset = 0;
       }
-
       document.getElementById(
         treeid
       ).style.transform = `translate3d(0,${startOffset}px,0)`;
@@ -481,10 +498,10 @@ const TreeContainer = React.forwardRef(function (
   // 对外接口
   useImperativeHandle(ref, () => ({
     /** 
-    获取某个节点
-    @param {*} id
-    @returns
-  */
+      获取某个节点
+      @param {*} id
+      @returns
+    */
     findNode(id) {
       return findNodeById(
         gobalData.current.hashData,
@@ -493,9 +510,9 @@ const TreeContainer = React.forwardRef(function (
       );
     },
     /** 
-  获取某个节点整个链路树
-  * @param {*} id
-  */
+    获取某个节点整个链路树
+    * @param {*} id
+    */
     findParents(id) {
       const node = findNodeById(
         gobalData.current.hashData,
@@ -507,23 +524,23 @@ const TreeContainer = React.forwardRef(function (
         : [];
     },
     /*获取所有节点
-  @returns
-  */
+    @returns
+    */
     getData() {
       return gobalData.current.data;
     },
     /*设置值
-  @param {*} newValue
-  */
+    @param {*} newValue
+    */
     getChecked() {
       return getChecked(gobalData.current.data);
     },
     /**
-      设置勾选
-      @param {*} id
-      @param {*}  isChecked 是否勾选
-    
-  */
+        设置勾选
+        @param {*} id
+        @param {*}  isChecked 是否勾选
+      
+    */
     setChecked(id, isChecked) {
       handlerData(
         gobalData,
@@ -541,14 +558,14 @@ const TreeContainer = React.forwardRef(function (
       );
     },
     /*** 
-  清除勾选
-  */
+    清除勾选
+    */
     clearChecked() {
       handlerData(gobalData, { type: "clearChecked" }, dispatch);
     },
     /*** 
-  全部勾选
-  */
+    全部勾选
+    */
     checkedAll() {
       handlerData(gobalData, { type: "checkedAll" }, dispatch);
     },
@@ -561,17 +578,17 @@ const TreeContainer = React.forwardRef(function (
       dispatch({ type: "selectNode", payload: { gobalData, id } });
     },
     /*
-  展开所有父节点
-  @param {*} id
-  */
+    展开所有父节点
+    @param {*} id
+    */
     setLinkOpen(id) {
       handlerData(gobalData, { type: "setLinkOpen", payload: id }, dispatch);
     },
     /** 
-  移除某个／多个节点[数组]
-  
-  @param {string,array} ids
-  */
+    移除某个／多个节点[数组]
+    
+    @param {string,array} ids
+    */
     remove(ids) {
       handlerData(
         gobalData,
@@ -580,17 +597,17 @@ const TreeContainer = React.forwardRef(function (
       );
     },
     /**
-  移除所有
-  
-  */
+    移除所有
+    
+    */
     removeAll() {
       handlerData(gobalData, { type: "removeAll" }, dispatch);
     },
 
     /**
-       * 筛选
-  @param {*} value
-  */
+         * 筛选
+    @param {*} value
+    */
     filter(value) {
       document.getElementById(treecontainerid).scrollTop = 0; //回归到顶部
       //处理数据
@@ -598,10 +615,10 @@ const TreeContainer = React.forwardRef(function (
       onScroll();
     },
     /**
-  追加节点
-  @param {*} children
-  @param {*} pId 父节点为空，即更新所有
-  */
+    追加节点
+    @param {*} children
+    @param {*} pId 父节点为空，即更新所有
+    */
     append(children, pId) {
       if (Array.isArray(children)) {
         if (!pId) {
@@ -619,9 +636,9 @@ const TreeContainer = React.forwardRef(function (
       }
     },
     /** 
-  更新节点,不会更新节点id，父id
-  @param {*} nodes  一个或多个(数组)
-  */
+    更新节点,不会更新节点id，父id
+    @param {*} nodes  一个或多个(数组)
+    */
     update(nodes) {
       if (nodes) {
         //格式化节点防止有些属性没传而影响后
@@ -633,8 +650,8 @@ const TreeContainer = React.forwardRef(function (
       }
     },
     /**
-  更新所有
-  */
+    更新所有
+    */
     updateAll(newData) {
       document.getElementById(treecontainerid).scrollTop = 0; // 回归到顶部
       //处理数据
@@ -704,7 +721,7 @@ const TreeContainer = React.forwardRef(function (
   useEffect(() => {
     if (url) {
       //第一次初始化 请求数据
-      getData(url, httpType, contentType, headers, params, (res) => {
+      getData(url, httpType, contentType, httpHeaders, params, (res) => {
         gobalData.current.data = setChildrenPath(
           gobalData.current.hashData,
           "",
@@ -712,9 +729,7 @@ const TreeContainer = React.forwardRef(function (
           handerLoadData(res, dataSource, loadSuccess),
           options
         );
-        gobalData.current.flatData = func.treeDataToFlatData(
-          gobalData.current.data
-        );
+        gobalData.current.flatData = treeDataToFlatData(gobalData.current.data);
         onScroll();
       });
     } else {
@@ -726,9 +741,7 @@ const TreeContainer = React.forwardRef(function (
         data,
         options
       );
-      gobalData.current.flatData = func.treeDataToFlatData(
-        gobalData.current.data
-      );
+      gobalData.current.flatData = treeDataToFlatData(gobalData.current.data);
       onScroll();
     }
   }, [data, url]);
@@ -738,14 +751,14 @@ const TreeContainer = React.forwardRef(function (
    */
   useEffect(() => {
     if (state.scrollIndex && state.scrollIndex.index >= 0) {
-      const vis = getVisibleCount(treecontainerid);
+      const vis = getVisibleCount(treecontainerid, rowDefaultHeight);
       if (
         state.scrollIndex.index > vis.endIndex ||
         state.scrollIndex.index < vis.startIndex
       ) {
         //不在可见范围内
         document.getElementById(treecontainerid).scrollTop =
-          (state.scrollIndex.index - 1) * config.rowDefaultHeight;
+          (state.scrollIndex.index - 1) * rowDefaultHeight;
       }
     }
   }, [state.scrollIndex]);
@@ -789,8 +802,9 @@ const TreeContainer = React.forwardRef(function (
   if (!componentType || componentType === "tree") {
     control = <TreeView></TreeView>;
   } else if (componentType === "treegrid") {
-    // control = <TreeGridView ref={treegrid}  ></TreeGridView>
+    control = <div>未实现</div>;
   }
+  console.log("data", gobalData.current, state.visibleData);
   return (
     <ShareContext.Provider
       value={{
@@ -812,7 +826,7 @@ const TreeContainer = React.forwardRef(function (
             top: 0,
             height:
               gobalData.current.flatData &&
-              gobalData.current.flatData.length * config.rowDefaultHeight,
+              gobalData.current.flatData.length * rowDefaultHeight,
             position: "absolute",
             width: 1,
           }}
@@ -832,11 +846,21 @@ TreeContainer.propTypes = {
   textField: PropTypes.string, //数据字段文本名称
   childrenField: PropTypes.string, //字节点字段
   dottedAble: PropTypes.bool, //是否有虚线
-  url: PropTypes.string, //后台查询地址
+  /**
+   * ajax请求参数
+   */
+  url: PropTypes.string, //ajax地址
+  httpType: PropTypes.string, //请求类型
+  contentType: PropTypes.string, //请求的参数传递类型
+  httpHeaders: PropTypes.object, //请求的头部
+  params: PropTypes.object, //查询条件
+  /**
+   * 数据源
+   */
+  dataSource: PropTypes.string, //ajax的返回的数据源中哪个属性作为数据源
+  footerSource: PropTypes.string, //页脚数据源,
+  totalSource: PropTypes.string, //ajax的返回的数据源中哪个属性作为总记录数源
 
-  params: PropTypes.object, //向后台传输的额外参数
-  dataSource: PropTypes.string, //ajax的返回的数据源中哪个属性作为数据源,为null时直接后台返回的数据作为数据源
-  headers: PropTypes.array, //表头
   data: PropTypes.array, //节点数据
   isSimpleData: PropTypes.bool, //是否使用简单的数据格式
   selectAble: PropTypes.bool, //是否允许勾选
@@ -875,7 +899,6 @@ TreeContainer.propTypes = {
   beforeDrop: PropTypes.func, //停靠前事件
   beforeRemove: PropTypes.func, //删除前事件
   beforeRename: PropTypes.func, //重命名前事件
-  beforeRightClick: PropTypes.func, //鼠标右键前事件
 };
 TreeContainer.defaultProps = {
   componentType: "tree",

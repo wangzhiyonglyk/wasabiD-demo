@@ -1,5 +1,5 @@
 /*
- create by wangzhiyong
+ create by 王志勇
  date:2020-11-02 评分组件
  desc:评分组件
  */

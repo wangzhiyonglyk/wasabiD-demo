@@ -1,23 +1,29 @@
 /**
- * create by wangzhiyong
+ * create by 王志勇
  * date:2020-08-09
  * 一个可以看拖动的盒子
  */
-import React from 'react';
+import React from "react";
 import PropTypes from "prop-types";
-import func from '../libs/func'
-import "../Sass/Layout/Drag.css"
+import func from "../libs/func";
+import "../Sass/Layout/Drag.css";
 class Drag extends React.Component {
   constructor() {
     super();
     this.state = {
-      cantainerid: Math.random().toString(36).slice(-8) + 'drag' + func.dateformat(new Date(), 'yyyyMMddHHmmss'),
-      dotid: Math.random().toString(36).slice(-8) + 'dot' + func.dateformat(new Date(), 'yyyyMMddHHmmss'),
+      cantainerid:
+        Math.random().toString(36).slice(-8) +
+        "drag" +
+        func.dateformat(new Date(), "yyyyMMddHHmmss"),
+      dotid:
+        Math.random().toString(36).slice(-8) +
+        "dot" +
+        func.dateformat(new Date(), "yyyyMMddHHmmss"),
     };
     // this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
     // this.mouseUpHandler = this.mouseUpHandler.bind(this)
-    this.onDragStart=this.onDragStart.bind(this);
-    this.onDragEnd=this.onDragEnd.bind(this);
+    this.onDragStart = this.onDragStart.bind(this);
+    this.onDragEnd = this.onDragEnd.bind(this);
   }
   // onMouseDown(event) {
   //   return ;
@@ -51,7 +57,6 @@ class Drag extends React.Component {
   //       this.mouse = true;//可移动
   //       this.props.dragBegin && this.props.dragBegin(this.props.data);
 
-
   //     }
   //   }
   // }
@@ -67,26 +72,34 @@ class Drag extends React.Component {
   //   }
 
   // }
-  onDragStart(){
-    window.localStorage.setItem("wasabi-dragItem",JSON.stringify(this.props.data??""));
-        this.props.onDragStart && this.props.onDragStart(this.props.data);
+  onDragStart() {
+    window.localStorage.setItem(
+      "wasabi-dragItem",
+      JSON.stringify(this.props.data ?? "")
+    );
+    this.props.onDragStart && this.props.onDragStart(this.props.data);
   }
-  onDragEnd(){
+  onDragEnd() {
     this.props.onDragEnd && this.props.onDragEnd(this.props.data);
   }
 
   render() {
-    return <div draggable={true} id={this.state.cantainerid} className={"wasabi-drag-box " + this.props.className} style={this.props.style} onDragStart={this.onDragStart}  
-    onDragEnd={this.onDragEnd}
-    >
-      {this.props.children}
-      {/* <div id={this.state.dotid} className={"wasabi-drag-box-dot " + this.props.className} style={this.props.style}>
+    return (
+      <div
+        draggable={true}
+        id={this.state.cantainerid}
+        className={"wasabi-drag-box " + this.props.className}
+        style={this.props.style}
+        onDragStart={this.onDragStart}
+        onDragEnd={this.onDragEnd}
+      >
+        {this.props.children}
+        {/* <div id={this.state.dotid} className={"wasabi-drag-box-dot " + this.props.className} style={this.props.style}>
         {this.props.children}
       </div> */}
-
-    </div>
+      </div>
+    );
   }
-
 }
 
 Drag.propTypes = {
@@ -96,7 +109,7 @@ Drag.propTypes = {
   widthChid: PropTypes.bool, //拖动时是否带上子节点影子
   onDragStart: PropTypes.func,
   onDragEnd: PropTypes.func,
-}
+};
 Drag.defaultProps = {
   name: "",
   data: {},
@@ -104,6 +117,6 @@ Drag.defaultProps = {
   className: "",
   widthChid: true,
   onDragStart: null,
-  onDragEnd: null
-}
+  onDragEnd: null,
+};
 export default Drag;

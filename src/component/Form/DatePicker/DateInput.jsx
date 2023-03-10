@@ -1,5 +1,5 @@
 /**
- * create by wangzhiyong
+ * create by 王志勇
  * date:2021-04-20
  * desc:为了日期组件定制的输入框，独立出来
  */
@@ -308,15 +308,15 @@ class DateInput extends React.Component {
           event.target.selectionEnd = 7;
         }
         break;
-        case "time":
-          if (event.target.selectionStart <= 2) {
-            event.target.selectionStart = 0;
-            event.target.selectionEnd = 2;
-          } else if (event.target.selectionStart > 2) {
-            event.target.selectionStart = 3;
-            event.target.selectionEnd = 5;
-          }
-          break;
+      case "time":
+        if (event.target.selectionStart <= 2) {
+          event.target.selectionStart = 0;
+          event.target.selectionEnd = 2;
+        } else if (event.target.selectionStart > 2) {
+          event.target.selectionStart = 3;
+          event.target.selectionEnd = 5;
+        }
+        break;
       case "date":
         if (event.target.selectionStart <= 4) {
           event.target.selectionStart = 0;
@@ -400,13 +400,17 @@ class DateInput extends React.Component {
       if (event.target.offsetLeft <= 10) {
         container.querySelectorAll(".wasabi-datetime")[0].style.display =
           "block";
-          container.querySelectorAll(".wasabi-datetime").length===2?container.querySelectorAll(".wasabi-datetime")[1].style.display =
-          "none":null;
+        container.querySelectorAll(".wasabi-datetime").length === 2
+          ? (container.querySelectorAll(".wasabi-datetime")[1].style.display =
+              "none")
+          : null;
       } else {
         container.querySelectorAll(".wasabi-datetime")[0].style.display =
           "none";
-          container.querySelectorAll(".wasabi-datetime").length===2?container.querySelectorAll(".wasabi-datetime")[1].style.display =
-          "block":null;
+        container.querySelectorAll(".wasabi-datetime").length === 2
+          ? (container.querySelectorAll(".wasabi-datetime")[1].style.display =
+              "block")
+          : null;
       }
       container.style.left = event.target.offsetLeft + "px";
     }

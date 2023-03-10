@@ -1,5 +1,5 @@
 /**
- *Created by wangzhiyong on 2016-03-02
+ *Created by 王志勇 on 2016-03-02
  * desc:列表组件,由此组件开始独立重构所有组件,不再依赖
  * wasabi框架的第一个组件
  * 2016-06-09后开始调整整个样式

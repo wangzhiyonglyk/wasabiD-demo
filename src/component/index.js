@@ -1,5 +1,5 @@
 /**
- * create by wangzhiyong
+ * create by 王志勇
  * 本项目在2015开始写组件，2016-03-02开始独立为了UI框架
  * date:2017-08-14 进行大改版
  * date 2020-11-20 调整组件，去掉不需要的组件
@@ -40,7 +40,7 @@ import Pagination from "./Data/Pagination/index.jsx"; //分页控件
 import ContentMenu from "./Data/ContentMenu/index.jsx"; //右键菜单
 import Color from "./Data/Color/index.jsx"; //调色板
 import GlobalSearch from "./Data/GlobalSearch/index.jsx"; //全局搜索
-import Excel from "./Data/Excel";//Excel
+import Excel from "./Data/Excel"; //Excel
 /*******************表格组件*************************/
 import { Table, TableBody, TableCell, TableHead, TableRow } from "./Data/Table";
 
@@ -120,6 +120,8 @@ import System from "./page/System/index.jsx";
 import func from "./libs/func.js"; //常用函数
 import mixins from "./Mixins/mixins"; //mixins
 import regs from "./libs/regs.js"; //常用的正则
+
+window.$message = Msg;
 export {
   Tag,
   Button,

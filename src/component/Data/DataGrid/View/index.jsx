@@ -297,7 +297,6 @@ class Grid extends React.Component {
     grid.push(
       this.props.loading ? <GridLoading key="loading"></GridLoading> : null
     );
-
     return (
       <div
         className={

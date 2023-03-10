@@ -1,5 +1,5 @@
 /*
- create by wangzhiyong
+ create by 王志勇
  date:2016-03-02 后开始独立改造
  2017-08-14改造
  desc:表单组件窗口
@@ -70,7 +70,7 @@ class Input extends React.PureComponent {
       case "switch":
         control = <Switch ref={this.input} {...props}></Switch>;
         break;
-      default://
+      default: //
         control = <ComboBox ref={this.input} {...props}></ComboBox>;
         break;
     }

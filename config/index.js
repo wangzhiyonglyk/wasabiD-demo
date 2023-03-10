@@ -1,5 +1,5 @@
 /**
- * create by wangzhiyong
+ * create by 王志勇
  * date:2017-08-15
  * desc webpack打包时的入口的脚本文件
  * 如果是单页面，请只写一个入口脚本文件,以src为根目录

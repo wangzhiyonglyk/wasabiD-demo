@@ -1,20 +1,30 @@
 /**
- * create by wangzhiyong
+ * create by 王志勇
  * date:2021-07-28
  * desc:分隔线
  */
- import React from "react";
+import React from "react";
 
-import "./separator.css"
- class Separator extends React.PureComponent{
-     constructor(props){
-         super(props);
-     }
-     render(){
-       return  <div className={"wasabi-separator " +(this.props.className??"") +" " +(this.props.theme??"")} style={this.props.style}>
-            <span className={"wasabi-separator-text"}>{this.props.children}</span>
-         </div>
-     }
- }
+import "./separator.css";
+class Separator extends React.PureComponent {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div
+        className={
+          "wasabi-separator " +
+          (this.props.className ?? "") +
+          " " +
+          (this.props.theme ?? "")
+        }
+        style={this.props.style}
+      >
+        <span className={"wasabi-separator-text"}>{this.props.children}</span>
+      </div>
+    );
+  }
+}
 
- export default Separator;
+export default Separator;

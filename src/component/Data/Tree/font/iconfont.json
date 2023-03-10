@@ -1,0 +1,79 @@
+{
+  "id": "3131694",
+  "name": "wasabi-tree",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "10304433",
+      "name": "text",
+      "font_class": "text",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "1842068",
+      "name": "check",
+      "font_class": "check",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "348320",
+      "name": "caret-down",
+      "font_class": "caret-down",
+      "unicode": "ea22",
+      "unicode_decimal": 59938
+    },
+    {
+      "icon_id": "348321",
+      "name": "caret-left",
+      "font_class": "caret-left",
+      "unicode": "ea23",
+      "unicode_decimal": 59939
+    },
+    {
+      "icon_id": "348322",
+      "name": "caret-right",
+      "font_class": "caret-right",
+      "unicode": "ea24",
+      "unicode_decimal": 59940
+    },
+    {
+      "icon_id": "348327",
+      "name": "caret-up",
+      "font_class": "caret-up",
+      "unicode": "ea29",
+      "unicode_decimal": 59945
+    },
+    {
+      "icon_id": "348454",
+      "name": "edit",
+      "font_class": "edit",
+      "unicode": "eaa7",
+      "unicode_decimal": 60071
+    },
+    {
+      "icon_id": "348489",
+      "name": "folder",
+      "font_class": "folder",
+      "unicode": "eac9",
+      "unicode_decimal": 60105
+    },
+    {
+      "icon_id": "348506",
+      "name": "folder-open",
+      "font_class": "folder-open",
+      "unicode": "eada",
+      "unicode_decimal": 60122
+    },
+    {
+      "icon_id": "490035",
+      "name": "delete",
+      "font_class": "delete",
+      "unicode": "eb0c",
+      "unicode_decimal": 60172
+    }
+  ]
+}

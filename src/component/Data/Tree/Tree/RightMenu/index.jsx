@@ -6,7 +6,7 @@
 import React from "react";
 import ContentMenuPanel from "../../ContentMenu/ContentMenuPanel";
 import ContentMenu from "../../ContentMenu";
-import LinkButton from "../../../Buttons/LinkButton";
+import LinkButton from "../../LinkButton";
 class RightMenu extends React.PureComponent {
   constructor(props) {
     super(props);

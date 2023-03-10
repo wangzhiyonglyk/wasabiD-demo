@@ -1,4 +1,4 @@
-/*create by wangzhiyong
+/*create by 王志勇
 date:2016-04-26
 desc:日期选择样式
 */
@@ -23,17 +23,16 @@ desc:日期选择样式
   top: 12px;
   cursor: pointer;
   text-align: center;
-  transition: all, transform .6s;
+  transition: all, transform 0.6s;
   color: var(--icon-color);
   font-size: var(--icon-size);
 }
-.combobox .comboxbox-icon:hover{
-  color:var(--icon-hover-color);
+.combobox .comboxbox-icon:hover {
+  color: var(--icon-hover-color);
 }
 .wasabi-form-group-body.readOnly .combobox .comboxbox-icon {
   cursor: not-allowed;
 }
-
 
 .combobox .comboxbox-icon.rotate {
   transform: rotate(180deg) translateY(8px);
@@ -54,8 +53,8 @@ desc:日期选择样式
   font-size: 14px;
 }
 
-.combobox .combobox-clear:hover{
-  color:var(--icon-hover-color);
+.combobox .combobox-clear:hover {
+  color: var(--icon-hover-color);
 }
 
 /*下拉容器*/
@@ -88,8 +87,9 @@ desc:日期选择样式
   top: -17px;
 }
 
-.dropcontainter::before, .dropcontainter::after {
-  content: '';
+.dropcontainter::before,
+.dropcontainter::after {
+  content: "";
   display: block;
   width: 0;
   height: 0;
@@ -104,40 +104,31 @@ desc:日期选择样式
 .combobox .date {
   width: 294px;
   height: 254px;
-
 }
 
 .combobox .time {
   width: 220px;
- 
 }
 
 .combobox .monthrange {
   width: 586px;
- 
 }
 .combobox .datetime {
   width: 294px;
- 
 }
-.combobox  .datetime .wasabi-datetime{
-  border:none;
+.combobox .datetime .wasabi-datetime {
+  border: none;
 }
-.combobox  .datetimerange .wasabi-datetime{
-  border:none;
+.combobox .datetimerange .wasabi-datetime {
+  border: none;
 }
 .combobox .daterange {
   width: 686px;
 }
 
-.combobox  .datetimerange {
+.combobox .datetimerange {
   width: 686px;
- 
 }
-
-
-
-
 
 /*日期范围*/
 
@@ -150,8 +141,6 @@ desc:日期选择样式
   width: 502px;
   height: 223px;
 }
-
-
 
 .combobox .datetimeicon .icon-time {
   font-size: 20px;
@@ -188,10 +177,9 @@ desc:日期选择样式
 
 .combobox .gridpicker {
   min-width: 500px;
-  width:100%;
+  width: 100%;
   height: 600px;
 }
-
 
 /*下拉列表*/
 
@@ -221,7 +209,5 @@ desc:日期选择样式
   outline: none;
   border: 1px solid var(--border-color);
   padding-right: 6px;
-  border-color: var(--border-color)!important;
+  border-color: var(--border-color) !important;
 }
-
-

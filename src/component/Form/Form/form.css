@@ -1,4 +1,4 @@
-/*create by wangzhiyong
+/*create by 王志勇
 date:2016-02-24
 desc:表单样式
 */
@@ -22,23 +22,23 @@ desc:表单样式
     flex-wrap: wrap;
 }
 
-.wasabi-form .form-body[cols="1"]>.wasabi-form-group {
+.wasabi-form .form-body[cols="1"] > .wasabi-form-group {
     width: 99%;
 }
 
-.wasabi-form .form-body[cols="2"]>.wasabi-form-group {
+.wasabi-form .form-body[cols="2"] > .wasabi-form-group {
     width: 49%;
 }
 
-.wasabi-form .form-body[cols="3"]>.wasabi-form-group {
+.wasabi-form .form-body[cols="3"] > .wasabi-form-group {
     width: 32%;
 }
 
-.wasabi-form .form-body[cols="4"]>.wasabi-form-group {
+.wasabi-form .form-body[cols="4"] > .wasabi-form-group {
     width: 24%;
 }
 
-.wasabi-form .form-body[cols="5"]>.wasabi-form-group {
+.wasabi-form .form-body[cols="5"] > .wasabi-form-group {
     width: 19%;
 }
 
@@ -65,11 +65,10 @@ desc:表单样式
     text-align: left;
 }
 
-.wasabi-form.top .wasabi-label{
+.wasabi-form.top .wasabi-label {
     text-align: left;
     height: 30px;
     line-height: 30px;
-
 }
 .wasabi-form.right .wasabi-label {
     text-align: right;
@@ -78,23 +77,23 @@ desc:表单样式
 /**
 控制col组件的布局
 */
-.wasabi-form .form-body[cols="1"]>.wasabi-cols {
+.wasabi-form .form-body[cols="1"] > .wasabi-cols {
     width: 99%;
 }
 
-.wasabi-form .form-body[cols="2"]>.wasabi-cols {
+.wasabi-form .form-body[cols="2"] > .wasabi-cols {
     width: 49%;
 }
 
-.wasabi-form .form-body[cols="3"]>.wasabi-cols {
+.wasabi-form .form-body[cols="3"] > .wasabi-cols {
     width: 32%;
 }
 
-.wasabi-form .form-body[cols="4"]>.wasabi-cols {
+.wasabi-form .form-body[cols="4"] > .wasabi-cols {
     width: 24%;
 }
 
-.wasabi-form .form-body[cols="5"]>.wasabi-cols {
+.wasabi-form .form-body[cols="5"] > .wasabi-cols {
     width: 19%;
 }
 
@@ -104,7 +103,4 @@ desc:表单样式
     width: 100%;
     margin-top: 20px;
     height: 30px;
-
-
-
 }

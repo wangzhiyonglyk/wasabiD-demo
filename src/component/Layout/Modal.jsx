@@ -1,4 +1,4 @@
-//create by wangzhiyong
+//create by 王志勇
 //date:2016-03-22
 //desc:模态窗口
 

@@ -1,5 +1,5 @@
 /**
- * Created by zhiyongwang on 2016-06-08.
+ * Created by 王志勇 on 2016-06-08.
  * 将独立于项目的公共函数分享出来
  *2020-11-06，重新规划
  2021-09-10添加新功能
@@ -593,7 +593,7 @@ func.toTreeData = function (
  */
 func.treeDataToFlatData = function (data) {
   let result = [];
-  if (data && data instanceof Array) {
+  if (Array.isArray(data)) {
     for (let i = 0; i < data.length; i++) {
       data[i]._isLast = i === data.length - 1 ? true : false; //目的为了画向下的虚线最一个不需要
       result.push(data[i]);
@@ -681,7 +681,7 @@ func.throttle = function (method, delay) {
   };
 };
 /**
- * create by wangzhiyong
+ * create by 王志勇
  * date:2021-04-22
  * 日期扩展
  */

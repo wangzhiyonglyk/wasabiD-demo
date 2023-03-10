@@ -1,5 +1,5 @@
 /**
- * create by wangzhiyong
+ * create by 王志勇
  * date:2020-12-20
  * desc 加了虚拟列表后，通过key来反查rowIndex方式效率太低了，todo ，暂时不处理
  */
@@ -75,14 +75,14 @@ export default {
     let rowIndex;
     for (let i = 0; i < this.state.data.length; i++) {
       if (this.state.data[i][this.props.priKey || "id"] == key) {
-       rowIndex=i;
+        rowIndex = i;
         break;
       }
     }
     if (checked) {
-      this.onChecked(rowIndex,key); //勾选，
+      this.onChecked(rowIndex, key); //勾选，
     } else {
-      this.onChecked(rowIndex,null); //取消勾选
+      this.onChecked(rowIndex, null); //取消勾选
     }
   },
 
@@ -101,7 +101,7 @@ export default {
     //
     let newData = this.state.data;
     newData.push(rowData || {});
-    let addData =this.state.addData || [];
+    let addData = this.state.addData || [];
     this.state.addData.set(this.getKey(newData.length - 1), rowData); //添加到脏数据里
     this.setState(
       {
@@ -126,7 +126,7 @@ export default {
   deleteRow: function (rowIndex) {
     //删除指定行数据
     //todo这里没处理当前页全部删除的情况
-    let deleteData =this.stat.deleteData || [];
+    let deleteData = this.stat.deleteData || [];
     deleteData.push(data.splice(rowIndex, 1));
     this.setState({
       data: data,
@@ -144,7 +144,7 @@ export default {
     if (rowData && typeof rowData === "object") {
       this.state.updateData.set(this.getKey(rowIndex), rowData); //更新某一行
       if (rowIndex >= 0 && rowIndex < this.state.data.length) {
-        let newData =this.state.newData;
+        let newData = this.state.newData;
         if (rowData && typeof rowData === "object") {
           //如果有值，则取新值
           newData[rowIndex] = rowData;
@@ -342,6 +342,6 @@ export default {
     html = html.replace(/export=\"1\"/g, "style=\"mso-number-format:'@';\"");
     // 创建一个Blob对象，第一个参数是文件的数据，第二个参数是文件类型属性对象
     var blob = new Blob([html], { type: "application/vnd.ms-excel" });
-    func.download(blob, title,".xls");
+    func.download(blob, title, ".xls");
   },
 };

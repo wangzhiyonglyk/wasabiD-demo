@@ -14,9 +14,12 @@ import { ShareContext } from "./handlerData.js";
 import TreeNode from "./TreeNode.jsx";
 function TreeView() {
   let nodeControl = [];
+  console.log("nodeControl");
   const { visibleData, treeProps } = useContext(ShareContext);
+  console.log("nodeControl", visibleData);
   if (Array.isArray(visibleData)) {
     nodeControl = visibleData.map((row) => {
+      console.log("dd");
       if (
         row.isParent === true ||
         (Array.isArray(row.children) && row.children.length > 0)

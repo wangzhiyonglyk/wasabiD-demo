@@ -1,5 +1,5 @@
 /*
-create by wangzhiyong
+create by 王志勇
 desc:模态窗口样式
 */
 
@@ -35,7 +35,7 @@ desc:模态窗口样式
   opacity: 0;
   filter: alpha(opacity=0);
   z-index: 3;
-  background-color: rgba(0, 0, 0, .0.15);
+  background-color: rgba(0, 0, 0, 0.15);
 }
 
 .wasabi-modal-container .wasabi-modal {
@@ -55,7 +55,6 @@ desc:模态窗口样式
   z-index: 7;
 }
 
-
 .wasabi-modal-close {
   float: right;
   line-height: normal;
@@ -69,8 +68,8 @@ desc:模态窗口样式
   z-index: 1;
 }
 
-.wasabi-modal-close:hover{
-  color:var(--danger-color);
+.wasabi-modal-close:hover {
+  color: var(--danger-color);
 }
 
 .wasabi-modal-header {
@@ -98,8 +97,6 @@ desc:模态窗口样式
   padding: 10px;
   margin: auto;
 }
-
-
 
 .wasabi-modal-footer {
   width: 100%;

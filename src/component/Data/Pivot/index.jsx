@@ -1,19 +1,19 @@
 /**
- * create by wangzhiyong
+ * create by 王志勇
  * date:2020-12-21
  * desc 交叉表
  * 2022=01-17 暂时不开放 pivot应该要依赖于treegrid
  * desc
  */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import func from "../../libs/func";
-import DataGrid from "../DataGrid"
+import DataGrid from "../DataGrid";
 import Tree from "../Tree";
 import Configuration from "./Configuration";
-import mixins from "../../Mixins/mixins"
-import dataHandler from "./dataHandler"
-import "./index.css"
+import mixins from "../../Mixins/mixins";
+import dataHandler from "./dataHandler";
+import "./index.css";
 // class Pivot extends Component {
 //     constructor(props) {
 //         super(props);
@@ -73,7 +73,7 @@ import "./index.css"
 //         this.setRowsAndColunmsAndData(this.state.columns, this.state.rows, this.state.values, this.state.data);
 //     }
 //     dataGridClick(rowData, rowIndex) {
-        
+
 //         this.tree.current.setClick(rowData._id);
 
 //     }
@@ -107,19 +107,18 @@ import "./index.css"
 //     }
 // }
 
-function Pivot(props){
-    return <div>暂时未开放</div>
+function Pivot(props) {
+  return <div>暂时未开放</div>;
 }
 Pivot.propTypes = {
-    fields: PropTypes.array,//所有的字段,是用于重新设计的
-    rows: PropTypes.array,//行维度
-    columns: PropTypes.array,//列维度
-    values: PropTypes.array,//统计参数
-    filters: PropTypes.array,//筛选条件
-    data: PropTypes.array,//数据,
-    checkAble:PropTypes.bool,//是否可以勾选
-    applyHandler: PropTypes.func,//请求数据处理
-  
-}
-mixins(Pivot, [dataHandler])
+  fields: PropTypes.array, //所有的字段,是用于重新设计的
+  rows: PropTypes.array, //行维度
+  columns: PropTypes.array, //列维度
+  values: PropTypes.array, //统计参数
+  filters: PropTypes.array, //筛选条件
+  data: PropTypes.array, //数据,
+  checkAble: PropTypes.bool, //是否可以勾选
+  applyHandler: PropTypes.func, //请求数据处理
+};
+mixins(Pivot, [dataHandler]);
 export default Pivot;

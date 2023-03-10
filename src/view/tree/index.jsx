@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Tree } from "../../component";
-import Tree1 from "wasabi-tree";
+// import Tree from "wasabi-tree";
 let data = [
   {
     id: 1,
@@ -53,6 +53,13 @@ let data = [
     dropAble: true,
   },
   {
+    id: "no5",
+    pId: "",
+    label:
+      "第no5个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    dropAble: true,
+  },
+  {
     id: 5,
     pId: "",
     label:
@@ -64,6 +71,14 @@ let data = [
     pId: "",
     label:
       "第6个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    dropAble: true,
+    draggAble: true,
+  },
+  {
+    id: 7,
+    pId: "",
+    label:
+      "第7个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
     dropAble: true,
     draggAble: true,
   },
@@ -85,7 +100,7 @@ for (let i = 0; i < 1000; i++) {
   data.push({
     id: "s" + i,
     pId: pId,
-    label: "第s" + i + "节点",
+    label: "父节点" + pId + "-第" + i + "子节点",
     draggAble: true,
     dropAble: true,
   });
@@ -106,7 +121,7 @@ function Page() {
         textFormatter={(row) => {
           return <div>{row.text}</div>;
         }}
-        style={{ width: 500 }}
+        style={{ width: 500, height: 500 }}
         data={data}
         textField="label"
         selectAble={true}

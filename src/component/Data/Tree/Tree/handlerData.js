@@ -1,5 +1,5 @@
 import React from "react";
-import func from "../../libs/func";
+import { toTreeData, treeDataToFlatData } from "../libs/func";
 import {
   setChecked,
   setRadioChecked,
@@ -70,7 +70,7 @@ export function handlerData(gobalData, action, dispatch) {
         payload.id,
         payload.options
       );
-      current.flatData = func.treeDataToFlatData(current.data);
+      current.flatData = treeDataToFlatData(current.data);
       break;
     // 停靠
     case "onDrop":
@@ -99,7 +99,7 @@ export function handlerData(gobalData, action, dispatch) {
           payload.options
         );
       }
-      current.flatData = func.treeDataToFlatData(current.data);
+      current.flatData = treeDataToFlatData(current.data);
       break;
     /**
      * 以下父组件调用的
@@ -120,7 +120,7 @@ export function handlerData(gobalData, action, dispatch) {
         payload.isOpened,
         payload.foldBroAble
       );
-      current.flatData = func.treeDataToFlatData(current.data);
+      current.flatData = treeDataToFlatData(current.data);
       break;
     //设置勾选
     case "setChecked":
@@ -160,7 +160,7 @@ export function handlerData(gobalData, action, dispatch) {
         payload.children,
         payload.options
       );
-      current.flatData = func.treeDataToFlatData(current.data);
+      current.flatData = treeDataToFlatData(current.data);
       break;
     //删除节点
     case "remove":
@@ -181,7 +181,7 @@ export function handlerData(gobalData, action, dispatch) {
           payload.options
         );
       }
-      current.flatData = func.treeDataToFlatData(current.data);
+      current.flatData = treeDataToFlatData(current.data);
       break;
     //删除所有
     case "removeAll":
@@ -209,14 +209,14 @@ export function handlerData(gobalData, action, dispatch) {
           payload.options
         );
       }
-      current.flatData = func.treeDataToFlatData(current.data);
+      current.flatData = treeDataToFlatData(current.data);
       break;
     //更新所有
     case "updateAll":
       current.hashData = new Map(); //先清空hash表
       //如果是简单数据，则转成树结构
       current.data = payload.options.isSimpleData
-        ? func.toTreeData(
+        ? toTreeData(
             payload.data,
             payload.options.idField,
             payload.options.parentField,
@@ -231,7 +231,7 @@ export function handlerData(gobalData, action, dispatch) {
         current.data,
         payload.options
       ); //设置路径等信息
-      current.flatData = func.treeDataToFlatData(current.data);
+      current.flatData = treeDataToFlatData(current.data);
       break;
     //移动节点到内部
     case "moveIn":
@@ -242,7 +242,7 @@ export function handlerData(gobalData, action, dispatch) {
         { id: payload.dropId },
         payload.options
       );
-      current.flatData = func.treeDataToFlatData(current.data);
+      current.flatData = treeDataToFlatData(current.data);
       break;
     //移动节点到前面
     case "moveBefore":
@@ -253,7 +253,7 @@ export function handlerData(gobalData, action, dispatch) {
         { id: payload.dropId },
         payload.options
       );
-      current.flatData = func.treeDataToFlatData(current.data);
+      current.flatData = treeDataToFlatData(current.data);
       break;
     //移动节点到后面
     case "moveAfter":
@@ -264,13 +264,13 @@ export function handlerData(gobalData, action, dispatch) {
         { id: payload.dropId },
         payload.options
       );
-      current.flatData = func.treeDataToFlatData(current.data);
+      current.flatData = treeDataToFlatData(current.data);
       break;
     //展开所有父节点
     case "setLinkOpen":
       dispatch({ type: "update", payload: { gobalData } });
       current.data = setLinkNodeOpen(current.hashData, current.data, payload);
-      current.flatData = func.treeDataToFlatData(current.data);
+      current.flatData = treeDataToFlatData(current.data);
       break;
     default:
       break;
@@ -296,6 +296,7 @@ export function handlerData(gobalData, action, dispatch) {
  */
 function getVisibleData(current) {
   let visibleData = [];
+  console.log("getVisibleData");
   try {
     if (current.filterData) {
       // 有新的过滤条件

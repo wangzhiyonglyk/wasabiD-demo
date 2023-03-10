@@ -1,120 +1,135 @@
-
 /**
- * create by wangzhiyong
+ * create by 王志勇
  * date:2020-08-07
  * desc 进度条报表
  */
-import React from 'react';
-import PropTypes from 'prop-types'
-import '../Sass/Animate/progress.css'
+import React from "react";
+import PropTypes from "prop-types";
+import "../Sass/Animate/progress.css";
 
 class ProgressChart extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            animate: false
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      animate: false,
+    };
+  }
+  /**
+   * 先设置为空
+   */
+  componentWillReceiveProps() {
+    // this.setState({
+    //     animate: false
+    // })
+    // this.refreshed = false;
+  }
+  componentWillMount() {
+    this.refresh();
+  }
+  componentDidUpdate() {
+    this.refresh();
+  }
+  /**
+   * 刷新
+   */
+  refresh() {
+    if (!this.refreshed) {
+      this.timeout = setTimeout(() => {
+        this.setState({
+          animate: true,
+        });
+        this.refreshed = true;
+      }, 200);
     }
-    /**
-     * 先设置为空
-     */
-    componentWillReceiveProps() {
-        // this.setState({
-        //     animate: false
-        // })
-        // this.refreshed = false;
-    }
-    componentWillMount() {
-        this.refresh();
-
-    }
-    componentDidUpdate() {
-        this.refresh();
-
-    }
-    /**
-     * 刷新 
-     */
-    refresh() {
-        if (!this.refreshed) {
-            this.timeout = setTimeout(() => {
-                this.setState({
-                    animate: true
-                })
-                this.refreshed = true;
-            }, 200);
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
+  getMax() {
+    let max = 0;
+    let arr =
+      this.props.data &&
+      this.props.data.map((item) => {
+        if (this.props.computer == "sum") {
+          max += item.value; //求和
         }
-
+        return item.value;
+      });
+    if (this.props.computer == "max") {
+      max = Math.max(...arr) || 100;
+    } else {
     }
-    componentWillUnmount() {
-        clearTimeout(this.timeout);
-    }
-    getMax() {
+    return max;
+  }
 
-        let max = 0;
-        let arr = this.props.data && this.props.data.map(item => {
-            if (this.props.computer == "sum") {
-                max += item.value;//求和
-            }
-            return item.value
-        })
-        if (this.props.computer == "max") {
-            max = Math.max(...arr) || 100;
-        }
-        else {
+  render() {
+    let max = this.getMax();
 
-        }
-        return max;
-    }
+    return (
+      <div className="wasabi-progress">
+        {this.props.data &&
+          this.props.data.map((item, index) => {
+            return (
+              <div className="progress-bar" key={index}>
+                <div
+                  className="progress-bar-left"
+                  style={{ width: item.titleWidth }}
+                >
+                  {/*<span className="progress-dot" style={{ background: item.dotColor }}></span><span className="progress-title" style={{ color: item.titleColor, fontSize: item.fontSize || 14 }}>{item.title}</span>*/}
+                  <span
+                    className="progress-title"
+                    style={{
+                      color: item.titleColor,
+                      fontSize: item.fontSize || 14,
+                    }}
+                  >
+                    {item.title}
+                  </span>
+                </div>
 
-    render() {
-        let max = this.getMax();
-
-        return <div className="wasabi-progress">
-            {
-                this.props.data && this.props.data.map((item, index) => {
-                    return <div className="progress-bar" key={index}>
-                        <div className="progress-bar-left" style={{ width: item.titleWidth }}>
-                            {/*<span className="progress-dot" style={{ background: item.dotColor }}></span><span className="progress-title" style={{ color: item.titleColor, fontSize: item.fontSize || 14 }}>{item.title}</span>*/}
-                            <span className="progress-title" style={{ color: item.titleColor, fontSize: item.fontSize || 14 }}>{item.title}</span>
-                        </div>
-
-                        <div className="progress-bar-center">
-                            <div className="progress-bar-bi-all" >
-
-                                <div className={"progress-bar-bi" + (this.state.animate ? " " : " noa")}
-                                    style={{
-                                        width: this.state.animate ? (parseInt((item.value / max) * 100)) + "%" : "0%",
-                                        minWidth: "2%",
-                                        background: item.barColor,
-                                        height: item.barHeight || 8,
-                                        borderRadius: item.radius || 4
-
-                                    }}></div>
-                            </div>
-
-                        </div>
-                        <div className="progress-desc" style={{ color: item.valueColor }}  >{item.desc ? item.desc : (item.percentage ? (parseInt((item.value / max) * 100)) + "%" : item.value)}</div>
-
-                    </div>
-
-                })
-            }
-
-        </div>
-    }
-
-
-
+                <div className="progress-bar-center">
+                  <div className="progress-bar-bi-all">
+                    <div
+                      className={
+                        "progress-bar-bi" + (this.state.animate ? " " : " noa")
+                      }
+                      style={{
+                        width: this.state.animate
+                          ? parseInt((item.value / max) * 100) + "%"
+                          : "0%",
+                        minWidth: "2%",
+                        background: item.barColor,
+                        height: item.barHeight || 8,
+                        borderRadius: item.radius || 4,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+                <div
+                  className="progress-desc"
+                  style={{ color: item.valueColor }}
+                >
+                  {item.desc
+                    ? item.desc
+                    : item.percentage
+                    ? parseInt((item.value / max) * 100) + "%"
+                    : item.value}
+                </div>
+              </div>
+            );
+          })}
+      </div>
+    );
+  }
 }
-ProgressChart.defaultProps = { 
-    computer: "max",//
-}
+ProgressChart.defaultProps = {
+  computer: "max", //
+};
 ProgressChart.propTypes = {
-    className: PropTypes.string,//样式
-    style: PropTypes.object,//样式，
-    computer: PropTypes.oneOf(["max", "sum"]),//计算方式
-    /**
+  className: PropTypes.string, //样式
+  style: PropTypes.object, //样式，
+  computer: PropTypes.oneOf(["max", "sum"]), //计算方式
+  /**
      * 数据 
      * {
      *  title:"标题",//可以传组件，与字符串，数字
@@ -133,8 +148,7 @@ ProgressChart.propTypes = {
      * 
      * }
      */
-    data: PropTypes.array//数据 
-
-}
+  data: PropTypes.array, //数据
+};
 
 export default ProgressChart;
