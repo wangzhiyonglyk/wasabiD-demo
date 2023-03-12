@@ -1,28 +1,4 @@
-@import url("../css/reboot.css");
-@import url("../css/animation.css");
-@import url("../font/iconfont.css");
 .wasabi-tree-parent {
-  --color: #676a6c;
-  --deepColor: #2e2e2e;
-  --primary-color: #409eff;
-  --primary-hover-color: #66b1ff;
-  --success-color: #67c23a;
-  --success-hover-color: #85ce61;
-  --info-color: #909399;
-  --info-hover-color: #a6a9ad;
-  --danger-color: #f56c6c;
-  --danger-hover-color: #f78989;
-  --warning-color: #e6a23c;
-  --warning-hover-color: #ebb563;
-  --border-color: #d7dae2;
-  --border-hover-color: #c0c4cc;
-  --background-color: #f6f6f6;
-  --background-hover-color: #e7e7e7;
-  --icon-color: #c0c4cc;
-  --icon-hover-color: #409eff;
-  --font-size: 14px;
-  --icon-size: 16px;
-  --box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
   position: relative;
   font-size: var(--font-size);
   color: var(--color);
@@ -30,6 +6,7 @@
   padding: 0px;
   width: 100%;
   overflow: auto;
+  height: 100%;
 }
 
 .wasabi-tree {
@@ -112,7 +89,7 @@
   height: 40px;
   border-left: 1px dotted var(--dotted-color);
   left: 7px;
-  top: 10px;
+  top: 12px;
 }
 
 /* 树表格与交叉表的底部分隔线,增加宽度是为了线足够长 */
@@ -191,7 +168,9 @@
   width: 100000px;
 }
 
-.wasabi-treegrid .wasabi-tree .wasabi-tree-li-icon-placeholder.selected::before {
+.wasabi-treegrid
+  .wasabi-tree
+  .wasabi-tree-li-icon-placeholder.selected::before {
   background-color: var(--background-color);
 }
 
@@ -299,7 +278,6 @@
   font-size: inherit;
   height: 100%;
   padding-top: 8px;
-  position: relative;
   padding-right: 4px;
 }
 
@@ -313,13 +291,14 @@
 }
 
 /*没有勾选功能时并且有子节点时有向下虚线*/
-.wasabi-tree .wasabi-tree-text-icon.noCheckhasChildren::after {
+.wasabi-tree .wasabi-tree-text-icon .noCheckhasChildren {
   content: "";
   position: absolute;
   border-left: 1px dotted var(--dotted-color);
-  height: 7px;
-  bottom: 0px;
+  height: 30px;
+  bottom: 0;
   left: 7px;
+  top: 20px;
 }
 
 /*文本*/
@@ -365,4 +344,12 @@
   font-size: inherit;
   transform: translateY(8px);
   margin-left: 4px;
+}
+/****单选按钮***/
+.wasabi-tree .wasabi-radio-btn {
+  margin-top: 0px;
+}
+/***复选按钮***/
+.wasabi-tree .wasabi-checkul .checkbox-label {
+  margin-top: 0px;
 }

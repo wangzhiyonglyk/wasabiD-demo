@@ -7,7 +7,6 @@ desc:表单输入框样式
 外层div
 */
 
-@import url("../../Sass/base.css");
 .wasabi-form-group {
   margin-right: 5px;
   position: relative;

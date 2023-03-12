@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Tree } from "../../component";
-// import Tree from "wasabi-tree";
+
 let data = [
   {
     id: 1,
@@ -121,12 +121,16 @@ function Page() {
         textFormatter={(row) => {
           return <div>{row.text}</div>;
         }}
-        style={{ width: 500, height: 500 }}
+        style={{ width: 500 }}
         data={data}
         textField="label"
+        contextMenuAble={true}
         selectAble={true}
         renameAble={true}
+        renameIconAble={true}
         removeAble={true}
+        removeIconAble={true}
+        checkStyle={"checkbox"}
         httpType="GET"
       ></Tree>
     </div>

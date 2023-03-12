@@ -25,8 +25,21 @@ class Home extends React.Component {
       <div>
         <Button onClick={this.onClick}>改变数据 </Button>
         <Form style={{ width: 800 }} cols={1} labelPosition={"top"}>
+          <Input type="text" name="text" label="text"></Input>
+          <Input
+            type="radio"
+            name="radio"
+            label="radio"
+            data={this.state.data}
+          ></Input>
+          <Input
+            type="checkbox"
+            name="checkbox"
+            label="checkbox"
+            data={this.state.data}
+          ></Input>
           <Input type="timerange" name="timerange" label="timerange"></Input>
-          {/* <Input type="year" name="year" label="year" value="test"></Input>
+          <Input type="year" name="year" label="year" value="test"></Input>
           <Input type="month" name="month" label="month" value="test"></Input>
           <Input type="time" name="time" label="time" value="test"></Input>
           <Input type="date" name="date" label="date" value="test"></Input>
@@ -58,7 +71,7 @@ class Home extends React.Component {
             name="datetimerange"
             label="datetimerange"
             value="test"
-          ></Input> */}
+          ></Input>
         </Form>
         {/* <Modal ref="modal"></Modal> */}
       </div>
