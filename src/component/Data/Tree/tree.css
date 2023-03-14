@@ -211,6 +211,10 @@
   position: relative;
   padding-top: 3px;
 }
+/**文本的框的宽度**/
+.wasabi-tree .wasabi-tree-li-node .wasabi-form-group {
+  width: 100%;
+}
 
 /* 树表格与交叉表底部的高度 */
 .wasabi-treegrid .wasabi-tree .wasabi-tree-li-node {
