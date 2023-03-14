@@ -45,6 +45,10 @@
   flex-wrap: nowrap;
   justify-content: flex-start;
 }
+.wasabi-tree li.wasabi-tree-li-container[disabled] {
+  opacity: 0.6;
+  pointer-events: none;
+}
 
 /*树的折叠图标， 因为checkbox宽度是20px 字体小一点*/
 .wasabi-tree .wasabi-tree-li-icon {
@@ -168,9 +172,7 @@
   width: 100000px;
 }
 
-.wasabi-treegrid
-  .wasabi-tree
-  .wasabi-tree-li-icon-placeholder.selected::before {
+.wasabi-treegrid .wasabi-tree .wasabi-tree-li-icon-placeholder.selected::before {
   background-color: var(--background-color);
 }
 
@@ -279,6 +281,7 @@
   height: 100%;
   padding-top: 8px;
   padding-right: 4px;
+  display: inline-block;
 }
 
 /* 树表格与交叉表高度对齐 */
@@ -345,6 +348,7 @@
   transform: translateY(8px);
   margin-left: 4px;
 }
+
 /****单选按钮***/
 .wasabi-tree .wasabi-radio-btn {
   margin-top: 0px;

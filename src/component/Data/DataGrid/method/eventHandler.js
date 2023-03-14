@@ -1,6 +1,6 @@
 /**
- * Created by 王志勇 on 2016/10/25.
- * edit by 王志勇 2020-05-09 修复分页的问题
+ * Created by wangzhiyonglyk on 2016/10/25.
+ * edit by wangzhiyonglyk 2020-05-09 修复分页的问题
  * 将DataGrid拆分,基本处理事件存在这里
  */
 import React from "react";

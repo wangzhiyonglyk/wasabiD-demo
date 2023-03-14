@@ -1,5 +1,5 @@
 /**
- * Created by 王志勇 on 2016-06-08.
+ * Created by wangzhiyonglyk on 2016-06-08.
  * 将独立于项目的公共函数分享出来
  *2020-11-06，重新规划
  2021-09-10添加新功能
@@ -512,7 +512,7 @@ func.componentMixins = function (component, mixinClass = []) {
  * @param {string } textField 文本key
  */
 func.toTreeData = function (
-  data = [],
+  data,
   idField = "id",
   parentField = "pId",
   textField = "text"
@@ -522,65 +522,66 @@ func.toTreeData = function (
   let count = 0; //总次数，防止死循环
   let pId = ""; //一级父节点pid值
   let ids = ""; //所有id值
-  for (let i = 0; i < data.length; i++) {
-    ids += "," + (data[i][idField] ?? "") + ",";
+  const cloneData = (data ?? []).concat(); //保证不影响原数据，防止重新更新
+  for (let i = 0; i < cloneData.length; i++) {
+    ids += "," + (cloneData[i][idField] ?? "") + ",";
   }
-  for (let i = 0; i < data.length; i++) {
-    if (ids.indexOf("," + (data[i][parentField] ?? "") + ",") <= -1) {
+  for (let i = 0; i < cloneData.length; i++) {
+    if (ids.indexOf("," + (cloneData[i][parentField] ?? "") + ",") <= -1) {
       //属于一级节点的pid值
-      pId += "," + (data[i][parentField] ?? "") + ",";
+      pId += "," + (cloneData[i][parentField] ?? "") + ",";
     }
   }
   let index = 0;
-  while (data.length !== 0 && count < 20000000) {
+  while (cloneData.length !== 0 && count < 2000000) {
     count++;
     if (
-      pId.indexOf("," + (data[index][parentField] ?? "") + ",") > -1 ||
-      !(data[index][parentField] ?? "")
+      pId.indexOf("," + (cloneData[index][parentField] ?? "") + ",") > -1 ||
+      !(cloneData[index][parentField] ?? "")
     ) {
       //一级节点
       let item = {
-        ...data[index],
-        id: data[index][idField] ?? "",
-        pId: data[index][parentField] ?? "",
-        text: data[index][textField] ?? "",
-        children: data[index]?.children ?? [], //保留原来的
+        ...cloneData[index],
+        id: cloneData[index][idField] ?? "",
+        pId: cloneData[index][parentField] ?? "",
+        text: cloneData[index][textField],
+        children: cloneData[index]?.children ?? [], //保留原来的
       };
       tree.push(item);
-      pos[data[index][idField]] = [tree.length - 1]; //节点路径
+      pos[cloneData[index][idField]] = [tree.length - 1]; //节点路径
       item._path = [tree.length - 1]; //保存路径,
-      data.splice(index, 1);
+      cloneData.splice(index, 1);
       index--;
     } else {
       //非一级节点
-      let posArr = pos[data[index][parentField] ?? ""]; //拿出父节点的路径
+      let posArr = pos[cloneData[index][parentField] ?? ""]; //拿出父节点的路径
       if (posArr) {
         let currentNode = tree[posArr[0]]; //找到在树中的位置
         for (let j = 1; j < posArr.length; j++) {
           currentNode = currentNode.children[posArr[j]];
         }
         let item = {
-          ...data[index],
-          id: data[index][idField],
-          pId: data[index][parentField] ?? "",
-          text: data[index][textField],
-          children: data[index]?.children ?? [], //保留原来的
+          ...cloneData[index],
+          id: cloneData[index][idField],
+          pId: cloneData[index][parentField] ?? "",
+          text: cloneData[index][textField],
+          children: cloneData[index]?.children ?? [], //保留原来的
         };
         currentNode.children.push(item);
-        pos[data[index][idField]] = posArr.concat([
+        pos[cloneData[index][idField]] = posArr.concat([
           currentNode.children.length - 1,
         ]);
-        item._path = pos[data[index][idField]]; //保存路径
-        data.splice(index, 1);
+        item._path = pos[cloneData[index][idField]]; //保存路径
+        cloneData.splice(index, 1);
         index--;
       }
     }
     index++;
-    if (index > data.length - 1) {
+    if (index > cloneData.length - 1) {
       index = 0; //归零
     }
   }
-  if (data.length > 0) {
+  if (cloneData.length > 0) {
     console.error("数据格式不正确，或者是数据量过大，请使用异步请求");
   }
   return tree;
@@ -591,8 +592,8 @@ func.toTreeData = function (
  * @param {*} data 数据
  * @returns
  */
-func.treeDataToFlatData = function (data) {
-  let result = [];
+func.treeDataToFlatData = function (data, result = []) {
+  result = result ?? [];
   if (Array.isArray(data)) {
     for (let i = 0; i < data.length; i++) {
       data[i]._isLast = i === data.length - 1 ? true : false; //目的为了画向下的虚线最一个不需要
@@ -602,7 +603,7 @@ func.treeDataToFlatData = function (data) {
         data[i].children.length > 0 &&
         data[i].isOpened === true
       ) {
-        result = result.concat(func.treeDataToFlatData(data[i].children));
+        treeDataToFlatData(data[i].children, result); //将结果传递下去，这样就不用利用返回值来合并
       }
     }
   }
@@ -681,7 +682,7 @@ func.throttle = function (method, delay) {
   };
 };
 /**
- * create by 王志勇
+ * create by wangzhiyonglyk
  * date:2021-04-22
  * 日期扩展
  */

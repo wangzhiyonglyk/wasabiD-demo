@@ -1,5 +1,5 @@
 /**
- * create by 王志勇
+ * create by wangzhiyonglyk
  * desc 普通轮播组件
  * date:2020-07-15
  * todo 还有bug

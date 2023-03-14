@@ -1,5 +1,5 @@
 /**
- * create by 王志勇
+ * create by wangzhiyonglyk
  * date:2020-12-08
  * desc 头像组件，可上传
  * todo 要将上传组件的公共代码

@@ -1,5 +1,5 @@
 /**
- * Created by 王志勇 on 2016-04-25.
+ * Created by wangzhiyonglyk on 2016-04-25.
  * 英文版
  */
 var lang = {

@@ -1,5 +1,5 @@
 /**
- * Created by 王志勇 on 2016-03-02以后.
+ * Created by wangzhiyonglyk on 2016-03-02以后.
  * edit 2020-11-08
  * edit 2022-09-17  完善组件，尤其是半选状态
  * 复选框组件

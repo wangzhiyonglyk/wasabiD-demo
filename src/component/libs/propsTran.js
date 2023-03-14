@@ -1,7 +1,7 @@
 /**
  * 将组件中属性的转换的方法独立出来
  * date:2020-11-06
- * 王志勇
+ * wangzhiyonglyk
  */
 import func from "./func";
 import regs from "./regs.js";
@@ -9,7 +9,7 @@ let propsTran = {
   /**
    * * 对数据进行预处理， 方便后期操作
    * date:2020-11-06 edit 2022-10-27 重写
-   * 王志勇
+   * wangzhiyonglyk
    * @param {*} data 数据
    * @param {*} pId 父节点
    * @param {*} path 初始化路径

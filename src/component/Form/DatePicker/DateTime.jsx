@@ -1,4 +1,4 @@
-//create by 王志勇
+//create by wangzhiyonglyk
 //date:2016-04-25
 //desc:日期时间组件，
 

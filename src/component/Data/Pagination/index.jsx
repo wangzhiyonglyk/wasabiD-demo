@@ -1,6 +1,6 @@
 /**
  * 分页组件
- * create by 王志勇
+ * create by wangzhiyonglyk
  * date:2021-04,从datagrid独立出来
  */
 import React, { Component } from "react";

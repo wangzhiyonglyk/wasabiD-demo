@@ -1,5 +1,5 @@
 /*
- create by 王志勇
+ create by wangzhiyonglyk
  date:2016-10-30
  desc:单页面应用的事件处理模型
  */

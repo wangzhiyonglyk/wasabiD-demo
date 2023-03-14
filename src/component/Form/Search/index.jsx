@@ -1,4 +1,4 @@
-//create by 王志勇
+//create by wangzhiyonglyk
 //date:2016-07-22
 //desc:独立的筛选框
 import React from "react";

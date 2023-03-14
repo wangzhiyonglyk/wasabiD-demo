@@ -1,5 +1,5 @@
 /**
- * Created by 王志勇 on 16/9/28.
+ * Created by wangzhiyonglyk on 16/9/28.
  * desc 将表单组件中的label单独出来,
  *
  */

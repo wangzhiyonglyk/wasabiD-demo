@@ -1,5 +1,5 @@
 /**
- * Created by 王志勇 on 2016/10/30.
+ * Created by wangzhiyonglyk on 2016/10/30.
  * edit 2021-01-15
  * 创建单表应用组件
  */

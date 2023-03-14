@@ -1,4 +1,4 @@
-//create by 王志勇
+//create by wangzhiyonglyk
 //date:2016-03-22
 //desc:可以变大小窗口
 import React from "react";

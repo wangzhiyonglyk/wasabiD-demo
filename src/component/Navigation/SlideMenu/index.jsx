@@ -1,6 +1,6 @@
 /*
 滑动菜单
-create by 王志勇
+create by wangzhiyonglyk
 date:2016-03-02
 desc:从原来的滑动面板而来
 */

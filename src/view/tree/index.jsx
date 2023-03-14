@@ -79,8 +79,10 @@ let data = [
     pId: "",
     label:
       "第7个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    iconCls: <span>test</span>,
     dropAble: true,
     draggAble: true,
+    disabled: true,
   },
 ];
 console.time("生成10万数据");

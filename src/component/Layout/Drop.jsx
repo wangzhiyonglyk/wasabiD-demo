@@ -1,5 +1,5 @@
 /**
- * Created by 王志勇 on 2016-03-26.
+ * Created by wangzhiyonglyk on 2016-03-26.
  * 能停靠的层与LinkButton配合使用
  */
 import React from "react";

@@ -1,5 +1,5 @@
 /*
- create by 王志勇
+ create by wangzhiyonglyk
  date:2016-03-02 从linkbutton中独立出来 
  edit 2019-12-18
  desc:按钮组件,从linkbutton独立出来

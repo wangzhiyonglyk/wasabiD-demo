@@ -1,5 +1,5 @@
 /*
- Created by 王志勇 on 16/7/30.
+ Created by wangzhiyonglyk on 16/7/30.
 */
 let fileType = {};
 

@@ -1,6 +1,6 @@
 /**
  * 登录页组件
- * create by 王志勇
+ * create by wangzhiyonglyk
  * date:2021-02-02
  */
 import React from "react";

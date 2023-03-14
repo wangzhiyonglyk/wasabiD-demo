@@ -1,6 +1,6 @@
-//creete by 王志勇
+//creete by wangzhiyonglyk
 //date:2016-08-02
-//edit by 王志勇 2020-10-18 todo blur事件要改
+//edit by wangzhiyonglyk 2020-10-18 todo blur事件要改
 //desc 普通的文本框
 import React, { Component } from "react";
 import propTypes from "../propsConfig/propTypes.js";

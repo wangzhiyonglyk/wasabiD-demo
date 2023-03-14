@@ -28,7 +28,7 @@ class Index extends React.Component {
           name="user"
           label="用户"
           data={[
-            { text: "王志勇", value: 1 },
+            { text: "wangzhiyonglyk", value: 1 },
             { text: "田玉红", value: 2 },
           ]}
         ></CheckBox>
