@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useRef, useCallback } from "react";
 import { createRoot } from "react-dom/client";
-import { Tree } from "../../component";
+import { Button, Tree } from "../../component";
 
 let data = [
   {
@@ -109,6 +109,59 @@ for (let i = 0; i < 1000; i++) {
 }
 console.timeEnd("生成10万数据");
 function Page() {
+  const treeRef = useRef(null);
+  const getData = useCallback(() => {
+    console.log(
+      "findNode",
+      treeRef.current.findNode(1),
+      treeRef.current.findParents("s102"),
+      treeRef.current.getData(),
+      treeRef.current.getChecked()
+    );
+  });
+  const onClick = useCallback(() => {
+    treeRef.current.selectNode(1);
+  });
+  const setChecked = useCallback(() => {
+    treeRef.current.setChecked(1, true);
+  });
+  const clearChecked = useCallback(() => {
+    treeRef.current.clearChecked();
+  });
+  const checkedAll = useCallback(() => {
+    treeRef.current.checkedAll();
+  });
+  const setLinkOpen = useCallback(() => {
+    treeRef.current.setLinkOpen("s504");
+  });
+  const removeNode = useCallback(() => {
+    treeRef.current.remove(7);
+  });
+  const removeAll = useCallback(() => {
+    treeRef.current.removeAll();
+  });
+  const append = useCallback(() => {
+    treeRef.current.append(
+      [
+        {
+          id: "n1",
+          text: "新节点",
+          label: "新节点1",
+        },
+      ],
+      7
+    );
+  });
+  const moveIn = useCallback(() => {
+    treeRef.current.moveIn(1, 7);
+  });
+  const moveBefore = useCallback(() => {
+    treeRef.current.moveBefore(3, 5);
+  });
+  const moveAfter = useCallback(() => {
+    treeRef.current.moveAfter(4, 6);
+  });
+  moveBefore;
   return (
     <div
       style={{
@@ -118,7 +171,47 @@ function Page() {
         flexDirection: "column",
       }}
     >
+      <div>
+        {" "}
+        <Button key="1" onClick={getData}>
+          获取值
+        </Button>
+        <Button key="2" onClick={onClick}>
+          设置选中
+        </Button>
+        <Button key="3" onClick={setChecked}>
+          设置勾选
+        </Button>
+        <Button key="4" onClick={clearChecked}>
+          清除勾选
+        </Button>
+        <Button key="5" onClick={checkedAll}>
+          勾选所有
+        </Button>
+        <Button key="6" onClick={setLinkOpen}>
+          展开节点
+        </Button>
+        <Button key="7" onClick={removeNode}>
+          移除节点
+        </Button>
+        <Button key="8" onClick={removeAll}>
+          移除所有节点
+        </Button>
+        <Button key="9" onClick={append}>
+          添加节点
+        </Button>
+        <Button key="moveIn" onClick={moveIn}>
+          moveIn
+        </Button>
+        <Button key="moveBefore" onClick={moveBefore}>
+          moveBefore
+        </Button>
+        <Button key="moveAfter" onClick={moveAfter}>
+          moveAfter
+        </Button>
+      </div>
       <Tree
+        ref={treeRef}
         isSimpleData={true}
         textFormatter={(row) => {
           return <div>{row.text}</div>;
