@@ -33,7 +33,7 @@ let propsTran = {
     let result = [];
     if (Array.isArray(data)) {
       data = isSimpleData
-        ? func.toTreeData(data, idField, parentField, textField)
+        ? func.toTreeData(data, idField, parentField, textField, childrenField)
         : data;
       result = data.map((item, index) => {
         item.id = item[idField];

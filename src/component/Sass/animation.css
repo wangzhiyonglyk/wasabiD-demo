@@ -74,7 +74,13 @@ a {
   animation: loading 1s linear infinite;
 }
 .tree-loading {
-  animation: tree-loading 1s linear infinite;
+  position: relative;
+  transform: translateY(10px);
+  width: 20px;
+}
+.tree-loading::before {
+  animation: loading 1s linear infinite;
+  position: absolute;
 }
 
 @keyframes loading {
@@ -83,14 +89,6 @@ a {
   }
   100% {
     transform: rotate(360deg);
-  }
-}
-@keyframes tree-loading {
-  0% {
-    transform: translateY(4px) rotate(0deg);
-  }
-  100% {
-    transform: translateY(4px) rotate(360deg);
   }
 }
 

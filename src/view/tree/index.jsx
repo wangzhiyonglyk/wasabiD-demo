@@ -5,84 +5,82 @@ import { Button, Tree } from "../../component";
 let data = [
   {
     id: 1,
-    label:
-      "第1个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    label: "第1个节点 ",
     dropAble: true,
+    isOpened: true,
   },
 
   {
     id: 2,
-    label:
-      "第2个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    label: "第2个节点 ",
     dropAble: true,
+    isOpened: true,
   },
   {
-    id: "2-1",
+    id: "1-1",
     pId: 1,
-    label:
-      "第1-1个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    label: "第1-1个节点 ",
     dropAble: true,
+    isOpened: true,
   },
   {
-    id: "2-2",
+    id: "1-2",
     pId: 1,
-    label:
-      "第12个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    label: "第12个节点 ",
     dropAble: true,
+    isOpened: true,
   },
 
   {
-    id: "2-2-1",
-    pId: "2-2",
-    label:
-      "第2-2-1个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    id: "1-2-1",
+    pId: "1-2",
+    label: "第2-2-1个节点 ",
     dropAble: true,
+    isOpened: true,
   },
   {
     id: 3,
     pId: "",
-    label:
-      "第3个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    label: "第3个节点 ",
     dropAble: true,
+    isOpened: true,
   },
   {
     id: 4,
     pId: "",
-    label:
-      "第4个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    label: "第4个节点 ",
     dropAble: true,
+    isOpened: true,
   },
   {
     id: "no5",
     pId: "",
-    label:
-      "第no5个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    label: "第no5个节点 ",
     dropAble: true,
   },
   {
     id: 5,
     pId: "",
-    label:
-      "第5个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    label: "第5个节点",
     dropAble: true,
+    isOpened: true,
   },
   {
     id: 6,
     pId: "",
-    label:
-      "第6个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
+    label: "第6个节点",
     dropAble: true,
     draggAble: true,
+    isOpened: true,
   },
   {
     id: 7,
     pId: "",
-    label:
-      "第7个节点 通过 dataSource 设置表格的数据源，通过 columns 设置表格的列。 注意 column.code 要与 d",
-    iconCls: <span>test</span>,
+    label: "第7个节点",
     dropAble: true,
     draggAble: true,
     disabled: true,
+    isOpened: true,
   },
 ];
 console.time("生成10万数据");
@@ -92,9 +90,9 @@ for (let i = 0; i < 1000; i++) {
     pId = 1;
   } else if (i < 50) {
     pId = 2;
-  } else if (i < 100) {
+  } else if (i < 1000) {
     pId = 3;
-  } else if (i < 200) {
+  } else if (i < 2000) {
     pId = 4;
   } else {
     pId = 5;
@@ -108,6 +106,7 @@ for (let i = 0; i < 1000; i++) {
   });
 }
 console.timeEnd("生成10万数据");
+
 function Page() {
   const treeRef = useRef(null);
   const getData = useCallback(() => {
