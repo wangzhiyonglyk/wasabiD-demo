@@ -5,28 +5,28 @@ import { Button, Tree } from "../../component";
 let data = [
   {
     id: 1,
-    label: "第1个节点 ",
+    text: "第1个节点 ",
     dropAble: true,
     isOpened: true,
   },
 
   {
     id: 2,
-    label: "第2个节点 ",
+    text: "第2个节点 ",
     dropAble: true,
     isOpened: true,
   },
   {
     id: "1-1",
     pId: 1,
-    label: "第1-1个节点 ",
+    text: "第1-1个节点 ",
     dropAble: true,
     isOpened: true,
   },
   {
     id: "1-2",
     pId: 1,
-    label: "第12个节点 ",
+    text: "第12个节点 ",
     dropAble: true,
     isOpened: true,
   },
@@ -34,41 +34,41 @@ let data = [
   {
     id: "1-2-1",
     pId: "1-2",
-    label: "第2-2-1个节点 ",
+    text: "第2-2-1个节点 ",
     dropAble: true,
     isOpened: true,
   },
   {
     id: 3,
     pId: "",
-    label: "第3个节点 ",
+    text: "第3个节点 ",
     dropAble: true,
     isOpened: true,
   },
   {
     id: 4,
     pId: "",
-    label: "第4个节点 ",
+    text: "第4个节点 ",
     dropAble: true,
     isOpened: true,
   },
   {
     id: "no5",
     pId: "",
-    label: "第no5个节点 ",
+    text: "第no5个节点 ",
     dropAble: true,
   },
   {
     id: 5,
     pId: "",
-    label: "第5个节点",
+    text: "第5个节点",
     dropAble: true,
     isOpened: true,
   },
   {
     id: 6,
     pId: "",
-    label: "第6个节点",
+    text: "第6个节点",
     dropAble: true,
     draggAble: true,
     isOpened: true,
@@ -76,15 +76,15 @@ let data = [
   {
     id: 7,
     pId: "",
-    label: "第7个节点",
+    text: "第7个节点",
     dropAble: true,
     draggAble: true,
     disabled: true,
     isOpened: true,
   },
 ];
-console.time("生成10万数据");
-for (let i = 0; i < 1000; i++) {
+
+for (let i = 0; i < 100000; i++) {
   let pId;
   if (i < 10) {
     pId = 1;
@@ -100,12 +100,11 @@ for (let i = 0; i < 1000; i++) {
   data.push({
     id: "s" + i,
     pId: pId,
-    label: "父节点" + pId + "-第" + i + "子节点",
+    text: "父节点" + pId + "-第" + i + "子节点",
     draggAble: true,
     dropAble: true,
   });
 }
-console.timeEnd("生成10万数据");
 
 function Page() {
   const treeRef = useRef(null);
@@ -144,8 +143,12 @@ function Page() {
       [
         {
           id: "n1",
-          text: "新节点",
-          label: "新节点1",
+          text: "新节点1",
+        },
+        {
+          id: "nn1",
+          pId: "n1",
+          text: "新节点1的子节点",
         },
       ],
       7
@@ -155,12 +158,19 @@ function Page() {
     treeRef.current.moveIn(1, 7);
   });
   const moveBefore = useCallback(() => {
-    treeRef.current.moveBefore(3, 5);
+    treeRef.current.moveBefore(3, 2);
   });
   const moveAfter = useCallback(() => {
-    treeRef.current.moveAfter(4, 6);
+    treeRef.current.moveAfter(3, 4);
   });
-  moveBefore;
+
+  const loading = useCallback(() => {
+    treeRef.current.setLoading(1);
+  });
+
+  const clearLoading = useCallback(() => {
+    treeRef.current.clearLoading();
+  });
   return (
     <div
       style={{
@@ -199,6 +209,12 @@ function Page() {
         <Button key="9" onClick={append}>
           添加节点
         </Button>
+        <Button key="loading" onClick={loading}>
+          设置加载状态
+        </Button>
+        <Button key="clearLoading" onClick={clearLoading}>
+          清除加载状态
+        </Button>
         <Button key="moveIn" onClick={moveIn}>
           moveIn
         </Button>
@@ -217,7 +233,7 @@ function Page() {
         }}
         style={{ width: 500 }}
         data={data}
-        textField="label"
+        textField="text"
         contextMenuAble={true}
         selectAble={true}
         renameAble={true}
@@ -225,6 +241,8 @@ function Page() {
         removeAble={true}
         removeIconAble={true}
         checkStyle={"checkbox"}
+        draggAble={true}
+        dropAble={true}
         httpType="GET"
       ></Tree>
     </div>
