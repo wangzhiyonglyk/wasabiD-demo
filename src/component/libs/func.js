@@ -455,24 +455,7 @@ func.diff = function (objA = null, objB = null, deep = true) {
         //值
         let propA = objA[propName];
         let propB = objB[propName];
-        if (deep) {
-          //注意条件不能合并
-          //深比较
-          if (func.diff(propA, propB, deep)) {
-            return true;
-          }
-        } else {
-          //浅比较
-          if (
-            typeof propA === "function" &&
-            propA.toString() !== propB.toString()
-          ) {
-            //如果属性是函数
-            return true;
-          } else if (propA !== propB) {
-            return true;
-          }
-        }
+        return func.diff(propA, propB, deep);
       }
     } catch (e) {
       console.log(objA, objB);

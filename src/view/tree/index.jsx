@@ -109,13 +109,12 @@ for (let i = 0; i < 100000; i++) {
 function Page() {
   const treeRef = useRef(null);
   const getData = useCallback(() => {
-    console.log(
-      "findNode",
-      treeRef.current.findNode(1),
-      treeRef.current.findParents("s102"),
-      treeRef.current.getData(),
-      treeRef.current.getChecked()
-    );
+    console.log({
+      找到节点为1: treeRef.current.findNode(1),
+      找到节点为s102的父节点: treeRef.current.findParents("s102"),
+      所有数据: treeRef.current.getData(),
+      勾选的: treeRef.current.getChecked(),
+    });
   });
   const onClick = useCallback(() => {
     treeRef.current.selectNode(1);
@@ -241,6 +240,7 @@ function Page() {
         removeAble={true}
         removeIconAble={true}
         checkStyle={"checkbox"}
+        radioType="all"
         draggAble={true}
         dropAble={true}
         httpType="GET"
