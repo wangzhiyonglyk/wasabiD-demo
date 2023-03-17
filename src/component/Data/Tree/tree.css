@@ -45,7 +45,7 @@
     flex-wrap: nowrap;
     justify-content: flex-start;
 }
-.wasabi-tree li.wasabi-tree-li-container[disabled] {
+.wasabi-tree li.wasabi-tree-li-container[disabled] > div {
     opacity: 0.6;
     pointer-events: none;
 }

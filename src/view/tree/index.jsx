@@ -170,6 +170,12 @@ function Page() {
   const clearLoading = useCallback(() => {
     treeRef.current.clearLoading();
   });
+  const setDisabled = useCallback(() => {
+    treeRef.current.setDisabled("1-2");
+  });
+  const setunDisabled = useCallback(() => {
+    treeRef.current.setDisabled("1-2", false);
+  });
   return (
     <div
       style={{
@@ -186,6 +192,12 @@ function Page() {
         </Button>
         <Button key="2" onClick={onClick}>
           设置选中
+        </Button>
+        <Button key="disabled" onClick={setDisabled}>
+          设置不可用
+        </Button>
+        <Button key="setunDisabled" onClick={setunDisabled}>
+          设置可用
         </Button>
         <Button key="3" onClick={setChecked}>
           设置勾选
