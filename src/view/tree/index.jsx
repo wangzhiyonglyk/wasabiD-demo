@@ -8,6 +8,8 @@ let data = [
     text: "第1个节点 ",
     dropAble: true,
     isOpened: true,
+    iconColor: "red",
+    iconOpen: <div>打开</div>,
   },
 
   {

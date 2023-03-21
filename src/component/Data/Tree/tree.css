@@ -269,6 +269,9 @@
     padding-top: 8px;
     padding-right: 4px;
     display: inline-block;
+    width: 20px;
+    overflow: hidden;
+    position: relative;
 }
 
 /* 树表格与交叉表高度对齐 */
@@ -296,6 +299,7 @@
     position: relative;
     color: inherit;
     word-break: break-all;
+    width: calc(100% - 20px);
 }
 
 /*子节点容器要跟外层折叠图标对齐*/
