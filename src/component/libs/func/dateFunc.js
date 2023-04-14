@@ -34,6 +34,39 @@ func.getNowTimeStamp = function () {
 };
 
 /**
+ * 获取年份
+ * @param {*} date
+ * @returns
+ */
+func.getYear = function (date = new Date()) {
+  return date.getFullYear();
+};
+/**
+ * 获取月份
+ * @param {*} date
+ * @returns
+ */
+func.getMonth = function (date = new Date()) {
+  return date.getMonth();
+};
+/**
+ * 获取星期几
+ * @param {*} date
+ * @returns
+ */
+func.getWeek = function (date = new Date()) {
+  return date.getDay();
+};
+/**
+ * 获取小时
+ * @param {*} date
+ * @returns
+ */
+func.getHour = function (date = new Date()) {
+  return date.getHours();
+};
+
+/**
  * 日期格式化为字符串
  * @param {DAte} date 日期
  * @param {string} format 格式
