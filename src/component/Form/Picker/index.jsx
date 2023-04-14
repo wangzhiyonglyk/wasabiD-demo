@@ -6,7 +6,7 @@
  edit 2017-08-17
  */
 import React, { Component } from "react";
-import func from "../../libs/func.js";
+import func from "../../libs/func/index.js";
 import propsTran from "../../libs/propsTran";
 import dom from "../../libs/dom";
 import loadDataHoc from "../loadDataHoc";

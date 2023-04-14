@@ -6,7 +6,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Time from "./Time.jsx";
 import Msg from "../../Info/Msg";
-import func from "../../libs/func";
+import func from "../../libs/func/index.js";
 import CalendarView from "./Calendar/CalendarView";
 class DateTime extends Component {
   constructor(props) {

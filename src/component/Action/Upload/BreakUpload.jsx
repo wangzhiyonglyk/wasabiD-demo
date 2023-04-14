@@ -11,7 +11,7 @@ import Modal from "../../Layout/Modal.jsx";
 import LinkButton from "../../Buttons/LinkButton";
 import Msg from "../../Info/Msg.jsx";
 import fileType from "../../libs/fileType";
-import func from "../../libs/func";
+import func from "../../libs/func/index.js";
 import api from "wasabi-api";
 import "../../Sass/Action/Import.css";
 class Upload extends Component {

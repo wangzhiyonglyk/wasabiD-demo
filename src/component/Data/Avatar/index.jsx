@@ -9,7 +9,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Msg from "../../Info/Msg.jsx";
 import api from "wasabi-api";
-import func from "../../libs/func";
+import func from "../../libs/func/index.js";
 import "./index.css";
 class Avatar extends Component {
   constructor(props) {

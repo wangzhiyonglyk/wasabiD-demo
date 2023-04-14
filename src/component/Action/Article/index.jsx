@@ -337,8 +337,7 @@ class Article extends React.Component {
                     <span>{func.dateformat(new Date())}</span>
                     <span>
                       &nbsp;&nbsp;
-                      {"字数：" +
-                        func.dealNumToEnglishFormat(this.state.wordNum)}
+                      {"字数：" + func.numToEnglishFormat(this.state.wordNum)}
                     </span>
                   </div>
                 </div>

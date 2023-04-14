@@ -6,7 +6,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./pagination.css";
-import func from "../../libs/func.js";
+import func from "../../libs/func/index.js";
 import pageSizeList from "./pageSizeList.js";
 
 class Pagination extends React.Component {

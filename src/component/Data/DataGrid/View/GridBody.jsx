@@ -5,7 +5,7 @@ import CheckBox from "../../../Form/CheckBox";
 import TableCell from "../../Table/TableCell.jsx";
 import TableRow from "../../Table/TableRow.jsx";
 import TableBody from "../../Table/TableBody.jsx";
-import func from "../../../libs/func";
+import func from "../../../libs/func/index.js";
 import config from "../config.js";
 class GridBody extends Component {
   constructor(props) {

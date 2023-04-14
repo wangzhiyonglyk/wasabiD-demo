@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import func from "../../libs/func.js";
+import func from "../../libs/func/index.js";
 import dom from "../../libs/dom"
 class SelectbleList extends React.Component {
     constructor(props) {

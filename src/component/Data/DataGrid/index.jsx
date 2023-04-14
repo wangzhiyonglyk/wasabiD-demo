@@ -26,7 +26,7 @@ import PropTypes from "prop-types";
 /**
  * 公共方法
  */
-import func from "../../libs/func.js";
+import func from "../../libs/func/index.js";
 
 import mixins from "../../Mixins/mixins";
 

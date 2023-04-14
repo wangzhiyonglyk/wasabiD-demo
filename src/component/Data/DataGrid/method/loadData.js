@@ -6,7 +6,7 @@
  */
 
 import React from "react";
-import func from "../../../libs/func.js";
+import func from "../../../libs/func/index.js";
 import Msg from "../../../Info/Msg.jsx";
 import api from "wasabi-api";
 import config from "../config.js";

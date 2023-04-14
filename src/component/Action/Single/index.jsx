@@ -13,7 +13,7 @@ import Modal from "../../Layout/Modal.jsx";
 import mixins from "../../Mixins/mixins";
 import SingleModelMixins from "./SingleModelMixins.jsx";
 import SingleHandlerMixins from "./SingleHandlerMixins.jsx";
-import func from "../../libs/func.js";
+import func from "../../libs/func/index.js";
 import Form from "../../Form/Form/index.jsx";
 import "./index.css";
 class Single extends React.Component {

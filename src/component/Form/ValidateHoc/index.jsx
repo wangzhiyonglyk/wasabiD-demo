@@ -198,8 +198,8 @@ const ValidateHoc = function (Widget) {
                   this.props.range &&
                   this.props.range <
                     func.getDateDiffDay(
-                      new Date(valueArr[1].replace(/-/g, "/")),
-                      new Date(valueArr[0].replace(/-/g, "/"))
+                      new Date(valueArr[0].replace(/-/g, "/")),
+                      new Date(valueArr[1].replace(/-/g, "/"))
                     )
                 ) {
                   //日期范围有range参数

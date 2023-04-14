@@ -8,7 +8,7 @@ import React, { Component } from "react";
 import DataGrid from "../../Data/DataGrid/index.jsx";
 import propTypes from "../propsConfig/propTypes.js";
 import ValidateHoc from "../ValidateHoc";
-import func from "../../libs/func";
+import func from "../../libs/func/index.js";
 import dom from "../../libs/dom";
 import loadDataHoc from "../loadDataHoc";
 import Msg from "../../Info/Msg.jsx";

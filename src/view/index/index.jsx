@@ -11,17 +11,9 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
-    let d = func.diff(
-      {
-        good: "1",
-      },
-      {
-        good: "2",
-      }
-    );
-    console.log(d);
-
-    console.log("dd", func.dealNumToEnglishFormat(333333.41234));
+    window.func = func;
+    console.log(func.numToEnglishFormat("2222.222"));
+    console.log(func.numToFixed("2222.222"));
   }
 
   render() {

@@ -12,7 +12,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import lang from "../../../Lang/language.js";
 import "./calendar.css";
-import func from "../../../libs/func.js";
+import func from "../../../libs/func/index.js";
 /**
  * 年份视图
  * @param {*} param0

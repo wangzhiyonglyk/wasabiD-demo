@@ -4,7 +4,7 @@
  * 将DataGrid拆分,基本处理事件存在这里
  */
 import React from "react";
-import func from "../../../libs/func.js";
+import func from "../../../libs/func/index.js";
 export default {
   /**
    * 获取当行的key

@@ -7,7 +7,7 @@
  */
 import React, { Component } from "react";
 //libs
-import func from "../../libs/func.js";
+import func from "../../libs/func/index.js";
 import propsTran from "../../libs/propsTran";
 import dom from "../../libs/dom";
 //hoc

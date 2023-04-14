@@ -9,7 +9,7 @@ import Msg from "../../Info/Msg.jsx";
 import LinkButton from "../../Buttons/LinkButton";
 import fileType from "../../libs/fileType";
 import api from "wasabi-api";
-import func from "../../libs/func";
+import func from "../../libs/func/index.js";
 
 import "./index.css";
 class Upload extends Component {

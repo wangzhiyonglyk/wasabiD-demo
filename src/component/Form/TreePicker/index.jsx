@@ -10,7 +10,7 @@ import propTypes from "../propsConfig/propTypes.js";
 import CheckBox from "../CheckBox/index.jsx";
 import propsTran from "../../libs/propsTran.js";
 import ValidateHoc from "../ValidateHoc";
-import func from "../../libs/func";
+import func from "../../libs/func/index.js";
 import dom from "../../libs/dom";
 class TreePicker extends Component {
   constructor(props) {

@@ -117,7 +117,7 @@ import Login from "./page/Login/index.jsx";
 import System from "./page/System/index.jsx";
 
 /*********************** 常用函数 *****************/
-import func from "./libs/func.js"; //常用函数
+import func from "./libs/func/index.js"; //常用函数
 import mixins from "./Mixins/mixins"; //mixins
 import regs from "./libs/regs.js"; //常用的正则
 
