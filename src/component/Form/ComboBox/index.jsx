@@ -31,6 +31,13 @@ class ComboBox extends React.PureComponent {
     //用于设置值
     this.combobox.current.setValue && this.combobox.current.setValue(value);
   }
+  focus() {
+    try {
+      this.combobox.current.focus();
+    } catch (e) {
+      console.log(e);
+    }
+  }
   /**
    * 重新查询数据
    * @param {*} params
@@ -45,7 +52,8 @@ class ComboBox extends React.PureComponent {
     return <Select ref={this.combobox} {...this.props}></Select>;
   }
   renderPicker() {
-    //下拉面板
+    //三级联动面板
+
     return <Picker ref={this.combobox} {...this.props}></Picker>;
   }
   renderDatePicker() {

@@ -21,13 +21,12 @@ border奇怪的现象，出现变粗的现象
 .wasabi-table th {
   border-bottom: 1px solid var(--border-color);
   border-right: 1px solid var(--border-color);
-  vertical-align: middle;
-  box-sizing: border-box;
   text-align: center;
   padding: 0px;
   font-weight: normal;
   background-color: white;
 }
+/* 最后一行不要线*/
 .wasabi-table tr:last-child td {
   border-bottom: none;
 }
@@ -106,34 +105,23 @@ border奇怪的现象，出现变粗的现象
 */
 .wasabi-table-cell {
   width: 100%;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 11px;
-  padding-bottom: 7px;
   box-sizing: border-box;
   word-break: break-all;
   position: relative;
   cursor: pointer;
   color: inherit;
   font-size: inherit;
-  /* 保证文字行不换行 */
   white-space: nowrap;
-  min-height: 40px;
   overflow: hidden;
-}
-.wasabi-table th .wasabi-table-cell {
-  overflow: hidden;
-  text-overflow: clip;
   height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding: 0px 5px;
+  flex-wrap: nowrap;
 }
 
-.wasabi-table.edit .wasabi-table-cell,
-.wasabi-pivot .wasabi-table-cell,
-.wasabi-treegrid .wasabi-table-cell {
-  overflow: hidden;
-  text-overflow: clip;
-  height: 40px;
-}
 .wasabi-table-cell:hover {
   color: var(--primary-color);
 }

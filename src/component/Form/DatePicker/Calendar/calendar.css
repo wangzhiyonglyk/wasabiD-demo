@@ -1,32 +1,35 @@
-.wasabi-datetime {
+.wasabi-calendar {
   width: 292px;
-  height:288px;
   background-color: white;
   font-size: var(--font-size);
-  color:var(--color);
-  border:1px solid var(--border-color);
+  color: var(--color);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
-  padding:5px;
+  padding: 5px;
 }
-.daterangeinput{
-  border:1px solid var(--border-color);
+.daterangeinput {
+  border: 1px solid var(--border-color);
   border-radius: 4px;
+  flex: 1;
+}
+.wasabi-form-group.noborder .daterangeinput {
+  border: none;
+  border-radius: 0px;
 }
 
 .daterangeinput:hover {
   border-color: var(--border-hover-color);
 }
-.daterangeinput.focus{
+.daterangeinput.focus {
   border-color: var(--primary-color);
 }
 .wasabi-has-error .daterangeinput {
   border-color: var(--danger-color);
 }
 
-.daterangeinput .wasabi-input{
+.daterangeinput .wasabi-input {
   outline: none;
-    height: 38px;
-    border: none;
+  border: none;
 }
 /*
 快速选择
@@ -43,18 +46,18 @@
   border-right: 1px solid var(--border-color);
 }
 
-.wasabi-date-qick>a {
+.wasabi-date-qick > a {
   color: var(--color);
   cursor: pointer;
   height: 30px;
   text-align: left;
 }
 
-.wasabi-date-qick>a:hover {
+.wasabi-date-qick > a:hover {
   color: var(--primary-color);
 }
 
-.wasabi-datetime-header {
+.wasabi-calendar-header {
   width: 100%;
   height: 30px;
   line-height: 30px;
@@ -66,32 +69,31 @@
   user-select: none;
 }
 
-.wasabi-datetime-header .triangle-left {
+.wasabi-calendar-header .triangle-left {
   float: left;
   cursor: pointer;
   margin-top: -22px;
   margin-left: 10px;
 }
 
-.wasabi-datetime-header .triangle-right {
+.wasabi-calendar-header .triangle-right {
   float: right;
   cursor: pointer;
   margin-top: -22px;
   margin-right: 10px;
 }
 
-.wasabi-datetime-body {
+.wasabi-calendar-body {
   width: 100%;
-  margin-top: 10px;
 }
 
-.wasabi-datetime-year {
+.wasabi-calendar-year {
   margin-top: 5px;
   display: flex;
   flex-wrap: wrap;
 }
 
-.wasabi-datetime-year .yearspan{
+.wasabi-calendar-year .yearspan {
   width: 70px;
   height: 40px;
   line-height: 40px;
@@ -100,32 +102,35 @@
   border-radius: 4px;
   cursor: pointer;
   margin-bottom: 5px;
-
 }
 
-.wasabi-datetime-year .yearspan:hover,.wasabi-datetime-year .yearspan.rangespan{
+.wasabi-calendar-year .yearspan:hover,
+.wasabi-calendar-year .yearspan.rangespan {
   color: var(--primary-color);
-background-color: var(--background-color);
+  background-color: var(--background-color);
 }
-.wasabi-datetime-year .yearspan.begin{
+.wasabi-calendar-year .yearspan.begin {
+  color: white;
+  background-color: var(--primary-color);
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+.wasabi-calendar-year .yearspan.end {
   color: white;
   background-color: var(--primary-color);
   border-top-right-radius: 20px;
-    border-bottom-right-radius:20px;
-
-  }
-  .wasabi-datetime-year .yearspan.end{
-    color: white;
-    background-color: var(--primary-color);
-    border-top-left-radius: 20px;
-    border-bottom-left-radius:20px;
-    }
-.wasabi-datetime-year .yearspan.chosed{
-color: white;
-background-color: var(--primary-color);
+  border-bottom-right-radius: 20px;
+}
+.wasabi-calendar-year .yearspan.chosed {
+  color: white;
+  background-color: var(--primary-color);
 }
 
-.wasabi-datetime-year input {
+.wasabi-calendar-year .yearspan.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.wasabi-calendar-year input {
   border: 1px solid var(--border-color);
   outline: none;
   width: 90px;
@@ -135,22 +140,21 @@ background-color: var(--primary-color);
   font-size: var(--font-size);
 }
 
-.wasabi-datetime-year input:hover {
-  border-color:var(--border-hover-color);
+.wasabi-calendar-year input:hover {
+  border-color: var(--border-hover-color);
 }
 
-.wasabi-datetime-year input:focus {
+.wasabi-calendar-year input:focus {
   border-color: var(--primary-color);
 }
 
-
-.wasabi-datetime-month {
+.wasabi-calendar-month {
   margin-top: 40px;
   display: flex;
   flex-wrap: wrap;
 }
 
-.wasabi-datetime-month .monthspan{
+.wasabi-calendar-month .monthspan {
   width: 70px;
   height: 40px;
   line-height: 40px;
@@ -159,235 +163,120 @@ background-color: var(--primary-color);
   border-radius: 4px;
   cursor: pointer;
   margin-bottom: 5px;
-
 }
-.wasabi-datetime-month .monthspan.begin{
-  color: white;
-  background-color: var(--primary-color);
-  border-top-right-radius: 20px;
-    border-bottom-right-radius:20px;
-}
-.wasabi-datetime-month .monthspan.end{
+.wasabi-calendar-month .monthspan.begin {
   color: white;
   background-color: var(--primary-color);
   border-top-left-radius: 20px;
-    border-bottom-left-radius:20px;
+  border-bottom-left-radius: 20px;
+}
+.wasabi-calendar-month .monthspan.end {
+  color: white;
+  background-color: var(--primary-color);
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
-.wasabi-datetime-month .monthspan:hover,.wasabi-datetime-month .monthspan.rangespan{
+.wasabi-calendar-month .monthspan:hover,
+.wasabi-calendar-month .monthspan.rangespan {
   color: var(--primary-color);
-background-color: var(--background-color);
+  background-color: var(--background-color);
 }
 
-.wasabi-datetime-month .monthspan.chosed{
-color: white;
-background-color: var(--primary-color);
+.wasabi-calendar-month .monthspan.chosed {
+  color: white;
+  background-color: var(--primary-color);
 }
 
-
-.wasabi-datetime-body .weekul {
+.wasabi-calendar-month .monthspan.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.wasabi-calendar-body .weekul {
   width: 100%;
   height: 30px;
   overflow: hidden;
-
 }
 
-.wasabi-datetime-body .weekspan {
+.wasabi-calendar-body .weekspan {
   list-style: none;
   float: left;
   width: 28px;
   height: 28px;
   text-align: center;
   cursor: pointer;
-  margin:6px;
+  margin: 6px;
 }
 
-.wasabi-datetime-body .dayul {
+.wasabi-calendar-body .dayul {
   width: 100%;
   margin-top: 2px;
   display: flex;
   flex-wrap: wrap;
 }
 
-.wasabi-datetime-body .datespan {
+.wasabi-calendar-body .datespan {
   list-style: none;
   float: left;
-  width:40px;
+  width: 40px;
   height: 28px;
-  text-align: center;;
+  text-align: center;
   cursor: pointer;
   padding: 0px 6px;
-  margin:3px 0px;
+  margin: 3px 0px;
 }
 
-.wasabi-datetime-body .datespan.rangespan{
+.wasabi-calendar-body .datespan.rangespan {
   background-color: var(--background-color);
 }
 
-.wasabi-datetime-body .datespan .radius {
+.wasabi-calendar-body .datespan .radius {
   width: 28px;
   height: 28px;
   line-height: 28px;
 }
 
-.wasabi-datetime-body .datespan .radius.chosed,.wasabi-datetime-body .datespan .radius:hover {
+.wasabi-calendar-body .datespan .radius.chosed,
+.wasabi-calendar-body .datespan .radius:hover {
   color: white;
   background-color: #409eff;
   border-radius: 50%;
 }
 
-.wasabi-datetime-body .datespan.disabled .radius:hover{
-  cursor:not-allowed;
+.wasabi-calendar-body .datespan.disabled .radius:hover {
+  cursor: not-allowed;
   color: var(--color);
-  background-color:transparent;
-
+  background-color: transparent;
 }
-.wasabi-datetime-body .datespan.begin{
-
+.wasabi-calendar-body .datespan.begin {
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
 }
-.wasabi-datetime-body .datespan.end{
+.wasabi-calendar-body .datespan.end {
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
 }
-.wasabi-datetime-body .datespan.begin .radius {
+.wasabi-calendar-body .datespan.begin .radius {
   color: white;
-  background-color: #409eff;
+  background-color: var(--primary-color);
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-
-.wasabi-datetime-body .datespan.end .radius {
+.wasabi-calendar-body .datespan.end .radius {
   color: white;
-  background-color: #409eff;
+  background-color: var(--primary-color);
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
 }
 
-
-.wasabi-datetime-body .datespan.disabled{
+.wasabi-calendar-body .datespan.disabled {
   cursor: not-allowed;
   opacity: 0.5;
-}
-/*
-  时间样式
-  */
-
-.wasabi-time-container {
-  position: relative;
-  width: 240px;
-  background: #ffffff;
-  padding: 10px;
-  border: 1px solid var(--border-color);
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  box-shadow: 0 0 20px #ddd;
-  height: 220px;
-  white-space: pre-wrap;
-  text-align: left;
-  padding-left: 15px;
-  z-index: 1;
-}
-
-.timerange .wasabi-time-container {
-  border: none;
-  z-index: auto;
-}
-
-.wasabi-time-container ul {
-  list-style: none;
-}
-
-.wasabi-time-container p {
-  font-weight: bold;
-  padding: 0 4px;
-  margin-top: 4px;
-  margin-bottom: 10px;
-  text-align: left;
-}
-
-.wasabi-time-container li {
-  display: inline-block;
-  position: relative;
-  margin: 4px;
-  cursor: pointer;
-  width: 34px;
-}
-
-.wasabi-time-container .recthour {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  text-align: center;
-  line-height: 24px;
-  border-radius: 50%;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-}
-
-.wasabi-time-container .recthour:hover, .wasabi-time-container .recthour.active {
-  background-color: #409eff;
-  color: #fff;
-}
-
-.wasabi-time-container .second-container {
-  display: none;
-  border: 1px solid var(--border-color);
-  background: #ffffff;
-  position: absolute;
-  top: 40px;
-  width: 240px;
-  padding: 10px;
-  padding-left: 15px;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  z-index: 5;
-  text-align: left;
-}
-
-.wasabi-time-container .second-container.all {
-  width: 460px;
-}
-
-.wasabi-time-container .second-container::before {
-  border-color: transparent transparent #ffffff;
-  top: -17px;
-  z-index: 1;
-}
-
-.timerange {
-  width: 420px;
-  height: 500px;
-}
-
-.wasabi-time-container .second-container::after {
-  border-color: transparent transparent var(--border-color);
-  top: -20px;
-}
-
-.wasabi-time-container .second-container::before, .wasabi-time-container .second-container::after {
-  content: '';
-  display: block;
-  width: 0;
-  height: 0;
-  border-width: 10px;
-  border-style: solid;
-  position: absolute;
-  left: 20px;
 }
 
 /*
@@ -397,7 +286,7 @@ background-color: var(--primary-color);
 .wasabi-time {
   position: relative;
   width: 254px;
-  height: 298px;
+
   background: #ffffff;
   border: 1px solid var(--border-color);
   border-radius: 5px;
@@ -446,7 +335,7 @@ background-color: var(--primary-color);
   font-size: var(--font-size);
 }
 
-.wasabi-time-circle-hour .hour:nth-child(n+13) {
+.wasabi-time-circle-hour .hour:nth-child(n + 13) {
   color: var(--color);
   font-size: 12px;
 }
@@ -461,7 +350,7 @@ background-color: var(--primary-color);
   color: white;
 }
 
-.wasabi-time-circle-hour .hour>span {
+.wasabi-time-circle-hour .hour > span {
   width: 30px;
   height: 30px;
   text-align: center;
@@ -538,7 +427,8 @@ background-color: var(--primary-color);
   width: 8px;
 }
 
-.wasabi-time-circle-minute .minute:hover::before, .wasabi-time-circle-minute .minute.active::before {
+.wasabi-time-circle-minute .minute:hover::before,
+.wasabi-time-circle-minute .minute.active::before {
   background: var(--primary-color);
 }
 
@@ -559,7 +449,7 @@ background-color: var(--primary-color);
   background: rgba(0, 0, 0, 0.1);
 }
 
-.wasabi-time-circle-minute .minute>span {
+.wasabi-time-circle-minute .minute > span {
   position: absolute;
   transform-origin: center center;
   text-align: center;
@@ -599,14 +489,14 @@ background-color: var(--primary-color);
   color: var(--color);
   cursor: pointer;
 }
-.wasabi-time-ok input{
+.wasabi-time-ok input {
   border: 1px solid var(--border-color);
   outline: none;
   color: var(--color);
   font-size: var(--font-size);
 }
 
-.wasabi-time-ok span>a {
+.wasabi-time-ok span > a {
   height: 25px;
   line-height: 24px;
   margin-left: 8px;
@@ -615,7 +505,7 @@ background-color: var(--primary-color);
   color: var(--primary-color);
 }
 
-.wasabi-time-ok>a {
+.wasabi-time-ok > a {
   width: 52px;
   color: var(--primary-color);
   text-align: center;

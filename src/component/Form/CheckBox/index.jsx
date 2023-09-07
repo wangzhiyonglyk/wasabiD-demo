@@ -43,17 +43,19 @@ function LiView(props) {
             disabled={disabled}
             readOnly={readOnly}
           ></label>
-          <div
-            className={
-              "checktext " +
-              (checked ? " checked " : " ") +
-              (half ? " halfcheck " : "")
-            }
-            disabled={disabled}
-            readOnly={readOnly}
-          >
-            {child.text}
-          </div>
+          {child.text ? (
+            <div
+              className={
+                "checktext " +
+                (checked ? " checked " : " ") +
+                (half ? " halfcheck " : "")
+              }
+              disabled={disabled}
+              readOnly={readOnly}
+            >
+              {child.text}
+            </div>
+          ) : null}
         </li>
       );
     });
@@ -145,7 +147,9 @@ class CheckBox extends React.Component {
       Msg.alert("值是空值");
     }
   }
-
+  focus() {
+    console.log("focus");
+  }
   render() {
     const { data, half, readOnly, disabled } = this.props;
 

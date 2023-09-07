@@ -5,10 +5,13 @@ desc:日期选择样式
 
 .combobox {
   width: 100%;
-  display: block;
+  display: flex;
   position: relative;
   font-size: 14px;
   color: var(--color);
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
 }
 
 /*下拉图标*/
@@ -23,7 +26,9 @@ desc:日期选择样式
   top: 12px;
   cursor: pointer;
   text-align: center;
-  transition: all, transform 0.6s;
+  transition:
+    all,
+    transform 0.6s;
   color: var(--icon-color);
   font-size: var(--icon-size);
 }
@@ -64,7 +69,7 @@ desc:日期选择样式
   margin: 0px;
   min-height: 250px;
   display: none;
-  position: absolute;
+  position: fixed;
   overflow: visible;
   z-index: 2;
   top: 44px;
@@ -73,7 +78,6 @@ desc:日期选择样式
   box-shadow: var(--box-shadow);
   background-color: white;
   margin: 5px 0;
-  width: 100%;
   justify-content: space-between;
 }
 .dropcontainter::before {
@@ -99,49 +103,6 @@ desc:日期选择样式
   left: 25px;
 }
 
-/*日期*/
-
-.combobox .date {
-  width: 294px;
-  height: 254px;
-}
-
-.combobox .time {
-  width: 220px;
-}
-
-.combobox .monthrange {
-  width: 586px;
-}
-.combobox .datetime {
-  width: 294px;
-}
-.combobox .datetime .wasabi-datetime {
-  border: none;
-}
-.combobox .datetimerange .wasabi-datetime {
-  border: none;
-}
-.combobox .daterange {
-  width: 686px;
-}
-
-.combobox .datetimerange {
-  width: 686px;
-}
-
-/*日期范围*/
-
-.combobox .range {
-  width: 502px;
-  height: 250px;
-}
-
-.combobox .timerange {
-  width: 502px;
-  height: 223px;
-}
-
 .combobox .datetimeicon .icon-time {
   font-size: 20px;
 }
@@ -154,6 +115,7 @@ desc:日期选择样式
   border-radius: 4px;
   outline: none;
   right: 2px;
+  z-index: 1;
 }
 
 /**
@@ -161,7 +123,6 @@ desc:日期选择样式
   */
 
 .combobox .select {
-  width: 100%;
   min-width: 210px;
   height: auto;
 }
@@ -169,22 +130,20 @@ desc:日期选择样式
 /*联级选择*/
 
 .combobox .picker {
-  width: 410px;
-  height: 527px;
+  min-width: 410px;
+  min-height: 527px;
 }
 
 /*下拉列表*/
 
 .combobox .gridpicker {
   min-width: 500px;
-  width: 100%;
-  height: 600px;
+  height: 400px;
 }
 
 /*下拉列表*/
 
 .combobox .treepicker {
-  width: 100%;
   min-width: 300px;
   height: 400px;
   overflow: auto;

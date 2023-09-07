@@ -1,11 +1,13 @@
 /*create by wangzhiyonglyk
 //date:2016-04-25
-//edit 2016-09-27重写
+//edit 2016-09-27 重写
 //date:2021-05-10 日期组件更名为日历（Calendar）组件作为独立组件，单独导出，其他日期组件全部放在日期选择组件中
-date:2022--09-19 重新改造日历组件  优化代码，
+date:2022--09-19 
+重新改造日历组件  优化代码，
 1.  拆分日历，将此组件只作日期组件的视图
 2.增加 下拉日期中最大日期与最小日期的功能
-3. 增加普通日历中一些功能
+2023-08-30 修复日历组件的bug，简化代码
+后期可能要独立为日历组件
 //desc:日历组件
 */
 import React, { Component } from "react";
@@ -13,6 +15,7 @@ import PropTypes from "prop-types";
 import lang from "../../../Lang/language.js";
 import "./calendar.css";
 import func from "../../../libs/func/index.js";
+import Msg from "../../../Info/Msg";
 /**
  * 年份视图
  * @param {*} param0
@@ -22,7 +25,10 @@ function YearView({
   yearArr,
   year,
   tempyear,
+  min,
+  max,
   isRange,
+  yearRangeType,
   rangeBegin,
   rangeEnd,
   yearViewVisible,
@@ -37,19 +43,27 @@ function YearView({
   yearArr.forEach((item) => {
     let className;
     if (isRange) {
+      // 注意了这里判断范围方式与月，日不同
       className =
         "yearspan" +
         (item === rangeBegin * 1 ? " begin" : "") +
         (item === rangeEnd * 1 ? " end" : "") +
-        (item > rangeBegin * 1 && item < rangeEnd * 1 ? " rangespan" : "");
+        (rangeBegin != null &&
+        rangeBegin != null &&
+        item > rangeBegin * 1 &&
+        item < rangeEnd * 1
+          ? " rangespan"
+          : "");
     } else {
       className = item === year * 1 ? "yearspan chosed" : "yearspan";
     }
     yearControl.push(
       <div
         key={item}
-        className={className}
-        onClick={changeYearHandler.bind(this, item)}
+        className={className + (item < min || item > max ? " disabled" : "")}
+        onClick={
+          item < min || item > max ? null : changeYearHandler.bind(this, item)
+        }
       >
         {item}
       </div>
@@ -57,7 +71,7 @@ function YearView({
   });
   return (
     <div
-      className="wasabi-datetime-year"
+      className="wasabi-calendar-year"
       style={{ display: yearViewVisible ? "flex" : "none" }}
     >
       <div
@@ -73,10 +87,15 @@ function YearView({
         <i
           className="icon-angle-double-left"
           onClick={yearPreNext.bind(this, 0)}
-        ></i>{" "}
+          style={{
+            opacity: !yearRangeType || yearRangeType === "first" ? 1 : 0,
+            pointerEvents:
+              !yearRangeType || yearRangeType === "first" ? null : "none",
+          }}
+        ></i>
         <input
           type="text"
-          value={tempyear}
+          value={tempyear || ""}
           name="year"
           onClick={yearInputClick}
           onBlur={yearonBlur}
@@ -87,6 +106,11 @@ function YearView({
         <i
           className="icon-angle-double-right"
           onClick={yearPreNext.bind(this, 1)}
+          style={{
+            opacity: !yearRangeType || yearRangeType === "second" ? 1 : 0,
+            pointerEvents:
+              !yearRangeType || yearRangeType === "second" ? null : "none",
+          }}
         ></i>
       </div>
       {yearControl}
@@ -99,8 +123,11 @@ function YearView({
  * @returns
  */
 function MonthView({
+  year,
   month,
   isRange,
+  min,
+  max,
   rangeBegin,
   rangeEnd,
   monthViewVisible,
@@ -108,21 +135,31 @@ function MonthView({
 }) {
   let control = [];
   for (let i = 1; i <= 12; i++) {
+    // 得到日期
+    let date = func.dateformat(new Date(year, i - 1), "yyyy-MM");
+
     let className;
     if (isRange) {
       className =
         "monthspan " +
         (i === rangeBegin * 1 ? " begin" : "") +
         (i === rangeEnd * 1 ? " end" : "") +
-        (i > rangeBegin * 1 && i < rangeEnd * 1 ? " rangespan" : "");
+        (rangeBegin != null &&
+        rangeEnd != null &&
+        i > rangeBegin * 1 &&
+        i < rangeEnd * 1
+          ? " rangespan"
+          : "");
     } else {
       className = "monthspan " + (month === i ? "chosed" : "");
     }
     control.push(
       <div
         key={i}
-        className={className}
-        onClick={changeMonthHandler.bind(this, i)}
+        className={className + (date < min || date > max ? " disabled" : "")}
+        onClick={
+          date < min || date > max ? null : changeMonthHandler.bind(this, i)
+        }
       >
         {i < 10 ? "0" + i : i}
       </div>
@@ -130,7 +167,7 @@ function MonthView({
   }
   return (
     <div
-      className="wasabi-datetime-month"
+      className="wasabi-calendar-month"
       style={{ display: monthViewVisible ? "flex" : "none" }}
     >
       {control}
@@ -206,7 +243,12 @@ function DayView({
   let thisMonthDaysNodes = thisMonthDays.map((item, index) => {
     let chosed = false; //当前日期是否被选中
     if (isRange) {
-      if (rangeBegin && rangeEnd && rangeBegin <= item && rangeEnd >= item) {
+      if (
+        rangeBegin != null &&
+        rangeEnd != null &&
+        rangeBegin <= item &&
+        rangeEnd >= item
+      ) {
         chosed = true;
       }
     } else if (day === item) {
@@ -251,7 +293,7 @@ function DayView({
 function CalendarHeader({ type, year, month, choseYear, choseMonth }) {
   //如果是年份，或者是年月范围两种情况就不显示头部
   return type === "year" ? null : (
-    <div className="wasabi-datetime-header">
+    <div className="wasabi-calendar-header">
       <div style={{ display: "inline", marginRight: 8 }} onClick={choseYear}>
         <span>{year}.</span>
       </div>
@@ -273,7 +315,7 @@ class CalendarView extends Component {
     this.state = {
       oldPropsValue: null, //保留原来的值,方便父组件强制更新
       tempyear: null, //年份输入框值
-      oldPropsYearArr: null, //旧值
+      oldPropsYearArr: null, //旧可的选择的年值
       yearArr: [], //当前可选年份
       year: null, //年，
       month: null, //月
@@ -295,43 +337,39 @@ class CalendarView extends Component {
   }
   static getDerivedStateFromProps(props, state) {
     let newState = {};
-    //如果指定了年份
-    if (props.isRange && func.diff(state.oldPropsYearArr, props.yearArr)) {
-      newState.yearArr = props.yearArr;
-      newState.oldPropsYearArr = props.yearArr;
-    }
-    if (
-      (props.year || "") +
-        "-" +
-        (props.month || "") +
-        "-" +
-        (props.day || "") !==
-      state.oldPropsValue
-    ) {
+
+    let newValue =
+      (props.year || "") + "-" + (props.month || "") + "-" + (props.day || "");
+    if (newValue !== state.oldPropsValue) {
       let date = new Date();
-      newState.year = props.year ? props.year : date.getFullYear();
+      newState.year = props.year ? props.year * 1 : date.getFullYear();
       newState.tempyear = newState.year;
-      newState.month = props.month ? props.month : date.getMonth() + 1;
-      newState.day = props.day;
-      newState.oldPropsValue =
-        (props.year || "") +
-        "-" +
-        (props.month || "") +
-        "-" +
-        (props.day || "");
+      newState.month = props.month ? props.month * 1 : date.getMonth() + 1;
+      newState.day = props.day * 1;
+      newState.oldPropsValue = newValue;
+    }
+
+    if (func.diff(state.oldPropsYearArr, props.yearArr)) {
       let yearArr = [];
-      for (let i = newState.year * 1 - 8; i < newState.year * 1 + 7; i++) {
-        yearArr.push(i);
+      if (!props.yearArr) {
+        // 没有传
+        yearArr = [];
+        for (let i = newState.year * 1 - 8; i < newState.year * 1 + 7; i++) {
+          yearArr.push(i);
+        }
+      } else {
+        yearArr = props.yearArr;
       }
       newState.yearArr = yearArr;
-
-      return newState;
+      newState.oldPropsYearArr = props.yearArr;
+      newState.tempyear = yearArr[Math.ceil(yearArr.length / 2)];
     }
+
     return newState;
   }
 
   /**
-   * 设置值
+   *为了保持表单特性，方便父组件调用，设置值
    * @param {*} year
    * @param {*} month
    * @param {*} day
@@ -346,6 +384,16 @@ class CalendarView extends Component {
       month: month,
       day: day,
     });
+  }
+
+  /**
+   * 获取值
+   */
+  getValue() {
+    return func.dateformat(
+      new Date(this.state.year, this.state.month - 1, this.state.day),
+      "yyyy-MM-dd"
+    );
   }
   /**
    * 选择年份
@@ -393,52 +441,48 @@ class CalendarView extends Component {
    * @param {*} value
    */
   changeYearHandler(value) {
-    this.setState(
-      {
-        yearViewVisible: this.props.type === "year" ? true : false,
-        monthViewVisible: this.props.type !== "year" ? true : false,
-        year: value,
-        tempyear: value,
-        day: null, //清空，防止没有
-      },
-      () => {
-        //向上传，用于范围组件
-        this.props.updateYearAndMonth &&
-          this.props.updateYearAndMonth(value, null);
-
-        this.props.type === "year" &&
-          this.props.onSelect &&
-          this.props.onSelect(value, value, this.props.name);
-      }
-    );
+    if (this.props.type === "year" && this.props.onSelect) {
+      this.props.onSelect(value, value, this.props.name);
+    } else {
+      this.setState(
+        {
+          yearViewVisible: this.props.type === "year" ? true : false,
+          monthViewVisible: this.props.type !== "year" ? true : false,
+          year: value,
+          tempyear: value,
+          day: null, //清空，防止没有
+        },
+        () => {
+          //向上传
+          this.props.updateYearAndMonth && this.props.updateYearAndMonth(value);
+        }
+      );
+    }
   }
   /**
    * 年份箭头
    * @param {*} type
    */
   yearPreNext(type) {
-    let yearArr = [];
-    if (type === 0) {
-      for (
-        let i = this.state.yearArr[0] - 8;
-        i < this.state.yearArr[0] + 7;
-        i++
-      ) {
-        yearArr.push(i);
-      }
+    if (this.props.type === "year" && this.props.updateYear) {
+      this.props.updateYear(type);
     } else {
-      for (
-        let i = this.state.yearArr[this.state.yearArr.length - 1] - 8;
-        i < this.state.yearArr[this.state.yearArr.length - 1] + 7;
-        i++
-      ) {
+      let len = 15;
+      let yearArr = [];
+      let begin =
+        type === 0
+          ? this.state.yearArr[0] - len
+          : this.state.yearArr[this.state.yearArr.length - 1] + 1;
+      for (let i = begin; i < begin + len; i++) {
         yearArr.push(i);
       }
+      this.setState({
+        yearArr: yearArr,
+        tempyear: yearArr[7],
+        rangeBegin: null,
+        rangeEnd: null,
+      });
     }
-    this.setState({
-      yearArr: yearArr,
-      tempyear: yearArr[7],
-    });
   }
   /**
    * 选择月份
@@ -508,7 +552,10 @@ class CalendarView extends Component {
     const yearProps = {
       yearArr: this.state.yearArr,
       year: this.state.year,
+      min: this.props.min,
+      max: this.props.max,
       isRange: this.props.isRange,
+      yearRangeType: this.props.yearRangeType,
       rangeBegin: this.props.rangeBegin,
       rangeEnd: this.props.rangeEnd,
       tempyear: this.state.tempyear,
@@ -520,8 +567,9 @@ class CalendarView extends Component {
       changeYearHandler: this.changeYearHandler,
       yearPreNext: this.yearPreNext,
     };
+
     return (
-      <div className="wasabi-datetime-body">
+      <div className="wasabi-calendar-body">
         <YearView {...yearProps}></YearView>
       </div>
     );
@@ -531,12 +579,13 @@ class CalendarView extends Component {
    * @returns
    */
   renderMonth() {
-    if (this.props.type !== "yaer") {
+    if (this.props.type !== "year") {
       return (
         <MonthView
           isRange={this.props.isRange}
           rangeBegin={this.props.rangeBegin}
           rangeEnd={this.props.rangeEnd}
+          year={this.state.year}
           month={this.state.month}
           monthViewVisible={this.state.monthViewVisible}
           changeMonthHandler={this.changeMonthHandler}
@@ -582,7 +631,7 @@ class CalendarView extends Component {
   render() {
     return (
       <div
-        className={"wasabi-datetime " + (this.props.className ?? "")}
+        className={"wasabi-calendar " + (this.props.className ?? "")}
         style={this.props.style}
       >
         <CalendarHeader
@@ -592,7 +641,7 @@ class CalendarView extends Component {
           choseYear={this.choseYear}
           choseMonth={this.choseMonth}
         ></CalendarHeader>
-        <div className="wasabi-datetime-body">
+        <div className="wasabi-calendar-body">
           {this.renderYear()}
           {this.renderMonth()}
           {this.renderDate()}
@@ -616,7 +665,10 @@ CalendarView.propTypes = {
   isRange: PropTypes.bool, //是否为范围选择
   rangeBegin: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), //日期范围选择时结束值 只有日
   rangeEnd: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), //日期范围选择时结果值
-
+  yearRangeType: PropTypes.oneOf(["first", "second"]), //是第几个,用于年份范围 因为年份范围，两个面板是联动的
+  yearArr: PropTypes.array, // 用于年份范围 因为年份范围，两个面板是联动的
+  updateYear: PropTypes.func, // 用于年份范围 因为年份范围，两个面板是联动的
+  updateYearAndMonth: PropTypes.func, // 年份或月份改变时，更新用于，日期范围，日期时间范围，月份范围
   onSelect: PropTypes.func, //选择后的事件
 };
 

@@ -77,7 +77,7 @@ func.isEmptyObject = function (obj) {
  *  @param {bool} deep 是否深层遍历
  * @returns
  */
-func.diff = function (objA = null, objB = null, deep = true) {
+func.diff = function (objA, objB, deep = true) {
   //
   if (objA === objB) {
     //直接相等，返回

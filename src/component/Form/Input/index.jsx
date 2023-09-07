@@ -14,24 +14,34 @@ import CheckButton from "../CheckButton";
 import Switch from "../Switch";
 import ComboBox from "../ComboBox";
 import Text from "../Text";
+import Password from "../Password/index.jsx";
 import Rate from "../Rate";
 import "./input.css";
 class Input extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.input = React.createRef();
+    this.inputRef = React.createRef();
   }
   validate() {
     //用于Form调用验证
-    return this.input.current.validate && this.input.current.validate();
+    return this.inputRef.current.validate && this.inputRef.current.validate();
   }
   getValue() {
     //用于调用获取值
-    return (this.input.current.getValue && this.input.current.getValue()) || "";
+    return (
+      (this.inputRef.current.getValue && this.inputRef.current.getValue()) || ""
+    );
   }
   setValue(value) {
     //用于设置值
-    this.input.current.setValue && this.input.current.setValue(value);
+    this.inputRef.current.setValue && this.inputRef.current.setValue(value);
+  }
+  focus() {
+    try {
+      this.inputRef.current.focus();
+    } catch (e) {
+      console.log(e);
+    }
   }
   /**
    * 重新查询数据，用于下拉框中的
@@ -39,19 +49,26 @@ class Input extends React.PureComponent {
    * @param {*} url
    */
   reload(params, url) {
-    this.input.current.reload && this.input.current.reload(params, url);
+    this.inputRef.current.reload && this.inputRef.current.reload(params, url);
   }
   renderText() {
     //普通文本框
-    return (
-      <Text ref={this.input} {...this.props}>
+    if (this.props.type === "strongPassword") {
+      // 强密码输入框
+      <Password ref={this.inputRef} {...this.props}>
         {this.props.children}
-      </Text>
-    );
+      </Password>;
+    } else {
+      return (
+        <Text ref={this.inputRef} {...this.props}>
+          {this.props.children}
+        </Text>
+      );
+    }
   }
   renderRate() {
     //评分
-    return <Rate ref={this.input} {...this.props}></Rate>;
+    return <Rate ref={this.inputRef} {...this.props}></Rate>;
   }
   renderUnInput(type) {
     //非输入框组件
@@ -59,19 +76,19 @@ class Input extends React.PureComponent {
     let props = { ...this.props }; ////原有的属性
     switch (type) {
       case "radio":
-        control = <Radio ref={this.input} {...props}></Radio>;
+        control = <Radio ref={this.inputRef} {...props}></Radio>;
         break;
       case "checkbox":
-        control = <CheckBox ref={this.input} {...props}></CheckBox>;
+        control = <CheckBox ref={this.inputRef} {...props}></CheckBox>;
         break;
       case "checkbutton":
-        control = <CheckButton ref={this.input} {...props}></CheckButton>;
+        control = <CheckButton ref={this.inputRef} {...props}></CheckButton>;
         break;
       case "switch":
-        control = <Switch ref={this.input} {...props}></Switch>;
+        control = <Switch ref={this.inputRef} {...props}></Switch>;
         break;
       default: //
-        control = <ComboBox ref={this.input} {...props}></ComboBox>;
+        control = <ComboBox ref={this.inputRef} {...props}></ComboBox>;
         break;
     }
 
@@ -80,27 +97,27 @@ class Input extends React.PureComponent {
 
   render() {
     let type = this.props.type;
-    if (
-      type == "text" ||
-      type == "email" ||
-      type == "url" ||
-      type == "number" ||
-      type == "integer" ||
-      type == "alpha" ||
-      type == "alphanum" ||
-      type == "mobile" ||
-      type == "idcard" ||
-      type == "password" ||
-      type == "textarea"
-    ) {
+    let texts = [
+      "text",
+      "email",
+      "url",
+      "number",
+      "integer",
+      "alpha",
+      "alphanum",
+      "mobile",
+      "idcard",
+      "password",
+      "strongPassword",
+      "textarea",
+    ];
+    if (texts.includes(type)) {
       //这几种类型统一为text
-
       return this.renderText();
     } else if (type == "rate") {
       return this.renderRate();
     } else {
       //输入文本输入框类型
-
       return this.renderUnInput(type);
     }
   }

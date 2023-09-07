@@ -9,7 +9,7 @@ import {
   Tag,
   Badge,
   Toolbar,
-  CheckBox,
+  Input,
 } from "../component";
 class Index extends React.Component {
   constructor(props) {
@@ -24,14 +24,15 @@ class Index extends React.Component {
     return (
       <div>
         <Separator key="s1">不同主题-Button</Separator>
-        <CheckBox
+        <Input
+          type="checkbox"
           name="user"
           label="用户"
           data={[
             { text: "wangzhiyonglyk", value: 1 },
             { text: "田玉红", value: 2 },
           ]}
-        ></CheckBox>
+        ></Input>
         <div key="d1" style={{ textAlign: "center" }}>
           <Button key="2" theme="primary" a="a">
             primary

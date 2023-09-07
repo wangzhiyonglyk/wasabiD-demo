@@ -119,6 +119,7 @@ class Single extends React.Component {
           totalSource={this.props.totalSource}
           contentType={this.props.contentType}
           httpHeaders={this.props.httpHeaders}
+          
           url={
             typeof this.props.pageHandler === "string"
               ? this.props.pageHandler

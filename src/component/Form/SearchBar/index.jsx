@@ -5,6 +5,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import LinkButton from "../../Buttons/LinkButton";
+import Button from "../../Buttons/Button";
 import func from "../../libs/func";
 import propsTran from "../../libs/propsTran";
 import "./searchbar.css";
@@ -20,6 +21,7 @@ class SearchBar extends Component {
     this.setData = this.setData.bind(this);
     this.clearData = this.clearData.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onReset = this.onReset.bind(this);
     this.getRefs = this.getRefs.bind(this);
     this.computerLabelWidth = this.computerLabelWidth.bind(this);
     this.expandHandler = this.expandHandler.bind(this);
@@ -193,10 +195,14 @@ class SearchBar extends Component {
       }
     }
   }
+  onReset() {
+    this.clearData();
+    this.props.onReset && this.props.onReset();
+  }
   expandHandler() {
     this.setState({
       dropType:
-        this.state.dropType == "icon-arrow-down"
+        this.state.dropType === "icon-arrow-down"
           ? "icon-arrow-up"
           : "icon-arrow-down",
     });
@@ -220,81 +226,152 @@ class SearchBar extends Component {
     });
     return maxWidth;
   }
+  renderLinkButton() {
+    return (
+      <React.Fragment>
+        <LinkButton
+          onClick={this.onSubmit}
+          theme={this.props.submitTheme}
+          hide={this.props.submitHide}
+          iconCls={this.props.submitIcon || "icon-search"}
+          style={this.props.submitStyle}
+          title={this.props.submitTitle}
+        >
+          {this.props.submitTitle || "搜索"}
+        </LinkButton>
+
+        <LinkButton
+          onClick={this.onReset}
+          theme={this.props.resetTheme}
+          hide={this.props.resetHide}
+          iconCls={this.props.resetIcon || "icon-repeat"}
+          style={this.props.resetStyle}
+          title={this.props.resetTitle}
+        >
+          {this.props.resetTitle || "重置"}
+        </LinkButton>
+
+        <LinkButton
+          onClick={this.props.onAdd}
+          theme={this.props.addTheme}
+          iconCls={this.props.addIcon || "icon-add"}
+          hide={this.props.addHide}
+          style={this.props.addStyle}
+          title={this.props.addTitle}
+        >
+          {this.props.addTitle || "添加"}
+        </LinkButton>
+
+        <LinkButton
+          iconCls={this.state.dropType}
+          onClick={this.expandHandler}
+        ></LinkButton>
+      </React.Fragment>
+    );
+  }
+  renderButton() {
+    return (
+      <React.Fragment>
+        <Button
+          onClick={this.onSubmit}
+          theme={this.props.submitTheme}
+          hide={this.props.submitHide}
+          iconCls={this.props.submitIcon || "icon-search"}
+          style={this.props.submitStyle}
+          title={this.props.submitTitle}
+        >
+          {this.props.submitTitle || "搜索"}
+        </Button>
+
+        <Button
+          onClick={this.onReset}
+          theme={this.props.resetTheme}
+          hide={this.props.resetHide}
+          iconCls={this.props.resetIcon || "icon-repeat"}
+          style={this.props.resetStyle}
+          title={this.props.resetTitle}
+        >
+          {this.props.resetTitle || "重置"}
+        </Button>
+
+        <Button
+          onClick={this.props.onAdd}
+          theme={this.props.addTheme}
+          iconCls={this.props.addIcon || "icon-add"}
+          hide={this.props.addHide}
+          style={this.props.addStyle}
+          title={this.props.addTitle}
+        >
+          {this.props.addTitle || "添加"}
+        </Button>
+
+        <Button
+          iconCls={this.state.dropType}
+          onClick={this.expandHandler}
+        ></Button>
+      </React.Fragment>
+    );
+  }
   render() {
     this.inputs = []; //先清空
     let maxWidth = this.computerLabelWidth();
+    let style = {
+      ...this.props.style,
+      height:
+        this.state.dropType === "icon-arrow-up"
+          ? 40
+          : this.props?.style?.height || null,
+    };
+    let className = "wasabi-searchbar clearfix " + (this.props.className ?? "");
     return (
-      <div
-        className={"wasabi-searchbar clearfix " + this.props.className}
-        style={this.props.style}
-      >
-        <div className="inputcontainer" cols={this.props.cols}>
-          {React.Children.map(this.props.children, (child, index) => {
-            if (child) {
-              if (typeof child.type !== "function") {
-                //非react组件
-                return child;
-              } else {
-                //这里有个问题，value与text在第二次会被清除,防止数据丢失
-                let data = child.props.data
-                  ? JSON.parse(JSON.stringify(child.props.data))
-                  : null;
-
-                //统一处理标签样式问题，方便对齐
-                let labelStyle = propsTran.handlerLabelStyle(
-                  child.labelStyle,
-                  maxWidth
-                );
-                let ref = child.ref ? child.ref : React.createRef();
-                typeof ref === "object" ? this.inputs.push(ref) : void 0; //如果对象型添加，字符型（旧语法）事后通过refs来获取
-                return React.cloneElement(child, {
-                  data: data,
-                  labelStyle: labelStyle,
-                  readOnly: this.state.disabled
-                    ? this.state.disabled
-                    : child.props.readOnly,
-                  key: index,
-                  ref: ref,
-                });
-              }
-            } else {
+      <div className={className} style={style} cols={this.props.cols || 4}>
+        {React.Children.map(this.props.children, (child, index) => {
+          if (child) {
+            if (typeof child.type !== "function") {
+              //非react组件
               return child;
+            } else {
+              //这里有个问题，value与text在第二次会被清除,防止数据丢失
+              let data = child.props.data
+                ? JSON.parse(JSON.stringify(child.props.data))
+                : null;
+
+              //统一处理标签样式问题，方便对齐
+              let labelStyle = propsTran.handlerLabelStyle(
+                child.labelStyle,
+                maxWidth
+              );
+              let ref = child.ref ? child.ref : React.createRef();
+              typeof ref === "object" ? this.inputs.push(ref) : void 0; //如果对象型添加，字符型（旧语法）事后通过refs来获取
+              return React.cloneElement(child, {
+                data: data,
+                labelStyle: labelStyle,
+                readOnly: this.state.disabled
+                  ? this.state.disabled
+                  : child.props.readOnly,
+                key: index,
+                ref: ref,
+              });
             }
-          })}
-        </div>
-        <div className="buttoncontainer">
-          <LinkButton
-            iconCls={this.state.dropType}
-            style={{
-              display:
-                this.props.children &&
-                React.Children.count(this.props.children) > this.props.cols
-                  ? "inline"
-                  : "none",
-            }}
-            onClick={this.expandHandler}
-          ></LinkButton>
-          <LinkButton
-            onClick={this.onSubmit.bind(this, "search")}
-            theme={this.props.submitTheme}
-            hide={this.props.onSubmit ? false : true}
-            iconCls="icon-search"
-            style={this.props.submitStyle}
-            title={this.props.submitTitle}
-          >
-            {this.props.submitTitle || "搜索"}
-          </LinkButton>
-          {this.props.addAble ? (
-            <LinkButton
-              onClick={this.props.onAdd}
-              theme={this.props.submitTheme}
-              iconCls="icon-add"
-              style={this.props.submitStyle}
-              title={this.props.addTitle}
-            >
-              {this.props.addTitle || "添加"}
-            </LinkButton>
-          ) : null}
+          } else {
+            return child;
+          }
+        })}
+        <div
+          className={
+            "wasabi-searchbar-blank " +
+            (this.props.buttonType === "link" ? "link" : "")
+          }
+        ></div>
+        <div
+          className={
+            "wasabi-searchbar-btns " +
+            (this.props.buttonType === "link" ? "link" : "")
+          }
+        >
+          {this.props.buttonType === "link"
+            ? this.renderLinkButton()
+            : this.renderButton()}
         </div>
       </div>
     );
@@ -303,21 +380,32 @@ class SearchBar extends Component {
 SearchBar.propTypes = {
   style: PropTypes.object, //样式
   className: PropTypes.string, //自定义样式
-  submitTitle: PropTypes.string, //查询按钮的标题
-  addTitle: PropTypes.string, //添加按钮的标题
-  submitHide: PropTypes.bool, //是否隐藏按钮
-  addAble: PropTypes.bool, //是否有添加按钮
-  submitTheme: PropTypes.string,
-  submitStyle: PropTypes.object,
-  cols: PropTypes.number, //多余几个隐藏
-  onSubmit: PropTypes.func, //提交事件
   expand: PropTypes.bool, //是否默认展开
-};
-SearchBar.defaultProps = {
-  submitTitle: "搜索", //查询按钮的标题
-  addTitle: "添加", //查询按钮的标题
-  submitTheme: "primary", //主题
-  cols: 3, //一行排几个
+  cols: PropTypes.number, //列数
+  buttonType: PropTypes.oneOf(["link", "botton"]), //按钮类型
+  submitTitle: PropTypes.string, //查询按钮的标题
+  submitTheme: PropTypes.string, //查询按钮的主题
+  submitIcon: PropTypes.string, //查询按钮的图标
+  submitStyle: PropTypes.object, //查询按钮的样式
+  submitHide: PropTypes.bool, //是否隐藏按钮
+
+  // 重置按钮
+  resetTitle: PropTypes.string,
+  resetTheme: PropTypes.string,
+  resetIcon: PropTypes.string,
+  resetStyle: PropTypes.object,
+  resetHide: PropTypes.bool,
+
+  // 添加按钮
+  addTitle: PropTypes.string,
+  addTheme: PropTypes.string,
+  addIcon: PropTypes.string,
+  addStyle: PropTypes.object,
+  addHide: PropTypes.bool,
+
+  onSubmit: PropTypes.func, //提交事件
+  onReset: PropTypes.func, //提交事件
+  onAdd: PropTypes.func, //添加事件
 };
 
 export default SearchBar;

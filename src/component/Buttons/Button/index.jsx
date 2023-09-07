@@ -82,6 +82,7 @@ class Button extends React.Component {
   }
 
   render() {
+    let marginRight = this.props.children ? 3 : 0;
     let props = {
       className:
         "  wasabi-button " +
@@ -102,14 +103,14 @@ class Button extends React.Component {
       <button
         {...props}
         id={this.buttonid}
-        onDoubleClick={this.onDoubleClick}
         onClick={this.onClick}
+        onDoubleClick={this.onDoubleClick}
         type="button"
       >
         <span style={{ display: "flex" }}>
           {this.props.iconCls && this.props.iconAlign === "left" ? (
             <i
-              style={{ marginRight: 3, color: this.props.iconColor }}
+              style={{ marginRight: marginRight, color: this.props.iconColor }}
               className={
                 "wasabi-button-icon " +
                 this.props.iconCls +
@@ -120,14 +121,14 @@ class Button extends React.Component {
           ) : null}
           {!this.props.iconCls && this.state.isdelay ? (
             <i
-              style={{ marginRight: 3 }}
+              style={{ marginRight: marginRight }}
               className={"wasabi-button-icon icon-loading loading"}
             ></i>
           ) : null}
           {this.props.children}
           {this.props.iconAlign === "right" ? (
             <i
-              style={{ marginLeft: 3, color: this.props.iconColor }}
+              style={{ marginLeft: marginRight, color: this.props.iconColor }}
               className={
                 "wasabi-button-icon " +
                 this.props.iconCls +

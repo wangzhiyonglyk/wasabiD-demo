@@ -1,58 +1,94 @@
 /*create by wangzhiyonglyk
 //date:2016-05-10
-desc:菜单树的样式
+desc:搜索栏的样式
 */
 
 .wasabi-searchbar {
   margin: 0px;
-  padding-top: 5px;
-  padding-left: 10px;
-  padding-bottom: 5px;
   width: 100%;
-  overflow: visible;
-  display: flex;
-}
-.wasabi-searchbar .inputcontainer {
+  position: relative;
+  overflow: hidden;
   display: flex;
   justify-content: flex-start;
+  align-items: flex-start;
+  align-items: flex-start;
   flex-wrap: wrap;
-  width: calc(100% - 180px);
 }
 
-.wasabi-searchbar .inputcontainer[cols="1"] > .wasabi-form-group {
-  width: 99%;
+.wasabi-searchbar[cols="1"] > .wasabi-form-group {
+  width: 100%;
 }
-.wasabi-searchbar .inputcontainer[cols="2"] > .wasabi-form-group {
-  width: 49%;
+.wasabi-searchbar[cols="2"] > .wasabi-form-group {
+  width: 50%;
 }
-.wasabi-searchbar .inputcontainer[cols="3"] > .wasabi-form-group {
-  width: 32%;
+.wasabi-searchbar[cols="3"] > .wasabi-form-group {
+  width: 33.3%;
 }
-.wasabi-searchbar .inputcontainer[cols="4"] > .wasabi-form-group {
-  width: 24%;
+.wasabi-searchbar[cols="4"] > .wasabi-form-group {
+  width: 25%;
 }
-.wasabi-searchbar .inputcontainer[cols="5"] > .wasabi-form-group {
-  width: 19%;
+.wasabi-searchbar[cols="5"] > .wasabi-form-group {
+  width: 20%;
 }
-.wasabi-searchbar .inputcontainer[cols="1"] > .wasabi-cols {
-  width: 99%;
+.wasabi-searchbar[cols="1"] > .wasabi-cols {
+  width: 100%;
 }
-.wasabi-searchbar .inputcontainer[cols="2"] > .wasabi-cols {
-  width: 49%;
+.wasabi-searchbar[cols="2"] > .wasabi-cols {
+  width: 50%;
 }
-.wasabi-searchbar .inputcontainer[cols="3"] > .wasabi-cols {
-  width: 32%;
+.wasabi-searchbar[cols="3"] > .wasabi-cols {
+  width: 33.3%;
 }
-.wasabi-searchbar .inputcontainer[cols="4"] > .wasabi-cols {
-  width: 24%;
+.wasabi-searchbar [cols="4"] > .wasabi-cols {
+  width: 25%;
 }
-.wasabi-searchbar .inputcontainer[cols="5"] > .wasabi-cols {
-  width: 19%;
+.wasabi-searchbar[cols="5"] > .wasabi-cols {
+  width: 20%;
 }
 
-.wasabi-searchbar .buttoncontainer {
-  min-width: 180px;
+.wasabi-searchbar .wasabi-searchbar-blank {
+  min-width: 300px;
+  height: 40px;
+  display: flex;
+  flex-shrink: 0;
 }
-.wasabi-searchbar .buttoncontainer > .wasabi-linkbutton {
-  line-height: 40px;
+.wasabi-searchbar .wasabi-searchbar-blank.link {
+  min-width: 220px;
+}
+.wasabi-searchbar .wasabi-searchbar-btns {
+  min-width: 300px;
+  height: 40px;
+  display: flex;
+  position: absolute;
+  justify-content: flex-end;
+  align-items: center;
+  right: 0px;
+  bottom: 0px;
+  padding-right: 10px;
+  background-color: white;
+  z-index: 1;
+}
+.wasabi-searchbar .wasabi-searchbar-btns.link {
+  min-width: 220px;
+}
+
+.wasabi-searchbar[cols="1"] .wasabi-searchbar-blank,
+.wasabi-searchbar[cols="1"] .wasabi-searchbar-btns {
+  width: 100%;
+}
+.wasabi-searchbar[cols="2"] .wasabi-searchbar-blank,
+.wasabi-searchbar[cols="2"] .wasabi-searchbar-btns {
+  width: 50%;
+}
+.wasabi-searchbar[cols="3"] .wasabi-searchbar-blank,
+.wasabi-searchbar[cols="3"] .wasabi-searchbar-btns {
+  width: 33.3%;
+}
+.wasabi-searchbar[cols="4"] .wasabi-searchbar-blank,
+.wasabi-searchbar[cols="4"] .wasabi-searchbar-btns {
+  width: 25%;
+}
+.wasabi-searchbar[cols="5"] .wasabi-searchbar-blank,
+.wasabi-searchbar[cols="5"] .wasabi-searchbar-btns {
+  width: 20%;
 }

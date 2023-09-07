@@ -51,19 +51,6 @@ import SearchBar from "./Form/SearchBar/index.jsx"; //表单查询组件
 import Form from "./Form/Form/index.jsx"; //表单提交组件
 import Input from "./Form/Input/index.jsx"; //通用表单组件
 
-import Text from "./Form/Text/index.jsx"; //文本
-import Rate from "./Form/Rate/index.jsx"; //评分
-import Select from "./Form/Select/index.jsx"; //下拉框
-import Switch from "./Form/Switch/index.jsx"; //开关
-import CheckBox from "./Form/CheckBox/index.jsx"; //复选框
-import CheckButton from "./Form/CheckButton/index.jsx"; //复选按钮
-import Radio from "./Form/Radio/index.jsx"; //单选
-import Picker from "./Form/Picker/index.jsx"; //三级下拉
-import TreePicker from "./Form/TreePicker/index.jsx"; //树形下拉框
-import DatePicker from "./Form/DatePicker/index.jsx"; //日期/时间
-import Password from "./Form/Password/index.jsx"; //强密码
-import Search from "./Form/Search/index.jsx"; //搜索栏组件
-
 /*****************日历组件******************/
 import Calendar from "./Form/DatePicker/Calendar/index.jsx"; //日历组件
 
@@ -152,18 +139,6 @@ export {
   Input,
   Form,
   SearchBar,
-  Text,
-  Rate,
-  Select,
-  Switch,
-  CheckBox,
-  CheckButton,
-  Radio,
-  Picker,
-  TreePicker,
-  DatePicker,
-  Password,
-  Search,
   Calendar,
   Separator,
   Box,

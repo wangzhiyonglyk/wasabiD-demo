@@ -18,6 +18,8 @@ class Rate extends Component {
       inValidateShow: "none",
       inValidateText: "",
     };
+    this.setValue = this.setValue.bind(this);
+    this.getValue = this.getValue.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
   }
@@ -132,6 +134,9 @@ class Rate extends Component {
     }
     return "";
   }
+  focus() {
+    console.log("focus");
+  }
   render() {
     return (
       <div
@@ -150,6 +155,7 @@ class Rate extends Component {
   }
 }
 Rate.propTypes = {
+  name: PropTypes.string, //name
   /**颜色值
    * 可以是一个字符，也可是一个数组,每个值对应一个星星
    * 如果是数组 参考如下
@@ -163,11 +169,9 @@ Rate.propTypes = {
   showValue: PropTypes.bool, //是否显示数值，
   disabled: PropTypes.bool, //禁止访问
   readOnly: PropTypes.bool, //只读
-  hide: PropTypes.bool, //隐藏
   texts: PropTypes.array, //文本值，每个值对应于一个星星
   textColor: PropTypes.string, //文本的颜色值
   value: PropTypes.number, //值
-  name: PropTypes.string.isRequired, //name
 };
 Rate.defaultProps = {
   type: "rate",

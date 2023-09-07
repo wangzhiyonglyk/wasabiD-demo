@@ -199,7 +199,7 @@ class DateTimeRange extends Component {
                 type="time"
                 key="begin"
                 onSelect={this.beginTimeHandler.bind(this)}
-                attachSecond={this.props.attachSecond}
+               
                 value={this.state.firstTime}
               ></Time>
             </div>
@@ -222,7 +222,7 @@ class DateTimeRange extends Component {
                 type="time"
                 key="end"
                 onSelect={this.endTimeHandler.bind(this)}
-                attachSecond={this.props.attachSecond}
+               
                 value={this.state.secondTime}
                 secondRange={true}
               ></Time>
@@ -234,6 +234,8 @@ class DateTimeRange extends Component {
           year={this.props.firstYear}
           month={this.props.firstMonth}
           day={this.props.firstDay}
+          min={this.props.min}
+          max={this.props.max}
           rangeBegin={this.props.firstRangeBegin}
           rangeEnd={this.props.firstRangeEnd}
           onSelect={this.props.firstHandler}
@@ -245,6 +247,8 @@ class DateTimeRange extends Component {
           year={this.props.secondYear}
           month={this.props.secondMonth}
           day={this.props.secondDay}
+          min={this.props.min}
+          max={this.props.max}
           rangeBegin={this.props.secondRangeBegin}
           rangeEnd={this.props.secondRangeEnd}
           onSelect={this.props.secondHandler}
@@ -260,12 +264,11 @@ DateTimeRange.propTypes = {
   firstTime: PropTypes.string, //第一个时间
   secondDate: PropTypes.string, //第二个日期
   secondTime: PropTypes.string, //第二个时间
-  attachSecond: PropTypes.bool, //是否带上秒
 
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // 最小值
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // 最大值
   onSelect: PropTypes.func, //确定事件
 };
-DateTimeRange.defaultProps = {
-  attachSecond: true,
-};
+
 
 export default DateRangeHoc(DateTimeRange);

@@ -17,6 +17,7 @@ import propTypes from "../propsConfig/propTypes.js";
 import ArrowInput from "./ArrowInput";
 import SelectbleList from "./SelectbleList";
 import Msg from "../../Info/Msg";
+import { setDropcontainterPosition } from "../propsConfig/public.js";
 import "./select.css";
 class Select extends Component {
   constructor(props) {
@@ -35,14 +36,18 @@ class Select extends Component {
     };
     this.showPicker = this.showPicker.bind(this);
     this.hidePicker = this.hidePicker.bind(this);
-    this.keyUpHandler = this.keyUpHandler.bind(this);
+    this.onKeyUp = this.onKeyUp.bind(this);
     this.addHandler = this.addHandler.bind(this);
     this.filter = this.filter.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onClear = this.onClear.bind(this);
     this.onSort = this.onSort.bind(this);
+
     this.onClick = this.onClick.bind(this);
+    this.onDoubleClick = this.onDoubleClick.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.onRemove = this.onRemove.bind(this);
   }
   static getDerivedStateFromProps(props, state) {
     let newState = {};
@@ -57,11 +62,6 @@ class Select extends Component {
        */
       newState.rawData = props.data;
       newState.data = func.clone(props.data); //复制一份
-
-      newState.text =
-        propsTran.processText(state.value, newState.data).join(",") ||
-        state.text;
-      newState.inputText = newState.text || state.inputText;
     }
     if (props.value !== state.oldPropsValue) {
       //父组件强行更新了
@@ -79,6 +79,13 @@ class Select extends Component {
     }
     return newState;
   }
+  /**
+   * 获取值
+   * @returns
+   */
+  getValue() {
+    return this.state.value;
+  }
 
   /**
    * 设置值
@@ -91,32 +98,30 @@ class Select extends Component {
       text: text,
       inputText: text.join(","),
     });
+    this.props.validate && this.props.validate(value);
   }
+
   /**
-   * 获取值
+   * 显示下拉框,可以用于隐藏
    * @returns
    */
-  getValue() {
-    return this.state.value;
-  }
-  /**
-   * 显示下拉框
-   * @returns
-   */
-  showPicker(event) {
+  showPicker(show = true) {
     try {
       //显示下拉选项
       if (this.props.readOnly) {
         return;
       }
+
       this.setState({
-        show: true,
+        show: show,
       });
+
       document.addEventListener("click", this.hidePicker);
+      setDropcontainterPosition(this.input.current);
     } catch (e) {}
   }
   /**
-   * 隐藏下拉框
+   * 隐藏下拉框，这个用于点击外部隐藏
    * @param {*} event
    */
   hidePicker(event) {
@@ -132,10 +137,6 @@ class Select extends Component {
       });
       try {
         document.removeEventListener("click", this.hidePicker);
-        this.props.validate(this.state.value); //验证
-        //在此处处理失去焦点事件
-        this.props.onBlur &&
-          this.props.onBlur(this.state.value, this.state.text, this.props.name);
       } catch (e) {}
     }
   }
@@ -143,11 +144,11 @@ class Select extends Component {
    * 键盘事件
    * @param {*} event
    */
-  keyUpHandler(event) {
+  onKeyUp(event) {
     if (this.props && this.props.attachAble && event.keyCode == 13) {
-      ////为了兼容旧属性
       this.addHandler(event);
     }
+    this.props.onKeyUp && this.props.onKeyUp(event);
   }
   /**
    * 手动输入添加
@@ -233,7 +234,7 @@ class Select extends Component {
       let undimFilter = []; //没有模糊筛选成功的
 
       this.state.data &&
-        this.state.data.forEach((item, index) => {
+        this.state.data.forEach((item) => {
           /**
            * **************注意事项********************
            * 前后加逗号匹配，防止数字匹配失效，
@@ -288,12 +289,27 @@ class Select extends Component {
     });
     return formatValue;
   }
+  focus() {
+    try {
+      this.input.current.focus();
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
   /***
    * 输入框的单击事件
    */
   onClick(event) {
-    this.showPicker(event);
+    this.showPicker();
     this.props.onClick && this.props.onClick(event);
+  }
+  /**
+   * 双击事件
+   * @param {*} event
+   */
+
+  onDoubleClick(event) {
+    this.props.onDoubleClick && this.props.onDoubleClick(event);
   }
   /**
    * 选择事件
@@ -329,14 +345,20 @@ class Select extends Component {
             (item) => item == value || item == text
           );
           if (findIndex > -1) {
-            //输入框可能不含有
+            //输入框含有这个文本,删除
             inputText.splice(findIndex, 1);
           }
         } else {
           //选中
           newValue.push(value);
           newText.push(text);
-          inputText.push(text);
+          let findIndex = inputText.findIndex(
+            (item) => item == value || item == text
+          );
+          if (findIndex <= -1) {
+            //输入框没有这个文本，添加
+            inputText.push(text);
+          }
         }
         this.setState({
           inputText: inputText.join(","),
@@ -379,7 +401,9 @@ class Select extends Component {
     let filterData = this.filter(event); //筛选数据
     this.setState({
       show: true,
-      inputText: event.target.value,
+      inputText: event.target.value.trim(),
+      value: event.target.value.trim(),
+      text: event.target.value.trim(),
       data: [].concat(
         filterData.absFilter,
         filterData.dimFilter,
@@ -388,8 +412,22 @@ class Select extends Component {
     });
     this.props.onChange &&
       this.props.onChange(
-        event.target.value,
-        event.target.value,
+        event.target.value.trim(),
+        event.target.value.trim(),
+        this.props.name,
+        event
+      );
+  }
+  /**
+   * 失去焦点
+   */
+  onBlur(event) {
+    this.props.validate && this.props.validate(this.state.value); //验证
+    //在此处处理失去焦点事件
+    this.props.onBlur &&
+      this.props.onBlur(
+        this.state.value,
+        this.state.text,
         this.props.name,
         event
       );
@@ -405,8 +443,8 @@ class Select extends Component {
       text: "",
       show: true,
     });
-    this.showPicker();
-    this.props.onSelect && this.props.onSelect("", "", this.props.name);
+
+    this.props.onSelect && this.props.onSelect("", "", this.props.name, null);
   }
   /**
    * 移除某个节点
@@ -457,20 +495,23 @@ class Select extends Component {
           placeholder={this.props.placeholder ?? ""}
           sortType={this.state.sortType}
           readOnly={this.props.readOnly}
-          onChange={this.onChange.bind(this)}
-          onClear={this.onClear.bind(this)}
-          onKeyUp={this.keyUpHandler.bind(this)}
-          onClick={this.onClick.bind(this)}
-          onSort={this.onSort.bind(this)}
+          onFocus={this.props.onFocus}
+          onClick={this.onClick}
+          onDoubleClick={this.onDoubleClick}
+          onKeyUp={this.onKeyUp}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
+          onClear={this.onClear}
+          onSort={this.onSort}
         ></ArrowInput>
         <SelectbleList
           show={this.state.show}
           value={this.state.value}
           data={this.state.data}
           removeAble={this.props.removeAble}
-          onSelect={this.onSelect.bind(this)}
-          onRemove={this.onRemove.bind(this)}
-        ></SelectbleList>{" "}
+          onSelect={this.onSelect}
+          onRemove={this.onRemove}
+        ></SelectbleList>
       </div>
     );
   }

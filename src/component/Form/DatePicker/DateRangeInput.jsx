@@ -10,6 +10,7 @@ import regs from "../../libs/regs";
 class DateRangeInput extends React.Component {
   constructor(props) {
     super(props);
+    this.input = React.createRef();
     this.fristinput = React.createRef();
     this.secondinput = React.createRef();
     this.firstValue = "";
@@ -48,7 +49,7 @@ class DateRangeInput extends React.Component {
       ) {
         //合法的值，并且光标在最后
         try {
-          this.secondinput.current.input.current.focus(); //第二输入框获取得焦点
+          this.secondinput.current.focus(); //第二输入框获取得焦点
         } catch (e) {
           console.log("secondinput", e);
         }
@@ -59,11 +60,9 @@ class DateRangeInput extends React.Component {
     this.props.onChange &&
       this.props.onChange(this.firstValue + "," + this.secondValue);
   }
-
-  changeFocus() {
-    this.secondinput.current.input.current.focus(); //第二输入框获取得焦点
+  focus() {
+    this.fristinput.current.focus();
   }
-
   render() {
     const { value } = this.props;
     const valueArr = value ? value.split(",") : ["", ""];
@@ -72,6 +71,7 @@ class DateRangeInput extends React.Component {
       <div
         style={{ position: "relative", display: "flex" }}
         className="daterangeinput"
+        ref={this.input}
       >
         <DateInput
           ref={this.fristinput}

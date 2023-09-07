@@ -4,10 +4,9 @@
  * desc:为了日期组件定制的输入框，独立出来
  */
 import React from "react";
-import PropTypes from "prop-types";
+
 import BaseInput from "../BaseInput";
 import func from "../../libs/func";
-import dom from "../../libs/dom";
 class DateInput extends React.Component {
   constructor(props) {
     super(props);
@@ -18,9 +17,10 @@ class DateInput extends React.Component {
     };
     this.onChange = this.onChange.bind(this);
     this.inputFormatter = this.inputFormatter.bind(this);
-    this.inputClick = this.inputClick.bind(this);
-    this.inputFocus = this.inputFocus.bind(this);
-    this.inputBlur = this.inputBlur.bind(this);
+    this.onClick = this.onClick.bind(this);
+    this.onDoubleClick = this.onDoubleClick.bind(this);
+    this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
     this.dateFormatterCheck = this.dateFormatterCheck.bind(this);
     this.timeFormatterCheck = this.timeFormatterCheck.bind(this);
     this.monthFormatterCheck = this.monthFormatterCheck.bind(this);
@@ -42,17 +42,7 @@ class DateInput extends React.Component {
   onChange(event) {
     let value = this.inputFormatter(event);
     if (value !== false) {
-      //输入不合法
-      this.setState(
-        {
-          value: value,
-        },
-        () => {
-          this.props.onChange && this.props.onChange(value, event);
-        }
-      );
-    } else if (event.target.value === "") {
-      //输入是空的
+      //输入合法
       this.setState(
         {
           value: value,
@@ -77,72 +67,75 @@ class DateInput extends React.Component {
      * 2.顺序输入，有效判断是否要加-或：
      * 3.插入输入时，判断对应的段是否有效，无效则光标选择，不禁止输入，因为禁止输入后光标会跳转末尾
      */
-    switch (this.props.type) {
-      case "time":
-      case "timerange":
-        reg = /^\d{1,2}$|^\d{2}:?$|^\d{2}:([0-5]|[0-5]\d)$/;
-        if (
-          value.length == event.target.selectionStart &&
-          reg.test(value) !== true
-        ) {
-          //末尾输入，格式不正确，
-          return false;
-        } else {
-          value = this.timeFormatterCheck(value, event);
-        }
-        break;
-      case "month":
-        reg = /^\d{1,4}-?$|^\d{4}-(0[1-9]*|1[0-2]*)$/;
-        if (
-          value.length == event.target.selectionStart &&
-          reg.test(value) !== true
-        ) {
-          return false;
-        } else {
-          value = this.monthFormatterCheck(value, event);
-        }
-        break;
-      case "date":
-      case "daterange":
-        reg =
-          /^\d{1,4}-?$|^\d{4}-(0[1-9]*|1[0-2]*)-?$|^\d{4}-(0[1-9]|1[0-2])-(0[1-9]*|[1-2][0-9]*|3[0-1]*)$/;
-        if (
-          value.length == event.target.selectionStart &&
-          reg.test(value) !== true
-        ) {
-          //末尾输入，格式不正确
-          return false;
-        } else {
-          value = this.dateFormatterCheck(value, event);
-        }
-        break;
-      case "datetime":
-      case "datetimerange":
-        //时间后面的输入只做了简单验证，否则太长了，通过控制输入来处理
-        reg =
-          /^\d{1,4}-?$|^\d{4}-(0[1-9]*|1[0-2]*)-?$|^\d{4}-(0[1-9]|1[0-2])-(0[1-9]*|[1-2][0-9]*|3[0-1]*)$|^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s?[\d:]*$/;
-        if (
-          value.length == event.target.selectionStart &&
-          reg.test(value) !== true
-        ) {
-          //末尾输入，格式不正确
-          return false;
-        } else {
-          value = this.dateFormatterCheck(value, event);
+    if (value) {
+      switch (this.props.type) {
+        case "time":
+        case "timerange":
+          reg = /^\d{1,2}$|^\d{2}:?$|^\d{2}:([0-5]|[0-5]\d)$/;
           if (
-            value.length == 10 &&
-            /^\d{4,4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/.test(value)
+            value.length == event.target.selectionStart &&
+            reg.test(value) !== true
           ) {
-            //有效的日期
-            value = value + " ";
-          } else if (value.length >= 11) {
-            value = this.timeFormatterCheck(value, event, 11);
+            //末尾输入，格式不正确，
+            return false;
+          } else {
+            value = this.timeFormatterCheck(value, event);
           }
-        }
-        break;
-      default:
-        break;
+          break;
+        case "month":
+          reg = /^\d{1,4}-?$|^\d{4}-(0[1-9]*|1[0-2]*)$/;
+          if (
+            value.length == event.target.selectionStart &&
+            reg.test(value) !== true
+          ) {
+            return false;
+          } else {
+            value = this.monthFormatterCheck(value, event);
+          }
+          break;
+        case "date":
+        case "daterange":
+          reg =
+            /^\d{1,4}-?$|^\d{4}-(0[1-9]*|1[0-2]*)-?$|^\d{4}-(0[1-9]|1[0-2])-(0[1-9]*|[1-2][0-9]*|3[0-1]*)$/;
+          if (
+            value.length == event.target.selectionStart &&
+            reg.test(value) !== true
+          ) {
+            //末尾输入，格式不正确
+            return false;
+          } else {
+            value = this.dateFormatterCheck(value, event);
+          }
+          break;
+        case "datetime":
+        case "datetimerange":
+          //时间后面的输入只做了简单验证，否则太长了，通过控制输入来处理
+          reg =
+            /^\d{1,4}-?$|^\d{4}-(0[1-9]*|1[0-2]*)-?$|^\d{4}-(0[1-9]|1[0-2])-(0[1-9]*|[1-2][0-9]*|3[0-1]*)$|^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s?[\d:]*$/;
+          if (
+            value.length == event.target.selectionStart &&
+            reg.test(value) !== true
+          ) {
+            //末尾输入，格式不正确
+            return false;
+          } else {
+            value = this.dateFormatterCheck(value, event);
+            if (
+              value.length == 10 &&
+              /^\d{4,4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/.test(value)
+            ) {
+              //有效的日期
+              value = value + " ";
+            } else if (value.length >= 11) {
+              value = this.timeFormatterCheck(value, event, 11);
+            }
+          }
+          break;
+        default:
+          break;
+      }
     }
+
     return value;
   }
 
@@ -261,39 +254,21 @@ class DateInput extends React.Component {
           event.target.selectionEnd = 5 + beginIndex;
         }
       }
+    } else if (value && event.target.selectionStart === beginIndex + 5) {
+      //分输入完时
+      const minute = value.slice(beginIndex + 3, beginIndex + 5);
+      if (/^[0-5]\d$/.test(minute) !== true) {
+        //输入不正确
+        event.target.selectionStart = 3 + beginIndex;
+        event.target.selectionEnd = 5 + beginIndex;
+      }
     }
-    //todo 暂时不处理秒
-    // else if (value && event.target.selectionStart === beginIndex + 5) {//分输入完时
-    //     const minute = value.slice(beginIndex + 3, beginIndex + 5);
-    //     if (/^[0-5]\d$/.test(minute) !== true) {
-    //         //输入不正确
-    //         event.target.selectionStart = 3 + beginIndex;
-    //         event.target.selectionEnd = 5 + beginIndex;
-    //     }
-    //     else{
-    //         //正确
-    //         if(this.props.attachSecond){
-    //             if (value.length === 5 + beginIndex) {//后面没值
-    //                 value = value + ":";
-    //                 event.target.selectionStart = value.length;
-    //             }
-    //             else {//后面有值
-    //                 event.target.selectionStart = 6 + beginIndex;
-    //                 event.target.selectionEnd = 8 + beginIndex;
-    //             }
-    //         }
-
-    //     }
-    // }
     return value;
   }
   /**
    * 控制光标
    */
-  inputClick(event) {
-    this.props.showPicker && this.props.showPicker(); //显示下拉框
-    //设置下拉框位置
-    this.handlerPositionAndDisplay(event);
+  onClick(event) {
     switch (this.props.type) {
       case "year":
         event.target.selectionStart = 0;
@@ -352,11 +327,23 @@ class DateInput extends React.Component {
       default:
         break;
     }
+    this.props.showPicker && this.props.showPicker();
+    this.props.onClick && this.props.onClick(event);
+  }
+  onDoubleClick(event) {
+    this.props.onDoubleClick && this.props.onDoubleClick(event);
+  }
+  focus() {
+    try {
+      this.input.current.focus();
+    } catch (e) {
+      console.log("e", e);
+    }
   }
   /**
    * 得到焦点
    */
-  inputFocus(event) {
+  onFocus(event) {
     switch (this.props.type) {
       case "time":
         event.target.selectionStart = 0;
@@ -371,50 +358,16 @@ class DateInput extends React.Component {
       default:
         break;
     }
-    this.props.showPicker && this.props.showPicker(); //显示下拉框
-    //设置焦点样式
-    event.target.parentNode.className =
-      event.target.parentNode.className.replace(" focus", "");
-    event.target.parentNode.className += " focus";
-    //设置下拉框位置
-    this.handlerPositionAndDisplay(event);
+    this.props.onFocus && this.props.onFocus(event);
   }
   /**
    * 失去焦点
    * @param {*} event
    */
-  inputBlur(event) {
-    event.target.parentNode.className =
-      event.target.parentNode.className.replace(" focus", "");
+  onBlur(event) {
+    this.props.onBlur && this.props.onBlur(event);
   }
 
-  /**
-   * 年份范围，年月范围控制下拉框的显示
-   * @param {*} event
-   */
-  handlerPositionAndDisplay(event) {
-    return;
-    if (this.props.type === "year" || this.props.type === "month") {
-      let p = dom.findAncestorByClasss(event.target, "combobox");
-      let container = p.querySelector(".dropcontainter");
-      if (event.target.offsetLeft <= 10) {
-        container.querySelectorAll(".wasabi-datetime")[0].style.display =
-          "block";
-        container.querySelectorAll(".wasabi-datetime").length === 2
-          ? (container.querySelectorAll(".wasabi-datetime")[1].style.display =
-              "none")
-          : null;
-      } else {
-        container.querySelectorAll(".wasabi-datetime")[0].style.display =
-          "none";
-        container.querySelectorAll(".wasabi-datetime").length === 2
-          ? (container.querySelectorAll(".wasabi-datetime")[1].style.display =
-              "block")
-          : null;
-      }
-      container.style.left = event.target.offsetLeft + "px";
-    }
-  }
   render() {
     return (
       <React.Fragment>
@@ -441,20 +394,15 @@ class DateInput extends React.Component {
           readOnly={this.props.readOnly}
           required={this.props.required}
           value={this.state.value}
+          onFocus={this.onFocus}
+          onClick={this.onClick}
+          onDoubleClick={this.onDoubleClick}
+          onKeyUp={this.props.onKeyUp}
           onChange={this.onChange}
-          onClick={this.inputClick}
-          onDoubleClick={this.props.showPicker}
-          onFocus={this.inputFocus}
-          onBlur={this.inputBlur}
+          onBlur={this.onBlur}
         />
       </React.Fragment>
     );
   }
 }
-DateInput.propTypes = {
-  onClear: PropTypes.func,
-  onClick: PropTypes.func,
-  onChange: PropTypes.func,
-};
-
 export default DateInput;

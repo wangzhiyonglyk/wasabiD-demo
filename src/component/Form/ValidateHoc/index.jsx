@@ -218,7 +218,7 @@ const ValidateHoc = function (Widget) {
           inValidateText = validation["required"];
         }
         this.setState({
-          validateClass: !isvalidate ? "wasabi-has-error" : "", //todo 暂时不处理成功的样式
+          validateClass: !isvalidate ? "wasabi-has-error" : "",
           inValidateText: inValidateText,
         });
       }
@@ -242,6 +242,14 @@ const ValidateHoc = function (Widget) {
       return this.input.current && this.input.current.getValue();
     }
 
+    focus() {
+      try {
+        this.input.current.focus();
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
     /**
      * 刷新,因为下拉框类型组件需要
      * @param {*} params
@@ -259,6 +267,7 @@ const ValidateHoc = function (Widget) {
           id={this.state.containerid}
           className={
             "wasabi-form-group " +
+            (this.props.noborder ? " noborder" : "") +
             (this.props.className || "") +
             " " +
             this.state.validateClass

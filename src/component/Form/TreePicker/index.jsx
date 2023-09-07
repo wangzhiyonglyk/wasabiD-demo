@@ -12,9 +12,11 @@ import propsTran from "../../libs/propsTran.js";
 import ValidateHoc from "../ValidateHoc";
 import func from "../../libs/func/index.js";
 import dom from "../../libs/dom";
+import { setDropcontainterPosition } from "../propsConfig/public.js";
 class TreePicker extends Component {
   constructor(props) {
     super(props);
+    this.input = React.createRef();
     this.tree = React.createRef();
     this.checkbox = React.createRef();
     this.state = {
@@ -28,6 +30,10 @@ class TreePicker extends Component {
     this.showPicker = this.showPicker.bind(this);
     this.hidePicker = this.hidePicker.bind(this);
     this.checkedAll = this.checkedAll.bind(this);
+    this.onClick = this.onClick.bind(this);
+    this.onDoubleClick = this.onDoubleClick.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onBlur = this.onBlur.bind(this);
   }
   static getDerivedStateFromProps(props, state) {
     if (props.value !== state.oldPropsValue) {
@@ -41,25 +47,19 @@ class TreePicker extends Component {
     return null;
   }
 
-  /**
-   * 清除
-   */
-  onClear() {
-    this.setValue("");
-  }
-  showPicker(event) {
+  showPicker(show = true) {
     //显示选择
     try {
-      event.stopPropagation(); //防止冒泡
       if (this.props.readOnly) {
         //只读不显示
         return;
       } else {
         this.setState({
-          show: true,
+          show: show,
         });
       }
       document.addEventListener("click", this.hidePicker);
+      setDropcontainterPosition(this.input.current);
     } catch (e) {}
   }
   /**
@@ -80,9 +80,6 @@ class TreePicker extends Component {
       try {
         document.removeEventListener("click", this.hidePicker);
         this.props.validate && this.props.validate(this.state.value);
-        //在此处处理失去焦点事件
-        this.props.onBlur &&
-          this.props.onBlur(this.state.value, this.state.text, this.props.name);
       } catch (e) {}
     }
   }
@@ -180,6 +177,60 @@ class TreePicker extends Component {
     return this.state.value;
   }
 
+  /**
+   * 清除
+   */
+  onClear() {
+    this.setValue("");
+  }
+  /***
+   * 输入框的单击事件
+   */
+  onClick(event) {
+    this.showPicker();
+    this.props.onClick && this.props.onClick(event);
+  }
+  /**
+   * 双击事件
+   * @param {*} event
+   */
+
+  onDoubleClick(event) {
+    this.props.onDoubleClick && this.props.onDoubleClick(event);
+  }
+  /**
+   * onchage 事件
+   * @param {*} event
+   */
+  onChange(event) {
+    this.tree.current.filter(event.target.value.trim());
+    this.setState({
+      show: true,
+      inputText: event.target.value,
+    });
+    this.props.onChange &&
+      this.props.onChange(
+        event.target.value,
+        event.target.value,
+        this.props.name,
+        event
+      );
+  }
+  /**
+   * 失去焦点
+   */
+  onBlur(event) {
+    this.props.validate(this.state.value); //验证
+    //在此处处理失去焦点事件
+    this.props.onBlur &&
+      this.props.onBlur(
+        this.state.value,
+        this.state.text,
+        this.props.name,
+        event
+      );
+  }
+
   render() {
     let inputProps = {
       readOnly: this.props.readOnly,
@@ -209,21 +260,24 @@ class TreePicker extends Component {
             "comboxbox-icon icon-caret-down " +
             (this.state.show ? "rotate" : "")
           }
-          onClick={this.showPicker.bind(this, 1)}
+          onClick={this.showPicker.bind(this)}
         ></i>
         <input
           type="text"
           {...inputProps}
+          ref={this.input}
           value={this.state.text}
-          onBlur={this.props.onBlur}
-          onClick={this.showPicker.bind(this)}
-          onChange={() => {}}
+          onFocus={this.props.onFocus}
+          onClick={this.onClick.bind(this)}
+          onDoubleClick={this.onDoubleClick.bind(this)}
+          onKeyUp={this.props.onKeyUp}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
           autoComplete="off"
         />
         <div
           className={"dropcontainter treepicker  "}
           style={{
-            height: this.props.height,
             display: this.state.show == true ? "block" : "none",
           }}
         >
@@ -252,6 +306,8 @@ class TreePicker extends Component {
           <Tree
             ref={this.tree}
             {...this.props}
+            // 注意了这里的idField
+            idField={this.props.idField || this.props.valueField}
             data={this.props.data}
             onChecked={this.onSelect.bind(this)}
             checkAble={true}

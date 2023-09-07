@@ -1,3 +1,4 @@
+/**强密码组件， */
 import React from "react";
 import BaseInput from "../BaseInput";
 import ValidateHoc from "../ValidateHoc";
@@ -6,47 +7,58 @@ import propTypes from "../propsConfig/propTypes.js";
 class Password extends React.Component {
   constructor(props) {
     super(props);
-    this.inputControl = React.createRef();
-    this.inputdom = React.createRef();
+    this.inputRef = React.createRef();
+
     this.state = {
-      tempValue: this.props.value || "",
+      oldPropsValue: null,
+      value: this.props.value || "",
     };
     this.onChange = this.onChange.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onPaste = this.onPaste.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.onFocus = this.onFocus.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
   }
-
+  static getDerivedStateFromProps(props, state) {
+    if (props.value !== state.oldPropsValue) {
+      //就是说原来的初始值发生改变了，说明父组件要更新值
+      return {
+        value: props.value || "",
+        oldPropsValue: props.value,
+      };
+    }
+    return null;
+  }
+  getValue() {
+    return this.state.value;
+  }
+  setValue(value) {
+    this.setState({
+      value: value,
+    });
+  }
   /**
    * change
    * @param {*} value
    */
   onChange(event) {
-    let value = event.target.value;
+    let currentValue = event.target.value;
     let tempValue;
-    if (event.target.selectionStart === value.length) {
-      let add = value.length > this.state.tempValue.length;
+    if (event.target.selectionStart === currentValue.length) {
+      let add = currentValue.length > this.state.value.length; // 是添加还是删除
       tempValue = add
-        ? this.state.tempValue + value.slice(this.state.tempValue.length)
-        : this.state.tempValue.slice(0, value.length);
+        ? this.state.value + currentValue.slice(this.state.value.length)
+        : this.state.value.slice(0, currentValue.length);
       this.setState({
-        tempValue: tempValue,
+        value: tempValue,
       });
       this.props.onChange &&
         this.props.onChange(tempValue, tempValue, this.props.name, event);
     } else {
       //禁止从中间删除
     }
-  }
-  getValue() {
-    return this.state.tempValue;
-  }
-  setValue(value) {
-    this.setState({
-      tempValue: value,
-    });
   }
   /************以下事件都是为了防止密码的输入出问题 ***********/
   onKeyUp(event) {
@@ -55,13 +67,53 @@ class Password extends React.Component {
       //控制光标位置
       event.target.selectionStart = event.target.value.length;
     }
+    this.props.onKeyUp && this.props.onKeyUp(event);
   }
   /**
    * //验证密码强度
    * @param {*} event
    */
   onBlur(event) {
-    this.props.validate && this.props.validate(this.state.tempValue);
+    this.props.validate && this.props.validate(this.state.value);
+    this.props.onBlur && this.props.onBlur(event);
+  }
+
+  /**
+   * 设置焦点
+   * @param {*} event
+   */
+  focus() {
+    //全部选中
+    try {
+      this.inputRef.current.focus();
+      this.inputRef.current.selectionStart = this.inputRef.current.value.length;
+    } catch (e) {
+      console.oog("error", e);
+    }
+  }
+  /**
+   * 焦点事件
+   */
+  onFocus(event) {
+    //全部选中
+    event.target.selectionStart = event.target.value.length;
+    this.props.onClick && this.props.onFocus(event);
+  }
+  /**
+   *  //控制光标位置
+   * @param {*} event
+   */
+  onClick(event) {
+    //全部选中
+    event.target.selectionStart = event.target.value.length;
+    this.props.onClick && this.props.onClick(event);
+  }
+  /**
+   * 防止选择部分，然后滑出，再删除
+   * @param {*} event
+   */
+  onMouseOut() {
+    this.inputRef.current.selectionStart = this.state.value.length;
   }
   /**
    * 粘贴处理,禁止粘贴
@@ -69,21 +121,9 @@ class Password extends React.Component {
    */
   onPaste(event) {
     event.preventDefault(); //阻止默认事件
+    this.props.onPaste && this.props.onPaste(event);
   }
-  /**
-   *  //控制光标位置
-   * @param {*} event
-   */
-  onClick(event) {
-    event.target.selectionStart = event.target.value.length;
-  }
-  /**
-   * 防止选择部分，然后滑出，再删除
-   * @param {*} event
-   */
-  onMouseOut(event) {
-    this.inputControl.current.selectionStart = this.state.tempValue.length;
-  }
+
   render() {
     return (
       <React.Fragment>
@@ -92,17 +132,18 @@ class Password extends React.Component {
           name={this.props.name}
           placeholder={this.props.placeholder}
           readOnly={this.props.readOnly}
-          ref={this.inputControl}
-          value={this.state.tempValue.replace(/./g, "*")}
+          ref={this.inputRef}
+          value={this.state.value.replace(/./g, "*")}
+          onFocus={this.onFocus}
+          onClick={this.onClick}
+          onDoubleClick={this.props.onDoubleClick}
           onBlur={this.onBlur}
           onPaste={this.onPaste}
           onChange={this.onChange}
           onKeyUp={this.onKeyUp}
-          onClick={this.onClick}
-          onFocus={this.onClick}
           onMouseOut={this.onMouseOut}
         ></BaseInput>
-        {this.props.children}{" "}
+        {this.props.children}
       </React.Fragment>
     );
   }

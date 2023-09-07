@@ -100,9 +100,9 @@ const loadDataHoc = function (Widget) {
           success: this.loadSuccess,
           data: this.state.params,
           error: this.loadError,
+          headers: this.props.httpHeaders,
+          contentType: this.props.contentType,
         };
-        fetchmodel.headers = this.props.httpHeaders;
-        fetchmodel.contentType = this.props.contentType;
         let wasabi_api = window.api || api;
         wasabi_api.ajax(fetchmodel);
         console.log("combobox-fetch", fetchmodel);
@@ -161,6 +161,14 @@ const loadDataHoc = function (Widget) {
         this.input.current.getValue &&
         this.input.current.getValue()
       );
+    }
+
+    focus() {
+      try {
+        this.input.current.focus();
+      } catch (e) {
+        console.log(e);
+      }
     }
 
     render() {

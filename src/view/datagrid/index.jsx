@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { DataGrid, Button } from "../../component";
+import { DataGrid, Button, Input } from "../../component";
 class Page extends React.Component {
   constructor(props) {
     super(props);
@@ -66,13 +66,13 @@ class Page extends React.Component {
           if (i % 2 == 0) {
             arr.push({
               id: i,
-              label: "通过   dataSource 中的数据字段相对应。",
+              text: "通过  ",
               label1: "dd",
             });
           } else {
             arr.push({
               id: i,
-              label: "可以停靠",
+              text: "可以停靠",
               label1: "testeste",
             });
           }
@@ -101,6 +101,25 @@ class Page extends React.Component {
     return (
       <div>
         <Button onClick={this.onClick}>获取勾选</Button>
+
+        <Input type="text" name="text" label="text"></Input>
+        <Input
+          type="radio"
+          name="radio"
+          label="radio"
+          data={this.state.data.slice(0, 6)}
+        ></Input>
+        <Input
+          type="checkbox"
+          name="checkbox"
+          label="checkbox"
+          data={this.state.data.slice(0, 6)}
+        ></Input>
+        <Input type="timerange" name="timerange" label="timerange"></Input>
+        <Input type="year" name="year" label="year" value="test"></Input>
+        <Input type="month" name="month" label="month" value="test"></Input>
+        <Input type="time" name="time" label="time" value="test"></Input>
+        <Input type="date" name="date" label="date" value="test"></Input>
         <DataGrid
           ref="grid"
           httpType="get"

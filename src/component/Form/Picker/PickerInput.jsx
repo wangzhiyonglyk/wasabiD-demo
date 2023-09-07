@@ -15,7 +15,12 @@ const PickerInput = React.forwardRef((props, ref) => {
     required,
     show,
     onClear,
+    onFocus,
     onClick,
+    onDoubleClick,
+    onKeyUp,
+    onChange,
+    onBlur,
   } = props;
   const inputProps = { name, title, placeholder, readOnly, required };
   return (
@@ -33,8 +38,12 @@ const PickerInput = React.forwardRef((props, ref) => {
         ref={ref}
         {...inputProps}
         value={value ?? ""}
+        onFocus={onFocus}
         onClick={onClick}
-        onChange={() => {}}
+        onDoubleClick={onDoubleClick}
+        onKeyUp={onKeyUp}
+        onChange={onChange}
+        onBlur={onBlur}
       />
     </React.Fragment>
   );

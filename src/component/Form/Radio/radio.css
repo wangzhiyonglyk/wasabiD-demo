@@ -7,26 +7,29 @@ desc:checkbox
   list-style: none;
   padding: 0;
   margin: 0;
-  padding-top: 12px;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
 }
 
 .wasabi-checkul li {
-  float: left;
   position: relative;
   list-style-type: none;
   display: flex;
   margin-right: 5px;
   z-index: 1;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
 }
 
 .wasabi-checkul .checktext {
   cursor: default;
-
-  height: 21px;
-  line-height: 21px;
-  font-size: var(--font-size);
-  color: var(--color);
-  margin-top: -2px;
+  font-size: inherit;
+  color: inherit;
+  margin-top: 2px;
   margin-left: 4px;
 }
 
@@ -36,13 +39,14 @@ desc:checkbox
 }
 
 .wasabi-checkul .checkbox-label {
-  font-family: "iconfont" !important;
+  font-family: iconfont !important;
   width: 14px;
   height: 14px;
   border: 1px solid var(--border-color);
   border-radius: 2px;
   position: relative;
-  margin-top: 0.5px;
+  display: flex;
+  transform: translateY(2px);
 }
 
 .wasabi-checkul .checkbox-label[readOnly],
@@ -56,8 +60,7 @@ desc:checkbox
   border: 1px solid var(--primary-color);
 }
 .wasabi-checkul .checkbox-label::before {
-  position: absolute;
-  top: -1px;
+  font-size: 12px;
 }
 .wasabi-checkul .checktext.checked {
   color: var(--primary-color);
@@ -67,7 +70,6 @@ desc:checkbox
   border: 1px solid transparent;
   background-color: var(--primary-color);
   color: white;
-  padding-top: 1px;
 }
 
 .wasabi-checkul .checkbox-label.halfcheck {
@@ -145,6 +147,8 @@ desc:checkbox
   float: right;
   margin-left: 4px;
   cursor: default;
+  color: inherit;
+  font-size: inherit;
 }
 
 .wasabi-checkul .radiotext.readOnly {

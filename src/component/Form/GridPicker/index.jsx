@@ -12,9 +12,11 @@ import func from "../../libs/func/index.js";
 import dom from "../../libs/dom";
 import loadDataHoc from "../loadDataHoc";
 import Msg from "../../Info/Msg.jsx";
+import { setDropcontainterPosition } from "../propsConfig/public.js";
 class GridPicker extends Component {
   constructor(props) {
     super(props);
+    this.input = React.createRef();
     this.grid = React.createRef();
 
     this.state = {
@@ -29,6 +31,10 @@ class GridPicker extends Component {
     this.hidePicker = this.hidePicker.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
     this.onSelect = this.onSelect.bind(this);
+    this.onClick = this.onClick.bind(this);
+    this.onDoubleClick = this.onDoubleClick.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onBlur = this.onBlur.bind(this);
   }
   static getDerivedStateFromProps(props, state) {
     if (props.value !== state.oldPropsValue) {
@@ -77,7 +83,7 @@ class GridPicker extends Component {
   onClear() {
     this.setValue("");
   }
-  showPicker(event) {
+  showPicker(show = true) {
     //显示选择
     try {
       if (this.props.readOnly) {
@@ -85,10 +91,11 @@ class GridPicker extends Component {
         return;
       } else {
         this.setState({
-          show: true,
+          show: show,
         });
       }
       document.addEventListener("click", this.hidePicker);
+      setDropcontainterPosition(this.input.current);
     } catch (e) {}
   }
   /**
@@ -115,6 +122,57 @@ class GridPicker extends Component {
       } catch (e) {}
     }
   }
+
+  /***
+   * 输入框的单击事件
+   */
+  onClick(event) {
+    this.showPicker();
+    this.props.onClick && this.props.onClick(event);
+  }
+  /**
+   * 双击事件
+   * @param {*} event
+   */
+
+  onDoubleClick(event) {
+    this.props.onDoubleClick && this.props.onDoubleClick(event);
+  }
+  /**
+   * onchage 事件
+   * @param {*} event
+   */
+  onChange(event) {
+    try {
+      this.gird.current.filter(event.target.value.trim());
+      this.setState({
+        show: true,
+        inputText: event.target.value,
+      });
+      this.props.onChange &&
+        this.props.onChange(
+          event.target.value,
+          event.target.value,
+          this.props.name,
+          event
+        );
+    } catch (e) {}
+  }
+  /**
+   * 失去焦点
+   */
+  onBlur(event) {
+    this.props.validate(this.state.value); //验证
+    //在此处处理失去焦点事件
+    this.props.onBlur &&
+      this.props.onBlur(
+        this.state.value,
+        this.state.text,
+        this.props.name,
+        event
+      );
+  }
+
   /**
    * 选择
    * @param {*} checked
@@ -163,6 +221,7 @@ class GridPicker extends Component {
     };
     this.props.reload && this.props.reload(params);
   }
+
   render() {
     let inputProps = {
       readOnly: this.props.readOnly,
@@ -197,10 +256,14 @@ class GridPicker extends Component {
         <input
           type="text"
           {...inputProps}
+          ref={this.input}
           value={this.state.text}
-          onBlur={this.props.onBlur}
-          onClick={this.showPicker.bind(this)}
-          onChange={() => {}}
+          onFocus={this.props.onFocus}
+          onClick={this.onClick.bind(this)}
+          onDoubleClick={this.onDoubleClick.bind(this)}
+          onKeyUp={this.props.onKeyUp}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
           autoComplete="off"
         />
         <div

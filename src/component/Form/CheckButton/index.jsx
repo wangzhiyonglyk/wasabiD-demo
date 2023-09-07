@@ -122,7 +122,9 @@ class CheckButton extends React.Component {
       Msg.alert("值是空值");
     }
   }
-
+  focus() {
+    console.log("focus");
+  }
   render() {
     const { data, half, readOnly } = this.props;
     const liprops = {

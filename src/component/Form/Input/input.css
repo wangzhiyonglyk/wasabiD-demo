@@ -8,11 +8,14 @@ desc:表单输入框样式
 */
 
 .wasabi-form-group {
-  margin-right: 5px;
   position: relative;
-  margin-bottom: 5px;
   display: flex;
   white-space: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  padding-bottom: 5px;
+  padding-right: 5px;
 }
 
 /*
@@ -23,6 +26,57 @@ desc:表单输入框样式
   position: relative;
   flex: 1;
   display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/*
+后台验证
+ */
+
+.wasabi-form-group-body .valid,
+.wasabi-form-group-body .invalid,
+.wasabi-form-group-body .validing {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  cursor: pointer;
+}
+
+/*
+ 验证成功
+ */
+
+.wasabi-form-group-body .valid:before {
+  font-size: 16px;
+  content: "\e95d";
+  color: #25d7b9;
+}
+
+/*
+ 验证失败
+  */
+
+.wasabi-form-group-body .invalid:before {
+  font-size: 16px;
+  content: "\e918";
+  color: var(--danger-color);
+}
+
+.wasabi-form-group-body .validing {
+  top: 10px;
+  border-radius: 100%;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  border: 1px solid #3c92a7;
+  border-bottom-color: transparent;
+  display: inline-block;
+  -webkit-animation: rotate 0.75s 0s linear infinite;
+  animation: rotate 0.75s 0s linear infinite;
 }
 
 /*
@@ -30,23 +84,27 @@ desc:表单输入框样式
 */
 
 .wasabi-input {
-  display: block;
-  width: 100%;
-  height: 100%;
-  padding: 10px 6px;
-  font-size: var(--font-size);
+  height: 40px;
+  padding: 10px 5px;
+  font-size: inherit;
   background-color: #fff;
   background-image: none;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
   color: inherit;
-  display: block;
+  display: flex;
   width: 100%;
   outline: none;
   border-radius: 4px;
   resize: vertical;
+  box-sizing: border-box;
+  color: inherit;
 }
 
+.wasabi-form-group.noborder .wasabi-input {
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 0px;
+}
 textarea.wasabi-input {
   height: 100%;
 }
@@ -63,16 +121,20 @@ textarea.wasabi-input {
   color: var(--border-hover-color);
 }
 
-.wasabi-input:hover {
+.wasabi-input:hover,
+.wasabi-form-group.noborder .wasabi-input:hover {
   border-color: var(--border-hover-color);
 }
 
-.wasabi-input:focus {
+.wasabi-input:focus,
+.wasabi-form-group.noborder .wasabi-input:focus {
   border-color: var(--primary-color);
 }
 
 .wasabi-input[disabled]:hover,
-.wasabi-input[readOnly]:hover {
+.wasabi-input[readOnly]:hover,
+.wasabi-form-group.noborder .wasabi-input[disabled]:hover,
+.wasabi-form-group.noborder .wasabi-input[readOnly]:hover {
   background-color: var(--background-color);
   border-color: var(--border-color);
   color: var(--border-hover-color);
@@ -133,57 +195,8 @@ input验证通过
   position: absolute;
   top: -8px;
   margin-left: 5px;
-  background: white;
   transform: scale(0.9);
-}
-
-/*
-后台验证
- */
-
-.wasabi-form-group-body .valid,
-.wasabi-form-group-body .invalid,
-.wasabi-form-group-body .validing {
-  font-family: "iconfont" !important;
-  font-style: normal;
-  width: 14px;
-  height: 14px;
-  position: absolute;
-  right: 10px;
-  top: 8px;
-  cursor: pointer;
-}
-
-/*
-验证成功
-*/
-
-.wasabi-form-group-body .valid:before {
-  font-size: 16px;
-  content: "\e95d";
-  color: #25d7b9;
-}
-
-/*
-验证失败
- */
-
-.wasabi-form-group-body .invalid:before {
-  font-size: 16px;
-  content: "\e918";
-  color: var(--danger-color);
-}
-
-.wasabi-form-group-body .validing {
-  top: 10px;
-  border-radius: 100%;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-  border: 1px solid #3c92a7;
-  border-bottom-color: transparent;
-  display: inline-block;
-  -webkit-animation: rotate 0.75s 0s linear infinite;
-  animation: rotate 0.75s 0s linear infinite;
+  background-color: white;
 }
 
 /* 正在提交*/

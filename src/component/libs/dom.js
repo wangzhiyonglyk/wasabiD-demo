@@ -8,6 +8,14 @@
 
 let dom = {
   /**
+   * 选择器
+   * @param {*} selector
+   * @returns
+   */
+  $: function (selector) {
+    return document.querySelectorAll(selector);
+  },
+  /**
    * 是否为子孙节点
    * @param {*} parent
    * @param {*} child

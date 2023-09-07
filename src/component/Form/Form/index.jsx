@@ -218,7 +218,7 @@ class Form extends Component {
         }
         style={this.props.style}
       >
-        <div className={"form-body clearfix "} cols={this.props.cols}>
+        <div className={"form-body  "} cols={this.props.cols}>
           {React.Children.map(this.props.children, (child, index) => {
             if (child) {
               if (typeof child.type !== "function") {
@@ -234,11 +234,12 @@ class Form extends Component {
                 typeof ref === "object" ? this.inputs.push(ref) : void 0; //如果对象型添加，字符型（旧语法）事后通过refs来获取
                 return React.cloneElement(child, {
                   data: data,
-
+                  noborder: this.props.noborder,
                   disabled: this.props.disabled,
                   readOnly: this.state.disabled
                     ? this.state.disabled
                     : child.props.readOnly,
+
                   key: index,
                   ref: ref,
                 });
@@ -273,13 +274,13 @@ Form.propTypes = {
   submitTheme: PropTypes.string,
   onSubmit: PropTypes.func, //提交成功后的回调事件
   cols: PropTypes.number, //一行几列
-  labelPosition: PropTypes.oneOf(["right", "left", "top"]), //文本对齐方式
+  labelPosition: PropTypes.oneOf(["left", "top"]), //文本对齐方式
 };
 Form.defaultProps = {
   submitTitle: "提交", //查询按钮的标题
   submitHide: true, //是否隐藏按钮
   submitTheme: "primary", //主题
   cols: 3, //默认3个
-  labelPosition: "right",
+  labelPosition: "left",
 };
 export default Form;

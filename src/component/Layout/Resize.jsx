@@ -53,21 +53,22 @@ class Resize extends React.Component {
     this.oldClientY = null;
     this.oldwidth = null;
     this.oldheight = null;
-  }
-  target() {
     let elment = document.getElementById(this.state.resizeid);
-    return elment;
+    if (elment) {
+      elment.style.cursor = "default"; //设置鼠标样式
+    }
   }
+
   mouseMoveHandler(event) {
     //鼠标移动事件
     let elment = document.getElementById(this.state.resizeid);
-    this.getDirection(elment, event); //设置方向
+    this.getDirection(elment, event); //显示方向
 
     //设置拖动
     if (this.oldClientX) {
       //判断是否可以拖动
 
-      let dir = this.dir;
+      let dir = this.dir; // 这个该来源于按下的方向
       try {
         if (dir && dir == "ew") {
           elment.style.width =
@@ -82,7 +83,6 @@ class Resize extends React.Component {
             this.oldheight + (event.clientY - this.oldClientY) + "px";
         }
       } catch (e) {}
-    } else {
     }
   }
   //获取方向

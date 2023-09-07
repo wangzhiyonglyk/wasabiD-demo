@@ -1,7 +1,7 @@
 //creete by wangzhiyonglyk
 //date:2016-08-02
-//edit by wangzhiyonglyk 2020-10-18 todo blur事件要改
-//desc 普通的文本框
+//edit by wangzhiyonglyk
+//desc 普通的文本框,可以进行搜索
 import React, { Component } from "react";
 import propTypes from "../propsConfig/propTypes.js";
 import BaseInput from "../BaseInput/index.jsx";
@@ -72,8 +72,8 @@ class Text extends Component {
     };
 
     this.onChange = this.onChange.bind(this);
-    this.keyUpHandler = this.keyUpHandler.bind(this);
-    this.blurHandler = this.blurHandler.bind(this);
+    this.onKeyUp = this.onKeyUp.bind(this);
+    this.onBlur = this.onBlur.bind(this);
 
     this.getValue = this.getValue.bind(this);
     this.setValue = this.setValue.bind(this);
@@ -147,7 +147,7 @@ class Text extends Component {
     }
   }
 
-  keyUpHandler(event) {
+  onKeyUp(event) {
     setTimeout(() => {
       this.onSearch();
     }, 300);
@@ -158,10 +158,15 @@ class Text extends Component {
   onSearch() {
     this.props.onSearch && this.props.onSearch(this.state.value);
   }
-  blurHandler(event) {
+  onBlur(event) {
     this.props.validate && this.props.validate(this.state.value);
     this.props.onBlur &&
-      this.props.onBlur(event.target.value, event.target.value, event);
+      this.props.onBlur(
+        event.target.value,
+        event.target.value,
+        this.props.name,
+        event
+      );
   }
   /**
    * 搜索后选中事件
@@ -172,11 +177,15 @@ class Text extends Component {
     this.setValue(value);
     this.props.onChange && this.props.onChange(value, value, this.props.name);
   }
+  /**
+   * 专门用于表格组件 todo
+   * @param {*} event
+   */
   onPaste(event) {
     this.props.onPaste && this.props.onPaste(event, this.state.value);
   }
   /**
-   * 为excel单元格粘贴复制做特殊处理
+   * 为excel单元格粘贴复制做特殊处理 todo
    */
   cellHandler(event) {
     const ancestorNode = dom.findAncestorByClasss(
@@ -208,10 +217,13 @@ class Text extends Component {
           title={this.props.title}
           readOnly={this.props.readOnly}
           className={"wasabi-input "}
-          onChange={this.onChange}
-          onKeyUp={this.keyUpHandler}
-          onBlur={this.blurHandler}
           value={this.state.value || ""}
+          onFocus={this.props.onFocus}
+          onClick={this.props.onClick}
+          onDoubleClick={this.props.onDoubleClick}
+          onKeyUp={this.onKeyUp}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
           onPaste={this.onPaste.bind(this)}
         ></TextInput>
         {this.props.onSearch ? (

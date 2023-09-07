@@ -19,39 +19,45 @@ import regs from "../../libs/regs";
  * @param {*} secondMonth 第二个月
  */
 function getRangeMonth(firstYear, firstMonth, secondYear, secondMonth) {
-  firstYear = firstYear || new Date().getFullYear();
-  secondYear = secondYear || new Date().getFullYear();
+  firstYear = firstYear * 1 || new Date().getFullYear();
+  secondYear = secondYear * 1 || new Date().getFullYear();
+  firstMonth = firstMonth * 1;
+  secondMonth = secondMonth * 1;
+  let value =
+    (firstYear ?? "") +
+    "-" +
+    (firstMonth < 10 ? "0" + firstMonth : firstMonth) +
+    "," +
+    (secondYear ?? "") +
+    "-" +
+    (secondMonth < 10 ? "0" + secondMonth : secondMonth);
   let result = {
+    firstYear,
+    firstMonth,
+    secondYear,
+    secondMonth,
     firstRangeBegin: null,
     firstRangeEnd: null,
     secondRangeBegin: null,
     secondRangeEnd: null,
     firstPanelYear: null, //属性面板的
     secondPanelYear: null, //属性面板的
-    value:
-      (firstYear ?? "") +
-      "-" +
-      (firstMonth ?? "") +
-      "," +
-      (secondYear ?? "") +
-      "-" +
-      (secondMonth ?? ""),
+    value: value,
   };
-  if (
-    (firstYear ?? "") + "-" + (firstMonth ?? "") >
-    (secondYear ?? "") + "-" + (secondMonth ?? "")
-  ) {
-    return result; //值不符合
-  }
+
   if (firstYear < secondYear) {
-    //两个什跨年了
+    //两个跨年了
     result.firstPanelYear = firstYear * 1;
     result.secondPanelYear = secondYear * 1;
 
-    result.firstRangeBegin = firstMonth * 1;
-    result.firstRangeEnd = 13;
-    result.secondRangeBegin = 0;
-    result.secondRangeEnd = secondMonth * 1;
+    result.firstRangeBegin = (firstMonth && firstMonth * 1) || null;
+    result.firstRangeEnd = secondMonth ? 13 : null;
+    // 如果第一个有值，才设置为0
+    result.secondRangeBegin = firstMonth ? 0 : secondMonth;
+    // 如果设置上面一个，说明是第二个开始选择，设置为空
+    result.secondRangeEnd = result.secondRangeBegin
+      ? null
+      : (secondMonth && secondMonth * 1) || null;
   } else if (firstYear * 1 === secondYear * 1) {
     //同一年
     result.firstPanelYear = firstYear && firstYear * 1;
@@ -62,6 +68,13 @@ function getRangeMonth(firstYear, firstMonth, secondYear, secondMonth) {
     result.secondRangeEnd = null;
   }
 
+  // 交换
+  if (regs.monthrange.test(value)) {
+    let arr = value.split(",");
+    if (arr[0] > arr[1]) {
+      result.value = arr[1] + "," + arr[0];
+    }
+  }
   return result;
 }
 /**
@@ -71,45 +84,48 @@ function getRangeMonth(firstYear, firstMonth, secondYear, secondMonth) {
  * @param {*} newValue 新的值
  */
 function getNewRangeMonth(type, oldMonthRangeObj, newValue) {
-  let arr = oldMonthRangeObj?.value.split(",") || "";
-  let firstRangeValue = (arr.length > 0 && arr[0]) || "";
-  let secondRangeValue = (arr.length > 1 && arr[1]) || "";
-  if (
+  let firstValue, secondValue;
+  let arr = oldMonthRangeObj.value && oldMonthRangeObj.value.split(",");
+  firstValue = arr && arr[0];
+  secondValue = arr && arr.length === 2 && arr[1];
+  let newYear, newMonth;
+  arr = newValue.split("-");
+  newYear = arr[0] * 1;
+  newMonth = arr[1] * 1;
+  //说明是重新选择
+  let newChose =
     regs.monthrange.test(oldMonthRangeObj.value) ||
-    (!regs.month.test(firstRangeValue) && !regs.month.test(secondRangeValue))
-  ) {
-    //旧值 正常，重新选择
-    let arr = newValue.split("-");
-    let newYear = arr[0] * 1;
-    let newMonth = arr[1] * 1;
-    oldMonthRangeObj = {
-      firstPanelYear: type === 1 ? newYear : oldMonthRangeObj.firstPanelYear,
-      secondPanelYear: type === 2 ? newYear : oldMonthRangeObj.secondPanelYear,
-      firstRangeBegin: type === 1 ? newMonth : null,
-      firstRangeEnd: null,
-      secondRangeBegin: type === 2 ? 0 : null,
-      secondRangeEnd: type === 2 ? newMonth : null,
-      value: type === 1 ? newValue + "," : "," + newValue,
-    };
-  } else {
-    //先归正大小
+    (!regs.month.test(firstValue) && !regs.month.test(secondValue));
 
-    let newArr = [firstRangeValue || secondRangeValue, newValue];
-    newArr.sort();
-    firstRangeValue = newArr[0];
-    secondRangeValue = newArr[1];
-    let firstYear = firstRangeValue.split("-")[0] || null;
-    let firstMonth = firstRangeValue.split("-")[1] || null;
-    let secondYear = secondRangeValue.split("-")[0] || null;
-    let secondMonth = secondRangeValue.split("-")[1] || null;
-    oldMonthRangeObj = getRangeMonth(
-      firstYear,
-      firstMonth,
-      secondYear,
-      secondMonth
-    );
+  if (newChose) {
+    if (type === 1) {
+      return getRangeMonth(
+        newYear,
+        newMonth,
+        oldMonthRangeObj.secondYear,
+        null
+      );
+    } else {
+      return getRangeMonth(oldMonthRangeObj.firstYear, null, newYear, newMonth);
+    }
+  } else {
+    if (regs.month.test(firstValue)) {
+      // 说明是第一个有效
+      return getRangeMonth(
+        oldMonthRangeObj.firstYear,
+        oldMonthRangeObj.firstMonth,
+        newYear,
+        newMonth
+      );
+    } else {
+      return getRangeMonth(
+        newYear,
+        newMonth,
+        oldMonthRangeObj.secondYear,
+        oldMonthRangeObj.secondMonth
+      );
+    }
   }
-  return oldMonthRangeObj;
 }
 
 function MonthRange(props) {
@@ -155,6 +171,17 @@ function MonthRange(props) {
     },
     [props, monthRangeObj]
   );
+
+  const updateYearAndMonth = useCallback((type, year) => {
+    let obj = {
+      firstRangeBegin: type === "first" ? null : monthRangeObj.firstRangeBegin,
+      firstRangeEnd: type === "first" ? null : monthRangeObj.firstRangeEnd,
+      secondRangeBegin:
+        type === "second" ? null : monthRangeObj.secondRangeBegin,
+      secondRangeEnd: type === "second" ? null : monthRangeObj.secondRangeEnd,
+    };
+    setmonthRangeObj({ ...monthRangeObj, ...obj });
+  });
   useEffect(() => {
     let monthRangeObj = getRangeMonth(
       props.firstYear,
@@ -171,18 +198,24 @@ function MonthRange(props) {
         key={"1"}
         type="month"
         isRange={true}
+        min={props.min}
+        max={props.max}
         year={monthRangeObj.firstPanelYear}
         rangeBegin={monthRangeObj.firstRangeBegin}
         rangeEnd={monthRangeObj.firstRangeEnd}
+        updateYearAndMonth={updateYearAndMonth.bind(this, "first")}
         onSelect={onFirstSelect}
       ></CalendarView>
       <CalendarView
         key="2"
         type="month"
         isRange={true}
+        min={props.min}
+        max={props.max}
         year={monthRangeObj.secondPanelYear}
         rangeBegin={monthRangeObj.secondRangeBegin}
         rangeEnd={monthRangeObj.secondRangeEnd}
+        updateYearAndMonth={updateYearAndMonth.bind(this, "second")}
         onSelect={onSecondSelect}
       ></CalendarView>
     </React.Fragment>
@@ -194,6 +227,8 @@ MonthRange.propTypes = {
   secondYear: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   fristMonth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   secoonMonth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // 最小值
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // 最大值
   onSelect: PropTypes.func, //确定事件
 };
 export default React.memo(MonthRange);

@@ -1,30 +1,116 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { Form, Text, Select, Input, Button } from "../../component";
+import { createRoot } from "react-dom/client";
+import { SearchBar, Form, Input, Button } from "../../component";
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
+    this.inputRef = React.createRef();
     this.state = {
       data: [
-        { text: "选择1", value: 1 },
-        { text: "选择2", value: 2 },
+        {
+          text: "只有一级",
+          value: "333",
+        },
+        {
+          text: "选择1",
+          value: 1,
+          children: [
+            {
+              text: "子节点1",
+              value: 11,
+              children: [{ text: "子子节点2", value: 111 }],
+            },
+          ],
+        },
+        {
+          text: "选择2",
+          value: 2,
+          children: [{ text: "子节点2", value: 22, text: "第二个子节点" }],
+        },
       ],
     };
     this.onClick = this.onClick.bind(this);
   }
   componentDidMount() {}
   onClick() {
-    this.setState({
-      data: this.state.data.concat([{ text: "测试1", value: Math.random(1) }]),
-    });
+    console.log(this.inputRef.current.getValue());
+    // this.setState({
+    //   data: this.state.data.concat([{ text: "测试1", value: Math.random(1) }]),
+    // });
   }
 
   render() {
     return (
       <div>
         <Button onClick={this.onClick}>改变数据 </Button>
-        <Form style={{ width: 800 }} cols={1} labelPosition={"top"}>
+        <SearchBar>
+          <Input
+            type="treepicker"
+            noborder={true}
+            name="select"
+            label="select"
+            data={this.state.data}
+          ></Input>
+          <Input
+            type="gridpicker"
+            noborder={true}
+            name="select"
+            label="select"
+            data={this.state.data}
+          ></Input>
+          <Input
+            type="select"
+            noborder={true}
+            name="select"
+            label="select"
+            data={this.state.data}
+          ></Input>
+          <Input
+            type="select"
+            noborder={true}
+            name="select"
+            label="select"
+            data={this.state.data}
+          ></Input>
+          <Input
+            type="select"
+            noborder={true}
+            name="select"
+            label="select"
+            data={this.state.data}
+          ></Input>
+          <Input
+            type="picker"
+            noborder={true}
+            name="picker"
+            label="picker"
+            data={this.state.data}
+          ></Input>
+          <Input
+            type="select"
+            noborder={true}
+            name="select"
+            label="select"
+            data={this.state.data}
+          ></Input>
+          <Input
+            type="select"
+            noborder={true}
+            name="select"
+            label="select"
+            data={this.state.data}
+          ></Input>
+          <Input
+            type="daterange"
+            noborder={true}
+            name="select"
+            label="select"
+            data={this.state.data}
+          ></Input>
+        </SearchBar>
+
+        {/* <Form key="1" style={{ width: 900 }} cols={2}>
           <Input type="text" name="text" label="text"></Input>
           <Input
             type="radio"
@@ -38,7 +124,12 @@ class Home extends React.Component {
             label="checkbox"
             data={this.state.data}
           ></Input>
-          <Input type="timerange" name="timerange" label="timerange"></Input>
+          <Input
+            ref={this.inputRef}
+            type="timerange"
+            name="timerange"
+            label="timerange"
+          ></Input>
           <Input type="year" name="year" label="year" value="test"></Input>
           <Input type="month" name="month" label="month" value="test"></Input>
           <Input type="time" name="time" label="time" value="test"></Input>
@@ -55,7 +146,12 @@ class Home extends React.Component {
             label="yearrange"
             value="2015,2024"
           ></Input>
-          <Input type="monthrange" name="monthrange" label="monthrange"></Input>
+          <Input
+            type="monthrange"
+            name="monthrange"
+            label="monthrange"
+            onClick={this.onClick}
+          ></Input>
           <Input
             type="daterange"
             min="2021-10-10"
@@ -72,11 +168,11 @@ class Home extends React.Component {
             label="datetimerange"
             value="test"
           ></Input>
-        </Form>
-        {/* <Modal ref="modal"></Modal> */}
+        </Form> */}
       </div>
     );
   }
 }
 
-ReactDOM.render(<Home />, document.getElementById("root"));
+const rootElement = document.getElementById("root");
+createRoot(rootElement).render(<Home />);

@@ -90,7 +90,7 @@ class Radio extends Component {
     if (this.props.readOnly) {
       return;
     }
-    if (value !== "") {
+    if ((value ?? "") !== "") {
       //0是有效值
       //更新
       this.setState({
@@ -102,6 +102,9 @@ class Radio extends Component {
     } else {
       Msg.alert("值是空值");
     }
+  }
+  focus() {
+    console.log("focus");
   }
   render() {
     const { data, readOnly } = this.props;

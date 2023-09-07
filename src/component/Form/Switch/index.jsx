@@ -7,8 +7,8 @@
  */
 
 import React, { Component } from "react";
-import Label from "../Label";
 import propType from "../propsConfig/propTypes.js";
+import ValidateHoc from "../ValidateHoc";
 import "./switch.css";
 class Switch extends Component {
   constructor(props) {
@@ -28,9 +28,7 @@ class Switch extends Component {
     }
     return null;
   }
-  validate() {
-    return true;
-  }
+
   getValue() {
     //获取值
     return this.state.checked ? 1 : 0;
@@ -58,9 +56,10 @@ class Switch extends Component {
         this.props.name
       );
   }
+  focus() {
+    console.log("focus");
+  }
   render() {
-    let componentClassName =
-      "wasabi-form-group " + (this.props.className || ""); //组件的基本样式
     let className = "syncbtn ";
     if (this.state.checked) {
       className += "checktrue";
@@ -73,39 +72,11 @@ class Switch extends Component {
 
     return (
       <div
-        className={componentClassName + " " + this.props.validateClass}
         style={this.props.style}
+        className={className}
+        onClick={this.handleClick}
       >
-        <Label
-          readOnly={this.props.readOnly || this.props.disabled}
-          style={this.props.labelStyle}
-          required={this.props.required}
-        >
-          {this.props.label}
-        </Label>
-        <div
-          className={"wasabi-form-group-body"}
-          style={{ width: !this.props.label ? "100%" : null }}
-        >
-          <div
-            style={this.props.style}
-            className={className}
-            onClick={this.handleClick}
-          >
-            <div className={"slideblock "}></div>
-          </div>
-          <small
-            className={"wasabi-help-block "}
-            style={{
-              display:
-                this.state.inValidateText && this.state.inValidateText !== ""
-                  ? this.state.inValidateShow
-                  : "none",
-            }}
-          >
-            {this.state.inValidateText}
-          </small>
-        </div>
+        <div className={"slideblock "}></div>
       </div>
     );
   }
@@ -113,4 +84,4 @@ class Switch extends Component {
 
 Switch.propTypes = propType;
 Switch.defaultProp = { type: "switch" };
-export default Switch;
+export default ValidateHoc(Switch);

@@ -14,7 +14,7 @@ const BaseInput = React.forwardRef((props, ref) => {
       ref={ref}
       className={"wasabi-input " + (props.className || "")}
       value={props.value || ""}
-      autoComplete="off"
+      autoComplete={props.autoComplete || "off"}
     />
   );
 });

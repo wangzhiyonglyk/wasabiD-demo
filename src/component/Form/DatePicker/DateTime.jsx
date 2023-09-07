@@ -1,6 +1,6 @@
 //create by wangzhiyonglyk
 //date:2016-04-25
-//desc:日期时间组件，
+//desc:日期时间组件
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -11,90 +11,64 @@ import CalendarView from "./Calendar/CalendarView";
 class DateTime extends Component {
   constructor(props) {
     super(props);
-    let newDate = new Date();
-    let year = newDate.getFullYear();
-    let month = newDate.getMonth() + 1;
     this.state = {
       oldPropsValue: "",
-      year: this.props.year ? this.props.year : year * 1,
-      month: this.props.month ? this.props.month : month * 1,
-      day: this.props.day ? this.props.day : newDate.getDate(),
-      time: this.props.time
-        ? this.props.time
-        : this.props.attachSecond
-        ? func.dateformat(newDate, "HH:mm:") + "00"
-        : func.dateformat(newDate, "HH:mm"),
+      year: null,
+      month: null,
+      day: null,
+      time: null,
       showTime: false,
     };
 
     this.dateChange = this.dateChange.bind(this);
   }
   static getDerivedStateFromProps(props, state) {
-    let newState = {};
-    if (
+    let newValue =
       (props.year || "") +
-        "-" +
-        (props.month || "") +
-        "-" +
-        (props.day || "") +
-        " " +
-        (props.time || "") !==
-      state.oldPropsValue
-    ) {
-      newState.year = props.year ? props.year : state.year;
-      newState.month = props.month ? props.month : state.month;
+      "-" +
+      (props.month || "") +
+      "-" +
+      (props.day || "") +
+      " " +
+      (props.time || "");
+    let newState = {};
+    if (newValue !== state.oldPropsValue) {
+      newState.year = props.year || state.year;
+      newState.month = props.month || state.month;
       newState.day = props.day || state.day;
       newState.time = props.time || state.time;
-      newState.oldPropsValue =
-        (props.year || "") +
-        "-" +
-        (props.month || "") +
-        "-" +
-        (props.day || "") +
-        " " +
-        (props.time || "");
+      newState.oldPropsValue = newValue;
       return newState;
     }
     return null;
   }
-  dateChange(value, text, name) {
+  dateChange(value) {
     value = value.split("-");
-    this.setState(
-      {
-        year: value[0] * 1,
-        month: value[1] * 1,
-        day: value[2] * 1,
-      },
-      () => {
-        this.onSelect();
-      }
-    );
+    this.setState({
+      year: value[0] * 1,
+      month: value[1] * 1,
+      day: value[2] * 1,
+      showTime: true,
+    });
   }
 
   onSelect() {
     if (this.state.year && this.state.month && this.state.day) {
-      let value =
-        this.state.year +
-        "-" +
-        (this.state.month.toString().length == 1
-          ? "0" + this.state.month.toString()
-          : this.state.month) +
-        "-" +
-        (this.state.day < 10
-          ? "0" + this.state.day.toString()
-          : this.state.day.toString());
-      this.props.onSelect &&
-        this.props.onSelect(
-          value + " " + this.state.time,
-          value + " " + this.state.time,
-          this.props.name
-        );
+      let date = new Date(
+        this.state.year,
+        this.state.month * 1 - 1,
+        this.state.day
+      );
+      date = func.dateformat(date, "yyyy-MM-dd");
+      date = date + " " + (this.state.time || "");
+      this.props.onSelect && this.props.onSelect(date, date, this.props.name);
     } else {
       Msg.alert("请选择日期");
     }
   }
 
   timeHandler() {
+    console.log("timeHandler");
     this.setState({
       showTime: true,
     });
@@ -114,33 +88,37 @@ class DateTime extends Component {
   render() {
     return (
       <React.Fragment>
-        <div>
+        <React.Fragment>
           <input
             className=" wasabi-input timeinput"
-            value={this.state.time}
+            value={this.state.time || ""}
             onClick={this.timeHandler.bind(this)}
             onChange={() => {}}
           ></input>
           <div
             style={{
-              display: this.state.showTime ? "inline-block" : "none",
-              zIndex: 1,
+              display: this.state.showTime ? "flex" : "none",
             }}
           >
             <Time
               onSelect={this.timeOnChange.bind(this)}
               key="end"
               value={this.state.time}
-              attachSecond={this.props.attachSecond}
+            
             ></Time>
           </div>
-        </div>
-        <CalendarView
-          year={this.state.year}
-          month={this.state.month}
-          day={this.state.day}
-          onSelect={this.dateChange}
-        ></CalendarView>
+        </React.Fragment>
+
+        {this.state.showTime ? null : (
+          <CalendarView
+            year={this.state.year}
+            month={this.state.month}
+            day={this.state.day}
+            min={this.props.min}
+            max={this.props.max}
+            onSelect={this.dateChange}
+          ></CalendarView>
+        )}
       </React.Fragment>
     );
   }
@@ -151,7 +129,8 @@ DateTime.propTypes = {
   month: PropTypes.number, //月
   day: PropTypes.number, //日
   time: PropTypes.string, //时间
-  attachSecond: PropTypes.bool, //是否带上秒
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // 最小值
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // 最大值
   onSelect: PropTypes.func, //选择后的事件
 };
 export default DateTime;
