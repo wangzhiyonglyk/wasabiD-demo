@@ -19,7 +19,7 @@ let entry = [
   {
     filename: "date", //文件名，
     title: "date", // 标题
-    src: "./view/date/index.tsx", //脚本路径
+    src: "./view/date/index.jsx", //脚本路径
   },
   {
     filename: "form", //文件名，
