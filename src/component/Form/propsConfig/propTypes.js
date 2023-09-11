@@ -41,6 +41,10 @@ export default {
     "treepicker", //下拉树选择
     "gridpicker", //表格下拉
     "panelpicker", //面板选择
+    "image", // 图片
+    "avatar", // 头像
+    "file", // 文件
+    "cloud", //云文件
   ]), //字段类型，
 
   name: PropTypes.string, //字段名
@@ -108,7 +112,7 @@ export default {
   // 下拉选择（select)
 
   onSort: PropTypes.func, // 排序事件
-  multiple: PropTypes.bool, //是否允许多选
+  multiple: PropTypes.bool, //是否允许多选,多上传，文件上传也可以
   attachAble: PropTypes.bool, //select是否可以添加数据
 
   // datepicker 日期组件
@@ -136,4 +140,20 @@ export default {
   // 表格 其他表格组件属性，请去表格组件本身查询
   priKey: PropTypes.array, //主键
   headers: PropTypes.array, //表头，gridpicker
+
+  // 文件上传
+  accept: PropTypes.oneOf([
+    "word",
+    "excel",
+    "ppt",
+    "office",
+    "txt",
+    "pdf",
+    "html",
+    "image",
+    "media",
+    "zip",
+    "json",
+  ]), //上传文件类型
+  uploadSuccess: PropTypes.func, // 上传成功事件
 };

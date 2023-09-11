@@ -5,5 +5,5 @@ export default {
   minWidth: 60, //数据列最小宽度
   rowDefaultHeight: 41, //列的默认高度
   bufferScale: 1, //数据缓存比例
-  minDataTotal: 501, //虚拟列表最小值
+  minDataTotal: 201, //虚拟列表最小值
 };

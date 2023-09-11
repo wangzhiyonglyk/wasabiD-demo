@@ -13,9 +13,9 @@ import Center from "../../Layout/Center";
 import Msg from "../../Info/Msg";
 import Simulator from "../Simulator";
 import LinkButton from "../../Buttons/LinkButton";
-import PlainUpload from "../Upload/PlainUpload";
+import Upload from "../../Form/Upload";
 import "./index.css";
-import Container from "../../Layout/Container";
+
 class Article extends React.Component {
   constructor(props) {
     super(props);
@@ -309,7 +309,7 @@ class Article extends React.Component {
         </Left>
         <Center>
           <Simulator style={{ marginLeft: 0 }}>
-            <Container className={"wasabi-article-center"}>
+            <div className={"wasabi-article-center"}>
               <div
                 style={{ display: this.state.title ? "block" : "none" }}
                 contentEditable={true}
@@ -377,23 +377,22 @@ class Article extends React.Component {
                             src={(this.props.urlPrefix | +"") + item.content}
                           ></img>
                         ) : (
-                          <PlainUpload
+                          <Upload
                             key={"upload" + index}
                             httpHeaders={this.props.httpHeaders}
                             params={this.props.params}
                             name={this.props.uploadFileName}
                             accept={"image"}
-                            uploadurl={this.props.uploadurl}
+                            url={this.props.uploadurl}
                             uploadSuccess={this.imgUploadSuccess}
-                            type="image"
-                          ></PlainUpload>
+                          ></Upload>
                         );
                         break;
                     }
                     return <li key={index}>{control}</li>;
                   })}
               </ul>
-            </Container>
+            </div>
           </Simulator>
         </Center>
       </Layout>

@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2563689 */
-  src: url('iconfont.woff?t=1678340654400') format('woff'),
-       url('iconfont.ttf?t=1678340654400') format('truetype'),
-       url('iconfont.svg?t=1678340654400#iconfont') format('svg');
+  src: url('iconfont.woff?t=1694420489150') format('woff'),
+       url('iconfont.ttf?t=1694420489150') format('truetype'),
+       url('iconfont.svg?t=1694420489150#iconfont') format('svg');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-attachment:before {
+  content: "\e6a9";
 }
 
 .icon-text:before {

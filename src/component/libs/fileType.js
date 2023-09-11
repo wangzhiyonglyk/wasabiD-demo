@@ -36,7 +36,6 @@ html
 fileType.html = new Map();
 fileType.html.set("application/xhtml+xml", ".xhtml");
 fileType.html.set("text/xml", ".xml");
-fileType.html.set("text/html", ".htm");
 fileType.html.set("text/html", ".html");
 fileType.html.set("text/javascript", ".js");
 fileType.html.set("application/json", ".json");
@@ -84,7 +83,7 @@ fileType.ppt.set("application/vnd.ms-powerpoint", ".ppt");
 压缩
  */
 fileType.zip = new Map();
-fileType.zip.set(".zip", "aplication/zip");
+fileType.zip.set("aplication/zip", ".zip");
 fileType.zip.set("application/x-rar", ".rar");
 
 /*
@@ -96,13 +95,14 @@ fileType.image.set("image/vnd.dwg", ".dwg");
 fileType.image.set("image/vnd.dxf", ".dxf");
 fileType.image.set("image/gif", ".gif");
 fileType.image.set("image/jp2", ".jp2");
-fileType.image.set("image/jpeg", ".jpe");
 fileType.image.set("image/jpeg", ".jpeg");
-fileType.image.set("image/jpeg", ".jpg");
+fileType.image.set("image/jpg", ".jpg");
 fileType.image.set("image/vnd.svf", ".svf");
 fileType.image.set("image/tiff", ".tif");
 fileType.image.set("image/tiff", ".tiff");
 fileType.image.set("image/png", ".png");
+fileType.image.set("image/svg", ".svg");
+fileType.image.set("image/webp", ".webp");
 
 fileType.getTypeMap = function (value) {
   switch (value) {
@@ -113,7 +113,13 @@ fileType.getTypeMap = function (value) {
     case "ppt":
       return fileType.ppt;
     case "office":
-      return fileType.office;
+      return [
+        fileType.word,
+        fileType.excel.fileType.ppt,
+        fileType.txt,
+        fileType.pdf,
+      ];
+
     case "txt":
       return fileType.txt;
     case "pdf":
@@ -136,33 +142,63 @@ fileType.getTypeMap = function (value) {
 //文件筛选
 fileType.filter = function (accept = "", files = []) {
   let result = true;
-  if (accept && files) {
-    accept = accept ? accept.split(",") : [];
-    let fileTypestr = ""; //得到所有的文件类型
-    for (let i = 0; i < accept.length; i++) {
-      let mymap = fileType.getTypeMap(accept[i]);
-      if (mymap) {
-        for (let key of mymap.keys()) {
-          fileTypestr += key + ",";
+  try {
+    if (accept && files) {
+      accept = accept ? accept.split(",") : [];
+      let fileTypestr = ""; //得到所有的文件类型
+      for (let i = 0; i < accept.length; i++) {
+        let mymap = fileType.getTypeMap(accept[i]);
+        if (Array.isArray(mymap)) {
+          mymap.forEach((item) => {
+            for (let key of item.keys()) {
+              fileTypestr += key + ",";
+            }
+          });
+        } else {
+          if (mymap) {
+            for (let key of mymap.keys()) {
+              fileTypestr += key + ",";
+            }
+          }
+        }
+      }
+      if (files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          if (fileTypestr.indexOf(files[i]?.type || "") <= -1) {
+            result = false;
+            break;
+          }
+        }
+      } else if (files) {
+        //一个文件
+        if (fileTypestr.indexOf(files?.type || "") <= -1) {
+          result = false;
         }
       }
     }
-    if (files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        if (files[i].type && fileTypestr.indexOf(files[i].type) <= -1) {
-          result = false;
-          break;
-        } else {
-        }
-      }
-    } else if (files) {
-      //一个文件
-      if (files.type && fileTypestr.indexOf(files.type) <= -1) {
-        result = false;
+  } catch (e) {
+    result = false;
+  }
+
+  return result;
+};
+
+/**
+ * 获取接受类型
+ * @param {*} accept
+ */
+fileType.getAccept = function (accept = "") {
+  accept = accept ? accept.split(",") : [];
+  let fileTypestr = ""; //得到所有的文件类型
+  for (let i = 0; i < accept.length; i++) {
+    let mymap = fileType.getTypeMap(accept[i]);
+    if (mymap) {
+      for (let key of mymap.keys()) {
+        fileTypestr += key + ",";
       }
     }
   }
-  return result;
+  return fileTypestr;
 };
 
 export default fileType;

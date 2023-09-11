@@ -23,7 +23,7 @@ class SearchBar extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onReset = this.onReset.bind(this);
     this.getRefs = this.getRefs.bind(this);
-    this.computerLabelWidth = this.computerLabelWidth.bind(this);
+
     this.expandHandler = this.expandHandler.bind(this);
   }
   /**
@@ -207,25 +207,7 @@ class SearchBar extends Component {
           : "icon-arrow-down",
     });
   }
-  /**
-   * 得到表单中标签的最大宽度，方便对齐
-   */
-  computerLabelWidth() {
-    let maxWidth = 0; //得到最大宽度
-    React.Children.map(this.props.children, (child, index) => {
-      if (child && child.props && child.props.label) {
-        let labelStyle = func.clone(child.labelStyle) || {};
-        if (labelStyle && labelStyle.width) {
-          //如果设置宽度，则不参与计算
-        } else {
-          let width = func.charWidth(child.props.label);
-          maxWidth = maxWidth < width ? width : maxWidth;
-          maxWidth = maxWidth > 160 ? 160 : maxWidth; //超过160就不管了，否则很难看
-        }
-      }
-    });
-    return maxWidth;
-  }
+
   renderLinkButton() {
     return (
       <React.Fragment>
@@ -314,7 +296,7 @@ class SearchBar extends Component {
   }
   render() {
     this.inputs = []; //先清空
-    let maxWidth = this.computerLabelWidth();
+
     let style = {
       ...this.props.style,
       height:
@@ -336,16 +318,10 @@ class SearchBar extends Component {
                 ? JSON.parse(JSON.stringify(child.props.data))
                 : null;
 
-              //统一处理标签样式问题，方便对齐
-              let labelStyle = propsTran.handlerLabelStyle(
-                child.labelStyle,
-                maxWidth
-              );
               let ref = child.ref ? child.ref : React.createRef();
               typeof ref === "object" ? this.inputs.push(ref) : void 0; //如果对象型添加，字符型（旧语法）事后通过refs来获取
               return React.cloneElement(child, {
                 data: data,
-                labelStyle: labelStyle,
                 readOnly: this.state.disabled
                   ? this.state.disabled
                   : child.props.readOnly,

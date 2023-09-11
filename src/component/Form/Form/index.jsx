@@ -205,10 +205,29 @@ class Form extends Component {
       disabled: !!disabled,
     });
   }
+  /**
+   * 得到表单中标签的最大宽度，方便对齐
+   */
+  computerLabelWidth() {
+    let maxWidth = 0; //得到最大宽度
 
+    React.Children.map(this.props.children, (child, index) => {
+      if (child && child.props && child.props.label) {
+        let labelStyle = func.clone(child.labelStyle) || {};
+        if (labelStyle && labelStyle.width) {
+          //如果设置宽度，则不参与计算
+        } else {
+          let width = func.charWidth(child.props.label); //大概计算宽度 todo
+          maxWidth = maxWidth < width ? width : maxWidth;
+          maxWidth = maxWidth > 160 ? 160 : maxWidth; //超过160就不管了，否则很难看
+        }
+      }
+    });
+    return maxWidth;
+  }
   render() {
     this.inputs = []; //先清空
-
+    let maxWidth = this.computerLabelWidth();
     return (
       <div
         className={
@@ -225,6 +244,11 @@ class Form extends Component {
                 //非react组件
                 return child;
               } else {
+                //统一处理标签样式问题，方便对齐
+                let labelStyle = propsTran.handlerLabelStyle(
+                  child.labelStyle,
+                  maxWidth
+                );
                 //这里有个问题，value与text在第二次会被清除,防止数据丢失
                 let data = child.props.data
                   ? JSON.parse(JSON.stringify(child.props.data))
@@ -233,6 +257,8 @@ class Form extends Component {
                 let ref = child.ref ? child.ref : React.createRef();
                 typeof ref === "object" ? this.inputs.push(ref) : void 0; //如果对象型添加，字符型（旧语法）事后通过refs来获取
                 return React.cloneElement(child, {
+                  labelStyle: labelStyle,
+                  name: child.props.name || "key" + index, // 如果没有配置表单name，按顺序给
                   data: data,
                   noborder: this.props.noborder,
                   disabled: this.props.disabled,

@@ -5,6 +5,7 @@
  * date 2020-11-20 调整组件，去掉不需要的组件
  * desc 2021-05-20 大改 主要数据这一块
  * date:2022-09-15 大改，着重于布局，表单，数据
+ * date:2022-09-11 大改 重构表单组件，将上传组件纳入表单组件内
  * desc:框架入口
  */
 import React from "react";
@@ -33,7 +34,7 @@ import Progress from "./Data/Progress/index.jsx"; //进度条
 import Track from "./Data/Track.jsx"; //物流跟踪
 import Step from "./Data/Step/index.jsx"; //步骤条
 import StepItem from "./Data/Step/StepItem"; //步骤条选项
-import Avatar from "./Data/Avatar/index.jsx"; //头像上传组件
+import Avatar from "./Form/Avatar/index.jsx"; //头像上传组件
 // import Pivot from "./Data/Pivot";//交叉表
 import TreeGrid from "./Data/TreeGrid/index.jsx"; //树型表格
 import Pagination from "./Data/Pagination/index.jsx"; //分页控件
@@ -93,7 +94,7 @@ import ProgressChart from "./Animate/ProgressChart"; //线性报表
 import Slider from "./Animate/Slider";
 import Scroll from "./Animate/Scroll";
 /*****************功能组件******************/
-import Upload from "./Action/Upload/index.jsx"; //上传组件
+import Upload from "./Form/Upload/index.jsx"; //上传组件
 import Editor from "./Action/Editor.jsx"; //上传组件
 import Article from "./Action/Article/index.jsx"; //文章编辑
 import Single from "./Action/Single/index.jsx"; //单表组件

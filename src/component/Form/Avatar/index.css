@@ -1,0 +1,68 @@
+.wasabi-avatar {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    cursor: pointer;
+}
+.wasabi-avatar.image {
+    width: 65px;
+    height: 65px;
+}
+.wasabi-avatar.avatar {
+    width: 48px;
+    height: 48px;
+}
+
+.wasabi-avatar .wasabi-avatar-icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    background-repeat: no-repeat;
+}
+.wasabi-avatar .wasabi-avatar-icon.avatar {
+    border-radius: 50%;
+    background-image: url("./icon.jpg");
+    background-repeat: no-repeat;
+    object-fit: fill;
+    background-size: 100% 100%;
+}
+
+.wasabi-avatar .wasabi-avatar-icon.image {
+    background-color: var(--background-color);
+    border: 1px dotted var(--border-color);
+}
+.wasabi-avatar .wasabi-avatar-icon.image::after {
+    font-family: "iconfont" !important;
+    content: "\E6D5";
+    position: absolute;
+    font-size: 24px;
+    left: 18px;
+    top: 20px;
+    color: var(--color);
+}
+.wasabi-avatar .wasabi-avatar-icon.image:hover {
+    border-color: var(--primary-color);
+}
+
+.wasabi-avatar .wasabi-upload-input {
+    display: none;
+}
+
+.wasabi-avatar .wasabi-upload-progress {
+    z-index: 1;
+    font-size: var(--font-size);
+    color: var(--primary-color);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--primary-color);
+    border-radius: 50%;
+}
+.wasabi-avatar.file .wasabi-upload-progress {
+    width: 65px;
+    height: 65px;
+}

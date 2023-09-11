@@ -3,12 +3,6 @@ date:2017-01-09
 desc:圣杯布局样式
 */
 
-.wasabi-container {
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
-}
 .wasabi-layout {
   position: relative;
   margin: 0;
@@ -17,9 +11,19 @@ desc:圣杯布局样式
   width: 100%;
   box-sizing: border-box;
   min-height: 500px;
-  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
-
+.wasabi-container {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
 .wasabi-layout .layout-panel {
   min-width: 1px;
   min-height: 1px;

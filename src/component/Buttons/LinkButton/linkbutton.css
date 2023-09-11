@@ -7,19 +7,25 @@ desc:小图标按钮样式
     display: inline-flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
     vertical-align: middle;
     position: relative;
     text-decoration: none;
     outline: none;
     cursor: pointer;
+    margin: 0px;
     padding: 0px;
     font-size: var(--font-size);
     color: var(--color);
+    position: relative;
+}
+.wasabi-linkbutton.onlyicon {
+    border: none;
+    text-decoration: none;
 }
 
 .wasabi-linkbutton + .wasabi-linkbutton {
-    margin-left: 10px;
+    margin-left: 5px;
 }
 .wasabi-linkbutton [class*=" icon-"] {
     font-size: inherit;
@@ -81,15 +87,24 @@ desc:小图标按钮样式
 .wasabi-linkbutton.danger:hover {
     color: var(--danger-hover-color);
 }
+
 .wasabi-linkbutton i.left {
     display: inline-block;
     margin-right: 3px;
     transform: translateY(1px);
 }
+.wasabi-linkbutton.onlyicon i.left {
+    margin-right: 0px;
+}
+
 .wasabi-linkbutton i.right {
     display: inline-block;
     margin-left: 3px;
     transform: translateY(1px);
+}
+
+.wasabi-linkbutton.onlyicon i.right {
+    margin-left: 0px;
 }
 .wasabi-linkbutton i.rightTop {
     display: inline-block;
@@ -102,17 +117,4 @@ desc:小图标按钮样式
     opacity: 0.7;
     cursor: not-allowed;
     box-shadow: none;
-}
-
-.wasabi-linkbutton.onlyicon {
-    border: none;
-    text-decoration: none;
-    width: auto;
-    height: auto;
-    position: relative;
-    background-color: transparent;
-    margin: 0px;
-    padding: 0px;
-    background: transparent;
-    font-size: 14px;
 }

@@ -14,6 +14,8 @@ label
   white-space: pre-wrap;
   color: inherit;
   font-size: inherit;
+  font-size: var(--font-size);
+  flex-shrink: 0;
 }
 
 .wasabi-label.readOnly {

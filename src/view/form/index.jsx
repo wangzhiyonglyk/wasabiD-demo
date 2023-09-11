@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { SearchBar, Form, Input, Button } from "../../component";
+import { SearchBar, Avatar, Input, Button, Upload } from "../../component";
 
 class Home extends React.Component {
   constructor(props) {
@@ -44,72 +44,23 @@ class Home extends React.Component {
     return (
       <div>
         <Button onClick={this.onClick}>改变数据 </Button>
-        <SearchBar>
-          <Input
-            type="treepicker"
-            noborder={true}
-            name="select"
-            label="select"
-            data={this.state.data}
-          ></Input>
-          <Input
-            type="gridpicker"
-            noborder={true}
-            name="select"
-            label="select"
-            data={this.state.data}
-          ></Input>
-          <Input
-            type="select"
-            noborder={true}
-            name="select"
-            label="select"
-            data={this.state.data}
-          ></Input>
-          <Input
-            type="select"
-            noborder={true}
-            name="select"
-            label="select"
-            data={this.state.data}
-          ></Input>
-          <Input
-            type="select"
-            noborder={true}
-            name="select"
-            label="select"
-            data={this.state.data}
-          ></Input>
-          <Input
-            type="picker"
-            noborder={true}
-            name="picker"
-            label="picker"
-            data={this.state.data}
-          ></Input>
-          <Input
-            type="select"
-            noborder={true}
-            name="select"
-            label="select"
-            data={this.state.data}
-          ></Input>
-          <Input
-            type="select"
-            noborder={true}
-            name="select"
-            label="select"
-            data={this.state.data}
-          ></Input>
-          <Input
-            type="daterange"
-            noborder={true}
-            name="select"
-            label="select"
-            data={this.state.data}
-          ></Input>
-        </SearchBar>
+        <Input
+          name="image"
+          type="file"
+          accept="image"
+          label="图片上传"
+          url="http://localhost:82/"
+          multiple={true}
+        ></Input>
 
+        <Upload
+          name="image"
+          type="cloud"
+          accept="image"
+          label="图片上传"
+          multiple={true}
+          url="http://localhost:82/"
+        ></Upload>
         {/* <Form key="1" style={{ width: 900 }} cols={2}>
           <Input type="text" name="text" label="text"></Input>
           <Input

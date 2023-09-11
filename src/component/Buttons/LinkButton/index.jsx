@@ -19,9 +19,8 @@ class LinkButton extends React.PureComponent {
       return;
     }
 
-    if (this.props.onClick !== null) {
+    this.props.onClick &&
       this.props.onClick(this.props.name, this.props.title, event);
-    }
   }
   onMouseOver(event) {
     if (this.props.onMouseOver) {
@@ -39,10 +38,13 @@ class LinkButton extends React.PureComponent {
       "wasabi-linkbutton " +
       (this.props.className || "") +
       " " +
-      (this.props.theme || "default"); //按钮样式
+      (this.props.theme || "info"); //按钮样式
     //如果没有图标，只有文字
     if (!this.props.iconCls) {
-      className += " " + "onlytext"; //只有文字
+      className += " onlytext"; //只有文字
+    }
+    if (!this.props.children) {
+      className += " onlyicon"; //只有文字
     }
     let style = this.props.style ? this.props.style : {}; //设置按钮样式
     let icon = (

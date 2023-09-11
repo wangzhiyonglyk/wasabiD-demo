@@ -14,7 +14,7 @@
   box-sizing: border-box;
   outline: none;
   margin: 0;
-  transition: .1s;
+  transition: 0.1s;
   user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
@@ -22,25 +22,20 @@
   border-radius: 4px;
   box-shadow: var(--box-shadow);
   position: relative;
-
 }
 
-.wasabi-button+.wasabi-button {
-  margin-left: 10px;
+.wasabi-button + .wasabi-button {
+  margin-left: 5px;
 }
-
-
 
 .wasabi-button.size-large {
   padding: 10px 16px;
   font-size: 16px;
- 
 }
 
 .wasabi-button.size-default {
   padding: 10px 12px;
   font-size: 14px;
-
 }
 
 .wasabi-button.size-small {
@@ -57,9 +52,8 @@
   transform: translateY(1px);
 }
 
-
-
-.wasabi-button.default , .wasabi-button.cancel {
+.wasabi-button.default,
+.wasabi-button.cancel {
   background: #fff;
   border: 1px solid var(--border-color);
   color: var(--color);
@@ -73,17 +67,15 @@
 
 .wasabi-button.success {
   color: #fff;
-  background-color: var( --success-color);
-  border-color: var( --success-color);
+  background-color: var(--success-color);
+  border-color: var(--success-color);
 }
 
-
-.wasabi-button.info{
+.wasabi-button.info {
   color: #fff;
   background-color: var(--info-color);
   border-color: var(--info-color);
 }
-
 
 .wasabi-button.warning {
   color: #fff;
@@ -91,16 +83,13 @@
   border-color: var(--warning-color);
 }
 
-
 .wasabi-button.danger {
   color: #fff;
   background-color: var(--danger-color);
   border-color: var(--danger-color);
 }
 
-
-
 .wasabi-button[disabled] {
-  opacity: 0.70;
+  opacity: 0.7;
   cursor: not-allowed;
 }

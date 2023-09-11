@@ -140,25 +140,30 @@ class DataGrid extends Component {
       }
     }
 
-    if (props.data != state.rawData) {
+    if (props.data !== state.rawData) {
       //如果传了固定数据,并且数据改变,浅比较
       //数据比较大且不分页则执行虚拟列表
       newState.initVirtualConfig =
-        props.pagination !== true && props.data.length < config.minDataTotal
+        props.pagination !== true && props.data?.length > config.minDataTotal
           ? true
           : null;
       newState.rawData = props.data;
+      // 处理当前的数据
       try {
-        //分页情况下，数据切割
-        newState.data =
-          props.pagination == true
-            ? props.data.length > (state.pageSize || 20)
+        //分页情况下，如果数据超过每页个数，则进行切割
+        let pageSize = state.pageSize || 20;
+        let pageIndex = state.pageIndex || 1;
+        if (props.pagination) {
+          newState.data =
+            props.data.length > pageSize
               ? props.data.slice(
-                  ((state.pageIndex || 1) - 1) * (state.pageSize || 20),
-                  (state.pageIndex || 1) * (state.pageSize || 20)
+                  (pageIndex - 1) * pageSize,
+                  pageIndex * pageSize
                 )
-              : props.data
-            : props.data;
+              : props.data;
+        } else {
+          newState.data = props.data;
+        }
       } catch (e) {
         newState.data = props.data;
       }

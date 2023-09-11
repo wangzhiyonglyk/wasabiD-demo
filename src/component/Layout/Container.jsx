@@ -19,12 +19,10 @@ class Container extends React.PureComponent {
     this.getRefs = this.getRefs.bind(this);
   }
   static propTypes = {
-    size: PropTypes.oneOf(["", "fluid", "xxl", "xl", "lg", "md", "sm"]),
     style: PropTypes.object,
     className: PropTypes.string,
   };
   static defaultProps = {
-    size: "", //
     style: {},
     className: "",
   };

@@ -245,58 +245,62 @@ class Grid extends React.Component {
     let grid = [];
     let style = func.clone(this.props.style) || {};
     let height = style.height || null;
+    style.height = null; //清空height,因为height是被单独提取出来用设置表格的高度
+    if (this.props.data && this.props.data.length) {
+      let pageTotal =
+        this.props.data.length < this.props.total
+          ? this.props.data.length
+          : this.props.total;
+      /* 头部分页 */
+      grid.push(
+        this.props.pagination &&
+          (this.props.pagePosition == "top" ||
+            this.props.pagePosition == "both") ? (
+          <Pagination
+            key="p1"
+            reload={this.props.reload}
+            exportAble={this.props.exportAble}
+            export={this.props.export}
+            onChange={this.props.paginationHandler}
+            pageIndex={this.props.pageIndex}
+            pageSize={this.props.pageSize}
+            pageTotal={pageTotal}
+            total={this.props.total}
+          ></Pagination>
+        ) : null
+      );
+      {
+        /* 真实表格容器 */
+      }
+      grid.push(this.renderTable(height));
+      {
+        /* 底部分页 */
+      }
+      grid.push(
+        this.props.pagination &&
+          (this.props.pagePosition === "bottom" ||
+            this.props.pagePosition === "both") ? (
+          <Pagination
+            key="p2"
+            reload={this.props.reload}
+            exportAble={this.props.exportAble}
+            export={this.props.export}
+            onChange={this.props.paginationHandler}
+            pageIndex={this.props.pageIndex}
+            pageSize={this.props.pageSize}
+            pageTotal={pageTotal}
+            total={this.props.total}
+          ></Pagination>
+        ) : null
+      );
+      /* 加载动画 */
+      grid.push(
+        this.props.loading ? <GridLoading key="loading"></GridLoading> : null
+      );
+    } else {
+      grid.push(<div>当前没有数据</div>);
+    }
 
-    style.height = null; //清空height,因为height是用设置表格的高度
-    let pageTotal =
-      this.props.data.length < this.props.total
-        ? this.props.data.length
-        : this.props.total;
-    /* 头部分页 */
-    grid.push(
-      this.props.pagination &&
-        (this.props.pagePosition == "top" ||
-          this.props.pagePosition == "both") ? (
-        <Pagination
-          key="p1"
-          reload={this.props.reload}
-          exportAble={this.props.exportAble}
-          export={this.props.export}
-          onChange={this.props.paginationHandler}
-          pageIndex={this.props.pageIndex}
-          pageSize={this.props.pageSize}
-          pageTotal={pageTotal}
-          total={this.props.total}
-        ></Pagination>
-      ) : null
-    );
-    {
-      /* 真实表格容器 */
-    }
-    grid.push(this.renderTable(height));
-    {
-      /* 底部分页 */
-    }
-    grid.push(
-      this.props.pagination &&
-        (this.props.pagePosition === "bottom" ||
-          this.props.pagePosition === "both") ? (
-        <Pagination
-          key="p2"
-          reload={this.props.reload}
-          exportAble={this.props.exportAble}
-          export={this.props.export}
-          onChange={this.props.paginationHandler}
-          pageIndex={this.props.pageIndex}
-          pageSize={this.props.pageSize}
-          pageTotal={pageTotal}
-          total={this.props.total}
-        ></Pagination>
-      ) : null
-    );
-    /* 加载动画 */
-    grid.push(
-      this.props.loading ? <GridLoading key="loading"></GridLoading> : null
-    );
     return (
       <div
         className={

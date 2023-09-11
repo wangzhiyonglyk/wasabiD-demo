@@ -16,6 +16,9 @@ import ComboBox from "../ComboBox";
 import Text from "../Text";
 import Password from "../Password/index.jsx";
 import Rate from "../Rate";
+import Avatar from "../Avatar/index.jsx";
+import Upload from "../Upload/index.jsx";
+
 import "./input.css";
 class Input extends React.PureComponent {
   constructor(props) {
@@ -38,9 +41,9 @@ class Input extends React.PureComponent {
   }
   focus() {
     try {
-      this.inputRef.current.focus();
+      this.inputRef?.current?.focus();
     } catch (e) {
-      console.log(e);
+      console.log("focus", e);
     }
   }
   /**
@@ -49,7 +52,11 @@ class Input extends React.PureComponent {
    * @param {*} url
    */
   reload(params, url) {
-    this.inputRef.current.reload && this.inputRef.current.reload(params, url);
+    try {
+      this.inputRef?.current?.reload(params, url);
+    } catch (e) {
+      console.log("reload", e);
+    }
   }
   renderText() {
     //普通文本框
@@ -86,6 +93,14 @@ class Input extends React.PureComponent {
         break;
       case "switch":
         control = <Switch ref={this.inputRef} {...props}></Switch>;
+        break;
+
+      case "avatar":
+      case "image":
+        control = <Avatar ref={this.inputRef} {...props}></Avatar>;
+        break;
+      case "file":
+        control = <Upload ref={this.inputRef} {...props}></Upload>;
         break;
       default: //
         control = <ComboBox ref={this.inputRef} {...props}></ComboBox>;

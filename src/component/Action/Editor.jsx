@@ -7,7 +7,7 @@ desc 富文本框
 import React from "react";
 import PropTypes from "prop-types";
 import E from "wangeditor";
-import Upload from "./Upload/BreakUpload";
+import Upload from "../Form/Upload";
 //引入富文本框
 
 class Editor extends React.Component {

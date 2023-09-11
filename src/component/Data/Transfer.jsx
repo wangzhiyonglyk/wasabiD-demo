@@ -112,7 +112,7 @@ class Transfer extends React.Component {
     let realData = data;
     if (this.props.dataSource == null) {
     } else {
-      realData = unit.getSource(data, this.props.dataSource);
+      realData = func.getSource(data, this.props.dataSource);
     }
     if (realData instanceof Array) {
       for (let i = 0; i < realData.length; i++) {

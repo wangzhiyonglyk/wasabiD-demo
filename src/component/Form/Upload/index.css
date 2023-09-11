@@ -1,0 +1,134 @@
+.wasabi-upload-container {
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.wasabi-upload-container.clound {
+    width: 360px;
+    flex-direction: column;
+}
+.wasabi-upload-container.file {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.wasabi-upload-cloud {
+    background-color: #fff;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 217px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    font-size: 14px;
+    color: var(--color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.wasabi-upload-cloud.disabled {
+    cursor: not-allowed;
+    background-color: #d9d9d9;
+}
+.wasabi-upload-cloud .wasabi-upload-icon {
+    font-size: 68px;
+    color: var(--border-hover-color);
+    margin: 0px 0 16px;
+    line-height: 50px;
+    display: inline-block;
+}
+.wasabi-upload-cloud.wasabi-upload-icon.icon-loading {
+    animation: turn 2s linear infinite;
+    -webkit-animation: turn 2s linear infinite;
+    font-size: 16px;
+    margin: 0;
+    line-height: 16px;
+    position: absolute;
+    top: 9px;
+    width: 16px;
+    height: 16px;
+}
+
+.wasabi-upload-cloud .wasabi-upload-text {
+    color: var(--color);
+    font-size: 14px;
+    text-align: center;
+}
+
+/**这里是按钮类上传时的样式**/
+.wasabi-upload-file {
+    display: flex;
+}
+
+/*上传的input file*/
+.wasabi-upload-input {
+    display: none;
+}
+/*下面是预览文件*/
+
+.wasabi-uplaod-files {
+    padding-left: 2px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.wasabi-upload-container.clound .wasabi-uplaod-files {
+    flex-direction: column;
+}
+.wasabi-upload-container.file .wasabi-uplaod-files {
+    flex-direction: row;
+}
+
+.wasabi-uplaod-files.onlyone {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.wasabi-uplaod-files .file {
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-right: 10px;
+}
+.wasabi-uplaod-files .file:hover {
+    background-color: var(--background-color);
+}
+.wasabi-uplaod-files img {
+    object-fit: fill;
+}
+.wasabi-uplaod-files .wasabi-upload-progress {
+    z-index: 1;
+    font-size: var(--font-size);
+    color: var(--primary-color);
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 16px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+.wasabi-uplaod-files .wasabi-upload-progress span {
+    transform: scale(0.8);
+}
+
+.wasabi-uplaod-files .wasabi-linkbutton i {
+    font-size: 16px;
+}
