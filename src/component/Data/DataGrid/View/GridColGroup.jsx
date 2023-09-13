@@ -4,7 +4,7 @@
  */
 import React from "react";
 import config from "../config";
-class GridColGroup extends React.Component {
+class GridColGroup extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -48,53 +48,35 @@ class GridColGroup extends React.Component {
       );
       tableWidth += config.selectWidth;
     }
-    this.props.headers.map((trheader, headerRowIndex) => {
+
+    // 设置列高度
+    this.props?.headers.map((trheader, headerRowIndex) => {
       if (trheader instanceof Array) {
         trheader.map((header, headerColumnIndex) => {
           if (header.colSpan && header.colSpan > 1) {
             //跨几列的不用渲染
             return;
           } else {
-            let width = header.width
-              ? header.width
-              : (this.props.headerWidth &&
-                  this.props.headerWidth[header.name || trheader.label]) ||
-                config.minWidth;
-            tableWidth += width;
             colgroup.push(
               <col
                 key={headerRowIndex + "-" + headerColumnIndex}
                 name={header.name || header.label} //name可能没有设置
-                width={width}
+                width={header.width}
               ></col>
             );
           }
         });
       } else {
-        let width = trheader.width
-          ? trheader.width
-          : (this.props.headerWidth &&
-              this.props.headerWidth[trheader.name || trheader.label]) ||
-            config.minWidth;
-        tableWidth += width;
         colgroup.push(
           <col
             key={headerRowIndex}
             name={trheader.name || trheader.label}
-            width={width}
+            width={trheader.width}
           ></col>
         );
       }
     });
 
-    if (document.getElementById(this.props.realTableId)) {
-      document.getElementById(this.props.realTableId).style.width =
-        tableWidth + "px";
-    }
-    if (document.getElementById(this.props.fixTableId)) {
-      document.getElementById(this.props.fixTableId).style.width =
-        tableWidth + "px";
-    }
     return <colgroup>{colgroup}</colgroup>;
   }
 }

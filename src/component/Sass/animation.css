@@ -2,6 +2,25 @@
 自定义文本显示方式
 */
 
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+body > div:first-child {
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
 .ellipsis {
   overflow: hidden;
   white-space: nowrap;
@@ -24,24 +43,7 @@
   clear: both;
   height: 0;
 }
-html {
-  height: 100%;
-  width: 100%;
-  margin: 0px;
-  padding: 0px;
-}
-body {
-  height: 100%;
-  width: 100%;
-  margin: 0px;
-  padding: 0px;
-}
-body > div {
-  height: 100%;
-  width: 100%;
-  padding: 0px;
-  margin: 0px;
-}
+
 a {
   text-decoration: none;
 }

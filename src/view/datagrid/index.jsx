@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { DataGrid, Button, Input } from "../../component";
 class Page extends React.Component {
   constructor(props) {
@@ -59,6 +59,39 @@ class Page extends React.Component {
             }
           },
         },
+        {
+          name: "省5",
+          label: "省5",
+          content: (rowData, rowIndex) => {
+            return (
+              <div>
+                tefgfsggsdagdfgdfsgdfgdfgdfgdfsdfsdfsdafsadfsadfsdafsdafsadfsdafsadfas
+              </div>
+            );
+          },
+        },
+        {
+          name: "省6",
+          label: "省6",
+          content: (rowData, rowIndex) => {
+            return (
+              <div>
+                tefgfsggsdagdfgdfsgdfgdfgdfgdfsdfsdfsdafsadfsadfsdafsdafsadfsdafsadfas
+              </div>
+            );
+          },
+        },
+        {
+          name: "省7",
+          label: "省7",
+          content: (rowData, rowIndex) => {
+            return (
+              <div>
+                tefgfsggsdagdfgdfsgdfgdfgdfgdfsdfsdfsdafsadfsadfsdafsdafsadfsdafsadfas
+              </div>
+            );
+          },
+        },
       ],
       data: (() => {
         let arr = [];
@@ -99,43 +132,22 @@ class Page extends React.Component {
   componentDidMount() {}
   render() {
     return (
-      <div>
-        <Button onClick={this.onClick}>获取勾选</Button>
-
-        <Input type="text" name="text" label="text"></Input>
-        <Input
-          type="radio"
-          name="radio"
-          label="radio"
-          data={this.state.data.slice(0, 6)}
-        ></Input>
-        <Input
-          type="checkbox"
-          name="checkbox"
-          label="checkbox"
-          data={this.state.data.slice(0, 6)}
-        ></Input>
-        <Input type="timerange" name="timerange" label="timerange"></Input>
-        <Input type="year" name="year" label="year" value="test"></Input>
-        <Input type="month" name="month" label="month" value="test"></Input>
-        <Input type="time" name="time" label="time" value="test"></Input>
-        <Input type="date" name="date" label="date" value="test"></Input>
-        <DataGrid
-          ref="grid"
-          httpType="get"
-          style={{ height: 600, width: "100%" }}
-          pagination={true}
-          textField="label"
-          rowNumber={true}
-          selectAble={true}
-          importAble={true}
-          fixedHeaders={this.state.fixedHeaders}
-          headers={this.state.headers}
-          data={this.state.data}
-        ></DataGrid>
-      </div>
+      <DataGrid
+        ref="grid"
+        httpType="get"
+        pagination={true}
+        textField="label"
+        rowNumber={true}
+        selectAble={true}
+        importAble={true}
+        fixedHeaders={this.state.fixedHeaders}
+        headers={this.state.headers}
+        // url="https://www.baidu.com"
+        data={this.state.data}
+      ></DataGrid>
     );
   }
 }
 
-ReactDOM.render(<Page />, document.getElementById("root"));
+const rootElement = document.getElementById("root");
+createRoot(rootElement).render(<Page />);

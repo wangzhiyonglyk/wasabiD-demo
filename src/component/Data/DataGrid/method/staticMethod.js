@@ -241,7 +241,7 @@ export default {
    * @param {*} title 导出标题
    */
   export(selected = false, title = "grid-") {
-    let fixTable = document.getElementById(this.state.fixTableId);
+    let fixTable = document.getElementById(this.state.tableHeaderId);
     let realTable = document.getElementById(this.state.realTableId);
     title = title + func.dateformat(new Date(), "yyyy-MM-dd");
     //导出表头

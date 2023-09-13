@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import "./pagination.css";
 import func from "../../libs/func/index.js";
 import pageSizeList from "./pageSizeList.js";
+import regs from "../../libs/regs";
 
 class Pagination extends React.Component {
   constructor(props) {
@@ -25,6 +26,7 @@ class Pagination extends React.Component {
     this.nextPaginationHandler = this.nextPaginationHandler.bind(this);
     this.nextPaginationHandler = this.nextPaginationHandler.bind(this);
     this.pageSizeHandler = this.pageSizeHandler.bind(this);
+    this.onKeyUp = this.onKeyUp.bind(this);
   }
   static getDerivedStateFromProps(props, state) {
     if (func.diff(props, state.oldProps)) {
@@ -67,13 +69,9 @@ class Pagination extends React.Component {
    * 下一页
    */
   nextPaginationHandler() {
-    var pageAll = parseInt(this.state.total / this.state.pageSize); //共多少页
-    var lastPageNum = this.state.total % this.state.pageSize;
-    if (lastPageNum > 0) {
-      pageAll++;
-    }
-    if (this.state.pageIndex == pageAll) {
-    } else {
+    let pageAll = Math.ceil(this.state.total / this.state.pageSize); //共多少页
+
+    if (this.state.pageIndex < pageAll) {
       this.props.onChange &&
         this.props.onChange(this.state.pageIndex + 1, this.state.pageSize);
     }
@@ -84,6 +82,21 @@ class Pagination extends React.Component {
    */
   pageSizeHandler(event) {
     this.props.onChange && this.props.onChange(1, event.target.value * 1);
+  }
+
+  /**
+   * 跳转至某页
+   * @param {*} event
+   */
+  onKeyUp(event) {
+    if (event.keyCode === 13 && regs.integer.test(event.target.value.trim())) {
+      let pageAll = Math.ceil(this.state.total / this.state.pageSize); //共多少页
+      let pageIndex = event.target.value.trim() * 1;
+      if (pageIndex >= 1 && pageIndex <= pageAll) {
+        this.props.onChange &&
+          this.props.onChange(pageIndex, this.state.pageSize);
+      }
+    }
   }
 
   /**
@@ -147,7 +160,6 @@ class Pagination extends React.Component {
                 width: 30,
               }}
             >
-              {" "}
               <i
                 title="导出"
                 style={{
@@ -170,7 +182,12 @@ class Pagination extends React.Component {
    */
   renderPagination() {
     //显示分页控件
-    let paginationComponent = null;
+    let paginationto = (
+      <div key="pagination-to" className="pagination-to">
+        跳转至<input onKeyUp={this.onKeyUp}></input>页
+      </div>
+    );
+    let paginationComponent = [];
     if (this.props.pagination) {
       let pageAll = parseInt(this.state.total / this.state.pageSize); //共多少页
       if (this.state.total % this.state.pageSize > 0) {
@@ -187,12 +204,12 @@ class Pagination extends React.Component {
         let firstIndex = 0; //第一个显示哪一页
         let lastIndex = 0; //最后一个显示哪一页
         let predisabledli = (
-          <li key="predis" className="paginate_button disabled">
+          <li key="predis" className="paginate-button disabled">
             <a>...</a>
           </li>
         ); //多余的分页标记
         let lastdisabledli = (
-          <li key="lastdis" className="paginate_button disabled">
+          <li key="lastdis" className="paginate-button disabled">
             <a>...</a>
           </li>
         ); //多余的分页标记
@@ -220,50 +237,60 @@ class Pagination extends React.Component {
           pageComponent.push(
             <li
               key={"li" + i}
+              onClick={this.paginationHandler.bind(this, i)}
               className={
-                "paginate_button " +
+                "paginate-button " +
                 (this.state.pageIndex * 1 == i ? "active" : "")
               }
             >
-              <a onClick={this.paginationHandler.bind(this, i)}>{i}</a>
+              {i}
             </li>
           );
         }
         pageComponent.unshift(predisabledli);
         pageComponent.push(lastdisabledli);
 
-        paginationComponent = (
+        paginationComponent.push(
           <div key="pagination-number" className="pagination-number">
             <ul className="pagination">
-              <li key={"lipre"} className="paginate_button ">
-                <a onClick={this.prePaginationHandler}>上一页</a>
+              <li
+                key={"lipre"}
+                className="paginate-button pre "
+                onClick={this.prePaginationHandler}
+              >
+                {"<"}
               </li>
               <li
                 key={"lifirst"}
+                onClick={this.paginationHandler.bind(this, 1)}
                 className={
-                  "paginate_button  " +
+                  "paginate-button  " +
                   (this.state.pageIndex * 1 == 1 ? "active" : "")
                 }
               >
-                <a onClick={this.paginationHandler.bind(this, 1)}>{1}</a>
+                {1}
               </li>
               {pageComponent}
 
               <li
                 key="lilast"
+                onClick={this.paginationHandler.bind(this, pageAll)}
                 className={
-                  "paginate_button previous " +
+                  "paginate-button  " +
                   (this.state.pageIndex * 1 == pageAll ? "active" : "")
                 }
               >
-                <a onClick={this.paginationHandler.bind(this, pageAll)}>
-                  {pageAll}
-                </a>
+                {pageAll}
               </li>
-              <li key="linext" className="paginate_button next">
-                <a onClick={this.nextPaginationHandler}>下一页</a>
+              <li
+                key="linext"
+                className="paginate-button next"
+                onClick={this.nextPaginationHandler}
+              >
+                {">"}
               </li>
             </ul>
+            {paginationto}
           </div>
         );
       } else {
@@ -276,7 +303,7 @@ class Pagination extends React.Component {
             <li
               key={"li" + i}
               className={
-                "paginate_button " +
+                "paginate-button " +
                 (this.state.pageIndex * 1 == i * 1 + 1 ? "active" : "")
               }
             >
@@ -285,21 +312,31 @@ class Pagination extends React.Component {
           );
           pagearr.push(control);
         }
-        paginationComponent = (
+        paginationComponent.push(
           <div key="pagination-number" className="pagination-number">
             <ul className="pagination">
-              <li key={"lipre"} className="paginate_button previous">
-                <a onClick={this.prePaginationHandler}>上一页</a>
+              <li
+                key={"lipre"}
+                className="paginate-button pre "
+                onClick={this.prePaginationHandler}
+              >
+                {"<"}
               </li>
               {pagearr}
-              <li key="linext" className="paginate_button next">
-                <a onClick={this.nextPaginationHandler}>下一页</a>
+              <li
+                key="linext"
+                className="paginate-button next"
+                onClick={this.nextPaginationHandler}
+              >
+                {">"}
               </li>
             </ul>
+            {paginationto}
           </div>
         );
       }
     }
+
     return paginationComponent;
   }
 

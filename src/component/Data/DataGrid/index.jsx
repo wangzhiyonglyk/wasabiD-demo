@@ -52,7 +52,7 @@ class DataGrid extends Component {
     this.state = {
       containerid: func.uuid(), //表格容器
       divideid: func.uuid(), //分隔线
-      fixTableId: func.uuid(), //表头table
+      tableHeaderId: func.uuid(), //表头table
       realTableId: func.uuid(), //真实table
       url: null,
       rawUrl: null,
@@ -85,8 +85,8 @@ class DataGrid extends Component {
       addData: new Map(), //新增的数据,因为有可能新增一个空的，然后再修改
       updateData: new Map(), //被修改过的数据，因为要判断曾经是否修改
       deleteData: [], //删除的数据
-      urlLoadData: false, //有url并且分页情况下是否需要请求加载数据
-      initVirtualConfig: null, //是否需要重置虚拟列表的配置,null标记为没有虚拟列表
+      urlLoadData: false, //有url，是否需要请求加载数据
+      needVirtualList: null, //是否需要重置虚拟列表的配置,null标记为没有虚拟列表,true 需要进行虚拟列表配置，false表示配置完成
     };
     //绑定事件
     let baseCtors = [
@@ -140,10 +140,14 @@ class DataGrid extends Component {
       }
     }
 
+    /**
+     * 处理数据
+     */
     if (props.data !== state.rawData) {
       //如果传了固定数据,并且数据改变,浅比较
+
       //数据比较大且不分页则执行虚拟列表
-      newState.initVirtualConfig =
+      newState.needVirtualList =
         props.pagination !== true && props.data?.length > config.minDataTotal
           ? true
           : null;
@@ -167,24 +171,25 @@ class DataGrid extends Component {
       } catch (e) {
         newState.data = props.data;
       }
-      if (newState.initVirtualConfig === null) {
+      if (newState.needVirtualList === null) {
         //不需要做虚拟列表
         newState.visibleData = newState.data;
       }
-      newState.total = props.total || props.data.length || 0;
-    } else if (
+      newState.total = props?.total || props?.data?.length || 0;
+    }
+    /**处理请求 */
+    if (
       props.url &&
       (props.url !== state.rawUrl || func.diff(props.params, state.rawParams))
     ) {
       //没有传数据，传的是url
       //有url,并且分页,url或者参数有变
-      newState = {
-        urlLoadData: true, //重新加载数据
-        url: props.url,
-        rawUrl: props.url,
-        rawParams: func.clone(props.params),
-        params: func.clone(props.params),
-      };
+
+      newState.urlLoadData = true; //重新加载数据
+      newState.url = props.url;
+      newState.rawUrl = props.url;
+      newState.rawParams = func.clone(props.params);
+      newState.params = func.clone(props.params);
     }
 
     return newState;
@@ -194,14 +199,18 @@ class DataGrid extends Component {
    */
   componentDidUpdate() {
     //重新加数据
-
+    console.log("componentDidUpdate");
     if (this.state.urlLoadData) {
       //需要请求数据
       this.reload(); //调用
-    } else if (this.state.initVirtualConfig && this.state.data?.length > 0) {
-      this.initVirtual(); //重置虚拟列表,
+      return;
     }
-    if (this.adjust) {
+
+    if (this.state.needVirtualList && this.state.visibleData?.length > 0) {
+      this.initVirtual(); //重新初始化虚拟列表,
+      return;
+    }
+    if (this.neddAdjustvirtualWidthAndHeight) {
       //调整虚拟列表与表格宽度
       this.adjustvirtual();
     }
@@ -210,10 +219,14 @@ class DataGrid extends Component {
     if (this.state.urlLoadData) {
       //需要请求数据
       this.reload(); //调用
-    } else if (this.state.initVirtualConfig && this.state.data?.length > 0) {
-      this.initVirtual(); //重置虚拟列表,
-    } else {
-      this.adjustColumnWidth(); //
+    }
+    if (this.state.needVirtualList && this.state.visibleData?.length > 0) {
+      this.initVirtual(); //重新初始化虚拟列表,
+      return;
+    }
+
+    if (this.state.visibleData?.length > 0) {
+      this.adjustColumnWidth(); //说明没有虚拟列表，只是调整宽度，用于表格自适应
     }
   }
   componentWillUnmount() {
@@ -264,6 +277,7 @@ DataGrid.propTypes = {
   importAble: PropTypes.bool, //是否允许导入
   selectChecked: PropTypes.bool, //选择行的时候是否同时选中,false
   exportAble: PropTypes.bool, //是否允许导出
+  compactCol: PropTypes.number, // 表格紧凑的
   /**
    * 分页
    */
@@ -307,7 +321,7 @@ DataGrid.propTypes = {
   onClick: PropTypes.func, //单击事件
   onDoubleClick: PropTypes.func, //双击事件
   onChecked: PropTypes.func, //监听表格中某一行被选中/取消
-  onUpdate: PropTypes.func, //手动更新事件，父组件一定要有返回值,返回详情组件
+  onUpdate: PropTypes.func, //手动更新事件，父组件一定要有返回值,返回新数据
   onDetail: PropTypes.func, //展示详情的函数，父组件一定要有返回值,返回详情组件
   onSave: PropTypes.func, //保存事件
   loadSuccess: PropTypes.func, //异步加载数据后，对数据进行进一步加工
@@ -320,7 +334,7 @@ DataGrid.defaultProps = {
   selectChecked: false,
   exportAble: true,
   borderAble: true,
-
+  compactCol: 10,
   /**
    * 分页
    */

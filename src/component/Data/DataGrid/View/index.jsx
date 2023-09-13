@@ -76,10 +76,10 @@ class Grid extends React.Component {
           }
           document.getElementById(this.props.realTableId).style.width =
             Math.ceil(tableWidth + event.clientX - this.beginLeft) + "px";
-          document.getElementById(this.props.fixTableId).style.width =
+          document.getElementById(this.props.tableHeaderId).style.width =
             Math.ceil(tableWidth + event.clientX - this.beginLeft) + "px";
           document
-            .getElementById(this.props.fixTableId)
+            .getElementById(this.props.tableHeaderId)
             .children[0].children[chosedHeaderColumnIndex].setAttribute(
               "width",
               Math.ceil(width + event.clientX - this.beginLeft)
@@ -108,7 +108,7 @@ class Grid extends React.Component {
         headerWidth={this.props.headerWidth}
         containerid={this.props.containerid}
         realTableId={this.props.realTableId}
-        fixTableId={this.props.fixTableId}
+        tableHeaderId={this.props.tableHeaderId}
         headers={this.props.headers}
         selectAble={this.props.selectAble}
         rowNumber={this.props.rowNumber}
@@ -119,7 +119,7 @@ class Grid extends React.Component {
   }
 
   /**
-   * 处理非固定表头
+   * 处理表头
    */
   renderHeader() {
     return (
@@ -189,6 +189,8 @@ class Grid extends React.Component {
    * 真实的表格
    */
   renderTable(height) {
+    // 是否有数据
+    let hasData = this.props?.visibleData?.length > 0 ? true : false;
     let colgroup = this.renderColGruop();
     let headerControl = this.renderHeader();
     return (
@@ -206,7 +208,7 @@ class Grid extends React.Component {
               (this.props.borderAble ? " " : " table-no-bordered ") +
               (this.props.editAble ? " edit " : "")
             }
-            id={this.props.fixTableId}
+            id={this.props.tableHeaderId}
           >
             {
               /**colgroup */
@@ -217,19 +219,22 @@ class Grid extends React.Component {
           </Table>
         </div>
         {/* 真实的表格  */}
-        <Table
-          className={this.props.borderAble ? " " : " table-no-bordered "}
-          id={this.props.realTableId}
-        >
-          {
-            /**colgroup */
-            colgroup
-          }
-          {/* 表体 */}
-          {this.renderBody()}
-          {/* 表尾 todo */}
-          {/* <tfoot>{this.renderFooter()}</tfoot> */}
-        </Table>
+        {hasData ? (
+          <Table
+            className={this.props.borderAble ? " " : " table-no-bordered "}
+            id={this.props.realTableId}
+          >
+            {
+              /**colgroup */
+              colgroup
+            }
+
+            {/* 表体 */}
+            {this.renderBody()}
+            {/* 表尾 todo */}
+            {/* <tfoot>{this.renderFooter()}</tfoot> */}
+          </Table>
+        ) : null}
         <div className="wasabi-virtual-height"></div>
 
         {/* 拖动列时的分隔线  */}
@@ -246,68 +251,61 @@ class Grid extends React.Component {
     let style = func.clone(this.props.style) || {};
     let height = style.height || null;
     style.height = null; //清空height,因为height是被单独提取出来用设置表格的高度
-    if (this.props.data && this.props.data.length) {
-      let pageTotal =
-        this.props.data.length < this.props.total
-          ? this.props.data.length
-          : this.props.total;
-      /* 头部分页 */
-      grid.push(
-        this.props.pagination &&
-          (this.props.pagePosition == "top" ||
-            this.props.pagePosition == "both") ? (
-          <Pagination
-            key="p1"
-            reload={this.props.reload}
-            exportAble={this.props.exportAble}
-            export={this.props.export}
-            onChange={this.props.paginationHandler}
-            pageIndex={this.props.pageIndex}
-            pageSize={this.props.pageSize}
-            pageTotal={pageTotal}
-            total={this.props.total}
-          ></Pagination>
-        ) : null
-      );
-      {
-        /* 真实表格容器 */
-      }
-      grid.push(this.renderTable(height));
-      {
-        /* 底部分页 */
-      }
-      grid.push(
-        this.props.pagination &&
-          (this.props.pagePosition === "bottom" ||
-            this.props.pagePosition === "both") ? (
-          <Pagination
-            key="p2"
-            reload={this.props.reload}
-            exportAble={this.props.exportAble}
-            export={this.props.export}
-            onChange={this.props.paginationHandler}
-            pageIndex={this.props.pageIndex}
-            pageSize={this.props.pageSize}
-            pageTotal={pageTotal}
-            total={this.props.total}
-          ></Pagination>
-        ) : null
-      );
-      /* 加载动画 */
-      grid.push(
-        this.props.loading ? <GridLoading key="loading"></GridLoading> : null
-      );
-    } else {
-      grid.push(<div>当前没有数据</div>);
-    }
+
+    let pagination = this.props.pagination;
+    let pagePosition = this.props.pagePosition;
+    let pageTotal =
+      this.props?.visibleData?.length < this.props.total
+        ? this.props.visibleData.length
+        : this.state.pageSize;
+    /* 头部分页 */
+    grid.push(
+      pagination && (pagePosition === "top" || pagePosition === "both") ? (
+        <Pagination
+          key="p1"
+          reload={this.props.reload}
+          exportAble={this.props.exportAble}
+          export={this.props.export}
+          onChange={this.props.paginationHandler}
+          pageIndex={this.props.pageIndex}
+          pageSize={this.props.pageSize}
+          pageTotal={pageTotal}
+          total={this.props.total}
+        ></Pagination>
+      ) : null
+    );
+
+    /* 真实表格容器 */
+    grid.push(this.renderTable(height));
+
+    /* 底部分页 */
+    grid.push(
+      pagination && (pagePosition === "bottom" || pagePosition === "both") ? (
+        <Pagination
+          key="p2"
+          reload={this.props.reload}
+          exportAble={this.props.exportAble}
+          export={this.props.export}
+          onChange={this.props.paginationHandler}
+          pageIndex={this.props.pageIndex}
+          pageSize={this.props.pageSize}
+          pageTotal={pageTotal}
+          total={this.props.total}
+        ></Pagination>
+      ) : null
+    );
+
+    /* 加载动画 */
+    grid.push(
+      this.props.loading ? <GridLoading key="loading"></GridLoading> : null
+    );
 
     return (
       <div
         className={
           "wasabi-grid " +
-          (this.props.pagination && this.props.pagePosition === "bottom"
-            ? " pagination"
-            : "") +
+          pagePosition +
+          (pagination ? " pagination " : "") +
           (this.props.className || "")
         }
         style={style}

@@ -4,10 +4,10 @@ grid
 
 .wasabi-grid {
   width: 100%;
-  height: 100%;
   position: relative;
   font-size: var(--font-size);
   color: var(--color);
+  height: 100%;
 }
 
 .wasabi-grid .wasabi-grid-tool {
@@ -31,9 +31,14 @@ grid
   width: 100%;
   height: 100%;
 }
+
 .wasabi-grid.pagination .wasabi-table-container {
-  border-bottom: none;
+  height: calc(100% - 40px);
 }
+.wasabi-grid.pagination.botn .wasabi-table-container {
+  height: calc(100% - 80px);
+}
+
 .wasabi-treegrid .wasabi-grid .wasabi-table-container {
   overflow-y: hidden;
 }

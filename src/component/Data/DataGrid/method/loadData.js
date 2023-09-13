@@ -234,8 +234,7 @@ export default {
         loading: false,
         detailIndex: null, //重新查询要清空详情
         detailView: null,
-        initVirtualConfig:
-          dataResult.length < config.minDataTotal ? null : true, //小于配置值则不设置，重新设置虚拟列表
+        needVirtualList: dataResult.length < config.minDataTotal ? null : true, //小于配置值则不设置，重新设置虚拟列表
       });
     }
   },

@@ -168,23 +168,32 @@ export default {
    */
   paginationHandler: function (pageIndex, pageSize) {
     //分页处理函数
-    if (
-      pageIndex == this.state.pageIndex &&
-      this.pageSize == this.state.pageSize
-    ) {
+    if (pageIndex == this.state.pageIndex && pageSize == this.state.pageSize) {
       //当前页,不处理
       return;
     } else {
       //跳转到指定页
-
-      this.loadData(
-        this.state.url,
-        pageSize,
-        pageIndex,
-        this.state.sortName,
-        this.state.sortOrder,
-        this.state.params
-      );
+      if (this.state.url) {
+        this.loadData(
+          this.state.url,
+          pageSize,
+          pageIndex,
+          this.state.sortName,
+          this.state.sortOrder,
+          this.state.params
+        );
+      } else {
+        let data = this.props.data.slice(
+          (pageIndex - 1) * pageSize,
+          pageIndex * pageSize
+        );
+        this.setState({
+          pageIndex,
+          pageSize,
+          data: data,
+          visibleData: data,
+        });
+      }
     }
   },
   /**
