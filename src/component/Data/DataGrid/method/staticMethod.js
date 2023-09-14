@@ -1,9 +1,9 @@
 /**
  * create by wangzhiyonglyk
  * date:2020-12-20
- * desc 加了虚拟列表后，通过key来反查rowIndex方式效率太低了，todo ，暂时不处理
+ * desc 给父组件加的
  */
-import React from "react";
+
 import func from "../../../libs/func/index.js";
 export default {
   /**

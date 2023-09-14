@@ -114,7 +114,7 @@ class GridBody extends Component {
    * @returns
    */
   setOrderAndSelectAndDetailRow(rowData, rowIndex) {
-    let stickyLeft = 1; //偏移量,表格左边有border
+    let stickyLeft = this.props.borderAble ? 1 : 0; //偏移量,表格左边有border
     let control = [];
     let key = this.getKey(rowIndex); //获取这一行的关键值
 
@@ -131,7 +131,7 @@ class GridBody extends Component {
           tdStyle={{
             position: "sticky",
             zIndex: 1,
-            left: this.props.borderAble ? stickyLeft : stickyLeft,
+            left: stickyLeft,
           }}
         >
           {
@@ -155,7 +155,7 @@ class GridBody extends Component {
           tdStyle={{
             position: "sticky",
             zIndex: 1,
-            left: this.props.borderAble ? stickyLeft : stickyLeft,
+            left: stickyLeft,
           }}
         >
           {(
@@ -190,7 +190,7 @@ class GridBody extends Component {
           tdStyle={{
             position: "sticky",
             zIndex: 1,
-            left: this.props.borderAble ? stickyLeft : stickyLeft,
+            left: stickyLeft,
           }}
         >
           {rowAllowChecked ? (
@@ -212,10 +212,9 @@ class GridBody extends Component {
    * @param {*} rowData 行
    * @param {*} rowOrderIndex 行下标
    * @param {*} columnIndex 列下标
-   * @param {*} stickyLeft 固定列偏移量
    * @returns
    */
-  setCellComponent(header, rowData, rowOrderIndex, columnIndex, stickyLeft) {
+  setCellComponent(header, rowData, rowOrderIndex, columnIndex) {
     //处理数据单元格
     let editAble =
       this.props.editIndex !== null &&
@@ -245,11 +244,8 @@ class GridBody extends Component {
           textAlign: header.align,
           position: header.sticky ? "sticky" : null,
           zIndex: header.sticky ? 1 : null,
-          left: header.sticky
-            ? this.props.borderAble
-              ? stickyLeft
-              : stickyLeft
-            : null,
+          left: header.sticky === "left" ? "0px" : null,
+          right: header.sticky === "right" ? "0px" : null,
         }}
       >
         {editAble ? (
@@ -291,18 +287,8 @@ class GridBody extends Component {
       return null; //格式不正确，或者数据为空时，不渲染
     }
     let trArr = []; //行数据
-    let preRowDataIndex = -1; //上一行数据下标
+
     this.props.data.forEach((rowData, rowDataIndex) => {
-      let stickyLeft = 1; //偏移量,表格左边有border
-      if (this.props.detailAble) {
-        stickyLeft += config.detailWidth;
-      }
-      if (this.props.rowNumber) {
-        stickyLeft += config.orderWidth;
-      }
-      if (this.props.selectAble) {
-        stickyLeft += config.selectWidth;
-      }
       if (rowData.hide) {
         //隐藏该行,用于treegrid
         preRowDataIndex++;
@@ -316,6 +302,7 @@ class GridBody extends Component {
             trheader.forEach((header, headerColumnIndex) => {
               if (header.colSpan && header.colSpan > 1) {
                 //跨几列的不用渲染
+                return;
               }
               //处理数据单元格
               tds.push(
@@ -323,21 +310,10 @@ class GridBody extends Component {
                   header,
                   rowData,
                   rowData._orderRowIndex ?? rowDataIndex,
-                  columnIndex,
-                  stickyLeft
+                  columnIndex
                 )
               );
-              //处理固定列的left值
-              if (preRowDataIndex !== rowDataIndex) {
-                //第一次跳转到本行
-                let width = header.width
-                  ? header.width
-                  : (this.props.headerWidth &&
-                      this.props.headerWidth[header.name]) ||
-                    config.minWidth;
-                stickyLeft += header.sticky ? width : 0;
-                preRowDataIndex++;
-              }
+
               columnIndex++; //列下标
             });
           } else {
@@ -347,21 +323,10 @@ class GridBody extends Component {
                 trheader,
                 rowData,
                 rowData._orderRowIndex ?? rowDataIndex,
-                columnIndex,
-                stickyLeft
+                columnIndex
               )
             );
-            //处理固定列的left值
-            if (preRowDataIndex !== rowDataIndex) {
-              //第一次跳转到本行
-              let width = trheader.width
-                ? trheader.width
-                : (this.props.headerWidth &&
-                    this.props.headerWidth[trheader.name]) ||
-                  config.minWidth;
-              stickyLeft += trheader.sticky ? width : 0;
-              preRowDataIndex++;
-            }
+
             columnIndex++; //列下标
           }
         });

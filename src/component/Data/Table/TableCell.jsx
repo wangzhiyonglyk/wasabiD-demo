@@ -11,13 +11,25 @@ class TableCell extends React.PureComponent {
     this.renderTh = this.renderTh.bind(this);
   }
   renderCell() {
+    let style = this.props.style || {};
+    switch (this.props.align) {
+      case "left":
+        style.justifyContent = "flex-start";
+        break;
+      case "right":
+        style.justifyContent = "flex-end";
+      default:
+        style.justifyContent = "center";
+        break;
+    }
+
     return (
       <div
         data-rowindex={this.props.rowIndex}
         data-columnindex={this.props.columnIndex}
         colSpan={this.props.colSpan || 1}
         rowSpan={this.props.rowSpan || 1}
-        style={this.props.style}
+        style={style}
         className={"wasabi-table-cell  "}
         title={
           typeof this.props.children === "string" ? this.props.children : ""
@@ -30,12 +42,13 @@ class TableCell extends React.PureComponent {
   renderTh() {
     return (
       <th
+        data-rowindex={this.props.rowIndex}
+        data-columnindex={this.props.columnIndex}
         name={this.props.name}
         className={
           (this.props.className || "") +
           (this.props.position !== "body" ? " nowrap " : "")
         }
-        align={this.props.align}
         style={this.props.thStyle}
         colSpan={this.props.colSpan || 1}
         rowSpan={this.props.rowSpan || 1}
@@ -52,14 +65,12 @@ class TableCell extends React.PureComponent {
   }
   renderTd() {
     let style = this.props.tdStyle || {};
-    style.msoNumberFormat = "'@'";
+    style.msoNumberFormat = "'@'"; // 用导出时数字的问题
     return (
       <td
         name={this.props.name}
-        id={this.props.id}
         data-rowindex={this.props.rowIndex}
         data-columnindex={this.props.columnIndex}
-        align={this.props.align}
         colSpan={this.props.colSpan || 1}
         rowSpan={this.props.rowSpan || 1}
         style={style}

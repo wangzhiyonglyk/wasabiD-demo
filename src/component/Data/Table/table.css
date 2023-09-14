@@ -26,7 +26,9 @@ border奇怪的现象，出现变粗的现象
 
   background-color: white;
 }
-
+.wasabi-table td:last-child .wasabi-table th:last-child {
+  border-right: none;
+}
 /*
 背景颜色
 */

@@ -13,11 +13,12 @@
  固定列，复杂表头仍然有bug，需要检查
   2021-11-28 重新实现紧凑宽度，调整宽度，固定表头，固定列等功能，优化渲染，列不再换行
   2021-12-28 增加虚拟列表功能
-  2022-01-07 重新设计虚拟列表的实现方式，采用onScroll,配置虚拟列表开关，目前是通过数据量的大小（300），这样可能适应于treegrid,pivot，又可以适应小数据量情况
+  2022-01-07 重新设计虚拟列表的实现方式，采用onScroll,配置虚拟列表开关，目前是通过数据量的大小（500），这样可能适应于treegrid,pivot，又可以适应小数据量情况
   2022-01-07 调整表格的宽度与高度等样式bug
    2022-01-07 解决因虚拟列表导致固定列的效果失败的bug，减少onScroll事件重复渲染的次数
     2022-08-09 调整因为虚拟列表的bug
       2022-09-15 完善表单事件与方法，
+      202-09-15 重构整个表格
  */
 
 import React, { Component } from "react";
@@ -64,8 +65,9 @@ class DataGrid extends Component {
       sortOrder: this.props.sortOrder, //排序方式
 
       /************以下这几个字段在 getDerivedStateFromProps 处理逻辑，这样提升性能 */
-      rawFixedHeaders: null, //固定列的表头,保存用于更新
+
       rawHeaders: null, //原有默认列保存起来，用于更新判断
+
       rawData: null, //原始数据，在自动分页时与判断是否更新有用
       headers: [], //页面中的headers
       data: [], //当前页的数据
@@ -108,35 +110,11 @@ class DataGrid extends Component {
     let newState = {}; //新的状态值
     // 处理Headers,因为交叉表的表头是后期传入的
     {
-      let headerChange = false;
-      //处理固定列
-      if (func.diff(props.fixedHeaders, state.rawFixedHeaders)) {
-        //有改变则更新headers等
-        newState.rawFixedHeaders = func.clone(props.fixedHeaders);
-
-        headerChange = true;
-      }
       //处理非固定列
       if (func.diff(props.headers, state.rawHeaders)) {
         //有改变则更新headers等
-        newState.rawHeaders = func.clone(props.headers);
-
-        headerChange = true;
-      }
-      if (headerChange) {
-        //标记固定列
-        newState.headers = [].concat(
-          (newState.rawFixedHeaders || []).map((item) => {
-            return { ...item, sticky: true };
-          }),
-          newState.rawHeaders || []
-        );
-        if (newState.headers && newState.headers instanceof Array) {
-          for (let i = 0; i < newState.headers.length; i++) {
-            if (newState.headers[i] instanceof Array) {
-            }
-          }
-        }
+        newState.rawHeaders = props.headers;
+        newState.headers = func.clone(props.headers);
       }
     }
 
@@ -199,7 +177,7 @@ class DataGrid extends Component {
    */
   componentDidUpdate() {
     //重新加数据
-    console.log("componentDidUpdate");
+
     if (this.state.urlLoadData) {
       //需要请求数据
       this.reload(); //调用
@@ -293,7 +271,6 @@ DataGrid.propTypes = {
    */
   priKey: PropTypes.string, //key值字段,
   headers: PropTypes.array, //表头设置
-  fixedHeaders: PropTypes.array, //固定列设置
   footer: PropTypes.array, //页脚,
   total: PropTypes.number, // 总条目数，有url没用，默认为 0
   data: PropTypes.array, //当前页数据（json）

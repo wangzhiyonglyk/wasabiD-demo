@@ -49,7 +49,7 @@ class GridColGroup extends React.PureComponent {
       tableWidth += config.selectWidth;
     }
 
-    // 设置列高度
+    // 设置列宽度
     this.props?.headers.map((trheader, headerRowIndex) => {
       if (trheader instanceof Array) {
         trheader.map((header, headerColumnIndex) => {
@@ -61,7 +61,7 @@ class GridColGroup extends React.PureComponent {
               <col
                 key={headerRowIndex + "-" + headerColumnIndex}
                 name={header.name || header.label} //name可能没有设置
-                width={header.width}
+                width={header.width ?? null}
               ></col>
             );
           }
@@ -71,7 +71,7 @@ class GridColGroup extends React.PureComponent {
           <col
             key={headerRowIndex}
             name={trheader.name || trheader.label}
-            width={trheader.width}
+            width={trheader.width ?? null}
           ></col>
         );
       }

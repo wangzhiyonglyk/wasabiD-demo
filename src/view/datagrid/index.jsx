@@ -10,16 +10,12 @@ class Page extends React.Component {
     this.form = React.createRef();
     this.state = {
       dropData: [],
-      fixedHeaders: [
-        {
-          name: "id",
-          label: "fixedid",
-        },
-      ],
+
       headers: [
         {
           name: "label",
           label: "省11",
+          sticky: "left",
           editor: {
             type: "select",
             options: {
@@ -31,6 +27,7 @@ class Page extends React.Component {
         {
           name: "label1",
           label: "省2",
+          sticky: "left",
           width: 200,
           editor: {
             type: "checkbox",
@@ -65,7 +62,7 @@ class Page extends React.Component {
           content: (rowData, rowIndex) => {
             return (
               <div>
-                tefgfsggsdagdfgdfsgdfgdfgdfgdfsdfsdfsdafsadfsadfsdafsdafsadfsdafsadfas
+                tefgfsggsdagdfgdfsgdfgdfgdfgdffgdfsgdfgdfgdfgssgdfgdfgdfgdfsdfsdfsdas
               </div>
             );
           },
@@ -73,23 +70,17 @@ class Page extends React.Component {
         {
           name: "省6",
           label: "省6",
+          sticky: "right",
           content: (rowData, rowIndex) => {
-            return (
-              <div>
-                tefgfsggsdagdfgdfsgdfgdfgdfgdfsdfsdfsdafsadfsadfsdafsdafsadfsdafsadfas
-              </div>
-            );
+            return <div>tefgfsggsdagdfgdfsgdfgdfgdgdfsgdfgdfgdf</div>;
           },
         },
         {
           name: "省7",
           label: "省7",
+          sticky: "right",
           content: (rowData, rowIndex) => {
-            return (
-              <div>
-                tefgfsggsdagdfgdfsgdfgdfgdfgdfsdfsdfsdafsadfsadfsdafsdafsadfsdafsadfas
-              </div>
-            );
+            return <div>tefgfsggsdagdfgdfsgdfg</div>;
           },
         },
       ],
@@ -140,8 +131,45 @@ class Page extends React.Component {
         rowNumber={true}
         selectAble={true}
         importAble={true}
-        fixedHeaders={this.state.fixedHeaders}
-        headers={this.state.headers}
+        compactCol={5}
+        headers={[
+          [
+            {
+              name: "itemid",
+              label: "Item ID",
+              rowSpan: 2,
+              width: 80,
+              sortAble: true,
+              sticky: "left",
+            },
+            {
+              name: "productid",
+              label: "Product ID",
+              rowSpan: 2,
+              width: 800,
+              sortAble: true,
+            },
+            { label: "Item Details", colSpan: 4 },
+          ],
+          [
+            {
+              name: "listprice",
+              label: "List Price",
+              width: 80,
+              align: "right",
+              sortAble: true,
+            },
+            {
+              name: "unitcost",
+              label: "Unit Cost",
+              width: 80,
+              align: "right",
+              sortAble: true,
+            },
+            { name: "attr1", label: "Attribute", width: 100 },
+            { name: "status", label: "Status", width: 60 },
+          ],
+        ]}
         // url="https://www.baidu.com"
         data={this.state.data}
       ></DataGrid>

@@ -35,8 +35,12 @@ grid
 .wasabi-grid.pagination .wasabi-table-container {
   height: calc(100% - 40px);
 }
+.wasabi-grid.pagination.bottom .wasabi-table-container {
+  border-bottom: none;
+}
 .wasabi-grid.pagination.botn .wasabi-table-container {
   height: calc(100% - 80px);
+  border-bottom: none;
 }
 
 .wasabi-treegrid .wasabi-grid .wasabi-table-container {

@@ -14,7 +14,6 @@ export default {
       this.container = document.getElementById(this.state.containerid);
       this.container.scrollTop = 0; //重置
       // 记住真实的表格dom
-      this.realTable = document.getElementById(this.state.realTableId);
       let topReduce = document
         .getElementById(this.state.tableHeaderId)
         ?.getBoundingClientRect().height; //表头高度
@@ -99,6 +98,7 @@ export default {
   scrollShowVisibleData(startIndex, endIndex) {
     try {
       if (this.virtualConfig.startIndex !== startIndex) {
+        const realTable = document.getElementById(this.state.realTableId);
         //如果下标与上次不同，才渲染，记住，减少滚动渲染次数
         this.virtualConfig.startIndex = startIndex;
         let startOffset; // 滚动的位置
@@ -118,7 +118,7 @@ export default {
           startOffset = 0;
         }
 
-        this.realTable.style.transform = `translate3d(0,${
+        realTable.style.transform = `translate3d(0,${
           this.virtualConfig.topReduce + startOffset
         }px,0)`;
 
@@ -178,7 +178,8 @@ export default {
   adjustItemHeight() {
     try {
       if (this.virtualConfig && this.virtualConfig.positions) {
-        let tr = this.realTable?.children[1]?.children; //取出当前行
+        const realTable = document.getElementById(this.state.realTableId);
+        let tr = realTable?.children[1]?.children; //取出当前行
         let isAdjustItemHeight = false; //是否调整过
         if (tr && tr.length > 0) {
           for (let i = 0; i < tr.length; i++) {
@@ -208,10 +209,12 @@ export default {
           let heightDiv = document
             .getElementById(this.state.containerid)
             .querySelector(".wasabi-virtual-height");
-          heightDiv.style.height =
-            this.virtualConfig.positions[
-              this.virtualConfig.positions.length - 1
-            ].bottom + "px";
+          if (heightDiv) {
+            heightDiv.style.height =
+              this.virtualConfig.positions[
+                this.virtualConfig.positions.length - 1
+              ].bottom + "px";
+          }
         }
       }
     } catch (e) {}
@@ -223,96 +226,153 @@ export default {
    * 2.实现表格紧凑
    */
   adjustColumnWidth() {
-    try {
-      if (
-        !this.virtualConfig &&
-        !document.getElementById(this.state.realTableId).style.transform
-      ) {
-        //没有虚拟列表的时候，并且没有设置时,也要设置一下表体的上部的位置,因为表头的高度是计算出来的
-        let topReduce = document
-          .getElementById(this.state.tableHeaderId)
-          ?.getBoundingClientRect().height; //表头高度
-        document.getElementById(
-          this.state.realTableId
-        ).style.transform = `translate3d(0,${topReduce}px,0)`;
-      }
-
-      // 调整默认宽度
-      if (this.state?.headers?.length < (this.props?.compactCol || 10)) {
-        // 如果小于紧凑列的数量，则设置为100% 用于自适应
-        if (document.getElementById(this.state.realTableId)) {
-          document.getElementById(this.state.realTableId).style.width =
-            "calc(100% - 5px)";
-        }
-        if (document.getElementById(this.state.tableHeaderId)) {
-          document.getElementById(this.state.tableHeaderId).style.width =
-            "calc(100% - 5px)";
-        }
-      }
-
-      // 下面是调整宽度
-      let columnIndex = 0; //列下标
-      // 详情列
-      if (this.props.detailAble) {
-        columnIndex++;
-      }
-      // 序号列
-      if (this.props.rowNumber) {
-        columnIndex++;
-      }
-      // 选择列
-      if (this.props.selectAble) {
-        columnIndex++;
-      }
-      if (this.state?.visibleData?.length > 0) {
-        //有数据才调整宽度
-        this.oldHeaderWidth = this.headerWidth ?? {}; //各列的宽度数据
-        this.headerWidth = {};
-        for (
-          let i = columnIndex;
-          i <
-          document.getElementById(this.state.realTableId).children[1]
-            .children[0].children.length;
-          i++
+    const realTable = document.getElementById(this.state.realTableId);
+    const tableHeader = document.getElementById(this.state.tableHeaderId);
+    let tableWidth = 0;
+    if (tableHeader && realTable) {
+      try {
+        if (
+          !this.virtualConfig &&
+          !document.getElementById(this.state.realTableId).style.transform
         ) {
-          // 拿到列名
-          let name = document
-            .getElementById(this.state.realTableId)
-            .children[1].children[0].children[i].getAttribute("name");
-          //表体第一行单元格宽度
-          let width = Math.ceil(
-            document
-              .getElementById(this.state.realTableId)
-              .children[1].children[0].children[i].getBoundingClientRect().width
-          );
-          //拿到表头对应列的单元格宽度
-          let headerWidth =
-            Math.ceil(
-              document
-                .getElementById(this.state.tableHeaderId)
-                .querySelector(`th[name='${name}']`)
-                ?.getBoundingClientRect().width
-            ) || config.minWidth;
-          //取最大的
-          this.headerWidth[name] = Math.max(headerWidth, width);
+          //没有虚拟列表的时候，并且没有设置时,也要设置一下表体的上部的位置,因为表头的高度是计算出来的
+          let topReduce = tableHeader?.getBoundingClientRect().height; //表头高度
+          realTable.style.transform = `translate3d(0,${topReduce}px,0)`;
         }
-      }
-    } catch (e) {
-      console.log("adjustColumnWidth", e);
-    } finally {
-      if (func.diff(this.oldHeaderWidth, this.headerWidth)) {
-        //如果列的宽度有变化才重新渲染
-        for (let name in this.headerWidth) {
-          let col = document
-            .getElementById(this.state.tableHeaderId)
-            .querySelector(`colgroup col[name='${name}']`);
-          col && col.setAttribute("width", this.headerWidth[name]);
-          col = document
-            .getElementById(this.state.realTableId)
-            .querySelector(`colgroup col[name='${name}']`);
-          col && col.setAttribute("width", this.headerWidth[name]);
+        // 调整默认宽度
+        if (this.state?.headers?.length < (this.props?.compactCol || 10)) {
+          // 如果小于紧凑列的数量，则设置为100% 用于自适应
+          realTable.style.width = "calc(100% - 5px)";
+          tableHeader.style.width = "calc(100% - 5px)";
         }
-        this.oldHeaderWidth = this.headerWidth;
+
+        // 下面是调整宽度
+        let columnIndex = 0; //列下标
+        // 详情列
+        if (this.props.detailAble) {
+          columnIndex++;
+          tableWidth += config.detailWidth;
+        }
+        // 序号列
+        if (this.props.rowNumber) {
+          columnIndex++;
+          tableWidth += config.orderWidth;
+        }
+        // 选择列
+        if (this.props.selectAble) {
+          columnIndex++;
+          tableWidth += config.selectWidth;
+        }
+        if (this.state?.visibleData?.length > 0) {
+          //有数据才调整宽度
+          this.oldHeaderWidth = null; //各列的宽度数据
+          this.headerWidth = [];
+          let firsttr = realTable.children[1].children[0]; // 第一行
+          for (let i = columnIndex; i < firsttr.children.length; i++) {
+            let td = firsttr.children[i];
+            // 是否为固定列
+            let sticky =
+              td?.style?.position === "sticky"
+                ? td.style.left
+                  ? "left"
+                  : "right"
+                : null;
+
+            //表体第一行单元格宽度
+            let width = Math.ceil(td.getBoundingClientRect().width);
+            //拿到表头对应列的单元格宽度
+            let headerWidth = Math.ceil(
+              tableHeader.children[0].children[i].getBoundingClientRect().width
+            );
+            tableWidth += Math.max(headerWidth, width);
+            //取最大的
+            this.headerWidth.push({
+              columnIndex: i,
+              sticky,
+              width: Math.max(headerWidth, width),
+            });
+          }
+        }
+      } catch (e) {
+        console.log("adjustColumnWidth", e);
+      } finally {
+        if (func.diff(this.oldHeaderWidth, this.headerWidth)) {
+          realTable.style.width = tableWidth + "px";
+          tableHeader.style.width = tableWidth + "px";
+          let stickyLeft = this.props.borderAble ? 1 : 0; //偏移量,表格左边有border
+          let stickyRight = 0;
+          if (this.props.detailAble) {
+            stickyLeft += config.detailWidth;
+          }
+          if (this.props.rowNumber) {
+            stickyLeft += config.orderWidth;
+          }
+          if (this.props.selectAble) {
+            stickyLeft += config.selectWidth;
+          }
+
+          //如果列的宽度有变化才重新渲染
+          try {
+            if (realTable && tableHeader) {
+              let headertrs = tableHeader.children[1].children; // 表头的行，可能有多行
+              let headersths = []; // 表头占据有效列的列
+              for (let i = 0; i < headertrs.length; i++) {
+                let ths = headertrs[i].children;
+                for (let j = 0; j < ths.length; j++) {
+                  if (ths[j].getAttribute("colSpan") === "1") {
+                    headersths.push(ths[j]);
+                  }
+                }
+              }
+
+              for (let i = 0; i < this.headerWidth.length; i++) {
+                const { columnIndex, sticky, width } = this.headerWidth[i];
+
+                // 设置头部宽度
+                let col = tableHeader?.children[0].children[columnIndex];
+                col && col.setAttribute("width", width);
+                // 设置表格宽度
+                col = realTable?.children[0].children[columnIndex];
+                col && col.setAttribute("width", width);
+
+                // 设置左固定列，这里不中断for，因为每一列都设置宽度
+                if (sticky === "left") {
+                  // 表头
+
+                  headersths[columnIndex].style.left = stickyLeft + "px";
+
+                  // 表体
+                  let trs = realTable.children[1].children;
+                  for (let i = 0; i < trs.length; i++) {
+                    trs[i].children[columnIndex].style.left = stickyLeft + "px";
+                  }
+                  stickyLeft += width;
+                }
+              }
+
+              //   // 设置右固定列 固定列是连续的，如果没有了就马上中断for
+              for (let i = this.headerWidth.length - 1; i >= 0; i--) {
+                const { columnIndex, sticky, width } = this.headerWidth[i];
+                if (sticky === "right") {
+                  // 表头
+                  headersths[columnIndex].style.right = stickyRight + "px";
+
+                  // 表体
+                  let trs = realTable.children[1].children;
+                  for (let i = 0; i < trs.length; i++) {
+                    trs[i].children[columnIndex].style.right =
+                      stickyRight + "px";
+                  }
+                  stickyRight += width;
+                } else {
+                  break; // 固定列是连续的，如果没有了就马上中断for
+                }
+              }
+            }
+          } catch (e) {}
+
+          this.oldHeaderWidth = this.headerWidth;
+        }
       }
     }
   },
