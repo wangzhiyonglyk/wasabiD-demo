@@ -32,10 +32,10 @@ class GridColGroup extends React.PureComponent {
         <col
           key="wasabi-order-column"
           name="wasabi-order-column"
-          width={config.orderWidth}
+          width={config.rowNumberWidth}
         ></col>
       );
-      tableWidth += config.orderWidth;
+      tableWidth += config.rowNumberWidth;
     }
     //处理选择列的宽度
     if (this.props.selectAble) {

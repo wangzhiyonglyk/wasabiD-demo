@@ -6,7 +6,8 @@ import TableCell from "../../Table/TableCell.jsx";
 import TableRow from "../../Table/TableRow.jsx";
 import TableBody from "../../Table/TableBody.jsx";
 import func from "../../../libs/func/index.js";
-import config from "../config.js";
+import { getRealRowIndex } from "../method/datafunc.js";
+import config from "../config.js"; // 配置文件
 class GridBody extends Component {
   constructor(props) {
     super(props);
@@ -158,13 +159,10 @@ class GridBody extends Component {
             left: stickyLeft,
           }}
         >
-          {(
-            (this.props.pageIndex - 1) * this.props.pageSize +
-            ((rowData._orderRowIndex ?? rowIndex) + 1)
-          ).toString()}
+          {rowIndex}
         </TableCell>
       );
-      stickyLeft += config.orderWidth;
+      stickyLeft += config.rowNumberWidth;
     }
     //选择列
     if (this.props.selectAble) {
@@ -175,7 +173,7 @@ class GridBody extends Component {
         onSelect: this.onChecked.bind(this, rowIndex),
         name: key,
       };
-      let rowAllowChecked = this.props.rowAllowChecked; //是否可以选择
+      let rowAllowChecked = this.props.rowAllowChecked; //通过自定义函数来判断断行是否可以选择
       if (typeof rowAllowChecked === "function") {
         rowAllowChecked = rowAllowChecked(rowData, rowIndex);
       } else {
@@ -208,34 +206,30 @@ class GridBody extends Component {
 
   /**
    * 生成单元格
-   * @param {*} header 列
-   * @param {*} rowData 行
-   * @param {*} rowOrderIndex 行下标
+   * @param {*} header 列头数据
+   * @param {*} rowData 行数据
+   * @param {*} rowIndex 行下标
    * @param {*} columnIndex 列下标
    * @returns
    */
-  setCellComponent(header, rowData, rowOrderIndex, columnIndex) {
+  setCellComponent(header, rowData, rowIndex, columnIndex) {
     //处理数据单元格
-    let editAble =
-      this.props.editIndex !== null &&
-      this.props.editIndex === rowOrderIndex + "-" + columnIndex &&
-      header.editor;
-
+    let editAble = this.props.editIndex === rowIndex + "-" + columnIndex;
     return (
       <TableCell
         name={header.name || header.label}
-        rowIndex={rowOrderIndex}
+        rowIndex={rowIndex}
         columnIndex={columnIndex}
-        onClick={this.onClick.bind(this, rowData, rowOrderIndex, columnIndex)}
+        onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
         onDoubleClick={this.onDoubleClick.bind(
           this,
           rowData,
-          rowOrderIndex,
+          rowIndex,
           columnIndex
         )}
-        key={"cell-" + rowOrderIndex.toString() + "-" + columnIndex.toString()}
+        key={"cell-" + rowIndex.toString() + "-" + columnIndex.toString()}
         className={
-          (this.props.focusIndex === rowOrderIndex &&
+          (this.props.focusIndex === rowIndex &&
           this.props.focusColumnIndex === columnIndex
             ? " focus "
             : "") + (header.export === false ? "wasabi-noexport" : "")
@@ -256,7 +250,7 @@ class GridBody extends Component {
             value={rowData[header.name]}
             onChange={this.tableCellEditHandler.bind(
               this,
-              rowOrderIndex,
+              rowIndex,
               (header.editor &&
                 header.editor.options &&
                 header.editor.options.onChange) ||
@@ -264,7 +258,7 @@ class GridBody extends Component {
             )}
             onSelect={this.tableCellEditHandler.bind(
               this,
-              rowOrderIndex,
+              rowIndex,
               (header.editor &&
                 header.editor.options &&
                 header.editor.options.onSelect) ||
@@ -272,7 +266,7 @@ class GridBody extends Component {
             )}
           ></Input>
         ) : (
-          this.getCellContent(header, rowData, rowOrderIndex)
+          this.getCellContent(header, rowData, rowIndex)
         )}
       </TableCell>
     );
@@ -288,30 +282,33 @@ class GridBody extends Component {
     }
     let trArr = []; //行数据
 
-    this.props.data.forEach((rowData, rowDataIndex) => {
+    this.props.data.forEach((rowData, index) => {
       if (rowData.hide) {
-        //隐藏该行,用于treegrid
-        preRowDataIndex++;
+        return;
       } else {
+        // 得到真正的行号,有虚拟列表的行号，取这个，没有再判断分页情况
+        let rowIndex = getRealRowIndex(
+          this.props.pagination,
+          this.props.pageIndex,
+          this.props.pageSize,
+          rowData,
+          index
+        );
+
         let tds = []; //当前的列集合
-        let key = this.getKey(rowDataIndex); //获取这一行的关键值
+        let key = this.getKey(rowIndex); //获取这一行的关键值
         //生成数据列
         let columnIndex = 0; //真正的列号
-        this.props.headers.forEach((trheader, headerRowIndex) => {
+        this.props.headers.forEach((trheader) => {
           if (trheader instanceof Array) {
-            trheader.forEach((header, headerColumnIndex) => {
+            trheader.forEach((header) => {
               if (header.colSpan && header.colSpan > 1) {
                 //跨几列的不用渲染
                 return;
               }
               //处理数据单元格
               tds.push(
-                this.setCellComponent(
-                  header,
-                  rowData,
-                  rowData._orderRowIndex ?? rowDataIndex,
-                  columnIndex
-                )
+                this.setCellComponent(header, rowData, rowIndex, columnIndex)
               );
 
               columnIndex++; //列下标
@@ -319,35 +316,27 @@ class GridBody extends Component {
           } else {
             //处理数据单元格
             tds.push(
-              this.setCellComponent(
-                trheader,
-                rowData,
-                rowData._orderRowIndex ?? rowDataIndex,
-                columnIndex
-              )
+              this.setCellComponent(trheader, rowData, rowIndex, columnIndex)
             );
 
             columnIndex++; //列下标
           }
         });
         let trClassName = "";
-        if (this.props.focusIndex == (rowData._orderRowIndex ?? rowDataIndex)) {
+        if (this.props.focusIndex == rowIndex) {
           trClassName += " selected ";
         }
-        if (this.props.editIndex === (rowData._orderRowIndex ?? rowDataIndex)) {
+        if (this.props.editIndex === rowIndex) {
           trClassName += " edited ";
         }
 
         trArr.push(
           <TableRow
-            key={"row-" + (rowData._orderRowIndex ?? rowDataIndex)}
-            rowIndex={rowData._orderRowIndex ?? rowDataIndex}
+            key={"row-" + rowIndex}
+            rowIndex={rowIndex}
             className={trClassName}
           >
-            {this.setOrderAndSelectAndDetailRow(
-              rowData,
-              rowData._orderRowIndex ?? rowDataIndex
-            )}
+            {this.setOrderAndSelectAndDetailRow(rowData, rowIndex)}
             {tds}
           </TableRow>
         );

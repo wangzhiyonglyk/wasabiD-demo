@@ -2,29 +2,13 @@
  * Created by wangzhiyonglyk on 2016/10/25.
  * edit by wangzhiyonglyk 2020-05-09 修复分页的问题
  * 将DataGrid拆分,基本处理事件存在这里
+ * 2023-09-18 重新设计事件体系
  */
 import React from "react";
 import func from "../../../libs/func/index.js";
-export default {
-  /**
-   * 获取当行的key
-   * @param {*} rowIndex 行号
-   */
-  getKey: function (rowIndex) {
-    let key;
-    let pageIndex = this.state.pageIndex;
-    if (rowIndex == null && rowIndex == undefined) {
-      console.log(new Error("rowIndex 值传错"));
-    } else {
-      key =
-        (this.state.data &&
-          this.state.data[rowIndex] &&
-          this.state.data[rowIndex][this.props.priKey || "id"]) ??
-        pageIndex.toString() + "-" + rowIndex.toString();
-    }
-    return key + "";
-  },
 
+import { checkCurrentPageCheckedAll, getRealRowIndex } from "./datafunc.js";
+export default {
   /**
    * 勾选事件
    * @param {*} rowIndex 行号
@@ -36,89 +20,73 @@ export default {
     //选中事件
     let key = this.getKey(rowIndex); //拿key值，防止0为值的情况
     let checkedData = this.state.checkedData; //已经选中的行
-    let checkedIndex = this.state.checkedIndex; //已经选中的行的序号，用于导出
+
     if (this.props.singleSelect == true) {
       //单选则清空
       checkedData = new Map(); //单选先清空之前的选择
-      checkedIndex = new Map();
     }
-    if (value ?? "" + "") {
-      //防止value为0这种情况
+    if ((value ?? "").toString()) {
+      //防止value为0这种情况 选择
       checkedData.set(key, this.state.data[rowIndex]);
-      checkedIndex.set(rowIndex + "", rowIndex);
     } else {
+      // 取消选择
       checkedData.delete(key);
-      checkedIndex.delete(rowIndex + "");
     }
-
     this.setState({
       checkedData: checkedData,
-      checkedIndex: checkedIndex,
+      isCheckedAll: checkCurrentPageCheckedAll(checkedData),
     });
     if (typeof this.props.onChecked === "function") {
-      var data = [];
+      var result = [];
       for (let value of checkedData.values()) {
-        data.push(value);
+        result.push(value);
       }
-      this.props.onChecked(data); //用于返回
+      this.props.onChecked(result); //用于返回
     }
   },
 
   /**
-   * 判断当前页是否全部选中
-   */
-  checkCurrentPageCheckedAll: function () {
-    //
-    if (!(this.state.data instanceof Array)) {
-      return;
-    }
-    let length = this.state.data.length;
-    if (length == 0) {
-      return false; //如果没有数据，则不判断，直接返回
-    }
-    var ischeckall = true;
-    for (let i = 0; i < length; i++) {
-      if (!this.state.checkedData.has(this.getKey(i))) {
-        ischeckall = false;
-        break;
-      }
-    }
-    return ischeckall;
-  },
-  /**
-   * 全选事件
+   * 全选按钮的单击事件
    * @param {*} value
    */
-  checkedAllHandler: function (value) {
-    //全选按钮的单击事件
-    if (!(this.state.data instanceof Array)) {
-      return;
-    }
-    let length = this.state.data.length;
-    let checkedData = this.state.checkedData;
-    let checkedIndex = this.state.checkedIndex;
-    for (let i = 0; i < length; i++) {
-      let key = this.getKey(i);
-      if (value == "yes") {
-        if (!checkedData.has(key)) {
-          checkedIndex.set(i + "", i);
-          checkedData.set(key, this.state.data[i]); //添加
+  onCheckedAll: function (value) {
+    if (value === "yes") {
+      if (this.state.visibleData.length > 0) {
+        //分页取可见数据，不分页取当前数据
+        let data = this.props.pagination
+          ? this.state.visibleData
+          : this.state.data;
+        let length = data.length;
+        let checkedData = new Map();
+
+        for (let i = 0; i < length; i++) {
+          let rowData = data[i];
+          // 真正的行号
+          let rowIndex = getRealRowIndex(
+            this.props.pagination,
+            this.state.pageIndex,
+            this.pageSize,
+            rowData,
+            i
+          );
+          let key = this.getKey(rowIndex, rowData);
+          checkedData.set(key, data[i]); //添加
         }
-      } else {
-        if (checkedData.has(key)) {
-          checkedIndex.delete(i + "");
-          checkedData.delete(key); //删除
+
+        if (typeof this.props.onChecked === "function") {
+          //执行父组件的onchecked事件
+          var result = [];
+          for (let value of checkedData.values()) {
+            result.push(value);
+          }
+          this.props.onChecked(result);
         }
       }
-    }
-    this.setState({ checkedData: checkedData, checkedIndex: checkedIndex });
-    if (typeof this.props.onChecked === "function") {
-      //执行父组件的onchecked事件
-      var data = [];
-      for (let value of checkedData.values()) {
-        data.push(value);
-      }
-      this.props.onChecked(data);
+    } else {
+      this.setState({
+        checkedData: new Map(),
+        isCheckedAll: false,
+      });
     }
   },
   /**
@@ -133,7 +101,8 @@ export default {
       focusIndex: rowIndex,
       focusColumnIndex: columnIndex,
     });
-    if (this.props.selectChecked == true) {
+    if (this.props.focusSelected == true) {
+      // 允许选择勾
       let key = this.getKey(rowIndex); //获取关键字
       if (this.state.checkedData.has(key)) {
         this.onChecked(rowIndex, "");
@@ -142,9 +111,8 @@ export default {
       }
     }
     if (this.state.editAble) {
-      //没有自定义,允许编辑表格
+      //允许编辑表格
       this.setState({
-        ...this.setHeaderEditor(), //设置表头
         editIndex: rowIndex + "-" + columnIndex,
       });
     }
@@ -183,61 +151,71 @@ export default {
           this.state.params
         );
       } else {
-        let data = this.props.data.slice(
+        let visibleData = this.state.data.slice(
           (pageIndex - 1) * pageSize,
           pageIndex * pageSize
         );
         this.setState({
           pageIndex,
           pageSize,
-          data: data,
-          visibleData: data,
+          visibleData: visibleData,
         });
       }
     }
   },
-  /**
-   * 编辑时设置单元格的编辑样式,防止没有
-   */
-  setHeaderEditor() {
-    //如果没有设置编辑，则设置
-    let headers = this.state.headers;
-    if (headers && headers.length > 0) {
-      for (let i = 0; i < headers.length; i++) {
-        if (headers[i] instanceof Array) {
-          for (let j = 0; j < headers[i].length; j++) {
-            if (headers[i][j].colSpan && headers[i][j].colSpan > 1) {
-              //跨行的列不设置
-              continue;
-            } else {
-              headers[i][j].editor = headers[i][j].editor
-                ? headers[i][j].editor
-                : {
-                    type: "text",
-                  };
-            }
-          }
-        } else {
-          headers[i].editor = headers[i].editor
-            ? headers[i].editor
-            : {
-                type: "text",
-              };
-        }
-      }
-    }
-    return {
-      headers: headers,
-    };
-  },
+
   /**
    * 排序事件
    * @param {*} sortName
    * @param {*} sortOrder
    */
   onSort: function (sortName, sortOrder) {
-    //排序事件
-    this.loadData(this.state.url, this.state.pageSize, 1, sortName, sortOrder);
+    //直接调用加载数据事件
+    if (this.state.url) {
+      this.loadData(
+        this.state.url,
+        this.state.pageSize,
+        1,
+        sortName,
+        sortOrder
+      );
+    } else {
+      // 本地排序
+      this.state.data.sort((newItem, oldItem) => {
+        if (sortOrder === "asc") {
+          return newItem[sortName] > oldItem[sortName] ? 1 : -1;
+        } else {
+          return newItem[sortName] < oldItem[sortName] ? 1 : -1;
+        }
+      });
+      let visibleData = this.state.visibleData;
+      // 如果有分页则重新切割
+      if (this.props.pagination) {
+        visibleData = this.state.data.slice(
+          (this.state.pageIndex - 1) * this.state.pageSize,
+          this.state.pageIndex * this.state.pageSize
+        );
+      } else if (this.state.data.length < config.minDataTotal) {
+        // 不分页，又不用做虚拟列表
+        visibleData = this.state.data;
+      }
+
+      this.setState({
+        sortName: sortName,
+        sortOrder: sortOrder,
+        data: this.state.data,
+        visibleData,
+        //分页或小于配置值则不设置，其他则重新设置虚拟列表
+        needVirtualHandler: this.props.pagination
+          ? null
+          : this.state.data?.length < config.minDataTotal
+          ? null
+          : true,
+        // 分页则重置，因为当前页数据变了
+        checkedData: this.props.pagination ? new Map() : this.state.checkedData,
+        isCheckedAll: this.props.pagination ? false : this.state.isCheckedAll,
+      });
+    }
   },
   /**
    * 添加一条

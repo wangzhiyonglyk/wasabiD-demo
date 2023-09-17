@@ -40,16 +40,19 @@ import eventHandler from "./method/eventHandler.js";
 import staticMethod from "./method/staticMethod";
 import pasteExtend from "./method/pasteExtend.js";
 import Grid from "./View";
+import { setHeaderEditor } from "./method/datafunc";
+
+import config from "./config.js"; // 基本配置
+
 /**
  * 样式
  */
 import "./datagrid.css";
 import "./datagridetail.css";
-import config from "./config.js";
+
 class DataGrid extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       containerid: func.uuid(), //表格容器
       divideid: func.uuid(), //分隔线
@@ -67,28 +70,30 @@ class DataGrid extends Component {
       /************以下这几个字段在 getDerivedStateFromProps 处理逻辑，这样提升性能 */
 
       rawHeaders: null, //原有默认列保存起来，用于更新判断
-
-      rawData: null, //原始数据，在自动分页时与判断是否更新有用
+      rawData: null, //原始数据，判断是否更新有用
       headers: [], //页面中的headers
-      data: [], //当前页的数据
+      data: [], //当前的数据
       visibleData: [], //可见的数据
+
       /************以上这几个字段在 getDerivedStateFromProps 处理逻辑，这样提升性能 */
       checkedData: new Map(), //勾选的数据
-      checkedIndex: new Map(), //勾选的下标
+      isCheckedAll: false, // 是否已经全选
+      focusIndex: null, // 焦点行
       detailView: null, //详情行,
       detailIndex: null, //显示详情的行下标
       total: 0, //总记录数
-      loading: this.props.url ? true : false, //显示正在加载图示
-      footer: this.props.footer, //页脚
-      updateUrl: this.props.updateUrl,
+      loading: false, //显示正在加载图示
+      footer: {}, //页脚
+      rawFooter: null, // 原始数据
+      updateUrl: this.props.updateUrl, // 更新的接口
       editAble:
         this.props.editAble || this.props.addAble || this.props.importAble, //如果允许添加或者导入，自然就允许编辑
       editIndex: null, //当前处理编辑的列
       addData: new Map(), //新增的数据,因为有可能新增一个空的，然后再修改
       updateData: new Map(), //被修改过的数据，因为要判断曾经是否修改
       deleteData: [], //删除的数据
-      urlLoadData: false, //有url，是否需要请求加载数据
-      needVirtualList: null, //是否需要重置虚拟列表的配置,null标记为没有虚拟列表,true 需要进行虚拟列表配置，false表示配置完成
+      urlLoadData: false, //有url，标记是否需要向后台请求数据
+      needVirtualHandler: null, //是否需要重置虚拟列表的配置,null标记为没有虚拟列表,true 需要进行虚拟列表配置，false表示配置完成
     };
     //绑定事件
     let baseCtors = [
@@ -114,7 +119,7 @@ class DataGrid extends Component {
       if (func.diff(props.headers, state.rawHeaders)) {
         //有改变则更新headers等
         newState.rawHeaders = props.headers;
-        newState.headers = func.clone(props.headers);
+        newState.headers = setHeaderEditor(func.clone(props.headers)); // 深复制，这里后期再考虑
       }
     }
 
@@ -123,46 +128,51 @@ class DataGrid extends Component {
      */
     if (props.data !== state.rawData) {
       //如果传了固定数据,并且数据改变,浅比较
+      newState.rawData = props.data;
+      newState.data = props.data; // 数据不作复制
+      // 总记录数
+      newState.total = props?.total || props?.data?.length || 0;
+
+      /**** 处理数据与可见数据*****/
 
       //数据比较大且不分页则执行虚拟列表
-      newState.needVirtualList =
+      newState.needVirtualHandler =
         props.pagination !== true && props.data?.length > config.minDataTotal
           ? true
           : null;
-      newState.rawData = props.data;
-      // 处理当前的数据
-      try {
-        //分页情况下，如果数据超过每页个数，则进行切割
-        let pageSize = state.pageSize || 20;
-        let pageIndex = state.pageIndex || 1;
-        if (props.pagination) {
-          newState.data =
-            props.data.length > pageSize
-              ? props.data.slice(
-                  (pageIndex - 1) * pageSize,
-                  pageIndex * pageSize
-                )
-              : props.data;
-        } else {
-          newState.data = props.data;
+
+      if (newState.needVirtualHandler) {
+        // 虚拟列表模式
+        newState.visibleData = [];
+      } else {
+        // 处理当前的数据
+        try {
+          //分页情况下，如果数据超过每页个数，则进行切割
+          let pageSize = state.pageSize || 20;
+          let pageIndex = state.pageIndex || 1;
+          if (props.pagination) {
+            // 超过当前页，则进行切割
+            newState.visibleData =
+              props.data.length > pageSize
+                ? props.data.slice(
+                    (pageIndex - 1) * pageSize,
+                    pageIndex * pageSize
+                  )
+                : props.data;
+          } else {
+            newState.visibleData = props.data;
+          }
+        } catch (e) {
+          newState.visibleData = props.data;
         }
-      } catch (e) {
-        newState.data = props.data;
       }
-      if (newState.needVirtualList === null) {
-        //不需要做虚拟列表
-        newState.visibleData = newState.data;
-      }
-      newState.total = props?.total || props?.data?.length || 0;
     }
     /**处理请求 */
     if (
       props.url &&
       (props.url !== state.rawUrl || func.diff(props.params, state.rawParams))
     ) {
-      //没有传数据，传的是url
-      //有url,并且分页,url或者参数有变
-
+      //没有传数据， 有 url或者参数有变
       newState.urlLoadData = true; //重新加载数据
       newState.url = props.url;
       newState.rawUrl = props.url;
@@ -170,54 +180,32 @@ class DataGrid extends Component {
       newState.params = func.clone(props.params);
     }
 
+    /**
+     * 处理页脚
+     */
+    if (func.diff(props.footer, state.rawFooter)) {
+      newState.rawFooter = props.footer;
+      newState.footer = func.clone(props.footer);
+    }
     return newState;
   }
   /**
    * 更新函数
    */
   componentDidUpdate() {
-    //重新加数据
-
-    if (this.state.urlLoadData) {
-      //需要请求数据
-      this.reload(); //调用
-      return;
-    }
-
-    if (this.state.needVirtualList && this.state.visibleData?.length > 0) {
-      this.initVirtual(); //重新初始化虚拟列表,
-      return;
-    }
-    if (this.neddAdjustvirtualWidthAndHeight) {
-      //调整虚拟列表与表格宽度
-      this.adjustvirtual();
-    }
+    this.handlerGridVisibleData();
   }
   componentDidMount() {
-    if (this.state.urlLoadData) {
-      //需要请求数据
-      this.reload(); //调用
-    }
-    if (this.state.needVirtualList && this.state.visibleData?.length > 0) {
-      this.initVirtual(); //重新初始化虚拟列表,
-      return;
-    }
+    this.handlerGridVisibleData();
+  }
 
-    if (this.state.visibleData?.length > 0) {
-      this.adjustColumnWidth(); //说明没有虚拟列表，只是调整宽度，用于表格自适应
-    }
-  }
-  componentWillUnmount() {
-    this.timeout && clearTimeout(this.timeout);
-  }
   render() {
     return (
       <Grid
         {...this.props}
         {...this.state}
         headerWidth={this.headerWidth}
-        checkedAllHandler={this.checkedAllHandler}
-        checkCurrentPageCheckedAll={this.checkCurrentPageCheckedAll}
+        onCheckedAll={this.onCheckedAll}
         getKey={this.getKey}
         onClick={this.onClick}
         onDoubleClick={this.onDoubleClick}
@@ -253,25 +241,26 @@ DataGrid.propTypes = {
   addAble: PropTypes.bool, //是否允许添加
   editAble: PropTypes.bool, //是否允许编辑
   importAble: PropTypes.bool, //是否允许导入
-  selectChecked: PropTypes.bool, //选择行的时候是否同时选中,false
+  focusSelected: PropTypes.bool, //选择行的时候是否同时选中,false
   exportAble: PropTypes.bool, //是否允许导出
   compactCol: PropTypes.number, // 表格紧凑的
+  rowAllowChecked: PropTypes.func, // 行是否可以选择，函数
   /**
    * 分页
    */
-  pagePosition: PropTypes.oneOf(["top", "bottom", "both"]), //分页栏的位置
   pagination: PropTypes.bool, //是否分页,默认值 true
+  pagePosition: PropTypes.oneOf(["top", "bottom", "both"]), //分页栏的位置
   pageIndex: PropTypes.number, //当前页号
   pageSize: PropTypes.number, //分页大小，默认30
-  sortName: PropTypes.string, //排序字段,
-  sortOrder: PropTypes.oneOf(["asc", "desc"]), //排序方式,默认asc,
+  sortName: PropTypes.string, //默认排序字段,
+  sortOrder: PropTypes.oneOf(["asc", "desc"]), //默认排序方式,默认asc,
 
   /**
    * 数据设置
    */
   priKey: PropTypes.string, //key值字段,
   headers: PropTypes.array, //表头设置
-  footer: PropTypes.array, //页脚,
+  footer: PropTypes.object, //页脚,
   total: PropTypes.number, // 总条目数，有url没用，默认为 0
   data: PropTypes.array, //当前页数据（json）
 
@@ -308,7 +297,7 @@ DataGrid.defaultProps = {
    * 表格常用属性设置
    */
 
-  selectChecked: false,
+  focusSelected: false,
   exportAble: true,
   borderAble: true,
   compactCol: 10,

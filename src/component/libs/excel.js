@@ -140,6 +140,13 @@ let excel = {
    * @returns
    */
   sheet2blob(sheet, sheetName) {
+    // 字符串转ArrayBuffer
+    function s2ab(s) {
+      let buf = new ArrayBuffer(s.length);
+      let view = new Uint8Array(buf);
+      for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
+      return buf;
+    }
     sheetName = sheetName || "sheet1";
     let workbook = {
       SheetNames: [sheetName],
@@ -154,13 +161,7 @@ let excel = {
     };
     let wbout = write(workbook, wopts);
     let blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
-    // 字符串转ArrayBuffer
-    function s2ab(s) {
-      let buf = new ArrayBuffer(s.length);
-      let view = new Uint8Array(buf);
-      for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
-      return buf;
-    }
+
     return blob;
   },
 };

@@ -10,7 +10,7 @@ export default {
    * 初始化虚拟列表参数
    */
   initVirtual() {
-    if (this.state.needVirtualList && this.state.data?.length > 0) {
+    if (this.state.needVirtualHandler && this.state.data?.length > 0) {
       this.container = document.getElementById(this.state.containerid);
       this.container.scrollTop = 0; //重置
       // 记住真实的表格dom
@@ -51,7 +51,7 @@ export default {
    */
   onVirtualScroll(event) {
     try {
-      if (this.state.needVirtualList !== null) {
+      if (this.state.needVirtualHandler !== null) {
         let scrollTop = this.container.scrollTop;
 
         let startIndex = this.binarySearch(
@@ -147,7 +147,7 @@ export default {
         this.neddAdjustvirtualWidthAndHeight = true;
 
         this.setState({
-          needVirtualList: false, //虚拟列表配置完成
+          needVirtualHandler: false, //虚拟列表配置完成
           visibleData: visibleData,
         });
       }
@@ -157,7 +157,7 @@ export default {
   },
   /***********************以下用于调整虚拟列表相关项与表格宽度*****************/
   /**
-   * 调整虚拟列表
+   * 滚动渲染后要调整虚拟列表
    */
   adjustvirtual() {
     //设置总高度;
@@ -256,7 +256,7 @@ export default {
         // 序号列
         if (this.props.rowNumber) {
           columnIndex++;
-          tableWidth += config.orderWidth;
+          tableWidth += config.rowNumberWidth;
         }
         // 选择列
         if (this.props.selectAble) {
@@ -305,7 +305,7 @@ export default {
             stickyLeft += config.detailWidth;
           }
           if (this.props.rowNumber) {
-            stickyLeft += config.orderWidth;
+            stickyLeft += config.rowNumberWidth;
           }
           if (this.props.selectAble) {
             stickyLeft += config.selectWidth;

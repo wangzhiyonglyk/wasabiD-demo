@@ -66,17 +66,19 @@ class GridHeader extends React.Component {
   getHeaderProps(header) {
     //排序样式
 
-    let props = {}; //设置单击事件
-    props.iconCls =
+    let headerProps = {}; //设置单击事件
+    headerProps.iconCls =
       header.sortAble == true
         ? this.props.sortName == header.name
           ? "icon-sort-" + this.props.sortOrder
           : "icon-sort"
         : "";
-    props.className = header.export === false ? " wasabi-noexport" : "";
-    props.onClick =
-      header.sortAble == true
-        ? this.props.sortName == header.name
+    // 如果本列不可以导出，则用class标记好
+    headerProps.className = header.export === false ? " wasabi-noexport" : "";
+    // 表头单击事件
+    headerProps.onClick =
+      header.sortAble === true
+        ? this.props.sortName === header.name
           ? this.onSort.bind(
               this,
               header.name,
@@ -84,8 +86,8 @@ class GridHeader extends React.Component {
             )
           : this.onSort.bind(this, header.name, "asc")
         : null;
-    props.content = this.getHeaderContent(header);
-    return props;
+    headerProps.content = this.getHeaderContent(header);
+    return headerProps;
   }
   /**
    * 获取头部内容
@@ -148,7 +150,7 @@ class GridHeader extends React.Component {
           序号
         </TableCell>
       );
-      stickyLeft += config.orderWidth;
+      stickyLeft += config.rowNumberWidth;
     }
     //处理选择列
     if (this.props.selectAble) {
@@ -156,7 +158,7 @@ class GridHeader extends React.Component {
         //设置checkbox的属性
         value: this.props.isCheckAll == true ? "yes" : null, //判断当前页是否选中
         data: [{ value: "yes", text: "" }],
-        onSelect: this.props.checkedAllHandler,
+        onSelect: this.props.onCheckedAll,
         name: "datagrid-check-all",
         rnd: func.uuid(), //加个随机数，保证每次重新渲染，否则会报 ref错误，原因不详
       };
@@ -207,7 +209,7 @@ class GridHeader extends React.Component {
         rowSpan={header.rowSpan}
         colSpan={header.colSpan}
         className={props.className || ""}
-        onClick={props.onClick || null}
+        onClick={props.onClick}
         onMouseMove={this.onMouseMove}
         onMouseDown={this.onMouseDown.bind(this, headerColumnIndex)}
       >

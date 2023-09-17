@@ -111,7 +111,7 @@ grid
   top: 0px;
   display: none;
   cursor: ew-resize;
-  background-color: var(--table-border-color);
+  background-color: var(--border-color);
 }
 
 .wasabi-grid .wasabi-virtual-height {

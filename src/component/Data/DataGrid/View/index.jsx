@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import GridHeader from "./GridHeader";
 import GridBody from "./GridBody";
@@ -7,6 +7,8 @@ import Pagination from "../../Pagination";
 import GridLoading from "./GridLoading";
 import func from "../../../libs/func";
 import Table from "../../Table/Table";
+import config from "../config";
+
 class Grid extends React.Component {
   constructor(props) {
     super(props);
@@ -23,13 +25,14 @@ class Grid extends React.Component {
   onHeaderMouseDown(headerColumnIndex, event) {
     this.chosedHeaderColumnIndex = headerColumnIndex;
     let container = document.getElementById(this.props.containerid);
-    this.left = container.getBoundingClientRect().left;
-    this.beginLeft = event.clientX;
+    this.left = container.getBoundingClientRect().left; // 得到整个容器左边距
+    this.beginLeft = event.clientX; // 标记当前的位置
     container.style.userSelect = "none";
     container.style.cursor = "ew-resize";
     let divide = document.getElementById(this.props.divideid);
     divide.style.display = "block";
-    divide.style.left = event.clientX - this.left + "px"; //这个位置才是相对容器的位置
+    divide.style.cursor = "ew-resize";
+    divide.style.left = this.beginLeft - this.left + "px"; //这个位置才是相对容器的位置
     document.addEventListener("mousemove", this.onDivideMouseMove);
     document.addEventListener("mouseup", this.onDivideMouseUp);
   }
@@ -60,30 +63,93 @@ class Grid extends React.Component {
         chosedHeaderColumnIndex++;
       }
       try {
-        if (document.getElementById(this.props.realTableId)) {
-          let nodes = document.getElementById(this.props.realTableId)
-            .children[0].children;
-          let tableWidth = 0; //不能直接拿 【realTableId】表格的宽度，不准
-          let width = nodes[chosedHeaderColumnIndex].getAttribute("width") * 1;
-          if (nodes) {
-            for (let i = 0; i < nodes.length; i++) {
-              tableWidth += nodes[i].getAttribute("width") * 1 || 0;
+        let realTable = document.getElementById(this.props.realTableId);
+        let tableHeader = document.getElementById(this.props.tableHeaderId);
+        if (realTable && tableHeader) {
+          // 宽度差
+          let diff = event.clientX - this.beginLeft;
+          // 表格当前宽度
+          let tableWidth = realTable.getBoundingClientRect().width; //
+
+          // 表头的col
+          let tableHeaderCols = tableHeader.children[0].children; // 拿到 colgroup 的cols
+
+          // 表头的th，用于设置固定列的问题
+          let tableHeaderths = tableHeader.children[1].children[0].children;
+
+          // 当前列的表头，用于设置固定列的问题
+          let currenth = tableHeaderths[chosedHeaderColumnIndex];
+
+          // 表体的第一行
+          let realTableFirstTds = realTable?.children[1]?.children[0]?.children;
+          // 当前列的宽度,
+          let currentColWidth =
+            realTableFirstTds[chosedHeaderColumnIndex].getBoundingClientRect()
+              .width;
+
+          // 表体的col
+          let realTableCols = realTable.children[0].children; // 拿到 colgroup 的cols
+
+          // 表体的行，用于设置固定列的问题
+          let realTabletrs = realTable.children[1].children;
+
+          if (realTableFirstTds) {
+            // 设置当前列对应的col的宽度,原来的宽度加拖动的宽度差
+
+            // 表头的col
+            tableHeaderCols[chosedHeaderColumnIndex].setAttribute(
+              "width",
+              Math.ceil(currentColWidth + diff)
+            );
+            // 表体的col
+            realTableCols[chosedHeaderColumnIndex].setAttribute(
+              "width",
+              Math.ceil(currentColWidth + diff)
+            );
+            //设置表格的宽度
+            realTable.style.width = Math.ceil(tableWidth + diff) + "px";
+            tableHeader.style.width = Math.ceil(tableWidth + diff) + "px";
+
+            /**************以下是处理固定列的left,right*************** */
+
+            if (currenth.style.position === "sticky" && currenth.right) {
+              // 当前列是右边固定,则只改变当前列的right值就可以了
+              let stickyRight = parseInt(currenth.right) + diff;
+              // 表头
+              currenth.right = stickyRight + "px";
+              // 表体
+              for (let i = 0; i < realTabletrs.length; i++) {
+                realTabletrs[i].children[chosedHeaderColumnIndex].style.right =
+                  stickyRight + "px";
+              }
+            } else if (
+              currenth.style.position === "sticky" &&
+              currenth.style.left
+            ) {
+              //当前列左边固定，继续看下一列
+              for (
+                let nextIndex = chosedHeaderColumnIndex + 1;
+                nextIndex < tableHeaderths.length;
+                nextIndex++
+              ) {
+                let nextth = tableHeaderths[nextIndex];
+                if (nextth.style.position === "sticky" && nextth.style.left) {
+                  // 下一列左边固定，则改变
+                  let stickyLeft = parseInt(nextth.style.left) + diff;
+                  // 表头
+                  nextth.style.left = stickyLeft + "px";
+
+                  // 表体
+                  for (let j = 0; j < realTabletrs.length; j++) {
+                    realTabletrs[j].children[nextIndex].style.left =
+                      stickyLeft + "px";
+                  }
+                } else {
+                  break;
+                }
+              }
             }
-            nodes[chosedHeaderColumnIndex].setAttribute(
-              "width",
-              Math.ceil(width + event.clientX - this.beginLeft)
-            );
           }
-          document.getElementById(this.props.realTableId).style.width =
-            Math.ceil(tableWidth + event.clientX - this.beginLeft) + "px";
-          document.getElementById(this.props.tableHeaderId).style.width =
-            Math.ceil(tableWidth + event.clientX - this.beginLeft) + "px";
-          document
-            .getElementById(this.props.tableHeaderId)
-            .children[0].children[chosedHeaderColumnIndex].setAttribute(
-              "width",
-              Math.ceil(width + event.clientX - this.beginLeft)
-            );
         }
       } catch (e) {
         console.log("error", e);
@@ -133,13 +199,10 @@ class Grid extends React.Component {
         detailAble={this.props.detailAble}
         sortName={this.props.sortName}
         sortOrder={this.props.sortOrder}
-        checkedAllHandler={this.props.checkedAllHandler}
-        isCheckAll={
-          this.props.checkCurrentPageCheckedAll &&
-          this.props.checkCurrentPageCheckedAll()
-        }
+        onCheckedAll={this.props.onCheckedAll}
+        isCheckAll={this.props.isCheckAll}
         onHeaderMouseDown={this.onHeaderMouseDown}
-        onSort={this.onSort}
+        onSort={this.props.onSort}
       ></GridHeader>
     );
   }
@@ -156,6 +219,7 @@ class Grid extends React.Component {
         borderAble={this.props.borderAble}
         priKey={this.props.priKey}
         checkedData={this.props.checkedData}
+        pagination={this.props.pagination}
         pageIndex={this.props.pageIndex}
         pageSize={this.props.pageSize}
         selectAble={this.props.selectAble}
@@ -173,7 +237,6 @@ class Grid extends React.Component {
         onDoubleClick={this.props.onDoubleClick}
         onChecked={this.props.onChecked}
         tableCellEditHandler={this.props.tableCellEditHandler}
-        onSort={this.props.onSort}
         onDetail={this.props.onDetail}
       ></GridBody>
     );

@@ -7,6 +7,32 @@
 import func from "../../../libs/func/index.js";
 export default {
   /**
+   * 获取当行的key
+   * @param {*} rowIndex 行号
+   */
+  getKey: function (rowIndex, rowData = null) {
+    let key;
+    let pageIndex = this.state.pageIndex || 1;
+    try {
+      rowData = rowData
+        ? rowData
+        : this.state.data && this.state.data[rowIndex];
+
+      if (rowIndex == null && rowIndex == undefined) {
+        console.log(new Error("rowIndex 值传错"));
+      } else {
+        key =
+          rowData[this.props.priKey || "id"] ??
+          pageIndex.toString() + "-" + rowIndex.toString();
+      }
+    } catch (e) {
+      pageIndex.toString() + "-" + rowIndex.toString();
+    }
+
+    return key + "";
+  },
+
+  /**
    * 设置焦点行
    * @param {*} key
    */
@@ -50,12 +76,9 @@ export default {
    * @param {*} index
    */
   getRowData: function (index) {
-    //获取当前焦点行的数据
-    if (index !== null && index !== undefined) {
-    } else {
-      index = this.state.focusIndex;
-    }
-    return this.state.data && this.state.data[index || 0];
+    return (
+      this.state.data && this.state.data[index || this.state.focusIndex || 0]
+    );
   },
   /**
    * 获取勾选的数据
@@ -70,6 +93,8 @@ export default {
   },
   /**
    * 设置勾选的值
+   * @param {*} key
+   * @param {*} checked
    */
   setChecked: function (key, checked) {
     let rowIndex;
@@ -90,14 +115,14 @@ export default {
    * 清除勾选
    */
   clearChecked: function () {
-    this.checkedAllHandler("no");
+    this.onCheckedAll("no");
   },
   /**
    * 添加一行
    * @param {*} rowData 数据
-   * @param {*} editAble 是否可编辑
+   * @param {*} editAble 添加后是否处理可编辑状态
    */
-  addRow: function (rowData = {}, editAble = false) {
+  addRow: function (rowData = null, editAble = false) {
     //
     let newData = this.state.data;
     newData.push(rowData || {});
@@ -105,7 +130,6 @@ export default {
     this.state.addData.set(this.getKey(newData.length - 1), rowData); //添加到脏数据里
     this.setState(
       {
-        ...this.setHeaderEditor(), //设置表头
         data: newData,
         total: this.state.total + 1,
         addData: addData,
@@ -126,12 +150,16 @@ export default {
   deleteRow: function (rowIndex) {
     //删除指定行数据
     //todo这里没处理当前页全部删除的情况
-    let deleteData = this.stat.deleteData || [];
+    let deleteData = this.state.deleteData || [];
     deleteData.push(data.splice(rowIndex, 1));
+    let checkedData = this.state.checkedData;
+    checkedData.delete(this.getKey(rowIndex));
     this.setState({
       data: data,
       total: this.state.total - 1,
       deleteData: deleteData,
+      checkedData,
+      isCheckedAll: this.checkCurrentPageCheckedAll(checkedData),
     });
   },
   /**
@@ -151,7 +179,6 @@ export default {
         }
         this.setState(
           {
-            ...this.setHeaderEditor(), //设置表头
             data: newData,
             updateData: this.state.updateData,
             editAble: editAble || this.state.editAble,
@@ -220,19 +247,21 @@ export default {
   reload: function (params = null, url = "") {
     //重新查询数据,
     url = url || this.state.url; //得到旧的url
-    params = params || this.state.params; //如果不传则用旧的
-    //查询条件发生，查询第一页
-    let pageIndex = func.diff(params, this.state.params, false)
-      ? 1
-      : this.state.pageIndex;
-    this.loadData(
-      url,
-      this.state.pageSize,
-      pageIndex,
-      this.state.sortName,
-      this.state.sortOrder,
-      params
-    );
+    if (url) {
+      params = params || this.state.params; //如果不传则用旧的
+      //查询条件发生，查询第一页
+      let pageIndex = func.diff(params, this.state.params, false)
+        ? 1
+        : this.state.pageIndex;
+      this.loadData(
+        url,
+        this.state.pageSize,
+        pageIndex,
+        this.state.sortName,
+        this.state.sortOrder,
+        params
+      );
+    }
   },
 
   /**

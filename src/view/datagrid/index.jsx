@@ -16,6 +16,7 @@ class Page extends React.Component {
           name: "label",
           label: "省11",
           sticky: "left",
+          sortAble: true,
           editor: {
             type: "select",
             options: {
@@ -28,6 +29,7 @@ class Page extends React.Component {
           name: "label1",
           label: "省2",
           sticky: "left",
+          sortAble: true,
           width: 200,
           editor: {
             type: "checkbox",
@@ -89,13 +91,13 @@ class Page extends React.Component {
         for (let i = 0; i < 400; i++)
           if (i % 2 == 0) {
             arr.push({
-              id: i,
+              label: i,
               text: "通过  ",
               label1: "dd",
             });
           } else {
             arr.push({
-              id: i,
+              label: i,
               text: "可以停靠",
               label1: "testeste",
             });
@@ -131,45 +133,8 @@ class Page extends React.Component {
         rowNumber={true}
         selectAble={true}
         importAble={true}
-        compactCol={5}
-        headers={[
-          [
-            {
-              name: "itemid",
-              label: "Item ID",
-              rowSpan: 2,
-              width: 80,
-              sortAble: true,
-              sticky: "left",
-            },
-            {
-              name: "productid",
-              label: "Product ID",
-              rowSpan: 2,
-              width: 800,
-              sortAble: true,
-            },
-            { label: "Item Details", colSpan: 4 },
-          ],
-          [
-            {
-              name: "listprice",
-              label: "List Price",
-              width: 80,
-              align: "right",
-              sortAble: true,
-            },
-            {
-              name: "unitcost",
-              label: "Unit Cost",
-              width: 80,
-              align: "right",
-              sortAble: true,
-            },
-            { name: "attr1", label: "Attribute", width: 100 },
-            { name: "status", label: "Status", width: 60 },
-          ],
-        ]}
+        // compactCol={5}
+        headers={this.state.headers}
         // url="https://www.baidu.com"
         data={this.state.data}
       ></DataGrid>

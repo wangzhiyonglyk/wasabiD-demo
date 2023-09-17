@@ -5,12 +5,30 @@
  *
  */
 
-import React from "react";
 import func from "../../../libs/func/index.js";
 import Msg from "../../../Info/Msg.jsx";
 import api from "wasabi-api";
 import config from "../config.js";
 export default {
+  /**
+   * 处理表格可视化数据
+   * @returns
+   */
+  handlerGridVisibleData() {
+    if (this.state.urlLoadData) {
+      //需要请求数据
+      this.reload(); //调用
+      return;
+    }
+    if (this.state.needVirtualHandler) {
+      this.initVirtual(); //需要虚拟列表
+      return;
+    }
+    if (this.state.visibleData?.length > 0) {
+      //只是调整宽度，用于表格自适应
+      this.adjustColumnWidth();
+    }
+  },
   /**
    * 分页加载数据
    * @param {*} url 请求的url
@@ -73,8 +91,8 @@ export default {
      */
     if (url) {
       this.setState({
-        urlLoadData: false,
-        loading: true,
+        urlLoadData: false, // 开始查询，设置为false,防止重复更新
+        loading: true, // 加载状态
         url: url, //更新,有可能从reload那里直接改变了url
       });
       let httpParams = func.clone(params) || {}; //本次请求的参数
@@ -114,22 +132,21 @@ export default {
     } else {
       //没有传url
       if (this.props.onUpdate) {
-        this.props.onUpdate(
-          this.state.pageSize,
-          this.state.pageIndex,
-          this.state.sortName,
-          this.state.sortOrder
-        );
+        // 父组件有更新事件
+        this.props.onUpdate(pageSize, pageIndex, sortName, sortOrder);
       } else {
-        //判断传的
-        if (this.state.rawData.length >= (pageSize || 20) * (pageIndex - 1)) {
+        //判断之前传入的，从当前数据中切割数据
+        if (this.state.data.length >= (pageSize || 20) * (pageIndex - 1)) {
+          let data = this.state.data.slice(
+            ((pageIndex || 1) - 1) * (pageSize || 20),
+            (pageIndex || 1) * (pageSize || 20)
+          );
           this.setState({
-            data: this.state.rawData.slice(
-              ((pageIndex || 1) - 1) * (pageSize || 20),
-              (pageIndex || 1) * (pageSize || 20)
-            ),
+            visibieData: data,
             pageIndex: pageIndex,
             pageSize: pageSize,
+            sortName,
+            sortOrder,
           });
         }
       }
@@ -147,7 +164,7 @@ export default {
    */
   loadSuccess(url, pageSize, pageIndex, sortName, sortOrder, params, result) {
     //数据加载成功
-    let dataSource = this.props.dataSource; //数据源
+
     let dataResult; //最终数据
     let totalResult; //最终总共记录
     let footerResult; //最终统计数据
@@ -157,11 +174,10 @@ export default {
       //如果父组件指定了数据加载后的方法，先执行，然后再处理数据
       let resultData = this.props.loadSuccess(result);
       //有正确的返回值
-      dataResult =
-        resultData && typeof resultData instanceof Array ? resultData : result;
-    } else if (dataSource && typeof dataSource === "string") {
+      dataResult = Array.isArray(resultData) ? resultData : result;
+    } else if (this.props.dataSource) {
       //需要重新指定数据源
-      dataResult = func.getSource(result, dataSource || "data");
+      dataResult = func.getSource(result, this.props.dataSource || "data");
     }
     //找到总记录数
     if (this.props.pagination && this.props.totalSource) {
@@ -193,50 +209,35 @@ export default {
       } else {
       }
     }
-    if (!footerResult) {
-      footerResult = this.state.footer;
-    }
-    console.log("datagrid-fetch结果", {
-      原数据: result,
-      处理后的数据: dataResult,
+    this.setState({
+      url: url,
+      pageSize: pageSize,
+      params: params,
+      pageIndex: pageIndex,
+      sortName: sortName,
+      sortOrder: sortOrder,
+      data: dataResult,
+      // 从后台取的数据，不判断数据是否超过了一页，不分页时，判断是否
+      visibieData: this.props.pagination
+        ? dataResult
+        : dataResult?.length < config.minDataTotal
+        ? dataResult
+        : [], // 需要设置虚拟列表时，则设置为空
+      total: totalResult,
+      footer: footerResult,
+      loading: false,
+      detailIndex: null, //重新查询要清空详情
+      detailView: null,
+      //分页或小于配置值则不设置，其他则重新设置虚拟列表
+      needVirtualHandler: this.props.pagination
+        ? null
+        : dataResult?.length < config.minDataTotal
+        ? null
+        : true,
+      // 取消全选
+      checkedData: new Map(),
+      isCheckedAll: isCheckedAll,
     });
-    if (
-      totalResult > 0 &&
-      dataResult &&
-      dataResult instanceof Array &&
-      dataResult.length == 0 &&
-      totalResult > 0 &&
-      pageIndex !== 1
-    ) {
-      //有总记录，没有当前记录数,不是第一页，继续查询转到上一页,
-      //目的是为了防止手动换页时，到最后一页根本没有数据
-      this.loadData(url, pageSize, pageIndex - 1, sortName, sortOrder, params);
-    } else {
-      //查询成功
-      if (dataResult && dataResult instanceof Array) {
-        //是数组,
-        //分页时查询的数据过多，切除掉
-        dataResult =
-          this.props.pagination == true
-            ? dataResult.slice(0, pageSize)
-            : dataResult;
-      }
-      this.setState({
-        url: url,
-        pageSize: pageSize,
-        params: func.clone(params), //这里一定要复制,只有复制才可以比较两次参数是否发生改变没有,防止父组件状态任何改变而导致不停的查询
-        pageIndex: pageIndex,
-        sortName: sortName,
-        sortOrder: sortOrder,
-        data: dataResult,
-        total: totalResult,
-        footer: footerResult,
-        loading: false,
-        detailIndex: null, //重新查询要清空详情
-        detailView: null,
-        needVirtualList: dataResult.length < config.minDataTotal ? null : true, //小于配置值则不设置，重新设置虚拟列表
-      });
-    }
   },
 
   /**

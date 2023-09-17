@@ -7,7 +7,6 @@
 import Msg from "../../../Info/Msg";
 import excel from "../../../libs/excel";
 import fileType from "../../../libs/fileType";
-import func from "../../../libs/func";
 import pageSizeList from "../../Pagination/pageSizeList.js";
 export default {
   /**
@@ -32,8 +31,8 @@ export default {
       try {
         if (fileType.filter("excel", event.dataTransfer.files[0])) {
           excel.readFile(event.dataTransfer.files[0]).then((workbook) => {
-            let json = excel.workbook2json(workbook);
-            this.json2data(json, this.state.data.length);
+            let json = excel.workbook2json(workbook, this.state.length);
+            this.json2data(json);
           });
         } else {
           Msg.error("只接受excel文件");
@@ -55,94 +54,72 @@ export default {
     } catch (e) {}
   },
   /**
-   *
-   * @param {*} json
-   * @param {*} rowIndex
-   * @param {*} columnIndex
+   *将json数据放到表格中
+   * @param {*} json 数据
+   * @param {*} beginRowIndex 行号
+   * @param {*} beginColumnIndex 列号
    */
-  json2data(json, rowIndex, columnIndex = 0) {
-    rowIndex =
-      rowIndex === null || rowIndex === undefined
-        ? this.state.data.length
-        : rowIndex;
+  json2data(json, beginRowIndex = 0, beginColumnIndex = 0) {
     if (json && json.body) {
-      const { headers } = this.setHeaderEditor(); //设置表头
-
-      let addData = [];
-      let oldData = func.clone(this.state.data, false);
-      let beginRowIndex = rowIndex; //开始的行下标
-      let beginColumnIndex = 0; //开始的列下标
+      const headers = this.state.headers; //表头
+      let data = this.state.data;
+      let total = this.state.total; // 总记录数
       for (let i = 0; i < json.body.length; i++) {
-        let rowData = {};
-        beginColumnIndex = 0;
-        for (let j = columnIndex || 0; j < headers.length; j++) {
+        let rowData = {}; //新的一行数据
+        let currentRowColumnIndex = 0; //新的一行数据开始下标
+        for (let j = beginColumnIndex || 0; j < headers.length; j++) {
           if (headers[j] instanceof Array) {
             for (let k = 0; i < headers[j][k].length; k++) {
               if (headers[j][k].colSpan > 1) {
                 continue;
               } else {
-                if (beginColumnIndex < json.body[i].length) {
-                  rowData[headers[j][k].name] = json.body[i][beginColumnIndex];
-                  beginColumnIndex++;
+                if (currentRowColumnIndex < json.body[i].length) {
+                  rowData[headers[j][k].name] =
+                    json.body[i][currentRowColumnIndex];
+                  currentRowColumnIndex++;
                 }
               }
             }
           } else {
-            if (beginColumnIndex < json.body[i].length) {
-              rowData[headers[j].name] = json.body[i][beginColumnIndex];
-              beginColumnIndex++;
+            if (currentRowColumnIndex < json.body[i].length) {
+              rowData[headers[j].name] = json.body[i][currentRowColumnIndex];
+              currentRowColumnIndex++;
             }
           }
         }
 
-        if (beginRowIndex < oldData.length) {
+        if (beginRowIndex < data.length) {
           //替换
-          oldData[beginRowIndex] = Object.assign(
-            oldData[beginRowIndex],
-            rowData
-          );
-
+          data[beginRowIndex] = Object.assign(data[beginRowIndex], rowData);
           this.state.updateData.set(
             this.getKey(beginRowIndex),
-            oldData[beginRowIndex]
+            data[beginRowIndex]
           ); //更新某一行
         } else {
-          addData.push(rowData);
+          // 追加
+          data.push(rowData);
+          total++;
           this.state.addData.set(this.getKey(beginRowIndex), rowData); //更新某一行
         }
         beginRowIndex++;
       }
-
-      let newData = [].concat(oldData, addData);
-      let pageSize = this.state.pageSize;
-      if (this.props.pagination) {
-        //分页时，追加了数据，扩展分页大小，防止翻页出错
-        if (newData.length > pageSize) {
-          for (let i = 0; i < pageSizeList.length; i++) {
-            pageSize = pageSizeList[i]; //取最大值
-            if (pageSizeList[i] >= newData.length) {
-              break;
-            }
-          }
-        }
+      let visibieData;
+      if (this.props.pagePosition) {
+        visibieData = data.slice(
+          (this.state.pageIndex - 1) * this.state.pageSize,
+          this.state.pageIndex * this.state.pageSize
+        );
+      } else {
       }
       this.setState(
         {
-          headers: headers,
-          data: newData,
-          total: newData.length,
-          pageSize: pageSize,
-          adjustHeight: true,
-          editAble: true, //允许编辑
-          editIndex:
-            rowIndex !== null && rowIndex !== undefined
-              ? rowIndex + "-" + columnIndex
-              : this.state.editIndex,
+          data: data,
+          total: total,
           addData: this.state.addData,
           updateData: this.state.updateData,
         },
         () => {
-          this.focusCell(rowIndex || 0, columnIndex || 0);
+          this.focusCell(beginRowIndex || 0, beginColumnIndex || 0);
         }
       );
     }
