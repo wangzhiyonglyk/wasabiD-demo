@@ -10,13 +10,14 @@ class Page extends React.Component {
     this.form = React.createRef();
     this.state = {
       dropData: [],
-
       headers: [
         {
           name: "label",
           label: "省11",
           sticky: "left",
+          statsType: "sum",
           sortAble: true,
+
           editor: {
             type: "select",
             options: {
@@ -45,6 +46,7 @@ class Page extends React.Component {
         {
           name: "省4",
           label: "省4",
+          filterAble: true,
           content: (rowData, rowIndex) => {
             if (rowIndex % 2 === 1) {
               return <div>{rowData.label}</div>;
@@ -61,12 +63,12 @@ class Page extends React.Component {
         {
           name: "省5",
           label: "省5",
+          filterAble: true,
+          editor: {
+            type: "daterange",
+          },
           content: (rowData, rowIndex) => {
-            return (
-              <div>
-                tefgfsggsdagdfgdfsgdfgdfgdfgdffgdfsgdfgdfgdfgssgdfgdfgdfgdfsdfsdfsdas
-              </div>
-            );
+            return <div>2020-10-10</div>;
           },
         },
         {
@@ -78,12 +80,10 @@ class Page extends React.Component {
           },
         },
         {
-          name: "省7",
-          label: "省7",
+          name: "操作列",
+          label: "操作列",
+          editAble: false,
           sticky: "right",
-          content: (rowData, rowIndex) => {
-            return <div>tefgfsggsdagdfgdfsgdfg</div>;
-          },
         },
       ],
       data: (() => {
@@ -94,12 +94,24 @@ class Page extends React.Component {
               label: i,
               text: "通过  ",
               label1: "dd",
+              操作列: [
+                {
+                  label: "编辑",
+                  style: { color: "red" },
+                },
+              ],
             });
           } else {
             arr.push({
               label: i,
               text: "可以停靠",
               label1: "testeste",
+              操作列: [
+                {
+                  label: "删除",
+                  style: { color: "blue" },
+                },
+              ],
             });
           }
         return arr;
@@ -125,19 +137,22 @@ class Page extends React.Component {
   componentDidMount() {}
   render() {
     return (
-      <DataGrid
-        ref="grid"
-        httpType="get"
-        pagination={true}
-        textField="label"
-        rowNumber={true}
-        selectAble={true}
-        importAble={true}
-        // compactCol={5}
-        headers={this.state.headers}
-        // url="https://www.baidu.com"
-        data={this.state.data}
-      ></DataGrid>
+      <div style={{ height: "100%", padding: 10 }}>
+        <DataGrid
+          ref="grid"
+          httpType="get"
+          pagination={true}
+          textField="label"
+          rowNumber={true}
+          selectAble={true}
+          importAble={true}
+          footerAble={true}
+          // compactCol={5}
+          headers={this.state.headers}
+          // url="https://www.baidu.com"
+          data={this.state.data}
+        ></DataGrid>
+      </div>
     );
   }
 }

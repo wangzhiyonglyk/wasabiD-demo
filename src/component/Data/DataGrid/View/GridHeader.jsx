@@ -21,19 +21,17 @@ import { TableCell, TableHead, TableRow } from "../../Table";
 import CheckBox from "../../../Form/CheckBox";
 import config from "../config";
 import func from "../../../libs/func";
+import Header from "./Header";
 class GridHeader extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
-    this.chosedHeaderColumnIndex = null;
-    this.getHeaderProps = this.getHeaderProps.bind(this);
-    this.getHeaderContent = this.getHeaderContent.bind(this);
+
     this.setOrderAndSelectAndDetailHeader =
       this.setOrderAndSelectAndDetailHeader.bind(this);
-    this.onSort = this.onSort.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
   }
+
   /**
    * 表头的鼠标监听事件
    * @param {*} event
@@ -60,61 +58,12 @@ class GridHeader extends React.Component {
         );
     }
   }
-  /**
-   * 得到头部相关属性
-   */
-  getHeaderProps(header) {
-    //排序样式
 
-    let headerProps = {}; //设置单击事件
-    headerProps.iconCls =
-      header.sortAble == true
-        ? this.props.sortName == header.name
-          ? "icon-sort-" + this.props.sortOrder
-          : "icon-sort"
-        : "";
-    // 如果本列不可以导出，则用class标记好
-    headerProps.className = header.export === false ? " wasabi-noexport" : "";
-    // 表头单击事件
-    headerProps.onClick =
-      header.sortAble === true
-        ? this.props.sortName === header.name
-          ? this.onSort.bind(
-              this,
-              header.name,
-              this.props.sortOrder == "asc" ? "desc" : "asc"
-            )
-          : this.onSort.bind(this, header.name, "asc")
-        : null;
-    headerProps.content = this.getHeaderContent(header);
-    return headerProps;
-  }
-  /**
-   * 获取头部内容
-   * @param {*} header
-   */
-  getHeaderContent(header) {
-    //内容
-    let content = header.headerContent; //自定义内容
-    if (typeof content === "function") {
-      //函数
-      try {
-        content = content(header.name, header.label);
-      } catch (e) {
-        console.log("生成自定列出错,原因", e.message);
-        content = "";
-      }
-    } else {
-      //为空时
-      content = header.label || "";
-    }
-    return content;
-  }
   /**
    * 设置表头的详情，序号，选择列
    */
   setOrderAndSelectAndDetailHeader(rowSpan = 1) {
-    let stickyLeft = this.props.borderAble ? 1 : 0; //偏移量,表格左边有border
+    let stickyLeft = 0;
     let control = [];
     //处理详情列
     if (this.props.detailAble) {
@@ -183,50 +132,6 @@ class GridHeader extends React.Component {
     return control;
   }
 
-  /**
-   * 设置表头单元格
-   * @param {*} header
-   * @param {*} headerRowIndex
-   * @param {*} headerColumnIndex
-   * @param {*} props
-   * @returns
-   */
-  setHeaderCell(header, headerRowIndex, headerColumnIndex, props) {
-    return (
-      <TableCell
-        rowIndex={headerRowIndex}
-        columnIndex={headerColumnIndex}
-        name={header.name || header.label}
-        key={"header-" + headerRowIndex + "-" + headerColumnIndex.toString()}
-        position="header"
-        align={header.align}
-        thStyle={{
-          position: header.sticky ? "sticky" : null,
-          zIndex: header.sticky ? 1 : null,
-          left: header.sticky === "left" ? "0px" : null,
-          right: header.sticky === "right" ? "0px" : null,
-        }}
-        rowSpan={header.rowSpan}
-        colSpan={header.colSpan}
-        className={props.className || ""}
-        onClick={props.onClick}
-        onMouseMove={this.onMouseMove}
-        onMouseDown={this.onMouseDown.bind(this, headerColumnIndex)}
-      >
-        {props.content}
-        <i className={props.iconCls}></i>
-      </TableCell>
-    );
-  }
-  /**
-   * 排序事件
-   * @param {*} name
-   * @param {*} sortOrder
-   */
-  onSort(name, sortOrder) {
-    this.props.onSort && this.props.onSort(name, sortOrder);
-  }
-
   render() {
     if (
       !(this.props.headers instanceof Array) ||
@@ -244,18 +149,40 @@ class GridHeader extends React.Component {
       if (trheader instanceof Array) {
         maxRowSpan = this.props.headers.length; //多行时
         trheader.map((header, headerColumnIndex) => {
-          let props = this.getHeaderProps(header);
-
           trcontrol.push(
-            this.setHeaderCell(header, headerRowIndex, headerColumnIndex, props)
+            <Header
+              key={headerRowIndex + "-" + headerColumnIndex}
+              {...header}
+              headerRowIndex={headerRowIndex}
+              headerColumnIndex={headerColumnIndex}
+              sortName={this.props.sortName}
+              sortOrder={this.props.sortOrder}
+              onSort={this.props.onSort}
+              filterOpen={this.props.filterOpen}
+              onMouseMove={this.onMouseMove}
+              onMouseDown={this.onMouseDown}
+            ></Header>
           );
         });
         headerControl.push(trcontrol);
         trcontrol = []; //清空
       } else {
-        //表头只有一行
-        let props = this.getHeaderProps(trheader);
-        trcontrol.push(this.setHeaderCell(trheader, 0, headerRowIndex, props));
+        //表头只有一行,headerRowIndex就是列号
+        let headerColumnIndex = headerRowIndex;
+        trcontrol.push(
+          <Header
+            key={"0-" + headerColumnIndex}
+            {...trheader}
+            headerRowIndex={0}
+            headerColumnIndex={headerColumnIndex}
+            sortName={this.props.sortName}
+            sortOrder={this.props.sortOrder}
+            onSort={this.props.onSort}
+            filterOpen={this.props.filterOpen}
+            onMouseMove={this.onMouseMove}
+            onMouseDown={this.onMouseDown}
+          ></Header>
+        );
       }
     });
     if (trcontrol.length > 0) {

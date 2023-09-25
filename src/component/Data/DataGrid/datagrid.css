@@ -71,7 +71,6 @@ grid
   top: 0px;
   z-index: 2;
   width: 100%;
-  background-color: var(--header-color);
 }
 
 /*
@@ -137,4 +136,13 @@ grid
 
   z-index: 1;
   width: 100%;
+}
+
+.wasabi-grid .wasabi-table-cell-span {
+  display: flex;
+}
+.wasabi-grid .dropcontainter.table {
+  position: absolute;
+  min-height: 0px;
+  padding: 10px;
 }

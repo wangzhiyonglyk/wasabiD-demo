@@ -583,6 +583,7 @@ class DatePicker extends Component {
       name: this.props.name,
       placeholder: placeholder,
       value: this.state.value || "",
+      show:this.state.show,
       showPicker: this.showPicker, //用于输入框单击时弹出选择框
       onFocus: this.props.onFocus,
       onClick: this.props.onClick,

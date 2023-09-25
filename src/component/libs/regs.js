@@ -6,7 +6,7 @@
 export default {
   email: /^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\.[a-z0-9-]+)*$/i,
   url: /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
-  number: /^\s*(\-|\+)?(\d+|(\d*(\.\d*)))\s*$/,
+  number: /^\s*[-+]?(\d+|(\d*(\.\d+)))\s*$/,
   year: /^[1-9]\d{3}$/, //年
   month: /^[1-9]\d{3}-(0[1-9]|1[0-2])$/, //年月
   date: /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/, //日期
@@ -84,6 +84,40 @@ export default {
     } else {
       return false;
     }
+  },
+  /**
+   * 匹配数字范围
+   * @param {*} value
+   */
+  numberrange: function (value) {
+    //输入一个输入范围（0-1，0-，-1）
+    // 可以多个，用逗号隔开
+
+    let numberrangeRegs =
+      /^\s*(([-+]?(\d+|(\d*(\.\d+))))\-([-+]?(\d+|(\d*(\.\d+)))){0,1})$|^(([-+]?(\d+|(\d*(\.\d+)))){0,1}\-([-+]?(\d+|(\d*(\.\d+)))))\s*z/; // 0-1 ，0-， -1
+    let values = (value ?? "").replace("，", ",").split(","); //
+    let istrue = true;
+    for (let i = 0; i < values; i++) {
+      if (!numberrangeRegs.test(value[i])) {
+        istrue = false;
+      }
+    }
+    return istrue;
+  },
+  integerrange: function (value) {
+    //可以输入单个数字，可以输入一个输入范围（0-1，0-，-1）
+    // 可以多个，用逗号隔开
+
+    let numberrangeRegs =
+      /^(([-+]?\d*)\-([-+]?\d+))$|^(([-+]?\d+)\-([-+]?\d*))$/; // 0-1 ，0-， -1
+    let values = (value ?? "").replace("，", ",").split(","); //
+    let istrue = true;
+    for (let i = 0; i < values; i++) {
+      if (!numberrangeRegs.test(value[i])) {
+        istrue = false;
+      }
+    }
+    return istrue;
   },
   //中国人人名
   chineseName: /^[\u4E00-\u9FA5]{1,20}[.▪•]?[\u4E00-\u9FA5]{1,20}$/,

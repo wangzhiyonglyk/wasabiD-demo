@@ -70,8 +70,8 @@ class DataGrid extends Component {
       /************以下这几个字段在 getDerivedStateFromProps 处理逻辑，这样提升性能 */
 
       rawHeaders: null, //原有默认列保存起来，用于更新判断
-      rawData: null, //原始数据，判断是否更新有用
       headers: [], //页面中的headers
+      rawData: null, // 原始数据
       data: [], //当前的数据
       visibleData: [], //可见的数据
 
@@ -89,6 +89,7 @@ class DataGrid extends Component {
       editAble:
         this.props.editAble || this.props.addAble || this.props.importAble, //如果允许添加或者导入，自然就允许编辑
       editIndex: null, //当前处理编辑的列
+      filters: {}, // 筛选条件
       addData: new Map(), //新增的数据,因为有可能新增一个空的，然后再修改
       updateData: new Map(), //被修改过的数据，因为要判断曾经是否修改
       deleteData: [], //删除的数据
@@ -115,7 +116,6 @@ class DataGrid extends Component {
     let newState = {}; //新的状态值
     // 处理Headers,因为交叉表的表头是后期传入的
     {
-      //处理非固定列
       if (func.diff(props.headers, state.rawHeaders)) {
         //有改变则更新headers等
         newState.rawHeaders = props.headers;
@@ -126,9 +126,9 @@ class DataGrid extends Component {
     /**
      * 处理数据
      */
-    if (props.data !== state.rawData) {
+    if (props.data && props.data !== state.rawData) {
       //如果传了固定数据,并且数据改变,浅比较
-      newState.rawData = props.data;
+      newState.rawData = props.data; //保留原始数据，用于筛选
       newState.data = props.data; // 数据不作复制
       // 总记录数
       newState.total = props?.total || props?.data?.length || 0;
@@ -212,6 +212,7 @@ class DataGrid extends Component {
         onChecked={this.onChecked}
         tableCellEditHandler={this.tableCellEditHandler}
         onSort={this.onSort}
+        onFilter={this.onFilter}
         onDetail={this.onDetail}
         paginationHandler={this.paginationHandler}
         exportAble={this.props.exportAble}
@@ -243,6 +244,7 @@ DataGrid.propTypes = {
   importAble: PropTypes.bool, //是否允许导入
   focusSelected: PropTypes.bool, //选择行的时候是否同时选中,false
   exportAble: PropTypes.bool, //是否允许导出
+  footerAble: PropTypes.bool, // 是否有页脚
   compactCol: PropTypes.number, // 表格紧凑的
   rowAllowChecked: PropTypes.func, // 行是否可以选择，函数
   /**

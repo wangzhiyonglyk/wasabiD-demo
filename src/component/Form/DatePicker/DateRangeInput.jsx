@@ -70,7 +70,7 @@ class DateRangeInput extends React.Component {
     return (
       <div
         style={{ position: "relative", display: "flex" }}
-        className="daterangeinput"
+        className={"daterangeinput " + (this.props.show ? "focus" : "")}
         ref={this.input}
       >
         <DateInput

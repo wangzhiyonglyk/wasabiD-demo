@@ -65,13 +65,17 @@ export default {
           let rowIndex = getRealRowIndex(
             this.props.pagination,
             this.state.pageIndex,
-            this.pageSize,
+            this.state.pageSize,
             rowData,
             i
           );
           let key = this.getKey(rowIndex, rowData);
           checkedData.set(key, data[i]); //添加
         }
+        this.setState({
+          checkedData: checkedData,
+          isCheckedAll: true,
+        });
 
         if (typeof this.props.onChecked === "function") {
           //执行父组件的onchecked事件
@@ -141,26 +145,7 @@ export default {
       return;
     } else {
       //跳转到指定页
-      if (this.state.url) {
-        this.loadData(
-          this.state.url,
-          pageSize,
-          pageIndex,
-          this.state.sortName,
-          this.state.sortOrder,
-          this.state.params
-        );
-      } else {
-        let visibleData = this.state.data.slice(
-          (pageIndex - 1) * pageSize,
-          pageIndex * pageSize
-        );
-        this.setState({
-          pageIndex,
-          pageSize,
-          visibleData: visibleData,
-        });
-      }
+      this.loadData(this.state.url, pageSize, pageIndex);
     }
   },
 
@@ -171,51 +156,45 @@ export default {
    */
   onSort: function (sortName, sortOrder) {
     //直接调用加载数据事件
-    if (this.state.url) {
-      this.loadData(
-        this.state.url,
-        this.state.pageSize,
-        1,
-        sortName,
-        sortOrder
-      );
+    this.loadData(this.state.url, this.state.pageSize, 1, sortName, sortOrder);
+  },
+  /**
+   *
+   * @param {*} headerRowIndex
+   * @param {*} headerColumnIndex
+   */
+  onFilter: function (headerRowIndex, headerColumnIndex, value, text) {
+    let headers = this.state.headers;
+    let header;
+    if (Array.isArray(headers[0])) {
+      header = headers[headerRowIndex][headerColumnIndex];
     } else {
-      // 本地排序
-      this.state.data.sort((newItem, oldItem) => {
-        if (sortOrder === "asc") {
-          return newItem[sortName] > oldItem[sortName] ? 1 : -1;
-        } else {
-          return newItem[sortName] < oldItem[sortName] ? 1 : -1;
-        }
-      });
-      let visibleData = this.state.visibleData;
-      // 如果有分页则重新切割
-      if (this.props.pagination) {
-        visibleData = this.state.data.slice(
-          (this.state.pageIndex - 1) * this.state.pageSize,
-          this.state.pageIndex * this.state.pageSize
-        );
-      } else if (this.state.data.length < config.minDataTotal) {
-        // 不分页，又不用做虚拟列表
-        visibleData = this.state.data;
-      }
-
-      this.setState({
-        sortName: sortName,
-        sortOrder: sortOrder,
-        data: this.state.data,
-        visibleData,
-        //分页或小于配置值则不设置，其他则重新设置虚拟列表
-        needVirtualHandler: this.props.pagination
-          ? null
-          : this.state.data?.length < config.minDataTotal
-          ? null
-          : true,
-        // 分页则重置，因为当前页数据变了
-        checkedData: this.props.pagination ? new Map() : this.state.checkedData,
-        isCheckedAll: this.props.pagination ? false : this.state.isCheckedAll,
-      });
+      header = headers[headerColumnIndex];
     }
+    header.filterValue = value;
+    if (header.editor.type.indexOf("range") > -1) {
+      header.filterText = text.replace(",", "至");
+    } else {
+      header.filterText = text.replace(",", "至");
+    }
+    let filters = this.state.filters || {};
+    filters[header.name || header.label] = {
+      value,
+      text,
+      name: header.name || header.label,
+      type: header?.editor?.type || "text",
+    };
+
+    //查询数据
+    this.loadData(
+      this.state.url,
+      this.state.pageSize,
+      1,
+      this.state.sortName,
+      this.state.sortOrder,
+      this.state.params,
+      filters
+    );
   },
   /**
    * 添加一条
@@ -308,16 +287,16 @@ export default {
    */
   tableCellEditHandler: function (rowIndex, callBack, value, text, name) {
     //编辑时单元格内的表单onchange的监听事件
-    if (this.state.addData.has(rowIndex)) {
+    let key = this.getKey(rowIndex);
+    if (this.state.addData.has(key)) {
       //说明是属于新增的
-      this.state.addData.set(this.getKey(rowIndex), this.state.data[rowIndex]);
+      this.state.addData.set(key, this.state.data[rowIndex]);
     } else {
       //属于修改的
-      this.state.updateData.set(
-        this.getKey(rowIndex),
-        this.state.data[rowIndex]
-      );
+      this.state.updateData.set(key, this.state.data[rowIndex]);
     }
+
+    // todo 这里可能会有问题
     let data = this.state.data;
     data[rowIndex][name] = value;
     this.setState({

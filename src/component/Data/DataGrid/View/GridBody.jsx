@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-
-import Input from "../../../Form/Input/index.jsx";
 import CheckBox from "../../../Form/CheckBox";
 import TableCell from "../../Table/TableCell.jsx";
 import TableRow from "../../Table/TableRow.jsx";
 import TableBody from "../../Table/TableBody.jsx";
 import func from "../../../libs/func/index.js";
 import { getRealRowIndex } from "../method/datafunc.js";
+import Cell from "./Cell.jsx";
 import config from "../config.js"; // 配置文件
 class GridBody extends Component {
   constructor(props) {
@@ -18,7 +17,7 @@ class GridBody extends Component {
     this.onChecked = this.onChecked.bind(this);
     this.tableCellEditHandler = this.tableCellEditHandler.bind(this);
     this.onDetail = this.onDetail.bind(this);
-    this.getCellContent = this.getCellContent.bind(this);
+
     this.setOrderAndSelectAndDetailRow =
       this.setOrderAndSelectAndDetailRow.bind(this);
   }
@@ -85,37 +84,13 @@ class GridBody extends Component {
   }
 
   /**
-   * 获取某一行单元格内容
-   * @param {*} header
-   * @param {*} rowData
-   * @param {*} rowIndex
-   * @returns
-   */
-  getCellContent(header, rowData, rowIndex) {
-    //内容
-    let content = header.content;
-    if (typeof content === "function") {
-      //函数
-      try {
-        content = content(rowData, rowIndex);
-      } catch (e) {
-        console.log("生成自定列出错,原因", e.message);
-        content = "";
-      }
-    } else {
-      //为空时
-      content = rowData[header.name];
-    }
-    return content === undefined || content === null ? "" : content;
-  }
-  /**
    * 设置行中的详情，序号，选择列
    * @param {*} rowData 行数据
    * @param {*}  rowIndex 行号
    * @returns
    */
   setOrderAndSelectAndDetailRow(rowData, rowIndex) {
-    let stickyLeft = this.props.borderAble ? 1 : 0; //偏移量,表格左边有border
+    let stickyLeft = 0;
     let control = [];
     let key = this.getKey(rowIndex); //获取这一行的关键值
 
@@ -159,7 +134,7 @@ class GridBody extends Component {
             left: stickyLeft,
           }}
         >
-          {rowIndex}
+          {rowIndex + 1}
         </TableCell>
       );
       stickyLeft += config.rowNumberWidth;
@@ -204,73 +179,6 @@ class GridBody extends Component {
     return control;
   }
 
-  /**
-   * 生成单元格
-   * @param {*} header 列头数据
-   * @param {*} rowData 行数据
-   * @param {*} rowIndex 行下标
-   * @param {*} columnIndex 列下标
-   * @returns
-   */
-  setCellComponent(header, rowData, rowIndex, columnIndex) {
-    //处理数据单元格
-    let editAble = this.props.editIndex === rowIndex + "-" + columnIndex;
-    return (
-      <TableCell
-        name={header.name || header.label}
-        rowIndex={rowIndex}
-        columnIndex={columnIndex}
-        onClick={this.onClick.bind(this, rowData, rowIndex, columnIndex)}
-        onDoubleClick={this.onDoubleClick.bind(
-          this,
-          rowData,
-          rowIndex,
-          columnIndex
-        )}
-        key={"cell-" + rowIndex.toString() + "-" + columnIndex.toString()}
-        className={
-          (this.props.focusIndex === rowIndex &&
-          this.props.focusColumnIndex === columnIndex
-            ? " focus "
-            : "") + (header.export === false ? "wasabi-noexport" : "")
-        } //为了不导出
-        tdStyle={{
-          textAlign: header.align,
-          position: header.sticky ? "sticky" : null,
-          zIndex: header.sticky ? 1 : null,
-          left: header.sticky === "left" ? "0px" : null,
-          right: header.sticky === "right" ? "0px" : null,
-        }}
-      >
-        {editAble ? (
-          <Input
-            {...header.editor.options}
-            type={header.editor.type}
-            name={header.name}
-            value={rowData[header.name]}
-            onChange={this.tableCellEditHandler.bind(
-              this,
-              rowIndex,
-              (header.editor &&
-                header.editor.options &&
-                header.editor.options.onChange) ||
-                null
-            )}
-            onSelect={this.tableCellEditHandler.bind(
-              this,
-              rowIndex,
-              (header.editor &&
-                header.editor.options &&
-                header.editor.options.onSelect) ||
-                null
-            )}
-          ></Input>
-        ) : (
-          this.getCellContent(header, rowData, rowIndex)
-        )}
-      </TableCell>
-    );
-  }
   render() {
     //渲染表体
     if (
@@ -308,7 +216,22 @@ class GridBody extends Component {
               }
               //处理数据单元格
               tds.push(
-                this.setCellComponent(header, rowData, rowIndex, columnIndex)
+                <Cell
+                  key={rowIndex + "-" + columnIndex}
+                  header={header}
+                  rowData={rowData}
+                  rowIndex={rowIndex}
+                  columnIndex={columnIndex}
+                  focusIndex={this.props.focusIndex}
+                  focusColumnIndex={this.props.focusColumnIndex}
+                  editAble={
+                    this.props.editAble &&
+                    this.props.editIndex === rowIndex + "-" + columnIndex
+                  }
+                  onClick={this.onClick}
+                  onDoubleClick={this.onDoubleClick}
+                  tableCellEditHandler={this.tableCellEditHandler}
+                ></Cell>
               );
 
               columnIndex++; //列下标
@@ -316,7 +239,22 @@ class GridBody extends Component {
           } else {
             //处理数据单元格
             tds.push(
-              this.setCellComponent(trheader, rowData, rowIndex, columnIndex)
+              <Cell
+                key={rowIndex + "-" + columnIndex}
+                header={trheader}
+                rowData={rowData}
+                rowIndex={rowIndex}
+                columnIndex={columnIndex}
+                focusIndex={this.props.focusIndex}
+                focusColumnIndex={this.props.focusColumnIndex}
+                editAble={
+                  this.props.editAble &&
+                  this.props.editIndex === rowIndex + "-" + columnIndex
+                }
+                onClick={this.onClick}
+                onDoubleClick={this.onDoubleClick}
+                tableCellEditHandler={this.tableCellEditHandler}
+              ></Cell>
             );
 
             columnIndex++; //列下标

@@ -48,16 +48,6 @@ export default {
   },
 
   /**
-   * 清空数据
-   */
-  clearData: function () {
-    //清空数据
-    this.setState({
-      data: [],
-      params: [],
-    });
-  },
-  /**
    *获取焦点行下标
    */
   getFocusIndex: function () {
@@ -193,18 +183,6 @@ export default {
   },
 
   /**
-   * 清除脏数据
-   */
-  clearDirtyData: function () {
-    //
-    this.setState({
-      addData: new Map(),
-      updateData: new Map(),
-      deleteData: [],
-    });
-  },
-
-  /**
    * 获取新增的数据
    * @returns
    */
@@ -240,6 +218,48 @@ export default {
   },
 
   /**
+   * 清除脏数据
+   */
+  clearDirtyData: function () {
+    //
+    this.setState({
+      addData: new Map(),
+      updateData: new Map(),
+      deleteData: [],
+    });
+  },
+
+  /**
+   * 清空数据
+   */
+  clearData: function () {
+    //清空数据
+    this.setState({
+      rawData: [],
+      visibleData: [],
+      data: [],
+      params: [],
+      pageIndex: 1,
+    });
+  },
+
+  /**
+   * 设置数据
+   * @param {*} data
+   */
+  setData: function (data) {
+    this.setState(
+      {
+        loading: true,
+        rawData: data,
+        pageIndex: 1, // 回到第一页
+      },
+      () => {
+        this.loadData();
+      }
+    );
+  },
+  /**
    * 更新方法
    * @param {*} params
    * @param {*} url
@@ -248,9 +268,9 @@ export default {
     //重新查询数据,
     url = url || this.state.url; //得到旧的url
     if (url) {
-      params = params || this.state.params; //如果不传则用旧的
-      //查询条件发生，查询第一页
-      let pageIndex = func.diff(params, this.state.params, false)
+      params = params === undefined ? this.state.params : params; //如果不传则用旧的
+      //查询条件发生改变，查询第一页
+      let pageIndex = func.diff(params, this.state.params)
         ? 1
         : this.state.pageIndex;
       this.loadData(

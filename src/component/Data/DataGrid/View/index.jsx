@@ -2,20 +2,38 @@ import React from "react";
 
 import GridHeader from "./GridHeader";
 import GridBody from "./GridBody";
+import GridFooter from "./GridFooter";
 import GridColGroup from "./GridColGroup";
 import Pagination from "../../Pagination";
 import GridLoading from "./GridLoading";
 import func from "../../../libs/func";
 import Table from "../../Table/Table";
-import config from "../config";
-
+import Filter from "./Filter";
+import { TableCell } from "../../Table";
 class Grid extends React.Component {
   constructor(props) {
     super(props);
+    this.filterRef = React.createRef();
     this.state = {};
+    this.filterOpen = this.filterOpen.bind(this);
     this.onHeaderMouseDown = this.onHeaderMouseDown.bind(this);
     this.onDivideMouseMove = this.onDivideMouseMove.bind(this);
     this.onDivideMouseUp = this.onDivideMouseUp.bind(this);
+  }
+  /**
+   * 打开筛选面板
+   * @param {*} headerRowIndex
+   * @param {*} headerColumnIndex
+   * @param {*} header
+   * @param {*} event
+   */
+  filterOpen(headerRowIndex, headerColumnIndex, header, event) {
+    this.filterRef.current.open(
+      headerRowIndex,
+      headerColumnIndex,
+      header,
+      event
+    );
   }
   /**
    * 表头鼠标按下事件
@@ -192,7 +210,6 @@ class Grid extends React.Component {
       <GridHeader
         headers={this.props.headers}
         headerWidth={this.props.headerWidth}
-        borderAble={this.props.borderAble}
         selectAble={this.props.selectAble}
         singleSelect={this.props.singleSelect}
         rowNumber={this.props.rowNumber}
@@ -203,7 +220,22 @@ class Grid extends React.Component {
         isCheckAll={this.props.isCheckAll}
         onHeaderMouseDown={this.onHeaderMouseDown}
         onSort={this.props.onSort}
+        filterOpen={this.filterOpen}
       ></GridHeader>
+    );
+  }
+
+  /**
+   * 处理渲染
+   */
+  renderFilter() {
+    return (
+      <Filter
+        key="filter"
+        containerid={this.props.containerid}
+        onFilter={this.props.onFilter}
+        ref={this.filterRef}
+      ></Filter>
     );
   }
 
@@ -226,6 +258,7 @@ class Grid extends React.Component {
         singleSelect={this.props.singleSelect}
         rowNumber={this.props.rowNumber}
         detailAble={this.props.detailAble}
+        editAble={this.props.editAble}
         editIndex={this.props.editIndex}
         detailIndex={this.props.detailIndex}
         detailView={this.props.detailView}
@@ -243,19 +276,34 @@ class Grid extends React.Component {
   }
 
   /**
-   * 表尾 todo
+   * 表尾
    */
   renderFooter() {
-    return null;
+    return this.props.footerAble ? (
+      <GridFooter
+        selectAble={this.props.selectAble}
+        rowNumber={this.props.rowNumber}
+        detailAble={this.props.detailAble}
+        // 注意这里的数据源不一样
+        data={this.props.data}
+        url={this.props.url}
+        headers={this.props.headers}
+      ></GridFooter>
+    ) : null;
   }
   /**
    * 真实的表格
    */
-  renderTable(height) {
+  renderTable() {
     // 是否有数据
     let hasData = this.props?.visibleData?.length > 0 ? true : false;
     let colgroup = this.renderColGruop();
     let headerControl = this.renderHeader();
+    let height = this.props.pagination
+      ? this.props.pagePosition === "both"
+        ? "calc(100% - 80px)"
+        : "calc(100% - 40px)"
+      : "100%";
     return (
       <div
         className="wasabi-table-container"
@@ -265,22 +313,21 @@ class Grid extends React.Component {
         style={{ height: height }}
       >
         {/* 表头独立是为了在紧凑表格宽度不够时 更好看一点*/}
-        <div className="table-fixedth">
-          <Table
-            className={
-              (this.props.borderAble ? " " : " table-no-bordered ") +
-              (this.props.editAble ? " edit " : "")
-            }
-            id={this.props.tableHeaderId}
-          >
-            {
-              /**colgroup */
-              colgroup
-            }
-            {/* 表头 */}
-            {headerControl}
-          </Table>
-        </div>
+        <Table
+          className={
+            " table-fixedth " +
+            (this.props.borderAble ? " " : " table-no-bordered ") +
+            (this.props.editAble ? " edit " : "")
+          }
+          id={this.props.tableHeaderId}
+        >
+          {
+            /**colgroup */
+            colgroup
+          }
+          {/* 表头 */}
+          {headerControl}
+        </Table>
         {/* 真实的表格  */}
         {hasData ? (
           <Table
@@ -295,13 +342,17 @@ class Grid extends React.Component {
             {/* 表体 */}
             {this.renderBody()}
             {/* 表尾 todo */}
-            {/* <tfoot>{this.renderFooter()}</tfoot> */}
+            {this.renderFooter()}
           </Table>
         ) : null}
-        <div className="wasabi-virtual-height"></div>
+        <div key="virtual" className="wasabi-virtual-height"></div>
 
         {/* 拖动列时的分隔线  */}
-        <div className="wasabi-grid-divide" id={this.props.divideid}></div>
+        <div
+          key="divide"
+          className="wasabi-grid-divide"
+          id={this.props.divideid}
+        ></div>
       </div>
     );
   }
@@ -374,6 +425,7 @@ class Grid extends React.Component {
         style={style}
       >
         {grid}
+        {this.renderFilter()}
       </div>
     );
   }

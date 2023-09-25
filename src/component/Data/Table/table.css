@@ -94,6 +94,7 @@ border奇怪的现象，出现变粗的现象
 .wasabi-table-cell .dropcontainter {
   position: absolute;
 }
+
 .wasabi-table td.focus .wasabi-input {
   border: 1px solid var(--primary-color);
   text-align: inherit;

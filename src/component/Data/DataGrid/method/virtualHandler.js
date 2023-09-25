@@ -143,13 +143,13 @@ export default {
           return item;
         });
 
-        // 数据重新加载，需要重新调整宽度与高度
-        this.neddAdjustvirtualWidthAndHeight = true;
-
-        this.setState({
-          needVirtualHandler: false, //虚拟列表配置完成
-          visibleData: visibleData,
-        });
+        this.setState(
+          {
+            needVirtualHandler: false, //虚拟列表配置完成
+            visibleData: visibleData,
+          },
+          () => {}
+        );
       }
     } catch (e) {
       console.log("scrollShowVisibleData error", e);
@@ -162,11 +162,14 @@ export default {
   adjustvirtual() {
     //设置总高度;
     try {
-      this.neddAdjustvirtualWidthAndHeight = false; //设置完成
-      setTimeout(() => {
+      if (this.state.needVirtualHandler === false) {
+        //虚拟列表调整完成
         this.adjustItemHeight(); //调整行高
         this.adjustColumnWidth(); //调整宽度
-      }, 10);
+      } else if (this.state.needVirtualHandler !== true) {
+        // 没有 虚拟列表
+        this.adjustColumnWidth(); //调整宽度
+      }
     } catch (e) {
     } finally {
     }
@@ -299,7 +302,7 @@ export default {
         if (func.diff(this.oldHeaderWidth, this.headerWidth)) {
           realTable.style.width = tableWidth + "px";
           tableHeader.style.width = tableWidth + "px";
-          let stickyLeft = this.props.borderAble ? 1 : 0; //偏移量,表格左边有border
+          let stickyLeft = 0;
           let stickyRight = 0;
           if (this.props.detailAble) {
             stickyLeft += config.detailWidth;
@@ -313,60 +316,77 @@ export default {
 
           //如果列的宽度有变化才重新渲染
           try {
-            if (realTable && tableHeader) {
-              let headertrs = tableHeader.children[1].children; // 表头的行，可能有多行
-              let headersths = []; // 表头占据有效列的列
-              for (let i = 0; i < headertrs.length; i++) {
-                let ths = headertrs[i].children;
-                for (let j = 0; j < ths.length; j++) {
-                  if (ths[j].getAttribute("colSpan") === "1") {
-                    headersths.push(ths[j]);
-                  }
+            let headertrs = tableHeader.children[1].children; // 表头的行，可能有多行
+            let headersths = []; // 表头占据有效列的列，用于设置固定列，todo这里可能有问题，跨几列的列，处理进来有点麻烦，后期再说
+            for (let i = 0; i < headertrs.length; i++) {
+              let ths = headertrs[i].children;
+              for (let j = 0; j < ths.length; j++) {
+                if (ths[j].getAttribute("colSpan") === "1") {
+                  headersths.push(ths[j]);
                 }
               }
+            }
 
-              for (let i = 0; i < this.headerWidth.length; i++) {
-                const { columnIndex, sticky, width } = this.headerWidth[i];
+            for (let i = 0; i < this.headerWidth.length; i++) {
+              const { columnIndex, sticky, width } = this.headerWidth[i];
 
-                // 设置头部宽度
-                let col = tableHeader?.children[0].children[columnIndex];
-                col && col.setAttribute("width", width);
-                // 设置表格宽度
-                col = realTable?.children[0].children[columnIndex];
-                col && col.setAttribute("width", width);
+              // 设置头部宽度
+              let col = tableHeader?.children[0].children[columnIndex];
+              col && col.setAttribute("width", width);
+              // 设置表格宽度
+              col = realTable?.children[0].children[columnIndex];
+              col && col.setAttribute("width", width);
 
-                // 设置左固定列，这里不中断for，因为每一列都设置宽度
-                if (sticky === "left") {
-                  // 表头
+              // 设置左固定列，这里不中断for，因为每一列都设置宽度
+              if (sticky === "left") {
+                // 表头
 
-                  headersths[columnIndex].style.left = stickyLeft + "px";
+                headersths[columnIndex].style.left = stickyLeft + "px";
 
-                  // 表体
-                  let trs = realTable.children[1].children;
-                  for (let i = 0; i < trs.length; i++) {
-                    trs[i].children[columnIndex].style.left = stickyLeft + "px";
-                  }
-                  stickyLeft += width;
+                // 表体
+                let trs = realTable.children[1].children;
+                for (let i = 0; i < trs.length; i++) {
+                  trs[i].children[columnIndex].style.left = stickyLeft + "px";
                 }
+                // 表尾
+                if (realTable.children.length === 3) {
+                  let footerFirst =
+                    realTable.children[2].children[0].children[0];
+                  let colSpan = footerFirst.getAttribute("colSpan") * 1;
+                  let footertds = realTable.children[2].children[0].children;
+                  footertds[columnIndex - colSpan + 1].style.left =
+                    stickyLeft + "px";
+                }
+
+                stickyLeft += width;
               }
+            }
 
-              //   // 设置右固定列 固定列是连续的，如果没有了就马上中断for
-              for (let i = this.headerWidth.length - 1; i >= 0; i--) {
-                const { columnIndex, sticky, width } = this.headerWidth[i];
-                if (sticky === "right") {
-                  // 表头
-                  headersths[columnIndex].style.right = stickyRight + "px";
+            //   设置右固定列 固定列是连续的，如果没有了就马上中断for
+            for (let i = this.headerWidth.length - 1; i >= 0; i--) {
+              const { columnIndex, sticky, width } = this.headerWidth[i];
+              if (sticky === "right") {
+                // 表头
+                headersths[columnIndex].style.right = stickyRight + "px";
 
-                  // 表体
-                  let trs = realTable.children[1].children;
-                  for (let i = 0; i < trs.length; i++) {
-                    trs[i].children[columnIndex].style.right =
-                      stickyRight + "px";
-                  }
-                  stickyRight += width;
-                } else {
-                  break; // 固定列是连续的，如果没有了就马上中断for
+                // 表体
+                let trs = realTable.children[1].children;
+                for (let i = 0; i < trs.length; i++) {
+                  trs[i].children[columnIndex].style.right = stickyRight + "px";
                 }
+
+                // 表尾
+                if (realTable.children.length === 3) {
+                  let footerFirst =
+                    realTable.children[2].children[0].children[0];
+                  let colSpan = footerFirst.getAttribute("colSpan") * 1;
+                  let footertds = realTable.children[2].children[0].children;
+                  footertds[columnIndex - colSpan + 1].style.right =
+                    stickyRight + "px";
+                }
+                stickyRight += width;
+              } else {
+                break; // 固定列是连续的，如果没有了就马上中断for
               }
             }
           } catch (e) {}

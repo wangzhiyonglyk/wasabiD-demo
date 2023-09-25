@@ -118,6 +118,8 @@ class Input extends React.PureComponent {
       "url",
       "number",
       "integer",
+      "numberrange",
+      "integerrange",
       "alpha",
       "alphanum",
       "mobile",

@@ -29,7 +29,9 @@ export default {
     "alpha", //英文字母
     "alphanum", //英文字母与数字
     "integer", //整型数据
+    "integerrange", // 整型数据范围
     "number", //数字
+    "numberrange", // 数字范围
     "textarea", //多行文本
     "select", //下拉框
     "radio", //单选框

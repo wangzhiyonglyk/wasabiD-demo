@@ -9,6 +9,7 @@ import func from "../../../libs/func/index.js";
 import Msg from "../../../Info/Msg.jsx";
 import api from "wasabi-api";
 import config from "../config.js";
+import { dataFilter, dataSort } from "./datafunc.js";
 export default {
   /**
    * 处理表格可视化数据
@@ -25,8 +26,8 @@ export default {
       return;
     }
     if (this.state.visibleData?.length > 0) {
-      //只是调整宽度，用于表格自适应
-      this.adjustColumnWidth();
+      //只是调整宽高，用于表格自适应
+      this.adjustvirtual();
     }
   },
   /**
@@ -36,10 +37,20 @@ export default {
    * @param {*} pageIndex 页号
    * @param {*} sortName  排序字段
    * @param {*} sortOrder  排序方式
-   * @param {*} params 参数
+   * @param {*} params 参数，从父组件额外传过来的，（props，或者reload方法）
+   *@param {*} filters 头部选择的过滤条件
    */
-  loadData: function (url, pageSize, pageIndex, sortName, sortOrder, params) {
+  loadData: function (
+    url,
+    pageSize,
+    pageIndex,
+    sortName,
+    sortOrder,
+    params,
+    filters
+  ) {
     ////数据处理函数,更新
+
     if (
       this.state.addData.size > 0 ||
       this.state.deleteData.size > 0 ||
@@ -52,7 +63,8 @@ export default {
           pageIndex,
           sortName,
           sortOrder,
-          params
+          params,
+          filters
         );
       });
     } else {
@@ -62,7 +74,8 @@ export default {
         pageIndex,
         sortName,
         sortOrder,
-        params
+        params,
+        filters
       );
     }
   },
@@ -74,7 +87,8 @@ export default {
    * @param {*} pageIndex 页号
    * @param {*} sortName  排序字段
    * @param {*} sortOrder  排序方式
-   * @param {*} params 参数
+   * @param {*} params 参数，从父组件额外传过来的，（props，或者reload方法）
+   *@param {*} filters 头部选择的过滤条件
    */
   loadDataConfirm: function (
     url,
@@ -82,20 +96,36 @@ export default {
     pageIndex,
     sortName,
     sortOrder,
-    params
+    params,
+    filters
   ) {
     /*
      url与params而url可能是通过reload方法传进来的,并没有作为状态值绑定
      headers可能是后期才传了,见Page组件可知
      所以此处需要详细判断
      */
+
+    //给默认值,查询条件不行，因为有清空的查询条件的情况
+    url = url ?? this.state.url;
+    pageSize = pageSize ?? this.state.pageSize;
+    pageIndex = pageIndex ?? this.state.pageIndex;
+    sortName = sortName ?? this.state.sortName;
+    sortOrder = sortOrder ?? this.state.sortOrder;
+    filters = filters ?? this.state.filters;
+
     if (url) {
       this.setState({
         urlLoadData: false, // 开始查询，设置为false,防止重复更新
         loading: true, // 加载状态
         url: url, //更新,有可能从reload那里直接改变了url
       });
-      let httpParams = func.clone(params) || {}; //本次请求的参数
+      let httpParams = { ...params }; //本次请求的参数
+      if (filters) {
+        for (let key in filters) {
+          httpParams[key] = filters[key].value;
+        }
+      }
+
       if (this.props.pagination == true) {
         //追加这四个参数
         httpParams.pageSize = pageSize;
@@ -119,7 +149,8 @@ export default {
           pageIndex,
           sortName,
           sortOrder,
-          params
+          params,
+          filters
         ),
         error: this.loadError,
         type: this.props.httpType ? this.props.httpType.toUpperCase() : "POST",
@@ -129,27 +160,51 @@ export default {
       console.log("datagrid-开始查询:", fetchmodel);
       let wasabi_api = window.api || api;
       wasabi_api.ajax(fetchmodel);
+    } else if (typeof this.props.onUpdate === "function") {
+      // 父组件有更新事件,父组件自行更新
+      this.props.onUpdate(pageSize, pageIndex, sortName, sortOrder, httpParams);
     } else {
-      //没有传url
-      if (this.props.onUpdate) {
-        // 父组件有更新事件
-        this.props.onUpdate(pageSize, pageIndex, sortName, sortOrder);
-      } else {
-        //判断之前传入的，从当前数据中切割数据
-        if (this.state.data.length >= (pageSize || 20) * (pageIndex - 1)) {
-          let data = this.state.data.slice(
-            ((pageIndex || 1) - 1) * (pageSize || 20),
-            (pageIndex || 1) * (pageSize || 20)
-          );
-          this.setState({
-            visibieData: data,
-            pageIndex: pageIndex,
-            pageSize: pageSize,
-            sortName,
-            sortOrder,
-          });
-        }
+      let data = this.state.rawData;
+
+      if (filters !== this.state.filters) {
+        // 有过滤
+        data = dataFilter(data, filters);
       }
+      if (
+        this.state.sortName !== sortName ||
+        this.state.sortOrder !== sortOrder
+      ) {
+        // 说明是本地重新排序
+        data = dataSort(this.state.rawData, sortName, sortOrder);
+      }
+      // 可见数据
+      let visibleData;
+      // 如果有分页则重新切割
+      if (this.props.pagination) {
+        visibleData = data.slice(
+          (pageIndex - 1) * pageSize,
+          pageIndex * pageSize
+        );
+      } else {
+        // 不分页，如果有虚拟列表则设置
+        visibleData = data.length < config.minDataTotal ? data : [];
+      }
+      this.setState({
+        loading: false,
+        data: data,
+        visibleData: visibleData,
+        pageIndex: pageIndex,
+        pageSize: pageSize,
+        sortName,
+        sortOrder,
+        filters: filters,
+        //分页或小于配置值则不设置，其他则重新设置虚拟列表
+        needVirtualHandler: this.props.pagination
+          ? null
+          : data?.length < config.minDataTotal
+          ? null
+          : true,
+      });
     }
   },
   /**

@@ -88,3 +88,69 @@ export function getRealRowIndex(
     : index;
   return rowIndex;
 }
+
+/**
+ * 数据过滤
+ * @param {*} data
+ * @param {*} filters
+ */
+export function dataFilter(data, filters) {
+  let result = data;
+  for (let key in filters) {
+    result = result.filter((rowData) => {
+      if (filters[key].type.indexOf("range") > -1) {
+        // 范围类的匹配
+        let values = filters[key].value.split(",");
+        return rowData[key] >= values[0] && rowData[key] <= values[1];
+      } else if (["integer", "number", "rate"].includes(filters[key].type)) {
+        // 数字类的匹配
+        let valueGroup = filters[key].value.split(","); //
+        let isFilter = false;
+        for (let i = 0; i < valueGroup.length; i++) {
+          values = valueGroup[0].split("-");
+          if (values.length === 1) {
+            if (rowData[key] == values[0]) {
+              isFilter = true;
+              break;
+            }
+          } else if (values.length === 2) {
+            if (rowData[key] >= values[0] && rowData[key] <= values[1]) {
+              isFilter = true;
+              break;
+            }
+          }
+        }
+        return isFilter;
+      } else if (
+        ["select", "picker", "treepicker", "gridpicker"].includes(
+          filters[key].type
+        )
+      ) {
+        // 多选
+        let valueGroup = filters[key].value.split(","); //
+        return valueGroup.includes(rowData[key] + "");
+      } else {
+        // 其他文本类的
+        return (rowData[key] + "").indexOf(filters[key].value) > -1;
+      }
+    });
+  }
+  return result;
+}
+
+/**
+ * 数据排序
+ * @param {*} data
+ * @param {*} sortName
+ * @param {*} sortOrder
+ */
+export function dataSort(data, sortName, sortOrder) {
+  data.sort((newItem, oldItem) => {
+    if (sortOrder === "asc") {
+      return newItem[sortName] > oldItem[sortName] ? 1 : -1;
+    } else {
+      return newItem[sortName] < oldItem[sortName] ? 1 : -1;
+    }
+  });
+  return;
+}

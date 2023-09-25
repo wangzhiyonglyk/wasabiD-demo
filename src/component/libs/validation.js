@@ -36,6 +36,8 @@ let validation = {
     string: "最小长度不能少于 {0} 个字符",
   },
   number: "必须为数字",
+  numberrange: "格式:1.5-4.5,1.4-,-5,多范围逗号隔开",
+  integerrange: "格式:1-4,1-,-5,多范围逗号隔开",
   password: "密码中必须包含小字母，大写字母、数字,8到30字符",
   strongPassword: "密码中必须包含小字母,大写字母、数字、特称字符,8到30字符",
   url: "url格式不正确",
