@@ -28,7 +28,7 @@
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    font-size: 14px;
+    font-size: var(--font-size);
     color: var(--color);
     display: flex;
     flex-direction: column;
@@ -59,7 +59,7 @@
 
 .wasabi-upload-cloud .wasabi-upload-text {
     color: var(--color);
-    font-size: 14px;
+    font-size: var(--font-size);
     text-align: center;
 }
 

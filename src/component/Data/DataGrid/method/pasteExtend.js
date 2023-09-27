@@ -7,7 +7,7 @@
 import Msg from "../../../Info/Msg";
 import excel from "../../../libs/excel";
 import fileType from "../../../libs/fileType";
-import pageSizeList from "../../Pagination/pageSizeList.js";
+
 export default {
   /**
    * 停靠
@@ -30,10 +30,12 @@ export default {
     ) {
       try {
         if (fileType.filter("excel", event.dataTransfer.files[0])) {
-          excel.readFile(event.dataTransfer.files[0]).then((workbook) => {
-            let json = excel.workbook2json(workbook, this.state.length);
-            this.json2data(json);
-          });
+          excel
+            .readFileToWorkbook(event.dataTransfer.files[0])
+            .then((workbook) => {
+              let json = excel.workbook2json(workbook, this.state.length);
+              this.json2data(json);
+            });
         } else {
           Msg.error("只接受excel文件");
         }

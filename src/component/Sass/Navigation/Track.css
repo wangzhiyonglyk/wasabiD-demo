@@ -7,7 +7,7 @@
   min-width: 400px;
   max-width: 600px;
   padding: 30px 0px 20px;
-  font-size: 14px;
+  font-size: var(--font-size);
   color: var(--color);
 }
 .wasabi-track .express {

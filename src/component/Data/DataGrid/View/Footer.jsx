@@ -160,7 +160,7 @@ const Footer = function (props) {
       key={"footer-" + headerRowIndex + "-" + headerColumnIndex.toString()}
       position="footer"
       align={align}
-      tdStyle={{
+      style={{
         position: sticky ? "sticky" : null,
         zIndex: sticky ? 1 : null,
         left: sticky === "left" ? "0px" : null,

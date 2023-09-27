@@ -11,7 +11,7 @@ desc:面板组件样式
   border-radius: 4px;
   -webkit-transition: height 1s;
   transition: height 1s;
-  font-size: 14px;
+  font-size: var(--font-size);
   color: var(--color);
 }
 

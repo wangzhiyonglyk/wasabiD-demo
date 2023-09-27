@@ -146,7 +146,7 @@ func.cookies = {
  * @param {*} title 标题
  * @param {*} extend 扩展名
  */
-func.download = function (blob, title, extend = ".xls") {
+func.download = function (blob, title, extend = ".xlsx") {
   if (typeof blob === "object" && blob instanceof Blob) {
     blob = URL.createObjectURL(blob); // 创建blob地址
   } else {

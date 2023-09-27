@@ -20,8 +20,8 @@
     font-size: var(--font-size);
     color: var(--color);
     user-select: none;
-    height: 40px;
-    line-height: 40px;
+    height: var(--tree-height);
+    line-height: var(--tree-height);
 }
 
 .wasabi-contentmenu .menu-item:hover {

@@ -1,27 +1,25 @@
-.wasabi-article{
-position: relative;
-overflow: hidden;
-margin:auto;
+.wasabi-article {
+    position: relative;
+    overflow: hidden;
+    margin: auto;
 }
 .wasabi-article .wasabi-article-catalog {
-width: 100%;
-border-right: 1px solid var(--border-color);    
-height: 100%;
-padding-top: 10px;
-overflow-y: hidden;
+    width: 100%;
+    border-right: 1px solid var(--border-color);
+    height: 100%;
+    padding-top: 10px;
+    overflow-y: hidden;
 }
 
-
-.wasabi-article .wasabi-article-catalog .tool{
-    width:100% ;
+.wasabi-article .wasabi-article-catalog .tool {
+    width: 100%;
     height: 44px;
 }
-.wasabi-article .wasabi-article-catalog .list{
+.wasabi-article .wasabi-article-catalog .list {
     height: 100%;
     overflow-y: auto;
     list-style: none;
     margin-top: 10px;
-
 }
 
 .wasabi-article .wasabi-article-catalog .list li {
@@ -32,14 +30,14 @@ overflow-y: hidden;
     align-items: center;
     cursor: pointer;
 }
-.wasabi-article .wasabi-article-catalog .list li:last-child{
+.wasabi-article .wasabi-article-catalog .list li:last-child {
     border-bottom: 1px solid var(--border-color);
 }
-.wasabi-article .wasabi-article-catalog .list li:hover,.wasabi-article .wasabi-article-catalog .list li.active
-{
+.wasabi-article .wasabi-article-catalog .list li:hover,
+.wasabi-article .wasabi-article-catalog .list li.active {
     background-color: var(--background-color);
 }
-.wasabi-article .wasabi-article-ellipsis{
+.wasabi-article .wasabi-article-ellipsis {
     display: block;
     height: 30px;
     line-height: 30px;
@@ -51,19 +49,19 @@ overflow-y: hidden;
     margin-left: 10px;
     width: 220px;
 }
-.wasabi-article .wasabi-article-saveStatus{
+.wasabi-article .wasabi-article-saveStatus {
     position: absolute;
     left: 5px;
     top: 2px;
 }
 
-.wasabi-article .wasabi-article-center{
+.wasabi-article .wasabi-article-center {
     width: 100%;
     height: 100%;
     border-right: 1px solid var(--border-color);
 }
 
-.wasabi-article .wasabi-article-title{
+.wasabi-article .wasabi-article-title {
     flex-shrink: 0;
     width: 100%;
     border: none;
@@ -79,7 +77,7 @@ overflow-y: hidden;
     padding: 10px;
 }
 
-.wasabi-article .wasabi-article-headericon{
+.wasabi-article .wasabi-article-headericon {
     display: block;
     border-radius: 50%;
     border: 1px solid #eee;
@@ -90,12 +88,12 @@ overflow-y: hidden;
     margin-left: 10px;
 }
 
-.wasabi-article .wasabi-article-author{
-    font-size: 14px;
+.wasabi-article .wasabi-article-author {
+    font-size: var(--font-size);
     margin-right: 8px;
 }
 
-.wasabi-article .wasabi-article-content{
+.wasabi-article .wasabi-article-content {
     width: 100%;
     position: relative;
     display: flex;
@@ -105,13 +103,12 @@ overflow-y: hidden;
     list-style: none;
     flex-direction: column;
     margin-bottom: 10px;
-
 }
-.wasabi-article-content .title{
+.wasabi-article-content .title {
     border: none;
     width: 100%;
     outline: none;
-    text-indent:1em;
+    text-indent: 1em;
     -webkit-user-modify: read-write-plaintext-only;
     user-select: read-write-plaintext-only;
     font-size: 16px;
@@ -120,22 +117,22 @@ overflow-y: hidden;
     font-weight: bold;
 }
 
-.wasabi-article-content .txt{
+.wasabi-article-content .txt {
     border: none;
     width: 100%;
     outline: none;
-    text-indent:2em;
+    text-indent: 2em;
     -webkit-user-modify: read-write-plaintext-only;
     user-select: read-write-plaintext-only;
     margin-top: 10px;
     text-align: left;
 }
-.wasabi-article-content .img{
-    margin-top:20px;
+.wasabi-article-content .img {
+    margin-top: 20px;
     width: 100%;
 }
-.wasabi-article-content .wasabi-upload{
-    margin:auto;
+.wasabi-article-content .wasabi-upload {
+    margin: auto;
     margin-top: 10px;
     width: 100%;
 }

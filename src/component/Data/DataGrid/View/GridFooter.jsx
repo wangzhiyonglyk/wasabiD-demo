@@ -40,7 +40,7 @@ function GridFooter({
       <TableCell
         colSpan={colSpan}
         key="sta1"
-        tdStyle={{
+        style={{
           position: "sticky",
           left: 0,
           zIndex: 1,

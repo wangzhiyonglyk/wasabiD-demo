@@ -16,7 +16,7 @@ desc:模态窗口样式
   bottom: 0;
   z-index: 3;
   overflow: hidden;
-  font-size: 14px;
+  font-size: var(--font-size);
   color: var(--color);
 }
 

@@ -16,6 +16,9 @@ border奇怪的现象，出现变粗的现象
   left: 0px;
   top: 0px;
   min-width: 500px;
+
+  border-left: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color);
 }
 
 .wasabi-table td,
@@ -41,7 +44,7 @@ border奇怪的现象，出现变粗的现象
 }
 
 .wasabi-table > tbody > tr.selected td {
-  background-color: var(--background-color);
+  background-color: var(--background-focus-color);
 }
 
 /* 树表格与交叉表不显示 */
@@ -67,7 +70,10 @@ border奇怪的现象，出现变粗的现象
 /*
 没有边框的时候
 */
-
+.wasabi-table.table-no-bordered {
+  border-bottom: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+}
 .wasabi-table.table-no-bordered td {
   border: none;
   border-top: 1px solid var(--border-color);
@@ -91,9 +97,6 @@ border奇怪的现象，出现变粗的现象
   overflow: visible;
   padding: 1px;
 }
-.wasabi-table-cell .dropcontainter {
-  position: absolute;
-}
 
 .wasabi-table td.focus .wasabi-input {
   border: 1px solid var(--primary-color);
@@ -113,7 +116,7 @@ border奇怪的现象，出现变粗的现象
   font-size: inherit;
   white-space: nowrap;
   overflow: hidden;
-  height: 40px;
+  height: var(--table-height);
   display: flex;
   justify-content: center;
   align-items: center;

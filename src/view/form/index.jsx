@@ -45,14 +45,11 @@ class Home extends React.Component {
       <div>
         <Button onClick={this.onClick}>改变数据 </Button>
         <Input
-          name="image"
-          type="file"
-          accept="image"
-          label="图片上传"
-          url="http://localhost:82/"
-          multiple={true}
+          type="select"
+          name="datetime"
+          label="datetime"
+          value="test"
         ></Input>
-
         <Upload
           name="image"
           type="cloud"

@@ -330,7 +330,7 @@
   height: 30px;
   border-radius: 15px;
   transform-origin: center center;
-  color: var(--deepColor);
+  color: var(--title-color);
   cursor: pointer;
   font-size: var(--font-size);
 }
@@ -407,7 +407,7 @@
 }
 
 .wasabi-time-circle-minute .minute:nth-child(5n) {
-  font-size: 14px;
+  font-size:var(--font-size);
 }
 
 .wasabi-time-circle-minute .minute::before {

@@ -32,6 +32,7 @@ let dom = {
 
     return false;
   },
+
   /**
    * 找到某个css类的祖先节点
    */
@@ -51,7 +52,7 @@ let dom = {
    * @param {*} className
    * @returns
    */
-  descendantByClass(node, className) {
+  findDescendantByClass(node, className) {
     return node && node.querySelector("." + className);
   },
 

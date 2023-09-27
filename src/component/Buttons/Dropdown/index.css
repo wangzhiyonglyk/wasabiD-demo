@@ -6,20 +6,18 @@
     -moz-border-radius: 4px;
     -ms-border-radius: 4px;
     -o-border-radius: 4px;
-    font-size: 14px;
+    font-size: var(--font-size);
     color: var(--color);
     padding-right: 6px;
 }
 
-.wasabi-dropdown+.wasabi-dropdown {
+.wasabi-dropdown + .wasabi-dropdown {
     margin-left: 10px;
 }
 
 .wasabi-dropdown[disabled] {
     cursor: not-allowed;
 }
-
-
 
 .wasabi-dropdown .wasabi-dropdown-arrow {
     position: absolute;
@@ -28,7 +26,7 @@
 }
 
 .wasabi-dropdown .wasabi-dropdown-arrow.noicon {
-    top: 12px
+    top: 12px;
 }
 
 .wasabi-dropdown-menu {
@@ -53,7 +51,6 @@
     border-style: solid;
     position: absolute;
     left: 15px;
-
 }
 
 .wasabi-dropdown-menu:before {
@@ -72,7 +69,7 @@
     line-height: 36px;
     padding: 0 20px;
     margin: 0;
-    font-size: 14px;
+    font-size: var(--font-size);
     color: var(--color);
     cursor: pointer;
     outline: none;

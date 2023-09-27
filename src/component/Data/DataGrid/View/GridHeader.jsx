@@ -22,6 +22,7 @@ import CheckBox from "../../../Form/CheckBox";
 import config from "../config";
 import func from "../../../libs/func";
 import Header from "./Header";
+import dom from "../../../libs/dom";
 class GridHeader extends React.Component {
   constructor(props) {
     super(props);
@@ -38,9 +39,20 @@ class GridHeader extends React.Component {
    */
   onMouseMove(event) {
     try {
-      let offsetX = event && event.nativeEvent && event.nativeEvent.offsetX;
-      let width = event.target.getBoundingClientRect().width;
-      if (width - offsetX <= 4) {
+      let headerNode;
+      if (event.target.tagName !== "TH") {
+        let headerNode = dom.findAncestorByClasss(
+          event.target,
+          "wasabi-table-cell"
+        );
+        headerNode = headerNode.parentNode;
+      } else {
+        headerNode = event.target;
+      }
+      let clientX = event && event.clientX;
+      let position = headerNode.getBoundingClientRect();
+      let leftPosition = position.left + position.width;
+      if (leftPosition - clientX <= 6) {
         event.target.style.cursor = "ew-resize";
       } else {
         event.target.style.cursor = "pointer";
@@ -73,7 +85,7 @@ class GridHeader extends React.Component {
           key="headerdetail"
           position="header"
           className="wasabi-detail-column"
-          thStyle={{
+          style={{
             position: "sticky",
             left: stickyLeft,
             zIndex: 1,
@@ -90,7 +102,7 @@ class GridHeader extends React.Component {
           key="headerorder"
           position="header"
           className="wasabi-order-column"
-          thStyle={{
+          style={{
             position: "sticky",
             left: stickyLeft,
             zIndex: 1,
@@ -117,7 +129,7 @@ class GridHeader extends React.Component {
           key="headercheckbox"
           position="header"
           className="wasabi-select-column"
-          thStyle={{
+          style={{
             position: "sticky",
             left: stickyLeft,
             zIndex: 1,
@@ -196,7 +208,14 @@ class GridHeader extends React.Component {
       headerControl[0] = [].concat(control, headerControl[0]);
     }
     return (
-      <TableHead style={{ position: "sticky", top: 0, zIndex: 1 }}>
+      <TableHead
+        style={{
+          display: this.props.hide ? "none" : null,
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+        }}
+      >
         {headerControl &&
           headerControl.map((tritem, rowindex) => {
             return <TableRow key={rowindex}>{tritem}</TableRow>;

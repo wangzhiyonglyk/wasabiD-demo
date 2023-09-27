@@ -9,7 +9,7 @@ import GridLoading from "./GridLoading";
 import func from "../../../libs/func";
 import Table from "../../Table/Table";
 import Filter from "./Filter";
-import { TableCell } from "../../Table";
+
 class Grid extends React.Component {
   constructor(props) {
     super(props);
@@ -205,9 +205,10 @@ class Grid extends React.Component {
   /**
    * 处理表头
    */
-  renderHeader() {
+  renderHeader(hide) {
     return (
       <GridHeader
+        hide={hide}
         headers={this.props.headers}
         headerWidth={this.props.headerWidth}
         selectAble={this.props.selectAble}
@@ -298,19 +299,13 @@ class Grid extends React.Component {
     // 是否有数据
     let hasData = this.props?.visibleData?.length > 0 ? true : false;
     let colgroup = this.renderColGruop();
-    let headerControl = this.renderHeader();
-    let height = this.props.pagination
-      ? this.props.pagePosition === "both"
-        ? "calc(100% - 80px)"
-        : "calc(100% - 40px)"
-      : "100%";
+
     return (
       <div
         className="wasabi-table-container"
         key="wasabi-table-container"
         onScroll={this.props.onVirtualScroll}
         id={this.props.containerid}
-        style={{ height: height }}
       >
         {/* 表头独立是为了在紧凑表格宽度不够时 更好看一点*/}
         <Table
@@ -326,7 +321,7 @@ class Grid extends React.Component {
             colgroup
           }
           {/* 表头 */}
-          {headerControl}
+          {this.renderHeader()}
         </Table>
         {/* 真实的表格  */}
         {hasData ? (
@@ -338,7 +333,8 @@ class Grid extends React.Component {
               /**colgroup */
               colgroup
             }
-
+            {/* 表头 隐藏，只是用于导出*/}
+            {this.renderHeader(true)}
             {/* 表体 */}
             {this.renderBody()}
             {/* 表尾 todo */}
@@ -379,7 +375,7 @@ class Grid extends React.Component {
           key="p1"
           reload={this.props.reload}
           exportAble={this.props.exportAble}
-          export={this.props.export}
+          export={this.props.export.bind(this, null)}
           onChange={this.props.paginationHandler}
           pageIndex={this.props.pageIndex}
           pageSize={this.props.pageSize}
@@ -399,7 +395,7 @@ class Grid extends React.Component {
           key="p2"
           reload={this.props.reload}
           exportAble={this.props.exportAble}
-          export={this.props.export}
+          export={this.props.export.bind(this, null)}
           onChange={this.props.paginationHandler}
           pageIndex={this.props.pageIndex}
           pageSize={this.props.pageSize}

@@ -77,7 +77,7 @@ const Cell = function ({
           ? " focus "
           : "") + (header.exportAble === false ? "wasabi-noexport" : "")
       } //为了不导出
-      tdStyle={{
+      style={{
         textAlign: header.align,
         position: header.sticky ? "sticky" : null,
         zIndex: header.sticky ? 1 : null,

@@ -1,11 +1,11 @@
 import { read, write, utils } from "xlsx";
 let excel = {
   /**
-   * 读取excel
-   * @param {*} file
+   * 读取excel,转成二进制数据
+   * @param {*} file 文件流
    * @param {*} callback
    */
-  readFile(file) {
+  readFileToWorkbook(file) {
     try {
       let reader = new FileReader();
       reader.readAsBinaryString(file);
@@ -25,9 +25,9 @@ let excel = {
     }
   },
   /**
-   *
-   * @param {*} workbook
-   * @param {*} sheetIndex
+   * 将工作表的数据转成csv格式
+   * @param {*} workbook 工作簿
+   * @param {*} sheetIndex 工作表序号
    * @returns
    */
   workbook2csv(workbook, sheetIndex = 0) {
@@ -35,16 +35,16 @@ let excel = {
       let sheetNames = workbook.SheetNames; // 工作表名称集合
       let worksheet = workbook.Sheets[sheetNames[sheetIndex]]; // 这里我们只读取第一张sheet
       let csv = utils.sheet_to_csv(worksheet);
-      console.log("csv", csv);
+
       return csv;
     } catch (e) {}
     return null;
   },
 
   /**
-   * 上传的工作表转成json格式
-   * @param {*} workbook
-   * @param {*} sheetIndex
+   * 将工作表的数据转成json格式
+   * @param {*} workbook 工作簿
+   * @param {*} sheetIndex 工作表序号
    * @returns
    */
   workbook2json(workbook, sheetIndex = 0) {
@@ -55,8 +55,11 @@ let excel = {
     return null;
   },
 
-  /***
+  /**
    * csv转json
+   * @param {*} csv
+   * @param {*} headerset 是否有表头，默认有
+   * @returns
    */
   csv2json(csv, headerset = true) {
     let json = {
@@ -88,24 +91,16 @@ let excel = {
     return json;
   },
   /**
-   *
+   * json格式转csv
    * @param {*} json
    * @returns
    */
   json2csv(json) {
     var csv = [];
-    if (
-      json.headers &&
-      json.headers instanceof Array &&
-      json.headers.length > 0
-    ) {
-      let header = [];
-      for (let i = 0; i < json.headers.length; i++) {
-        header.push(json.headers[i]);
-      }
-      csv.push(header.join(","));
+    if (Array.isArray(json.header) && json.header.length > 0) {
+      csv.push(json.header.join(","));
     }
-    if (json.body && json.body instanceof Array && json.body.length > 0) {
+    if (Array.isArray(json.body) && json.body.length > 0) {
       for (let i = 0; i < json.body.length; i++) {
         let row = [];
         for (let j = 0; j < json.body[i].length; j++) {
@@ -116,7 +111,11 @@ let excel = {
     }
     return csv.join("\n") + "\n";
   },
-  // csv转sheet对象
+  /**
+   * csv 转成工作表sheet格式
+   * @param {*} csv
+   * @returns
+   */
   csv2sheet(csv) {
     let sheet = {}; // 将要生成的sheet
     csv = csv.split("\n");
@@ -135,8 +134,8 @@ let excel = {
 
   /**
    * 将一个sheet转成最终的excel文件的blob对象
-   * @param {*} sheet
-   * @param {*} sheetName
+   * @param {*} sheet 工作表sheet格式数据
+   * @param {*} sheetName 工作表名
    * @returns
    */
   sheet2blob(sheet, sheetName) {
@@ -163,6 +162,61 @@ let excel = {
     let blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
 
     return blob;
+  },
+  /**
+   * 导出为excel
+   * @param {*} blob 二进制数据
+   * @param {*} title
+   */
+  exportExcel(blob, title) {
+    if (typeof blob === "object" && blob instanceof Blob) {
+      blob = URL.createObjectURL(blob); // 创建blob地址
+    }
+    title = title || func.dateformat(new Date(), "yyyy-MM-dd HH:mm:ss");
+    let downloadA = document.createElement("a");
+    downloadA.href = blob;
+    downloadA.download = title + ".xlsx";
+    downloadA.click();
+    window.URL.revokeObjectURL(downloadA.href); //释放
+  },
+  /**
+   * json格式数据导出为excel表格
+   * @param {*} json json 数据
+   * @param {*} title 标题
+   */
+  jsonExportExcel(json, title) {
+    try {
+      let csv = this.json2csv(json);
+      let sheet = this.csv2sheet(csv);
+      let blob1 = this.sheet2blob(sheet);
+      this.exportExcel(blob1, title);
+    } catch (e) {
+      if (window.Msg) {
+        window.Msg(e.message);
+      } else {
+        alert(e.message);
+      }
+    }
+  },
+  /**
+   * 表格导出excel表格
+   * @param {*} tableId
+   * @param {*} title
+   */
+  tableExportExcel(tableId, title) {
+    let wb = utils.table_to_book(document.getElementById(tableId));
+    console.log(wb);
+    let wbout = write(wb, { bookType: "xlsx", type: "binary" });
+    function s2ab(s) {
+      let buf = new ArrayBuffer(s.length);
+      let view = new Uint8Array(buf);
+      for (let i = 0; i < s.length; i++) {
+        view[i] = s.charCodeAt(i) & 0xff;
+      }
+      return buf;
+    }
+    let blob1 = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
+    this.exportExcel(blob1, title);
   },
 };
 export default excel;

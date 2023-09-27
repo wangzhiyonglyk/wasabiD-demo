@@ -81,7 +81,15 @@ class DateRangeInput extends React.Component {
           value={valueArr[0]}
           onChange={this.onChange.bind(this, 1)}
         ></DateInput>
-        <span style={{ lineHeight: "40px", marginRight: 10 }}>至</span>
+        <span
+          style={{
+            marginLeft: 2,
+            lineHeight: "var(--input-height)",
+            marginRight: 2,
+          }}
+        >
+          至
+        </span>
         <DateInput
           ref={this.secondinput}
           key="2"

@@ -10,7 +10,7 @@ desc:导入功能组件样式
   display: block;
   margin-top: 20px;
   padding-left: 15px;
-  font-size: 14px;
+  font-size: var(--font-size);
   color: var(--color);
 }
 
@@ -27,8 +27,12 @@ desc:导入功能组件样式
   background-image: none;
   border: 1px solid var(--border-color);
   box-shadow: none !important;
-  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  -webkit-transition:
+    border-color ease-in-out 0.15s,
+    box-shadow ease-in-out 0.15s;
+  transition:
+    border-color ease-in-out 0.15s,
+    box-shadow ease-in-out 0.15s;
   outline: none;
   margin-right: 10px;
 }
@@ -93,5 +97,5 @@ desc:导入功能组件样式
 }
 .import-upload-info .info {
   color: var(--color);
-  font-size: 14px;
+  font-size: var(--font-size);
 }

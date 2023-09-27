@@ -1,15 +1,13 @@
-.wasabi-step{
+.wasabi-step {
     white-space: nowrap;
     display: flex;
 }
 
-
-.wasabi-step-item{
+.wasabi-step-item {
     flex: 1;
     margin-right: 0px;
     display: inline-block;
     color: var(--color);
-
 }
 .wasabi-step-item.default {
     color: var(--primary-color);
@@ -17,27 +15,25 @@
 .wasabi-step-item.primary {
     color: var(--primary-color);
 }
-.wasabi-step-item.info{
+.wasabi-step-item.info {
     color: var(--info-color);
 }
-.wasabi-step-item.success{
-    color: var( --success-color);
+.wasabi-step-item.success {
+    color: var(--success-color);
 }
-.wasabi-step-item.warning{
+.wasabi-step-item.warning {
     color: var(--warning-color);
 }
-.wasabi-step-item.danger{
+.wasabi-step-item.danger {
     color: var(--danger-color);
 }
 
-
-
-.wasabi-step-item-header{
+.wasabi-step-item-header {
     position: relative;
     width: 100%;
     text-align: center;
 }
- .wasabi-step-line{
+.wasabi-step-line {
     height: 2px;
     top: 11px;
     left: 50%;
@@ -46,27 +42,26 @@
     border-color: inherit;
     background-color: var(--border-color);
 }
-.wasabi-step-item.default  .wasabi-step-line{
+.wasabi-step-item.default .wasabi-step-line {
     background-color: var(--primary-color);
 }
-.wasabi-step-item.primary   .wasabi-step-line{
+.wasabi-step-item.primary .wasabi-step-line {
     background-color: var(--primary-color);
 }
-.wasabi-step-item.info  .wasabi-step-line{
+.wasabi-step-item.info .wasabi-step-line {
     background-color: var(--info-color);
 }
-.wasabi-step-item.success  .wasabi-step-line{
-    background-color: var( --success-color);
+.wasabi-step-item.success .wasabi-step-line {
+    background-color: var(--success-color);
 }
-.wasabi-step-item.warning  .wasabi-step-line{
+.wasabi-step-item.warning .wasabi-step-line {
     background-color: var(--warning-color);
 }
-.wasabi-step-item.danger .wasabi-step-line{
+.wasabi-step-item.danger .wasabi-step-line {
     background-color: var(--danger-color);
 }
 
-
-.wasabi-step-icon{
+.wasabi-step-icon {
     position: relative;
     z-index: 1;
     display: inline-flex;
@@ -74,17 +69,16 @@
     align-items: center;
     width: 24px;
     height: 24px;
-    font-size: 14px;
+    font-size: var(--font-size);
     box-sizing: border-box;
     background: #fff;
-   
+
     border-radius: 50%;
     border: 2px solid;
     border-color: inherit;
-  
 }
 
-.wasabi-step-icon-inner{
+.wasabi-step-icon-inner {
     display: inline-block;
     user-select: none;
     text-align: center;
@@ -93,11 +87,11 @@
     color: inherit;
 }
 
-.wasabi-step-content{
+.wasabi-step-content {
     text-align: center;
     white-space: normal;
 }
-.wasabi-step-title{
+.wasabi-step-title {
     color: inherit;
     font-size: 16px;
     line-height: 38px;
@@ -105,7 +99,7 @@
     white-space: normal;
 }
 
-.wasabi-step-desc{
+.wasabi-step-desc {
     color: inherit;
     margin-top: -5px;
     font-size: 12px;

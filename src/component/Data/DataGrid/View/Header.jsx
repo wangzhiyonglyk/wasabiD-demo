@@ -3,6 +3,8 @@
  *
  * name:列名
  * label:列描述
+ * className:样式，
+ * style:样式，
  * headerContent:头部内容函数（name, label)
  * footerContent:尾部内容函数 (sType,name, label)
  * statsType:"sum", 统计方式，avg,平均值，min最小值，max，最大值，sum求和
@@ -13,8 +15,8 @@
  * width:列的宽度，在colgroup中设置，不在这里
  * sortAble：是否允许排序
  * filterAble:是否允许筛选
- * exportAble：是否允许导出,
  * editAble:列是否允许编辑，
+ * exportAble:是否允许导出
  * content:此列的渲染函数（rowData,rowIndex,columnIndex) 此函数权限最大
  * editor:{
  * type:"",表单类型
@@ -30,6 +32,7 @@ const Header = function (props) {
   const {
     name,
     label,
+    className,
     headerContent,
     headerRowIndex,
     headerColumnIndex,
@@ -40,7 +43,6 @@ const Header = function (props) {
     sortAble,
     sortName,
     sortOrder,
-    exportAble,
     filterAble,
     onSort,
     filterOpen,
@@ -48,8 +50,6 @@ const Header = function (props) {
     onMouseDown,
   } = props;
 
-  // 如果本列不可以导出，则用class标记好
-  const className = exportAble === false ? " wasabi-noexport" : "";
   const sortIconCls =
     sortAble == true
       ? sortName == name
@@ -90,7 +90,8 @@ const Header = function (props) {
       key={"header-" + headerRowIndex + "-" + headerColumnIndex.toString()}
       position="header"
       align={align}
-      thStyle={{
+      className={className || ""}
+      style={{
         position: sticky ? "sticky" : null,
         zIndex: sticky ? 1 : null,
         left: sticky === "left" ? "0px" : null,
@@ -98,7 +99,6 @@ const Header = function (props) {
       }}
       rowSpan={rowSpan}
       colSpan={colSpan}
-      className={className || ""}
       onClick={
         sortAble
           ? onClick.bind(this, name, sortOrder === "asc" ? "desc" : "asc")

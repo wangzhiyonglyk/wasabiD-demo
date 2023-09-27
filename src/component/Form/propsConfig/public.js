@@ -4,12 +4,16 @@ import dom from "../../libs/dom";
  * @param {*} target
  */
 export function setDropcontainterPosition(target) {
-  let container = target.parentNode;
-  if (!dom.findAncestorByClasss(container, "wasabi-table-cell")) {
-    // 不是表格内的
-    let position = target.parentNode.getBoundingClientRect();
-    let drop = container.querySelector("div.dropcontainter");
-    drop.style.top = position.bottom + 5 + "px";
-    drop.style.left = position.left + "px";
+  let container =
+    dom.findAncestorByClasss(target, "wasabi-form-group") || target.parentNode;
+
+  let position = target.parentNode.getBoundingClientRect();
+  let top = position.bottom + 5;
+  if (dom.findAncestorByClasss(target, "wasabi-table-cell")) {
+    // 表格内的要减少高度
+    top = top - 46;
   }
+  let drop = container.querySelector("div.dropcontainter");
+  drop.style.top = top + "px";
+  drop.style.left = position.left + "px";
 }

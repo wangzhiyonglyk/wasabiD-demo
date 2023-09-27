@@ -17,7 +17,7 @@
 .wasabi-message.success {
   background-color: #f0f9eb;
   border-color: #e1f3d8;
-  color: var( --success-color);
+  color: var(--success-color);
 }
 
 .wasabi-message.error {
@@ -86,7 +86,7 @@
 }
 
 .wasabi-confirm .wasabi-confirm-message {
-  font-size: 14px;
+  font-size: var(--font-size);
   text-align: center;
   color: var(--color);
   line-height: 23px;

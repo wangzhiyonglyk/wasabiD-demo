@@ -104,7 +104,7 @@ class GridBody extends Component {
         <TableCell
           key={"bodydetail-" + rowIndex.toString()}
           className={" wasabi-detail-column "}
-          tdStyle={{
+          style={{
             position: "sticky",
             zIndex: 1,
             left: stickyLeft,
@@ -128,7 +128,7 @@ class GridBody extends Component {
         <TableCell
           key={"bodyorder" + rowIndex.toString()}
           className={"wasabi-order-column "}
-          tdStyle={{
+          style={{
             position: "sticky",
             zIndex: 1,
             left: stickyLeft,
@@ -160,7 +160,7 @@ class GridBody extends Component {
         <TableCell
           key={"bodycheckbox" + rowIndex.toString()}
           className={"wasabi-select-column"}
-          tdStyle={{
+          style={{
             position: "sticky",
             zIndex: 1,
             left: stickyLeft,

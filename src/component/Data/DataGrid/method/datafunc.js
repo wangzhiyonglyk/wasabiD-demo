@@ -152,5 +152,5 @@ export function dataSort(data, sortName, sortOrder) {
       return newItem[sortName] < oldItem[sortName] ? 1 : -1;
     }
   });
-  return;
+  return data;
 }

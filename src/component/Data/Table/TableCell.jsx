@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-/***
- * 注意tdStyle与style的区别
- */
+
 class TableCell extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -11,7 +9,7 @@ class TableCell extends React.PureComponent {
     this.renderTh = this.renderTh.bind(this);
   }
   renderCell() {
-    let style = this.props.style || {};
+    let style = {};
     switch (this.props.align) {
       case "left":
         style.justifyContent = "flex-start";
@@ -42,6 +40,7 @@ class TableCell extends React.PureComponent {
   renderTh() {
     return (
       <th
+        id={this.props.id}
         data-rowindex={this.props.rowIndex}
         data-columnindex={this.props.columnIndex}
         name={this.props.name}
@@ -49,7 +48,7 @@ class TableCell extends React.PureComponent {
           (this.props.className || "") +
           (this.props.position !== "body" ? " nowrap " : "")
         }
-        style={this.props.thStyle}
+        style={this.props.style}
         colSpan={this.props.colSpan || 1}
         rowSpan={this.props.rowSpan || 1}
         onClick={this.props.onClick}
@@ -64,7 +63,7 @@ class TableCell extends React.PureComponent {
     );
   }
   renderTd() {
-    let style = this.props.tdStyle || {};
+    let style = this.props.style || {};
     style.msoNumberFormat = "'@'"; // 用导出时数字的问题
     return (
       <td

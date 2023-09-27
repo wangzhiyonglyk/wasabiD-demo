@@ -261,9 +261,10 @@ DataGrid.propTypes = {
    * 数据设置
    */
   priKey: PropTypes.string, //key值字段,
+  title: PropTypes.string, // 表格标题，用于导出
   headers: PropTypes.array, //表头设置
   footer: PropTypes.object, //页脚,
-  total: PropTypes.number, // 总条目数，有url没用，默认为 0
+  total: PropTypes.number, // 总条目数，有url没用，默认为data.length
   data: PropTypes.array, //当前页数据（json）
 
   /**

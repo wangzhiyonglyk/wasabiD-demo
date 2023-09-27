@@ -4,7 +4,7 @@
   right: 0px;
   top: 0px;
   z-index: 2;
-  font-size: 14px;
+  font-size: var(--font-size);
   color: var(--color);
   overflow: hidden;
 

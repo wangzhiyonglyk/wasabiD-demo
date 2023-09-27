@@ -21,7 +21,7 @@ class ContentMenuPanel extends React.Component {
     if (this.submenu === null && children && children.length > 1) {
       for (let i = 0; i < children.length; i++) {
         if (children[i].type.name === "ContentMenu") {
-          this.submenu = dom.descendantByClass(
+          this.submenu = dom.findDescendantByClass(
             document.getElementById(this.containerid),
             "wasabi-contentmenu"
           );

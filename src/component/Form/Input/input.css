@@ -84,8 +84,8 @@ desc:表单输入框样式
 */
 
 .wasabi-input {
-  height: 40px;
-  padding: 10px 5px;
+  height: var(--input-height);
+  padding: 5px;
   font-size: inherit;
   background-color: #fff;
   background-image: none;

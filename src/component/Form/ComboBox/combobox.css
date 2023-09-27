@@ -7,7 +7,7 @@ desc:日期选择样式
   width: 100%;
   display: flex;
   position: relative;
-  font-size: 14px;
+  font-size: var(--font-size);
   color: var(--color);
   justify-content: flex-start;
   align-items: center;
@@ -23,7 +23,7 @@ desc:日期选择样式
   height: 24px;
   position: absolute;
   right: 4px;
-  top: 12px;
+  top: 8px;
   cursor: pointer;
   text-align: center;
   transition:
@@ -52,10 +52,10 @@ desc:日期选择样式
   height: 12px;
   position: absolute;
   right: 25px;
-  top: 14px;
+  top: 8px;
   color: var(--icon-color);
   cursor: pointer;
-  font-size: 14px;
+  font-size: var(--font-size);
 }
 
 .combobox .combobox-clear:hover {
@@ -72,7 +72,7 @@ desc:日期选择样式
   position: fixed;
   overflow: visible;
   z-index: 2;
-  top: 44px;
+  top: 32px;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   box-shadow: var(--box-shadow);
@@ -109,7 +109,7 @@ desc:日期选择样式
 
 .combobox .timeinput {
   width: 70px;
-  height: 30px;
+  height: var(--input-height);
   top: 2px;
   position: absolute;
   border-radius: 4px;

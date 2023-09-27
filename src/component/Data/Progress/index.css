@@ -1,15 +1,14 @@
-.wasabi-progress{
+.wasabi-progress {
     position: relative;
     line-height: 1;
-    
 }
-.wasabi-progress-line{
+.wasabi-progress-line {
     margin-bottom: 15px;
     width: 100%;
     min-width: 350px;
     height: 6px;
 }
-.wasabi-progress-circle{
+.wasabi-progress-circle {
     width: 126px;
     height: 126px;
     margin-right: 15px;
@@ -17,15 +16,14 @@
     justify-content: center;
     align-items: center;
 }
-.wasabi-progress-circle .circle{
+.wasabi-progress-circle .circle {
     width: 100%;
     height: 100%;
     position: absolute;
     left: 0px;
     right: 0px;
-  
 }
-.wasabi-progress-bar{
+.wasabi-progress-bar {
     padding-right: 50px;
     display: inline-block;
     vertical-align: middle;
@@ -34,7 +32,7 @@
     box-sizing: border-box;
     height: 100%;
 }
-.wasabi-progress-bar-outer{
+.wasabi-progress-bar-outer {
     border-radius: 100px;
     background-color: var(--border-color);
     overflow: hidden;
@@ -42,7 +40,7 @@
     vertical-align: middle;
     height: 100%;
 }
-.wasabi-progress-bar-inner{
+.wasabi-progress-bar-inner {
     position: absolute;
     left: 0;
     top: 0;
@@ -63,24 +61,24 @@
     -ms-border-radius: 100px;
     -o-border-radius: 100px;
 }
-.wasabi-progress-bar-inner.primary{
+.wasabi-progress-bar-inner.primary {
     background-color: var(--primary-color);
 }
-.wasabi-progress-bar-inner.info{
+.wasabi-progress-bar-inner.info {
     background-color: var(--info-color);
 }
-.wasabi-progress-bar-inner.success{
-    background-color: var( --success-color);
+.wasabi-progress-bar-inner.success {
+    background-color: var(--success-color);
 }
 
-.wasabi-progress-bar-inner.warning{
+.wasabi-progress-bar-inner.warning {
     background-color: var(--warning-color);
 }
-.wasabi-progress-bar-inner.danger{
+.wasabi-progress-bar-inner.danger {
     background-color: var(--danger-color);
 }
-.wasabi-progress-text{
-    font-size: 14px;
+.wasabi-progress-text {
+    font-size: var(--font-size);
     color: var(--primary-color);
     display: inline-block;
     vertical-align: middle;
@@ -89,18 +87,18 @@
     z-index: 1;
 }
 
-.wasabi-progress-text.primary{
+.wasabi-progress-text.primary {
     color: var(--primary-color);
 }
-.wasabi-progress-text.info{
+.wasabi-progress-text.info {
     color: var(--info-color);
 }
-.wasabi-progress-text.success{
-    color: var( --success-color);
+.wasabi-progress-text.success {
+    color: var(--success-color);
 }
-.wasabi-progress-text.warning{
+.wasabi-progress-text.warning {
     color: var(--warning-color);
 }
-.wasabi-progress-text.danger{
+.wasabi-progress-text.danger {
     color: var(--danger-color);
 }

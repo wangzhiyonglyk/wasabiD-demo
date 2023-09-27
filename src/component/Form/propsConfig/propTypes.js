@@ -8,7 +8,6 @@
 import PropTypes from "prop-types";
 export default {
   type: PropTypes.oneOf([
-    "rate", //评分
     "text", //普通输入框
     "password", //密码
     "strongPassword", //强密码

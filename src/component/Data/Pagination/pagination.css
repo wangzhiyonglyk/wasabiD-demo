@@ -5,8 +5,7 @@
   margin-top: -1px;
   padding-left: 4px;
   height: 40px;
-  line-height: 40px;
-  border: 1px solid var(--table-border-color);
+  border: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -58,7 +57,7 @@
 .wasabi-pagination .pagination-to input {
   height: 28px;
   width: 45px;
-  border: 1px solid var(--table-border-color);
+  border: 1px solid var(--border-color);
   outline: none;
   border-radius: 4px;
   margin-left: 2px;
@@ -69,7 +68,7 @@
 
 .wasabi-pagination .pagination-select {
   outline: none;
-  border: 1px solid var(--table-border-color);
+  border: 1px solid var(--border-color);
   height: 28px;
   width: 60px;
   border-radius: 4px;
