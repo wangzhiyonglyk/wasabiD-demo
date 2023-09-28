@@ -145,6 +145,7 @@ class Page extends React.Component {
           textField="label"
           rowNumber={true}
           selectAble={true}
+          borderAble={false}
           importAble={true}
           footerAble={true}
           // compactCol={5}

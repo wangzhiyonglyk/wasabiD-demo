@@ -62,13 +62,13 @@
 /* 树表格与交叉表*/
 .wasabi-treegrid .wasabi-tree .wasabi-tree-li-icon {
     border-bottom: 1px solid var(--border-color);
-    height: 41px;
+    height: calc(var(--table-height) + 1px);
     padding-top: 14px;
 }
 
 .wasabi-pivot .wasabi-tree .wasabi-tree-li-icon {
     border-bottom: 1px solid var(--border-color);
-    height: 41px;
+    height: calc(var(--table-height) + 1px);
     padding-top: 14px;
 }
 
@@ -95,7 +95,7 @@
 /*树节点向下的虚线*/
 .wasabi-tree .wasabi-tree-li-icon-afterBelow {
     position: absolute;
-    height: 40px;
+    height: var(--table-height);
     border-left: 1px dotted var(--dotted-color);
     left: 7px;
     top: 12px;
@@ -109,7 +109,7 @@
     border-bottom: 1px solid var(--border-color);
     width: 10000px;
     left: -1000px;
-    height: 41px;
+    height: calc(var(--table-height) + 1px);
     top: 0px;
 }
 
@@ -120,7 +120,7 @@
     border-bottom: 1px solid var(--border-color);
     width: 10000px;
     left: -1000px;
-    height: 41px;
+    height: calc(var(--table-height) + 1px);
     top: 0px;
 }
 
@@ -133,12 +133,12 @@
 
 /* 树表格与交叉表底部的分隔线 */
 .wasabi-treegrid .wasabi-tree .wasabi-tree-li-icon-placeholder {
-    height: 41px;
+    height: calc(var(--table-height) + 1px);
     border-bottom: 1px solid var(--border-color);
 }
 
 .wasabi-pivot .wasabi-tree .wasabi-tree-li-icon-placeholder {
-    height: 41px;
+    height: calc(var(--table-height) + 1px);
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -149,7 +149,7 @@
     position: absolute;
     border-bottom: 1px solid var(--border-color);
     left: -100000px;
-    height: 41px;
+    height: calc(var(--table-height) + 1px);
     top: 0px;
     width: 100000px;
 }
@@ -160,7 +160,7 @@
     position: absolute;
     border-bottom: 1px solid var(--border-color);
     left: -100000px;
-    height: 41px;
+    height: calc(var(--table-height) + 1px);
     top: 0px;
     width: 100000px;
 }
@@ -169,21 +169,20 @@
 .wasabi-tree .wasabi-form-group {
     margin: 0px;
     padding-top: 2px;
-    height: 30px;
     margin-bottom: 0px;
     width: 20px;
 }
 
 /* 树表格与交叉表的高度*/
 .wasabi-treegrid .wasabi-tree .wasabi-form-group {
-    height: 41px;
+    height: calc(var(--table-height) + 1px);
     border-bottom: 1px solid var(--border-color);
     padding-top: 4px;
     margin-top: 0px;
 }
 
 .wasabi-pivot .wasabi-tree .wasabi-form-group {
-    height: 41px;
+    height: calc(var(--table-height) + 1px);
     border-bottom: 1px solid var(--border-color);
     padding-top: 4px;
     margin-top: 0px;
@@ -226,14 +225,14 @@
 }
 /* 树表格与交叉表底部的高度 */
 .wasabi-treegrid .wasabi-tree .wasabi-tree-li-node {
-    height: 41px;
-    line-height: 41px;
+    height: calc(var(--table-height) + 1px);
+    line-height: calc(var(--table-height) + 1px);
     border-bottom: 1px solid var(--border-color);
 }
 
 .wasabi-pivot .wasabi-tree .wasabi-tree-li-node {
-    height: 41px;
-    line-height: 41px;
+    height: calc(var(--table-height) + 1px);
+    line-height: calc(var(--table-height) + 1px);
     border-bottom: 1px solid var(--border-color);
 }
 

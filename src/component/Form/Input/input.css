@@ -94,7 +94,7 @@ desc:表单输入框样式
   display: flex;
   width: 100%;
   outline: none;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   resize: vertical;
   box-sizing: border-box;
   color: inherit;
@@ -214,4 +214,37 @@ input验证通过
     -webkit-transform: rotate(360deg) scale(1);
     transform: rotate(360deg) scale(1);
   }
+}
+
+.wasabi-form-group .wasabi-preend {
+  background-color: var(--background-color);
+  color: var(--color);
+  position: relative;
+  border: 1px solid var(--border-color);
+  padding: 0 5px;
+  height: var(--input-height);
+  line-height: var(--input-height);
+  display: flex;
+}
+.wasabi-form-group .wasabi-preend.before {
+  border-right: none;
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+}
+
+.wasabi-form-group .wasabi-preend.after {
+  border-left: none;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+}
+.wasabi-form-group .wasabi-preend.before + .wasabi-input {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.wasabi-form-group .wasabi-input.after {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.wasabi-form-group .wasabi-input.beforeicon {
+  padding-left: 20px;
 }

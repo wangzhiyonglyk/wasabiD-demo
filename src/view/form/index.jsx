@@ -45,10 +45,12 @@ class Home extends React.Component {
       <div>
         <Button onClick={this.onClick}>改变数据 </Button>
         <Input
-          type="select"
+          type="text"
           name="datetime"
           label="datetime"
           value="test"
+          beforeIcon="icon-add"
+          afterIcon="icon-search"
         ></Input>
         <Upload
           name="image"

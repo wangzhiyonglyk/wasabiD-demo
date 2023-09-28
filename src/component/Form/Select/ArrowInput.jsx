@@ -10,53 +10,56 @@ const ArrowInput = React.forwardRef((props, ref) => {
    * @param {*} type
    * @returns
    */
-  const getIconProps = useCallback((type) => {
-    switch (type) {
-      case "sort":
-        return {
-          title:
-            props.sortType == "asc"
-              ? "顺排"
-              : props.sortType == "desc"
-              ? "倒排"
-              : "点击排序",
-          style: {
-            position: "absolute",
-            top: 14,
-            right: 10,
-            color: props.sortType
-              ? "var(--icon-hover-color)"
-              : "var(--icon-color)",
-          },
-          className:
-            props.sortType == "asc"
-              ? "icon-sort-asc"
-              : props.sortType == "desc"
-              ? "icon-sort-desc"
-              : "icon-sort",
-          onClick: props.onSort,
-        };
-      case "chose":
-        return {
-          className:
-            "comboxbox-icon icon-caret-down " + (props.show ? "rotate" : ""),
-          onClick: props.onClick,
-        };
-      case "clear":
-        return {
-          title: "清除",
-          className: "combobox-clear icon-clear",
-          onClick: props.onClear,
-          style: {
-            display: props.readOnly
-              ? "none"
-              : props.value == "" || !props.value
-              ? "none"
-              : "inline",
-          },
-        };
-    }
-  }, []);
+  const getIconProps = useCallback(
+    (type) => {
+      switch (type) {
+        case "sort":
+          return {
+            title:
+              props.sortType == "asc"
+                ? "顺排"
+                : props.sortType == "desc"
+                ? "倒排"
+                : "点击排序",
+            style: {
+              position: "absolute",
+              top: 14,
+              right: 10,
+              color: props.sortType
+                ? "var(--icon-hover-color)"
+                : "var(--icon-color)",
+            },
+            className:
+              props.sortType == "asc"
+                ? "icon-sort-asc"
+                : props.sortType == "desc"
+                ? "icon-sort-desc"
+                : "icon-sort",
+            onClick: props.onSort,
+          };
+        case "chose":
+          return {
+            className:
+              "comboxbox-icon icon-caret-down " + (props.show ? "rotate" : ""),
+            onClick: props.onClick,
+          };
+        case "clear":
+          return {
+            title: "清除",
+            className: "combobox-clear icon-clear",
+            onClick: props.onClear,
+            style: {
+              display: props.readOnly
+                ? "none"
+                : props.value == "" || !props.value
+                ? "none"
+                : "inline",
+            },
+          };
+      }
+    },
+    [props.sortType, props.show, props.onClick, props.onSort]
+  );
   return (
     <React.Fragment>
       {props.attachAble ? (

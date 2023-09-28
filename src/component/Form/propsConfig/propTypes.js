@@ -88,6 +88,8 @@ export default {
 
   // text（普通文本框）
   onSearch: PropTypes.func, //查询事件
+  addBefore: PropTypes.any, // 前缀
+  addAfter: PropTypes.any, // 后缀
   // text,password
   onPaste: PropTypes.func, //粘贴事件
 

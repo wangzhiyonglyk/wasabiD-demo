@@ -23,7 +23,7 @@ desc:日期选择样式
   height: 24px;
   position: absolute;
   right: 4px;
-  top: 8px;
+  top: var(--position-top);
   cursor: pointer;
   text-align: center;
   transition:
@@ -52,7 +52,7 @@ desc:日期选择样式
   height: 12px;
   position: absolute;
   right: 25px;
-  top: 8px;
+  top: var(--position-top);
   color: var(--icon-color);
   cursor: pointer;
   font-size: var(--font-size);
@@ -72,7 +72,7 @@ desc:日期选择样式
   position: fixed;
   overflow: visible;
   z-index: 2;
-  top: 32px;
+  top: var(--input-height);
   border: 1px solid var(--border-color);
   border-radius: 4px;
   box-shadow: var(--box-shadow);

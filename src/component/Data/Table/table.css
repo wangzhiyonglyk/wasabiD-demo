@@ -20,6 +20,9 @@ border奇怪的现象，出现变粗的现象
   border-left: 1px solid var(--border-color);
   border-top: 1px solid var(--border-color);
 }
+.wasabi-table ::-webkit-scrollbar {
+  width: 0px;
+}
 
 .wasabi-table td,
 .wasabi-table th {
@@ -29,6 +32,9 @@ border奇怪的现象，出现变粗的现象
   padding: 0px;
 
   background-color: white;
+}
+.wasabi-table th {
+  background-color: var(--title-background-color);
 }
 .wasabi-table td:last-child .wasabi-table th:last-child {
   border-right: none;
@@ -71,12 +77,11 @@ border奇怪的现象，出现变粗的现象
 没有边框的时候
 */
 .wasabi-table.table-no-bordered {
-  border-bottom: 1px solid var(--border-color);
   border-right: 1px solid var(--border-color);
 }
 .wasabi-table.table-no-bordered td {
   border: none;
-  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .wasabi-table.table-no-bordered th {

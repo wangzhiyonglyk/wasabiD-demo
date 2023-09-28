@@ -24,14 +24,44 @@ function Icon(props) {
         cursor: "pointer",
         position: "absolute",
         right: 10,
-        top: 15,
-        color: "var(--primary-color)",
+        top: "var(--position-top)",
+        color: "var(--color)",
       }}
       onClick={props.onSearch}
     ></i>
   );
 }
 
+function AfterIcon(props) {
+  return (
+    <i
+      className={props.afterIcon}
+      style={{
+        cursor: "pointer",
+        position: "absolute",
+        right: 10,
+        top: "var(--position-top)",
+        color: "var(--color)",
+      }}
+      onClick={props.onClick}
+    ></i>
+  );
+}
+function BeforeIcon(props) {
+  return (
+    <i
+      className={props.beforeIcon}
+      style={{
+        cursor: "pointer",
+        position: "absolute",
+        left: 2,
+        top: "var(--position-top)",
+        color: "var(--color)",
+      }}
+      onClick={props.onClick}
+    ></i>
+  );
+}
 /**
  * 数据列表
  * @param {*} props
@@ -210,13 +240,25 @@ class Text extends Component {
   render() {
     return (
       <React.Fragment>
+        {this.props.addBefore ? (
+          <div className="wasabi-preend before">{this.props.addBefore}</div>
+        ) : null}
+        {this.props.beforeIcon ? (
+          <BeforeIcon
+            beforeIcon={this.props.beforeIcon}
+            onClick={this.props.onClick}
+          ></BeforeIcon>
+        ) : null}
         <TextInput
           id={this.props.id}
           type={this.props.type}
           name={this.props.name}
           title={this.props.title}
           readOnly={this.props.readOnly}
-          className={"wasabi-input "}
+          className={
+            (this.props.addAfter ? "after" : "") +
+            (this.props.beforeIcon ? " beforeicon" : "")
+          }
           value={this.state.value || ""}
           onFocus={this.props.onFocus}
           onClick={this.props.onClick}
@@ -226,8 +268,16 @@ class Text extends Component {
           onBlur={this.onBlur}
           onPaste={this.onPaste.bind(this)}
         ></TextInput>
+        {this.props.addAfter ? (
+          <div className="wasabi-preend after">{this.props.addAfter}</div>
+        ) : null}
         {this.props.onSearch ? (
           <Icon disabled={this.props.disabled} onSearch={this.onSearch}></Icon>
+        ) : this.props.afterIcon ? (
+          <AfterIcon
+            afterIcon={this.props.afterIcon}
+            onClick={this.props.onClick}
+          ></AfterIcon>
         ) : null}
         {this.props.children}
         <DataList

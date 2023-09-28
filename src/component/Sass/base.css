@@ -22,9 +22,9 @@ date:2021-02-06 重新调整
   --title-size: 16px;
 
   /* 表单默认高度 */
-  --input-height: 32px;
+  --input-height: 40px;
   /* 表格 行默认高度 */
-  --table-height: 32px;
+  --table-height: 40px;
   /* 树 行默认高度 */
   --tree-height: 32px;
 
@@ -35,7 +35,7 @@ date:2021-02-06 重新调整
 
   /* 按钮高度 */
   /* 大 */
-  --large-btn-height: 38px;
+  --large-btn-height: 40px;
   /* 默认 */
   --default-btn-height: 32px;
   /* 小 */
@@ -80,31 +80,29 @@ date:2021-02-06 重新调整
   --warning-hover-color: #ebb563;
 
   /* 边框颜色 */
-  --border-color: #dcdfe6;
+  --border-color: #e5e6eb;
   /*  鼠标放上 边框颜色 */
   --border-hover-color: #c0c4cc;
   /*  焦点 边框颜色 */
   --border-focus-color: #409eff;
 
   /* 默认背景颜色 */
-  --background-color: #fafafa;
+  --background-color: #f7f8fa;
   /* 鼠标放上 默认背景颜色 */
-  --background-hover-color: #f5f7fa;
+  --background-hover-color: #f1f2f5;
 
   /* 鼠标放上 默认背景颜色 */
-  --background-focus-color: #dbdee24a;
+  --background-focus-color: #f2f3f5;
 
   /* 标题背景颜色 */
-  --title-background-color: #fafafa;
-  /* 鼠标放上 标题背景颜色 */
-  --title-background-hover-color: #f5f7fa;
-
-  /* 鼠标放上 标题默认背景颜色 */
-  --title-background-focus-color: #dbdee2;
+  --title-background-color: #f2f3f5;
 
   /* 整体页面背景颜色 */
   --body-background-color: white;
 
   /* 阴影 */
   --box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+
+  /*文本框中图标top位置*/
+  --position-top: 12px;
 }
