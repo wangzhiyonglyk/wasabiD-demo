@@ -164,6 +164,7 @@ export default {
    * @param {*} headerColumnIndex
    */
   onFilter: function (headerRowIndex, headerColumnIndex, value, text) {
+    console.log("onFilter",value,text)
     let headers = this.state.headers;
     let header;
     if (Array.isArray(headers[0])) {

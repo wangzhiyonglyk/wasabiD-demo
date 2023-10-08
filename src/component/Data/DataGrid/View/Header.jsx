@@ -45,6 +45,7 @@ const Header = function (props) {
     sortOrder,
     filterAble,
     onSort,
+    filterValue,
     filterOpen,
     onMouseMove,
     onMouseDown,
@@ -108,10 +109,10 @@ const Header = function (props) {
       onMouseDown={onMouseDown.bind(this, headerColumnIndex)}
     >
       {getHeaderContent}
-      {sortIconCls ? <i className={sortIconCls}></i> : null}
+      {sortIconCls ? <i className={" wasabi-grid-sort "+sortIconCls}></i> : null}
       {filterAble ? (
         <i
-          className="icon-filter"
+          className={"wasabi-grid-filter icon-filter "+(filterValue? "filter":"")}
           onClick={filterOpen.bind(
             this,
             headerRowIndex,

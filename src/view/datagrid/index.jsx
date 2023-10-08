@@ -47,18 +47,7 @@ class Page extends React.Component {
           name: "省4",
           label: "省4",
           filterAble: true,
-          content: (rowData, rowIndex) => {
-            if (rowIndex % 2 === 1) {
-              return <div>{rowData.label}</div>;
-            } else {
-              return (
-                <div>
-                  <button key="1">没有</button>
-                  <button key="2">ddd</button>
-                </div>
-              );
-            }
-          },
+          
         },
         {
           name: "省5",
@@ -76,7 +65,7 @@ class Page extends React.Component {
           label: "省6",
           sticky: "right",
           content: (rowData, rowIndex) => {
-            return <div>tefgfsggsdagdfgdfsgdfgdfgdgdfsgdfgdfgdf</div>;
+            return <div>湖南省衡阳市</div>;
           },
         },
         {
@@ -93,7 +82,7 @@ class Page extends React.Component {
             arr.push({
               label: i,
               text: "通过  ",
-              label1: "dd",
+              label1: "深圳市",
               操作列: [
                 {
                   label: "编辑",
@@ -105,7 +94,7 @@ class Page extends React.Component {
             arr.push({
               label: i,
               text: "可以停靠",
-              label1: "testeste",
+              label1: "广州市",
               操作列: [
                 {
                   label: "删除",
@@ -145,7 +134,7 @@ class Page extends React.Component {
           textField="label"
           rowNumber={true}
           selectAble={true}
-          borderAble={false}
+          // borderAble={false}
           importAble={true}
           footerAble={true}
           // compactCol={5}

@@ -3,140 +3,174 @@ grid
 */
 
 .wasabi-grid {
-  width: 100%;
-  position: relative;
-  font-size: var(--font-size);
-  color: var(--color);
-  height: 100%;
+    width: 100%;
+    position: relative;
+    font-size: var(--font-size);
+    color: var(--color);
+    height: 100%;
 }
 
 .wasabi-grid .wasabi-grid-tool {
-  border: 1px solid var(--border-color);
-  border-bottom: none;
-  height: var(--table-height);
-  line-height: var(--table-height);
-  padding-left: 20px;
-  background-color: var(--background-color);
-  width: calc(100% - 2px);
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+    height: var(--table-height);
+    line-height: var(--table-height);
+    padding-left: 20px;
+    background-color: var(--background-color);
+    width: calc(100% - 2px);
 }
+
 
 /*
 表格容器
 */
-.wasabi-grid .wasabi-table-container {
-  position: relative;
-  overflow: auto;
-  background-color: white;
 
-  width: 100%;
-  height: 100%;
+.wasabi-grid .wasabi-table-container {
+    position: relative;
+    overflow: auto;
+    background-color: white;
+    width: 100%;
+    height: 100%;
 }
 
 .wasabi-grid.pagination .wasabi-table-container {
-  height: calc(100% - 40px);
+    height: calc(100% - 40px);
 }
 
 .wasabi-grid.pagination.both .wasabi-table-container {
-  height: calc(100% - 80px);
+    height: calc(100% - 80px);
 }
 
 .wasabi-treegrid .wasabi-grid .wasabi-table-container {
-  overflow-y: hidden;
+    overflow-y: hidden;
 }
+
 .wasabi-pivot .wasabi-grid .wasabi-table-container {
-  overflow-y: hidden;
+    overflow-y: hidden;
 }
 
 .wasabi-grid .wasabi-select-column .wasabi-form-group {
-  margin-bottom: 0;
-  margin-left: 6px;
-  margin-top: -1px;
+    margin-bottom: 0;
+    margin-left: 6px;
+    margin-top: -1px;
 }
+
 
 /*
 *真实表格
 */
+
 .wasabi-grid .wasabi-table-realTable {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
+
 
 /* 固定表头容器 */
 
 .wasabi-grid .table-fixedth {
-  position: sticky;
-  top: 0px;
-  z-index: 2;
-  width: 100%;
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+    width: 100%;
 }
-.wasabi-grid .table-fixedth + .wasabi-table {
-  border-top: none;
+
+.wasabi-grid .table-fixedth+.wasabi-table {
+    border-top: none;
 }
+
+
 /*
 正在加载
 */
 
 .wasabi-grid .wasabi-grid-loading {
-  position: absolute;
-  float: left;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  background-color: #000000;
-  opacity: 0.1;
-  z-index: 3;
+    position: absolute;
+    float: left;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    opacity: 0.1;
+    z-index: 3;
 }
 
 .wasabi-grid .wasabi-load-icon {
-  position: absolute;
-  left: 50%;
-  top: 20%;
-  background-image: url("../../img/loading.gif");
-  background-size: 16px 16px;
-  background-repeat: no-repeat;
-  width: 16px;
-  height: 16px;
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    background-image: url("../../img/loading.gif");
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    width: 16px;
+    height: 16px;
 }
+
 
 /*列拖动时的分隔线*/
 
 .wasabi-grid .wasabi-grid-divide {
-  position: absolute;
-  height: 10000px;
-  width: 1px;
-  z-index: 2;
-  top: 0px;
-  display: none;
-  cursor: ew-resize;
-  background-color: var(--border-color);
+    position: absolute;
+    height: 10000px;
+    width: 1px;
+    z-index: 2;
+    top: 0px;
+    display: none;
+    cursor: ew-resize;
+    background-color: var(--border-color);
 }
 
 .wasabi-grid .wasabi-virtual-height {
-  position: absolute;
-  width: 1px;
-  z-index: -1;
+    position: absolute;
+    width: 1px;
+    z-index: -1;
 }
 
-/* 虚拟列表的分隔线 */
-.wasabi-virtual-above-separator {
-  position: absolute;
-  top: 0px;
-  height: 1px;
 
-  z-index: 1;
-  width: 100%;
+/* 虚拟列表的分隔线 */
+
+.wasabi-virtual-above-separator {
+    position: absolute;
+    top: 0px;
+    height: 1px;
+    z-index: 1;
+    width: 100%;
 }
 
 .wasabi-virtual-below-separator {
-  position: absolute;
-  top: 0px;
-  height: 1px;
-
-  z-index: 1;
-  width: 100%;
+    position: absolute;
+    top: 0px;
+    height: 1px;
+    z-index: 1;
+    width: 100%;
 }
 
 .wasabi-grid .wasabi-table-cell-span {
-  display: flex;
+    display: flex;
+}
+
+.wasabi-grid .wasabi-grid-sort {
+    margin-left: 8px;
+    color: #a9aeb8;
+}
+
+.wasabi-grid .wasabi-grid-filter {
+    color: var(--icon-color);
+    position: absolute;
+    right: var(--margin-left);
+}
+
+.wasabi-grid .wasabi-grid-filter:hover {
+    color: var(--primary-color);
+}
+.wasabi-grid .wasabi-grid-filter.filter{
+    color: var(--primary-color);
+}
+.wasabi-grid .wasabi-grid-sort.icon-sort-asc {
+    color: var(--primary-color);
+}
+
+.wasabi-grid .wasabi-grid-sort.icon-sort-desc {
+    color: var(--primary-color);
 }

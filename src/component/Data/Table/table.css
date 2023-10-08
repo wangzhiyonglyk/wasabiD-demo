@@ -2,160 +2,183 @@
 列表样式
  */
 
+
 /*
 表格基本样式
 border奇怪的现象，出现变粗的现象
 */
-.wasabi-table {
-  clear: both;
-  border-spacing: 0;
-  border-collapse: inherit;
-  box-sizing: border-box;
-  table-layout: fixed;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  min-width: 500px;
 
-  border-left: 1px solid var(--border-color);
-  border-top: 1px solid var(--border-color);
+.wasabi-table {
+    clear: both;
+    border-spacing: 0;
+    border-collapse: inherit;
+    box-sizing: border-box;
+    table-layout: fixed;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    min-width: 500px;
+    border-left: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
 }
+
 .wasabi-table ::-webkit-scrollbar {
-  width: 0px;
+    width: 0px;
 }
 
 .wasabi-table td,
 .wasabi-table th {
-  border-bottom: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
-  text-align: center;
-  padding: 0px;
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    text-align: center;
+    padding: 0px;
+    background-color: white;
+}
 
-  background-color: white;
-}
 .wasabi-table th {
-  background-color: var(--title-background-color);
+    background-color: var(--title-background-color);
 }
+
 .wasabi-table td:last-child .wasabi-table th:last-child {
-  border-right: none;
+    border-right: none;
 }
+
+
 /*
 背景颜色
 */
+
 .wasabi-table th {
-  font-weight: bold;
-}
-.wasabi-table tr:hover td {
-  background-color: var(--background-color);
+    font-weight: 500;
 }
 
-.wasabi-table > tbody > tr.selected td {
-  background-color: var(--background-focus-color);
+.wasabi-table tr:hover td {
+    background-color: var(--background-color);
 }
+
+.wasabi-table>tbody>tr.selected td {
+    background-color: var(--background-focus-color);
+}
+
 
 /* 树表格与交叉表不显示 */
+
 .wasabi-treegrid .wasabi-table tr:hover td {
-  background-color: white;
+    background-color: white;
 }
 
 .wasabi-pivot .wasabi-table tr:hover td {
-  background-color: white;
+    background-color: white;
 }
 
 .wasabi-table-realTable .wasabi-table tr:hover td {
-  background-color: white;
+    background-color: white;
 }
+
+
 /* 树表格与交叉表选中时显示 */
-.wasabi-treegrid .wasabi-table > tbody > tr.selected:hover td {
-  background-color: var(--background-color);
+
+.wasabi-treegrid .wasabi-table>tbody>tr.selected:hover td {
+    background-color: var(--background-color);
 }
-.wasabi-pivot .wasabi-table > tbody > tr.selected:hover td {
-  background-color: var(--background-color);
+
+.wasabi-pivot .wasabi-table>tbody>tr.selected:hover td {
+    background-color: var(--background-color);
 }
+
 
 /*
 没有边框的时候
 */
+
 .wasabi-table.table-no-bordered {
-  border-right: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
 }
+
 .wasabi-table.table-no-bordered td {
-  border: none;
-  border-bottom: 1px solid var(--border-color);
+    border: none;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .wasabi-table.table-no-bordered th {
-  border: none;
-  border-bottom: 1px solid var(--border-color);
+    border: none;
+    border-bottom: 1px solid var(--border-color);
 }
+
 
 /*
 编辑状态下
 */
+
 .wasabi-table-cell .wasabi-form-group {
-  padding-right: 0px;
-  padding-bottom: 0px;
-  width: calc(100% - 2px);
+    padding-right: 0px;
+    padding-bottom: 0px;
+    width: calc(100% - 2px);
 }
 
 .wasabi-table td.focus .wasabi-table-cell {
-  overflow: visible;
-  padding: 1px;
+    overflow: visible;
+    padding: 1px;
 }
 
 .wasabi-table td.focus .wasabi-input {
-  border: 1px solid var(--primary-color);
-  text-align: inherit;
+    border: 1px solid var(--primary-color);
+    text-align: inherit;
 }
+
 
 /*
 单元格样式
 */
+
 .wasabi-table-cell {
-  width: 100%;
-  box-sizing: border-box;
-  word-break: break-all;
-  position: relative;
-  cursor: pointer;
-  color: inherit;
-  font-size: inherit;
-  white-space: nowrap;
-  overflow: hidden;
-  height: var(--table-height);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  padding: 0px 5px;
-  flex-wrap: nowrap;
+    width: 100%;
+    box-sizing: border-box;
+    word-break: break-all;
+    position: relative;
+    cursor: pointer;
+    color: inherit;
+    font-size: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    height: var(--table-height);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    padding: 0px 5px;
+    flex-wrap: nowrap;
 }
 
 .wasabi-table-cell:hover {
-  color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 .wasabi-table .wasabi-order-column {
-  position: sticky;
+    position: sticky;
 }
+
 .wasabi-table .wasabi-detail-column {
-  position: sticky;
+    position: sticky;
 }
+
 .wasabi-table .wasabi-select-column {
-  position: sticky;
+    position: sticky;
 }
+
 .wasabi-excel-sheet .wasabi-table td,
 .wasabi-excel-sheet .wasabi-table th {
-  border-bottom: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
-  padding: 0px 2px;
-  vertical-align: middle;
-  box-sizing: border-box;
-  text-align: center;
-  overflow: hidden;
-  min-width: 80px;
-  font-weight: normal;
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    padding: 0px 2px;
+    vertical-align: middle;
+    box-sizing: border-box;
+    text-align: center;
+    overflow: hidden;
+    min-width: 80px;
+    font-weight: normal;
 }
 
 .wasabi-excel-sheet .wasabi-table td.chosed {
-  background-color: var(--background-color);
+    background-color: var(--background-color);
 }

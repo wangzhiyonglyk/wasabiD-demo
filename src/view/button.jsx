@@ -47,7 +47,7 @@ class Index extends React.Component {
             danger
           </Button>
           <Button key="6" theme="info">
-            info
+          Secondary
           </Button>
         </div>
         <Separator key="s2">不同大小按钮-Button</Separator>

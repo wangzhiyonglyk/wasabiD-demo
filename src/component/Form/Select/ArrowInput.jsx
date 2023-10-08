@@ -40,7 +40,7 @@ const ArrowInput = React.forwardRef((props, ref) => {
         case "chose":
           return {
             className:
-              "comboxbox-icon icon-caret-down " + (props.show ? "rotate" : ""),
+              "comboxbox-icon icon-arrow-down " + (props.show ? "rotate" : ""),
             onClick: props.onClick,
           };
         case "clear":

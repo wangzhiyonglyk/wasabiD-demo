@@ -21,17 +21,22 @@ function Filter({ containerid, onFilter }, ref) {
   );
   const hide = useCallback(
     (event) => {
-      let isdes = dom.isDescendant(divRef.current, event.target);
-      if (event.target.className !== "icon-filter" && !isdes) {
-        divRef.current.style.display = "none";
-        document.removeEventListener("click", hide);
+      if(event&&event.target){
+        console.log("test",event.target)
+        let isdes = dom.isDescendant(divRef.current, event.target);
+        if (event.target.className.indexOf("wasabi-grid-filter")<=-1 && !isdes) {
+          divRef.current.style.display = "none";
+          document.removeEventListener("click", hide);
+        }
       }
+      
     },
     [divRef]
   );
   // 对外接口
   useImperativeHandle(ref, () => ({
     open(headerRowIndex, headerColumnIndex, cheader, event) {
+     
       let container = document.getElementById(containerid);
       this.left = container.getBoundingClientRect().left; // 得到整个容器左边距
       divRef.current.style.display = "block";
@@ -41,11 +46,15 @@ function Filter({ containerid, onFilter }, ref) {
       setColumnIndex(headerColumnIndex);
       setHeader(cheader);
       setTimeout(() => {
-        console.log("show");
+      
         document.addEventListener("click", hide);
       }, 30);
     },
   }));
+  const type=header&&header.editor.type;
+  const onBlur=type?type.indexOf("date")>=0||
+  type.indexOf("picker")>=0
+  ||type.indexOf("select")>=0?null:onFilterHandler:null;
   return (
     <div
       key="filter"
@@ -58,7 +67,8 @@ function Filter({ containerid, onFilter }, ref) {
           {...header?.editor?.options}
           type={header?.editor?.type}
           name={header.name}
-          onChange={onFilterHandler}
+          value={header.filterValue}
+          onBlur={onBlur}
           onSelect={onFilterHandler}
         ></Input>
       ) : null}

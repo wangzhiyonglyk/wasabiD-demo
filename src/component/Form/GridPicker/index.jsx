@@ -248,7 +248,7 @@ class GridPicker extends Component {
         ></i>
         <i
           className={
-            "comboxbox-icon icon-caret-down " +
+            "comboxbox-icon icon-arrow-down " +
             (this.state.show ? "rotate" : "")
           }
           onClick={this.showPicker.bind(this)}

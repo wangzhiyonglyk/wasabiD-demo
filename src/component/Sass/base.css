@@ -10,99 +10,99 @@ date:2021-02-06 重新调整
  date:2021-06-22 拆分样式，取reboot
  date:2023-09-27 重新定义事件样式变量
 */
+
 @import url("./reboot.css");
 @import url("./animation.css");
 @import url("./font/iconfont.css");
 :root {
-  /* 默认字体大小 */
-  --font-size: 14px;
-  /* 默认图标大小 */
-  --icon-size: 16px;
-  /* 标题类默认字体大小 */
-  --title-size: 16px;
+    /* 默认字体大小 */
+    --font-size: 14px;
+    /* 默认图标大小 */
+    --icon-size: 16px;
+    /* 标题类默认字体大小 */
+    --title-size: 16px;
+    /* 表单默认高度 */
+    --input-height: 40px;
+    /* 表格 行默认高度 */
+    --table-height: 40px;
+    /* 树 行默认高度 */
+    --tree-height: 32px;
+    /* 同类组件右间距 */
+    --margin-left: 5px;
+    /* 同类组件下间距 */
+    --margin-bottom: 5px;
+    /* 按钮高度 */
+    /* 大 */
+    --large-btn-height: 40px;
+    /* 默认 */
+    --default-btn-height: 32px;
+    /* 小 */
+    --small-btn-height: 24px;
+    /* mini */
+    --mini-btn-height: 20px;
+    /* 默认圆角度 */
+    --border-radius: 4px;
+    /*  默认字体颜色 */
+    --color: #1d2129;
+    /* 图标颜色 */
+    --icon-color: #4e5969;
+    /* 鼠标放上 图标颜色  */
+    --icon-hover-color: #165dff;
+    /* 焦点颜色 */
+    --focus-color: #165dff;
+    /* 主题颜色 */
+    --primary-color: #165dff;
+    /* 鼠标放上 主题颜色 */
+    --primary-hover-color: #66b1ff;
+    /* 成功颜色 */
+    --success-color: #00b42a;
+    /*  鼠标放上 成功颜色 */
+    --success-hover-color: #25c342;
+    /* 普通消息颜色 */
+    --info-color: #909399;
+    /* 鼠标放上 普通消息颜色 */
+    --info-hover-color: #a6a9ad;
+    /* 危险颜色 */
+    --danger-color: #f53f3f;
+    /*  鼠标放上 危险颜色 */
+    --danger-hover-color: #f76560;
+    /* 警告颜色 */
+    --warning-color: #ff7d02;
+    /*  鼠标放上 警告颜色 */
+    --warning-hover-color: #ff9a2f;
+    /* 边框颜色 */
+    --border-color: #e5e6eb;
+    /*  鼠标放上 边框颜色 */
+    --border-hover-color: #c0c4cc;
+    /*  焦点 边框颜色 */
+    --border-focus-color: #165dff;
+    /* 默认背景颜色 */
+    --background-color: #f7f8fa;
+    /* 鼠标放上 默认背景颜色 */
+    --background-hover-color: #f1f2f5;
+    /* 鼠标放上 默认背景颜色 */
+    --background-focus-color: #f2f3f5;
+    /* 标题背景颜色 */
+    --title-background-color: #f2f3f5;
+    /* 整体页面背景颜色 */
+    --body-background-color: white;
+    /* 阴影 */
+    --box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+    /*文本框中图标top位置*/
+    --position-top: 12px;
+}
 
-  /* 表单默认高度 */
-  --input-height: 40px;
-  /* 表格 行默认高度 */
-  --table-height: 40px;
-  /* 树 行默认高度 */
-  --tree-height: 32px;
-
-  /* 同类组件右间距 */
-  --margin-right: 5px;
-  /* 同类组件下间距 */
-  --margin-bottom: 5px;
-
-  /* 按钮高度 */
-  /* 大 */
-  --large-btn-height: 40px;
-  /* 默认 */
-  --default-btn-height: 32px;
-  /* 小 */
-  --small-btn-height: 24px;
-  /* mini */
-  --mini-btn-height: 20px;
-
-  /* 默认圆角度 */
-  --border-radius: 4px;
-
-  /*  默认字体颜色 */
-  --color: #676a6c;
-  /* 粗体，标题等使用 */
-  --title-color: #2e2e2e;
-  /* 图标颜色 */
-  --icon-color: #c0c4cc;
-  /**鼠标放上的颜色*/
-  --hover-color: #50575c;
-  /* 鼠标放上 图标颜色  */
-  --icon-hover-color: #409eff;
-  /* 焦点颜色 */
-  --focus-color: #409eff;
-  /* 主题颜色 */
-  --primary-color: #409eff;
-  /* 鼠标放上 主题颜色 */
-  --primary-hover-color: #66b1ff;
-  /* 成功颜色 */
-  --success-color: #67c23a;
-  /*  鼠标放上 成功颜色 */
-  --success-hover-color: #85ce61;
-  /* 普通消息颜色 */
-  --info-color: #909399;
-  /* 鼠标放上 普通消息颜色 */
-  --info-hover-color: #a6a9ad;
-  /* 危险颜色 */
-  --danger-color: #f56c6c;
-  /*  鼠标放上 危险颜色 */
-  --danger-hover-color: #f78989;
-  /* 警告颜色 */
-  --warning-color: #e6a23c;
-  /*  鼠标放上 警告颜色 */
-  --warning-hover-color: #ebb563;
-
-  /* 边框颜色 */
-  --border-color: #e5e6eb;
-  /*  鼠标放上 边框颜色 */
-  --border-hover-color: #c0c4cc;
-  /*  焦点 边框颜色 */
-  --border-focus-color: #409eff;
-
-  /* 默认背景颜色 */
-  --background-color: #f7f8fa;
-  /* 鼠标放上 默认背景颜色 */
-  --background-hover-color: #f1f2f5;
-
-  /* 鼠标放上 默认背景颜色 */
-  --background-focus-color: #f2f3f5;
-
-  /* 标题背景颜色 */
-  --title-background-color: #f2f3f5;
-
-  /* 整体页面背景颜色 */
-  --body-background-color: white;
-
-  /* 阴影 */
-  --box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-
-  /*文本框中图标top位置*/
-  --position-top: 12px;
+:root.my-red {
+    /* 主题颜色 */
+    --primary-color: #C3002F;
+    /* 鼠标放上 主题颜色 */
+    --primary-hover-color: #990126;
+    /* 成功颜色 */
+    --success-color: #64BB5C;
+    /* 普通消息颜色 */
+    --info-color: #909399;
+    /* 危险颜色 */
+    --danger-color: #E84026;
+    /* 警告颜色 */
+    --warning-color: #EFAF41;
 }

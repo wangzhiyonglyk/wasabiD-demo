@@ -31,7 +31,7 @@ const PickerInput = React.forwardRef((props, ref) => {
         style={{ display: readOnly ? "none" : !value ? "none" : "inline" }}
       ></i>
       <i
-        className={"comboxbox-icon icon-caret-down " + (show ? "rotate" : "")}
+        className={"comboxbox-icon icon-arrow-down " + (show ? "rotate" : "")}
         onClick={onClick}
       ></i>
       <BaseInput

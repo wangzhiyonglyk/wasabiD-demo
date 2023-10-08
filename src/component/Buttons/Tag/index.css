@@ -12,28 +12,34 @@
     margin-bottom: 10px;
     cursor: pointer;
 }
+
 .wasabi-tag [class*="icon-"] {
     margin-left: 5px;
     font-size: 12px;
 }
-.wasabi-tag + .wasabi-tag {
+
+.wasabi-tag+.wasabi-tag {
     margin-left: 10px;
 }
+
 .wasabi-tag.primary {
     background-color: #ecf5ff;
     color: var(--primary-color);
     border: 1px solid #d9ecff;
 }
+
 .wasabi-tag.success {
     background-color: #f0f9eb;
     border-color: #e1f3d8;
     color: var(--success-color);
 }
+
 .wasabi-tag.info {
     background-color: #f4f4f5;
     border-color: #e9e9eb;
-    color: var(--info-color);
+    color: var(--color);
 }
+
 .wasabi-tag.warning {
     background-color: #fdf6ec;
     border-color: #faecd8;
