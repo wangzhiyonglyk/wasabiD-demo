@@ -33,7 +33,7 @@ export default {
           excel
             .readFileToWorkbook(event.dataTransfer.files[0])
             .then((workbook) => {
-              let json = excel.workbook2json(workbook, this.state.length);
+              let json = excel.workbook2json(workbook);
               this.json2data(json);
             });
         } else {
@@ -44,7 +44,7 @@ export default {
   },
 
   //excel粘贴事件
-  onPaste: async function (rowIndex, columnIndex, event, oldValue) {
+  onPaste: async function (rowIndex, columnIndex) {
     //excel粘贴事件
     try {
       let text = await window.navigator.clipboard.readText();
@@ -115,6 +115,7 @@ export default {
       }
       this.setState(
         {
+          visibieData: visibieData,
           data: data,
           total: total,
           addData: this.state.addData,

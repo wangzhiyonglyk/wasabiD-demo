@@ -1,4 +1,5 @@
 import { read, write, utils } from "xlsx";
+
 let excel = {
   /**
    * 读取excel,转成二进制数据
@@ -15,7 +16,7 @@ let excel = {
           let workbook = read(data, { type: "binary" });
           resolve(workbook);
         };
-        reader.onerror = function (e) {
+        reader.onerror = function () {
           reject("error");
         };
       });
@@ -37,7 +38,9 @@ let excel = {
       let csv = utils.sheet_to_csv(worksheet);
 
       return csv;
-    } catch (e) {}
+    } catch (e) {
+      console.log("error", e);
+    }
     return null;
   },
 
@@ -51,7 +54,9 @@ let excel = {
     try {
       let csv = this.workbook2csv(workbook, sheetIndex);
       return this.csv2json(csv);
-    } catch (e) {}
+    } catch (e) {
+      console.log("error", e);
+    }
     return null;
   },
 
@@ -87,7 +92,9 @@ let excel = {
         json.body.push(row);
       }
       return json;
-    } catch (e) {}
+    } catch (e) {
+      console.log("error", e);
+    }
     return json;
   },
   /**
@@ -96,7 +103,7 @@ let excel = {
    * @returns
    */
   json2csv(json) {
-    var csv = [];
+    let csv = [];
     if (Array.isArray(json.header) && json.header.length > 0) {
       csv.push(json.header.join(","));
     }
@@ -172,7 +179,7 @@ let excel = {
     if (typeof blob === "object" && blob instanceof Blob) {
       blob = URL.createObjectURL(blob); // 创建blob地址
     }
-    title = title || func.dateformat(new Date(), "yyyy-MM-dd HH:mm:ss");
+    title = title || func.dateformat(new Date());
     let downloadA = document.createElement("a");
     downloadA.href = blob;
     downloadA.download = title + ".xlsx";
@@ -200,12 +207,12 @@ let excel = {
   },
   /**
    * 表格导出excel表格
-   * @param {*} tableId
+   * @param {*} tableId 表格id
    * @param {*} title
    */
   tableExportExcel(tableId, title) {
     let wb = utils.table_to_book(document.getElementById(tableId));
-    console.log(wb);
+
     let wbout = write(wb, { bookType: "xlsx", type: "binary" });
     function s2ab(s) {
       let buf = new ArrayBuffer(s.length);

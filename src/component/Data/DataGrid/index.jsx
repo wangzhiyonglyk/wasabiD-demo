@@ -214,6 +214,8 @@ class DataGrid extends Component {
         onSort={this.onSort}
         onFilter={this.onFilter}
         onDetail={this.onDetail}
+        onDrop={this.onDrop}
+        onDragOver={this.onDragOver}
         paginationHandler={this.paginationHandler}
         exportAble={this.props.exportAble}
         reload={this.reload}

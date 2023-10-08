@@ -306,6 +306,8 @@ class Grid extends React.Component {
         key="wasabi-table-container"
         onScroll={this.props.onVirtualScroll}
         id={this.props.containerid}
+        onDrop={this.props.onDrop}
+        onDragOver={this.props.onDragOver}
       >
         {/* 表头独立是为了在紧凑表格宽度不够时 更好看一点*/}
         <Table
