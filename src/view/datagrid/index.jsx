@@ -44,10 +44,9 @@ class Page extends React.Component {
           },
         },
         {
-          name: "省4",
+          name: "test33",
           label: "省4",
           filterAble: true,
-          
         },
         {
           name: "省5",
@@ -56,17 +55,11 @@ class Page extends React.Component {
           editor: {
             type: "daterange",
           },
-          content: (rowData, rowIndex) => {
-            return <div>2020-10-10</div>;
-          },
         },
         {
           name: "省6",
           label: "省6",
           sticky: "right",
-          content: (rowData, rowIndex) => {
-            return <div>湖南省衡阳市</div>;
-          },
         },
         {
           name: "操作列",
@@ -83,6 +76,7 @@ class Page extends React.Component {
               label: i,
               text: "通过  ",
               label1: "深圳市",
+              test33: "深圳市",
               操作列: [
                 {
                   label: "编辑",
@@ -95,6 +89,7 @@ class Page extends React.Component {
               label: i,
               text: "可以停靠",
               label1: "广州市",
+              test33: "广州市",
               操作列: [
                 {
                   label: "删除",

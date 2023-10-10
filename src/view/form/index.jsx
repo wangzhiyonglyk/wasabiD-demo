@@ -33,8 +33,8 @@ class Home extends React.Component {
     this.onClick = this.onClick.bind(this);
   }
   componentDidMount() {}
-  onClick() {
-    console.log(this.inputRef.current.getValue());
+  onClick(value, text, name) {
+    console.log(value, text, name);
     // this.setState({
     //   data: this.state.data.concat([{ text: "测试1", value: Math.random(1) }]),
     // });
@@ -46,20 +46,10 @@ class Home extends React.Component {
         <Button onClick={this.onClick}>改变数据 </Button>
         <Input
           type="text"
-          name="datetime"
-          label="datetime"
-          value="test"
-          beforeIcon="icon-add"
-          afterIcon="icon-search"
+          name="text"
+          label="text"
+          onChange={this.onClick}
         ></Input>
-        <Upload
-          name="image"
-          type="cloud"
-          accept="image"
-          label="图片上传"
-          multiple={true}
-          url="http://localhost:82/"
-        ></Upload>
         {/* <Form key="1" style={{ width: 900 }} cols={2}>
           <Input type="text" name="text" label="text"></Input>
           <Input

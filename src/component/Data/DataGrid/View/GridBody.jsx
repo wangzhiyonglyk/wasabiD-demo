@@ -59,18 +59,30 @@ class GridBody extends Component {
   /**
    * 单元格编辑事件
    * @param {*} rowIndex 行的序号
-   * @param {*} columnIndex 真正的列序号
-   * @param {*} headerRowIndex 表头的行号
-   * @param {*} headerColumnIndex 表头的列号
+   * @param {*} visibleDataIndex 可见数据的行的序号
    * @param {func} callBack 自定义的回调函数
    * @param {*} value 值
    * @param {*} text 文本值
    * @param {*} name 对字段名
    */
-  tableCellEditHandler(rowIndex, callBack, value, text, name) {
+  tableCellEditHandler(
+    rowIndex,
+    visibleDataIndex,
+    callBack,
+    value,
+    text,
+    name
+  ) {
     if (name) {
       this.props.tableCellEditHandler &&
-        this.props.tableCellEditHandler(rowIndex, callBack, value, text, name);
+        this.props.tableCellEditHandler(
+          rowIndex,
+          visibleDataIndex,
+          callBack,
+          value,
+          text,
+          name
+        );
     }
   }
 
@@ -244,15 +256,19 @@ class GridBody extends Component {
                 header={trheader}
                 rowData={rowData}
                 rowIndex={rowIndex}
+                visibleDataIndex={index}
                 columnIndex={columnIndex}
-                focusIndex={this.props.focusIndex}
-                focusColumnIndex={this.props.focusColumnIndex}
+                isFocus={
+                  rowIndex === this.props.focusIndex &&
+                  columnIndex === this.props.focusColumnIndex
+                }
                 editAble={
                   this.props.editAble &&
                   this.props.editIndex === rowIndex + "-" + columnIndex
                 }
                 onClick={this.onClick}
                 onDoubleClick={this.onDoubleClick}
+                onPaste={this.props.onPaste}
                 tableCellEditHandler={this.tableCellEditHandler}
               ></Cell>
             );

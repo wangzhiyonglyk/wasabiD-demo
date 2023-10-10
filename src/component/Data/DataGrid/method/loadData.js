@@ -50,13 +50,14 @@ export default {
     filters
   ) {
     ////数据处理函数,更新
-
+    // 在有后端接口时，如果要更新数据，则需要提示
     if (
-      this.state.addData.size > 0 ||
-      this.state.deleteData.size > 0 ||
-      this.state.updateData.size > 0
+      this.props.url &&
+      (this.state.addData.size > 0 ||
+        this.state.deleteData.size > 0 ||
+        this.state.updateData.size > 0)
     ) {
-      Msg.confirm("有脏数据,是否继续更新列表?", () => {
+      Msg.confirm("数据有变动还未提交,是否继续?", () => {
         this.loadDataConfirm(
           url,
           pageSize,

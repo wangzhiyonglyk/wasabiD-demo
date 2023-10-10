@@ -326,10 +326,9 @@ export default {
                 }
               }
             }
-
+            //  设置列宽度，及左侧固定列的问题
             for (let i = 0; i < this.headerWidth.length; i++) {
               const { columnIndex, sticky, width } = this.headerWidth[i];
-
               // 设置头部宽度
               let col = tableHeader?.children[0].children[columnIndex];
               col && col.setAttribute("width", width);
@@ -339,17 +338,24 @@ export default {
 
               // 设置左固定列，这里不中断for，因为每一列都设置宽度
               if (sticky === "left") {
-                // 表头
-
+                // 固定表头
                 headersths[columnIndex].style.left = stickyLeft + "px";
 
+                //表头
+                let theadtrs = realTable.children[1].children;
+                for (let i = 0; i < theadtrs.length; i++) {
+                  theadtrs[i].children[columnIndex].style.left =
+                    stickyLeft + "px";
+                }
                 // 表体
-                let trs = realTable.children[1].children;
-                for (let i = 0; i < trs.length; i++) {
-                  trs[i].children[columnIndex].style.left = stickyLeft + "px";
+                let tbodytrs = realTable.children[2].children;
+
+                for (let i = 0; i < tbodytrs.length; i++) {
+                  tbodytrs[i].children[columnIndex].style.left =
+                    stickyLeft + "px";
                 }
                 // 表尾
-                if (realTable.children.length === 3) {
+                if (realTable.children.length === 4) {
                   let footerFirst =
                     realTable.children[2].children[0].children[0];
                   let colSpan = footerFirst.getAttribute("colSpan") * 1;
@@ -366,17 +372,23 @@ export default {
             for (let i = this.headerWidth.length - 1; i >= 0; i--) {
               const { columnIndex, sticky, width } = this.headerWidth[i];
               if (sticky === "right") {
-                // 表头
+                // 固定表头
                 headersths[columnIndex].style.right = stickyRight + "px";
-
+                // 表头
+                let theadtrs = realTable.children[1].children;
+                for (let i = 0; i < theadtrs.length; i++) {
+                  theadtrs[i].children[columnIndex].style.right =
+                    stickyRight + "px";
+                }
                 // 表体
-                let trs = realTable.children[1].children;
-                for (let i = 0; i < trs.length; i++) {
-                  trs[i].children[columnIndex].style.right = stickyRight + "px";
+                let tbodytrs = realTable.children[2].children;
+                for (let i = 0; i < tbodytrs.length; i++) {
+                  tbodytrs[i].children[columnIndex].style.right =
+                    stickyRight + "px";
                 }
 
                 // 表尾
-                if (realTable.children.length === 3) {
+                if (realTable.children.length === 4) {
                   let footerFirst =
                     realTable.children[2].children[0].children[0];
                   let colSpan = footerFirst.getAttribute("colSpan") * 1;

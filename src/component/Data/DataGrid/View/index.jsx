@@ -269,6 +269,7 @@ class Grid extends React.Component {
         getKey={this.props.getKey}
         onClick={this.props.onClick}
         onDoubleClick={this.props.onDoubleClick}
+        onPaste={this.props.onPaste}
         onChecked={this.props.onChecked}
         tableCellEditHandler={this.props.tableCellEditHandler}
         onDetail={this.props.onDetail}

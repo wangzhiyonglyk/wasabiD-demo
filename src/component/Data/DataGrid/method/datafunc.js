@@ -95,6 +95,7 @@ export function getRealRowIndex(
  * @param {*} filters
  */
 export function dataFilter(data, filters) {
+  console.log("dataFilter");
   let result = data;
   for (let key in filters) {
     result = result.filter((rowData) => {

@@ -13,16 +13,18 @@ const Cell = function ({
   header,
   rowData,
   rowIndex,
+  visibleDataIndex,
   columnIndex,
-  focusIndex,
-  focusColumnIndex,
+  isFocus,
   editAble,
   onClick,
   onDoubleClick,
+  onPaste,
   tableCellEditHandler,
 }) {
   const getCellContent = useMemo(() => {
     //内容
+
     let content = header?.content;
     if (typeof content === "function") {
       //函数
@@ -62,8 +64,9 @@ const Cell = function ({
         content = rowData[header.name];
       }
     }
+
     return content ?? "";
-  }, [header, rowData, rowIndex]);
+  }, [header, rowData[header.name], rowIndex, columnIndex]);
   return (
     <TableCell
       name={header.name || header.label}
@@ -73,9 +76,8 @@ const Cell = function ({
       onDoubleClick={onDoubleClick.bind(this, rowData, rowIndex, columnIndex)}
       key={"cell-" + rowIndex.toString() + "-" + columnIndex.toString()}
       className={
-        (focusIndex === rowIndex && focusColumnIndex === columnIndex
-          ? " focus "
-          : "") + (header.exportAble === false ? "wasabi-noexport" : "")
+        (isFocus ? " focus " : "") +
+        (header.exportAble === false ? "wasabi-noexport" : "")
       } //为了不导出
       style={{
         textAlign: header.align,
@@ -96,11 +98,14 @@ const Cell = function ({
           onChange={tableCellEditHandler.bind(
             this,
             rowIndex,
+            visibleDataIndex,
             header?.editor?.options?.onChange || null
           )}
+          onPaste={onPaste.bind(this, rowIndex, columnIndex, visibleDataIndex)}
           onSelect={tableCellEditHandler.bind(
             this,
             rowIndex,
+            visibleDataIndex,
             header?.editor?.options?.onSelect || null
           )}
         ></Input>

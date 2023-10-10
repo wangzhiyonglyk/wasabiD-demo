@@ -164,7 +164,6 @@ export default {
    * @param {*} headerColumnIndex
    */
   onFilter: function (headerRowIndex, headerColumnIndex, value, text) {
-    console.log("onFilter",value,text)
     let headers = this.state.headers;
     let header;
     if (Array.isArray(headers[0])) {
@@ -175,10 +174,8 @@ export default {
     header.filterValue = value;
     if (header.editor.type.indexOf("range") > -1) {
       header.filterText = text.replace(",", "至");
-    } else {
-      header.filterText = text.replace(",", "至");
     }
-    let filters = this.state.filters || {};
+    let filters = { ...this.state.filters } || {};
     filters[header.name || header.label] = {
       value,
       text,
@@ -278,15 +275,20 @@ export default {
   /**
    * 单元格编辑事件
    * @param {*} rowIndex 行的序号
-   * @param {*} columnIndex 真正的列序号
-   * @param {*} headerRowIndex 表头的行号
-   * @param {*} headerColumnIndex 表头的列号
+   * @param {*} visibleDataIndex 可见数据中的行序号
    * @param {func} callBack 自定义的回调函数
    * @param {*} value 值
    * @param {*} text 文本值
    * @param {*} name 对字段名
    */
-  tableCellEditHandler: function (rowIndex, callBack, value, text, name) {
+  tableCellEditHandler: function (
+    rowIndex,
+    visibleDataIndex,
+    callBack,
+    value,
+    text,
+    name
+  ) {
     //编辑时单元格内的表单onchange的监听事件
     let key = this.getKey(rowIndex);
     if (this.state.addData.has(key)) {
@@ -297,10 +299,13 @@ export default {
       this.state.updateData.set(key, this.state.data[rowIndex]);
     }
 
-    // todo 这里可能会有问题
     let data = this.state.data;
     data[rowIndex][name] = value;
+    let visibleData = this.state.visibleData;
+    visibleData[visibleDataIndex][name] = value;
+    // visibleData[visibleDataIndex] = { ...visibleData[visibleDataIndex] };
     this.setState({
+      visibleData,
       data: data,
       addData: this.state.addData,
       updateData: this.state.updateData,

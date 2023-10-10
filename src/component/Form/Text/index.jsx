@@ -7,6 +7,7 @@ import propTypes from "../propsConfig/propTypes.js";
 import BaseInput from "../BaseInput/index.jsx";
 import SelectbleList from "../Select/SelectbleList";
 import ValidateHoc from "../ValidateHoc";
+import Msg from "../../Info/Msg.jsx";
 import dom from "../../libs/dom";
 import "../Select/select.css";
 
@@ -225,8 +226,18 @@ class Text extends Component {
     let value = event.target.value;
     if (ancestorNode) {
       //是单元格中的输入框
-      if (value.indexOf("\t") > -1 || value.indexOf("\n") > -1) {
-        //csv
+      if (
+        event.ctrlKey &&
+        (value.indexOf("\t") > -1 || value.indexOf("\n") > -1)
+      ) {
+        //在表格中粘贴，
+        //除了富文本，其他不处理 todo
+        if (this.props.type === "textarea") {
+          Msg.alert("表格中富文本不处理excel粘贴");
+          this.setValue(value);
+          this.props.onChange &&
+            this.props.onChange(value, value, this.props.name); //自定义的改变事件
+        }
       } else {
         this.setValue(value);
         this.props.onChange &&

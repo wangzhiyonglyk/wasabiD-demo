@@ -43,15 +43,24 @@ export default {
     }
   },
 
-  //excel粘贴事件
-  onPaste: async function (rowIndex, columnIndex) {
-    //excel粘贴事件
+  /**
+   * 粘贴事件
+   * @param {*} rowIndex 真正的行，
+   * @param {*} columnIndex 真正的列
+   * @param {*} visibleDataIndex 可见数据中的行号
+   */
+  onPaste: async function (rowIndex, columnIndex, visibleDataIndex) {
     try {
       let text = await window.navigator.clipboard.readText();
       if (text.indexOf("\t") > -1 || text.indexOf("\n") > -1) {
         text = text.replace(/\r\n/g, "\n").replace(/\t/g, ","); //转成xlsx脚本的可操作的csv格式
         //说明是csv数据，不包含头部
-        this.json2data(excel.csv2json(text, false), rowIndex, columnIndex);
+        this.json2data(
+          excel.csv2json(text, false),
+          rowIndex,
+          columnIndex,
+          visibleDataIndex
+        );
       }
     } catch (e) {}
   },
@@ -60,11 +69,19 @@ export default {
    * @param {*} json 数据
    * @param {*} beginRowIndex 行号
    * @param {*} beginColumnIndex 列号
+   * @param {*} visibleDataIndex 可见数据中的行号
+   *
    */
-  json2data(json, beginRowIndex = 0, beginColumnIndex = 0) {
+  json2data(
+    json,
+    beginRowIndex = 0,
+    beginColumnIndex = 0,
+    visibleDataIndex = 0
+  ) {
     if (json && json.body) {
       const headers = this.state.headers; //表头
       let data = this.state.data;
+      let visibleData = this.state.visibleData;
       let total = this.state.total; // 总记录数
       for (let i = 0; i < json.body.length; i++) {
         let rowData = {}; //新的一行数据
@@ -92,7 +109,14 @@ export default {
 
         if (beginRowIndex < data.length) {
           //替换
-          data[beginRowIndex] = Object.assign(data[beginRowIndex], rowData);
+          data[beginRowIndex] = { ...data[beginRowIndex], ...rowData };
+          // 防止出问题
+          if (visibleDataIndex < visibleData.length) {
+            visibleData[visibleDataIndex] = data[beginRowIndex];
+          } else {
+            visibleData.push(rowData);
+          }
+
           this.state.updateData.set(
             this.getKey(beginRowIndex),
             data[beginRowIndex]
@@ -100,29 +124,25 @@ export default {
         } else {
           // 追加
           data.push(rowData);
+          visibleData.push(rowData);
           total++;
           this.state.addData.set(this.getKey(beginRowIndex), rowData); //更新某一行
         }
         beginRowIndex++;
+        visibleDataIndex++;
       }
-      let visibieData;
-      if (this.props.pagePosition) {
-        visibieData = data.slice(
-          (this.state.pageIndex - 1) * this.state.pageSize,
-          this.state.pageIndex * this.state.pageSize
-        );
-      } else {
-      }
+
       this.setState(
         {
-          visibieData: visibieData,
+          visibleData: visibleData,
           data: data,
           total: total,
           addData: this.state.addData,
           updateData: this.state.updateData,
         },
         () => {
-          this.focusCell(beginRowIndex || 0, beginColumnIndex || 0);
+          this.focusCell &&
+            this.focusCell(beginRowIndex || 0, beginColumnIndex || 0);
         }
       );
     }

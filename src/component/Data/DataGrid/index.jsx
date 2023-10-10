@@ -222,6 +222,7 @@ class DataGrid extends Component {
         export={this.export}
         onAdd={this.onAdd}
         onSave={this.onSave}
+        onPaste={this.onPaste}
         onVirtualScroll={this.onVirtualScroll}
       ></Grid>
     );
