@@ -14,7 +14,7 @@ class Page extends React.Component {
         {
           name: "label",
           label: "省11",
-          sticky: "left",
+       
           statsType: "sum",
           sortAble: true,
 
@@ -29,7 +29,7 @@ class Page extends React.Component {
         {
           name: "label1",
           label: "省2",
-          sticky: "left",
+       
           sortAble: true,
           width: 200,
           editor: {
@@ -59,13 +59,13 @@ class Page extends React.Component {
         {
           name: "省6",
           label: "省6",
-          sticky: "right",
+       
         },
         {
           name: "操作列",
           label: "操作列",
           editAble: false,
-          sticky: "right",
+     
         },
       ],
       data: (() => {

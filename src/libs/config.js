@@ -7,7 +7,7 @@ const config = {
    
   },
   pro: {
-    url: 'http://emap-server.sz.bocsys.cn',// 正式后台服务地址
+    url: '',// 正式后台服务地址
  
   },
 }

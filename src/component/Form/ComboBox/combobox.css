@@ -67,7 +67,6 @@ desc:日期选择样式
 .dropcontainter {
   padding: 0px;
   margin: 0px;
-  min-height: 250px;
   display: none;
   position: fixed;
   overflow: visible;

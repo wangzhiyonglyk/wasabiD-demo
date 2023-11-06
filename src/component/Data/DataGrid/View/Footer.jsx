@@ -65,7 +65,7 @@ const Footer = function (props) {
     if (statsType && typeof footerContent === "function") {
       //函数
       try {
-        newcontent = footerContent(statsType, name, label);
+        newcontent = footerContent( name, label);
       } catch (e) {
         console.log("生成统计列报错,原因", e.message);
         newcontent = "";

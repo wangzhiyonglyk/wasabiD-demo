@@ -70,7 +70,7 @@
     text-align: center;
     position: relative;
     cursor: pointer;
-    color: #409eff;
+    color:var(--primary-color);
     margin-bottom: 2px;
     user-select: none;
 }
@@ -252,7 +252,7 @@
 .wasabi-calendar-body .datespan .radius.chosed,
 .wasabi-calendar-body .datespan .radius:hover {
     color: white;
-    background-color: #409eff;
+    background-color:var(--primary-color);
     border-radius: 50%;
 }
 

@@ -200,6 +200,7 @@ class DataGrid extends Component {
   }
 
   render() {
+
     return (
       <Grid
         {...this.props}
@@ -233,7 +234,6 @@ DataGrid.propTypes = {
   /**
    * 表格常用属性设置
    */
-
   style: PropTypes.object, //样式对象
   className: PropTypes.string, //样式
   selectAble: PropTypes.bool, // 是否显示选择，默认值 false
@@ -249,7 +249,8 @@ DataGrid.propTypes = {
   exportAble: PropTypes.bool, //是否允许导出
   footerAble: PropTypes.bool, // 是否有页脚
   compactCol: PropTypes.number, // 表格紧凑的
-  rowAllowChecked: PropTypes.func, // 行是否可以选择，函数
+  draggAble: PropTypes.bool,// 表头是否拖动顺序
+  
   /**
    * 分页
    */
@@ -290,6 +291,7 @@ DataGrid.propTypes = {
   /**
    * 事件
    */
+  rowAllowChecked: PropTypes.func, // 行是否可以选择，函数
   onClick: PropTypes.func, //单击事件
   onDoubleClick: PropTypes.func, //双击事件
   onChecked: PropTypes.func, //监听表格中某一行被选中/取消

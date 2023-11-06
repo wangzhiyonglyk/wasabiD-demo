@@ -5,8 +5,8 @@
  * label:列描述
  * className:样式，
  * style:样式，
- * headerContent:头部内容函数（name, label)
- * footerContent:尾部内容函数 (sType,name, label)
+ * headerContent:头部内容函数（name, label) 权限最大
+ * footerContent:尾部内容函数 (name, label) 权限最大
  * statsType:"sum", 统计方式，avg,平均值，min最小值，max，最大值，sum求和
  * align:对齐方式
  * sticky:固定列方式，left ,right ,或为空
@@ -18,6 +18,7 @@
  * editAble:列是否允许编辑，
  * exportAble:是否允许导出
  * content:此列的渲染函数（rowData,rowIndex,columnIndex) 此函数权限最大
+ * draggAble:是否允许拖动
  * editor:{
  * type:"",表单类型
  * options:{} 表单其他属性

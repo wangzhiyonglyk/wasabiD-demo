@@ -7,6 +7,7 @@
  */
 import PropTypes from "prop-types";
 export default {
+    /****基础属性****/
   type: PropTypes.oneOf([
     "text", //普通输入框
     "password", //密码
@@ -57,7 +58,7 @@ export default {
   ]), //字段文字说明属性
   title: PropTypes.string, //提示信息
 
-  /****基础属性****/
+
 
   value: PropTypes.oneOfType([
     PropTypes.number,

@@ -11,13 +11,33 @@
  */
 let func = {};
 func.clone = function (obj, deep = true) {
+  const toStr = Function.prototype.call.bind(Object.prototype.toString)
   let o;
   switch (typeof obj) {
     case "object":
       if (obj === null) {
         o = null;
       } else {
-        if (obj instanceof Array) {
+        if (obj.nodeType && 'cloneNode' in obj) {
+          // DOM Node
+          o = obj.cloneNode(true)
+        }
+        else if (toStr(obj) === '[object Date]') {
+          //对日期的复制
+          o = new Date(obj.getTime());
+        } else if (obj instanceof Map) {
+          o = new Map(obj);
+        } else if (obj instanceof Set) {
+          o = new Set(obj);
+        } else if (toStr(obj) === '[object RegExp]') {
+          const flags = []
+          if (obj.global) { flags.push('g') }
+          if (obj.multiline) { flags.push('m') }
+          if (obj.ignoreCase) { flags.push('i') }
+          o = new RegExp(obj.source, flags.join(''))
+        } 
+        else if (Array.isArray(obj)) {
+          // 数组
           o = [];
           if (deep) {
             for (let i = 0; i < obj.length; i++) {
@@ -26,25 +46,12 @@ func.clone = function (obj, deep = true) {
           } else {
             o = obj.slice(0);
           }
-        } else if (obj instanceof Date) {
-          //对日期的复制
-          o = new Date(obj.valueOf());
-        } else if (obj instanceof Map) {
-          o = new Map(obj);
-        } else if (obj instanceof Set) {
-          o = new Set(obj);
-        } else if (obj instanceof RegExp) {
-          o = new RegExp(obj);
         } else {
           //普通对象
-          o = {};
-          if (deep) {
+          o = obj.constructor ? new obj.constructor() : {}
             for (let k in obj) {
-              o[k] = func.clone(obj[k]);
+              o[k] =deep? func.clone(obj[k]):obj[k]
             }
-          } else {
-            o = { ...obj };
-          }
         }
       }
       break;
@@ -290,7 +297,7 @@ func.componentMixins = function (component, mixinClass = []) {
         }
       });
     });
-  } catch (e) {}
+  } catch (e) { }
 
   return component;
 };

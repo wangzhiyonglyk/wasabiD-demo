@@ -73,6 +73,7 @@ function Filter({ containerid, onFilter }, ref) {
           value={header.filterValue}
           onBlur={onBlur}
           onSelect={onFilterHandler}
+
         ></Input>
       ) : null}
     </div>

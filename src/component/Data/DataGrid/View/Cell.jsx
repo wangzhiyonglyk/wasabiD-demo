@@ -38,17 +38,28 @@ const Cell = function ({
       //为空时
       if (Array.isArray(rowData[header.name])) {
         return rowData[header.name].map((item, index) => {
-          return (
-            <div
+          if (typeof item === "object" && !func.isEmptyObject(item)) { 
+            // 是对象
+              <div
               key={index}
               className={"wasabi-table-cell-span " + item.className}
               style={item.style}
             >
               {item.label}
             </div>
-          );
+          }
+          else {
+            // 非对象
+              <div
+              key={index}
+              className={"wasabi-table-cell-span" }
+            >
+              {item}
+            </div>
+          }
+        
         });
-      } else if (!func.isEmptyObject(rowData[header.name])) {
+      } else if (typeof rowData[header.name]==="object"&&!func.isEmptyObject(rowData[header.name])) {
         // 这个是值是对象
         return (
           <div

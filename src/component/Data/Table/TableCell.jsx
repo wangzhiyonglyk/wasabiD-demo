@@ -57,6 +57,12 @@ class TableCell extends React.PureComponent {
         onMouseUp={this.props.onMouseUp}
         onMouseMove={this.props.onMouseMove}
         onMouseOut={this.props.onMouseOut}
+        onkeyUp={this.props.onkeyUp}
+        onKeyDown={this.props.onKeyDown}
+        onNodeDragStart={this.props.onNodeDragStart}
+        onNodeDragEnd={this.props.onNodeDragEnd}
+        onNodeDragOver={this.props.onNodeDragOver}
+        onNodeDragLeave={this.props.onNodeDragLeave}
       >
         {this.renderCell()}
       </th>
@@ -84,12 +90,17 @@ class TableCell extends React.PureComponent {
         onMouseUp={this.props.onMouseUp}
         onMouseMove={this.props.onMouseMove}
         onMouseOut={this.props.onMouseOut}
+        onkeyUp={this.props.onkeyUp}
+        onKeyDown={this.props.onKeyDown}
+        onNodeDragStart={this.props.onNodeDragStart}
+        onNodeDragEnd={this.props.onNodeDragEnd}
+        onNodeDragOver={this.props.onNodeDragOver}
+        onNodeDragLeave={this.props.onNodeDragLeave}
       >
         {this.renderCell()}
       </td>
     );
   }
-
   render() {
     switch (this.props.position || "body") {
       case "header":

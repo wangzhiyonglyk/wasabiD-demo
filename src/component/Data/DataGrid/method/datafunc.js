@@ -95,16 +95,18 @@ export function getRealRowIndex(
  * @param {*} filters
  */
 export function dataFilter(data, filters) {
-  console.log("dataFilter");
+
   let result = data;
   for (let key in filters) {
-    result = result.filter((rowData) => {
+    if ((filters[key].value ?? "").toString()!== "") {
+          result = result.filter((rowData) => {
       if (filters[key].type.indexOf("range") > -1) {
         // 范围类的匹配
-        let values = filters[key].value.split(",");
+         let values = filters[key].value.split(",");
         return rowData[key] >= values[0] && rowData[key] <= values[1];
       } else if (["integer", "number", "rate"].includes(filters[key].type)) {
         // 数字类的匹配
+        
         let valueGroup = filters[key].value.split(","); //
         let isFilter = false;
         for (let i = 0; i < valueGroup.length; i++) {
@@ -135,6 +137,8 @@ export function dataFilter(data, filters) {
         return (rowData[key] + "").indexOf(filters[key].value) > -1;
       }
     });
+      }
+  
   }
   return result;
 }
