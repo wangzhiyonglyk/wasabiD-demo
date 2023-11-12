@@ -153,6 +153,7 @@ grid
 .wasabi-grid .wasabi-grid-sort {
     margin-left: 8px;
     color: #a9aeb8;
+    transform: translateY(1px);
 }
 
 .wasabi-grid .wasabi-grid-filter {
@@ -169,8 +170,14 @@ grid
 }
 .wasabi-grid .wasabi-grid-sort.icon-sort-asc {
     color: var(--primary-color);
+    transform: translateY(2px);
 }
 
 .wasabi-grid .wasabi-grid-sort.icon-sort-desc {
     color: var(--primary-color);
+    transform: translateY(2px);
+}
+
+.wasabi-grid  .dropcontainter.table{
+    min-height: auto;
 }

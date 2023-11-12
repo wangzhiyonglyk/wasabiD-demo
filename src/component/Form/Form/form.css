@@ -24,11 +24,12 @@ desc:表单样式
     flex-direction: column;
     justify-content: flex-start;
     align-self: flex-end;
+    align-items: flex-start;
 }
 
 .wasabi-form.top .wasabi-label {
-    height: 30px;
-    line-height: 30px;
+    height: 24px;
+    line-height: 24px;
 }
 
 .wasabi-form .form-body {
@@ -39,46 +40,46 @@ desc:表单样式
 }
 
 .wasabi-form .form-body[cols="1"] > .wasabi-form-group {
-    width: calc(100% - 5px);
+    width: calc(100% );
 }
 
 .wasabi-form .form-body[cols="2"] > .wasabi-form-group {
-    width: calc(50% - 5px);
+    width: calc(50% );
 }
 
 .wasabi-form .form-body[cols="3"] > .wasabi-form-group {
-    width: calc(33% - 5px);
+    width: calc(33% );
 }
 
 .wasabi-form .form-body[cols="4"] > .wasabi-form-group {
-    width: calc(25% - 5px);
+    width: calc(25% );
 }
 
 .wasabi-form .form-body[cols="5"] > .wasabi-form-group {
-    width: calc(20% - 5px);
+    width: calc(20% );
 }
 
 /**
 控制col组件的布局
 */
 .wasabi-form .form-body[cols="1"] > .wasabi-cols {
-    width: calc(100% - 5px);
+    width: calc(100% );
 }
 
 .wasabi-form .form-body[cols="2"] > .wasabi-cols {
-    width: calc(50% - 5px);
+    width: calc(50% );
 }
 
 .wasabi-form .form-body[cols="3"] > .wasabi-cols {
-    width: calc(33% - 5px);
+    width: calc(33% );
 }
 
 .wasabi-form .form-body[cols="4"] > .wasabi-cols {
-    width: calc(25% - 5px);
+    width: calc(25% );
 }
 
 .wasabi-form .form-body[cols="5"] > .wasabi-cols {
-    width: calc(20% - 5px);
+    width: calc(20% );
 }
 
 .wasabi-form .form-submit {
@@ -86,5 +87,5 @@ desc:表单样式
     text-align: center;
     width: 100%;
     margin-top: 20px;
-    height: 30px;
+    height: 40px;
 }

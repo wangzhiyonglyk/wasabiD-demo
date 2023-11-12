@@ -307,32 +307,37 @@ class SearchBar extends Component {
     let className = "wasabi-searchbar clearfix " + (this.props.className ?? "");
     return (
       <div className={className} style={style} cols={this.props.cols || 4}>
-        {React.Children.map(this.props.children, (child, index) => {
-          if (child) {
-            if (typeof child.type !== "function") {
-              //非react组件
-              return child;
-            } else {
-              //这里有个问题，value与text在第二次会被清除,防止数据丢失
-              let data = child.props.data
-                ? JSON.parse(JSON.stringify(child.props.data))
-                : null;
+          {React.Children.map(this.props.children, (child, index) => {
+            if (child) {
+              if (typeof child.type !== "function") {
+                //非react组件
+                return child;
+              } else {
+                //统一处理标签样式问题，方便对齐
+               
+                //这里有个问题，value与text在第二次会被清除,防止数据丢失
+                let data = child.props.data
+                  ? JSON.parse(JSON.stringify(child.props.data))
+                  : null;
 
-              let ref = child.ref ? child.ref : React.createRef();
-              typeof ref === "object" ? this.inputs.push(ref) : void 0; //如果对象型添加，字符型（旧语法）事后通过refs来获取
-              return React.cloneElement(child, {
-                data: data,
-                readOnly: this.state.disabled
-                  ? this.state.disabled
-                  : child.props.readOnly,
-                key: index,
-                ref: ref,
-              });
+                let ref = child.ref ? child.ref : React.createRef();
+                typeof ref === "object" ? this.inputs.push(ref) : void 0; //如果对象型添加，字符型（旧语法）事后通过refs来获取
+                return React.cloneElement(child, {
+                  name: child.props.name || "key" + index, // 如果没有配置表单name，按顺序给
+                  data: data,
+                  noborder: this.props.noborder,//
+                  disabled: this.props.disabled,
+                  readOnly: this.state.disabled
+                    ? this.state.disabled
+                    : child.props.readOnly,
+                  key: child.props.name|| "key" + index,
+                  ref: ref,
+                });
+              }
+            } else {
+              return null;
             }
-          } else {
-            return child;
-          }
-        })}
+          })}
         <div
           className={
             "wasabi-searchbar-blank " +

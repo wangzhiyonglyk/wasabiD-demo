@@ -64,7 +64,7 @@ function ProvinceView(props) {
   let provinceComponents = [];
   if (data && data instanceof Array && data.length > 0) {
     data.map((child, index) => {
-      let left = (index % 5) * -65; //todo
+  
       provinceComponents.push(
         <li
           key={"province" + index}
@@ -77,7 +77,7 @@ function ProvinceView(props) {
                 child.children && child.children.length > 0 && child.expand
                   ? "block"
                   : "none",
-              left: left,
+            
             }}
           >
             <CityView
@@ -346,6 +346,7 @@ class Picker extends Component {
       inputText: "",
       filterData: [],
     });
+    this.props.validate && this.props.validate(""); //验证
     this.props.onSelect && this.props.onSelect("", "", this.props.name, null);
   }
 
@@ -659,7 +660,7 @@ class Picker extends Component {
           .children instanceof Array &&
         newData[this.state.provinceActiveIndex].children[currentCityIndex]
           .children.length > 0
-      ) {
+      ) { 
         //有子节点(三级节点)则不执行选中事件
         let expand =
           newData[this.state.provinceActiveIndex].children[currentCityIndex]
@@ -690,7 +691,7 @@ class Picker extends Component {
       }
 
       this.setState({
-        show: false,
+        show: show,
         value: selectValue,
         text: selectText,
         inputText: inputText,

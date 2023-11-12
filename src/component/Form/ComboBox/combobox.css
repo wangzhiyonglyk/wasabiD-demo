@@ -19,11 +19,10 @@ desc:日期选择样式
 .combobox .comboxbox-icon {
   font-style: normal;
   display: block;
-  width: 22px;
-  height: 24px;
+  width: var(--icon-size);
+  height:var(--icon-size);;
   position: absolute;
   right: 4px;
-  top: var(--position-top);
   cursor: pointer;
   text-align: center;
   transition:
@@ -40,24 +39,26 @@ desc:日期选择样式
 }
 
 .combobox .comboxbox-icon.rotate {
-  transform: rotate(180deg) translateY(8px);
+  transform: rotate(180deg);
 }
 
 /*清空图标*/
 
-.combobox .combobox-clear {
+.combobox-clear {
   font-family: iconfont;
   font-style: normal;
   width: 12px;
   height: 12px;
   position: absolute;
-  right: 25px;
+  right: 20px;
   top: var(--position-top);
   color: var(--icon-color);
   cursor: pointer;
   font-size: var(--font-size);
 }
-
+.combobox-clear.text{
+  right: 8px;
+}
 .combobox .combobox-clear:hover {
   color: var(--icon-hover-color);
 }
@@ -65,12 +66,14 @@ desc:日期选择样式
 /*下拉容器*/
 
 .dropcontainter {
+
   padding: 0px;
   margin: 0px;
+  min-height: 250px;
   display: none;
   position: fixed;
   overflow: visible;
-  z-index: 2;
+  z-index: 9;
   top: var(--input-height);
   border: 1px solid var(--border-color);
   border-radius: 4px;
@@ -78,6 +81,9 @@ desc:日期选择样式
   background-color: white;
   margin: 5px 0;
   justify-content: space-between;
+}
+.dropcontainter.select{
+  width:100%;
 }
 .dropcontainter::before {
   border-color: transparent transparent #ffffff;
@@ -129,7 +135,7 @@ desc:日期选择样式
 /*联级选择*/
 
 .combobox .picker {
-  min-width: 410px;
+  min-width: 380px;
   min-height: 527px;
 }
 

@@ -52,7 +52,7 @@ class GridHeader extends React.Component {
       let clientX = event && event.clientX;
       let position = headerNode.getBoundingClientRect();
       let leftPosition = position.left + position.width;
-      if (leftPosition - clientX <= 6) {
+      if (leftPosition - clientX <= 5) {
         event.target.style.cursor = "ew-resize";
       } else {
         event.target.style.cursor = "pointer";
@@ -185,6 +185,8 @@ class GridHeader extends React.Component {
           <Header
             key={"0-" + headerColumnIndex}
             {...trheader}
+             // 拖动功能，如果列有值则取列值，否则取组件的值,只有单行列头可以拖动
+             draggAble={(trheader.draggAble??"")!==""?trheader.draggAble: this.props.draggAble}
             headerRowIndex={0}
             headerColumnIndex={headerColumnIndex}
             sortName={this.props.sortName}
@@ -193,6 +195,7 @@ class GridHeader extends React.Component {
             filterOpen={this.props.filterOpen}
             onMouseMove={this.onMouseMove}
             onMouseDown={this.onMouseDown}
+            onChangeHeaderOrder={this.props.onChangeHeaderOrder}
           ></Header>
         );
       }

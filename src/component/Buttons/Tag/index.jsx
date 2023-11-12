@@ -63,6 +63,8 @@ Tag.propTypes = {
     "info",
     "warning",
     "danger",
+    "cancel",
+    "default"
   ]),
   style: PropTypes.object, //样式
   className: PropTypes.string, //自定义样式

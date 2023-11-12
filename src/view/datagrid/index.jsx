@@ -17,10 +17,12 @@ class Page extends React.Component {
        
           statsType: "sum",
           sortAble: true,
-
+          sticky: "left",
           editor: {
             type: "select",
+          
             options: {
+              required:true,
               data: [{ text: "test", value: "test" }],
             },
           },
@@ -47,18 +49,25 @@ class Page extends React.Component {
           name: "test33",
           label: "省4",
           filterAble: true,
+          editor:{
+            type: "text",
+            options: {
+              required:true
+              }
+            }
         },
         {
           name: "省5",
           label: "省5",
           filterAble: true,
           editor: {
-            type: "daterange",
+            type: "date",
           },
         },
         {
           name: "省6",
           label: "省6",
+          type:"linkbutton"
        
         },
         {
@@ -77,10 +86,20 @@ class Page extends React.Component {
               text: "通过  ",
               label1: "深圳市",
               test33: "深圳市",
+              省6:"省6",
               操作列: [
                 {
                   label: "编辑",
-                  style: { color: "red" },
+                  type:"linkbutton",
+                 
+                },
+                {
+                  label: "删除",
+                  type: "linkbutton",
+                  options: {
+                    theme:"success"
+                  },
+                 
                 },
               ],
             });
@@ -90,6 +109,7 @@ class Page extends React.Component {
               text: "可以停靠",
               label1: "广州市",
               test33: "广州市",
+              省6:"省222",
               操作列: [
                 {
                   label: "删除",
@@ -114,7 +134,7 @@ class Page extends React.Component {
     this.onClick = this.onClick.bind(this);
   }
   onClick(event) {
-    let data = this.refs.grid.getChecked();
+    let data = this.input.current.getValue();
     console.log("getChecked", data);
   }
   componentDidUpdate() {}
@@ -122,17 +142,19 @@ class Page extends React.Component {
   render() {
     return (
       <div style={{ height: "100%", padding: 10 }}>
+      
         <DataGrid
           ref="grid"
           httpType="get"
           pagination={true}
           textField="label"
-          rowNumber={true}
-          selectAble={true}
-          // borderAble={false}
+          rowNumber={false}
+          selectAble={false}
+          borderAble={true}
           importAble={true}
           footerAble={true}
           // compactCol={5}
+          draggAble={true}
           headers={this.state.headers}
           // url="https://www.baidu.com"
           data={this.state.data}

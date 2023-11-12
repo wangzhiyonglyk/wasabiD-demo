@@ -9,7 +9,7 @@ import "../Sass/Layout/resize.css";
 class Resize extends React.Component {
   constructor(props) {
     super(props);
-    this.resizediv = React.createRef();
+
     this.state = {
       resizeid: func.uuid(),
       width: this.props.width,
@@ -119,6 +119,14 @@ class Resize extends React.Component {
 
     targetElement.style.cursor = cursor ? cursor + "-resize" : "default"; //设置鼠标样式
     return cursor;
+  }
+  /**
+   * 得到当前的对象
+   * @returns 
+   */
+  getTarget() {
+      
+    return document.getElementById(this.state.resizeid)
   }
   render() {
     return (

@@ -23,31 +23,38 @@
 }
 
 .wasabi-tag.primary {
-    background-color: #ecf5ff;
+    background-color:var(--primary-shallow-color);
     color: var(--primary-color);
-    border: 1px solid #d9ecff;
+    border: 1px solid var(--primary-color);
 }
 
 .wasabi-tag.success {
-    background-color: #f0f9eb;
-    border-color: #e1f3d8;
+    background-color: var(--success-shallow-color);
+    border-color: var(--success-color);
     color: var(--success-color);
 }
 
 .wasabi-tag.info {
-    background-color: #f4f4f5;
-    border-color: #e9e9eb;
+    background-color: var(--info-shallow-color);
+    border-color: var(--info-color);
     color: var(--color);
 }
 
 .wasabi-tag.warning {
-    background-color: #fdf6ec;
-    border-color: #faecd8;
+    background-color: var(--warning-shallow-color);
+    border-color: var(--warning-color);
     color: var(--warning-color);
 }
 
 .wasabi-tag.danger {
-    background-color: #fef0f0;
-    border-color: #fde2e2;
+    background-color: var(--danger-shallow-color);
+    border-color: var(--danger-color);
     color: var(--danger-color);
+}
+
+.wasabi-tag.default,
+.wasabi-tag.cancel {
+    background: #fff;
+    border-color: var(--border-color);
+    color: var(--color);
 }

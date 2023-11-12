@@ -40,7 +40,7 @@ import eventHandler from "./method/eventHandler.js";
 import staticMethod from "./method/staticMethod";
 import pasteExtend from "./method/pasteExtend.js";
 import Grid from "./View";
-import { setHeaderEditor } from "./method/datafunc";
+import { formatHeader } from "./method/datafunc";
 
 import config from "./config.js"; // 基本配置
 
@@ -119,7 +119,7 @@ class DataGrid extends Component {
       if (func.diff(props.headers, state.rawHeaders)) {
         //有改变则更新headers等
         newState.rawHeaders = props.headers;
-        newState.headers = setHeaderEditor(func.clone(props.headers)); // 深复制，这里后期再考虑
+        newState.headers = formatHeader(func.clone(props.headers)); // 深复制，这里后期再考虑
       }
     }
 
@@ -225,6 +225,7 @@ class DataGrid extends Component {
         onSave={this.onSave}
         onPaste={this.onPaste}
         onVirtualScroll={this.onVirtualScroll}
+        onChangeHeaderOrder={this.onChangeHeaderOrder}
       ></Grid>
     );
   }

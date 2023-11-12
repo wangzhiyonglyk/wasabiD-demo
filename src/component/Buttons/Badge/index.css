@@ -30,6 +30,11 @@
     background-color: var(--danger-color);
 }
 
+.wasabi-badge.cancel .wasabi-badge-content {
+    background-color: var(--danger-color);
+}
+
+
 .wasabi-badge.primary .wasabi-badge-content {
     background-color: var(--primary-color);
 }

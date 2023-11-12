@@ -5,25 +5,27 @@ desc:圣杯布局
  */
 
 import React from "react";
-import PropTypes from "prop-types";
+import PropTypes from "prop-types"; 
+import func from "../libs/func";
 import "../Sass/Layout/Layout.css";
 class Layout extends React.Component {
   constructor(props) {
     super(props);
-    this.calWidthHeight = this.calWidthHeight.bind(this);
+
     this.state = {
-      leftid: Math.random().toString(36).slice(-8),
-      rightid: Math.random().toString(36).slice(-8),
-      centerid: Math.random().toString(36).slice(-8),
+      id:func.randomStr(),
+      centerid:func.randomStr(),
     };
+    this.calWidthHeight = this.calWidthHeight.bind(this);
+    this.onChange=this.onChange.bind(this)
   }
   static propTypes = {
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    border: PropTypes.bool,
+    resize: PropTypes.bool
   };
   static defaultProps = {
-    width: "100%",
-    height: null,
+    border: true,
+    resize: true,
   };
   calWidthHeight() {
     //计算center的高度与宽度
@@ -35,18 +37,18 @@ class Layout extends React.Component {
       if (child) {
         switch (child.props.type) {
           case "header":
-            centerReduceHeight += child.props.height ? child.props.height : 0; //默认100
-            top = child.props.height ? child.props.height : 0;
+            centerReduceHeight += child.props.height ? child.props.height : 42; 
+            top = child.props.height ? child.props.height : 42;
             break;
           case "footer":
-            centerReduceHeight += child.props.height ? child.props.height : 0;
+            centerReduceHeight += child.props.height ? child.props.height : 100;
             break;
           case "left":
-            centerReduceWidth += child.props.width ? child.props.width : 0;
-            left = child.props.width ? child.props.width : 0;
+            centerReduceWidth += child.props.width ? child.props.width : 100;
+            left = child.props.width ? child.props.width : 100;
             break;
           case "right":
-            centerReduceWidth += child.props.width ? child.props.width : 0;
+            centerReduceWidth += child.props.width ? child.props.width : 100;
             break;
         }
       }
@@ -59,45 +61,61 @@ class Layout extends React.Component {
       left: left,
     };
   }
+  /**
+   * 容器内部调整宽高
+   * @param {*} type 
+   * @param {*} value 
+   */
+  onChange(type, value) {
+  
+    this.props.onChange&&this.props.onChange(type,value)
+  }
   render() {
     let widthHeight = this.calWidthHeight(); //计算宽高
     return (
       <div
-        className={"wasabi-layout clearfix " + (this.props.className || "")}
-        style={{ width: this.props.width, height: this.props.height }}
+        className={"wasabi-layout clearfix " + (this.props.className || "")+(this.props.border?"":" noborder")}
+        id={this.state.id}
+        style={this.props.style}
       >
         {React.Children.map(this.props.children, (child, index) => {
           if (child) {
             switch (child.props.type) {
               case "center":
                 return React.cloneElement(child, {
-                  leftid: this.state.leftid,
-                  centerid: this.state.centerid,
-                  rightid: this.state.rightid,
+                  centerid: this.props.resize? this.state.centerid:null, 
+                  onChange:this.onChange,
                   key: index,
                   ref: index,
                   ...widthHeight,
                 });
               case "left":
-                return React.cloneElement(child, {
-                  leftid: this.state.leftid,
-                  centerid: this.state.centerid,
-                  rightid: this.state.rightid,
+                return React.cloneElement(child, { 
+                  parentId:this.state.id,
+                  centerid: this.props.resize? this.state.centerid:null, 
+                  onChange:this.onChange,
                   key: index,
                   ref: index,
                   ...widthHeight,
                 });
               case "right":
                 return React.cloneElement(child, {
-                  leftid: this.state.leftid,
-                  centerid: this.state.centerid,
-                  rightid: this.state.rightid,
+                  parentId:this.state.id,
+                  centerid: this.props.resize? this.state.centerid:null, 
+                  onChange:this.onChange,
                   key: index,
                   ref: index,
                   ...widthHeight,
                 });
+              // header，footer,其他
               default:
-                return React.cloneElement(child, { key: index, ref: index });
+                return React.cloneElement(child, {
+                  parentId: this.state.id,
+                  centerid: this.props.resize? this.state.centerid:null, 
+                  key: index,
+                  onChange:this.onChange,
+                  ref: index
+                });
             }
           }
         })}

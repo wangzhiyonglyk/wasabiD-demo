@@ -145,33 +145,20 @@ class Pagination extends React.Component {
           {
             <i
               title="刷新"
-              style={{ fontSize: 16, cursor: "pointer" }}
+            
               className="icon-refresh"
               onClick={this.props.reload}
             ></i>
           }
           &nbsp;&nbsp;
           {this.props.exportAble ? (
-            <div
-              style={{
-                display: "inline-block",
-                height: 20,
-                position: "relative",
-                width: 30,
-              }}
-            >
-              <i
-                title="导出"
-                style={{
-                  cursor: "pointer",
-                  fontSize: 20,
-                  position: "absolute",
-                  top: 5,
-                }}
-                className="icon-excel"
-                onClick={this.props.export}
-              ></i>
-            </div>
+       
+          <i
+            title="导出"
+           
+            className="icon-excel"
+            onClick={this.props.export}
+          ></i>
           ) : null}
         </div>
       </div>

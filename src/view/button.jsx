@@ -47,7 +47,10 @@ class Index extends React.Component {
             danger
           </Button>
           <Button key="6" theme="info">
-          Secondary
+          info
+          </Button>
+          <Button key="cancel" theme="cancel">
+          cancel
           </Button>
         </div>
         <Separator key="s2">不同大小按钮-Button</Separator>
@@ -153,6 +156,9 @@ class Index extends React.Component {
           </Badge>
           <Badge key="5" theme="info" tag={10}>
             info
+          </Badge>
+          <Badge key="5" theme="default" tag={10}>
+            default
           </Badge>
         </div>
         <Separator key="s8">下拉菜单-Dropdown</Separator>

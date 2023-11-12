@@ -9,12 +9,11 @@ label
 
 .wasabi-label {
   margin-right: 5px;
-  height: 40px;
-  line-height: 40px;
+  height:var(--input-height);
+  line-height: var(--input-height);
   white-space: pre-wrap;
   color: inherit;
   font-size: inherit;
-  font-size: var(--font-size);
   flex-shrink: 0;
 }
 

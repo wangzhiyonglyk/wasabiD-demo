@@ -13,15 +13,15 @@ class DateTimeRange extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      oldPropsValue:
-        (this.props.firstTime || "") + (this.props.secondTime || ""),
-      firstTime:
-        this.props.firstTime || func.dateformat(new Date(), "HH:mm:") + "00",
-      secondTime:
-        this.props.secondTime || func.dateformat(new Date(), "HH:mm:") + "59",
+      oldPropsValue: null,
+      firstDate: null,
+      secondDate:null,
+      firstTime:null,
+      secondTime:null,
       showfirstTime: false,
       showsecondTime: false,
     };
+  
     this.onSelectHandler = this.onSelectHandler.bind(this);
     this.beginTimeHandler = this.beginTimeHandler.bind(this);
     this.endTimeHandler = this.endTimeHandler.bind(this);
@@ -30,11 +30,16 @@ class DateTimeRange extends Component {
     this.onClick = this.onClick.bind(this);
   }
   static getDerivedStateFromProps(props, state) {
-    if (
-      (props.firstTime || "") + (props.secondTime || "") !==
-      state.oldPropsValue
-    ) {
+   
+    let newPropsValue = (props.firstDate || "") + " " + (props.firstTime || "")
+      + "," +
+    (props.secondDate|| "") + " " + (props.secondTime || "")
+    if (newPropsValue !== state.oldPropsValue) {
+      // 父节点发生值改变
       return {
+        oldPropsValue: newPropsValue,
+        firstDate: props.firstDate,
+        secondDate:props.secondDate,
         firstTime: props.firstTime,
         secondTime: props.secondTime,
       };
@@ -160,6 +165,7 @@ class DateTimeRange extends Component {
     this.props.onSelect && this.props.onSelect(value, value, this.props.name);
   }
   render() {
+   
     return (
       <React.Fragment>
         <div className="wasabi-date-qick">
@@ -222,9 +228,8 @@ class DateTimeRange extends Component {
                 type="time"
                 key="end"
                 onSelect={this.endTimeHandler.bind(this)}
-               
                 value={this.state.secondTime}
-                secondRange={true}
+              
               ></Time>
             </div>
           </div>

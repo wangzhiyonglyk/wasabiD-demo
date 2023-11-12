@@ -6,6 +6,7 @@
  */
 import React from "react";
 import func from "../../../libs/func/index.js";
+import {changeRangeType} from "../../../Form/propsConfig/propTypes.js"
 
 import { checkCurrentPageCheckedAll, getRealRowIndex } from "./datafunc.js";
 export default {
@@ -98,9 +99,11 @@ export default {
    * @param {*} rowData 行数据
    * @param {*} rowIndex 行号
    * @param {*} columnIndex 列号
-   * @param {*} event
+    * @param {*} label 标题 多元素时有效
+   * @param {*} event 事件源
    */
-  onClick: function (rowData, rowIndex, columnIndex) {
+  onClick: function (rowData, rowIndex, columnIndex, label, event) {
+ 
     this.setState({
       focusIndex: rowIndex,
       focusColumnIndex: columnIndex,
@@ -120,7 +123,7 @@ export default {
         editIndex: rowIndex + "-" + columnIndex,
       });
     }
-    this.props.onClick && this.props.onClick(rowData, rowIndex, columnIndex); //
+    this.props.onClick && this.props.onClick(rowData, rowIndex, columnIndex,label,event); //
   },
   /**
    * 双击事件
@@ -172,7 +175,8 @@ export default {
       header = headers[headerColumnIndex];
     }
     header.filterValue = value;
-    if (header.editor.type.indexOf("range") > -1) {
+    header.filterText = text;
+    if (changeRangeType.includes(header.editor.type) > -1) {
       header.filterText = text.replace(",", "至");
     }
     let filters = { ...this.state.filters } || {};
@@ -193,6 +197,34 @@ export default {
       this.state.params,
       filters
     );
+  },
+  /**
+   * 调整列的顺序
+   * @param {*} dragHeaderColumnIndex 
+   * @param {*} dropHeaderColumnIndex 
+   */
+  onChangeHeaderOrder: function (dragHeaderColumnIndex, dropHeaderColumnIndex) {
+    let headers = this.state.headers;
+    let drag = headers[dragHeaderColumnIndex];
+    if (dragHeaderColumnIndex < dropHeaderColumnIndex) {
+      // 向后插入
+      // 先插入，再删除,因为删除的下标不会发生改变
+      headers.splice(dropHeaderColumnIndex, 0, drag);
+      headers.splice(dragHeaderColumnIndex,1)
+    }
+    else if (dragHeaderColumnIndex > dropHeaderColumnIndex) {
+      // 向前插入
+      headers.splice(dropHeaderColumnIndex, 0, drag);
+      //  先插入，再删除，删除下标加1
+      headers.splice(dragHeaderColumnIndex+1,1)
+    }
+    else {
+      // 相等不处理
+      return;
+    }
+    this.setState({
+      headers:headers
+    })
   },
   /**
    * 添加一条
@@ -303,7 +335,7 @@ export default {
     data[rowIndex][name] = value;
     let visibleData = this.state.visibleData;
     visibleData[visibleDataIndex][name] = value;
-    // visibleData[visibleDataIndex] = { ...visibleData[visibleDataIndex] };
+   
     this.setState({
       visibleData,
       data: data,

@@ -69,12 +69,12 @@ class Select extends Component {
         props.value,
         newState.data || state.data
       );
-
+      text = text.join(",")||props.value// 如果找不到则以value为值
       newState = {
         value: props.value || "",
         oldPropsValue: props.value,
-        text: text.join(","),
-        inputText: text.join(","),
+        text:text,
+        inputText: text,
       };
     }
     return newState;
@@ -368,7 +368,7 @@ class Select extends Component {
         /**
          * 注意了，这里多了一个inputText值
          */
-
+     
         this.props.onSelect &&
           this.props.onSelect(
             newValue.join(","),
@@ -389,6 +389,8 @@ class Select extends Component {
         this.props.onSelect &&
           this.props.onSelect(newValue, newText, this.props.name, row);
       }
+
+      this.props.validate && this.props.validate(""); //验证
     } else {
       Msg.alert("值是空值");
     }
@@ -422,6 +424,7 @@ class Select extends Component {
    * 失去焦点
    */
   onBlur(event) {
+
     this.props.validate && this.props.validate(this.state.value); //验证
     //在此处处理失去焦点事件
     this.props.onBlur &&
@@ -441,9 +444,9 @@ class Select extends Component {
       inputText: "",
       value: "",
       text: "",
-      show: true,
+      show: false,
     });
-
+    this.props.validate && this.props.validate(""); //验证
     this.props.onSelect && this.props.onSelect("", "", this.props.name, null);
   }
   /**

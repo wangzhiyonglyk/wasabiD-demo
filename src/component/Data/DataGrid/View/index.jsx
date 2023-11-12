@@ -215,6 +215,7 @@ class Grid extends React.Component {
         singleSelect={this.props.singleSelect}
         rowNumber={this.props.rowNumber}
         detailAble={this.props.detailAble}
+        draggAble={this.props.draggAble}
         sortName={this.props.sortName}
         sortOrder={this.props.sortOrder}
         onCheckedAll={this.props.onCheckedAll}
@@ -222,6 +223,7 @@ class Grid extends React.Component {
         onHeaderMouseDown={this.onHeaderMouseDown}
         onSort={this.props.onSort}
         filterOpen={this.filterOpen}
+        onChangeHeaderOrder={this.props.onChangeHeaderOrder}
       ></GridHeader>
     );
   }
@@ -248,7 +250,7 @@ class Grid extends React.Component {
       <GridBody
         headerWidth={this.props.headerWidth}
         headers={this.props.headers}
-        data={this.props.visibleData}
+        visibleData={this.props.visibleData}
         borderAble={this.props.borderAble}
         priKey={this.props.priKey}
         checkedData={this.props.checkedData}

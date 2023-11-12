@@ -38,6 +38,7 @@ class DatePicker extends Component {
     this.splitDateTime = this.splitDateTime.bind(this);
     this.showPicker = this.showPicker.bind(this);
     this.hidePicker = this.hidePicker.bind(this);
+    this.onChange = this.onChange.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onClear = this.onClear.bind(this);
@@ -119,7 +120,9 @@ class DatePicker extends Component {
       value: value,
       text: value,
     });
+    this.props.onChange
     this.props.validate && this.props.validate(value);
+    
   }
 
   focus() {
@@ -130,8 +133,17 @@ class DatePicker extends Component {
     }
   }
 
+  onChange(value, event) {
+    this.setValue(value);
+    this.props.onChange && this.props.onChange(value, value, this.props.name, event)
+    if (this.props.validate && this.props.validate(value)) {// 如果值有效，则执行onSelect事件
+     this.onSelect(value,value,this.props.name,true)
+   }
+    
+  }
+
   onBlur(event) {
-    this.props.validate && this.props.validate(this.state.value);
+    this.props.validate && this.props.validate(this.state.value)
     //在此处处理失去焦点事件
     this.props.onBlur &&
       this.props.onBlur(
@@ -146,8 +158,8 @@ class DatePicker extends Component {
    *
    * @param {*} value 值
    * @param {*} text 文本值
-   * @param {*} name 名称
-   * @param {*} hide 多余的参数是否隐藏
+   * @param {*} name 名称 从日期面板中得来，因为日期面板可以独立作为组件
+   * @param {*} hide 是否隐藏，在范围选择第二个时需要关闭面板
    */
   onSelect(value, text, name, hide = true) {
     //选中事件
@@ -171,6 +183,7 @@ class DatePicker extends Component {
       value: "",
       text: "",
     });
+    this.props.validate && this.props.validate(""); //验证
     this.props.onSelect && this.props.onSelect("", "", this.props.name);
   }
   /**
@@ -514,66 +527,66 @@ class DatePicker extends Component {
 
   render() {
     let control = null;
-    let controlDropClassName = "";
+   
     let placeholder = this.props.placeholder;
     let { type } = this.props;
 
     switch (type) {
       case "year":
         control = this.renderYear();
-        controlDropClassName = "date";
+     
         placeholder = placeholder || "0000";
         break;
       case "month":
         control = this.renderMonth();
-        controlDropClassName = "date";
+    
         placeholder = placeholder || "0000-00";
         break;
       case "time":
         control = this.renderTime();
-        controlDropClassName = "time";
+        
         placeholder = placeholder || "00:00";
         break;
       case "date":
         control = this.renderDate();
-        controlDropClassName = "date";
+      
         placeholder = placeholder || "0000-00-00";
         break;
       case "datetime":
         control = this.renderDateTime();
-        controlDropClassName = "datetime";
+      
         placeholder = placeholder || "0000-00-00 00:00";
         break;
       case "yearrange":
         control = this.renderYearRange();
-        controlDropClassName = "monthrange";
+     
         placeholder = placeholder || "0000";
         break;
 
       case "monthrange":
         control = this.renderMonthRange();
-        controlDropClassName = "monthrange";
+      
         placeholder = placeholder || "0000-00";
         break;
       case "timerange":
         control = this.renderTimeRange();
-        controlDropClassName = "timerange";
+     
         placeholder = placeholder || "00:00";
         break;
 
       case "daterange":
         control = this.renderDateRange();
-        controlDropClassName = "daterange";
+     
         placeholder = placeholder || "0000-00-00";
         break;
       case "datetimerange":
         control = this.renderDateTimeRange();
-        controlDropClassName = "datetimerange";
+    
         placeholder = placeholder || "0000-00-00 00:00";
         break;
       default:
         control = this.renderDate();
-        controlDropClassName = "date";
+    
         placeholder = placeholder || "0000-00-00";
         break;
     }
@@ -589,7 +602,7 @@ class DatePicker extends Component {
       onClick: this.props.onClick,
       onDoubleClick: this.props.onDoubleClick,
       onKeyUp: this.props.onKeyUp,
-      onChange: this.setValue,
+      onChange: this.onChange,
       onBlur: this.onBlur,
       onClear: this.onClear,
       validate: this.props.validate,
@@ -603,7 +616,7 @@ class DatePicker extends Component {
         )}
         <div
           id={this.state.pickerid}
-          className={"dropcontainter " + controlDropClassName + " "}
+          className={"dropcontainter date "}
           style={{
             display: this.state.show == true ? "flex" : "none",
           }}

@@ -108,6 +108,7 @@ LinkButton.propTypes = {
     "warning",
     "danger",
     "cancel",
+    "default"
   ]),
   textStyle: PropTypes.object,
   href: PropTypes.string, //链接地址

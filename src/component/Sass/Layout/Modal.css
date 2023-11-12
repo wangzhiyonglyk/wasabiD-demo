@@ -35,7 +35,7 @@ desc:模态窗口样式
   opacity: 0;
   filter: alpha(opacity=0);
   z-index: 3;
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(0, 0, 0, 0.25);
 }
 
 .wasabi-modal-container .wasabi-modal {
@@ -47,12 +47,13 @@ desc:模态窗口样式
   overflow: hidden;
   padding: 0px;
   opacity: 0;
-  top: calc(50% - 200px);
-  left: calc(50% - 200px);
+  top: calc(50% - 400px);
+  left: calc(50% - 300px);
   margin-bottom: 5px;
-  height: 400px;
-  width: 400px;
+  height: 600px;
+  width: 800px;
   z-index: 7;
+  overflow: visible;
 }
 
 .wasabi-modal-close {
@@ -63,7 +64,7 @@ desc:模态窗口样式
   height: 18px;
   position: absolute;
   right: 10px;
-  top: 18px;
+  top: calc(var(--table-height)/2 - var(--font-size)/2);
   cursor: pointer;
   z-index: 1;
 }
@@ -75,11 +76,11 @@ desc:模态窗口样式
 .wasabi-modal-header {
   font-size: 18px;
   font-weight: bold;
-  height: 50px;
-  line-height: 50px;
-  padding-left: 20px;
+  height: var(--table-height);
+  line-height: var(--table-height);
+  padding-left: 10px;
   text-align: left;
-  background-color: var(--header-color);
+  background-color: var(--background-color);
   border-bottom: 1px solid var(--border-color);
   cursor: move;
   -webkit-user-select: none;
@@ -93,8 +94,8 @@ desc:模态窗口样式
   width: 100%;
   position: relative;
   text-align: left;
-  height: calc(100% - 100px);
-  padding: 10px;
+  height: calc(100% - 2*var(--table-height) - 10px);
+  padding: var(--modal-padding);
   margin: auto;
 }
 
@@ -104,9 +105,11 @@ desc:模态窗口样式
   position: absolute;
   left: 0;
   bottom: 0;
-  height: 50px;
-  padding-top: 10px;
+  height: calc(var(--table-height) + 10px);
   padding-right: 20px;
   background-color: var(--background-color);
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items:center;
 }
+

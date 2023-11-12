@@ -13,21 +13,20 @@ export default {
    */
   getKey: function (rowIndex, rowData = null) {
     let key;
-    let pageIndex = this.state.pageIndex || 1;
     try {
       rowData = rowData
         ? rowData
         : this.state.data && this.state.data[rowIndex];
 
-      if (rowIndex == null && rowIndex == undefined) {
+      if (rowIndex === null && rowIndex === undefined) {
         console.log(new Error("rowIndex 值传错"));
       } else {
         key =
           rowData[this.props.priKey || "id"] ??
-          pageIndex.toString() + "-" + rowIndex.toString();
+        rowIndex.toString();
       }
     } catch (e) {
-      pageIndex.toString() + "-" + rowIndex.toString();
+      rowIndex.toString();
     }
 
     return key + "";
@@ -81,6 +80,20 @@ export default {
       data.push(value);
     }
     return data;
+  },
+  /**
+   * 获取数据
+   * @returns 
+   */
+  getData: function () {
+    return this.state.data;
+  },
+  /**
+   * 获取表头
+   * @returns 
+   */
+  getHeaders: function () {
+    return this.state.headers;
   },
   /**
    * 设置勾选的值

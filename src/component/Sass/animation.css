@@ -26,7 +26,7 @@ body>div:first-child {
 }
 
 .show {
-    display: block;
+    display: flex;
 }
 
 .clearfix:after {
@@ -48,7 +48,6 @@ a {
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-    /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: inherit;
@@ -57,7 +56,7 @@ a {
 
 [class^="icon-"][disabled],
 [class*=" icon-"][disabled] {
-    opacity: 0.4;
+    opacity: 0.6;
     cursor: not-allowed;
     box-shadow: none;
 }

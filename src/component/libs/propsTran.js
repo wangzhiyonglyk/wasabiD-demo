@@ -16,6 +16,9 @@ let propsTran = {
   preprocessForm(data = [], valueField = "value", textField = "text") {
     if (Array.isArray(data)) {
       return data.map((item, index) => {
+        if (Array.isArray(item.children)) {
+          item.children=this.preprocessForm(item.children,valueField,textField)
+        }
         return {
           ...item, //保留原有字段
           //附加字段，方便后期操作
@@ -75,7 +78,7 @@ let propsTran = {
     };
   },
   /**
-   * 时间范围组件 todo 这里有点复杂
+   * 日期范围，日期时间范围组件 todo 这里有点复杂
    * @param {*} props
    */
   setDateRangeDefaultState(props) {
@@ -90,7 +93,7 @@ let propsTran = {
     let firstTime =
       props.type === "daterange"
         ? ""
-        : props.firstTime || func.dateformat(newDate, "HH:mm:") + "00";
+        : props.firstTime || func.dateformat(newDate, "HH:mm") ;
     //先设置默认值
     let firstYear = newDate.getFullYear();
     let firstMonth = newDate.getMonth() + 1;
@@ -124,7 +127,7 @@ let propsTran = {
     let secondTime =
       props.type == "daterange"
         ? ""
-        : props.secondTime || func.dateformat(newDate, "HH:mm:") + "59";
+        : props.secondTime || func.dateformat(newDate, "HH:mm");
     //先设置默认值
     let secondYear = firstYear; //默认与第一个同年
     let secondMonth;

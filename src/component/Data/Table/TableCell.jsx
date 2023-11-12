@@ -32,6 +32,14 @@ class TableCell extends React.PureComponent {
         title={
           typeof this.props.children === "string" ? this.props.children : ""
         }
+        draggable={this.props.draggAble}
+        onKeyUp={this.props.onKeyUp}
+        onKeyDown={this.props.onKeyDown}
+        onDragStart={this.props.onDragStart}
+        onDragEnd={this.props.onDragEnd}
+        onDragOver={this.props.onDragOver}
+        onDragLeave={this.props.onDragLeave}
+        onDrop={this.props.onDrop}
       >
         {this.props.children}
       </div>
@@ -57,12 +65,7 @@ class TableCell extends React.PureComponent {
         onMouseUp={this.props.onMouseUp}
         onMouseMove={this.props.onMouseMove}
         onMouseOut={this.props.onMouseOut}
-        onkeyUp={this.props.onkeyUp}
-        onKeyDown={this.props.onKeyDown}
-        onNodeDragStart={this.props.onNodeDragStart}
-        onNodeDragEnd={this.props.onNodeDragEnd}
-        onNodeDragOver={this.props.onNodeDragOver}
-        onNodeDragLeave={this.props.onNodeDragLeave}
+        
       >
         {this.renderCell()}
       </th>
@@ -79,7 +82,6 @@ class TableCell extends React.PureComponent {
         colSpan={this.props.colSpan || 1}
         rowSpan={this.props.rowSpan || 1}
         style={style}
-        export="1"
         className={
           (this.props.className || "") +
           (this.props.position !== "body" ? " nowrap " : "")
@@ -90,12 +92,7 @@ class TableCell extends React.PureComponent {
         onMouseUp={this.props.onMouseUp}
         onMouseMove={this.props.onMouseMove}
         onMouseOut={this.props.onMouseOut}
-        onkeyUp={this.props.onkeyUp}
-        onKeyDown={this.props.onKeyDown}
-        onNodeDragStart={this.props.onNodeDragStart}
-        onNodeDragEnd={this.props.onNodeDragEnd}
-        onNodeDragOver={this.props.onNodeDragOver}
-        onNodeDragLeave={this.props.onNodeDragLeave}
+       
       >
         {this.renderCell()}
       </td>

@@ -16,21 +16,25 @@ date:2021-02-06 重新调整
 @import url("./font/iconfont.css");
 :root {
     /* 默认字体大小 */
-    --font-size: 14px;
+    --font-size: 12px;
     /* 默认图标大小 */
-    --icon-size: 16px;
+    --icon-size: 14px;
     /* 标题类默认字体大小 */
-    --title-size: 16px;
+    --title-size: 14px;
     /* 表单默认高度 */
-    --input-height: 40px;
+    --input-height: 32px;
     /* 表格 行默认高度 */
-    --table-height: 40px;
+    --table-height: 32px;
     /* 树 行默认高度 */
     --tree-height: 32px;
-    /* 同类组件右间距 */
-    --margin-left: 5px;
+    /* 同类组件左间距 */
+    --margin-left: 12px;
     /* 同类组件下间距 */
-    --margin-bottom: 5px;
+    --margin-bottom: 20px;
+    /**按钮类组件左间距**/
+    --button-left:12px;
+    /* 模态窗口内边距 */
+    --modal-padding:12px;
     /* 按钮高度 */
     /* 大 */
     --large-btn-height: 40px;
@@ -43,47 +47,57 @@ date:2021-02-06 重新调整
     /* 默认圆角度 */
     --border-radius: 4px;
     /*  默认字体颜色 */
-    --color: #1d2129;
+    --color: #000000e6;
     /* 图标颜色 */
-    --icon-color: #4e5969;
+    --icon-color: #000000cc;
     /* 鼠标放上 图标颜色  */
-    --icon-hover-color: #165dff;
+    --icon-hover-color: #C3002F;
     /* 焦点颜色 */
-    --focus-color: #165dff;
+    --focus-color: #C3002F;
     /* 主题颜色 */
-    --primary-color: #165dff;
+    --primary-color: #C3002F;
     /* 鼠标放上 主题颜色 */
-    --primary-hover-color: #66b1ff;
+    --primary-hover-color: #c3002fcc;
+
+      /* 主题浅颜色 */
+    --primary-shallow-color:#FDECE9;
     /* 成功颜色 */
-    --success-color: #00b42a;
+    --success-color: #64BB5C;
     /*  鼠标放上 成功颜色 */
-    --success-hover-color: #25c342;
+    --success-hover-color: #64BB5Ccc;
+ /* 成功浅颜色 */
+    --success-shallow-color:#F0F8EF;
     /* 普通消息颜色 */
-    --info-color: #909399;
+    --info-color: #c7c7c7;
     /* 鼠标放上 普通消息颜色 */
-    --info-hover-color: #a6a9ad;
+    --info-hover-color: #c7c7c7cc;
+ /* 普通消息浅颜色 */
+    --info-shallow-color: #e3e3e3;
     /* 危险颜色 */
-    --danger-color: #f53f3f;
+    --danger-color: #E84026;
     /*  鼠标放上 危险颜色 */
-    --danger-hover-color: #f76560;
+    --danger-hover-color: #E84026cc;
+     /*  危险浅颜色 */
+     --danger-shallow-color: #FDECE9;
     /* 警告颜色 */
-    --warning-color: #ff7d02;
+    --warning-color: #EFAF41;
     /*  鼠标放上 警告颜色 */
-    --warning-hover-color: #ff9a2f;
+    --warning-hover-color: #EFAF41cc;
+        /* 警告浅颜色 */
+    --warning-shallow-color: #FDF7EC;
     /* 边框颜色 */
-    --border-color: #e5e6eb;
+    --border-color: #E5E5E5;
     /*  鼠标放上 边框颜色 */
     --border-hover-color: #c0c4cc;
-    /*  焦点 边框颜色 */
-    --border-focus-color: #165dff;
     /* 默认背景颜色 */
     --background-color: #f7f8fa;
     /* 鼠标放上 默认背景颜色 */
     --background-hover-color: #f1f2f5;
-    /* 鼠标放上 默认背景颜色 */
-    --background-focus-color: #f2f3f5;
     /* 标题背景颜色 */
     --title-background-color: #f2f3f5;
+    --table-hover-color:#fdebee;
+    --table-focus-color:#f7cdd4;
+    --table-background-color:#F7F7F7;
     /* 整体页面背景颜色 */
     --body-background-color: white;
     /* 阴影 */

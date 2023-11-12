@@ -21,13 +21,12 @@
     -ms-user-select: none;
     padding: 0 15px;
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
     position: relative;
     color: var(--color);
 }
 
 .wasabi-button+.wasabi-button {
-    margin-left: var(--margin-left);
+    margin-left: var(--button-left);
 }
 
 .wasabi-button.size-large {
@@ -79,7 +78,7 @@
 }
 
 .wasabi-button.info {
-    color: #fff;
+    color:var(--color);
     background-color: var(--info-color);
     border: 1px solid var(--border-color);
 }

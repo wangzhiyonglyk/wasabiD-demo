@@ -1,129 +1,116 @@
 /*
  create by wangzhiyonglyk
  date:2017-02-09
- desc:圣杯布局，右侧
+ desc:圣杯布局，左侧
  */
 import React from "react";
 import PropTypes from "prop-types";
 import func from "../libs/func";
-import dom from "../libs/dom";
+
 class Left extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      min: 5,
-      separatorid: Math.random().toString(36).slice(-8),
+      oldWidth: null,
+      width: null,
+      id: func.randomStr(),
+   
     };
-    this.targets = []; //用于清除
+   
     this.mouseDownHandler = this.mouseDownHandler.bind(this);
     this.mouseUpHandler = this.mouseUpHandler.bind(this);
     this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
   }
   static defaultProps = {
-    className: "",
     type: "left",
-    top: 0,
+    resize: true,
     width: 0,
-    height: 0,
+    
   };
   static propTypes = {
-    top: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    reduceHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+   resize: PropTypes.bool,
+    width:PropTypes.number,
+  
   };
-  componentDidMount() {
-    //设置鼠标事件
-    //先去掉拖动事件
-    // let center = document.getElementById(this.props.centerid);
-    // if (center) {
-    //     document.addEventListener( "mousedown", this.mouseDownHandler)
-    // }
+  static getDerivedStateFromProps(props, state) {
+    if (props.width !== state.oldWidth) {
+     return  {
+        width: props.width,
+        oldWidth:props.width
+       }
+    }
+    return null
   }
-  /**
-   * 鼠标移动事件
-   * @param {*} event
-   */
-  mouseMoveHandler(event) {
-    let center = document.getElementById(this.props.centerid);
-    if (this.position !== null && center) {
-      let target = document.getElementById(this.state.separatorid);
-      let left = document.getElementById(this.props.leftid);
-      let right = document.getElementById(this.props.rightid);
-      let rightWidth = (right && right.getBoundingClientRect().width) || 0; //右侧宽度
-      left ? (left.style.cursor = "ew-resize") : null;
-      center ? (center.style.cursor = "ew-resize") : null;
-      left ? (left.style.userSelect = "none") : null;
-      center ? (center.style.userSelect = "none") : null;
-      event.target.style.cursor = "ew-resize";
-      if (this.targets.push(event.target)); //保留，用于还原
-      if (
-        event.clientX - this.oldClientX > 2 ||
-        event.clientX - this.oldClientX < -2
-      ) {
-        //防止抖动
-        target.style.left =
-          this.position.leftWidth + event.clientX - this.oldClientX - 3 + "px";
-        left.style.width =
-          this.position.leftWidth + event.clientX - this.oldClientX + "px";
-        center.style.left =
-          this.position.leftWidth + event.clientX - this.oldClientX + "px";
-        center.style.width =
-          "calc(100% - " +
-          (rightWidth +
-            this.position.leftWidth +
-            event.clientX -
-            this.oldClientX) +
-          "px)";
-      }
+  componentDidMount() {
+     //设置鼠标事件
+     this. center =document.getElementById(this.props.centerid);
+     if (this.center&&this.props.resize) {
+      this.dom = document.getElementById(this.state.id)
+      this.oldClientX = null
+      this.dom.addEventListener("mousemove", this.mouseMoveHandler);
+      
+      
     }
   }
+  
   /**
    * 鼠标按下事件
    * @param {*} event
    */
   mouseDownHandler(event) {
-    if (
-      dom.isDescendant(
-        document.getElementById(this.state.separatorid),
-        event.target
-      ) ||
-      event.target.className == "wasabi-separator-left"
-    ) {
+    if (event.target.style.cursor === "ew-resize") {
       document.addEventListener("mousemove", this.mouseMoveHandler);
       document.addEventListener("mouseup", this.mouseUpHandler);
       //记住原始位置
       this.oldClientX = event.clientX;
-      this.oldClientY = event.clientY;
-      let target = document.getElementById(this.state.separatorid);
-      let left = document.getElementById(this.props.leftid);
-      this.position = target.getBoundingClientRect();
-      this.position.leftWidth = left.getBoundingClientRect().width;
-    } else {
-      this.position = null;
+      this.oldWidth = this.dom.getBoundingClientRect().width// 使用这个更精确
+      this.oldCenterWidth= this.center.getBoundingClientRect().width// 使用这个更精确
+
     }
   }
+/**
+   * 鼠标移动事件
+   * @param {*} event
+   */
+  mouseMoveHandler(event) {
+   
+    if (this.oldClientX !== null) {
+      this.dom.style.width = this.oldWidth + (event.clientX - this.oldClientX) + "px";
+      this.center.style.left = this.oldWidth + (event.clientX - this.oldClientX) + "px";
+      this.center.style.width = this.oldCenterWidth - (event.clientX - this.oldClientX) + "px";
+  } else {
 
+    let clientX = event && event.clientX;
+    let position = this.dom.getBoundingClientRect();
+    let leftPosition = position.left + position.width;
+    if (leftPosition - clientX <= 5) {
+     
+      event.target.style.cursor = "ew-resize";
+      this.dom.addEventListener("mousedown", this.mouseDownHandler);
+    } else {
+      event.target.style.cursor = "pointer";
+     
+    }
+  }
+}
   /**
    * 鼠标松开事件
    * @param {*} event
    */
   mouseUpHandler(event) {
-    this.position = null;
-    let left = document.getElementById(this.props.leftid);
-    let center = document.getElementById(this.props.centerid);
-    let right = document.getElementById(this.props.rightid);
-    left ? (left.style.cursor = "pointer") : null;
-    center ? (center.style.cursor = "pointer") : null;
-    right ? (right.style.cursor = "pointer") : null;
-    for (let i = 0; i < this.targets.length; i++) {
-      this.targets[i].style.cursor = "pointer";
+    if (event.target.style.cursor === "ew-resize") {
+      this.dom.removeEventListener("mousedown", this.mouseDownHandler);
+      document.removeEventListener("mousemove", this.mouseMoveHandler);
+      document.removeEventListener("mouseup", this.mouseUpHandler);
+      let width = this.dom.getBoundingClientRect().width
+      this.setState({
+        width:width
+      })
+      this.props.onChange && this.props.onChange("left",width);
     }
-    this.targets = []; //清空
-    let target = document.getElementById(this.state.separatorid);
-    target.style.cursor = "ew-resize";
-
-    document.removeEventListener("mouseup", this.mouseUpHandler);
-    document.removeEventListener("mousemove", this.mouseMoveHandler);
+    event.target.style.cursor = "pointer"
+    this.oldClientX = null;
+      this.oldWidth = null;
   }
 
   render() {
@@ -132,15 +119,17 @@ class Left extends React.Component {
         className={
           "wasabi-layout-left  layout-panel " + (this.props.className ?? "")
         }
-        id={this.props.leftid}
+        id={this.state.id}
         style={{
+          ...this.props.style,
           top: this.props.top,
-          width: this.props.width,
-          height: this.props.reduceHeight
+          width: this.state.width,
+          height: this.props.reduceHeight!==null&&this.props.reduceHeight!==undefined
             ? "calc(100% - " + this.props.reduceHeight.toString() + "px"
             : null,
         }}
       >
+       
         {this.props.children}
       </div>
     );

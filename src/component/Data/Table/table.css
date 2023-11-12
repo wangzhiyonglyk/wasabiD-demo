@@ -39,6 +39,8 @@ border奇怪的现象，出现变粗的现象
     background-color: var(--title-background-color);
 }
 
+
+
 .wasabi-table td:last-child .wasabi-table th:last-child {
     border-right: none;
 }
@@ -53,11 +55,11 @@ border奇怪的现象，出现变粗的现象
 }
 
 .wasabi-table tr:hover td {
-    background-color: var(--background-color);
+    background-color: var(--table-hover-color);
 }
 
 .wasabi-table>tbody>tr.selected td {
-    background-color: var(--background-focus-color);
+    background-color: var(--table-focus-color);
 }
 
 
@@ -85,6 +87,10 @@ border奇怪的现象，出现变粗的现象
 .wasabi-pivot .wasabi-table>tbody>tr.selected:hover td {
     background-color: var(--background-color);
 }
+.wasabi-table.table-no-bordered tr:nth-child(even) td {
+
+    background-color: var(--table-background-color);
+}
 
 
 /*
@@ -94,15 +100,13 @@ border奇怪的现象，出现变粗的现象
 .wasabi-table.table-no-bordered {
     border-right: 1px solid var(--border-color);
 }
-
-.wasabi-table.table-no-bordered td {
+.wasabi-table.table-no-bordered  td {
     border: none;
-    border-bottom: 1px solid var(--border-color);
 }
 
 .wasabi-table.table-no-bordered th {
     border: none;
-    border-bottom: 1px solid var(--border-color);
+   
 }
 
 

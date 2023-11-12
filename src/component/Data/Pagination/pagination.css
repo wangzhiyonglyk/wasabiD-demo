@@ -39,7 +39,7 @@
 }
 
 .wasabi-pagination .paginate-button.active {
-  border: 1px solid var(--primary-color);
+background-color: var(--table-hover-color);
   color: var(--primary-color);
 }
 .wasabi-pagination .paginate-button.disabled {
@@ -49,7 +49,9 @@
   background-color: var(--background-color);
 }
 
-.wasabi-pagination .paginate-button.active:hover,
+.wasabi-pagination .paginate-button.active:hover{
+  background-color: var(--table-hover-color);
+}
 .wasabi-pagination .paginate-button.disabled:hover {
   background-color: inherit;
 }

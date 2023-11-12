@@ -7,6 +7,8 @@ import React from "react";
 
 import BaseInput from "../BaseInput";
 import func from "../../libs/func";
+import regs from "../../libs/regs";
+
 class DateInput extends React.Component {
   constructor(props) {
     super(props);
@@ -40,19 +42,27 @@ class DateInput extends React.Component {
    * @param {*} value
    */
   onChange(event) {
-    let value = this.inputFormatter(event);
-    if (value !== false) {
-      //输入合法
-      this.setState(
-        {
-          value: value,
-        },
-        () => {
-          this.props.onChange && this.props.onChange(value, event);
-        }
-      );
+    
+    let lastKey = event.target.value.slice(-1);
+     let regs=/^[0-9]{1,1}$/
+    if ( event.target.value===""||regs.test(lastKey)) {
+      // 只能输入数字
+      let value = this.inputFormatter(event);
+      if (value !== false) {
+        //输入合法
+        this.setState(
+          {
+            value: value,
+          },
+          () => {
+           
+            this.props.onChange && this.props.onChange(value, event);
+          }
+        );
+      }
     }
-  }
+    }
+   
   /**
    * 格式化输入
    * @param {*} value
@@ -62,12 +72,29 @@ class DateInput extends React.Component {
     let value = event.target.value;
     let reg;
     /**
-     * 先两种情况，1.顺序输入，2.插入输入
+     * 先判断输入的长度是否有效
+     * 
+     * 然后再判断两种情况，1.顺序输入，2.插入输入
      * 1.顺序输入，先判断有效性，无效,则不改变
      * 2.顺序输入，有效判断是否要加-或：
      * 3.插入输入时，判断对应的段是否有效，无效则光标选择，不禁止输入，因为禁止输入后光标会跳转末尾
      */
+    let lengths = {
+      year: 4,
+      month: 7,
+      time: 5,
+      date: 10,
+      datetime: 16,
+      yearrange: 4,
+      monthrange: 7,
+      timerange: 5,
+      daterange: 10,
+      datetimerange:16,
+    }
     if (value) {
+      if (value.length > lengths[this.props.type]) {
+        return false;
+      }
       switch (this.props.type) {
         case "time":
         case "timerange":
@@ -109,7 +136,7 @@ class DateInput extends React.Component {
           break;
         case "datetime":
         case "datetimerange":
-          //时间后面的输入只做了简单验证，否则太长了，通过控制输入来处理
+          //这里的正则，时间后面的输入只做了简单验证，否则太长了，通过时间控制输入来处理
           reg =
             /^\d{1,4}-?$|^\d{4}-(0[1-9]*|1[0-2]*)-?$|^\d{4}-(0[1-9]|1[0-2])-(0[1-9]*|[1-2][0-9]*|3[0-1]*)$|^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s?[\d:]*$/;
           if (
@@ -119,7 +146,7 @@ class DateInput extends React.Component {
             //末尾输入，格式不正确
             return false;
           } else {
-            value = this.dateFormatterCheck(value, event);
+            value = this.dateFormatterCheck(value, event);// 处理日期输入的光标问题
             if (
               value.length == 10 &&
               /^\d{4,4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/.test(value)
@@ -127,6 +154,7 @@ class DateInput extends React.Component {
               //有效的日期
               value = value + " ";
             } else if (value.length >= 11) {
+              // 后面有时间了
               value = this.timeFormatterCheck(value, event, 11);
             }
           }
@@ -140,7 +168,7 @@ class DateInput extends React.Component {
   }
 
   /**
-   * 验证年月输入
+   * 验证年月输入光标处理
    * @param {*} value
    * @param {*} event
    * @returns
@@ -161,7 +189,7 @@ class DateInput extends React.Component {
     return value;
   }
   /**
-   * 验证日期输入
+   * 验证日期输入光标处理
    * @param {*} value
    * @param {*} event
    * @returns
@@ -228,13 +256,13 @@ class DateInput extends React.Component {
   }
 
   /**
-   * 验证时间输入
+   * 验证时间输入光标处理
    * @param {*} value 值
    * @param {*} event
    * @param {*} beginIndex 开始位置，用于日期时间格式时
    * @returns
    */
-  timeFormatterCheck(value, event, beginIndex = 0) {
+  timeFormatterCheck(value, event, beginIndex = 0) {  
     if (value && event.target.selectionStart === beginIndex + 2) {
       //时输入完时
       const hour = value.slice(beginIndex + 0, beginIndex + 2);
@@ -262,7 +290,16 @@ class DateInput extends React.Component {
         event.target.selectionStart = 3 + beginIndex;
         event.target.selectionEnd = 5 + beginIndex;
       }
+    } else if (value && event.target.selectionStart === 10 && beginIndex === 11) {
+      //专门用于日期时间，日期输入完成，后面有时间
+      if (regs.datetime.test(value)) {
+        //后面格式正确
+        event.target.selectionStart = 11
+        event.target.selectionEnd = 13;
+      }
+      
     }
+   
     return value;
   }
   /**
@@ -382,10 +419,10 @@ class DateInput extends React.Component {
               : "none",
           }}
         ></i>
-        <i
+        {this.props.isfirst ? null : <i
           className={"comboxbox-icon icon-calendar  "}
           onClick={this.props.showPicker}
-        ></i>
+        ></i>}
         <BaseInput
           ref={this.input}
           name={this.props.name}

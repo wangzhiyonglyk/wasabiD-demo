@@ -14,8 +14,10 @@ desc:表单输入框样式
   align-items: center;
   justify-content: flex-start;
   flex-wrap: nowrap;
-  padding-bottom: 5px;
-  padding-right: 5px;
+  padding-bottom: var(--margin-bottom);
+  padding-right: var(--margin-left);
+  font-size: var(--font-size);
+  color:var(--color);
 }
 
 /*
@@ -28,8 +30,13 @@ desc:表单输入框样式
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  height: var(--input-height);
+  min-height:  var(--input-height);
 }
 
+.wasabi-form.top .wasabi-form-group .wasabi-form-group-body{
+  width: 100%;
+}
 /*
 后台验证
  */
@@ -195,8 +202,13 @@ input验证通过
   position: absolute;
   top: -8px;
   margin-left: 5px;
-  transform: scale(0.9);
+  transform: scale(0.8);
   background-color: white;
+}
+
+.wasabi-form-group.noborder .wasabi-help-block{
+  top: -5px;
+  margin-left: -5px;
 }
 
 /* 正在提交*/

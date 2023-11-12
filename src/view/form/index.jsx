@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { SearchBar, Avatar, Input, Button, Upload } from "../../component";
-
+import { SearchBar, Form, Avatar, Input, Button, Upload ,Modal} from "../../component";
+import Province from "../../component/Form/Province";
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -33,29 +33,24 @@ class Home extends React.Component {
     this.onClick = this.onClick.bind(this);
   }
   componentDidMount() {}
-  onClick(value, text, name) {
-    console.log(value, text, name);
-    // this.setState({
-    //   data: this.state.data.concat([{ text: "测试1", value: Math.random(1) }]),
-    // });
+  onClick() {
+    this.refs.modal.open()
   }
 
   render() {
     return (
       <div>
-        <Button onClick={this.onClick}>改变数据 </Button>
-        <Input
-          type="text"
-          name="text"
-          label="text"
-          onChange={this.onClick}
-        ></Input>
-        {/* <Form key="1" style={{ width: 900 }} cols={2}>
+        <Button onClick={this.onClick}>打开</Button>
+        <Modal ref="modal">
+          
+        <Form key="1" style={{ width: 500 }} cols={1}>
+          
           <Input type="text" name="text" label="text"></Input>
           <Input
             type="radio"
             name="radio"
             label="radio"
+            labelStyle={{ width: 150 }}
             data={this.state.data}
           ></Input>
           <Input
@@ -94,8 +89,8 @@ class Home extends React.Component {
           ></Input>
           <Input
             type="daterange"
-            min="2021-10-10"
-            max="2022-10-10"
+            min="2022-10-10"
+            max="2024-10-10"
             name="daterange"
             range={10}
             label="daterange"
@@ -108,7 +103,18 @@ class Home extends React.Component {
             label="datetimerange"
             value="test"
           ></Input>
-        </Form> */}
+        </Form>
+        </Modal>
+        
+        <Form key="1" style={{ width: "100%" }}  >
+          
+          <Input type="text" name="text" label="标题"></Input>
+          <Input type="text" name="text" label="标题"></Input>
+          <Input type="text" name="text" label="标题"></Input>
+          <Input type="text" name="text" label="标题"></Input>
+         
+        </Form>
+     
       </div>
     );
   }

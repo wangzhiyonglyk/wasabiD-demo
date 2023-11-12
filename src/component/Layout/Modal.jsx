@@ -19,7 +19,7 @@ class Modal extends React.Component {
     let height =
       this.props.style && this.props.style.height
         ? this.props.style.height
-        : 400;
+        : 600;
     style.width = width;
     style.height = height;
     style.left =
@@ -76,10 +76,10 @@ class Modal extends React.Component {
    */
   mouseMoveHandler(event) {
     if (this.position !== null) {
-      let target = this.resizeref.current.target();
-      if (
+      let target = this.resizeref.current.getTarget();
+      if (target&&(
         event.clientX - this.oldClientX > 5 ||
-        event.clientX - this.oldClientX < -5
+        event.clientX - this.oldClientX < -5)
       ) {
         //防止抖动
         target.style.left =
@@ -100,7 +100,7 @@ class Modal extends React.Component {
     //记住原始位置
     this.oldClientX = event.clientX;
     this.oldClientY = event.clientY;
-    let target = this.resizeref.current.target();
+    let target = this.resizeref.current.getTarget();
     this.position = target.getBoundingClientRect();
   }
 
@@ -135,13 +135,6 @@ class Modal extends React.Component {
     }
     let footer = null;
     let buttons = [];
-
-    buttons.push(
-      <Button title="确定" key="ok" theme="primary" onClick={this.OKHandler}>
-        确定
-      </Button>
-    );
-
     buttons.push(
       <Button
         title="取消"
@@ -150,6 +143,11 @@ class Modal extends React.Component {
         onClick={this.cancelHandler}
       >
         取消
+      </Button>
+    );
+    buttons.push(
+      <Button title="确定" key="ok" theme="primary" onClick={this.OKHandler}>
+        确定
       </Button>
     );
 
@@ -204,7 +202,7 @@ Modal.defaultProps = {
   className: "",
   style: {},
   resize: false, //是否可以改变大小
-  destroy: false,
+  destroy: true,
   onClose: null,
   OKHandler: null, //确定按钮的事件,
   cancelHandler: null, //取消事件

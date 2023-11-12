@@ -20,11 +20,11 @@ export default {
     "month", //年月
     "date", //日期
     "time", //时间
-    "timerange", //时间范围
     "datetime", //日期时间
     "yearrange", // 年范围
     "monthrange", //年月范围
     "daterange", //日期范围
+    "timerange", //时间范围
     "datetimerange", //日期时间范围
     "alpha", //英文字母
     "alphanum", //英文字母与数字
@@ -57,9 +57,6 @@ export default {
     PropTypes.node,
   ]), //字段文字说明属性
   title: PropTypes.string, //提示信息
-
-
-
   value: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,
@@ -161,3 +158,61 @@ export default {
   ]), //上传文件类型
   uploadSuccess: PropTypes.func, // 上传成功事件
 };
+
+// 下拉类型
+export const comboboxType = [
+  "year", //年份
+  "month", //年月
+  "date", //日期
+  "time", //时间
+  "datetime", //日期时间
+  "yearrange", // 年范围
+  "monthrange", //年月范围
+  "daterange", //日期范围
+  "timerange", //时间范围
+  "datetimerange", //日期时间范围
+  "select", //下拉框
+  "picker", //级联选择组件
+  "treepicker", //下拉树选择
+  "gridpicker", //表格下拉
+  "panelpicker", //面板选择
+]
+
+// 文本型
+export const textType = [
+  "text", //普通输入框
+  "password", //密码
+  "strongPassword", //强密码
+  "email", //邮箱
+  "url", //网址
+  "mobile", //手机
+  "idcard", //身份证
+  "alpha", //英文字母
+    "alphanum", //英文字母与数字
+    "integer", //整型数据
+    "integerrange", // 整型数据范围
+    "number", //数字
+    "numberrange", // 数字范围
+]
+
+// 范围型
+export const rangeType = [
+  "yearrange", // 年范围
+  "monthrange", //年月范围
+  "daterange", //日期范围
+  "timerange", //时间范围
+  "datetimerange", //日期时间范围
+  "integerrange", // 整型数据范围
+  "numberrange", // 数字范围
+]
+
+// 在表格中筛选时转成范围型
+export const changeRangeType = [
+  "integer",// 整型
+  "number",// 数字
+  "year", //年份
+  "month", //年月
+  "date", //日期
+  "time", //时间
+  "datetime", //日期时间
+]

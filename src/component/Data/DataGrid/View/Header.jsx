@@ -3,8 +3,8 @@
  *
  * name:列名
  * label:列描述
- * className:样式，
- * style:样式，
+ * className:表头样式，
+ * style:表头样式，
  * headerContent:头部内容函数（name, label) 权限最大
  * footerContent:尾部内容函数 (name, label) 权限最大
  * statsType:"sum", 统计方式，avg,平均值，min最小值，max，最大值，sum求和
@@ -17,13 +17,14 @@
  * filterAble:是否允许筛选
  * editAble:列是否允许编辑，
  * exportAble:是否允许导出
- * content:此列的渲染函数（rowData,rowIndex,columnIndex) 此函数权限最大
  * draggAble:是否允许拖动
+ * content:此列的渲染函数（rowData,rowIndex,columnIndex) 此函数权限最大
  * editor:{
  * type:"",表单类型
  * options:{} 表单其他属性
- *
  * }
+ *  type:// 展示快捷类型组件
+ *  options:{  } // 其他配置项
  */
 
 import React, { useCallback, useMemo } from "react";
@@ -35,6 +36,7 @@ const Header = function (props) {
     label,
     className,
     headerContent,
+    editor,
     headerRowIndex,
     headerColumnIndex,
     align,
@@ -45,11 +47,14 @@ const Header = function (props) {
     sortName,
     sortOrder,
     filterAble,
+    draggAble,
     onSort,
     filterValue,
+    filterText,
     filterOpen,
     onMouseMove,
     onMouseDown,
+    onChangeHeaderOrder
   } = props;
 
   const sortIconCls =
@@ -65,6 +70,23 @@ const Header = function (props) {
     },
     [onSort]
   );
+  const onDragStart = useCallback((event) => {
+    event.dataTransfer.setData("dragHeader", headerColumnIndex); //保存起来
+  }, [headerColumnIndex])
+  
+  const  onDragOver = useCallback(event => {
+    event.target.style.borderLeft = "1px solid var(--primary-color)";
+  }, [])
+  
+  const onDragLeave = useCallback(event => {
+    event.target.style.borderLeft = null;
+  }, [])
+  const onDrop = useCallback(event => {
+    event.preventDefault();
+    event.target.style.borderLeft = null;
+    onChangeHeaderOrder&&onChangeHeaderOrder(event.dataTransfer.getData("dragHeader"),headerColumnIndex)
+   
+  },[headerColumnIndex])
   // 得到内容
   const getHeaderContent = useMemo(() => {
     //内容
@@ -106,13 +128,19 @@ const Header = function (props) {
           ? onClick.bind(this, name, sortOrder === "asc" ? "desc" : "asc")
           : null
       }
+      draggAble={draggAble}
       onMouseMove={onMouseMove}
       onMouseDown={onMouseDown.bind(this, headerColumnIndex)}
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
     >
-      {getHeaderContent}
+      {editor?.options?.required ? <span style={{ color: "var(--danger-color)" }}>*</span>:null} {getHeaderContent}
       {sortIconCls ? <i className={" wasabi-grid-sort "+sortIconCls}></i> : null}
       {filterAble ? (
         <i
+          title={filterText}
           className={"wasabi-grid-filter icon-filter "+(filterValue? "filter":"")}
           onClick={filterOpen.bind(
             this,

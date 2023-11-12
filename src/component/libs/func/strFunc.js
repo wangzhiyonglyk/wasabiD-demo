@@ -117,7 +117,7 @@ func.strToNum = function (str) {
 };
 
 /**
- * 根据字符计算大概宽度
+ * 根据字符计算大概宽度 todo 这里的算法要改，要根据页面的字体大小才行
  * @param {*} str 字符
  */
 func.charWidth = function (str = "") {
@@ -128,9 +128,9 @@ func.charWidth = function (str = "") {
     for (let i = 0; i < strArr.length; i++) {
       let reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
       if (reg.test(strArr[i])) {
-        width += 20; //汉字20个像素
+        width += 16; //汉字20个像素
       } else {
-        width += 10;
+        width += 8;
       }
     }
   } catch (e) {}

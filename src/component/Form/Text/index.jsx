@@ -11,6 +11,7 @@ import Msg from "../../Info/Msg.jsx";
 import dom from "../../libs/dom";
 import "../Select/select.css";
 
+
 /**
  * 图标
  * @param {*} props
@@ -106,8 +107,7 @@ class Text extends Component {
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onBlur = this.onBlur.bind(this);
 
-    this.getValue = this.getValue.bind(this);
-    this.setValue = this.setValue.bind(this);
+    this.onClear=this.onClear.bind(this)
     this.onSelect = this.onSelect.bind(this);
     this.onSearch = this.onSearch.bind(this);
     this.hidePicker = this.hidePicker.bind(this);
@@ -208,6 +208,18 @@ class Text extends Component {
     this.setValue(value);
     this.props.onChange && this.props.onChange(value, value, this.props.name);
   }
+    /**
+   * 全部清除
+   */
+    onClear(event) {
+      event.stopPropagation(); //防止冒泡
+      this.setValue("");
+      this.props.validate && this.props.validate("");
+      this.props.onChange && this.props.onChange("", "", this.props.name);
+      // 注意了这里也执行，防止直接清空
+      this.props.onBlur && this.props.onBlur( "","", this.props.name, event );
+    
+    }
   /**
    * 专门用于表格组件 todo
    * @param {*} event
@@ -223,7 +235,7 @@ class Text extends Component {
       event.target,
       "wasabi-table-cell"
     );
-    let value = event.target.value;
+    let value = value||event.target.value;
     if (ancestorNode) {
       //是单元格中的输入框
       if (
@@ -282,6 +294,11 @@ class Text extends Component {
         {this.props.addAfter ? (
           <div className="wasabi-preend after">{this.props.addAfter}</div>
         ) : null}
+          <i
+        className={"combobox-clear text icon-clear"}
+        onClick={this.onClear}
+        style={{ display: this.props.readOnly ? "none" : !this.state.value ? "none" : "inline" }}
+      ></i>
         {this.props.onSearch ? (
           <Icon disabled={this.props.disabled} onSearch={this.onSearch}></Icon>
         ) : this.props.afterIcon ? (

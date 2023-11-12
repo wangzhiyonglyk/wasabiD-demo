@@ -20,6 +20,8 @@ desc:checkbox
   display: flex;
   margin-right: 5px;
   z-index: 1;
+  line-height: 14px;
+  height: 14px;;
   justify-content: flex-start;
   align-items: center;
   align-content: center;
@@ -46,7 +48,6 @@ desc:checkbox
   border-radius: 2px;
   position: relative;
   display: flex;
-  transform: translateY(2px);
 }
 
 .wasabi-checkul .checkbox-label[readOnly],

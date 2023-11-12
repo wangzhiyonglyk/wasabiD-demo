@@ -1,26 +1,30 @@
 /**
  * 跟表格本身事件，方法无关的函数
  */
-
+import {comboboxType} from "../../../Form/propsConfig/propTypes"
 /**
- * 编辑时设置单元格的编辑样式,防止没有
+ * 格式化表头，用于编辑时设置单元格的编辑样式,防止没有,并且编辑时如果是下拉选项则放弃固定列
  * @param {*} headers 头部
  * @returns
  */
-export function setHeaderEditor(headers) {
+export function formatHeader(headers) {
   if (headers && headers.length > 0) {
     for (let i = 0; i < headers.length; i++) {
       if (headers[i] instanceof Array) {
         for (let j = 0; j < headers[i].length; j++) {
           if (headers[i][j].colSpan && headers[i][j].colSpan > 1) {
             //跨行的列不设置
+            headers[i][j].sticky = null;// 多行列表取消固定列
             continue;
+            
           } else {
             headers[i][j].editor = headers[i][j].editor
               ? headers[i][j].editor
               : {
                   type: "text",
-                };
+              };
+            
+              headers[i][j].sticky = null;// 多行列表取消固定列
           }
         }
       } else {
@@ -28,7 +32,10 @@ export function setHeaderEditor(headers) {
           ? headers[i].editor
           : {
               type: "text",
-            };
+          };
+        if (comboboxType.includes(headers[i].editor.type)) {
+          headers[i].sticky = null;// 取消固定列，因为下拉框无法展示，除非
+        }
       }
     }
   }
@@ -66,7 +73,7 @@ export function checkCurrentPageCheckedAll(
 }
 
 /**
- * 得到真正的行号
+ * 得到真正的行号 ,
  * @param {*} pagination 分页
  * @param {*} pageIndex 分页号
  * @param {*} pageSize
@@ -80,7 +87,7 @@ export function getRealRowIndex(
   rowData,
   index
 ) {
-  // 真正的行号
+  // 真正的行号 有虚拟列表的行号,取这个，没有再判断分页情况
   let rowIndex = rowData._orderRowIndex
     ? rowData._orderRowIndex
     : pagination

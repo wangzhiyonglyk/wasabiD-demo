@@ -156,6 +156,7 @@ Button.propTypes = {
     "warning",
     "danger",
     "cancel",
+    "default"
   ]),
   size: PropTypes.oneOf(["large", "default", "small", "mini"]), //图标的位置
   onClick: PropTypes.func, //按钮单击事件

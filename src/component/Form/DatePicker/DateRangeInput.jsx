@@ -77,6 +77,7 @@ class DateRangeInput extends React.Component {
           ref={this.fristinput}
           key="1"
           {...this.props}
+          isfirst={true}
           type={(this.props.type ?? "").replace("range", "")}
           value={valueArr[0]}
           onChange={this.onChange.bind(this, 1)}

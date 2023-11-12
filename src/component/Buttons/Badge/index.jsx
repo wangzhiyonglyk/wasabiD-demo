@@ -67,6 +67,7 @@ Badge.propTypes = {
     "warning",
     "danger",
     "cancel",
+    "default"
   ]),
   style: PropTypes.object, //样式
   hide: PropTypes.bool,

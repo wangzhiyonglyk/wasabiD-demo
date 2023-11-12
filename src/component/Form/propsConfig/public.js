@@ -6,14 +6,19 @@ import dom from "../../libs/dom";
 export function setDropcontainterPosition(target) {
   let container =
     dom.findAncestorByClasss(target, "wasabi-form-group") || target.parentNode;
-
-  let position = target.parentNode.getBoundingClientRect();
-  let top = position.bottom + 5;
-  if (dom.findAncestorByClasss(target, "wasabi-table-cell")) {
-    // 表格内的要减少高度
-    top = top - 46;
+  if (container) {
+    let position = container.getBoundingClientRect();
+    let drop = container.querySelector("div.dropcontainter");
+    if (drop) {
+      drop.style.position = "absolute"
+      drop.style.top ="calc(var(--input-height) + 5px)";
+      drop.style.left = "0px";
+      if (drop.className.indexOf("date") <= -1)
+      {
+        drop.style.width=position.width+"px"
+      }  
+    }
+   
   }
-  let drop = container.querySelector("div.dropcontainter");
-  drop.style.top = top + "px";
-  drop.style.left = position.left + "px";
+  
 }

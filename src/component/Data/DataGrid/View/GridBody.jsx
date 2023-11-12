@@ -32,11 +32,14 @@ class GridBody extends Component {
   /**
    * 单击事件
    * @param {*} rowData 行数据
-   * @param {*} rowIndex 行下标
-   * @param {*} columnIndex 列下标
+   * @param {*} rowIndex 行号
+   * @param {*} columnIndex 列号
+    * @param {*} label 标题 多元素时有效
+   * @param {*} event 事件源
    */
-  onClick(rowData, rowIndex, columnIndex) {
-    this.props.onClick && this.props.onClick(rowData, rowIndex, columnIndex);
+  onClick(rowData, rowIndex, columnIndex, label, event) {
+    event&&event.stopPropagation();
+    this.props.onClick && this.props.onClick(rowData, rowIndex, columnIndex,label,event);
   }
   /**
    * 双击事件
@@ -194,25 +197,25 @@ class GridBody extends Component {
   render() {
     //渲染表体
     if (
-      !(this.props.data instanceof Array) ||
+      !(this.props.visibleData instanceof Array) ||
       !(this.props.headers instanceof Array) ||
-      this.props.data.length === 0
+      this.props.visibleData.length === 0
     ) {
       return null; //格式不正确，或者数据为空时，不渲染
     }
     let trArr = []; //行数据
 
-    this.props.data.forEach((rowData, index) => {
+    this.props.visibleData.forEach((rowData, visibleDataIndex) => {
       if (rowData.hide) {
         return;
       } else {
-        // 得到真正的行号,有虚拟列表的行号，取这个，没有再判断分页情况
+        // 得到真正的行号
         let rowIndex = getRealRowIndex(
           this.props.pagination,
           this.props.pageIndex,
           this.props.pageSize,
           rowData,
-          index
+          visibleDataIndex
         );
 
         let tds = []; //当前的列集合
@@ -256,7 +259,7 @@ class GridBody extends Component {
                 header={trheader}
                 rowData={rowData}
                 rowIndex={rowIndex}
-                visibleDataIndex={index}
+                visibleDataIndex={visibleDataIndex}
                 columnIndex={columnIndex}
                 isFocus={
                   rowIndex === this.props.focusIndex &&
