@@ -1,5 +1,5 @@
 .resize {
-  z-index: 2;
+  z-index: 1;
   border: 1px solid var(--border-color);
   margin: 5px;
   padding: 2px;

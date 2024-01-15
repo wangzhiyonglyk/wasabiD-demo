@@ -67,11 +67,7 @@ class Layout extends React.Component {
                   onChange: this.onChange,
                   key: index,
                   ref: index,
-
                 });
-
-
-
             }
           }
         })}

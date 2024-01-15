@@ -2,7 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import {Layout,Header,Footer,Center,Left,Right} from "../../component";
 
-class Home extends React.Component {
+class Page extends React.Component {
   constructor(props) {
     super(props);
     this.inputRef = React.createRef();
@@ -51,4 +51,4 @@ class Home extends React.Component {
 }
 
 const rootElement = document.getElementById("root");
-createRoot(rootElement).render(<Home />);
+createRoot(rootElement).render(<Page />);

@@ -141,7 +141,7 @@ class Resize extends React.Component {
   }
 }
 Resize.propTypes = {
-  style: PropTypes.object.isRequired, //样式
+  style: PropTypes.object, //样式
   className: PropTypes.string, //样式
 
   resize: PropTypes.bool, //是否允许调整大小
