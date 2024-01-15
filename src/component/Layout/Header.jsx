@@ -66,7 +66,7 @@ class Header extends React.Component {
       let clientY = event && event.clientY;
       let position = this.dom.getBoundingClientRect();
       let topPosition = position.top + position.height;
-      if (topPosition - clientY <= 5) {
+      if (topPosition - clientY>=0&&topPosition - clientY <= 5) {
        
         event.target.style.cursor = "ns-resize";
         this.dom.addEventListener("mousedown", this.mouseDownHandler);

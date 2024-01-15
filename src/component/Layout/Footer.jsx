@@ -61,7 +61,7 @@ class Footer extends React.Component {
       let clientY = event && event.clientY;
       let position = this.dom.getBoundingClientRect();
       let topPosition = position.top;
-      if (clientY - topPosition <=5&&clientY - clientY >=0) {
+      if (clientY - topPosition <=5&&clientY - topPosition >=0) {
         event.target.style.cursor = "ns-resize";
         this.dom.addEventListener("mousedown", this.mouseDownHandler);
       } else {  

@@ -68,7 +68,7 @@ class Left extends React.Component {
     let clientX = event && event.clientX;
     let position = this.dom.getBoundingClientRect();
     let leftPosition = position.left + position.width;
-    if (leftPosition - clientX <= 5) {
+    if (leftPosition - clientX <= 5&&leftPosition - clientX >=0) {
       event.target.style.cursor = "ew-resize";
       this.dom.addEventListener("mousedown", this.mouseDownHandler);
     } else {
