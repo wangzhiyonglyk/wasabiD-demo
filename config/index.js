@@ -72,6 +72,11 @@ let entry = [
     title: "布局", // 标题
     src: "./view/layout/index.jsx", //脚本路径
   },
+     {
+    filename: "resize", //文件名，
+    title: "调整大小", // 标题
+    src: "./view/resize/index.jsx", //脚本路径
+  },
 ];
 
 module.exports = entry;
