@@ -66,7 +66,7 @@ import Header from "./Layout/Header.jsx"; //布局组件-头部
 import Footer from "./Layout/Footer.jsx"; //布局组件-底部
 import Left from "./Layout/Left.jsx"; //布局组件-左侧
 import Right from "./Layout/Right.jsx"; //布局组件-右侧
-import Container from "./Layout/Container.jsx"; //布局组件-网格容器
+
 import Row from "./Layout/Row.jsx"; //布局组件-行
 import Col from "./Layout/Col.jsx"; //布局组件-列
 
@@ -151,7 +151,7 @@ export {
   Footer,
   Left,
   Right,
-  Container,
+
   Row,
   Col,
   Modal,

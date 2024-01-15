@@ -67,6 +67,11 @@ let entry = [
     title: "修改密码", // 标题
     src: "./view/changePassword/index.jsx", //脚本路径
   },
+    {
+    filename: "layout", //文件名，
+    title: "布局", // 标题
+    src: "./view/layout/index.jsx", //脚本路径
+  },
 ];
 
 module.exports = entry;

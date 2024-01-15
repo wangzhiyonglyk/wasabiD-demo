@@ -9,7 +9,6 @@ import Layout from "../../Layout/Layout";
 import Left from "../../Layout/Left";
 import Center from "../../Layout/Center";
 
-import Container from "../../Layout/Container";
 import GlobalSearch from "../../Data/GlobalSearch";
 import SystemHeader from "./SystemHeader";
 
@@ -168,7 +167,7 @@ class System extends React.Component {
               activeShortHandler={this.activeShortHandler.bind(this)}
             ></SystemHeader>
           ) : null}
-          <Left width={this.state.leftWidth}>
+          <Left  className="system-left-nav" width={this.state.leftWidth}>
             <SystemMenu
               title={this.props.title}
               navTheme={navTheme}

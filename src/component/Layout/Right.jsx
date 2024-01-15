@@ -10,8 +10,6 @@ class Right extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      oldWidth: null,
-      width: null,
       id: func.randomStr(),
     };
     this.targets = []; //用于清除
@@ -22,42 +20,19 @@ class Right extends React.Component {
   static defaultProps = {
     type: "right",
     resize:true,
-    width: 0,
-   
   };
   static propTypes = {
-    resize: PropTypes.bool,
-    width: PropTypes.number,
-   
+    resize: PropTypes.bool
   };
-  static getDerivedStateFromProps(props, state) {
-    if (props.width !== state.oldWidth) {
-     return  {
-        width: props.width,
-        oldWidth:props.width
-       }
-    }
-    return null
-  }
+
   componentDidMount() {
     //设置鼠标事件
-    this. center =document.getElementById(this.props.centerid);
-   if (this.center&&this.props.resize) {
+   if (this.props.resize) {
      this.dom = document.getElementById(this.state.id)
      this.oldClientX = null
      this.dom.addEventListener("mousemove", this.mouseMoveHandler);
-    
    }
- }componentDidMount() {
-  //设置鼠标事件
-  this. center =document.getElementById(this.props.centerid);
- if (this.center) {
-   this.dom=document.getElementById(this.state.id)
-   this.dom.addEventListener("mousemove", this.mouseMoveHandler);
-   this.oldClientX = null
-   
  }
-}
    
   
   /**
@@ -71,7 +46,7 @@ class Right extends React.Component {
       //记住原始位置
       this.oldClientX = event.clientX;
       this.oldWidth = this.dom.getBoundingClientRect().width// 使用这个更精确
-      this.oldCenterWidth= this.center.getBoundingClientRect().width// 使用这个更精确
+   
 
     }
   }
@@ -80,23 +55,17 @@ class Right extends React.Component {
    * @param {*} event
    */
   mouseMoveHandler(event) {
-   
     if (this.oldClientX !== null) {
       this.dom.style.width = this.oldWidth - (event.clientX - this.oldClientX) + "px";
-      this.center.style.width = this.oldCenterWidth + (event.clientX - this.oldClientX) + "px";
   } else {
-
     let clientX = event && event.clientX;
     let position = this.dom.getBoundingClientRect();
       let leftPosition = position.left 
-     
     if (clientX-leftPosition >=0&&clientX-leftPosition <= 5) {
-     
       event.target.style.cursor = "ew-resize";
       this.dom.addEventListener("mousedown", this.mouseDownHandler);
     } else {
-      event.target.style.cursor = "pointer";
-     
+      event.target.style.cursor = "pointer"
     }
   }
 }
@@ -111,9 +80,6 @@ class Right extends React.Component {
       document.removeEventListener("mousemove", this.mouseMoveHandler);
       document.removeEventListener("mouseup", this.mouseUpHandler);
       let width = this.dom.getBoundingClientRect().width
-      this.setState({
-        width:width
-      })
       this.props.onChange && this.props.onChange("right",width);
     }
     event.target.style.cursor = "pointer";
@@ -129,10 +95,8 @@ class Right extends React.Component {
         style={{
           ...this.props.style,
           top: this.props.top,
-          width: this.state.width,
-          height: this.props.reduceHeight!==null&&this.props.reduceHeight!==undefined
-            ? "calc(100% - " + this.props.reduceHeight.toString() + "px"
-            : null,
+          width: this.props.width,
+         
         }}
       >
      

@@ -3,7 +3,10 @@
    font-size: var(--font-size);
    color: var(--color);
 }
-
+.wasabi-system .system-left-nav{
+   flex-direction:column ;
+   overflow-x: hidden;
+}
 
 .wasabi-system .system {
    height: 42px;
@@ -12,6 +15,10 @@
    top: 0px;
    z-index: 1;
    position: sticky;
+   display: flex;
+   align-items: center;
+   justify-content: flex-start;
+   padding-left:10px;
 }
 
 .wasabi-system .system.wihte {
@@ -59,10 +66,7 @@
 .wasabi-system .system .logo {
    height: 20px;
    width: 20px;
-   margin-left: 20px;
-   margin-top: 11px;
-
-
+   object-fit: fill;
 }
 
 .wasabi-system .system .title {
@@ -72,11 +76,6 @@
    font-size: 16px;
    font-weight: 700;
 
-}
-
-.wasabi-system .wasabi-menu {
-   min-height: calc(100% - 42px);
-   height: auto;
 }
 
 .wasabi-system .header {
@@ -132,9 +131,11 @@
 }
 
 
+
 .wasabi-system .header .nav {
-   float: right;
    height: 100%;
+   flex: 1;
+   overflow: hidden;
 }
 
 .wasabi-system .header .nav ul {
