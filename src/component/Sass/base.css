@@ -12,11 +12,12 @@ date:2021-02-06 重新调整
 */
 
 @import url("./reboot.css");
+@import url("./grid.css");
 @import url("./animation.css");
 @import url("./font/iconfont.css");
 :root {
     /* 默认字体大小 */
-    --font-size: 12px;
+    --font-size: 14px;
     /* 默认图标大小 */
     --icon-size: 14px;
     /* 标题类默认字体大小 */

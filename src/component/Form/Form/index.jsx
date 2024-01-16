@@ -2,13 +2,16 @@
 //date:2016-03-02后开始独立改造
 //edit date:2020-04-05
 //edit date:2021-02 修复bug
+// edit 2024-01-16 暂时先用class的组件,改造成hook有点麻烦,因为涉及到ref的问题
 //desc:表单组件
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "../../Buttons/Button";
 import func from "../../libs/func";
-import propsTran from "../../libs/propsTran";
+import mixins from "../../Mixins/mixins";
+import method from "./method";
 import "./form.css";
+
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -18,12 +21,13 @@ class Form extends Component {
       disabled: this.props.disabled,
       rawDisabled: this.props.disabled,
     };
-    this.validate = this.validate.bind(this);
-    this.getData = this.getData.bind(this);
-    this.setData = this.setData.bind(this);
-    this.clearData = this.clearData.bind(this);
+   Object.getOwnPropertyNames(method).forEach((name) => {
+        if (typeof method[name] == "function") {
+          this[name] = this[name].bind(this);
+        }
+      });
     this.onSubmit = this.onSubmit.bind(this);
-    this.getRefs = this.getRefs.bind(this);
+
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -35,116 +39,7 @@ class Form extends Component {
     }
     return null;
   }
-  /**
-   * 合并两种refs引用方式
-   * @returns
-   */
-  getRefs() {
-    let combinxRefs = []; //合并新旧语法
-    for (let i = 0; i < this.inputs.length; i++) {
-      let cref = this.inputs[i].current;
-      if (cref) {
-        combinxRefs.push(cref);
-      }
-    }
-    for (let r in this.refs) {
-      combinxRefs.push(this.refs[r]);
-    }
-    return combinxRefs;
-  }
-  /**
-   * 验证
-   * @returns
-   */
-  validate() {
-    let isva = true;
-    let combinxRefs = this.getRefs();
-    for (let i = 0; i < combinxRefs.length; i++) {
-      let cref = combinxRefs[i];
-      if (isva) {
-        //如果验证是正确的，继续获取值
-        isva = cref && cref.validate ? cref.validate() : isva;
-      } else {
-        //如果前一个验证失败，则验证不拿值
-        cref && cref.validate ? cref.validate() : void 0;
-      }
-    }
-    return isva;
-  }
-  /**
-   * 获取值
-   * @returns
-   */
-  getData() {
-    var data = {};
-    let combinxRefs = this.getRefs();
-    for (let i = 0; i < combinxRefs.length; i++) {
-      let cref = combinxRefs[i];
-      if (cref && cref.props.name && cref.getValue) {
-        //说明是表单控件
-        if (cref.props.name.indexOf(",") > -1) {
-          //含有多个字段
-          var nameSplit = cref.props.name.split(",");
-          if (cref.getValue()) {
-            var valueSplit = cref.getValue().split(",");
-            for (let index = 0; index < nameSplit.length; index++) {
-              if (index < valueSplit.length) {
-                data[nameSplit[index]] = valueSplit[index];
-              }
-            }
-          } else {
-            for (let index = 0; index < nameSplit.length; index++) {
-              data[nameSplit[index]] = "";
-            }
-          }
-        } else {
-          data[cref.props.name] = cref.getValue();
-        }
-      } else if (cref.getData) {
-        //布局组件或者表单组件
-        data = Object.assign({}, data, cref.getData());
-      }
-    }
-    return data;
-  }
-  /**
-   * 设置值
-   * @param {*} data
-   * @returns
-   */
-  setData(data) {
-    //设置值,data是对象
-
-    if (!data) {
-      return;
-    }
-    let combinxRefs = this.getRefs();
-    for (let i = 0; i < combinxRefs.length; i++) {
-      let cref = combinxRefs[i];
-      if (
-        cref &&
-        cref.props.name &&
-        data[cref.props.name] !== null &&
-        data[cref.props.name] !== undefined
-      ) {
-        cref.setValue && cref.setValue(data[cref.props.name]);
-      } else if (cref && cref.setData) {
-        //表单或者布局组件
-        cref.setData(data);
-      }
-    }
-  }
-  /**
-   * 清除数据
-   */
-  clearData() {
-    let combinxRefs = this.getRefs();
-    for (let i = 0; i < combinxRefs.length; i++) {
-      let cref = combinxRefs[i];
-      cref && cref.setValue && cref.setValue("");
-      cref && cref.clearData && cref.clearData();
-    }
-  }
+ 
   onSubmit() {
     //提交 数据
     var data = {}; //各个字段对应的值
@@ -317,4 +212,10 @@ Form.defaultProps = {
   cols: 4, //默认3个
   labelPosition: "left",
 };
+/**
+ * 合并公共方法
+ */
+mixins(Form, [
+  method,
+]);
 export default Form;

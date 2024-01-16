@@ -34,6 +34,7 @@ class Home extends React.Component {
   }
   componentDidMount() {}
   onClick() {
+      this.refs.form.validate()
     this.refs.modal.open()
   }
 
@@ -41,9 +42,9 @@ class Home extends React.Component {
     return (
       <div>
         <Button onClick={this.onClick}>打开</Button>
-        <Modal ref="modal">
+        <Modal >
           
-        <Form key="1" style={{ width: 500 }} cols={1}>
+        <Form ref="form" key="1" style={{ width: 500 }} cols={1}>
           
           <Input type="text" name="text" label="text"></Input>
           <Input
@@ -106,10 +107,10 @@ class Home extends React.Component {
         </Form>
         </Modal>
         
-        <Form key="1" style={{ width: "100%" }}  >
+        <Form ref="form" style={{ width: "100%" }}  >
           
-          <Input type="text" name="text" label="标题"></Input>
-          <Input type="text" name="text" label="标题"></Input>
+          <Input type="text" required={true} name="text" label="标题"></Input>
+          <Input type="text"  required={true}  name="text" label="标题"></Input>
           <Input type="text" name="text" label="标题"></Input>
           <Input type="text" name="text" label="标题"></Input>
          

@@ -65,7 +65,7 @@
 .no-margins {
    margin: 0 !important;
 }
-.text {
+.box-content .text {
    font-weight: 600;
    float: right;
 }
