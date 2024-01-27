@@ -55,7 +55,7 @@ class Password extends React.Component {
         value: tempValue,
       });
       this.props.onChange &&
-        this.props.onChange(tempValue, tempValue, this.props.name, event);
+        this.props.onChange(tempValue, this.props.name, event);
     } else {
       //禁止从中间删除
     }

@@ -7,7 +7,7 @@
  */
 import PropTypes from "prop-types";
 export default {
-    /****基础属性****/
+  /****基础属性****/
   type: PropTypes.oneOf([
     "text", //普通输入框
     "password", //密码
@@ -47,6 +47,7 @@ export default {
     "avatar", // 头像
     "file", // 文件
     "cloud", //云文件
+    "phone",//手机输入
   ]), //字段类型，
 
   name: PropTypes.string, //字段名
@@ -188,11 +189,11 @@ export const textType = [
   "mobile", //手机
   "idcard", //身份证
   "alpha", //英文字母
-    "alphanum", //英文字母与数字
-    "integer", //整型数据
-    "integerrange", // 整型数据范围
-    "number", //数字
-    "numberrange", // 数字范围
+  "alphanum", //英文字母与数字
+  "integer", //整型数据
+  "integerrange", // 整型数据范围
+  "number", //数字
+  "numberrange", // 数字范围
 ]
 
 // 范围型

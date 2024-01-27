@@ -973,7 +973,7 @@ class Picker extends Component {
     };
 
     return (
-      <div className="combobox">
+      <div className="combobox wasabi-picker ">
         <PickerInput
           ref={this.input}
           {...this.props}
@@ -988,7 +988,7 @@ class Picker extends Component {
           onClear={this.onClear}
         ></PickerInput>
         <div
-          className={"dropcontainter  picker "}
+          className={"dropcontainter  picker"}
           style={{ display: this.state.show == true ? "block" : "none" }}
           id={this.state.pickerid}
         >

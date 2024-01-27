@@ -10,6 +10,7 @@ import Picker from "../Picker";
 import Select from "../Select";
 import TreePicker from "../TreePicker";
 import GridPicker from "../GridPicker";
+import Phone from "../Phone";
 import "./combobox.css";
 class ComboBox extends React.PureComponent {
   constructor(props) {
@@ -31,6 +32,9 @@ class ComboBox extends React.PureComponent {
     //用于设置值
     this.combobox.current.setValue && this.combobox.current.setValue(value);
   }
+  /**
+   * 获取焦点
+   */
   focus() {
     try {
       this.combobox.current.focus();
@@ -65,6 +69,9 @@ class ComboBox extends React.PureComponent {
   renderGridPicker() {
     return <GridPicker ref={this.combobox} {...this.props}></GridPicker>;
   }
+  renderPhone(){
+    return <Phone ref={this.combobox} {...this.props}></Phone>
+  }
 
   render() {
     let control = null;
@@ -80,6 +87,9 @@ class ComboBox extends React.PureComponent {
         break;
       case "gridpicker":
         control = this.renderGridPicker();
+        break;
+        case "phone":
+        control=this.renderPhone();
         break;
       default: //剩下的都是日期相关的
         control = this.renderDatePicker();

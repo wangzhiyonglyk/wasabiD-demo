@@ -248,16 +248,16 @@ class Text extends Component {
           Msg.alert("表格中富文本不处理excel粘贴");
           this.setValue(value);
           this.props.onChange &&
-            this.props.onChange(value, value, this.props.name); //自定义的改变事件
+            this.props.onChange(value, this.props.name,event); //自定义的改变事件
         }
       } else {
         this.setValue(value);
         this.props.onChange &&
-          this.props.onChange(value, value, this.props.name); //自定义的改变事件
+          this.props.onChange(value, this.props.name,event); //自定义的改变事件
       }
     } else {
       this.setValue(value);
-      this.props.onChange && this.props.onChange(value, value, this.props.name); //自定义的改变事件
+      this.props.onChange && this.props.onChange(value, this.props.name,event); //自定义的改变事件
     }
   }
   render() {

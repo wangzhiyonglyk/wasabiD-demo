@@ -181,3 +181,5 @@ export {
   mixins,
   regs,
 };
+
+import "./Form/Phone/data"

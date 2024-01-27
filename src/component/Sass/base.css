@@ -104,7 +104,7 @@ date:2021-02-06 重新调整
     /* 阴影 */
     --box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
     /*文本框中图标top位置*/
-    --position-top: 12px;
+    --position-top: var(50% - 6px);
 }
 
 :root.my-red {
