@@ -189,13 +189,23 @@ class DataGrid extends Component {
     }
     return newState;
   }
+   // nextProps：更新后的props属性
+  // nextState: 更新后的state状态
+  shouldComponentUpdate(nextProps, nextState) {
+  if(JSON.stringify(nextProps)===JSON.stringify(this.props)){
+    return false;
+  }
+ return true ;
+  }
   /**
    * 更新函数
    */
   componentDidUpdate() {
+    console.log("componentDidUpdate")
     this.handlerGridVisibleData();
   }
   componentDidMount() {
+     console.log("componentDidMount")
     this.handlerGridVisibleData();
   }
 
@@ -307,7 +317,7 @@ DataGrid.defaultProps = {
    */
 
   focusSelected: false,
-  exportAble: true,
+  exportAble: false,
   borderAble: true,
   compactCol: 10,
   /**

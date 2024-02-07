@@ -6,7 +6,7 @@
  */
 import React from "react";
 import func from "../../../libs/func/index.js";
-import {changeRangeType} from "../../../Form/propsConfig/propTypes.js"
+import { changeRangeType } from "../../../Form/propsConfig/propTypes.js"
 
 import { checkCurrentPageCheckedAll, getRealRowIndex } from "./datafunc.js";
 export default {
@@ -103,7 +103,7 @@ export default {
    * @param {*} event 事件源
    */
   onClick: function (rowData, rowIndex, columnIndex, label, event) {
- 
+
     this.setState({
       focusIndex: rowIndex,
       focusColumnIndex: columnIndex,
@@ -123,7 +123,7 @@ export default {
         editIndex: rowIndex + "-" + columnIndex,
       });
     }
-    this.props.onClick && this.props.onClick(rowData, rowIndex, columnIndex,label,event); //
+    this.props.onClick && this.props.onClick(rowData, rowIndex, columnIndex, label, event); //
   },
   /**
    * 双击事件
@@ -132,9 +132,9 @@ export default {
    * @param {*} columnIndex 列号
    * @param {*} event
    */
-  onDoubleClick: function (rowData, rowIndex, columnIndex) {
+  onDoubleClick: function (rowData, rowIndex, columnIndex, label, event) {
     this.props.onDoubleClick &&
-      this.props.onDoubleClick(rowData, rowIndex, columnIndex);
+      this.props.onDoubleClick(rowData, rowIndex, columnIndex, label, event);
   },
 
   /**
@@ -210,20 +210,20 @@ export default {
       // 向后插入
       // 先插入，再删除,因为删除的下标不会发生改变
       headers.splice(dropHeaderColumnIndex, 0, drag);
-      headers.splice(dragHeaderColumnIndex,1)
+      headers.splice(dragHeaderColumnIndex, 1)
     }
     else if (dragHeaderColumnIndex > dropHeaderColumnIndex) {
       // 向前插入
       headers.splice(dropHeaderColumnIndex, 0, drag);
       //  先插入，再删除，删除下标加1
-      headers.splice(dragHeaderColumnIndex+1,1)
+      headers.splice(dragHeaderColumnIndex + 1, 1)
     }
     else {
       // 相等不处理
       return;
     }
     this.setState({
-      headers:headers
+      headers: headers
     })
   },
   /**
@@ -335,7 +335,7 @@ export default {
     data[rowIndex][name] = value;
     let visibleData = this.state.visibleData;
     visibleData[visibleDataIndex][name] = value;
-   
+
     this.setState({
       visibleData,
       data: data,

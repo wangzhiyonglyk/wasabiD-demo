@@ -3,7 +3,73 @@ date:2016-03-30
 desc:下拉框样式
 */
 
-.wasabi-select ul {
+.wasabi-select-multiple{
+  position: relative;
+    border: 1px solid var(--border-color);
+    display: flex;
+    width: 100%;
+    outline: none;
+    border-radius: var(--border-radius);
+    flex-wrap: wrap;
+}
+
+.wasabi-select-multiple[disabled],
+.wasabi-select-multiple[readOnly] {
+  background-color: var(--background-color);
+  border-color: var(--border-color);
+  color: var(--border-hover-color);
+  cursor: not-allowed;
+}
+
+
+
+.wasabi-select-multiple:hover,
+.wasabi-form-group.noborder .wasabi-select-multiple:hover {
+  border-color: var(--border-hover-color);
+}
+
+.wasabi-select-multiple:focus,
+.wasabi-form-group.noborder .wasabi-select-multiple:focus {
+  border-color: var(--primary-color);
+}
+.wasabi-select-multiple .wasabi-input{
+  border:none;
+  flex: 1;
+  min-width: 30px;
+}
+ .wasabi-has-error .wasabi-select-multiple {
+    border-color: var(--danger-color);
+}
+
+.wasabi-select-multiple .multiple-item-container{
+  display: flex;
+  flex-wrap: wrap;
+
+}
+.wasabi-select-multiple .multiple-item{
+ background-color: var(--background-color);
+    padding: 5px;
+    padding-right: 14px;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+}
+.wasabi-select-multiple .multiple-item .icon-close{
+  position: absolute;
+  font-size: 12px;
+  transform: scale(.7);
+  top:8px;
+  right: 2px;
+}
+.wasabi-select-multiple .multiple-item .icon-close:hover{
+ opacity: 0.7;
+}
+ .multiple-item+.multiple-item{
+  margin-left: 5px;
+}
+
+
+.dropcontainter.select ul {
   width: 100%;
   height: 100%;
   background-color: #fff;
@@ -16,7 +82,7 @@ desc:下拉框样式
   padding: 0;
   margin: 0;
 }
-.wasabi-select ul li {
+.dropcontainter.select ul li {
   height: 35px;
   line-height: 35px;
   overflow: hidden;
@@ -26,14 +92,14 @@ desc:下拉框样式
   text-align: left;
   font-size: var(--font-size);
 }
-.wasabi-select ul li:hover {
+.dropcontainter.select ul li:hover {
   background-color: var(--background-color);
 }
 
-.wasabi-select ul li.active {
+.dropcontainter.selectul li.active {
   color: var(--primary-color);
 }
-.wasabi-select ul li.active:after {
+.dropcontainter.select ul li.active:after {
   font-family: "iconfont" !important;
   content: "\ea38";
   position: absolute;
@@ -44,3 +110,4 @@ desc:下拉框样式
   font-size: 16px;
   color: var(--primary-color);
 }
+

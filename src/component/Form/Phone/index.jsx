@@ -180,9 +180,7 @@ onSelect(country,event){
           this.props.onBlur(this.state.value, this.state.text, this.props.name);
       } catch (e) {}
     }
-    else{
-      console.log("dd")
-    }
+  
   }
   render(){
    return   <div className="combobox wasabi-phone ">

@@ -132,7 +132,7 @@ class Single extends React.Component {
               ? this.props.pageHandler
               : null
           }
-          rowNumber={true}
+       
           selectAble={this.props.selectAble}
           data={this.props.data}
         ></DataGrid>

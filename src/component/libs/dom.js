@@ -102,7 +102,8 @@ let dom = {
    * @param {*} pad 多余间距
    */
   scrollParent(el) {
-    let node = el.parentNode;
+
+    let node = el && el.parentNode;
 
     while (node !== null && node !== document.documentElement) {
       let overflow = this.computedStyle(node, "overflow");

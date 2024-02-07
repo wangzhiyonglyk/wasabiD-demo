@@ -10,6 +10,7 @@ import Picker from "../Picker";
 import Select from "../Select";
 import TreePicker from "../TreePicker";
 import GridPicker from "../GridPicker";
+import Province  from "../Province";
 import Phone from "../Phone";
 import "./combobox.css";
 class ComboBox extends React.PureComponent {
@@ -67,7 +68,11 @@ class ComboBox extends React.PureComponent {
     return <TreePicker ref={this.combobox} {...this.props}></TreePicker>;
   }
   renderGridPicker() {
+    
     return <GridPicker ref={this.combobox} {...this.props}></GridPicker>;
+  }
+    renderProvince() {
+    return <Province ref={this.combobox} {...this.props}></Province>;
   }
   renderPhone(){
     return <Phone ref={this.combobox} {...this.props}></Phone>
@@ -87,6 +92,9 @@ class ComboBox extends React.PureComponent {
         break;
       case "gridpicker":
         control = this.renderGridPicker();
+        break;
+      case "province":
+  control = this.renderProvince();
         break;
         case "phone":
         control=this.renderPhone();

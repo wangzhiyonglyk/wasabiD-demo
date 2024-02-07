@@ -28,7 +28,7 @@ import Badge from "../../../Buttons/Badge";
  * @param {*} item 
  * @returns 
  */
-const typeRender = function (item,onClick) {
+const typeRender = function (rowData, rowIndex, columnIndex,item,onClick) {
   if (item.type && ["button", "linkbutton", "tag", "badge"].includes(item.type)) {        
     // 有类型
     switch (item.type) {
@@ -50,6 +50,7 @@ const typeRender = function (item,onClick) {
       className={"wasabi-table-cell-span " + item.className}
       style={item.style}
       {...item.options}
+      onClick={onClick.bind(this,rowData, rowIndex, columnIndex, item.label)}
     >
       {item.label}
     </div>
@@ -89,7 +90,7 @@ const Cell = function ({
     //内容
     let content = header?.content;
     if (typeof content === "function") {
-      //函数
+      //函数 权限最高，自由度最多
       try {
         content = content(rowData, rowIndex, columnIndex);
       } catch (e) {
@@ -103,13 +104,14 @@ const Cell = function ({
         content= rowData[header.name].map((item, index) => {
           if (typeof item === "object" && !func.isEmptyObject(item)) {
             // 是对象
-            return typeRender(item,onClick)
+            return typeRender(rowData, rowIndex, columnIndex, item,onClick)
           }
           else {
             // 非对象
             return <div
               key={index}
               className={"wasabi-table-cell-span"}
+                onClick={onClick.bind(this,rowData, rowIndex, columnIndex, item)}
             >
               {item}
             </div>
@@ -118,12 +120,14 @@ const Cell = function ({
         });
       } else if (typeof rowData[header.name] === "object" && !func.isEmptyObject(rowData[header.name])) {
         // 这个是值是对象
-        content= typeRender( rowData[header.name],onClick)
+        content= typeRender( rowData, rowIndex, columnIndex, rowData[header.name],onClick)
       } else {
         // 文本的时候，看表头
         if (header.type) {
-          // 有格式
-          content = typeRender({
+          // 表头有格式设置
+          content = typeRender(
+            rowData, rowIndex, columnIndex, 
+            {
             type: header.type,
             options: header.options,
             label: rowData[header.name]
@@ -142,8 +146,9 @@ const Cell = function ({
       name={header.name || header.label}
       rowIndex={rowIndex}
       columnIndex={columnIndex}
+      // 保证参数一致
       onClick={onClick.bind(this, rowData, rowIndex, columnIndex,"")}
-      onDoubleClick={onDoubleClick.bind(this, rowData, rowIndex, columnIndex)}
+      onDoubleClick={onDoubleClick.bind(this, rowData, rowIndex, columnIndex,"")}
       key={"cell-" + rowIndex.toString() + "-" + columnIndex.toString()}
       className={
         (isFocus ? " focus " : "") +

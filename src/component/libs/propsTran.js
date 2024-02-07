@@ -17,7 +17,7 @@ let propsTran = {
     if (Array.isArray(data)) {
       return data.map((item, index) => {
         if (Array.isArray(item.children)) {
-          item.children=this.preprocessForm(item.children,valueField,textField)
+          item.children = this.preprocessForm(item.children, valueField, textField)
         }
         return {
           ...item, //保留原有字段
@@ -34,7 +34,9 @@ let propsTran = {
    * @param {*} value
    * @param {*} data
    */
-  processText(value = "", data = []) {
+  processText(value, data = []) {
+    value = value || [];
+
     let text = []; //选中的文本值
     if (data && data instanceof Array && data.length > 0) {
       for (let i = 0; i < data.length; i++) {
@@ -88,12 +90,12 @@ let propsTran = {
     let firstDate = regs.date.test(props.firstDate)
       ? props.firstDate
       : regs.datetime.test(props.firstDate)
-      ? props.firstDate.split(" ")[0]
-      : ""; //给的第一个值
+        ? props.firstDate.split(" ")[0]
+        : ""; //给的第一个值
     let firstTime =
       props.type === "daterange"
         ? ""
-        : props.firstTime || func.dateformat(newDate, "HH:mm") ;
+        : props.firstTime || func.dateformat(newDate, "HH:mm");
     //先设置默认值
     let firstYear = newDate.getFullYear();
     let firstMonth = newDate.getMonth() + 1;

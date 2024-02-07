@@ -4,7 +4,7 @@
  * date:2021-05-10 将日期组件全部合并到一个文件夹中，
  * date:2022-09-22 增加年，年月组件，并且完善组件，但是设计上仍然有点繁，后期再想办法改进
  */
-import React, { Component } from "react";
+import React from "react";
 import CalendarView from "./Calendar/CalendarView";
 import DateInput from "./DateInput";
 import DateRangeInput from "./DateRangeInput";
@@ -19,29 +19,18 @@ import regs from "../../libs/regs.js";
 import ValidateHoc from "../ValidateHoc";
 import func from "../../libs/func";
 import propTypes from "../propsConfig/propTypes.js";
-import dom from "../../libs/dom";
-import { setDropcontainterPosition } from "../propsConfig/public.js";
 
-class DatePicker extends Component {
+import ComboBox from "../ComboBox/Base";
+
+class DatePicker extends ComboBox {
   constructor(props) {
     super(props);
-    this.input = React.createRef();
-    this.state = {
-      pickerid: func.uuid(),
-      oldPropsValue: null, //保留原来的值
-      value: "",
-      text: "",
-    };
-    this.getValue = this.getValue.bind(this);
-    this.setValue = this.setValue.bind(this);
+
+   this.getValue=this.getValue.bind(this)
+   this.setValue=this.setValue.bind(this)  
     this.splitDate = this.splitDate.bind(this);
     this.splitDateTime = this.splitDateTime.bind(this);
-    this.showPicker = this.showPicker.bind(this);
-    this.hidePicker = this.hidePicker.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.onBlur = this.onBlur.bind(this);
     this.onSelect = this.onSelect.bind(this);
-    this.onClear = this.onClear.bind(this);
     this.renderDate = this.renderDate.bind(this);
     this.renderDateRange = this.renderDateRange.bind(this);
     this.renderDateTime = this.renderDateTime.bind(this);
@@ -57,10 +46,7 @@ class DatePicker extends Component {
     }
     return null;
   }
-  componentDidUpdate() {
-    //
-    dom.scrollVisible(document.getElementById(this.state.pickerid)); //上在滚动条的情况下自动上浮
-  }
+
   /**
    * 获取值
    * @returns
@@ -120,38 +106,7 @@ class DatePicker extends Component {
       value: value,
       text: value,
     });
-    this.props.onChange
     this.props.validate && this.props.validate(value);
-    
-  }
-
-  focus() {
-    try {
-      this.input.current.focus();
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  onChange(value, event) {
-    this.setValue(value);
-    this.props.onChange && this.props.onChange(value, value, this.props.name, event)
-    if (this.props.validate && this.props.validate(value)) {// 如果值有效，则执行onSelect事件
-     this.onSelect(value,value,this.props.name,true)
-   }
-    
-  }
-
-  onBlur(event) {
-    this.props.validate && this.props.validate(this.state.value)
-    //在此处处理失去焦点事件
-    this.props.onBlur &&
-      this.props.onBlur(
-        this.state.value,
-        this.state.text,
-        this.props.name,
-        event
-      );
   }
 
   /**
@@ -175,17 +130,7 @@ class DatePicker extends Component {
     this.props.onSelect &&
       this.props.onSelect(value, text, name || this.props.name);
   }
-  /**
-   *清除数据
-   */
-  onClear() {
-    this.setState({
-      value: "",
-      text: "",
-    });
-    this.props.validate && this.props.validate(""); //验证
-    this.props.onSelect && this.props.onSelect("", "", this.props.name);
-  }
+
   /**
    * 拆分日期格式
    * @param {*} datestr
@@ -224,50 +169,7 @@ class DatePicker extends Component {
     }
     return returnvalue;
   }
-  /**
-   * 显示下拉
-   * @param {*} e
-   * @returns
-   */
-  showPicker(show = true) {
-    //显示选择
-    if (this.props.readOnly || this.state.show) {
-      //只读不显示
-      return;
-    } else {
-      this.setState({
-        show: show,
-      });
-    }
-    document.addEventListener("click", this.hidePicker);
-    setDropcontainterPosition(this.input.current.input.current);
-  }
 
-  /**
-   * 隐藏下拉框
-   * @param {*} event
-   */
-  hidePicker(event) {
-    if (this.props.readOnly || !this.state.show) {
-      //只读不显示
-      return;
-    }
-    if (
-      !dom.isDescendant(
-        document.getElementById(this.props.containerid),
-        event.target
-      )
-    ) {
-      this.setState({
-        show: false,
-      });
-
-      try {
-        document.removeEventListener("click", this.hidePicker);
-        this.props.validate && this.props.validate(this.state.value);
-      } catch (e) {}
-    }
-  }
 
   /**
    * 渲染年组件

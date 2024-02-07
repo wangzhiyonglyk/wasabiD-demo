@@ -47,6 +47,7 @@ export default {
     "avatar", // 头像
     "file", // 文件
     "cloud", //云文件
+    "province",//省市县
     "phone",//手机输入
   ]), //字段类型，
 
@@ -115,8 +116,8 @@ export default {
 
   onSort: PropTypes.func, // 排序事件
   multiple: PropTypes.bool, //是否允许多选,多上传，文件上传也可以
-  attachAble: PropTypes.bool, //select是否可以添加数据
-
+  attachAble: PropTypes.bool, //select是否可以追加数据
+  sortAble: PropTypes.bool,//是否可以排序
   // datepicker 日期组件
   range: PropTypes.number, //日期与时间相关选择时，最大范围
   attachTime: PropTypes.bool, //日期组件时是否附带时间

@@ -9,6 +9,7 @@ import SelectbleList from "../Select/SelectbleList";
 import ValidateHoc from "../ValidateHoc";
 import Msg from "../../Info/Msg.jsx";
 import dom from "../../libs/dom";
+import { setDropcontainterPosition } from "../propsConfig/public.js";
 import "../Select/select.css";
 
 
@@ -71,14 +72,12 @@ function BeforeIcon(props) {
  */
 function DataList(props) {
   return (
-    <div className="wasabi-select">
-      <SelectbleList
+  <SelectbleList
         show={props.show}
         value={props.value || ""}
         data={props.data || []}
         onSelect={props.onSelect}
       ></SelectbleList>
-    </div>
   );
 }
 /**
@@ -134,6 +133,32 @@ class Text extends Component {
       value: value,
       show: false,
     });
+  }
+   /***
+   * 输入框的单击事件
+   */
+  onClick(event) {
+    this.showPicker();
+    this.props.onClick && this.props.onClick(event);
+  }
+   /**
+   * 显示下拉框,可以用于隐藏
+   * @returns
+   */
+  showPicker(show = true) {
+    try {
+      //显示下拉选项
+      if (this.props.readOnly) {
+        return;
+      }
+
+      this.setState({
+        show: show,
+      });
+
+      document.addEventListener("click", this.hidePicker);
+      setDropcontainterPosition(this.input.current);
+    } catch (e) {}
   }
   /**
    * 隐藏下拉框

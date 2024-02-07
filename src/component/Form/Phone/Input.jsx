@@ -6,12 +6,13 @@
 import React,{useMemo } from "react";
 import BaseInput from "../BaseInput";
 import { allCountries,allCountryCodes } from "./data";
+import { getCountry } from "./func";
 const PhoneInput = React.forwardRef((props, ref) => {
   const {
     value,
     name,
     title,
-    placeholder='+86 13888888888',
+    placeholder='+8613888888888',
     readOnly,
     required,
     show,
@@ -28,17 +29,10 @@ const PhoneInput = React.forwardRef((props, ref) => {
 
   const country=useMemo(() => {
      if(value) {
-     let str=value.slice(0, value.indexOf(" ")).replace("+","")
-          const countryCode=allCountryCodes[str]||["86"]//默认为中国
-          return allCountries[countryCode[0]];
-          
-     }
-     else{
-        return allCountries["cn"]
-     }
-    }
-  
-  , [value])
+     const result= getCountry(value);
+     return result.country;
+    }},
+     [value])
   return (
     <React.Fragment>
       <div className="selected-flag" title={title}  onClick={showPicker}>

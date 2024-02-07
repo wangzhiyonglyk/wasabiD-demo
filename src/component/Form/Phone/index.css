@@ -1,17 +1,18 @@
 .wasabi-phone {
 position: relative;
+
 }
 
 .wasabi-phone .wap {
   position: relative;
   width: 100%;
-  background: #fff;
-  padding: 9px;
   white-space: pre-wrap;
    list-style: none;
   text-align: left;
   margin: 0px;
   padding: 0px;
+  z-index: 9;
+ 
 }
 .wasabi-phone .wap li {
   display: flex;

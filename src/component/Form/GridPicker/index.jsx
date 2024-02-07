@@ -4,48 +4,58 @@
  edit 2020-10 参照ztree改造
  desc:表格下拉选择
  */
-import React, { Component } from "react";
+import React from "react";
 import DataGrid from "../../Data/DataGrid/index.jsx";
 import propTypes from "../propsConfig/propTypes.js";
 import ValidateHoc from "../ValidateHoc";
-import func from "../../libs/func/index.js";
-import dom from "../../libs/dom";
+
 import loadDataHoc from "../loadDataHoc";
 import Msg from "../../Info/Msg.jsx";
-import { setDropcontainterPosition } from "../propsConfig/public.js";
-class GridPicker extends Component {
+
+import ComboBox from "../ComboBox/Base.jsx";
+
+
+class GridPicker extends ComboBox {
   constructor(props) {
     super(props);
-    this.input = React.createRef();
-    this.grid = React.createRef();
-
-    this.state = {
-      containerid: func.uuid(),
-      show: false, //是否显示下拉框
-      text: "",
-      value: "",
-      oldPropsValue: "", //保存初始化的值
-      filterText: "", //筛选
-    };
-    this.showPicker = this.showPicker.bind(this);
-    this.hidePicker = this.hidePicker.bind(this);
-    this.onUpdate = this.onUpdate.bind(this);
-    this.onSelect = this.onSelect.bind(this);
-    this.onClick = this.onClick.bind(this);
-    this.onDoubleClick = this.onDoubleClick.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-  }
-  static getDerivedStateFromProps(props, state) {
-    if (props.value !== state.oldPropsValue) {
-      //父组件强行更新了
-      return {
-        value: props.value || "",
-        oldPropsValue: props.value,
-      };
+    this.state={
+      ...this.state,
+      gridrender:false
     }
-    return null;
+    this.grid = React.createRef();
+    this.showPicker=this.showPicker.bind(this)
+    this.setValue=this.setValue.bind(this)
+    this.onSelect = this.onSelect.bind(this);
+    this.onChange = this.onChange.bind(this);
+  
   }
+  /**
+     * 显示下拉框,可以用于隐藏
+     * @returns
+     */
+    showPicker(show = true) {
+        try {
+            //显示下拉选项
+            if (this.props.readOnly) {
+                return;
+            }
+
+            this.setState({
+                show: show,
+           
+            },()=>{
+              if(this.state.gridrender===false){
+                this.setState({
+                  gridrender:true
+                })
+              }
+            });
+
+            document.addEventListener("click", this.hidePicker);
+            // 日期组件多一层
+            setDropcontainterPosition(this.input.current?.input?this.input.current.input.current:this.input.current);
+        } catch (e) { }
+    }
 
   /**
    * 设置值
@@ -71,83 +81,16 @@ class GridPicker extends Component {
     }
   }
   /**
-   * 获取值
-   * @returns
-   */
-  getValue() {
-    return this.state.value;
-  }
-  /**
-   * 清除
-   */
-  onClear() {
-    this.setValue("");
-  }
-  showPicker(show = true) {
-    //显示选择
-    try {
-      if (this.props.readOnly) {
-        //只读不显示
-        return;
-      } else {
-        this.setState({
-          show: show,
-        });
-      }
-      document.addEventListener("click", this.hidePicker);
-      setDropcontainterPosition(this.input.current);
-    } catch (e) {}
-  }
-  /**
-   * 隐藏下拉框
-   * @param {*} event
-   */
-  hidePicker(event) {
-    if (
-      !dom.isDescendant(
-        document.getElementById(this.props.containerid),
-        event.target
-      )
-    ) {
-      this.setState({
-        show: false,
-      });
-
-      try {
-        document.removeEventListener("click", this.hidePicker);
-        this.props.validate && this.props.validate(this.state.value);
-        //在此处处理失去焦点事件
-        this.props.onBlur &&
-          this.props.onBlur(this.state.value, this.state.text, this.props.name);
-      } catch (e) {}
-    }
-  }
-
-  /***
-   * 输入框的单击事件
-   */
-  onClick(event) {
-    this.showPicker();
-    this.props.onClick && this.props.onClick(event);
-  }
-  /**
-   * 双击事件
-   * @param {*} event
-   */
-
-  onDoubleClick(event) {
-    this.props.onDoubleClick && this.props.onDoubleClick(event);
-  }
-  /**
    * onchage 事件
    * @param {*} event
    */
   onChange(event) {
     try {
+        this.props.validate && this.props.validate(value);
       this.gird.current.filter(event.target.value.trim());
       this.setState({
-        show: true,
-        inputText: event.target.value,
+    
+        inputText: event.target.value.trim(),
       });
       this.props.onChange &&
         this.props.onChange(
@@ -158,21 +101,6 @@ class GridPicker extends Component {
         );
     } catch (e) {}
   }
-  /**
-   * 失去焦点
-   */
-  onBlur(event) {
-    this.props.validate(this.state.value); //验证
-    //在此处处理失去焦点事件
-    this.props.onBlur &&
-      this.props.onBlur(
-        this.state.value,
-        this.state.text,
-        this.props.name,
-        event
-      );
-  }
-
   /**
    * 选择
    * @param {*} checked
@@ -205,22 +133,7 @@ class GridPicker extends Component {
       Msg.error("必须设置valueField,textField");
     }
   }
-  /**
-   * 翻页
-   * @param {*} pageSize
-   * @param {*} pageIndex
-   * @param {*} sortName
-   * @param {*} sortOrder
-   */
-  onUpdate(pageSize, pageIndex, sortName, sortOrder) {
-    let params = {
-      pageSize,
-      pageIndex,
-      sortName,
-      sortOrder,
-    };
-    this.props.reload && this.props.reload(params);
-  }
+
 
   render() {
     let inputProps = {
@@ -255,8 +168,8 @@ class GridPicker extends Component {
         ></i>
         <input
           type="text"
-          {...inputProps}
           ref={this.input}
+          {...inputProps}
           value={this.state.text}
           onFocus={this.props.onFocus}
           onClick={this.onClick.bind(this)}
@@ -268,22 +181,15 @@ class GridPicker extends Component {
         />
         <div
           className={"dropcontainter gridpicker  "}
-          style={{
-            height: this.props.height,
-            display: this.state.show == true ? "block" : "none",
-          }}
+         style={{ display: this.state.show == true ? "block" : "none" }}
+          id={this.state.pickerid}
         >
-          <DataGrid
+        {this.state.gridrender?  <DataGrid
             grid={this.gird}
             {...this.props}
-            onUpdate={this.onUpdate}
-            pagination={this.props.pagination || false}
-            rowNumber={true}
-            exportAble={false}
-            selectAble={true}
-            singleSelect={this.props.singleSelect || false}
+             selectAble={true}
             onChecked={this.onSelect}
-          ></DataGrid>
+          ></DataGrid>:null}
         </div>
       </div>
     );

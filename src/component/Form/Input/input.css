@@ -105,7 +105,9 @@ desc:表单输入框样式
   resize: vertical;
   box-sizing: border-box;
   color: inherit;
+  padding-right: 20px;
 }
+
 
 .wasabi-form-group.noborder .wasabi-input {
   border: none;

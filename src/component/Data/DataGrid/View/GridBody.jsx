@@ -47,9 +47,9 @@ class GridBody extends Component {
    * @param {*} rowIndex 行下标
    * @param {*} columnIndex 列下标
    */
-  onDoubleClick(rowData, rowIndex, columnIndex) {
+  onDoubleClick(rowData, rowIndex, columnIndex, label, event) {
     this.props.onDoubleClick &&
-      this.props.onDoubleClick(rowData, rowIndex, columnIndex);
+      this.props.onDoubleClick(rowData, rowIndex, columnIndex, label, event);
   }
   /**
    * 行勾选

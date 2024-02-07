@@ -1,7 +1,7 @@
 /**
  * 跟表格本身事件，方法无关的函数
  */
-import {comboboxType} from "../../../Form/propsConfig/propTypes"
+import { comboboxType } from "../../../Form/propsConfig/propTypes"
 /**
  * 格式化表头，用于编辑时设置单元格的编辑样式,防止没有,并且编辑时如果是下拉选项则放弃固定列
  * @param {*} headers 头部
@@ -16,22 +16,22 @@ export function formatHeader(headers) {
             //跨行的列不设置
             headers[i][j].sticky = null;// 多行列表取消固定列
             continue;
-            
+
           } else {
             headers[i][j].editor = headers[i][j].editor
               ? headers[i][j].editor
               : {
-                  type: "text",
+                type: "text",
               };
-            
-              headers[i][j].sticky = null;// 多行列表取消固定列
+
+            headers[i][j].sticky = null;// 多行列表取消固定列
           }
         }
       } else {
         headers[i].editor = headers[i].editor
           ? headers[i].editor
           : {
-              type: "text",
+            type: "text",
           };
         if (comboboxType.includes(headers[i].editor.type)) {
           headers[i].sticky = null;// 取消固定列，因为下拉框无法展示，除非
@@ -91,8 +91,8 @@ export function getRealRowIndex(
   let rowIndex = rowData._orderRowIndex
     ? rowData._orderRowIndex
     : pagination
-    ? (pageIndex - 1) * pageSize + index
-    : index;
+      ? (pageIndex - 1) * pageSize + index
+      : index;
   return rowIndex;
 }
 
@@ -105,47 +105,47 @@ export function dataFilter(data, filters) {
 
   let result = data;
   for (let key in filters) {
-    if ((filters[key].value ?? "").toString()!== "") {
-          result = result.filter((rowData) => {
-      if (filters[key].type.indexOf("range") > -1) {
-        // 范围类的匹配
-         let values = filters[key].value.split(",");
-        return rowData[key] >= values[0] && rowData[key] <= values[1];
-      } else if (["integer", "number", "rate"].includes(filters[key].type)) {
-        // 数字类的匹配
-        
-        let valueGroup = filters[key].value.split(","); //
-        let isFilter = false;
-        for (let i = 0; i < valueGroup.length; i++) {
-          values = valueGroup[0].split("-");
-          if (values.length === 1) {
-            if (rowData[key] == values[0]) {
-              isFilter = true;
-              break;
-            }
-          } else if (values.length === 2) {
-            if (rowData[key] >= values[0] && rowData[key] <= values[1]) {
-              isFilter = true;
-              break;
+    if ((filters[key].value ?? "").toString() !== "") {
+      result = result.filter((rowData) => {
+        if (filters[key].type.indexOf("range") > -1) {
+          // 范围类的匹配
+          let values = filters[key].value.split(",");
+          return rowData[key] >= values[0] && rowData[key] <= values[1];
+        } else if (["integer", "number", "rate"].includes(filters[key].type)) {
+          // 数字类的匹配
+
+          let valueGroup = filters[key].value.split(","); //
+          let isFilter = false;
+          for (let i = 0; i < valueGroup.length; i++) {
+            values = valueGroup[0].split("-");
+            if (values.length === 1) {
+              if (rowData[key] == values[0]) {
+                isFilter = true;
+                break;
+              }
+            } else if (values.length === 2) {
+              if (rowData[key] >= values[0] && rowData[key] <= values[1]) {
+                isFilter = true;
+                break;
+              }
             }
           }
+          return isFilter;
+        } else if (
+          ["select", "picker", "treepicker", "gridpicker"].includes(
+            filters[key].type
+          )
+        ) {
+          // 多选
+          let valueGroup = filters[key].value.split(","); //
+          return valueGroup.includes(rowData[key] + "");
+        } else {
+          // 其他文本类的
+          return (rowData[key] + "").indexOf(filters[key].value) > -1;
         }
-        return isFilter;
-      } else if (
-        ["select", "picker", "treepicker", "gridpicker"].includes(
-          filters[key].type
-        )
-      ) {
-        // 多选
-        let valueGroup = filters[key].value.split(","); //
-        return valueGroup.includes(rowData[key] + "");
-      } else {
-        // 其他文本类的
-        return (rowData[key] + "").indexOf(filters[key].value) > -1;
-      }
-    });
-      }
-  
+      });
+    }
+
   }
   return result;
 }

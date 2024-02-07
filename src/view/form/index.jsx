@@ -42,79 +42,17 @@ class Home extends React.Component {
     return (
       <div>
         <Button onClick={this.onClick}>打开</Button>
-        <Modal ref="modal" >
-          
-        <Form ref="form" key="1" style={{ width: 500 }} cols={1}>
-          
-          <Input type="phone" name="phone" label="phone"></Input>
-            <Input type="picker" name="picker" label="picker"></Input>
-          <Input
-            type="radio"
-            name="radio"
-            label="radio"
-            labelStyle={{ width: 150 }}
-            data={this.state.data}
-          ></Input>
-          <Input
-            type="checkbox"
-            name="checkbox"
-            label="checkbox"
-            data={this.state.data}
-          ></Input>
-          <Input
-            ref={this.inputRef}
-            type="timerange"
-            name="timerange"
-            label="timerange"
-          ></Input>
-          <Input type="year" name="year" label="year" value="test"></Input>
-          <Input type="month" name="month" label="month" value="test"></Input>
-          <Input type="time" name="time" label="time" value="test"></Input>
-          <Input type="date" name="date" label="date" value="test"></Input>
-          <Input
-            type="datetime"
-            name="datetime"
-            label="datetime"
-            value="test"
-          ></Input>
-          <Input
-            type="yearrange"
-            name="yearrange"
-            label="yearrange"
-            value="2015,2024"
-          ></Input>
-          <Input
-            type="monthrange"
-            name="monthrange"
-            label="monthrange"
-            onClick={this.onClick}
-          ></Input>
-          <Input
-            type="daterange"
-            min="2022-10-10"
-            max="2024-10-10"
-            name="daterange"
-            range={10}
-            label="daterange"
-          ></Input>
-          <Input type="monthrange" name="monthrange" label="monthrange"></Input>
-          <Input type="timerange" name="timerange" label="timerange"></Input>
-          <Input
-            type="datetimerange"
-            name="datetimerange"
-            label="datetimerange"
-            value="test"
-          ></Input>
-        </Form>
-        </Modal>
+        
         
         <Form ref="form" style={{ width: "100%" }}  >
-           
-          <Input type="phone" name="phone" label="phone"></Input>
-          <Input type="select" data={this.state.data} required={true} name="text" label="标题"></Input>
-          <Input type="text"  required={true}  name="text" label="标题"></Input>
-          <Input type="text" name="text" label="标题"></Input>
-          <Input type="text" name="text" label="标题"></Input>
+         
+          <Input type="phone" name="phone" label="phone" data={this.state.data} headers={
+             [
+        {
+          name: "value",
+          label: "省11",
+          }]}></Input>
+         
          
         </Form>
      

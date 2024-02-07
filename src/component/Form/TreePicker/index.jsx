@@ -4,85 +4,70 @@
  edit 2020-10 参照ztree改造
  desc:树下拉选择
  */
-import React, { Component } from "react";
+import React from "react";
 import Tree from "../../Data/Tree/index.jsx";
 import propTypes from "../propsConfig/propTypes.js";
 import CheckBox from "../CheckBox/index.jsx";
 import propsTran from "../../libs/propsTran.js";
 import ValidateHoc from "../ValidateHoc";
-import func from "../../libs/func/index.js";
-import dom from "../../libs/dom";
-import { setDropcontainterPosition } from "../propsConfig/public.js";
-class TreePicker extends Component {
+import ComboBox from "../ComboBox/Base.jsx";
+class TreePicker extends ComboBox {
   constructor(props) {
     super(props);
-    this.input = React.createRef();
+
     this.tree = React.createRef();
     this.checkbox = React.createRef();
     this.state = {
-      containerid: func.uuid(),
-      show: false, //是否显示下拉框
-      text: "",
-      value: "",
-      oldPropsValue: "", //保存初始化的值
+      ...this.state,
       filterText: "", //筛选
     };
-    this.showPicker = this.showPicker.bind(this);
-    this.hidePicker = this.hidePicker.bind(this);
+
     this.checkedAll = this.checkedAll.bind(this);
-    this.onClick = this.onClick.bind(this);
-    this.onDoubleClick = this.onDoubleClick.bind(this);
+
     this.onChange = this.onChange.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-  }
-  static getDerivedStateFromProps(props, state) {
-    if (props.value !== state.oldPropsValue) {
-      //父组件强行更新了
-      return {
-        value: props.value || "",
-        text: propsTran.processText(props.value, props.data).join(","),
-        oldPropsValue: props.value,
-      };
-    }
-    return null;
+
   }
 
-  showPicker(show = true) {
-    //显示选择
-    try {
-      if (this.props.readOnly) {
-        //只读不显示
-        return;
-      } else {
-        this.setState({
-          show: show,
-        });
-      }
-      document.addEventListener("click", this.hidePicker);
-      setDropcontainterPosition(this.input.current);
-    } catch (e) {}
-  }
+
   /**
-   * 隐藏下拉框
+   * 设置值
+   * @param {*} value
+   */
+  setValue(value) {
+     let text = propsTran.processText(value, this.props.data);
+    this.setState({
+      value: value,
+      text: text.join(","),
+    });
+    if (value) {
+    
+      this.tree.current.input.current.setChecked(value);
+    } else {
+      this.checkbox.current.setValue("");
+      this.checkedAll("");
+    }
+  }
+
+
+  /**
+   * onchage 事件
    * @param {*} event
    */
-  hidePicker(event) {
-    if (
-      !dom.isDescendant(
-        document.getElementById(this.props.containerid),
-        event.target
-      )
-    ) {
-      this.setState({
-        show: false,
-      });
-
-      try {
-        document.removeEventListener("click", this.hidePicker);
-        this.props.validate && this.props.validate(this.state.value);
-      } catch (e) {}
-    }
+  onChange(event) {
+      this.props.validate && this.props.validate(value);
+    this.tree.current.filter(event.target.value.trim());
+    this.setState({
+      inputText: event.target.value,
+    });
+    this.props.onChange &&
+      this.props.onChange(
+        event.target.value,
+        event.target.value,
+        this.props.name,
+        event
+      );
   }
+
   /**
    * 选择
    * @param {*} checked
@@ -148,88 +133,8 @@ class TreePicker extends Component {
         this.tree.current.input.current.filter(event.target.value.trim());
     }
   }
-  /**
-   * 设置值
-   * @param {*} value
-   */
-  setValue(value) {
-    if (value) {
-      let text = propsTran.processText(value, this.props.data).join(",");
-      this.setState({
-        value: value,
-        text: text,
-      });
-      this.tree.current.input.current.setChecked(value);
-    } else {
-      this.setState({
-        value: "",
-        text: "",
-      });
-      this.checkbox.current.setValue("");
-      this.checkedAll("");
-    }
-  }
-  /**
-   * 获取值
-   * @returns
-   */
-  getValue() {
-    return this.state.value;
-  }
 
-  /**
-   * 清除
-   */
-  onClear() {
-    this.setValue("");
-  }
-  /***
-   * 输入框的单击事件
-   */
-  onClick(event) {
-    this.showPicker();
-    this.props.onClick && this.props.onClick(event);
-  }
-  /**
-   * 双击事件
-   * @param {*} event
-   */
 
-  onDoubleClick(event) {
-    this.props.onDoubleClick && this.props.onDoubleClick(event);
-  }
-  /**
-   * onchage 事件
-   * @param {*} event
-   */
-  onChange(event) {
-    this.tree.current.filter(event.target.value.trim());
-    this.setState({
-      show: true,
-      inputText: event.target.value,
-    });
-    this.props.onChange &&
-      this.props.onChange(
-        event.target.value,
-        event.target.value,
-        this.props.name,
-        event
-      );
-  }
-  /**
-   * 失去焦点
-   */
-  onBlur(event) {
-    this.props.validate(this.state.value); //验证
-    //在此处处理失去焦点事件
-    this.props.onBlur &&
-      this.props.onBlur(
-        this.state.value,
-        this.state.text,
-        this.props.name,
-        event
-      );
-  }
 
   render() {
     let inputProps = {
@@ -251,8 +156,8 @@ class TreePicker extends Component {
             display: this.props.readOnly
               ? "none"
               : this.state.value == "" || !this.state.value
-              ? "none"
-              : "inline",
+                ? "none"
+                : "inline",
           }}
         ></i>
         <i

@@ -19,22 +19,19 @@ const ArrowInput = React.forwardRef((props, ref) => {
               props.sortType == "asc"
                 ? "顺排"
                 : props.sortType == "desc"
-                ? "倒排"
-                : "点击排序",
+                  ? "倒排"
+                  : "点击排序",
             style: {
-              position: "absolute",
-              top: 14,
-              right: 10,
               color: props.sortType
                 ? "var(--icon-hover-color)"
                 : "var(--icon-color)",
             },
             className:
               props.sortType == "asc"
-                ? "icon-sort-asc"
+                ? "combobox-sort icon-sort-asc"
                 : props.sortType == "desc"
-                ? "icon-sort-desc"
-                : "icon-sort",
+                  ?  " combobox-sort icon-sort-desc"
+                  : " combobox-sort icon-sort",
             onClick: props.onSort,
           };
         case "chose":
@@ -51,23 +48,37 @@ const ArrowInput = React.forwardRef((props, ref) => {
             style: {
               display: props.readOnly
                 ? "none"
-                : props.value == "" || !props.value
-                ? "none"
-                : "inline",
+                : props.text
+                  ? "inline"
+                  : "none",
             },
           };
       }
     },
-    [props.sortType, props.show, props.onClick, props.onSort]
+    [props.sortType, props.text, props.show, props.onClick, props.onSort]
   );
+  /**
+   * 删除
+   */
+  const onDeleteValue = useCallback((index, event) => {
+    event.stopPropagation();
+    props.onDeleteValue && props.onDeleteValue(index)
+  }, [])
   return (
     <React.Fragment>
-      {props.attachAble ? (
+      {props.sortAble ? (
         <i {...getIconProps("sort")}></i>
       ) : (
         <i {...getIconProps("chose")}></i>
       )}
       <i {...getIconProps("clear")}></i>
+      {props.multiple && props.text ? <div className="multiple-item-container">
+        {
+          props.text.split(",").map((item, index) => {
+            return <span key={index} onClick={props.onClick} className="multiple-item" >{item}<i onClick={onDeleteValue.bind(this, index)} className="icon-close"></i></span>
+          })}
+      </div>
+        : null}
       <BaseInput
         ref={ref}
         name={props.name}
@@ -76,7 +87,7 @@ const ArrowInput = React.forwardRef((props, ref) => {
           (props.placeholder ?? "") + (props.attachAble ? "回车添加" : "")
         }
         readOnly={props.readOnly}
-        value={props.value || ""}
+        value={props.inputText}
         onFocus={props.onFocus}
         onClick={props.onClick}
         onDoubleClick={props.onDoubleClick}
