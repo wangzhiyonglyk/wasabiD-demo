@@ -1,13 +1,13 @@
 /*create by wangzhiyonglyk
-/* 借用了bootstrap一些样式调整,
+/* 借用了 bootstrap 一些样式调整，
 date:2016-03-02 
 edit by wangzhyonglyk 扩展一些基本属性
 desc:基本样式
 date:2017-07-28 独立出来，对整体样式风格修改 
 date:2021-02-06 重新调整
- date: 2021-05-15 去掉控制字体大小，颜色等属性，以方便与其他ui库兼容
+ date: 2021-05-15 去掉控制字体大小，颜色等属性，以方便与其他 ui 库兼容
  date:2021-05-20 增加变量
- date:2021-06-22 拆分样式，取reboot
+ date:2021-06-22 拆分样式，取 reboot
  date:2023-09-27 重新定义事件样式变量
 */
 
@@ -48,9 +48,9 @@ date:2021-02-06 重新调整
     /* 默认圆角度 */
     --border-radius: 4px;
     /*  默认字体颜色 */
-    --color: #000000e6;
+    --color: #1d2129;
     /* 图标颜色 */
-    --icon-color: #000000cc;
+    --icon-color: #1d2129;
     /* 鼠标放上 图标颜色  */
     --icon-hover-color: #C3002F;
     /* 焦点颜色 */
@@ -103,7 +103,7 @@ date:2021-02-06 重新调整
     --body-background-color: white;
     /* 阴影 */
     --box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-    /*文本框中图标top位置*/
+    /*文本框中图标 top 位置*/
     --position-top: calc(50% - 6px);
 }
 

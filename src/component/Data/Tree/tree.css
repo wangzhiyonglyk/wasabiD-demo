@@ -1,4 +1,37 @@
 .wasabi-tree-parent {
+    --color: #676a6c;
+    --deepColor: #2e2e2e;
+    --primary-color: #409eff;
+    --primary-hover-color: #66b1ff;
+    --success-color: #67c23a;
+    --success-hover-color: #85ce61;
+    --info-color: #909399;
+    --info-hover-color: #a6a9ad;
+    --danger-color: #f56c6c;
+    --danger-hover-color: #f78989;
+    --warning-color: #e6a23c;
+    --warning-hover-color: #ebb563;
+    --border-color: #d7dae2;
+    --border-hover-color: #c0c4cc;
+    --background-color: #f6f6f6;
+    --background-hover-color: #e7e7e7;
+    --icon-color: #c0c4cc;
+    --icon-hover-color: #409eff;
+    --font-size: 14px;
+    --icon-size: 16px;
+    --box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+    position: relative;
+    font-size: var(--font-size);
+    color: var(--color);
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    overflow: auto;
+    height: 100%;
+  }
+  
+
+.wasabi-tree-parent {
     position: relative;
     font-size: var(--font-size);
     color: var(--color);
@@ -168,24 +201,27 @@
 /*树的勾选框*/
 .wasabi-tree .wasabi-form-group {
     margin: 0px;
-    padding-top: 2px;
+    padding-top: 0px;
     margin-bottom: 0px;
     width: 20px;
+    padding-bottom: 0px;
 }
 
 /* 树表格与交叉表的高度*/
 .wasabi-treegrid .wasabi-tree .wasabi-form-group {
     height: calc(var(--table-height) + 1px);
     border-bottom: 1px solid var(--border-color);
-    padding-top: 4px;
+    padding-top: 0px;
     margin-top: 0px;
+    padding-bottom: 0px;
 }
 
 .wasabi-pivot .wasabi-tree .wasabi-form-group {
     height: calc(var(--table-height) + 1px);
     border-bottom: 1px solid var(--border-color);
-    padding-top: 4px;
+    padding-top: 0px;
     margin-top: 0px;
+    padding-bottom: 0px;
 }
 
 /*有子节点勾选框有向下的虚线 */
@@ -198,9 +234,6 @@
     top: 25px;
 }
 
-.wasabi-tree .wasabi-checkul {
-    padding-top: 8px;
-}
 
 .wasabi-tree .wasabi-checkul li {
     margin-right: 0px;

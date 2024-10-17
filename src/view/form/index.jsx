@@ -13,20 +13,20 @@ class Home extends React.Component {
           value: "333",
         },
         {
-          text: "选择1",
+          text: "选择 1",
           value: 1,
           children: [
             {
-              text: "子节点1",
+              text: "子节点 1",
               value: 11,
-              children: [{ text: "子子节点2", value: 111 }],
+              children: [{ text: "子子节点 2", value: 111 }],
             },
           ],
         },
         {
-          text: "选择2",
+          text: "选择 2",
           value: 2,
-          children: [{ text: "子节点2", value: 22, text: "第二个子节点" }],
+          children: [{ text: "子节点 2", value: 22, text: "第二个子节点" }],
         },
       ],
     };
@@ -34,7 +34,7 @@ class Home extends React.Component {
   }
   componentDidMount() {}
   onClick() {
-      this.refs.form.validate()
+     
     this.refs.modal.open()
   }
 
@@ -43,18 +43,18 @@ class Home extends React.Component {
       <div>
         <Button onClick={this.onClick}>打开</Button>
         
+        <Modal ref="modal">    <Form ref="form" style={{ width: "100%" }}  >
+         
+         <Input type="phone" name="phone" label="phone" data={this.state.data} headers={
+            [
+       {
+         name: "value",
+         label: "省11",
+         }]}></Input>
         
-        <Form ref="form" style={{ width: "100%" }}  >
-         
-          <Input type="phone" name="phone" label="phone" data={this.state.data} headers={
-             [
-        {
-          name: "value",
-          label: "省11",
-          }]}></Input>
-         
-         
-        </Form>
+        
+       </Form></Modal>
+    
      
       </div>
     );

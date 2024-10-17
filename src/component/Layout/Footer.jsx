@@ -80,9 +80,7 @@ class Footer extends React.Component {
         document.removeEventListener("mousemove", this.mouseMoveHandler);
         document.removeEventListener("mouseup", this.mouseUpHandler);
         let height = this.dom.getBoundingClientRect().height
-        this.setState({
-          height:height
-        })
+        
         this.props.onChange && this.props.onChange("footer",height);
       }
       event.target.style.cursor = "pointer"

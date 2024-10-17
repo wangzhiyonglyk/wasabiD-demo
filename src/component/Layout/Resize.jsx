@@ -4,7 +4,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import func from "../libs/func";
-import "../Sass/Layout/resize.css";
+import "./resize.css";
 
 class Resize extends React.Component {
   constructor(props) {
@@ -12,8 +12,6 @@ class Resize extends React.Component {
 
     this.state = {
       resizeid: func.uuid(),
-      width: this.props.width,
-      height: this.props.height,
       min: 8, //最小尺度
     };
     this.mouseDownHandler = this.mouseDownHandler.bind(this);
@@ -28,21 +26,32 @@ class Resize extends React.Component {
       document.addEventListener("mousemove", this.mouseMoveHandler);
       document.addEventListener("mouseup", this.mouseUpHandler);
       document.addEventListener("mousedown", this.mouseDownHandler);
+  
+    // 设置值，防止父组件控制了布局
+  this.setPosition()
     }
+
+  }
+  componentDidUpdate() {
+    if(this.state.visible){
+      this.resizeref.current?.setPosition()
+    }
+   
   }
   mouseDownHandler(event) {
     let elment = document.getElementById(this.state.resizeid);
-    //鼠标按下事件,保存鼠标位置
+    //鼠标按下事件，保存鼠标位置
     let dir = this.getDirection(elment, event);
     if (dir) {
       this.dir = dir; //记住方向
       //记住原始位置
       this.oldClientX = event.clientX;
       this.oldClientY = event.clientY;
+ //记住原始宽度与高度
+ const position=elment.getBoundingClientRect();
+ this.oldwidth =position.width;
+ this.oldheight = position.height;
 
-      //记住原始宽度与高度
-      this.oldwidth = elment.getBoundingClientRect().width;
-      this.oldheight = elment.getBoundingClientRect().height;
     } else {
       this.oldClientX = null;
       this.oldClientY = null;
@@ -98,7 +107,7 @@ class Resize extends React.Component {
     yPos = event.clientY; //
     offset = this.state.min;
 
-    let position = targetElement.getBoundingClientRect(); //获取div的位置信息
+    let position = targetElement.getBoundingClientRect(); //获取 div 的位置信息
 
     let cursor = "";
     if (
@@ -127,6 +136,22 @@ class Resize extends React.Component {
   getTarget() {
       
     return document.getElementById(this.state.resizeid)
+  }
+  
+  /**
+   * 设置位置
+   */
+  setPosition(){
+    let elment = document.getElementById(this.state.resizeid);
+    const position=elment.getBoundingClientRect();
+    if(position.width>0&&!elment.style.left){
+        // 设置值，防止父组件控制了布局
+        elment.style.position="absolute";
+        elment.style.left=(position.left)+"px";
+        elment.style.top=(position.top)+"px";
+        elment.style.width=position.width+"px";
+        elment.style.height=position.height+"px";
+    }
   }
   render() {
     return (

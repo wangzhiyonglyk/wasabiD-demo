@@ -1,7 +1,8 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useCallback ,useEffect} from "react";
 import { createRoot } from "react-dom/client";
 import { Button, Tree } from "../../component";
 
+console.time("渲染时间")
 let data = [
   {
     id: 1,
@@ -9,7 +10,7 @@ let data = [
     dropAble: true,
     isOpened: true,
     iconColor: "red",
-    iconOpen: <div>打开</div>,
+  
   },
 
   {
@@ -178,6 +179,9 @@ function Page() {
   const setunDisabled = useCallback(() => {
     treeRef.current.setDisabled("1-2", false);
   });
+  useEffect(()=>{
+console.timeEnd("渲染时间")
+  },[])
   return (
     <div
       style={{

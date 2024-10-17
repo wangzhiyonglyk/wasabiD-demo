@@ -11,32 +11,36 @@
  */
 let func = {};
 func.clone = function (obj, deep = true) {
-  const toStr = Function.prototype.call.bind(Object.prototype.toString)
+  const toStr = Function.prototype.call.bind(Object.prototype.toString);
   let o;
   switch (typeof obj) {
     case "object":
       if (obj === null) {
         o = null;
       } else {
-        if (obj.nodeType && 'cloneNode' in obj) {
+        if (obj.nodeType && "cloneNode" in obj) {
           // DOM Node
-          o = obj.cloneNode(true)
-        }
-        else if (toStr(obj) === '[object Date]') {
+          o = obj.cloneNode(true);
+        } else if (toStr(obj) === "[object Date]") {
           //对日期的复制
           o = new Date(obj.getTime());
         } else if (obj instanceof Map) {
           o = new Map(obj);
         } else if (obj instanceof Set) {
           o = new Set(obj);
-        } else if (toStr(obj) === '[object RegExp]') {
-          const flags = []
-          if (obj.global) { flags.push('g') }
-          if (obj.multiline) { flags.push('m') }
-          if (obj.ignoreCase) { flags.push('i') }
-          o = new RegExp(obj.source, flags.join(''))
-        } 
-        else if (Array.isArray(obj)) {
+        } else if (toStr(obj) === "[object RegExp]") {
+          const flags = [];
+          if (obj.global) {
+            flags.push("g");
+          }
+          if (obj.multiline) {
+            flags.push("m");
+          }
+          if (obj.ignoreCase) {
+            flags.push("i");
+          }
+          o = new RegExp(obj.source, flags.join(""));
+        } else if (Array.isArray(obj)) {
           // 数组
           o = [];
           if (deep) {
@@ -48,10 +52,10 @@ func.clone = function (obj, deep = true) {
           }
         } else {
           //普通对象
-          o = obj.constructor ? new obj.constructor() : {}
-            for (let k in obj) {
-              o[k] =deep? func.clone(obj[k]):obj[k]
-            }
+          o = obj.constructor ? new obj.constructor() : {};
+          for (let k in obj) {
+            o[k] = deep ? func.clone(obj[k]) : obj[k];
+          }
         }
       }
       break;
@@ -297,8 +301,46 @@ func.componentMixins = function (component, mixinClass = []) {
         }
       });
     });
-  } catch (e) { }
+  } catch (e) {}
 
   return component;
+};
+
+ /**
+   * 数组比较函数
+   * @param key key值
+   * @param type  asc,desc
+   */
+ function compare(key, type) {
+  //这是比较函数
+  return function (after, pre) {
+    let preItem = pre[key];
+    let afterItem = after[key];
+    if (typeof preItem === "number" || typeof afterItem === "number") {
+      if (type === OrderType.desc) {
+        return preItem - afterItem;
+      } else {
+        return afterItem - preItem;
+      }
+    } else {
+      preItem = JSON.stringify(preItem);
+      afterItem = JSON.stringify(afterItem);
+      if (type === OrderType.desc) {
+        return preItem > afterItem ? 1 : preItem === afterItem ? 0 : -1;
+      } else {
+        return preItem < afterItem ? 1 : preItem === afterItem ? 0 : -1;
+      }
+    }
+  };
+}
+
+/**
+ * 数组sort排序
+ * @param arr 数据
+ * @param key key值
+ * @param type  排序方式 asc,desc
+ */
+func.arrSort = function (arr, key, type="asc") {
+  return arr.sort(compare(key, type));
 };
 export default func;

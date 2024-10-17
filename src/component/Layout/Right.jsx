@@ -94,7 +94,7 @@ class Right extends React.Component {
         id={this.state.id}
         style={{
           ...this.props.style,
-          top: this.props.top,
+
           width: this.props.width,
          
         }}

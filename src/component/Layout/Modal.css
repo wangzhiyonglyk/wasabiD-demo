@@ -3,41 +3,25 @@ create by wangzhiyonglyk
 desc:模态窗口样式
 */
 
-.wasabi-modal-container.active {
-  display: block;
-}
-
 .wasabi-modal-container {
   position: fixed;
-  display: none;
+  display: none !important;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
   left: 0;
-  right: 0;
   top: 0;
-  bottom: 0;
   z-index: 3;
   overflow: hidden;
   font-size: var(--font-size);
   color: var(--color);
-}
-
-.wasabi-overlay.active {
-  left: 0;
-  opacity: 1;
-  filter: alpha(opacity=1);
-}
-
-.wasabi-overlay {
-  position: fixed;
-  left: -100%;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  filter: alpha(opacity=0);
-  z-index: 3;
   background-color: rgba(0, 0, 0, 0.25);
 }
 
+.wasabi-modal-container.active {
+  display: flex!important;;
+}
 .wasabi-modal-container .wasabi-modal {
   position: absolute;
   border: 1px solid var(--border-color);
@@ -46,39 +30,24 @@ desc:模态窗口样式
   box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
   overflow: hidden;
   padding: 0px;
-  opacity: 0;
-  top: calc(50% - 400px);
-  left: calc(50% - 300px);
   margin-bottom: 5px;
   height: 600px;
   width: 800px;
   z-index: 7;
   overflow: visible;
+  display: flex;
+  flex-direction: column;
 }
 
-.wasabi-modal-close {
-  float: right;
-  line-height: normal;
-  text-decoration: none;
-  width: 18px;
-  height: 18px;
-  position: absolute;
-  right: 10px;
-  top: calc(var(--table-height)/2 - var(--font-size)/2);
-  cursor: pointer;
-  z-index: 1;
-}
-
-.wasabi-modal-close:hover {
-  color: var(--danger-color);
-}
-
-.wasabi-modal-header {
+.wasabi-modal .wasabi-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 18px;
   font-weight: bold;
   height: var(--table-height);
-  line-height: var(--table-height);
-  padding-left: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
   text-align: left;
   background-color: var(--background-color);
   border-bottom: 1px solid var(--border-color);
@@ -87,19 +56,32 @@ desc:模态窗口样式
   user-select: none;
   -ms-user-select: none;
   user-select: none;
+  flex-shrink: 0;
 }
 
-.wasabi-modal-container .wasabi-modal .wasabi-modal-content {
-  overflow: auto;
+.wasabi-modal .wasabi-modal-close {
+  line-height: normal;
+  text-decoration: none;
+  z-index: 2;
+  color: var(--icon-color) !important;
+  cursor: pointer !important;
+  font-size: 16px;
+}
+
+.wasabi-modal .wasabi-modal-close:hover {
+  color: var(--primary-color) !important;
+}
+
+.wasabi-modal .wasabi-modal-content {
+  flex: 1;
   width: 100%;
   position: relative;
   text-align: left;
-  height: calc(100% - 2*var(--table-height) - 10px);
   padding: var(--modal-padding);
-  margin: auto;
+  overflow: auto;
 }
 
-.wasabi-modal-footer {
+.wasabi-modal .wasabi-modal-footer {
   width: 100%;
   border-top: 1px solid var(--border-color);
   position: absolute;
@@ -110,6 +92,5 @@ desc:模态窗口样式
   background-color: var(--background-color);
   display: flex;
   justify-content: flex-end;
-  align-items:center;
+  align-items: center;
 }
-

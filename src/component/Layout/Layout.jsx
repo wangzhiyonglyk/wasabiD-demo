@@ -7,7 +7,7 @@ desc:圣杯布局
 import React from "react";
 import PropTypes from "prop-types";
 import func from "../libs/func";
-import "../Sass/Layout/Layout.css";
+import "./Layout.css";
 class Layout extends React.Component {
   constructor(props) {
     super(props);
@@ -59,7 +59,7 @@ class Layout extends React.Component {
             }
           }
         })}
-        <div className="wasabi-layout-container"> {React.Children.map(this.props.children, (child, index) => {
+        <div className="wasabi-layout-center"> {React.Children.map(this.props.children, (child, index) => {
           if (child && child.props.type) {
             switch (child.props.type) {
               case "left":

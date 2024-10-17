@@ -20,14 +20,7 @@ desc:圣杯布局样式
   justify-content: flex-start;
 
 }
-.wasabi-layout .wasabi-layout-container {
-  flex:1;
-  margin: 0px;
-  padding: 0px;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
+
 .wasabi-layout .layout-panel {
   min-width: 1px;
   min-height: 1px;
@@ -57,6 +50,15 @@ desc:圣杯布局样式
 .wasabi-layout.noborder .wasabi-layout-footer{
   border-width:0px;
 }
+.wasabi-layout .wasabi-layout-center {
+  flex:1;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
 .wasabi-layout .wasabi-layout-left {
   border: 0;
   border-right: 1px solid var(--border-color);
@@ -74,8 +76,4 @@ desc:圣杯布局样式
 
 .wasabi-layout.noborder .wasabi-layout-right{
   border-width:0px;
-}
-.wasabi-layout .wasabi-layout-center {
-flex:1;
-position: relative;
 }
